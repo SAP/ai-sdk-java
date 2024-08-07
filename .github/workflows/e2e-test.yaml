@@ -28,12 +28,12 @@ jobs:
       - name: "Build SDK"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
-          ./mvnw $MVN_ARGS
+          mvn $MVN_ARGS
 
       - name: "Run tests"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :e2e-test-app -DskipTests=false"
-          ./mvnw $MVN_ARGS
+          mvn $MVN_ARGS
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
           aicore: ${{ secrets.AICORE_SERVICE_KEY }}
@@ -43,7 +43,7 @@ jobs:
       - name: "Start Application Locally"
         run: |
           cd e2e-test-app
-          ../mvnw spring-boot:run &
+          .mvn spring-boot:run &
           timeout=15
           while ! nc -z localhost 8080; do
             sleep 1

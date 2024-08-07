@@ -25,7 +25,7 @@ jobs:
 
       - name: "Publish Snapshot"
         run: >
-          ./mvnw 
+          mvn 
           --batch-mode
           --no-transfer-progress
           --threads 1C

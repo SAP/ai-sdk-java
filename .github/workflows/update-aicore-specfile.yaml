@@ -99,7 +99,7 @@ jobs:
       - name: "Re-generate AI Core client"
         run: |
           rm -rf $GENERATED_CLIENT_PATH
-          ./mvnw clean install -pl core -DskipTests ${{ env.MVN_MULTI_THREADED_ARGS }}
+          mvn clean install -pl core -DskipTests ${{ env.MVN_MULTI_THREADED_ARGS }}
 
       - name: "Commit generated client"
         run: |
