@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.sap.ai.sdk.core.client.ExecutionUnitTest
--------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in com.sap.ai.sdk.core.client.ExecutionUnitTest
