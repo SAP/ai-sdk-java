@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+		"http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<module name="Checker">
+	<property name="charset" value="UTF-8"/>
+
+	<module name="TreeWalker">
+		<module name="SuppressionCommentFilter"/>
+		<module name="SuppressWithNearbyCommentFilter">
+			<property name="commentFormat" value="NOCHECKSTYLE"/>
+		</module>
+		<module name="SuppressWithNearbyCommentFilter">
+			<property name="commentFormat" value="ALLOW THROWABLE"/>
+			<property name="checkFormat" value="RegexpSinglelineJava"/>
+		</module>
+		<module name="SuppressWithNearbyCommentFilter">
+			<property name="commentFormat" value="ALLOW CATCH THROWABLE"/>
+			<property name="checkFormat" value="IllegalCatch"/>
+		</module>
+		<module name="SuppressWithNearbyCommentFilter">
+			<property name="commentFormat" value="ALLOW EXIT"/>
+			<property name="checkFormat" value="RegexpSinglelineJava"/>
+		</module>
+
+		<!-- handled through formatter constraints: -->
+		<!--<module name="InvalidJavadocPosition" />-->
+		<!--<module name="JavadocMissingWhitespaceAfterAsterisk" />-->
+		<!--<module name="RequireEmptyLineBeforeBlockTagGroup" />-->
+		<!--<module name="JavadocContentLocation" />-->
+
+		<module name="JavadocStyle">
+			<property name="scope" value="protected"/>
+			<property name="checkEmptyJavadoc" value="true"/>
+			<property name="checkFirstSentence" value="false"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="JavadocVariable">
+			<property name="scope" value="protected"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="MissingJavadocMethod">
+			<property name="scope" value="protected"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="MissingJavadocType">
+			<property name="scope" value="protected"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="JavadocMethod">
+			<property name="scope" value="protected"/>
+			<property name="allowedAnnotations" value="Override"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="JavadocType">
+			<property name="scope" value="protected"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="JavadocVariable">
+			<property name="scope" value="protected"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="IllegalCatch">
+			<property name="severity" value="error"/>
+			<property name="illegalClassNames"
+					  value="java.lang.Error, java.lang.Throwable"/>
+		</module>
+		<module name="NoFinalizer">
+			<property name="severity" value="error"/>
+		</module>
+		<module name="DefaultComesLast">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="IllegalImport">
+			<property name="severity" value="info"/>
+			<property name="illegalPkgs" value="java.awt, javax.swing"/>
+		</module>
+		<module name="RegexpSinglelineJava">
+			<property name="severity" value="warning"/>
+			<property name="format"
+					  value="(System\.exit|System\.gc\(\)|System\.runFinalization\(\)|System\.setErr|System\.setIn|System\.setOut|System\.setProperties|System\.setProperty|System\.setSecurityManager|((?!\x3c\x3f[ \t]+extends[ \t]+Throwable\x3e)(...extends[ \t]+Throwable.))|(?!\x3c\x3f[ \t]+extends[ \t]+java\.lang\.Throwable\x3e)(...extends[ \t]+java\.lang\.Throwable.)|extends[ \t]+Error|extends[ \t]+java\.lang\.Error)"/>
+			<property name="ignoreComments" value="true"/>
+		</module>
+		<module name="EmptyBlock">
+			<property name="severity" value="error"/>
+			<property name="option" value="text"/>
+			<property name="tokens" value="LITERAL_WHILE,LITERAL_FINALLY,LITERAL_IF"/>
+		</module>
+		<module name="ModifierOrderCheck">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="TodoComment">
+			<property name="format" value="(TODO)|(todo)|(ToDo)|(FIXME)|(fixme)|(FixMe)"/>
+		</module>
+	</module>
+</module>

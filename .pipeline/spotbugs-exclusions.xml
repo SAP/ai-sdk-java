@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <Match>
+    <!-- Excluded for now, see this Jira item for resolution: https://sapjira.wdf.sap.corp/browse/CLOUDECOSYSTEM-8706-->
+    <Bug pattern="DM_CONVERT_CASE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Package name="com.sap.ai.sdk.core.client"/>
+      <Package name="com.sap.ai.sdk.core.client.model"/>
+      <Package name="com.sap.ai.sdk.orchestration.client"/>
+      <Package name="com.sap.ai.sdk.orchestration.client.model"/>
+    </Or>
+  </Match>
+</FindBugsFilter>

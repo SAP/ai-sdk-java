@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="PMD Rules SAP">
+  <description>
+    PMD Rules SAP
+  </description>
+  <!-- Already covered in PMD Default Rule Set for Java
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+    <priority>1</priority>
+    <properties>
+      <property name="allowCommentedBlocks" value="true" />
+    </properties>
+  </rule>
+  -->
+
+  <!-- Already covered in PMD Default Rule Set for Java
+  <rule ref="category/java/errorprone.xml/MisplacedNullCheck">
+    <priority>2</priority>
+  </rule>
+  -->
+
+  <rule ref="category/java/bestpractices.xml/MethodReturnsInternalArray">
+    <priority>2</priority>
+  </rule>
+  <rule ref="category/java/errorprone.xml/AvoidInstanceofChecksInCatchClause">
+    <priority>4</priority>
+  </rule>
+  <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes">
+    <priority>3</priority>
+  </rule>
+  <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement">
+    <priority>3</priority>
+  </rule>
+  <rule ref="category/java/bestpractices.xml/PreserveStackTrace">
+    <priority>3</priority>
+  </rule>
+
+  <!-- Already covered in PMD Default Rule Set for Java
+  <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock">
+    <priority>2</priority>
+  </rule>
+  -->
+
+  <rule ref="category/java/design.xml/SignatureDeclareThrowsException">
+    <priority>3</priority>
+  </rule>
+    <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally">
+    <priority>2</priority>
+  </rule>
+  <rule ref="category/java/bestpractices.xml/SystemPrintln">
+    <priority>3</priority>
+  </rule>
+
+  <!-- Already covered in PMD Default Rule Set for Java
+  <rule ref="category/java/errorprone.xml/BrokenNullCheck">
+    <priority>2</priority>
+  </rule>
+  -->
+
+  <!-- Already covered in PMD Default Rule Set for Java
+  <rule ref="category/java/errorprone.xml/UnconditionalIfStatement">
+    <priority>2</priority>
+  </rule>
+  -->
+
+  <rule ref="category/java/design.xml/AvoidThrowingNullPointerException">
+    <priority>4</priority>
+  </rule>
+
+  <!-- Already covered in PMD Default Rule Set for Java
+  <rule ref="category/java/bestpractices.xml/UnusedImports">
+    <priority>5</priority>
+  </rule>
+  -->
+</ruleset>
