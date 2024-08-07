@@ -204,21 +204,21 @@ final OpenAiChatCompletionOutput result =
 ### Prerequisites
 
 - A deployed Orchestration service in AI Core.
-  - [Orchestration documentation](https://github.tools.sap/AI/llm-orchestration#3-how-tos)
+  - [Orchestration documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration)
   - <details>
     <summary>An example orchestration deployment from the AI Core <code>/deployments</code> endpoint</summary>
     <pre>
     {
-      "id": "db1d64d9f06be467",
-      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467",
-      "configurationId": "dd80625e-ad86-426a-b1a7-1494c083428f",
+      "id": "d123456abcdefg",
+      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d123456abcdefg",
+      "configurationId": "12345-123-123-123-123456abcdefg",
       "configurationName": "orchestration",
       "scenarioId": "orchestration",
       "status": "RUNNING",
       "statusMessage": null,
       "targetStatus": "RUNNING",
       "lastOperation": "CREATE",
-      "latestRunningConfigurationId": "dd80625e-ad86-426a-b1a7-1494c083428f",
+      "latestRunningConfigurationId": "12345-123-123-123-123456abcdefg",
       "ttl": null,
       "createdAt": "2024-08-05T16:17:29Z",
       "modifiedAt": "2024-08-06T06:32:50Z",

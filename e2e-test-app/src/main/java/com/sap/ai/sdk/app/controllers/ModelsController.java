@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoint for Available Models */
 @RestController
-@SuppressWarnings("unused")
+@SuppressWarnings("unused") // TODO: test that OpenAiModel contains all available models
 public class ModelsController {
 
   private static final ModelApi API =

@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * Implementation that customizes the {@link Executor} instance used when processing @{@link Async}
  * method invocations.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("unused") // Used by Spring
 @EnableAsync
 @Configuration
 public class AsynchronousConfiguration implements AsyncConfigurer {

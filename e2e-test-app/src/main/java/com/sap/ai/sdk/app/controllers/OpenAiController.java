@@ -66,7 +66,6 @@ class OpenAiController {
    */
   @GetMapping("/chatCompletionTool")
   @Nonnull
-  @SuppressWarnings("unused")
   public static OpenAiChatCompletionOutput chatCompletionTools() {
     final var question =
         "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?";

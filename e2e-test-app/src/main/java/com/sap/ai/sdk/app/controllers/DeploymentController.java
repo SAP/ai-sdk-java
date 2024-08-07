@@ -36,7 +36,6 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/createDelete")
   @Nullable
-  @SuppressWarnings("unused")
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
@@ -58,7 +57,7 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/stop")
   @Nonnull
-  @SuppressWarnings("unused")
+  @SuppressWarnings("unused") // debug method that doesn't need to be tested
   public List<AiDeploymentModificationResponse> stopByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
@@ -86,7 +85,7 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/delete")
   @Nonnull
-  @SuppressWarnings("unused")
+  @SuppressWarnings("unused") // debug method that doesn't need to be tested
   public List<AiDeploymentDeletionResponse> deleteByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
@@ -106,7 +105,6 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
-  @SuppressWarnings("unused")
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
     final AiDeploymentList deploymentList = API.deploymentQuery("default");
 
@@ -122,7 +120,6 @@ class DeploymentController {
    */
   @GetMapping("/getAll")
   @Nullable
-  @SuppressWarnings("unused")
   public AiDeploymentList getAll() {
     return API.deploymentQuery("default");
   }

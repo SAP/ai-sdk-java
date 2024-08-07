@@ -37,8 +37,6 @@ jobs:
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
           aicore: ${{ secrets.AICORE_SERVICE_KEY }}
-          # TODO: Remove this once the orchestration service is available on our BTP subaccount
-          ORCHESTRATION_CLIENT_SECRET: ${{ secrets.ORCHESTRATION_CLIENT_SECRET }}
 
       - name: "Start Application Locally"
         run: |
@@ -56,8 +54,6 @@ jobs:
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
           aicore: ${{ secrets.AICORE_SERVICE_KEY }}
-          # TODO: Remove this once the orchestration service is available on our BTP subaccount
-          ORCHESTRATION_CLIENT_SECRET: ${{ secrets.ORCHESTRATION_CLIENT_SECRET }}
 
       - name: "Health Check"
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers

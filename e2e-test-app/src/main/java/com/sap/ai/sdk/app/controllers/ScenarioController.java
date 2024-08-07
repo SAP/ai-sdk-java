@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoint for Scenario operations */
 @RestController
-@SuppressWarnings("unused")
+@SuppressWarnings("unused") // debug method that doesn't need to be tested
 public class ScenarioController {
 
   private static final ScenarioApi API = new ScenarioApi(getClient());
