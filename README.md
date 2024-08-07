@@ -2,6 +2,8 @@
 
 # AI SDK for Java
 
+# ⚠️ This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change ⚠️
+
 ## About this project
 
 Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Set up your SAP AI Core instance with SAP Cloud SDK for AI Core.
