@@ -1,7 +1,0 @@
-com/sap/ai/sdk/core/CoreTest.class
-com/sap/ai/sdk/core/client/WireMockTestServer.class
-com/sap/ai/sdk/core/client/ExecutionUnitTest.class
-com/sap/ai/sdk/core/client/DeploymentUnitTest.class
-com/sap/ai/sdk/core/client/ArtifactUnitTest.class
-com/sap/ai/sdk/core/client/ConfigurationUnitTest.class
-com/sap/ai/sdk/core/client/ScenarioUnitTest.class

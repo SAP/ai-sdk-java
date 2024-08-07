@@ -1,8 +1,0 @@
-com/sap/ai/sdk/app/controllers/OrchestrationController.class
-com/sap/ai/sdk/app/controllers/OpenAiController.class
-com/sap/ai/sdk/app/ControllerExceptionHandler.class
-com/sap/ai/sdk/app/controllers/ModelsController.class
-com/sap/ai/sdk/app/AsynchronousConfiguration.class
-com/sap/ai/sdk/app/controllers/DeploymentController.class
-com/sap/ai/sdk/app/Application.class
-com/sap/ai/sdk/app/controllers/ScenarioController.class
