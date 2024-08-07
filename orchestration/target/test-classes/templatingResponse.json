@@ -1,0 +1,53 @@
+{
+  "request_id": "26ea36b5-c196-4806-a9a6-a686f0c6ad91",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "Reply with 'Orchestration Service is working!' in German"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj",
+      "object": "chat.completion",
+      "created": 1721224505,
+      "model": "gpt-35-turbo-16k",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Orchestration Service funktioniert!"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 19,
+        "total_tokens": 26
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj",
+    "object": "chat.completion",
+    "created": 1721224505,
+    "model": "gpt-35-turbo-16k",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Orchestration Service funktioniert!"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 7,
+      "prompt_tokens": 19,
+      "total_tokens": 26
+    }
+  }
+}

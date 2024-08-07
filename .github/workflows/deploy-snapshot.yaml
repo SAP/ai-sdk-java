@@ -1,0 +1,39 @@
+name: Deploy Snapshot to internal SAP Artifactory
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 20 * * 1-5
+
+jobs:
+  deploy-snapshot:
+    name: Deploy Snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          server-id: artifactory-snapshots
+          server-username: DEPLOYMENT_USER
+          server-password: DEPLOYMENT_PASS
+
+      - name: "Publish Snapshot"
+        run: >
+          ./mvnw 
+          --batch-mode
+          --no-transfer-progress
+          --threads 1C
+          --show-version
+          -DrepositoryId=artifactory-snapshots
+          -Dmaven.compiler.showCompilationChanges
+          -Dhttp.keepAlive=false
+          clean package deploy
+        env:
+          DEPLOYMENT_USER: ${{ secrets.ARTIFACTORY_COMMON_USER }}
+          DEPLOYMENT_PASS: ${{ secrets.ARTIFACTORY_COMMON_PASSWORD }}

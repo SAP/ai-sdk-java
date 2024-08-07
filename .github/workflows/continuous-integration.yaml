@@ -1,0 +1,101 @@
+name: "Continuous Integration"
+on:
+  pull_request:
+    branches: [ "*" ]
+
+env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  MVN_SKIP_CI_PLUGINS: -DskipFormatting -Denforcer.skip -Djacoco.skip -Dmdep.analyze.skip
+  JAVA_VERSION: 17
+
+jobs:
+
+  continous-integration:
+    # https://wiki.one.int.sap/wiki/display/DevFw/SUGAR
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Format code"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} spotless:apply"
+          ./mvnw $MVN_ARGS
+
+      - name: "Commit formatting changes if necessary"
+        run: |
+          diff=`git diff`
+          if [ ! -z "$diff" ]; then
+            git config --global user.email "cloudsdk@sap.com"
+            git config --global user.name "SAP Cloud SDK Bot"
+            git commit -am "Formatting"
+            git push
+          fi
+
+      - name: "Build SDK"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          ./mvnw $MVN_ARGS
+
+      - name: "Verify Local Changes"
+        run: |
+          CHANGED_FILES="$(git --no-pager diff --name-only)"
+          if [[ ! -z "$CHANGED_FILES" ]]; then
+              echo "There are local changes in the following files:"
+              echo "$CHANGED_FILES"
+              echo "Printing the git diff:"
+              git --no-pager diff
+              exit 1
+          fi
+
+      - name: "Checkstyle"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} -P!build-test-modules org.apache.maven.plugins:maven-checkstyle-plugin:checkstyle"
+          ./mvnw $MVN_ARGS
+          python .pipeline/scripts/print-checkstyle.py
+
+      - name: "PMD"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} org.apache.maven.plugins:maven-pmd-plugin:pmd"
+          ./mvnw $MVN_ARGS
+          python .pipeline/scripts/print-pmd.py
+
+      - name: "Spotbugs"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} com.github.spotbugs:spotbugs-maven-plugin:spotbugs"
+          ./mvnw $MVN_ARGS
+          python .pipeline/scripts/print-spotbugs.py
+
+      - name: "Run Unit Tests"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
+          ./mvnw $MVN_ARGS
+
+      - name: "Coverage Report"
+        run: python .pipeline/scripts/print-coverage.py --jacoco-report-pattern "**/target/site/jacoco/jacoco.csv"
+
+      - name: "Slack Notification"
+        ## currently disabled, as there are no main builds yet
+        if: false
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "🚨 Main Build Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      #TODO: CodeQL step
+      #TODO: Blackduck and security rating steps

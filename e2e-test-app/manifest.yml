@@ -1,0 +1,12 @@
+applications:
+  - name: e2e-app-java
+    random-route: false
+    routes:
+      - route: 'ai-sdk-java-e2e-test.cfapps.eu12-001.hana.ondemand.com'
+    path: target/e2e-test-app.jar
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
+    buildpacks:
+      - java_buildpack
+    services:
+      - default_aicore
