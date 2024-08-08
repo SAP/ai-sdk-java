@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * ChatMessage
  */
-
 // CHECKSTYLE:OFF
 public class ChatMessage 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class ChatMessage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the role of this {@link ChatMessage} instance and return the same instance.
-   *
-   * @param role  The role of this {@link ChatMessage}
-   * @return The same instance of this {@link ChatMessage} class
-   */
+    * Set the role of this {@link ChatMessage} instance and return the same instance.
+    *
+    * @param role  The role of this {@link ChatMessage}
+    * @return The same instance of this {@link ChatMessage} class
+    */
    @Nonnull public ChatMessage role(@Nonnull final String role) {
     this.role = role;
     return this;
   }
 
    /**
-   * Get role
-   * @return role  The role of this {@link ChatMessage} instance.
-  **/
+    * Get role
+    * @return role  The role of this {@link ChatMessage} instance.
+    */
   @Nonnull public String getRole() {
     return role;
   }
 
   /**
-  * Set the role of this {@link ChatMessage} instance.
-  *
-  * @param role  The role of this {@link ChatMessage}
-  */
+   * Set the role of this {@link ChatMessage} instance.
+   *
+   * @param role  The role of this {@link ChatMessage}
+   */
   public void setRole( @Nonnull final String role) {
     this.role = role;
   }
 
    /**
-   * Set the content of this {@link ChatMessage} instance and return the same instance.
-   *
-   * @param content  The content of this {@link ChatMessage}
-   * @return The same instance of this {@link ChatMessage} class
-   */
+    * Set the content of this {@link ChatMessage} instance and return the same instance.
+    *
+    * @param content  The content of this {@link ChatMessage}
+    * @return The same instance of this {@link ChatMessage} class
+    */
    @Nonnull public ChatMessage content(@Nonnull final String content) {
     this.content = content;
     return this;
   }
 
    /**
-   * Get content
-   * @return content  The content of this {@link ChatMessage} instance.
-  **/
+    * Get content
+    * @return content  The content of this {@link ChatMessage} instance.
+    */
   @Nonnull public String getContent() {
     return content;
   }
 
   /**
-  * Set the content of this {@link ChatMessage} instance.
-  *
-  * @param content  The content of this {@link ChatMessage}
-  */
+   * Set the content of this {@link ChatMessage} instance.
+   *
+   * @param content  The content of this {@link ChatMessage}
+   */
   public void setContent( @Nonnull final String content) {
     this.content = content;
   }
@@ -186,6 +185,7 @@ public class ChatMessage
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

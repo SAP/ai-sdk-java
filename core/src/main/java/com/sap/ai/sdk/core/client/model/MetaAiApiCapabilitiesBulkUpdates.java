@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Services that support patch on /executions and /deployments to change targetStatus of multiple executions and deployments.
  */
-
 // CHECKSTYLE:OFF
 public class MetaAiApiCapabilitiesBulkUpdates 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class MetaAiApiCapabilitiesBulkUpdates
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
-   *
-   * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
-   * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
-   */
+    * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
+    *
+    * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
+    * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
+    */
    @Nonnull public MetaAiApiCapabilitiesBulkUpdates executions(@Nonnull final Boolean executions) {
     this.executions = executions;
     return this;
   }
 
    /**
-   * Get executions
-   * @return executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
-  **/
+    * Get executions
+    * @return executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
+    */
   @Nonnull public Boolean isExecutions() {
     return executions;
   }
 
   /**
-  * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
-  *
-  * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
-  */
+   * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
+   *
+   * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
+   */
   public void setExecutions( @Nonnull final Boolean executions) {
     this.executions = executions;
   }
 
    /**
-   * Set the deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
-   *
-   * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
-   * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
-   */
+    * Set the deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
+    *
+    * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
+    * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
+    */
    @Nonnull public MetaAiApiCapabilitiesBulkUpdates deployments(@Nonnull final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
 
    /**
-   * Get deployments
-   * @return deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
-  **/
+    * Get deployments
+    * @return deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
+    */
   @Nonnull public Boolean isDeployments() {
     return deployments;
   }
 
   /**
-  * Set the deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
-  *
-  * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
-  */
+   * Set the deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
+   *
+   * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
+   */
   public void setDeployments( @Nonnull final Boolean deployments) {
     this.deployments = deployments;
   }
@@ -186,6 +185,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

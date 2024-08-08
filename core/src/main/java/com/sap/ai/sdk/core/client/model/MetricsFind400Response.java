@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * MetricsFind400Response
  */
-
 // CHECKSTYLE:OFF
 public class MetricsFind400Response 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class MetricsFind400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link MetricsFind400Response} instance and return the same instance.
-   *
-   * @param error  The error of this {@link MetricsFind400Response}
-   * @return The same instance of this {@link MetricsFind400Response} class
-   */
+    * Set the error of this {@link MetricsFind400Response} instance and return the same instance.
+    *
+    * @param error  The error of this {@link MetricsFind400Response}
+    * @return The same instance of this {@link MetricsFind400Response} class
+    */
    @Nonnull public MetricsFind400Response error(@Nonnull final TrckApiError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link MetricsFind400Response} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link MetricsFind400Response} instance.
+    */
   @Nonnull public TrckApiError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link MetricsFind400Response} instance.
-  *
-  * @param error  The error of this {@link MetricsFind400Response}
-  */
+   * Set the error of this {@link MetricsFind400Response} instance.
+   *
+   * @param error  The error of this {@link MetricsFind400Response}
+   */
   public void setError( @Nonnull final TrckApiError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class MetricsFind400Response
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

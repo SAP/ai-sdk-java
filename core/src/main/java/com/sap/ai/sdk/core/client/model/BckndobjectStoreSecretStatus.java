@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * This represents the meta-data of a stored secret. The &#39;data&#39; field of the secret is never retrieved.
  */
-
 // CHECKSTYLE:OFF
 public class BckndobjectStoreSecretStatus 
 // CHECKSTYLE:ON
@@ -55,57 +54,57 @@ public class BckndobjectStoreSecretStatus
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
-   *
-   * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
-   * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
-   */
+    * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
+    *
+    * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
+    * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
+    */
    @Nonnull public BckndobjectStoreSecretStatus metadata(@Nonnull final BckndobjectStoreSecretStatusMetadata metadata) {
     this.metadata = metadata;
     return this;
   }
 
    /**
-   * Get metadata
-   * @return metadata  The metadata of this {@link BckndobjectStoreSecretStatus} instance.
-  **/
+    * Get metadata
+    * @return metadata  The metadata of this {@link BckndobjectStoreSecretStatus} instance.
+    */
   @Nonnull public BckndobjectStoreSecretStatusMetadata getMetadata() {
     return metadata;
   }
 
   /**
-  * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance.
-  *
-  * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
-  */
+   * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance.
+   *
+   * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
+   */
   public void setMetadata( @Nonnull final BckndobjectStoreSecretStatusMetadata metadata) {
     this.metadata = metadata;
   }
 
    /**
-   * Set the name of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
-   *
-   * @param name  Name of objectstore
-   * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
-   */
+    * Set the name of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
+    *
+    * @param name  Name of objectstore
+    * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
+    */
    @Nonnull public BckndobjectStoreSecretStatus name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name of objectstore
-   * @return name  The name of this {@link BckndobjectStoreSecretStatus} instance.
-  **/
+    * Name of objectstore
+    * @return name  The name of this {@link BckndobjectStoreSecretStatus} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndobjectStoreSecretStatus} instance.
-  *
-  * @param name  Name of objectstore
-  */
+   * Set the name of this {@link BckndobjectStoreSecretStatus} instance.
+   *
+   * @param name  Name of objectstore
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
@@ -187,6 +186,7 @@ public class BckndobjectStoreSecretStatus
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

@@ -7,9 +7,9 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.AiExecutable ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiExecutableList ; //NOPMD
-import com.sap.ai.sdk.core.client.model.ArtifactQuery400Response ; //NOPMD
+import com.sap.ai.sdk.core.client.model.AiExecutable;
+import com.sap.ai.sdk.core.client.model.AiExecutableList;
+import com.sap.ai.sdk.core.client.model.ArtifactQuery400Response;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,28 +32,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.32.1.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.32.1.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class ExecutableApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public ExecutableApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public ExecutableApi( @Nonnull final ApiClient apiClient )
     {
@@ -61,21 +60,22 @@ public class ExecutableApi extends AbstractOpenApiService {
     }
 
         /**
-    * <p>Get details about specific executable</p>
-     *<p>Retrieve details about an executable identified by executableId belonging to a scenario identified by scenarioId. </p>
+     * <p>Get details about specific executable</p>
+     * <p>Retrieve details about an executable identified by executableId belonging to a scenario identified by scenarioId. </p>
      * <p><b>200</b> - An Executable
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>404</b> - The specified resource was not found
-* @param scenarioId
-        Scenario identifier
-* @param executableId
-        Executable identifier
-* @param aiResourceGroup
-        Specify a resource group id
-* @return AiExecutable
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param scenarioId
+     *      Scenario identifier
+     * @param executableId
+     *      Executable identifier
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return AiExecutable
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiExecutable executableGet( @Nonnull final String scenarioId,  @Nonnull final String executableId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    @Nonnull
+    public AiExecutable executableGet( @Nonnull final String scenarioId,  @Nonnull final String executableId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'scenarioId' is set
@@ -133,7 +133,8 @@ public class ExecutableApi extends AbstractOpenApiService {
      * @return AiExecutableList
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public AiExecutableList executableQuery( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup,  @Nullable final String versionId) throws OpenApiRequestException {
+    @Nonnull
+    public AiExecutableList executableQuery( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup,  @Nullable final String versionId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'scenarioId' is set
@@ -175,18 +176,19 @@ public class ExecutableApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get list of executables</p>
-     *<p>Retrieve a list of executables for a scenario. Filter by version ID, if required. </p>
+     * <p>Get list of executables</p>
+     * <p>Retrieve a list of executables for a scenario. Filter by version ID, if required. </p>
      * <p><b>200</b> - A list of executables
      * <p><b>400</b> - The specification of the resource was incorrect
-* @param scenarioId
-        Scenario identifier
-* @param aiResourceGroup
-        Specify a resource group id
-* @return AiExecutableList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param scenarioId
+     *      Scenario identifier
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return AiExecutableList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiExecutableList executableQuery( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    @Nonnull
+    public AiExecutableList executableQuery( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
         return executableQuery(scenarioId, aiResourceGroup, null);
     }
 }

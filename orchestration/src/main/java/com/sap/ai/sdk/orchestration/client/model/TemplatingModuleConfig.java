@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * TemplatingModuleConfig
  */
-
 // CHECKSTYLE:OFF
 public class TemplatingModuleConfig 
 // CHECKSTYLE:ON
@@ -58,21 +57,21 @@ public class TemplatingModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the template of this {@link TemplatingModuleConfig} instance and return the same instance.
-   *
-   * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-   * @return The same instance of this {@link TemplatingModuleConfig} class
-   */
+    * Set the template of this {@link TemplatingModuleConfig} instance and return the same instance.
+    *
+    * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+    * @return The same instance of this {@link TemplatingModuleConfig} class
+    */
    @Nonnull public TemplatingModuleConfig template(@Nonnull final List<ChatMessage> template) {
     this.template = template;
     return this;
   }
   /**
-  * Add one template instance to this {@link TemplatingModuleConfig}.
-  * @param templateItem The template that should be added
-  * @return The same instance of type {@link TemplatingModuleConfig}
-  */
-  @Nonnull public TemplatingModuleConfig addtemplateItem( @Nonnull final ChatMessage templateItem) {
+   * Add one template instance to this {@link TemplatingModuleConfig}.
+   * @param templateItem The template that should be added
+   * @return The same instance of type {@link TemplatingModuleConfig}
+   */
+  @Nonnull public TemplatingModuleConfig addTemplateItem( @Nonnull final ChatMessage templateItem) {
     if (this.template == null) {
       this.template = new ArrayList<>();
     }
@@ -81,46 +80,46 @@ public class TemplatingModuleConfig
   }
 
    /**
-   * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-   * @return template  The template of this {@link TemplatingModuleConfig} instance.
-  **/
+    * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+    * @return template  The template of this {@link TemplatingModuleConfig} instance.
+    */
   @Nonnull public List<ChatMessage> getTemplate() {
     return template;
   }
 
   /**
-  * Set the template of this {@link TemplatingModuleConfig} instance.
-  *
-  * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-  */
+   * Set the template of this {@link TemplatingModuleConfig} instance.
+   *
+   * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+   */
   public void setTemplate( @Nonnull final List<ChatMessage> template) {
     this.template = template;
   }
 
    /**
-   * Set the defaults of this {@link TemplatingModuleConfig} instance and return the same instance.
-   *
-   * @param defaults  Optional default values for the template. If a parameter has no default it is required.
-   * @return The same instance of this {@link TemplatingModuleConfig} class
-   */
+    * Set the defaults of this {@link TemplatingModuleConfig} instance and return the same instance.
+    *
+    * @param defaults  Optional default values for the template. If a parameter has no default it is required.
+    * @return The same instance of this {@link TemplatingModuleConfig} class
+    */
    @Nonnull public TemplatingModuleConfig defaults(@Nonnull final Object defaults) {
     this.defaults = defaults;
     return this;
   }
 
    /**
-   * Optional default values for the template. If a parameter has no default it is required.
-   * @return defaults  The defaults of this {@link TemplatingModuleConfig} instance.
-  **/
+    * Optional default values for the template. If a parameter has no default it is required.
+    * @return defaults  The defaults of this {@link TemplatingModuleConfig} instance.
+    */
   @Nonnull public Object getDefaults() {
     return defaults;
   }
 
   /**
-  * Set the defaults of this {@link TemplatingModuleConfig} instance.
-  *
-  * @param defaults  Optional default values for the template. If a parameter has no default it is required.
-  */
+   * Set the defaults of this {@link TemplatingModuleConfig} instance.
+   *
+   * @param defaults  Optional default values for the template. If a parameter has no default it is required.
+   */
   public void setDefaults( @Nonnull final Object defaults) {
     this.defaults = defaults;
   }
@@ -202,6 +201,7 @@ public class TemplatingModuleConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

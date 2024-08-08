@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * OrchestrationConfig
  */
-
 // CHECKSTYLE:OFF
 public class OrchestrationConfig 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class OrchestrationConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance and return the same instance.
-   *
-   * @param moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
-   */
+    * Set the moduleConfigurations of this {@link OrchestrationConfig} instance and return the same instance.
+    *
+    * @param moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig}
+    * @return The same instance of this {@link OrchestrationConfig} class
+    */
    @Nonnull public OrchestrationConfig moduleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations) {
     this.moduleConfigurations = moduleConfigurations;
     return this;
   }
 
    /**
-   * Get moduleConfigurations
-   * @return moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig} instance.
-  **/
+    * Get moduleConfigurations
+    * @return moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig} instance.
+    */
   @Nonnull public ModuleConfigs getModuleConfigurations() {
     return moduleConfigurations;
   }
 
   /**
-  * Set the moduleConfigurations of this {@link OrchestrationConfig} instance.
-  *
-  * @param moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig}
-  */
+   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance.
+   *
+   * @param moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig}
+   */
   public void setModuleConfigurations( @Nonnull final ModuleConfigs moduleConfigurations) {
     this.moduleConfigurations = moduleConfigurations;
   }
@@ -154,6 +153,7 @@ public class OrchestrationConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

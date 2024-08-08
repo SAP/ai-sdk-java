@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * MetaAiApiCapabilitiesLogs
  */
-
 // CHECKSTYLE:OFF
 public class MetaAiApiCapabilitiesLogs 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class MetaAiApiCapabilitiesLogs
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the executions of this {@link MetaAiApiCapabilitiesLogs} instance and return the same instance.
-   *
-   * @param executions  The executions of this {@link MetaAiApiCapabilitiesLogs}
-   * @return The same instance of this {@link MetaAiApiCapabilitiesLogs} class
-   */
+    * Set the executions of this {@link MetaAiApiCapabilitiesLogs} instance and return the same instance.
+    *
+    * @param executions  The executions of this {@link MetaAiApiCapabilitiesLogs}
+    * @return The same instance of this {@link MetaAiApiCapabilitiesLogs} class
+    */
    @Nonnull public MetaAiApiCapabilitiesLogs executions(@Nonnull final Boolean executions) {
     this.executions = executions;
     return this;
   }
 
    /**
-   * Get executions
-   * @return executions  The executions of this {@link MetaAiApiCapabilitiesLogs} instance.
-  **/
+    * Get executions
+    * @return executions  The executions of this {@link MetaAiApiCapabilitiesLogs} instance.
+    */
   @Nonnull public Boolean isExecutions() {
     return executions;
   }
 
   /**
-  * Set the executions of this {@link MetaAiApiCapabilitiesLogs} instance.
-  *
-  * @param executions  The executions of this {@link MetaAiApiCapabilitiesLogs}
-  */
+   * Set the executions of this {@link MetaAiApiCapabilitiesLogs} instance.
+   *
+   * @param executions  The executions of this {@link MetaAiApiCapabilitiesLogs}
+   */
   public void setExecutions( @Nonnull final Boolean executions) {
     this.executions = executions;
   }
 
    /**
-   * Set the deployments of this {@link MetaAiApiCapabilitiesLogs} instance and return the same instance.
-   *
-   * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesLogs}
-   * @return The same instance of this {@link MetaAiApiCapabilitiesLogs} class
-   */
+    * Set the deployments of this {@link MetaAiApiCapabilitiesLogs} instance and return the same instance.
+    *
+    * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesLogs}
+    * @return The same instance of this {@link MetaAiApiCapabilitiesLogs} class
+    */
    @Nonnull public MetaAiApiCapabilitiesLogs deployments(@Nonnull final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
 
    /**
-   * Get deployments
-   * @return deployments  The deployments of this {@link MetaAiApiCapabilitiesLogs} instance.
-  **/
+    * Get deployments
+    * @return deployments  The deployments of this {@link MetaAiApiCapabilitiesLogs} instance.
+    */
   @Nonnull public Boolean isDeployments() {
     return deployments;
   }
 
   /**
-  * Set the deployments of this {@link MetaAiApiCapabilitiesLogs} instance.
-  *
-  * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesLogs}
-  */
+   * Set the deployments of this {@link MetaAiApiCapabilitiesLogs} instance.
+   *
+   * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesLogs}
+   */
   public void setDeployments( @Nonnull final Boolean deployments) {
     this.deployments = deployments;
   }
@@ -186,6 +185,7 @@ public class MetaAiApiCapabilitiesLogs
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum KpiColumnName {
   
-  RESOURCEGROUP("ResourceGroup"),
+  RESOURCE_GROUP("ResourceGroup"),
   
   SCENARIO("Scenario"),
   

@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * FileDownload400Response
  */
-
 // CHECKSTYLE:OFF
 public class FileDownload400Response 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class FileDownload400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link FileDownload400Response} instance and return the same instance.
-   *
-   * @param error  The error of this {@link FileDownload400Response}
-   * @return The same instance of this {@link FileDownload400Response} class
-   */
+    * Set the error of this {@link FileDownload400Response} instance and return the same instance.
+    *
+    * @param error  The error of this {@link FileDownload400Response}
+    * @return The same instance of this {@link FileDownload400Response} class
+    */
    @Nonnull public FileDownload400Response error(@Nonnull final DSetError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link FileDownload400Response} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link FileDownload400Response} instance.
+    */
   @Nonnull public DSetError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link FileDownload400Response} instance.
-  *
-  * @param error  The error of this {@link FileDownload400Response}
-  */
+   * Set the error of this {@link FileDownload400Response} instance.
+   *
+   * @param error  The error of this {@link FileDownload400Response}
+   */
   public void setError( @Nonnull final DSetError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class FileDownload400Response
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

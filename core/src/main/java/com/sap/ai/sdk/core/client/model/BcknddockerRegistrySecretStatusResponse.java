@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * This represents a list of meta-data of a stored secret. The &#39;data&#39; field of the secret is never retrieved.
  */
-
 // CHECKSTYLE:OFF
 public class BcknddockerRegistrySecretStatusResponse 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class BcknddockerRegistrySecretStatusResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
-   */
+    * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
+    */
    @Nonnull public BcknddockerRegistrySecretStatusResponse count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
-   * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
-   */
+    * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
+    * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
+    */
    @Nonnull public BcknddockerRegistrySecretStatusResponse resources(@Nonnull final List<BcknddockerRegistrySecretStatus> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link BcknddockerRegistrySecretStatusResponse}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link BcknddockerRegistrySecretStatusResponse}
-  */
-  @Nonnull public BcknddockerRegistrySecretStatusResponse addresourcesItem( @Nonnull final BcknddockerRegistrySecretStatus resourcesItem) {
+   * Add one resources instance to this {@link BcknddockerRegistrySecretStatusResponse}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link BcknddockerRegistrySecretStatusResponse}
+   */
+  @Nonnull public BcknddockerRegistrySecretStatusResponse addResourcesItem( @Nonnull final BcknddockerRegistrySecretStatus resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class BcknddockerRegistrySecretStatusResponse
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
+    */
   @Nonnull public List<BcknddockerRegistrySecretStatus> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-  *
-  * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
-  */
+   * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
+   *
+   * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
+   */
   public void setResources( @Nonnull final List<BcknddockerRegistrySecretStatus> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class BcknddockerRegistrySecretStatusResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

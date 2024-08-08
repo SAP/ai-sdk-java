@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * RTALabel
  */
-
 // CHECKSTYLE:OFF
 public class RTALabel 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class RTALabel
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link RTALabel} instance and return the same instance.
-   *
-   * @param key  The key of this {@link RTALabel}
-   * @return The same instance of this {@link RTALabel} class
-   */
+    * Set the key of this {@link RTALabel} instance and return the same instance.
+    *
+    * @param key  The key of this {@link RTALabel}
+    * @return The same instance of this {@link RTALabel} class
+    */
    @Nonnull public RTALabel key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link RTALabel} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link RTALabel} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link RTALabel} instance.
-  *
-  * @param key  The key of this {@link RTALabel}
-  */
+   * Set the key of this {@link RTALabel} instance.
+   *
+   * @param key  The key of this {@link RTALabel}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the value of this {@link RTALabel} instance and return the same instance.
-   *
-   * @param value  The value of this {@link RTALabel}
-   * @return The same instance of this {@link RTALabel} class
-   */
+    * Set the value of this {@link RTALabel} instance and return the same instance.
+    *
+    * @param value  The value of this {@link RTALabel}
+    * @return The same instance of this {@link RTALabel} class
+    */
    @Nonnull public RTALabel value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Get value
-   * @return value  The value of this {@link RTALabel} instance.
-  **/
+    * Get value
+    * @return value  The value of this {@link RTALabel} instance.
+    */
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link RTALabel} instance.
-  *
-  * @param value  The value of this {@link RTALabel}
-  */
+   * Set the value of this {@link RTALabel} instance.
+   *
+   * @param value  The value of this {@link RTALabel}
+   */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -186,6 +185,7 @@ public class RTALabel
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

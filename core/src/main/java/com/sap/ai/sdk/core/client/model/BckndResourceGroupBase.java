@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGroupBase
  */
-
 // CHECKSTYLE:OFF
 public class BckndResourceGroupBase 
 // CHECKSTYLE:ON
@@ -57,85 +56,85 @@ public class BckndResourceGroupBase
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the resourceGroupId of this {@link BckndResourceGroupBase} instance and return the same instance.
-   *
-   * @param resourceGroupId  resource group id
-   * @return The same instance of this {@link BckndResourceGroupBase} class
-   */
+    * Set the resourceGroupId of this {@link BckndResourceGroupBase} instance and return the same instance.
+    *
+    * @param resourceGroupId  resource group id
+    * @return The same instance of this {@link BckndResourceGroupBase} class
+    */
    @Nonnull public BckndResourceGroupBase resourceGroupId(@Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
 
    /**
-   * resource group id
-   * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupBase} instance.
-  **/
+    * resource group id
+    * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupBase} instance.
+    */
   @Nonnull public String getResourceGroupId() {
     return resourceGroupId;
   }
 
   /**
-  * Set the resourceGroupId of this {@link BckndResourceGroupBase} instance.
-  *
-  * @param resourceGroupId  resource group id
-  */
+   * Set the resourceGroupId of this {@link BckndResourceGroupBase} instance.
+   *
+   * @param resourceGroupId  resource group id
+   */
   public void setResourceGroupId( @Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
    /**
-   * Set the tenantId of this {@link BckndResourceGroupBase} instance and return the same instance.
-   *
-   * @param tenantId  tenant id
-   * @return The same instance of this {@link BckndResourceGroupBase} class
-   */
+    * Set the tenantId of this {@link BckndResourceGroupBase} instance and return the same instance.
+    *
+    * @param tenantId  tenant id
+    * @return The same instance of this {@link BckndResourceGroupBase} class
+    */
    @Nonnull public BckndResourceGroupBase tenantId(@Nonnull final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
    /**
-   * tenant id
-   * @return tenantId  The tenantId of this {@link BckndResourceGroupBase} instance.
-  **/
+    * tenant id
+    * @return tenantId  The tenantId of this {@link BckndResourceGroupBase} instance.
+    */
   @Nonnull public String getTenantId() {
     return tenantId;
   }
 
   /**
-  * Set the tenantId of this {@link BckndResourceGroupBase} instance.
-  *
-  * @param tenantId  tenant id
-  */
+   * Set the tenantId of this {@link BckndResourceGroupBase} instance.
+   *
+   * @param tenantId  tenant id
+   */
   public void setTenantId( @Nonnull final String tenantId) {
     this.tenantId = tenantId;
   }
 
    /**
-   * Set the zoneId of this {@link BckndResourceGroupBase} instance and return the same instance.
-   *
-   * @param zoneId  zone id
-   * @return The same instance of this {@link BckndResourceGroupBase} class
-   */
+    * Set the zoneId of this {@link BckndResourceGroupBase} instance and return the same instance.
+    *
+    * @param zoneId  zone id
+    * @return The same instance of this {@link BckndResourceGroupBase} class
+    */
    @Nonnull public BckndResourceGroupBase zoneId(@Nonnull final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
 
    /**
-   * zone id
-   * @return zoneId  The zoneId of this {@link BckndResourceGroupBase} instance.
-  **/
+    * zone id
+    * @return zoneId  The zoneId of this {@link BckndResourceGroupBase} instance.
+    */
   @Nonnull public String getZoneId() {
     return zoneId;
   }
 
   /**
-  * Set the zoneId of this {@link BckndResourceGroupBase} instance.
-  *
-  * @param zoneId  zone id
-  */
+   * Set the zoneId of this {@link BckndResourceGroupBase} instance.
+   *
+   * @param zoneId  zone id
+   */
   public void setZoneId( @Nonnull final String zoneId) {
     this.zoneId = zoneId;
   }
@@ -219,6 +218,7 @@ public class BckndResourceGroupBase
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

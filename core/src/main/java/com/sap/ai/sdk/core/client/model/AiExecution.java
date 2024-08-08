@@ -44,7 +44,6 @@ import javax.annotation.Nullable;
 /**
  * Execution that may generate artifacts
  */
-
 // CHECKSTYLE:OFF
 public class AiExecution 
 // CHECKSTYLE:ON
@@ -160,217 +159,217 @@ public class AiExecution
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param id  ID of the execution
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the id of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param id  ID of the execution
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * ID of the execution
-   * @return id  The id of this {@link AiExecution} instance.
-  **/
+    * ID of the execution
+    * @return id  The id of this {@link AiExecution} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiExecution} instance.
-  *
-  * @param id  ID of the execution
-  */
+   * Set the id of this {@link AiExecution} instance.
+   *
+   * @param id  ID of the execution
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the configurationId of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param configurationId  ID of the configuration
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the configurationId of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param configurationId  ID of the configuration
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution configurationId(@Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
    /**
-   * ID of the configuration
-   * @return configurationId  The configurationId of this {@link AiExecution} instance.
-  **/
+    * ID of the configuration
+    * @return configurationId  The configurationId of this {@link AiExecution} instance.
+    */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
 
   /**
-  * Set the configurationId of this {@link AiExecution} instance.
-  *
-  * @param configurationId  ID of the configuration
-  */
+   * Set the configurationId of this {@link AiExecution} instance.
+   *
+   * @param configurationId  ID of the configuration
+   */
   public void setConfigurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
   }
 
    /**
-   * Set the configurationName of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param configurationName  Name of the configuration
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the configurationName of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param configurationName  Name of the configuration
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution configurationName(@Nonnull final String configurationName) {
     this.configurationName = configurationName;
     return this;
   }
 
    /**
-   * Name of the configuration
-   * @return configurationName  The configurationName of this {@link AiExecution} instance.
-  **/
+    * Name of the configuration
+    * @return configurationName  The configurationName of this {@link AiExecution} instance.
+    */
   @Nonnull public String getConfigurationName() {
     return configurationName;
   }
 
   /**
-  * Set the configurationName of this {@link AiExecution} instance.
-  *
-  * @param configurationName  Name of the configuration
-  */
+   * Set the configurationName of this {@link AiExecution} instance.
+   *
+   * @param configurationName  Name of the configuration
+   */
   public void setConfigurationName( @Nonnull final String configurationName) {
     this.configurationName = configurationName;
   }
 
    /**
-   * Set the scenarioId of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param scenarioId  ID of the scenario
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the scenarioId of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param scenarioId  ID of the scenario
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution scenarioId(@Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
    /**
-   * ID of the scenario
-   * @return scenarioId  The scenarioId of this {@link AiExecution} instance.
-  **/
+    * ID of the scenario
+    * @return scenarioId  The scenarioId of this {@link AiExecution} instance.
+    */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
 
   /**
-  * Set the scenarioId of this {@link AiExecution} instance.
-  *
-  * @param scenarioId  ID of the scenario
-  */
+   * Set the scenarioId of this {@link AiExecution} instance.
+   *
+   * @param scenarioId  ID of the scenario
+   */
   public void setScenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
    /**
-   * Set the targetStatus of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param targetStatus  Target status of the execution
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the targetStatus of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param targetStatus  Target status of the execution
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
    /**
-   * Target status of the execution
-   * @return targetStatus  The targetStatus of this {@link AiExecution} instance.
-  **/
+    * Target status of the execution
+    * @return targetStatus  The targetStatus of this {@link AiExecution} instance.
+    */
   @Nonnull public TargetStatusEnum getTargetStatus() {
     return targetStatus;
   }
 
   /**
-  * Set the targetStatus of this {@link AiExecution} instance.
-  *
-  * @param targetStatus  Target status of the execution
-  */
+   * Set the targetStatus of this {@link AiExecution} instance.
+   *
+   * @param targetStatus  Target status of the execution
+   */
   public void setTargetStatus( @Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
 
    /**
-   * Set the status of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param status  The status of this {@link AiExecution}
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the status of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param status  The status of this {@link AiExecution}
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution status(@Nonnull final AiExecutionStatus status) {
     this.status = status;
     return this;
   }
 
    /**
-   * Get status
-   * @return status  The status of this {@link AiExecution} instance.
-  **/
+    * Get status
+    * @return status  The status of this {@link AiExecution} instance.
+    */
   @Nonnull public AiExecutionStatus getStatus() {
     return status;
   }
 
   /**
-  * Set the status of this {@link AiExecution} instance.
-  *
-  * @param status  The status of this {@link AiExecution}
-  */
+   * Set the status of this {@link AiExecution} instance.
+   *
+   * @param status  The status of this {@link AiExecution}
+   */
   public void setStatus( @Nonnull final AiExecutionStatus status) {
     this.status = status;
   }
 
    /**
-   * Set the statusMessage of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param statusMessage  Execution status message
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the statusMessage of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param statusMessage  Execution status message
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution statusMessage(@Nonnull final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
    /**
-   * Execution status message
-   * @return statusMessage  The statusMessage of this {@link AiExecution} instance.
-  **/
+    * Execution status message
+    * @return statusMessage  The statusMessage of this {@link AiExecution} instance.
+    */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
 
   /**
-  * Set the statusMessage of this {@link AiExecution} instance.
-  *
-  * @param statusMessage  Execution status message
-  */
+   * Set the statusMessage of this {@link AiExecution} instance.
+   *
+   * @param statusMessage  Execution status message
+   */
   public void setStatusMessage( @Nonnull final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
    /**
-   * Set the outputArtifacts of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param outputArtifacts  The outputArtifacts of this {@link AiExecution}
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the outputArtifacts of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param outputArtifacts  The outputArtifacts of this {@link AiExecution}
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution outputArtifacts(@Nonnull final List<AiArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
   /**
-  * Add one outputArtifacts instance to this {@link AiExecution}.
-  * @param outputArtifactsItem The outputArtifacts that should be added
-  * @return The same instance of type {@link AiExecution}
-  */
-  @Nonnull public AiExecution addoutputArtifactsItem( @Nonnull final AiArtifact outputArtifactsItem) {
+   * Add one outputArtifacts instance to this {@link AiExecution}.
+   * @param outputArtifactsItem The outputArtifacts that should be added
+   * @return The same instance of type {@link AiExecution}
+   */
+  @Nonnull public AiExecution addOutputArtifactsItem( @Nonnull final AiArtifact outputArtifactsItem) {
     if (this.outputArtifacts == null) {
       this.outputArtifacts = new ArrayList<>();
     }
@@ -379,186 +378,186 @@ public class AiExecution
   }
 
    /**
-   * Get outputArtifacts
-   * @return outputArtifacts  The outputArtifacts of this {@link AiExecution} instance.
-  **/
+    * Get outputArtifacts
+    * @return outputArtifacts  The outputArtifacts of this {@link AiExecution} instance.
+    */
   @Nonnull public List<AiArtifact> getOutputArtifacts() {
     return outputArtifacts;
   }
 
   /**
-  * Set the outputArtifacts of this {@link AiExecution} instance.
-  *
-  * @param outputArtifacts  The outputArtifacts of this {@link AiExecution}
-  */
+   * Set the outputArtifacts of this {@link AiExecution} instance.
+   *
+   * @param outputArtifacts  The outputArtifacts of this {@link AiExecution}
+   */
   public void setOutputArtifacts( @Nonnull final List<AiArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 
    /**
-   * Set the executionScheduleId of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param executionScheduleId  ID of the execution schedule
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the executionScheduleId of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param executionScheduleId  ID of the execution schedule
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution executionScheduleId(@Nonnull final String executionScheduleId) {
     this.executionScheduleId = executionScheduleId;
     return this;
   }
 
    /**
-   * ID of the execution schedule
-   * @return executionScheduleId  The executionScheduleId of this {@link AiExecution} instance.
-  **/
+    * ID of the execution schedule
+    * @return executionScheduleId  The executionScheduleId of this {@link AiExecution} instance.
+    */
   @Nonnull public String getExecutionScheduleId() {
     return executionScheduleId;
   }
 
   /**
-  * Set the executionScheduleId of this {@link AiExecution} instance.
-  *
-  * @param executionScheduleId  ID of the execution schedule
-  */
+   * Set the executionScheduleId of this {@link AiExecution} instance.
+   *
+   * @param executionScheduleId  ID of the execution schedule
+   */
   public void setExecutionScheduleId( @Nonnull final String executionScheduleId) {
     this.executionScheduleId = executionScheduleId;
   }
 
    /**
-   * Set the createdAt of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param createdAt  Timestamp of resource creation
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the createdAt of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param createdAt  Timestamp of resource creation
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution createdAt(@Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Timestamp of resource creation
-   * @return createdAt  The createdAt of this {@link AiExecution} instance.
-  **/
+    * Timestamp of resource creation
+    * @return createdAt  The createdAt of this {@link AiExecution} instance.
+    */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-  * Set the createdAt of this {@link AiExecution} instance.
-  *
-  * @param createdAt  Timestamp of resource creation
-  */
+   * Set the createdAt of this {@link AiExecution} instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   */
   public void setCreatedAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
    /**
-   * Set the modifiedAt of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param modifiedAt  Timestamp of latest resource modification
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the modifiedAt of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param modifiedAt  Timestamp of latest resource modification
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
    /**
-   * Timestamp of latest resource modification
-   * @return modifiedAt  The modifiedAt of this {@link AiExecution} instance.
-  **/
+    * Timestamp of latest resource modification
+    * @return modifiedAt  The modifiedAt of this {@link AiExecution} instance.
+    */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
 
   /**
-  * Set the modifiedAt of this {@link AiExecution} instance.
-  *
-  * @param modifiedAt  Timestamp of latest resource modification
-  */
+   * Set the modifiedAt of this {@link AiExecution} instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   */
   public void setModifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
   }
 
    /**
-   * Set the submissionTime of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param submissionTime  Timestamp of job submitted
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the submissionTime of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param submissionTime  Timestamp of job submitted
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution submissionTime(@Nonnull final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
     return this;
   }
 
    /**
-   * Timestamp of job submitted
-   * @return submissionTime  The submissionTime of this {@link AiExecution} instance.
-  **/
+    * Timestamp of job submitted
+    * @return submissionTime  The submissionTime of this {@link AiExecution} instance.
+    */
   @Nonnull public OffsetDateTime getSubmissionTime() {
     return submissionTime;
   }
 
   /**
-  * Set the submissionTime of this {@link AiExecution} instance.
-  *
-  * @param submissionTime  Timestamp of job submitted
-  */
+   * Set the submissionTime of this {@link AiExecution} instance.
+   *
+   * @param submissionTime  Timestamp of job submitted
+   */
   public void setSubmissionTime( @Nonnull final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
   }
 
    /**
-   * Set the startTime of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param startTime  Timestamp of job status changed to RUNNING
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the startTime of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param startTime  Timestamp of job status changed to RUNNING
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution startTime(@Nonnull final OffsetDateTime startTime) {
     this.startTime = startTime;
     return this;
   }
 
    /**
-   * Timestamp of job status changed to RUNNING
-   * @return startTime  The startTime of this {@link AiExecution} instance.
-  **/
+    * Timestamp of job status changed to RUNNING
+    * @return startTime  The startTime of this {@link AiExecution} instance.
+    */
   @Nonnull public OffsetDateTime getStartTime() {
     return startTime;
   }
 
   /**
-  * Set the startTime of this {@link AiExecution} instance.
-  *
-  * @param startTime  Timestamp of job status changed to RUNNING
-  */
+   * Set the startTime of this {@link AiExecution} instance.
+   *
+   * @param startTime  Timestamp of job status changed to RUNNING
+   */
   public void setStartTime( @Nonnull final OffsetDateTime startTime) {
     this.startTime = startTime;
   }
 
    /**
-   * Set the completionTime of this {@link AiExecution} instance and return the same instance.
-   *
-   * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-   * @return The same instance of this {@link AiExecution} class
-   */
+    * Set the completionTime of this {@link AiExecution} instance and return the same instance.
+    *
+    * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+    * @return The same instance of this {@link AiExecution} class
+    */
    @Nonnull public AiExecution completionTime(@Nonnull final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
     return this;
   }
 
    /**
-   * Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-   * @return completionTime  The completionTime of this {@link AiExecution} instance.
-  **/
+    * Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+    * @return completionTime  The completionTime of this {@link AiExecution} instance.
+    */
   @Nonnull public OffsetDateTime getCompletionTime() {
     return completionTime;
   }
 
   /**
-  * Set the completionTime of this {@link AiExecution} instance.
-  *
-  * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-  */
+   * Set the completionTime of this {@link AiExecution} instance.
+   *
+   * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+   */
   public void setCompletionTime( @Nonnull final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
   }
@@ -664,6 +663,7 @@ public class AiExecution
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * AiArtifactCreationResponse
  */
-
 // CHECKSTYLE:OFF
 public class AiArtifactCreationResponse 
 // CHECKSTYLE:ON
@@ -57,85 +56,85 @@ public class AiArtifactCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiArtifactCreationResponse} instance and return the same instance.
-   *
-   * @param id  Generic ID
-   * @return The same instance of this {@link AiArtifactCreationResponse} class
-   */
+    * Set the id of this {@link AiArtifactCreationResponse} instance and return the same instance.
+    *
+    * @param id  Generic ID
+    * @return The same instance of this {@link AiArtifactCreationResponse} class
+    */
    @Nonnull public AiArtifactCreationResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Generic ID
-   * @return id  The id of this {@link AiArtifactCreationResponse} instance.
-  **/
+    * Generic ID
+    * @return id  The id of this {@link AiArtifactCreationResponse} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiArtifactCreationResponse} instance.
-  *
-  * @param id  Generic ID
-  */
+   * Set the id of this {@link AiArtifactCreationResponse} instance.
+   *
+   * @param id  Generic ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the message of this {@link AiArtifactCreationResponse} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link AiArtifactCreationResponse} class
-   */
+    * Set the message of this {@link AiArtifactCreationResponse} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link AiArtifactCreationResponse} class
+    */
    @Nonnull public AiArtifactCreationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link AiArtifactCreationResponse} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link AiArtifactCreationResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link AiArtifactCreationResponse} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link AiArtifactCreationResponse} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-   * Set the url of this {@link AiArtifactCreationResponse} instance and return the same instance.
-   *
-   * @param url  Reference to the location of the artifact. 
-   * @return The same instance of this {@link AiArtifactCreationResponse} class
-   */
+    * Set the url of this {@link AiArtifactCreationResponse} instance and return the same instance.
+    *
+    * @param url  Reference to the location of the artifact. 
+    * @return The same instance of this {@link AiArtifactCreationResponse} class
+    */
    @Nonnull public AiArtifactCreationResponse url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-   * Reference to the location of the artifact. 
-   * @return url  The url of this {@link AiArtifactCreationResponse} instance.
-  **/
+    * Reference to the location of the artifact. 
+    * @return url  The url of this {@link AiArtifactCreationResponse} instance.
+    */
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-  * Set the url of this {@link AiArtifactCreationResponse} instance.
-  *
-  * @param url  Reference to the location of the artifact. 
-  */
+   * Set the url of this {@link AiArtifactCreationResponse} instance.
+   *
+   * @param url  Reference to the location of the artifact. 
+   */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
@@ -219,6 +218,7 @@ public class AiArtifactCreationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

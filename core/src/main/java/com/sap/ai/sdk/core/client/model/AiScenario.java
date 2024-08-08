@@ -43,7 +43,6 @@ import javax.annotation.Nullable;
 /**
  * An ML Scenario consists of a number of executables. E.g., there can be one or several training executables, an inference (deployment) executable. An ML Scenario is versioned. 
  */
-
 // CHECKSTYLE:OFF
 public class AiScenario 
 // CHECKSTYLE:ON
@@ -71,77 +70,77 @@ public class AiScenario
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link AiScenario} instance and return the same instance.
-   *
-   * @param name  Name of the scenario
-   * @return The same instance of this {@link AiScenario} class
-   */
+    * Set the name of this {@link AiScenario} instance and return the same instance.
+    *
+    * @param name  Name of the scenario
+    * @return The same instance of this {@link AiScenario} class
+    */
    @Nonnull public AiScenario name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name of the scenario
-   * @return name  The name of this {@link AiScenario} instance.
-  **/
+    * Name of the scenario
+    * @return name  The name of this {@link AiScenario} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link AiScenario} instance.
-  *
-  * @param name  Name of the scenario
-  */
+   * Set the name of this {@link AiScenario} instance.
+   *
+   * @param name  Name of the scenario
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the description of this {@link AiScenario} instance and return the same instance.
-   *
-   * @param description  Description of the scenario
-   * @return The same instance of this {@link AiScenario} class
-   */
+    * Set the description of this {@link AiScenario} instance and return the same instance.
+    *
+    * @param description  Description of the scenario
+    * @return The same instance of this {@link AiScenario} class
+    */
    @Nonnull public AiScenario description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-   * Description of the scenario
-   * @return description  The description of this {@link AiScenario} instance.
-  **/
+    * Description of the scenario
+    * @return description  The description of this {@link AiScenario} instance.
+    */
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-  * Set the description of this {@link AiScenario} instance.
-  *
-  * @param description  Description of the scenario
-  */
+   * Set the description of this {@link AiScenario} instance.
+   *
+   * @param description  Description of the scenario
+   */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-   * Set the labels of this {@link AiScenario} instance and return the same instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   * @return The same instance of this {@link AiScenario} class
-   */
+    * Set the labels of this {@link AiScenario} instance and return the same instance.
+    *
+    * @param labels  Arbitrary labels as meta information
+    * @return The same instance of this {@link AiScenario} class
+    */
    @Nonnull public AiScenario labels(@Nonnull final List<AiScenarioLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-  * Add one labels instance to this {@link AiScenario}.
-  * @param labelsItem The labels that should be added
-  * @return The same instance of type {@link AiScenario}
-  */
-  @Nonnull public AiScenario addlabelsItem( @Nonnull final AiScenarioLabel labelsItem) {
+   * Add one labels instance to this {@link AiScenario}.
+   * @param labelsItem The labels that should be added
+   * @return The same instance of type {@link AiScenario}
+   */
+  @Nonnull public AiScenario addLabelsItem( @Nonnull final AiScenarioLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -150,102 +149,102 @@ public class AiScenario
   }
 
    /**
-   * Arbitrary labels as meta information
-   * @return labels  The labels of this {@link AiScenario} instance.
-  **/
+    * Arbitrary labels as meta information
+    * @return labels  The labels of this {@link AiScenario} instance.
+    */
   @Nonnull public List<AiScenarioLabel> getLabels() {
     return labels;
   }
 
   /**
-  * Set the labels of this {@link AiScenario} instance.
-  *
-  * @param labels  Arbitrary labels as meta information
-  */
+   * Set the labels of this {@link AiScenario} instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   */
   public void setLabels( @Nonnull final List<AiScenarioLabel> labels) {
     this.labels = labels;
   }
 
    /**
-   * Set the id of this {@link AiScenario} instance and return the same instance.
-   *
-   * @param id  ID of the scenario
-   * @return The same instance of this {@link AiScenario} class
-   */
+    * Set the id of this {@link AiScenario} instance and return the same instance.
+    *
+    * @param id  ID of the scenario
+    * @return The same instance of this {@link AiScenario} class
+    */
    @Nonnull public AiScenario id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * ID of the scenario
-   * @return id  The id of this {@link AiScenario} instance.
-  **/
+    * ID of the scenario
+    * @return id  The id of this {@link AiScenario} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiScenario} instance.
-  *
-  * @param id  ID of the scenario
-  */
+   * Set the id of this {@link AiScenario} instance.
+   *
+   * @param id  ID of the scenario
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the createdAt of this {@link AiScenario} instance and return the same instance.
-   *
-   * @param createdAt  Timestamp of resource creation
-   * @return The same instance of this {@link AiScenario} class
-   */
+    * Set the createdAt of this {@link AiScenario} instance and return the same instance.
+    *
+    * @param createdAt  Timestamp of resource creation
+    * @return The same instance of this {@link AiScenario} class
+    */
    @Nonnull public AiScenario createdAt(@Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Timestamp of resource creation
-   * @return createdAt  The createdAt of this {@link AiScenario} instance.
-  **/
+    * Timestamp of resource creation
+    * @return createdAt  The createdAt of this {@link AiScenario} instance.
+    */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-  * Set the createdAt of this {@link AiScenario} instance.
-  *
-  * @param createdAt  Timestamp of resource creation
-  */
+   * Set the createdAt of this {@link AiScenario} instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   */
   public void setCreatedAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
    /**
-   * Set the modifiedAt of this {@link AiScenario} instance and return the same instance.
-   *
-   * @param modifiedAt  Timestamp of latest resource modification
-   * @return The same instance of this {@link AiScenario} class
-   */
+    * Set the modifiedAt of this {@link AiScenario} instance and return the same instance.
+    *
+    * @param modifiedAt  Timestamp of latest resource modification
+    * @return The same instance of this {@link AiScenario} class
+    */
    @Nonnull public AiScenario modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
    /**
-   * Timestamp of latest resource modification
-   * @return modifiedAt  The modifiedAt of this {@link AiScenario} instance.
-  **/
+    * Timestamp of latest resource modification
+    * @return modifiedAt  The modifiedAt of this {@link AiScenario} instance.
+    */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
 
   /**
-  * Set the modifiedAt of this {@link AiScenario} instance.
-  *
-  * @param modifiedAt  Timestamp of latest resource modification
-  */
+   * Set the modifiedAt of this {@link AiScenario} instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   */
   public void setModifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
   }
@@ -335,6 +334,7 @@ public class AiScenario
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

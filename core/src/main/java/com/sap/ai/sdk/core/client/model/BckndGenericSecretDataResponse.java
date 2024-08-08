@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndGenericSecretDataResponse
  */
-
 // CHECKSTYLE:OFF
 public class BckndGenericSecretDataResponse 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndGenericSecretDataResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the message of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link BckndGenericSecretDataResponse} class
-   */
+    * Set the message of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link BckndGenericSecretDataResponse} class
+    */
    @Nonnull public BckndGenericSecretDataResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link BckndGenericSecretDataResponse} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link BckndGenericSecretDataResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link BckndGenericSecretDataResponse} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link BckndGenericSecretDataResponse} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-   * Set the name of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
-   *
-   * @param name  Name
-   * @return The same instance of this {@link BckndGenericSecretDataResponse} class
-   */
+    * Set the name of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
+    *
+    * @param name  Name
+    * @return The same instance of this {@link BckndGenericSecretDataResponse} class
+    */
    @Nonnull public BckndGenericSecretDataResponse name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name
-   * @return name  The name of this {@link BckndGenericSecretDataResponse} instance.
-  **/
+    * Name
+    * @return name  The name of this {@link BckndGenericSecretDataResponse} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndGenericSecretDataResponse} instance.
-  *
-  * @param name  Name
-  */
+   * Set the name of this {@link BckndGenericSecretDataResponse} instance.
+   *
+   * @param name  Name
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
@@ -186,6 +185,7 @@ public class BckndGenericSecretDataResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 
