@@ -23,7 +23,8 @@ We use wiremock tests to verify (de-) serialization, HTTP headers and other beha
 We construct these tests only with data that has been obtained from real systems.
 This guarantees that, at least at the time of creating the test, a real system behaved in the exact same way the wiremock test stub does.
 
-TBD: How much of the generated code for the AI Core API do we want to test
+TBD: How much of the generated code for the AI Core API do we want to test, and how do we want to test it.
+There are various tools available to automate parts of this, see [this list](https://openapi.tools/#data-validators).
 
 ## Integration Tests
 
