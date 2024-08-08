@@ -1,0 +1,72 @@
+name: "End-to-end Tests"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 22 * * *
+
+env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  JAVA_VERSION: 17
+
+jobs:
+
+  end-to-end-tests:
+    # https://wiki.one.int.sap/wiki/display/DevFw/SUGAR
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Build SDK"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          mvn $MVN_ARGS
+
+      - name: "Run tests"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :e2e-test-app -DskipTests=false"
+          mvn $MVN_ARGS
+        env:
+          # See "End-to-end test application instructions" on the README.md to update the secret
+          aicore: ${{ secrets.AICORE_SERVICE_KEY }}
+
+      - name: "Start Application Locally"
+        run: |
+          cd e2e-test-app
+          .mvn spring-boot:run &
+          timeout=15
+          while ! nc -z localhost 8080; do
+            sleep 1
+            timeout=$((timeout - 1))
+            if [ $timeout -le 0 ]; then
+              echo "Server did not start within 15 seconds."
+              exit 1
+            fi
+          done
+        env:
+          # See "End-to-end test application instructions" on the README.md to update the secret
+          aicore: ${{ secrets.AICORE_SERVICE_KEY }}
+
+      - name: "Health Check"
+        # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
+        run: wget -qO- -S localhost:8080
+
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

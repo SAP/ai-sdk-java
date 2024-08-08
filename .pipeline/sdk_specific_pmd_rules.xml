@@ -1,0 +1,378 @@
+<?xml version="1.0"?>
+<ruleset name="PMD Rules SAP Cloud SDK"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <!-- For syntax overview, find https://de.wikiversity.org/wiki/Kurs:Programmierung_in_Java/EBNF-Syntax_Java_1.5 -->
+    <description>
+        PMD Rules SAP Cloud SDK
+    </description>
+
+    <rule name="CustomLoggerDeclaration" language="java"
+          message="Do not manually declare Logger reference."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Do not manually declare Logger reference. Use Lombok's @Slf4j annotation on class level instead.
+        </description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //FieldDeclaration[@Static]
+                        /VariableDeclarator
+                        /MethodCall[@MethodName = "getLogger"]/AmbiguousName[@Name = "LoggerFactory"]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class HelloWorld
+            {
+                private static final Logger log = LoggerFactory.getLogger(HelloWorld.class);
+            }
+
+            // Instead, use the following:
+
+            import lombok.extern.slf4j.Slf4j;
+
+            @Slf4j
+            public class HelloWorld
+            {
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <rule name="IncorrectUseOfOptional" language="java"
+          message="Do not use Optional for method parameters or member fields."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Optional should only be used as return type, not as method parameter or member field.
+        </description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //ClassBody/*
+                        [
+                            self::FieldDeclaration/ClassType[@SimpleName='Optional'] or
+                            self::*/FormalParameters/FormalParameter/ClassType[@SimpleName='Optional']
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            public class MyClass
+            {
+                private final Optional<T> member; // BAD: Optional<T> used as member
+
+                public Optional<T> method( Optional<T> parameter ) // BAD: Optional<T> used as parameter
+                {
+
+                }
+            }
+
+            // Instead, use the following:
+
+            public class MyClass
+            {
+                @Nullable
+                private final T member;
+
+                public Optional<T> method( @Nullable final T parameter )
+                {
+
+                }
+            }
+            ]]>
+        </example>
+    </rule>
+    <rule name="UseOfGuavaOptional" language="java"
+          message="Guava's Optional is used, use the Java 8 Optional instead."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Guava's Optional is used, use the Java 8 Optional instead.
+        </description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //ImportDeclaration
+                        [starts-with(@ImportedName, 'com.google.common.base.Optional')]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            import com.google.common.base.Optional;
+            ]]>
+        </example>
+    </rule>
+    <rule name="NullAnnotationMissingOnPublicMethod" language="java"
+          message="Public method is not annotated with @Nonnull or @Nullable."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Public method is not annotated with @Nonnull or @Nullable.
+            This is beneficial to communicate a clear contract and ensure better interoperability with Kotlin.
+        </description>
+        <priority>5</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //MethodDeclaration[@EffectiveVisibility='public' and @Void=false() and ClassType and not(
+                            ./ModifierList/Annotation[@SimpleName='Nullable'] or
+                            ./ModifierList/Annotation[@SimpleName='Nonnull']
+                        )]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            public class SomeClass {
+                // Okay
+                @Nullable
+                public MyClass method()
+                {
+                    return null;
+                }
+
+                // Okay
+                @Nonnull
+                public MyClass method()
+                {
+                    return new MyClass();
+                }
+
+                // Okay
+                @Nonnull
+                public MyClass method()
+                {
+                    return new MyClass();
+                }
+
+                // Nullability annotation missing
+                public T method()
+                {
+                    // ...
+                }
+            }
+            ]]>
+        </example>
+    </rule>
+    <rule name="NullAnnotationMissingOnPublicMethodParameter" language="java"
+          message="Parameter type of public method is not annotated with @Nonnull or @Nullable."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Missing @Nonnull or @Nullable annotation on parameter of public method or constructor.
+            This is beneficial to communicate a clear API contract and it allows for effective argument constraint validation in the IDE.
+        </description>
+        <priority>5</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //ClassBody
+                        /*[@EffectiveVisibility='public']
+                        /FormalParameters
+                        /FormalParameter[
+                            ClassType and
+                            not(
+                                ./ModifierList/Annotation[@SimpleName='Nullable'] or
+                                ./ModifierList/Annotation[@SimpleName='Nonnull']
+                            )]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            public class SomeType {
+                // Okay
+                public SomeType() { }
+
+                // Okay
+                public SomeType( @Nullable Object parameter ) { }
+
+                // Okay
+                public SomeType( @Nonnull Object parameter, int primitive ) { }
+
+                // Nullability annotation missing
+                public SomeType( Object parameter ) { }
+            }
+            ]]>
+        </example>
+    </rule>
+    <rule name="PrematureComputationOfElseBlock" language="java"
+          message="Else block of fluent-API is computed in advance."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Do not unnecessarily compute code in advance, when it's not needed.
+            Avoid premature instantiation.
+            Instead of direct constructor call, use lambda notation or constructor reference, e.g. TargetType::new
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //MethodCall[@MethodName='orElse' or @MethodName='getOrElse']
+                        /ArgumentList[not(LambdaExpression) and (.//MethodCall or .//ConstructorCall)]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            public class SomeType {
+                // Okay
+                Option.of(variable).getOrElse("foo");
+                Optional.of(variable).orElse(foo);
+                Optional.of(variable).orElseGet(() -> "foo" + bar());
+
+                // Not okay
+                Option.of(variable).getOrElse(bar());
+                Optional.of(variable).orElse("foo" + bar());
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <!-- The following "performance"-related rules are taken from here: https://pmd.github.io/latest/pmd_rules_java_performance.html -->
+    <rule ref="category/java/performance.xml/StringToString" />
+    <rule ref="category/java/performance.xml/UseStringBufferLength" />
+    <rule ref="category/java/performance.xml/UseArraysAsList" />
+    <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
+    <rule ref="category/java/performance.xml/StringInstantiation" />
+    <rule ref="category/java/performance.xml/InefficientStringBuffering" />
+    <rule ref="category/java/performance.xml/InefficientEmptyStringCheck" />
+    <rule ref="category/java/performance.xml/AvoidFileStream" />
+    <rule ref="category/java/performance.xml/AvoidArrayLoops" />
+
+    <!-- Code Style rules, taken from: https://pmd.github.io/latest/pmd_rules_java_codestyle.html -->
+    <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass" />
+    <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending" />
+    <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />
+    <rule ref="category/java/codestyle.xml/BooleanGetMethodName" />
+    <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+        <properties>
+            <!-- By default this rule expects utility classes to end on "Helper" or "Utils" -->
+            <!-- See https://github.com/pmd/pmd/issues/1164 for details -->
+            <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]*" />
+        </properties>
+    </rule>
+    <rule ref="category/java/codestyle.xml/ControlStatementBraces" />
+    <rule ref="category/java/codestyle.xml/ExtendsObject" />
+    <rule ref="category/java/codestyle.xml/FieldDeclarationsShouldBeAtStartOfClass" />
+    <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions" />
+    <rule ref="category/java/codestyle.xml/IdenticalCatchBranches" />
+    <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
+    <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" />
+    <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
+    <rule ref="category/java/codestyle.xml/MethodNamingConventions" />
+    <rule ref="category/java/codestyle.xml/NoPackage" />
+    <rule ref="category/java/codestyle.xml/PackageCase" />
+    <rule ref="category/java/codestyle.xml/UnnecessaryBoxing" />
+    <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
+    <rule ref="category/java/codestyle.xml/UnnecessaryModifier" />
+    <rule ref="category/java/codestyle.xml/UnnecessaryReturn" />
+    <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
+
+    <rule name="WildcardImports" language="java"
+    message="Do not use wildcard imports"
+    class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>
+        Do not use wildcard imports as they clutter the class namespace with unnecessary load of possible imports
+    </description>
+    <priority>1</priority>
+    <properties>
+        <property name="xpath">
+            <value>
+                <![CDATA[
+                        //ImportDeclaration
+                        [@PackageName=@ImportedName]
+                    ]]>
+            </value>
+        </property>
+    </properties>
+    <example>
+        <![CDATA[
+            import java.util.*;
+            import java.sql.*;
+            ]]>
+    </example>
+    </rule>
+
+    <!-- Rules related to Logging -->
+    <!-- Documented at: https://pmd.github.io/latest/pmd_rules_java_errorprone.html -->
+    <rule ref="category/java/errorprone.xml/MoreThanOneLogger" />
+    <rule ref="category/java/errorprone.xml/UseCorrectExceptionLogging" />
+
+    <rule name="NoAssertKeyword" language="java"
+          message="Do not use the assert keyword in Java."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Do not use the assert keyword in Java. Check conditions with if and throw meaningful exceptions instead.
+        </description>
+        <priority>1</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                          //AssertStatement
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            assert everythingIsAlright == true;
+            ]]>
+        </example>
+    </rule>
+
+    <rule name="NoRedundantLogLevelCheck" language="java"
+          message="Do not unnecessarily check SLF4J log levels for constant log payload."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Do not unnecessarily check log levels for constant log payload. SLF4J internally runs the lookup already.
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //IfStatement[
+                            @Else=false() and
+                            ./MethodCall[starts-with(@MethodName, "is") and ends-with(@MethodName, "Enabled") and AmbiguousName[@Name="log"]] and
+                            ./Block[@Size=1]/ExpressionStatement/MethodCall[AmbiguousName[@Name="log"] and not(.//MethodCall) and not(.//ConstructorCall)]
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            if( log.isDebugEnabled() ) {
+                log.debug("This is " +
+                  " a " + CONSTANT + " String");
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <rule ref="category/java/errorprone.xml/CloseResource" />
+    <rule ref="category/java/bestpractices.xml/UseTryWithResources" />
+</ruleset>

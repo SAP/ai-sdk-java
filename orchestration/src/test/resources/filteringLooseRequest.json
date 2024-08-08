@@ -1,0 +1,55 @@
+{
+  "orchestration_config": {
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo-16k",
+        "model_params": {
+          "temperature": 0.1,
+          "max_tokens": 50,
+          "frequency_penalty": 0,
+          "presence_penalty": 0
+        },
+        "model_version": "latest"
+      },
+      "templating_module_config": {
+        "template": [
+          {
+            "role": "user",
+            "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}"
+          }
+        ]
+      },
+      "filtering_module_config": {
+        "input": {
+          "filters": [
+            {
+              "type": "azure_content_safety",
+              "config": {
+                "Hate": 4,
+                "SelfHarm": 4,
+                "Sexual": 4,
+                "Violence": 4
+              }
+            }
+          ]
+        },
+        "output": {
+          "filters": [
+            {
+              "type": "azure_content_safety",
+              "config": {
+                "Hate": 4,
+                "SelfHarm": 4,
+                "Sexual": 4,
+                "Violence": 4
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "input_params": {
+    "disclaimer": "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
+  }
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>sdk-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>orchestration</artifactId>
+  <name>Orchestration client</name>
+  <description>Generating and testing the Orchestration client.</description>
+  <organization>
+    <name>SAP SE</name>
+    <url>https://www.sap.com</url>
+  </organization>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <!-- scope "test" -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.3.2</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${project.basedir}/src/main/java/com/sap/ai/sdk/orchestration/client</directory>
+              <includes>
+                <include>**/*</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+        <executions>
+          <execution>
+            <id>delete-orchestration-generated-client</id>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.sap.cloud.sdk.datamodel</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${cloud-sdk.version}</version>
+        <configuration>
+          <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+          <apiMaturity>released</apiMaturity>
+          <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+          <compileScope>COMPILE</compileScope>
+          <!-- Do not delete the output directory because it contains non-generated code -->
+          <!-- The generated client is instead deleted by the maven-clean-plugin here above -->
+          <deleteOutputDirectory>false</deleteOutputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>orchestration</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
+              <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
+              <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- skip spotless-maven-plugin -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
