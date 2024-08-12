@@ -1,6 +1,6 @@
 ## Context
 
-AI/ai-sdk-java-backlog#ISSUENUMBER.
+https://github.tools.sap/AI/ai-sdk-java-backlog/issues/ISSUENUMBER.
 
 Please provide a short description of what your change does and why it is needed.
 
