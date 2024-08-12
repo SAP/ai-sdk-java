@@ -1,4 +1,4 @@
-name: Deploy Snapshot to internal SAP Artifactory
+name: Deploy Snapshot to common SAP Artifactory
 
 on:
   workflow_dispatch:
