@@ -197,6 +197,7 @@ public interface OpenAiChatMessage {
         return this;
       }
 
+      /** Image URL. */
       // { "url": "website.com/picture.jpg" }
       @JsonFormat(shape = Shape.OBJECT)
       @NoArgsConstructor
