@@ -7,10 +7,10 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.KpiColumnName;
-import com.sap.ai.sdk.core.client.model.KpiGet400Response;
-import com.sap.ai.sdk.core.client.model.KpiResultSet;
-import java.util.Set;
+import com.sap.ai.sdk.core.client.model.KpiColumnName ; //NOPMD
+import com.sap.ai.sdk.core.client.model.KpiGet400Response ; //NOPMD
+import com.sap.ai.sdk.core.client.model.KpiResultSet ; //NOPMD
+import java.util.Set ; //NOPMD
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,27 +33,28 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
- *
- * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
- */
+* AI Core in version 2.33.0.
+*
+* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+*/
+
 public class KpiApi extends AbstractOpenApiService {
     /**
-     * Instantiates this API class to invoke operations on the AI Core.
-     *
-     * @param httpDestination The destination that API should be used with
-     */
+    * Instantiates this API class to invoke operations on the AI Core.
+    *
+    * @param httpDestination The destination that API should be used with
+    */
     public KpiApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-     *
-     * @param apiClient
-     *            ApiClient to invoke the API on
-     */
+    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+    *
+    * @param apiClient
+    *            ApiClient to invoke the API on
+    */
     @Beta
     public KpiApi( @Nonnull final ApiClient apiClient )
     {
@@ -73,8 +74,7 @@ public class KpiApi extends AbstractOpenApiService {
      * @return KpiResultSet
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public KpiResultSet get( @Nullable final Set<KpiColumnName> $select) throws OpenApiRequestException {
+    @Nullable  public KpiResultSet kpiGet( @Nullable final Set<KpiColumnName> $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/analytics/kpis").build().toUriString();
@@ -100,17 +100,16 @@ public class KpiApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get KPIs</p>
-     * <p>Retrieve the number of executions, artifacts, and deployments  for each resource group, scenario, and executable. The columns to be returned can be specified in a query parameter. </p>
+    * <p>Get KPIs</p>
+     *<p>Retrieve the number of executions, artifacts, and deployments  for each resource group, scenario, and executable. The columns to be returned can be specified in a query parameter. </p>
      * <p><b>200</b> - KPIs
      * <p><b>400</b> - Invalid request
      * <p><b>404</b> - The specified resource was not found
      * <p><b>429</b> - Too many requests
-     * @return KpiResultSet
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return KpiResultSet
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public KpiResultSet get() throws OpenApiRequestException {
-        return get(null);
+    @Nullable   public KpiResultSet kpiGet() throws OpenApiRequestException {
+        return kpiGet(null);
     }
 }

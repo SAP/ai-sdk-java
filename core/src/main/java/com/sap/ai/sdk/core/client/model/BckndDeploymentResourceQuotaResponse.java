@@ -25,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.sap.ai.sdk.core.client.model.BckndUsageResourcePlanItem;
+import com.sap.ai.sdk.core.client.model.BckndDeploymentQuotaItem;
+import com.sap.ai.sdk.core.client.model.BckndDeploymentUsage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,93 +41,93 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * BckndDeploymentUsage
+ * BckndDeploymentResourceQuotaResponse
  */
 
 // CHECKSTYLE:OFF
-public class BckndDeploymentUsage 
+public class BckndDeploymentResourceQuotaResponse 
 // CHECKSTYLE:ON
 {
-  @JsonProperty("count")
-  private Integer count;
+  @JsonProperty("usage")
+  private BckndDeploymentUsage usage;
 
-  @JsonProperty("items")
-  private List<BckndUsageResourcePlanItem> items = new ArrayList<>();
+  @JsonProperty("quotas")
+  private List<BckndDeploymentQuotaItem> quotas = new ArrayList<>();
 
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
+   * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
    *
-   * @param count  The count of this {@link BckndDeploymentUsage}
-   * @return The same instance of this {@link BckndDeploymentUsage} class
+   * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
+   * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
    */
-   @Nonnull public BckndDeploymentUsage count(@Nonnull final Integer count) {
-    this.count = count;
+   @Nonnull public BckndDeploymentResourceQuotaResponse usage(@Nonnull final BckndDeploymentUsage usage) {
+    this.usage = usage;
     return this;
   }
 
    /**
-   * Get count
-   * @return count  The count of this {@link BckndDeploymentUsage} instance.
+   * Get usage
+   * @return usage  The usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
   **/
-  @Nonnull public Integer getCount() {
-    return count;
+  @Nonnull public BckndDeploymentUsage getUsage() {
+    return usage;
   }
 
   /**
-  * Set the count of this {@link BckndDeploymentUsage} instance.
+  * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
   *
-  * @param count  The count of this {@link BckndDeploymentUsage}
+  * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
   */
-  public void setCount( @Nonnull final Integer count) {
-    this.count = count;
+  public void setUsage( @Nonnull final BckndDeploymentUsage usage) {
+    this.usage = usage;
   }
 
    /**
-   * Set the items of this {@link BckndDeploymentUsage} instance and return the same instance.
+   * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
    *
-   * @param items  The items of this {@link BckndDeploymentUsage}
-   * @return The same instance of this {@link BckndDeploymentUsage} class
+   * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
+   * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
    */
-   @Nonnull public BckndDeploymentUsage items(@Nonnull final List<BckndUsageResourcePlanItem> items) {
-    this.items = items;
+   @Nonnull public BckndDeploymentResourceQuotaResponse quotas(@Nonnull final List<BckndDeploymentQuotaItem> quotas) {
+    this.quotas = quotas;
     return this;
   }
   /**
-  * Add one items instance to this {@link BckndDeploymentUsage}.
-  * @param itemsItem The items that should be added
-  * @return The same instance of type {@link BckndDeploymentUsage}
+  * Add one quotas instance to this {@link BckndDeploymentResourceQuotaResponse}.
+  * @param quotasItem The quotas that should be added
+  * @return The same instance of type {@link BckndDeploymentResourceQuotaResponse}
   */
-  @Nonnull public BckndDeploymentUsage additemsItem( @Nonnull final BckndUsageResourcePlanItem itemsItem) {
-    if (this.items == null) {
-      this.items = new ArrayList<>();
+  @Nonnull public BckndDeploymentResourceQuotaResponse addquotasItem( @Nonnull final BckndDeploymentQuotaItem quotasItem) {
+    if (this.quotas == null) {
+      this.quotas = new ArrayList<>();
     }
-    this.items.add(itemsItem);
+    this.quotas.add(quotasItem);
     return this;
   }
 
    /**
-   * Get items
-   * @return items  The items of this {@link BckndDeploymentUsage} instance.
+   * Get quotas
+   * @return quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
   **/
-  @Nonnull public List<BckndUsageResourcePlanItem> getItems() {
-    return items;
+  @Nonnull public List<BckndDeploymentQuotaItem> getQuotas() {
+    return quotas;
   }
 
   /**
-  * Set the items of this {@link BckndDeploymentUsage} instance.
+  * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
   *
-  * @param items  The items of this {@link BckndDeploymentUsage}
+  * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
   */
-  public void setItems( @Nonnull final List<BckndUsageResourcePlanItem> items) {
-    this.items = items;
+  public void setQuotas( @Nonnull final List<BckndDeploymentQuotaItem> quotas) {
+    this.quotas = quotas;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link BckndDeploymentUsage}.
+   * Get the names of the unrecognizable properties of the {@link BckndDeploymentResourceQuotaResponse}.
    * @return The set of properties names
    */
   @JsonIgnore
@@ -136,7 +137,7 @@ public class BckndDeploymentUsage
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link BckndDeploymentUsage} instance.
+   * Get the value of an unrecognizable property of this {@link BckndDeploymentResourceQuotaResponse} instance.
    * @param name  The name of the property
    * @return The value of the property
    * @throws NoSuchElementException  If no property with the given name could be found.
@@ -144,13 +145,13 @@ public class BckndDeploymentUsage
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
-        throw new NoSuchElementException("BckndDeploymentUsage has no field with name '" + name + "'.");
+        throw new NoSuchElementException("BckndDeploymentResourceQuotaResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link BckndDeploymentUsage} instance. If the map previously contained a mapping
+   * Set an unrecognizable property of this {@link BckndDeploymentResourceQuotaResponse} instance. If the map previously contained a mapping
    * for the key, the old value is replaced by the specified value.
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -170,23 +171,23 @@ public class BckndDeploymentUsage
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final BckndDeploymentUsage bckndDeploymentUsage = (BckndDeploymentUsage) o;
-    return Objects.equals(this.cloudSdkCustomFields, bckndDeploymentUsage.cloudSdkCustomFields) &&
-        Objects.equals(this.count, bckndDeploymentUsage.count) &&
-        Objects.equals(this.items, bckndDeploymentUsage.items);
+    final BckndDeploymentResourceQuotaResponse bckndDeploymentResourceQuotaResponse = (BckndDeploymentResourceQuotaResponse) o;
+    return Objects.equals(this.cloudSdkCustomFields, bckndDeploymentResourceQuotaResponse.cloudSdkCustomFields) &&
+        Objects.equals(this.usage, bckndDeploymentResourceQuotaResponse.usage) &&
+        Objects.equals(this.quotas, bckndDeploymentResourceQuotaResponse.quotas);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(count, items, cloudSdkCustomFields);
+    return Objects.hash(usage, quotas, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class BckndDeploymentUsage {\n");
-    sb.append("    count: ").append(toIndentedString(count)).append("\n");
-    sb.append("    items: ").append(toIndentedString(items)).append("\n");
+    sb.append("class BckndDeploymentResourceQuotaResponse {\n");
+    sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
+    sb.append("    quotas: ").append(toIndentedString(quotas)).append("\n");
     cloudSdkCustomFields.forEach((k,v) -> sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
