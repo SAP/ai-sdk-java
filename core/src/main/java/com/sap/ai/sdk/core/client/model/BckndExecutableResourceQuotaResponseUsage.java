@@ -51,6 +51,7 @@ public class BckndExecutableResourceQuotaResponseUsage
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndExecutableResourceQuotaResponseUsage() {  }
 
    /**
     * Set the servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance and return the same instance.
@@ -186,6 +187,12 @@ public class BckndExecutableResourceQuotaResponseUsage
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndExecutableResourceQuotaResponseUsage} instance. No arguments are required.
+    */
+    public static BckndExecutableResourceQuotaResponseUsage create() {
+        return new BckndExecutableResourceQuotaResponseUsage();
+    }
 
 }
 

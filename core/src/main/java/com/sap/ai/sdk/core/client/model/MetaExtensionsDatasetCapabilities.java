@@ -54,6 +54,7 @@ public class MetaExtensionsDatasetCapabilities
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaExtensionsDatasetCapabilities() {  }
 
    /**
     * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
@@ -219,6 +220,12 @@ public class MetaExtensionsDatasetCapabilities
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaExtensionsDatasetCapabilities} instance. No arguments are required.
+    */
+    public static MetaExtensionsDatasetCapabilities create() {
+        return new MetaExtensionsDatasetCapabilities();
+    }
 
 }
 

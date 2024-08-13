@@ -155,6 +155,7 @@ public class RTAExecution
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAExecution() {  }
 
    /**
     * Set the scenarioId of this {@link RTAExecution} instance and return the same instance.
@@ -530,6 +531,60 @@ public class RTAExecution
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAExecution} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (scenarioId) -> (executableId) -> (createdAt) -> (modifiedAt) -> new RTAExecution().scenarioId(scenarioId).executableId(executableId).createdAt(createdAt).modifiedAt(modifiedAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the scenarioId of this {@link RTAExecution} instance.
+        *
+        * @param scenarioId  ID of the scenario
+        * @return The RTAExecution builder.
+        */
+        Builder1 scenarioId( @Nonnull final String scenarioId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the executableId of this {@link RTAExecution} instance.
+        *
+        * @param executableId  ID of the executable
+        * @return The RTAExecution builder.
+        */
+        Builder2 executableId( @Nonnull final String executableId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the createdAt of this {@link RTAExecution} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The RTAExecution builder.
+        */
+        Builder3 createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the modifiedAt of this {@link RTAExecution} instance.
+        *
+        * @param modifiedAt  Timestamp of latest resource modification
+        * @return The RTAExecution instance.
+        */
+        RTAExecution modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
+    }
 
 }
 

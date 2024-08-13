@@ -51,6 +51,7 @@ public class BcknddockerRegistrySecretDeletionResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BcknddockerRegistrySecretDeletionResponse() {  }
 
    /**
     * Set the id of this {@link BcknddockerRegistrySecretDeletionResponse} instance and return the same instance.
@@ -186,6 +187,36 @@ public class BcknddockerRegistrySecretDeletionResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BcknddockerRegistrySecretDeletionResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (message) -> new BcknddockerRegistrySecretDeletionResponse().id(id).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link BcknddockerRegistrySecretDeletionResponse} instance.
+        *
+        * @param id  Generic ID
+        * @return The BcknddockerRegistrySecretDeletionResponse builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link BcknddockerRegistrySecretDeletionResponse} instance.
+        *
+        * @param message  Message
+        * @return The BcknddockerRegistrySecretDeletionResponse instance.
+        */
+        BcknddockerRegistrySecretDeletionResponse message( @Nonnull final String message);
+    }
 
 }
 

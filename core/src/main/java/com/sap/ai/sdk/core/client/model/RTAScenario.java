@@ -68,6 +68,7 @@ public class RTAScenario
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAScenario() {  }
 
    /**
     * Set the id of this {@link RTAScenario} instance and return the same instance.
@@ -335,6 +336,60 @@ public class RTAScenario
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAScenario} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (name) -> (createdAt) -> (modifiedAt) -> new RTAScenario().id(id).name(name).createdAt(createdAt).modifiedAt(modifiedAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link RTAScenario} instance.
+        *
+        * @param id  ID of the scenario
+        * @return The RTAScenario builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the name of this {@link RTAScenario} instance.
+        *
+        * @param name  Name of the scenario
+        * @return The RTAScenario builder.
+        */
+        Builder2 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the createdAt of this {@link RTAScenario} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The RTAScenario builder.
+        */
+        Builder3 createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the modifiedAt of this {@link RTAScenario} instance.
+        *
+        * @param modifiedAt  Timestamp of latest resource modification
+        * @return The RTAScenario instance.
+        */
+        RTAScenario modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
+    }
 
 }
 

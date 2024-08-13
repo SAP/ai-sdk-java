@@ -52,6 +52,7 @@ public class BckndResourceGroupPatchRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndResourceGroupPatchRequest() {  }
 
    /**
     * Set the labels of this {@link BckndResourceGroupPatchRequest} instance and return the same instance.
@@ -169,6 +170,12 @@ public class BckndResourceGroupPatchRequest
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndResourceGroupPatchRequest} instance. No arguments are required.
+    */
+    public static BckndResourceGroupPatchRequest create() {
+        return new BckndResourceGroupPatchRequest();
+    }
 
 }
 

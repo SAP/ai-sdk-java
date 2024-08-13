@@ -123,6 +123,7 @@ public class GroundingFilter
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected GroundingFilter() {  }
 
    /**
     * Set the id of this {@link GroundingFilter} instance and return the same instance.
@@ -456,6 +457,12 @@ public class GroundingFilter
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link GroundingFilter} instance. No arguments are required.
+    */
+    public static GroundingFilter create() {
+        return new GroundingFilter();
+    }
 
 }
 

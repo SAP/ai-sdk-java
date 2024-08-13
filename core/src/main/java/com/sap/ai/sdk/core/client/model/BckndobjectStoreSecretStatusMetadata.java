@@ -90,6 +90,7 @@ public class BckndobjectStoreSecretStatusMetadata
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndobjectStoreSecretStatusMetadata() {  }
 
    /**
     * Set the servingKubeflowOrgS3Usehttps of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
@@ -615,6 +616,12 @@ public class BckndobjectStoreSecretStatusMetadata
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndobjectStoreSecretStatusMetadata} instance. No arguments are required.
+    */
+    public static BckndobjectStoreSecretStatusMetadata create() {
+        return new BckndobjectStoreSecretStatusMetadata();
+    }
 
 }
 

@@ -85,6 +85,7 @@ public class RTAExecutable
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAExecutable() {  }
 
    /**
     * Set the id of this {@link RTAExecutable} instance and return the same instance.
@@ -538,6 +539,84 @@ public class RTAExecutable
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAExecutable} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (name) -> (scenarioId) -> (deployable) -> (createdAt) -> (modifiedAt) -> new RTAExecutable().id(id).name(name).scenarioId(scenarioId).deployable(deployable).createdAt(createdAt).modifiedAt(modifiedAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link RTAExecutable} instance.
+        *
+        * @param id  ID of the executable
+        * @return The RTAExecutable builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the name of this {@link RTAExecutable} instance.
+        *
+        * @param name  Name of the executable
+        * @return The RTAExecutable builder.
+        */
+        Builder2 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the scenarioId of this {@link RTAExecutable} instance.
+        *
+        * @param scenarioId  ID of the scenario
+        * @return The RTAExecutable builder.
+        */
+        Builder3 scenarioId( @Nonnull final String scenarioId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the deployable of this {@link RTAExecutable} instance.
+        *
+        * @param deployable  Whether this pipeline is deployable
+        * @return The RTAExecutable builder.
+        */
+        Builder4 deployable( @Nonnull final Boolean deployable);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder4 {
+        /**
+        * Set the createdAt of this {@link RTAExecutable} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The RTAExecutable builder.
+        */
+        Builder5 createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder5 {
+        /**
+        * Set the modifiedAt of this {@link RTAExecutable} instance.
+        *
+        * @param modifiedAt  Timestamp of latest resource modification
+        * @return The RTAExecutable instance.
+        */
+        RTAExecutable modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
+    }
 
 }
 

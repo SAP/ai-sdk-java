@@ -52,6 +52,7 @@ public class AiLogCommonResultItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiLogCommonResultItem() {  }
 
    /**
     * Set the timestamp of this {@link AiLogCommonResultItem} instance and return the same instance.
@@ -187,6 +188,12 @@ public class AiLogCommonResultItem
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link AiLogCommonResultItem} instance. No arguments are required.
+    */
+    public static AiLogCommonResultItem create() {
+        return new AiLogCommonResultItem();
+    }
 
 }
 

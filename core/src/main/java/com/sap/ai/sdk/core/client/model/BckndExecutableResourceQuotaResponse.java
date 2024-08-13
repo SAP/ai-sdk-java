@@ -53,6 +53,7 @@ public class BckndExecutableResourceQuotaResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndExecutableResourceQuotaResponse() {  }
 
    /**
     * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
@@ -188,6 +189,24 @@ public class BckndExecutableResourceQuotaResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndExecutableResourceQuotaResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (quota) -> new BckndExecutableResourceQuotaResponse().quota(quota);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance.
+        *
+        * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
+        * @return The BckndExecutableResourceQuotaResponse instance.
+        */
+        BckndExecutableResourceQuotaResponse quota( @Nonnull final BckndExecutableResourceQuotaResponseQuota quota);
+    }
 
 }
 

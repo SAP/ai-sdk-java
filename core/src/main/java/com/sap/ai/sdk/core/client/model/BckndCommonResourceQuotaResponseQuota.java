@@ -48,6 +48,7 @@ public class BckndCommonResourceQuotaResponseQuota
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndCommonResourceQuotaResponseQuota() {  }
 
    /**
     * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance and return the same instance.
@@ -153,6 +154,12 @@ public class BckndCommonResourceQuotaResponseQuota
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndCommonResourceQuotaResponseQuota} instance. No arguments are required.
+    */
+    public static BckndCommonResourceQuotaResponseQuota create() {
+        return new BckndCommonResourceQuotaResponseQuota();
+    }
 
 }
 

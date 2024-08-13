@@ -62,6 +62,7 @@ public class MetaCapabilities
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaCapabilities() {  }
 
    /**
     * Set the runtimeIdentifier of this {@link MetaCapabilities} instance and return the same instance.
@@ -287,6 +288,24 @@ public class MetaCapabilities
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link MetaCapabilities} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (aiApi) -> new MetaCapabilities().aiApi(aiApi);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the aiApi of this {@link MetaCapabilities} instance.
+        *
+        * @param aiApi  The aiApi of this {@link MetaCapabilities}
+        * @return The MetaCapabilities instance.
+        */
+        MetaCapabilities aiApi( @Nonnull final MetaAiApi aiApi);
+    }
 
 }
 

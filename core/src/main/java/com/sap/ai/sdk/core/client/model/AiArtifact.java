@@ -151,6 +151,7 @@ public class AiArtifact
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiArtifact() {  }
 
    /**
     * Set the labels of this {@link AiArtifact} instance and return the same instance.
@@ -598,6 +599,96 @@ public class AiArtifact
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiArtifact} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (kind) -> (url) -> (id) -> (scenarioId) -> (createdAt) -> (modifiedAt) -> new AiArtifact().name(name).kind(kind).url(url).id(id).scenarioId(scenarioId).createdAt(createdAt).modifiedAt(modifiedAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link AiArtifact} instance.
+        *
+        * @param name  Name of the artifact
+        * @return The AiArtifact builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the kind of this {@link AiArtifact} instance.
+        *
+        * @param kind  Kind of the artifact, i.e. model or dataset
+        * @return The AiArtifact builder.
+        */
+        Builder2 kind( @Nonnull final KindEnum kind);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the url of this {@link AiArtifact} instance.
+        *
+        * @param url  Reference to the location of the artifact. 
+        * @return The AiArtifact builder.
+        */
+        Builder3 url( @Nonnull final String url);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the id of this {@link AiArtifact} instance.
+        *
+        * @param id  ID of the artifact
+        * @return The AiArtifact builder.
+        */
+        Builder4 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder4 {
+        /**
+        * Set the scenarioId of this {@link AiArtifact} instance.
+        *
+        * @param scenarioId  ID of the scenario
+        * @return The AiArtifact builder.
+        */
+        Builder5 scenarioId( @Nonnull final String scenarioId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder5 {
+        /**
+        * Set the createdAt of this {@link AiArtifact} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The AiArtifact builder.
+        */
+        Builder6 createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder6 {
+        /**
+        * Set the modifiedAt of this {@link AiArtifact} instance.
+        *
+        * @param modifiedAt  Timestamp of latest resource modification
+        * @return The AiArtifact instance.
+        */
+        AiArtifact modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
+    }
 
 }
 

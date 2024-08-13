@@ -51,6 +51,7 @@ public class BckndServiceCapabilitiesLogs
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndServiceCapabilitiesLogs() {  }
 
    /**
     * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
@@ -186,6 +187,12 @@ public class BckndServiceCapabilitiesLogs
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndServiceCapabilitiesLogs} instance. No arguments are required.
+    */
+    public static BckndServiceCapabilitiesLogs create() {
+        return new BckndServiceCapabilitiesLogs();
+    }
 
 }
 

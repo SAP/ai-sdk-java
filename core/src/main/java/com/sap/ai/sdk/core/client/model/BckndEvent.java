@@ -174,6 +174,7 @@ public class BckndEvent
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndEvent() {  }
 
    /**
     * Set the tenantId of this {@link BckndEvent} instance and return the same instance.
@@ -399,6 +400,12 @@ public class BckndEvent
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndEvent} instance. No arguments are required.
+    */
+    public static BckndEvent create() {
+        return new BckndEvent();
+    }
 
 }
 

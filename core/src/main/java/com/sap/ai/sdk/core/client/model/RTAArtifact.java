@@ -135,6 +135,7 @@ public class RTAArtifact
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAArtifact() {  }
 
    /**
     * Set the name of this {@link RTAArtifact} instance and return the same instance.
@@ -432,6 +433,72 @@ public class RTAArtifact
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAArtifact} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (executionId) -> (url) -> (kind) -> (createdAt) -> new RTAArtifact().name(name).executionId(executionId).url(url).kind(kind).createdAt(createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link RTAArtifact} instance.
+        *
+        * @param name  Name of the artifact; this is used for dependent pipelines to resolve an artifact
+        * @return The RTAArtifact builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the executionId of this {@link RTAArtifact} instance.
+        *
+        * @param executionId  ID of the execution
+        * @return The RTAArtifact builder.
+        */
+        Builder2 executionId( @Nonnull final String executionId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the url of this {@link RTAArtifact} instance.
+        *
+        * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+        * @return The RTAArtifact builder.
+        */
+        Builder3 url( @Nonnull final String url);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the kind of this {@link RTAArtifact} instance.
+        *
+        * @param kind  Kind of the artifact, i.e. model or dataset
+        * @return The RTAArtifact builder.
+        */
+        Builder4 kind( @Nonnull final KindEnum kind);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder4 {
+        /**
+        * Set the createdAt of this {@link RTAArtifact} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The RTAArtifact instance.
+        */
+        RTAArtifact createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
 
 }
 

@@ -48,6 +48,7 @@ public class RTABackendDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTABackendDetails() {  }
 
    /**
     * Set the backendDetails of this {@link RTABackendDetails} instance and return the same instance.
@@ -153,6 +154,12 @@ public class RTABackendDetails
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link RTABackendDetails} instance. No arguments are required.
+    */
+    public static RTABackendDetails create() {
+        return new RTABackendDetails();
+    }
 
 }
 

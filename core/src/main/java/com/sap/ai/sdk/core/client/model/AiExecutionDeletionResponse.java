@@ -51,6 +51,7 @@ public class AiExecutionDeletionResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionDeletionResponse() {  }
 
    /**
     * Set the id of this {@link AiExecutionDeletionResponse} instance and return the same instance.
@@ -186,6 +187,36 @@ public class AiExecutionDeletionResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionDeletionResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (message) -> new AiExecutionDeletionResponse().id(id).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link AiExecutionDeletionResponse} instance.
+        *
+        * @param id  Generic ID
+        * @return The AiExecutionDeletionResponse builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link AiExecutionDeletionResponse} instance.
+        *
+        * @param message  Message
+        * @return The AiExecutionDeletionResponse instance.
+        */
+        AiExecutionDeletionResponse message( @Nonnull final String message);
+    }
 
 }
 
