@@ -1,0 +1,41 @@
+# configuration docu: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  - package-ecosystem: maven
+    target-branch: main
+    directory: '/'
+    schedule:
+      interval: weekly
+      time: '08:00'
+      timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore: [DevOps] '
+    groups:
+      production-minor-patch:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+        exclude-patterns:
+          - "*-plugin"
+      production-major:
+        dependency-type: "production"
+        update-types: [ "major" ]
+        exclude-patterns:
+          - "*-plugin"
+      plugins:
+        dependency-type: "production"
+        patterns:
+          - "*-plugin"
+      test:
+        dependency-type: "development"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'chore: [DevOps] '
+    groups:
+      github-actions:
+        patterns:
+          - "*"
