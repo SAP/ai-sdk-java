@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * LLMModuleConfig
  */
-
 // CHECKSTYLE:OFF
 public class LLMModuleConfig 
 // CHECKSTYLE:ON
@@ -57,85 +56,85 @@ public class LLMModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the modelName of this {@link LLMModuleConfig} instance and return the same instance.
-   *
-   * @param modelName  Model name as in LLM Access configuration
-   * @return The same instance of this {@link LLMModuleConfig} class
-   */
+    * Set the modelName of this {@link LLMModuleConfig} instance and return the same instance.
+    *
+    * @param modelName  Model name as in LLM Access configuration
+    * @return The same instance of this {@link LLMModuleConfig} class
+    */
    @Nonnull public LLMModuleConfig modelName(@Nonnull final String modelName) {
     this.modelName = modelName;
     return this;
   }
 
    /**
-   * Model name as in LLM Access configuration
-   * @return modelName  The modelName of this {@link LLMModuleConfig} instance.
-  **/
+    * Model name as in LLM Access configuration
+    * @return modelName  The modelName of this {@link LLMModuleConfig} instance.
+    */
   @Nonnull public String getModelName() {
     return modelName;
   }
 
   /**
-  * Set the modelName of this {@link LLMModuleConfig} instance.
-  *
-  * @param modelName  Model name as in LLM Access configuration
-  */
+   * Set the modelName of this {@link LLMModuleConfig} instance.
+   *
+   * @param modelName  Model name as in LLM Access configuration
+   */
   public void setModelName( @Nonnull final String modelName) {
     this.modelName = modelName;
   }
 
    /**
-   * Set the modelParams of this {@link LLMModuleConfig} instance and return the same instance.
-   *
-   * @param modelParams  Model parameters
-   * @return The same instance of this {@link LLMModuleConfig} class
-   */
+    * Set the modelParams of this {@link LLMModuleConfig} instance and return the same instance.
+    *
+    * @param modelParams  Model parameters
+    * @return The same instance of this {@link LLMModuleConfig} class
+    */
    @Nonnull public LLMModuleConfig modelParams(@Nonnull final Object modelParams) {
     this.modelParams = modelParams;
     return this;
   }
 
    /**
-   * Model parameters
-   * @return modelParams  The modelParams of this {@link LLMModuleConfig} instance.
-  **/
+    * Model parameters
+    * @return modelParams  The modelParams of this {@link LLMModuleConfig} instance.
+    */
   @Nonnull public Object getModelParams() {
     return modelParams;
   }
 
   /**
-  * Set the modelParams of this {@link LLMModuleConfig} instance.
-  *
-  * @param modelParams  Model parameters
-  */
+   * Set the modelParams of this {@link LLMModuleConfig} instance.
+   *
+   * @param modelParams  Model parameters
+   */
   public void setModelParams( @Nonnull final Object modelParams) {
     this.modelParams = modelParams;
   }
 
    /**
-   * Set the modelVersion of this {@link LLMModuleConfig} instance and return the same instance.
-   *
-   * @param modelVersion  Version of the model to use
-   * @return The same instance of this {@link LLMModuleConfig} class
-   */
+    * Set the modelVersion of this {@link LLMModuleConfig} instance and return the same instance.
+    *
+    * @param modelVersion  Version of the model to use
+    * @return The same instance of this {@link LLMModuleConfig} class
+    */
    @Nonnull public LLMModuleConfig modelVersion(@Nonnull final String modelVersion) {
     this.modelVersion = modelVersion;
     return this;
   }
 
    /**
-   * Version of the model to use
-   * @return modelVersion  The modelVersion of this {@link LLMModuleConfig} instance.
-  **/
+    * Version of the model to use
+    * @return modelVersion  The modelVersion of this {@link LLMModuleConfig} instance.
+    */
   @Nonnull public String getModelVersion() {
     return modelVersion;
   }
 
   /**
-  * Set the modelVersion of this {@link LLMModuleConfig} instance.
-  *
-  * @param modelVersion  Version of the model to use
-  */
+   * Set the modelVersion of this {@link LLMModuleConfig} instance.
+   *
+   * @param modelVersion  Version of the model to use
+   */
   public void setModelVersion( @Nonnull final String modelVersion) {
     this.modelVersion = modelVersion;
   }
@@ -219,6 +218,7 @@ public class LLMModuleConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

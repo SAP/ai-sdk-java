@@ -43,7 +43,6 @@ import javax.annotation.Nullable;
 /**
  * ModuleConfigs
  */
-
 // CHECKSTYLE:OFF
 public class ModuleConfigs 
 // CHECKSTYLE:ON
@@ -68,141 +67,141 @@ public class ModuleConfigs
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the llmModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-   *
-   * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
+    * Set the llmModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+    *
+    * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
+    * @return The same instance of this {@link ModuleConfigs} class
+    */
    @Nonnull public ModuleConfigs llmModuleConfig(@Nonnull final LLMModuleConfig llmModuleConfig) {
     this.llmModuleConfig = llmModuleConfig;
     return this;
   }
 
    /**
-   * Get llmModuleConfig
-   * @return llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs} instance.
-  **/
+    * Get llmModuleConfig
+    * @return llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs} instance.
+    */
   @Nonnull public LLMModuleConfig getLlmModuleConfig() {
     return llmModuleConfig;
   }
 
   /**
-  * Set the llmModuleConfig of this {@link ModuleConfigs} instance.
-  *
-  * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
-  */
+   * Set the llmModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
+   */
   public void setLlmModuleConfig( @Nonnull final LLMModuleConfig llmModuleConfig) {
     this.llmModuleConfig = llmModuleConfig;
   }
 
    /**
-   * Set the templatingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-   *
-   * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
+    * Set the templatingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+    *
+    * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
+    * @return The same instance of this {@link ModuleConfigs} class
+    */
    @Nonnull public ModuleConfigs templatingModuleConfig(@Nonnull final TemplatingModuleConfig templatingModuleConfig) {
     this.templatingModuleConfig = templatingModuleConfig;
     return this;
   }
 
    /**
-   * Get templatingModuleConfig
-   * @return templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs} instance.
-  **/
+    * Get templatingModuleConfig
+    * @return templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs} instance.
+    */
   @Nonnull public TemplatingModuleConfig getTemplatingModuleConfig() {
     return templatingModuleConfig;
   }
 
   /**
-  * Set the templatingModuleConfig of this {@link ModuleConfigs} instance.
-  *
-  * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
-  */
+   * Set the templatingModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
+   */
   public void setTemplatingModuleConfig( @Nonnull final TemplatingModuleConfig templatingModuleConfig) {
     this.templatingModuleConfig = templatingModuleConfig;
   }
 
    /**
-   * Set the filteringModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-   *
-   * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
+    * Set the filteringModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+    *
+    * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
+    * @return The same instance of this {@link ModuleConfigs} class
+    */
    @Nonnull public ModuleConfigs filteringModuleConfig(@Nonnull final FilteringModuleConfig filteringModuleConfig) {
     this.filteringModuleConfig = filteringModuleConfig;
     return this;
   }
 
    /**
-   * Get filteringModuleConfig
-   * @return filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs} instance.
-  **/
+    * Get filteringModuleConfig
+    * @return filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs} instance.
+    */
   @Nonnull public FilteringModuleConfig getFilteringModuleConfig() {
     return filteringModuleConfig;
   }
 
   /**
-  * Set the filteringModuleConfig of this {@link ModuleConfigs} instance.
-  *
-  * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
-  */
+   * Set the filteringModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
+   */
   public void setFilteringModuleConfig( @Nonnull final FilteringModuleConfig filteringModuleConfig) {
     this.filteringModuleConfig = filteringModuleConfig;
   }
 
    /**
-   * Set the maskingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-   *
-   * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
+    * Set the maskingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+    *
+    * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
+    * @return The same instance of this {@link ModuleConfigs} class
+    */
    @Nonnull public ModuleConfigs maskingModuleConfig(@Nonnull final MaskingModuleConfig maskingModuleConfig) {
     this.maskingModuleConfig = maskingModuleConfig;
     return this;
   }
 
    /**
-   * Get maskingModuleConfig
-   * @return maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs} instance.
-  **/
+    * Get maskingModuleConfig
+    * @return maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs} instance.
+    */
   @Nonnull public MaskingModuleConfig getMaskingModuleConfig() {
     return maskingModuleConfig;
   }
 
   /**
-  * Set the maskingModuleConfig of this {@link ModuleConfigs} instance.
-  *
-  * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
-  */
+   * Set the maskingModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
+   */
   public void setMaskingModuleConfig( @Nonnull final MaskingModuleConfig maskingModuleConfig) {
     this.maskingModuleConfig = maskingModuleConfig;
   }
 
    /**
-   * Set the groundingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-   *
-   * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
+    * Set the groundingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+    *
+    * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
+    * @return The same instance of this {@link ModuleConfigs} class
+    */
    @Nonnull public ModuleConfigs groundingModuleConfig(@Nonnull final GroundingModuleConfig groundingModuleConfig) {
     this.groundingModuleConfig = groundingModuleConfig;
     return this;
   }
 
    /**
-   * Get groundingModuleConfig
-   * @return groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs} instance.
-  **/
+    * Get groundingModuleConfig
+    * @return groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs} instance.
+    */
   @Nonnull public GroundingModuleConfig getGroundingModuleConfig() {
     return groundingModuleConfig;
   }
 
   /**
-  * Set the groundingModuleConfig of this {@link ModuleConfigs} instance.
-  *
-  * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
-  */
+   * Set the groundingModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
+   */
   public void setGroundingModuleConfig( @Nonnull final GroundingModuleConfig groundingModuleConfig) {
     this.groundingModuleConfig = groundingModuleConfig;
   }
@@ -290,6 +289,7 @@ public class ModuleConfigs
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 
