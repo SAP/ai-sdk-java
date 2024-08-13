@@ -10,10 +10,26 @@
   <artifactId>e2e-test-app</artifactId>
   <name>End-to-end test application</name>
   <description>Spring Boot application that tests AI clients when deployed in BTP.</description>
+
+  <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
     <url>https://www.sap.com</url>
   </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>SAP</name>
+      <email>cloudsdk@sap.com</email>
+      <organization>SAP SE</organization>
+      <organizationUrl>https://www.sap.com</organizationUrl>
+    </developer>
+  </developers>
 
   <properties>
     <spring-boot.version>3.3.0</spring-boot.version>
@@ -21,6 +37,9 @@
     <cf-logging.version>3.7.1</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
+    <!-- Allow logging frameworks because this module is not released -->
+    <enforcer.skipBanLoggingFrameworks>true</enforcer.skipBanLoggingFrameworks>
+    <enforcer.skipEnforceScopeLoggerBridges>true</enforcer.skipEnforceScopeLoggerBridges>
   </properties>
 
   <dependencyManagement>
@@ -32,14 +51,16 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.toolchain</groupId>
+        <artifactId>jetty-jakarta-servlet-api</artifactId>
+        <version>5.0.2</version>
+        <scope>compile</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
-    <dependency>
-      <groupId>com.sap.cloud.sdk</groupId>
-      <artifactId>sdk-core</artifactId>
-    </dependency>
+    <!-- scope "compile" -->
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>core</artifactId>
@@ -52,24 +73,62 @@
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>orchestration</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.jetty.toolchain</groupId>
+      <artifactId>jetty-jakarta-servlet-api</artifactId>
+    </dependency>
+    <!-- scope "runtime" -->
+    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.sap.hcp.cf.logging</groupId>
       <artifactId>cf-java-logging-support-logback</artifactId>
       <version>${cf-logging.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <!-- scope "provided" -->
     <dependency>
@@ -80,7 +139,7 @@
     <!-- scope "test" -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

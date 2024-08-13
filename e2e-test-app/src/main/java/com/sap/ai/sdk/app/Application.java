@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app;
 
+import jakarta.servlet.ServletException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -23,5 +24,14 @@ class Application extends SpringBootServletInitializer {
    */
   public static void main(final String[] args) {
     SpringApplication.run(Application.class, args);
+  }
+
+  /**
+   * This exists only to import ServletException. This import exists only to justify the dependency
+   * jetty-jakarta-servlet-api for the maven-dependency-plugin to succeed.
+   */
+  @Override
+  public void onStartup(jakarta.servlet.ServletContext servletContext) throws ServletException {
+    super.onStartup(servletContext);
   }
 }
