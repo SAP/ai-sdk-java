@@ -5,10 +5,9 @@ import static com.sap.ai.sdk.core.Core.getClient;
 import com.sap.ai.sdk.core.client.ScenarioApi;
 import com.sap.ai.sdk.core.client.model.AiModelList;
 import com.sap.ai.sdk.core.client.model.AiScenarioList;
+import javax.annotation.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Nullable;
 
 /** Endpoint for Scenario operations */
 @RestController
