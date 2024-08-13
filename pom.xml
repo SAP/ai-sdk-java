@@ -35,7 +35,7 @@
     <assertj-core.version>3.25.3</assertj-core.version>
     <slf4j.version>2.0.13</slf4j.version>
     <spotless.version>2.43.0</spotless.version>
-    <checkstyle.version>8.41</checkstyle.version>
+    <checkstyle.version>10.17.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.2.2</surefire.version>
   </properties>
