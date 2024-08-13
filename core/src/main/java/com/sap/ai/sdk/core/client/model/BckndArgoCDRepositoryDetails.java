@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Repository details
  */
-
 // CHECKSTYLE:OFF
 public class BckndArgoCDRepositoryDetails 
 // CHECKSTYLE:ON
@@ -116,85 +115,85 @@ public class BckndArgoCDRepositoryDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
-   *
-   * @param name  The name of the repository
-   * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
-   */
+    * Set the name of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
+    *
+    * @param name  The name of the repository
+    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
+    */
    @Nonnull public BckndArgoCDRepositoryDetails name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * The name of the repository
-   * @return name  The name of this {@link BckndArgoCDRepositoryDetails} instance.
-  **/
+    * The name of the repository
+    * @return name  The name of this {@link BckndArgoCDRepositoryDetails} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndArgoCDRepositoryDetails} instance.
-  *
-  * @param name  The name of the repository
-  */
+   * Set the name of this {@link BckndArgoCDRepositoryDetails} instance.
+   *
+   * @param name  The name of the repository
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the url of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
-   *
-   * @param url  The repository URL
-   * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
-   */
+    * Set the url of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
+    *
+    * @param url  The repository URL
+    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
+    */
    @Nonnull public BckndArgoCDRepositoryDetails url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-   * The repository URL
-   * @return url  The url of this {@link BckndArgoCDRepositoryDetails} instance.
-  **/
+    * The repository URL
+    * @return url  The url of this {@link BckndArgoCDRepositoryDetails} instance.
+    */
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-  * Set the url of this {@link BckndArgoCDRepositoryDetails} instance.
-  *
-  * @param url  The repository URL
-  */
+   * Set the url of this {@link BckndArgoCDRepositoryDetails} instance.
+   *
+   * @param url  The repository URL
+   */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
 
    /**
-   * Set the status of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
-   *
-   * @param status  The status of the repository&#39;s on-boarding
-   * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
-   */
+    * Set the status of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
+    *
+    * @param status  The status of the repository&#39;s on-boarding
+    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
+    */
    @Nonnull public BckndArgoCDRepositoryDetails status(@Nonnull final StatusEnum status) {
     this.status = status;
     return this;
   }
 
    /**
-   * The status of the repository&#39;s on-boarding
-   * @return status  The status of this {@link BckndArgoCDRepositoryDetails} instance.
-  **/
+    * The status of the repository&#39;s on-boarding
+    * @return status  The status of this {@link BckndArgoCDRepositoryDetails} instance.
+    */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
 
   /**
-  * Set the status of this {@link BckndArgoCDRepositoryDetails} instance.
-  *
-  * @param status  The status of the repository&#39;s on-boarding
-  */
+   * Set the status of this {@link BckndArgoCDRepositoryDetails} instance.
+   *
+   * @param status  The status of the repository&#39;s on-boarding
+   */
   public void setStatus( @Nonnull final StatusEnum status) {
     this.status = status;
   }
@@ -278,6 +277,7 @@ public class BckndArgoCDRepositoryDetails
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

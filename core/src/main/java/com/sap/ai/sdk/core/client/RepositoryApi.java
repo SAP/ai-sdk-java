@@ -7,14 +7,14 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCreationResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCredentials ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryData ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDataResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDeletionResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDetails ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryModificationResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndErrorResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCreationResponse;
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCredentials;
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryData;
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDataResponse;
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDeletionResponse;
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDetails;
+import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryModificationResponse;
+import com.sap.ai.sdk.core.client.model.BckndErrorResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,28 +37,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.32.1.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.32.1.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class RepositoryApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public RepositoryApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public RepositoryApi( @Nonnull final ApiClient apiClient )
     {
@@ -80,7 +79,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @return BckndArgoCDRepositoryCreationResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndArgoCDRepositoryCreationResponse create( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryCreationResponse create( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndArgoCDRepositoryData;
         
         // verify the required parameter 'bckndArgoCDRepositoryData' is set
@@ -113,18 +113,19 @@ public class RepositoryApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>On-board a new GitOps repository</p>
-     *<p>On-board a new GitOps repository as specified in the content payload</p>
+     * <p>On-board a new GitOps repository</p>
+     * <p>On-board a new GitOps repository as specified in the content payload</p>
      * <p><b>200</b> - The repository has been on-boarded
      * <p><b>409</b> - The provided repository already exists
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @param bckndArgoCDRepositoryData
-            The value for the parameter bckndArgoCDRepositoryData
-* @return BckndArgoCDRepositoryCreationResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param bckndArgoCDRepositoryData
+     *      The value for the parameter bckndArgoCDRepositoryData
+     * @return BckndArgoCDRepositoryCreationResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndArgoCDRepositoryCreationResponse create( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryCreationResponse create( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData) throws OpenApiRequestException {
         return create(bckndArgoCDRepositoryData, null);
     }
 
@@ -142,7 +143,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @return BckndArgoCDRepositoryDeletionResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndArgoCDRepositoryDeletionResponse delete( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryDeletionResponse delete( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'repositoryName' is set
@@ -176,18 +178,19 @@ public class RepositoryApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Off-board a repository.</p>
-     *<p>Remove a repository from GitOps.</p>
+     * <p>Off-board a repository.</p>
+     * <p>Remove a repository from GitOps.</p>
      * <p><b>200</b> - The repository has been off-boarded successfully.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @param repositoryName
-        Name of the repository
-* @return BckndArgoCDRepositoryDeletionResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param repositoryName
+     *      Name of the repository
+     * @return BckndArgoCDRepositoryDeletionResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndArgoCDRepositoryDeletionResponse delete( @Nonnull final String repositoryName) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryDeletionResponse delete( @Nonnull final String repositoryName) throws OpenApiRequestException {
         return delete(repositoryName, null);
     }
 
@@ -205,7 +208,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @return BckndArgoCDRepositoryDetails
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndArgoCDRepositoryDetails get( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryDetails get( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'repositoryName' is set
@@ -239,18 +243,19 @@ public class RepositoryApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get the access details for a repository</p>
-     *<p>Retrieve the access details for a repository if it exists.</p>
+     * <p>Get the access details for a repository</p>
+     * <p>Retrieve the access details for a repository if it exists.</p>
      * <p><b>200</b> - The repository details have been found and returned.
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @param repositoryName
-        Name of the repository
-* @return BckndArgoCDRepositoryDetails
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param repositoryName
+     *      Name of the repository
+     * @return BckndArgoCDRepositoryDetails
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndArgoCDRepositoryDetails get( @Nonnull final String repositoryName) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryDetails get( @Nonnull final String repositoryName) throws OpenApiRequestException {
         return get(repositoryName, null);
     }
 
@@ -271,7 +276,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @return BckndArgoCDRepositoryDataResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndArgoCDRepositoryDataResponse getAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryDataResponse getAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/repositories").build().toUriString();
@@ -302,15 +308,16 @@ public class RepositoryApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>List all GitOps repositories for a tenant</p>
-     *<p>Retrieve a list of all GitOps repositories for a tenant.</p>
+     * <p>List all GitOps repositories for a tenant</p>
+     * <p>Retrieve a list of all GitOps repositories for a tenant.</p>
      * <p><b>200</b> - Returns a list of all GitOps repositories for the tenant.
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @return BckndArgoCDRepositoryDataResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @return BckndArgoCDRepositoryDataResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndArgoCDRepositoryDataResponse getAll() throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryDataResponse getAll() throws OpenApiRequestException {
         return getAll(null, null, null, null);
     }
 
@@ -330,7 +337,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @return BckndArgoCDRepositoryModificationResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndArgoCDRepositoryModificationResponse update( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryModificationResponse update( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndArgoCDRepositoryCredentials;
         
         // verify the required parameter 'repositoryName' is set
@@ -371,20 +379,21 @@ public class RepositoryApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Update the repository credentials.</p>
-     *<p>Update the referenced repository credentials to synchronize a repository. </p>
+     * <p>Update the repository credentials.</p>
+     * <p>Update the referenced repository credentials to synchronize a repository. </p>
      * <p><b>200</b> - The repository credentials have been updated and will eventually be synced.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @param repositoryName
-        Name of the repository
-* @param bckndArgoCDRepositoryCredentials
-            The value for the parameter bckndArgoCDRepositoryCredentials
-* @return BckndArgoCDRepositoryModificationResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param repositoryName
+     *      Name of the repository
+     * @param bckndArgoCDRepositoryCredentials
+     *      The value for the parameter bckndArgoCDRepositoryCredentials
+     * @return BckndArgoCDRepositoryModificationResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndArgoCDRepositoryModificationResponse update( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials) throws OpenApiRequestException {
+    @Nonnull
+    public BckndArgoCDRepositoryModificationResponse update( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials) throws OpenApiRequestException {
         return update(repositoryName, bckndArgoCDRepositoryCredentials, null);
     }
 }

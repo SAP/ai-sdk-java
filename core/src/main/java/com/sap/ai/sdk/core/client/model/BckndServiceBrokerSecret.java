@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceBrokerSecret
  */
-
 // CHECKSTYLE:OFF
 public class BckndServiceBrokerSecret 
 // CHECKSTYLE:ON
@@ -57,85 +56,85 @@ public class BckndServiceBrokerSecret
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link BckndServiceBrokerSecret} instance and return the same instance.
-   *
-   * @param name  broker secret name
-   * @return The same instance of this {@link BckndServiceBrokerSecret} class
-   */
+    * Set the name of this {@link BckndServiceBrokerSecret} instance and return the same instance.
+    *
+    * @param name  broker secret name
+    * @return The same instance of this {@link BckndServiceBrokerSecret} class
+    */
    @Nonnull public BckndServiceBrokerSecret name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * broker secret name
-   * @return name  The name of this {@link BckndServiceBrokerSecret} instance.
-  **/
+    * broker secret name
+    * @return name  The name of this {@link BckndServiceBrokerSecret} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndServiceBrokerSecret} instance.
-  *
-  * @param name  broker secret name
-  */
+   * Set the name of this {@link BckndServiceBrokerSecret} instance.
+   *
+   * @param name  broker secret name
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the passwordKeyRef of this {@link BckndServiceBrokerSecret} instance and return the same instance.
-   *
-   * @param passwordKeyRef  username key reference in broker secret
-   * @return The same instance of this {@link BckndServiceBrokerSecret} class
-   */
+    * Set the passwordKeyRef of this {@link BckndServiceBrokerSecret} instance and return the same instance.
+    *
+    * @param passwordKeyRef  username key reference in broker secret
+    * @return The same instance of this {@link BckndServiceBrokerSecret} class
+    */
    @Nonnull public BckndServiceBrokerSecret passwordKeyRef(@Nonnull final String passwordKeyRef) {
     this.passwordKeyRef = passwordKeyRef;
     return this;
   }
 
    /**
-   * username key reference in broker secret
-   * @return passwordKeyRef  The passwordKeyRef of this {@link BckndServiceBrokerSecret} instance.
-  **/
+    * username key reference in broker secret
+    * @return passwordKeyRef  The passwordKeyRef of this {@link BckndServiceBrokerSecret} instance.
+    */
   @Nonnull public String getPasswordKeyRef() {
     return passwordKeyRef;
   }
 
   /**
-  * Set the passwordKeyRef of this {@link BckndServiceBrokerSecret} instance.
-  *
-  * @param passwordKeyRef  username key reference in broker secret
-  */
+   * Set the passwordKeyRef of this {@link BckndServiceBrokerSecret} instance.
+   *
+   * @param passwordKeyRef  username key reference in broker secret
+   */
   public void setPasswordKeyRef( @Nonnull final String passwordKeyRef) {
     this.passwordKeyRef = passwordKeyRef;
   }
 
    /**
-   * Set the usernameKeyRef of this {@link BckndServiceBrokerSecret} instance and return the same instance.
-   *
-   * @param usernameKeyRef  password key reference in broker secret
-   * @return The same instance of this {@link BckndServiceBrokerSecret} class
-   */
+    * Set the usernameKeyRef of this {@link BckndServiceBrokerSecret} instance and return the same instance.
+    *
+    * @param usernameKeyRef  password key reference in broker secret
+    * @return The same instance of this {@link BckndServiceBrokerSecret} class
+    */
    @Nonnull public BckndServiceBrokerSecret usernameKeyRef(@Nonnull final String usernameKeyRef) {
     this.usernameKeyRef = usernameKeyRef;
     return this;
   }
 
    /**
-   * password key reference in broker secret
-   * @return usernameKeyRef  The usernameKeyRef of this {@link BckndServiceBrokerSecret} instance.
-  **/
+    * password key reference in broker secret
+    * @return usernameKeyRef  The usernameKeyRef of this {@link BckndServiceBrokerSecret} instance.
+    */
   @Nonnull public String getUsernameKeyRef() {
     return usernameKeyRef;
   }
 
   /**
-  * Set the usernameKeyRef of this {@link BckndServiceBrokerSecret} instance.
-  *
-  * @param usernameKeyRef  password key reference in broker secret
-  */
+   * Set the usernameKeyRef of this {@link BckndServiceBrokerSecret} instance.
+   *
+   * @param usernameKeyRef  password key reference in broker secret
+   */
   public void setUsernameKeyRef( @Nonnull final String usernameKeyRef) {
     this.usernameKeyRef = usernameKeyRef;
   }
@@ -219,6 +218,7 @@ public class BckndServiceBrokerSecret
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

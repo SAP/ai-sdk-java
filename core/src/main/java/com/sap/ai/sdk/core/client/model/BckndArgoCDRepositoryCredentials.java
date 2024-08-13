@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndArgoCDRepositoryCredentials
  */
-
 // CHECKSTYLE:OFF
 public class BckndArgoCDRepositoryCredentials 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndArgoCDRepositoryCredentials
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
-   *
-   * @param username  Username for read-access to the repository
-   * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
-   */
+    * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
+    *
+    * @param username  Username for read-access to the repository
+    * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
+    */
    @Nonnull public BckndArgoCDRepositoryCredentials username(@Nonnull final String username) {
     this.username = username;
     return this;
   }
 
    /**
-   * Username for read-access to the repository
-   * @return username  The username of this {@link BckndArgoCDRepositoryCredentials} instance.
-  **/
+    * Username for read-access to the repository
+    * @return username  The username of this {@link BckndArgoCDRepositoryCredentials} instance.
+    */
   @Nonnull public String getUsername() {
     return username;
   }
 
   /**
-  * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance.
-  *
-  * @param username  Username for read-access to the repository
-  */
+   * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance.
+   *
+   * @param username  Username for read-access to the repository
+   */
   public void setUsername( @Nonnull final String username) {
     this.username = username;
   }
 
    /**
-   * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
-   *
-   * @param password  Password for read-access to the repository
-   * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
-   */
+    * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
+    *
+    * @param password  Password for read-access to the repository
+    * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
+    */
    @Nonnull public BckndArgoCDRepositoryCredentials password(@Nonnull final String password) {
     this.password = password;
     return this;
   }
 
    /**
-   * Password for read-access to the repository
-   * @return password  The password of this {@link BckndArgoCDRepositoryCredentials} instance.
-  **/
+    * Password for read-access to the repository
+    * @return password  The password of this {@link BckndArgoCDRepositoryCredentials} instance.
+    */
   @Nonnull public String getPassword() {
     return password;
   }
 
   /**
-  * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance.
-  *
-  * @param password  Password for read-access to the repository
-  */
+   * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance.
+   *
+   * @param password  Password for read-access to the repository
+   */
   public void setPassword( @Nonnull final String password) {
     this.password = password;
   }
@@ -186,6 +185,7 @@ public class BckndArgoCDRepositoryCredentials
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

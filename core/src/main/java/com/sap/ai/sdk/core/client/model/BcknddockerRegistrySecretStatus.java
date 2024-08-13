@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * This represents the meta-data of a stored secret. The &#39;data&#39; field of the secret is never retrieved.
  */
-
 // CHECKSTYLE:OFF
 public class BcknddockerRegistrySecretStatus 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class BcknddockerRegistrySecretStatus
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link BcknddockerRegistrySecretStatus} instance and return the same instance.
-   *
-   * @param name  Name of dockerRegistryStore
-   * @return The same instance of this {@link BcknddockerRegistrySecretStatus} class
-   */
+    * Set the name of this {@link BcknddockerRegistrySecretStatus} instance and return the same instance.
+    *
+    * @param name  Name of dockerRegistryStore
+    * @return The same instance of this {@link BcknddockerRegistrySecretStatus} class
+    */
    @Nonnull public BcknddockerRegistrySecretStatus name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name of dockerRegistryStore
-   * @return name  The name of this {@link BcknddockerRegistrySecretStatus} instance.
-  **/
+    * Name of dockerRegistryStore
+    * @return name  The name of this {@link BcknddockerRegistrySecretStatus} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BcknddockerRegistrySecretStatus} instance.
-  *
-  * @param name  Name of dockerRegistryStore
-  */
+   * Set the name of this {@link BcknddockerRegistrySecretStatus} instance.
+   *
+   * @param name  Name of dockerRegistryStore
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
@@ -153,6 +152,7 @@ public class BcknddockerRegistrySecretStatus
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

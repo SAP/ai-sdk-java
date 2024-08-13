@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * TrckGetMetricResourceList
  */
-
 // CHECKSTYLE:OFF
 public class TrckGetMetricResourceList 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class TrckGetMetricResourceList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link TrckGetMetricResourceList} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link TrckGetMetricResourceList} class
-   */
+    * Set the count of this {@link TrckGetMetricResourceList} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link TrckGetMetricResourceList} class
+    */
    @Nonnull public TrckGetMetricResourceList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link TrckGetMetricResourceList} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link TrckGetMetricResourceList} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link TrckGetMetricResourceList} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link TrckGetMetricResourceList} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link TrckGetMetricResourceList} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link TrckGetMetricResourceList}
-   * @return The same instance of this {@link TrckGetMetricResourceList} class
-   */
+    * Set the resources of this {@link TrckGetMetricResourceList} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link TrckGetMetricResourceList}
+    * @return The same instance of this {@link TrckGetMetricResourceList} class
+    */
    @Nonnull public TrckGetMetricResourceList resources(@Nonnull final List<TrckGetMetricResource> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link TrckGetMetricResourceList}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link TrckGetMetricResourceList}
-  */
-  @Nonnull public TrckGetMetricResourceList addresourcesItem( @Nonnull final TrckGetMetricResource resourcesItem) {
+   * Add one resources instance to this {@link TrckGetMetricResourceList}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link TrckGetMetricResourceList}
+   */
+  @Nonnull public TrckGetMetricResourceList addResourcesItem( @Nonnull final TrckGetMetricResource resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class TrckGetMetricResourceList
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link TrckGetMetricResourceList} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link TrckGetMetricResourceList} instance.
+    */
   @Nonnull public List<TrckGetMetricResource> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link TrckGetMetricResourceList} instance.
-  *
-  * @param resources  The resources of this {@link TrckGetMetricResourceList}
-  */
+   * Set the resources of this {@link TrckGetMetricResourceList} instance.
+   *
+   * @param resources  The resources of this {@link TrckGetMetricResourceList}
+   */
   public void setResources( @Nonnull final List<TrckGetMetricResource> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class TrckGetMetricResourceList
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

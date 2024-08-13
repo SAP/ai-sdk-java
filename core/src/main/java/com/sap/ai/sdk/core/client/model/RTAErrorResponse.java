@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * RTAErrorResponse
  */
-
 // CHECKSTYLE:OFF
 public class RTAErrorResponse 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class RTAErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link RTAErrorResponse} instance and return the same instance.
-   *
-   * @param error  The error of this {@link RTAErrorResponse}
-   * @return The same instance of this {@link RTAErrorResponse} class
-   */
+    * Set the error of this {@link RTAErrorResponse} instance and return the same instance.
+    *
+    * @param error  The error of this {@link RTAErrorResponse}
+    * @return The same instance of this {@link RTAErrorResponse} class
+    */
    @Nonnull public RTAErrorResponse error(@Nonnull final RTAError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link RTAErrorResponse} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link RTAErrorResponse} instance.
+    */
   @Nonnull public RTAError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link RTAErrorResponse} instance.
-  *
-  * @param error  The error of this {@link RTAErrorResponse}
-  */
+   * Set the error of this {@link RTAErrorResponse} instance.
+   *
+   * @param error  The error of this {@link RTAErrorResponse}
+   */
   public void setError( @Nonnull final RTAError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class RTAErrorResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

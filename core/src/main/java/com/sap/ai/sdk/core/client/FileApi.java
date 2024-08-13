@@ -7,9 +7,9 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.DSetFileCreationResponse ; //NOPMD
-import java.io.File ; //NOPMD
-import com.sap.ai.sdk.core.client.model.FileDownload400Response ; //NOPMD
+import com.sap.ai.sdk.core.client.model.DSetFileCreationResponse;
+import java.io.File;
+import com.sap.ai.sdk.core.client.model.FileDownload400Response;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,28 +32,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.32.1.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.32.1.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class FileApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public FileApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public FileApi( @Nonnull final ApiClient apiClient )
     {
@@ -74,7 +73,8 @@ public class FileApi extends AbstractOpenApiService {
      * @return An OpenApiResponse containing the status code of the HttpResponse.
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-     @Nonnull public OpenApiResponse delete( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
+    @Nonnull
+    public OpenApiResponse delete( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'path' is set
@@ -109,17 +109,18 @@ public class FileApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Delete file</p>
-     *<p>Delete the file specified by the path parameter.</p>
+     * <p>Delete file</p>
+     * <p>Delete the file specified by the path parameter.</p>
      * <p><b>204</b> - The request was processed successfully.
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>404</b> - The specified resource was not found
-* @param path
-        path relative to the object store root URL in the secret
-* @return An OpenApiResponse containing the status code of the HttpResponse.
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param path
+     *      path relative to the object store root URL in the secret
+     * @return An OpenApiResponse containing the status code of the HttpResponse.
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-     @Nonnull  public OpenApiResponse delete( @Nonnull final String path) throws OpenApiRequestException {
+    @Nonnull
+    public OpenApiResponse delete( @Nonnull final String path) throws OpenApiRequestException {
         return delete(path, null);
     }
 
@@ -136,7 +137,8 @@ public class FileApi extends AbstractOpenApiService {
      * @return File
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public File download( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
+    @Nonnull
+    public File download( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'path' is set
@@ -170,17 +172,18 @@ public class FileApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Download file</p>
-     *<p>Endpoint for downloading file. The path must point to an individual file.</p>
+     * <p>Download file</p>
+     * <p>Endpoint for downloading file. The path must point to an individual file.</p>
      * <p><b>200</b> - OK
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>404</b> - The specified resource was not found
-* @param path
-        path relative to the object store root URL in the secret
-* @return File
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param path
+     *      path relative to the object store root URL in the secret
+     * @return File
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public File download( @Nonnull final String path) throws OpenApiRequestException {
+    @Nonnull
+    public File download( @Nonnull final String path) throws OpenApiRequestException {
         return download(path, null);
     }
 
@@ -202,7 +205,8 @@ public class FileApi extends AbstractOpenApiService {
      * @return DSetFileCreationResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public DSetFileCreationResponse upload( @Nonnull final String path,  @Nullable final String aiResourceGroup,  @Nullable final Boolean overwrite,  @Nullable final String body) throws OpenApiRequestException {
+    @Nonnull
+    public DSetFileCreationResponse upload( @Nonnull final String path,  @Nullable final String aiResourceGroup,  @Nullable final Boolean overwrite,  @Nullable final String body) throws OpenApiRequestException {
         final Object localVarPostBody = body;
         
         // verify the required parameter 'path' is set
@@ -239,18 +243,19 @@ public class FileApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Upload file (size &lt;&#x3D; 100Mb)</p>
-     *<p>Endpoint for uploading file. The maximum file size depends on the actual implementation  but must not exceed 100MB. The actual file size limit can be obtained by querying  the AI API Runtime Capabilities Endpoint and checking the limits in the section of the &#x60;fileUpload&#x60; extension.  Path cannot be a prefix, it must be a path to an object. Clients may group the objects in any manner they choose by specifying path prefixes.  Allowed mime-types will be decided by the implementation. Content-Type header can be set to \&quot;application/octet-stream\&quot; but the implementation is responsible  for detecting the actual mime type and checking against the allowed list of mime types.  For security reasons, implementations cannot trust the mime type sent by the client.  Example URLs:  /files/dar/schemas/schema.json  /files/icr/datasets/training/20201001/20201001-01.csv  /files/icr/datasets/training/20201001/20201001-02.csv   /files/mask-detection/training/mask-detection-20210301.tar.gz</p>
+     * <p>Upload file (size &lt;&#x3D; 100Mb)</p>
+     * <p>Endpoint for uploading file. The maximum file size depends on the actual implementation  but must not exceed 100MB. The actual file size limit can be obtained by querying  the AI API Runtime Capabilities Endpoint and checking the limits in the section of the &#x60;fileUpload&#x60; extension.  Path cannot be a prefix, it must be a path to an object. Clients may group the objects in any manner they choose by specifying path prefixes.  Allowed mime-types will be decided by the implementation. Content-Type header can be set to \&quot;application/octet-stream\&quot; but the implementation is responsible  for detecting the actual mime type and checking against the allowed list of mime types.  For security reasons, implementations cannot trust the mime type sent by the client.  Example URLs:  /files/dar/schemas/schema.json  /files/icr/datasets/training/20201001/20201001-01.csv  /files/icr/datasets/training/20201001/20201001-02.csv   /files/mask-detection/training/mask-detection-20210301.tar.gz</p>
      * <p><b>201</b> - Created
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>409</b> - The specified file already exists and cannot be overwritten.
      * <p><b>413</b> - The file size exceeds the supported limit.
-* @param path
-        path relative to the object store root URL in the secret
-* @return DSetFileCreationResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param path
+     *      path relative to the object store root URL in the secret
+     * @return DSetFileCreationResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public DSetFileCreationResponse upload( @Nonnull final String path) throws OpenApiRequestException {
+    @Nonnull
+    public DSetFileCreationResponse upload( @Nonnull final String path) throws OpenApiRequestException {
         return upload(path, null, null, null);
     }
 }

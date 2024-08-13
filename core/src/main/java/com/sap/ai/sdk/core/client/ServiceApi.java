@@ -7,9 +7,9 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.BckndErrorResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndExtendedService ; //NOPMD
-import com.sap.ai.sdk.core.client.model.BckndServiceList ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndErrorResponse;
+import com.sap.ai.sdk.core.client.model.BckndExtendedService;
+import com.sap.ai.sdk.core.client.model.BckndServiceList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,28 +32,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.32.1.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.32.1.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class ServiceApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public ServiceApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public ServiceApi( @Nonnull final ApiClient apiClient )
     {
@@ -75,7 +74,8 @@ public class ServiceApi extends AbstractOpenApiService {
      * @return BckndExtendedService
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndExtendedService get( @Nonnull final String serviceName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nonnull
+    public BckndExtendedService get( @Nonnull final String serviceName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'serviceName' is set
@@ -109,18 +109,19 @@ public class ServiceApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get a service</p>
-     *<p>Get an service of a given main tenant. </p>
+     * <p>Get a service</p>
+     * <p>Get an service of a given main tenant. </p>
      * <p><b>200</b> - A service object
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @param serviceName
-        Name of the Service
-* @return BckndExtendedService
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param serviceName
+     *      Name of the Service
+     * @return BckndExtendedService
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndExtendedService get( @Nonnull final String serviceName) throws OpenApiRequestException {
+    @Nonnull
+    public BckndExtendedService get( @Nonnull final String serviceName) throws OpenApiRequestException {
         return get(serviceName, null);
     }
 
@@ -135,7 +136,8 @@ public class ServiceApi extends AbstractOpenApiService {
      * @return BckndServiceList
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public BckndServiceList getAll( @Nullable final String authorization) throws OpenApiRequestException {
+    @Nonnull
+    public BckndServiceList getAll( @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/services").build().toUriString();
@@ -161,15 +163,16 @@ public class ServiceApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Gets all services of a given main tenant</p>
-     *<p>Retrieve a list of services for a given main tenant. </p>
+     * <p>Gets all services of a given main tenant</p>
+     * <p>Retrieve a list of services for a given main tenant. </p>
      * <p><b>200</b> - A list of services
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-* @return BckndServiceList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @return BckndServiceList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public BckndServiceList getAll() throws OpenApiRequestException {
+    @Nonnull
+    public BckndServiceList getAll() throws OpenApiRequestException {
         return getAll(null);
     }
 }

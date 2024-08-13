@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * Common log record.
  */
-
 // CHECKSTYLE:OFF
 public class AiLogCommonResultItem 
 // CHECKSTYLE:ON
@@ -55,57 +54,57 @@ public class AiLogCommonResultItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the timestamp of this {@link AiLogCommonResultItem} instance and return the same instance.
-   *
-   * @param timestamp  Datetime in RFC 3339.
-   * @return The same instance of this {@link AiLogCommonResultItem} class
-   */
+    * Set the timestamp of this {@link AiLogCommonResultItem} instance and return the same instance.
+    *
+    * @param timestamp  Datetime in RFC 3339.
+    * @return The same instance of this {@link AiLogCommonResultItem} class
+    */
    @Nonnull public AiLogCommonResultItem timestamp(@Nonnull final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
 
    /**
-   * Datetime in RFC 3339.
-   * @return timestamp  The timestamp of this {@link AiLogCommonResultItem} instance.
-  **/
+    * Datetime in RFC 3339.
+    * @return timestamp  The timestamp of this {@link AiLogCommonResultItem} instance.
+    */
   @Nonnull public OffsetDateTime getTimestamp() {
     return timestamp;
   }
 
   /**
-  * Set the timestamp of this {@link AiLogCommonResultItem} instance.
-  *
-  * @param timestamp  Datetime in RFC 3339.
-  */
+   * Set the timestamp of this {@link AiLogCommonResultItem} instance.
+   *
+   * @param timestamp  Datetime in RFC 3339.
+   */
   public void setTimestamp( @Nonnull final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
    /**
-   * Set the msg of this {@link AiLogCommonResultItem} instance and return the same instance.
-   *
-   * @param msg  message content.
-   * @return The same instance of this {@link AiLogCommonResultItem} class
-   */
+    * Set the msg of this {@link AiLogCommonResultItem} instance and return the same instance.
+    *
+    * @param msg  message content.
+    * @return The same instance of this {@link AiLogCommonResultItem} class
+    */
    @Nonnull public AiLogCommonResultItem msg(@Nonnull final String msg) {
     this.msg = msg;
     return this;
   }
 
    /**
-   * message content.
-   * @return msg  The msg of this {@link AiLogCommonResultItem} instance.
-  **/
+    * message content.
+    * @return msg  The msg of this {@link AiLogCommonResultItem} instance.
+    */
   @Nonnull public String getMsg() {
     return msg;
   }
 
   /**
-  * Set the msg of this {@link AiLogCommonResultItem} instance.
-  *
-  * @param msg  message content.
-  */
+   * Set the msg of this {@link AiLogCommonResultItem} instance.
+   *
+   * @param msg  message content.
+   */
   public void setMsg( @Nonnull final String msg) {
     this.msg = msg;
   }
@@ -187,6 +186,7 @@ public class AiLogCommonResultItem
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 
