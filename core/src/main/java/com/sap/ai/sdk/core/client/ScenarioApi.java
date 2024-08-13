@@ -7,11 +7,11 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.AiModelList ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiScenario ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiScenarioList ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiVersionList ; //NOPMD
-import com.sap.ai.sdk.core.client.model.ArtifactQuery400Response ; //NOPMD
+import com.sap.ai.sdk.core.client.model.AiModelList;
+import com.sap.ai.sdk.core.client.model.AiScenario;
+import com.sap.ai.sdk.core.client.model.AiScenarioList;
+import com.sap.ai.sdk.core.client.model.AiVersionList;
+import com.sap.ai.sdk.core.client.model.ArtifactQuery400Response;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,28 +34,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.33.0.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.33.0.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class ScenarioApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public ScenarioApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public ScenarioApi( @Nonnull final ApiClient apiClient )
     {
@@ -63,78 +62,30 @@ public class ScenarioApi extends AbstractOpenApiService {
     }
 
         /**
-    * <p>Get information about all models available in LLM global scenario</p>
-     *<p>Retrieve information about all models available in LLM global scenario</p>
-     * <p><b>200</b> - The request was successful and information of all LLM models will be returned.
-     * <p><b>400</b> - The specification of the resource was incorrect
-* @param scenarioId
-        Scenario identifier
-* @param aiResourceGroup
-        Specify a resource group id
-* @return AiModelList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nullable   public AiModelList modelsGet( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        // verify the required parameter 'scenarioId' is set
-        if (scenarioId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling modelsGet");
-        }
-        
-        // verify the required parameter 'aiResourceGroup' is set
-        if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling modelsGet");
-        }
-        
-        // create path and map variables
-        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-        localVarPathParams.put("scenarioId", scenarioId);
-        final String localVarPath = UriComponentsBuilder.fromPath("/lm/scenarios/{scenarioId}/models").buildAndExpand(localVarPathParams).toUriString();
-
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
-
-        if (aiResourceGroup != null)
-        localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
-
-        final ParameterizedTypeReference<AiModelList> localVarReturnType = new ParameterizedTypeReference<AiModelList>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
-    /**
-    * <p>Get scenario by id</p>
-     *<p>Retrieve details for a scenario specified by scenarioId.</p>
+     * <p>Get scenario by id</p>
+     * <p>Retrieve details for a scenario specified by scenarioId.</p>
      * <p><b>200</b> - A scenario
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>404</b> - The specified resource was not found
-* @param aiResourceGroup
-        Specify a resource group id
-* @param scenarioId
-        Scenario identifier
-* @return AiScenario
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @param scenarioId
+     *      Scenario identifier
+     * @return AiScenario
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiScenario scenarioGet( @Nonnull final String aiResourceGroup,  @Nonnull final String scenarioId) throws OpenApiRequestException {
+    @Nonnull
+    public AiScenario get( @Nonnull final String aiResourceGroup,  @Nonnull final String scenarioId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling scenarioGet");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
         }
         
         // verify the required parameter 'scenarioId' is set
         if (scenarioId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling scenarioGet");
+            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling get");
         }
         
         // create path and map variables
@@ -162,20 +113,71 @@ public class ScenarioApi extends AbstractOpenApiService {
         return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
     /**
-    * <p>Get list of scenarios</p>
-     *<p>Retrieve a list of all available scenarios.</p>
-     * <p><b>200</b> - A list of scenarios
-* @param aiResourceGroup
-        Specify a resource group id
-* @return AiScenarioList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * <p>Get information about all models available in LLM global scenario</p>
+     * <p>Retrieve information about all models available in LLM global scenario</p>
+     * <p><b>200</b> - The request was successful and information of all LLM models will be returned.
+     * <p><b>400</b> - The specification of the resource was incorrect
+     * @param scenarioId
+     *      Scenario identifier
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return AiModelList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiScenarioList scenarioQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    @Nonnull
+    public AiModelList get_0( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        // verify the required parameter 'scenarioId' is set
+        if (scenarioId == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling get_0");
+        }
+        
+        // verify the required parameter 'aiResourceGroup' is set
+        if (aiResourceGroup == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get_0");
+        }
+        
+        // create path and map variables
+        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+        localVarPathParams.put("scenarioId", scenarioId);
+        final String localVarPath = UriComponentsBuilder.fromPath("/lm/scenarios/{scenarioId}/models").buildAndExpand(localVarPathParams).toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+        if (aiResourceGroup != null)
+        localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<AiModelList> localVarReturnType = new ParameterizedTypeReference<AiModelList>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+    /**
+     * <p>Get list of scenarios</p>
+     * <p>Retrieve a list of all available scenarios.</p>
+     * <p><b>200</b> - A list of scenarios
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return AiScenarioList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public AiScenarioList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling scenarioQuery");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/scenarios").build().toUriString();
@@ -214,17 +216,18 @@ public class ScenarioApi extends AbstractOpenApiService {
      * @return AiVersionList
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public AiVersionList versions( @Nonnull final String aiResourceGroup,  @Nonnull final String scenarioId,  @Nullable final List<String> labelSelector) throws OpenApiRequestException {
+    @Nonnull
+    public AiVersionList queryVersions( @Nonnull final String aiResourceGroup,  @Nonnull final String scenarioId,  @Nullable final List<String> labelSelector) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling versions");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling queryVersions");
         }
         
         // verify the required parameter 'scenarioId' is set
         if (scenarioId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling versions");
+            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling queryVersions");
         }
         
         // create path and map variables
@@ -256,18 +259,19 @@ public class ScenarioApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get list of versions for scenario</p>
-     *<p>Retrieve a list of scenario versions based on the versions of executables available within that scenario. </p>
+     * <p>Get list of versions for scenario</p>
+     * <p>Retrieve a list of scenario versions based on the versions of executables available within that scenario. </p>
      * <p><b>200</b> - A list of versions for the scenario
      * <p><b>400</b> - The specification of the resource was incorrect
-* @param aiResourceGroup
-        Specify a resource group id
-* @param scenarioId
-        Scenario identifier
-* @return AiVersionList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @param scenarioId
+     *      Scenario identifier
+     * @return AiVersionList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiVersionList versions( @Nonnull final String aiResourceGroup,  @Nonnull final String scenarioId) throws OpenApiRequestException {
-        return versions(aiResourceGroup, scenarioId, null);
+    @Nonnull
+    public AiVersionList queryVersions( @Nonnull final String aiResourceGroup,  @Nonnull final String scenarioId) throws OpenApiRequestException {
+        return queryVersions(aiResourceGroup, scenarioId, null);
     }
 }

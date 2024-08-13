@@ -7,11 +7,11 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.AiArtifact ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiArtifactCreationResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiArtifactList ; //NOPMD
-import com.sap.ai.sdk.core.client.model.AiArtifactPostData ; //NOPMD
-import com.sap.ai.sdk.core.client.model.ArtifactQuery400Response ; //NOPMD
+import com.sap.ai.sdk.core.client.model.AiArtifact;
+import com.sap.ai.sdk.core.client.model.AiArtifactCreationResponse;
+import com.sap.ai.sdk.core.client.model.AiArtifactList;
+import com.sap.ai.sdk.core.client.model.AiArtifactPostData;
+import com.sap.ai.sdk.core.client.model.ArtifactQuery400Response;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,28 +34,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.33.0.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.33.0.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class ArtifactApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public ArtifactApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public ArtifactApi( @Nonnull final ApiClient apiClient )
     {
@@ -87,12 +86,13 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @return Integer
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public Integer artifactCount( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final List<String> artifactLabelSelector) throws OpenApiRequestException {
+    @Nonnull
+    public Integer count( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final List<String> artifactLabelSelector) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactCount");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling count");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/artifacts/$count").build().toUriString();
@@ -127,41 +127,43 @@ public class ArtifactApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get number of artifacts</p>
-     *<p>Retrieve  the number of available artifacts that match the specified filter criteria. Filter criteria include a scenarioId, executionId, an artifact name, artifact kind, or artifact labels. Search by substring of artifact name or description is also possible. </p>
+     * <p>Get number of artifacts</p>
+     * <p>Retrieve  the number of available artifacts that match the specified filter criteria. Filter criteria include a scenarioId, executionId, an artifact name, artifact kind, or artifact labels. Search by substring of artifact name or description is also possible. </p>
      * <p><b>200</b> - Number of artifacts
      * <p><b>400</b> - The specification of the resource was incorrect
-* @param aiResourceGroup
-        Specify a resource group id
-* @return Integer
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return Integer
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public Integer artifactCount( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return artifactCount(aiResourceGroup, null, null, null, null, null, null, null);
+    @Nonnull
+    public Integer count( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return count(aiResourceGroup, null, null, null, null, null, null, null);
     }
     /**
-    * <p>Register artifact</p>
-     *<p>Register an artifact for use in a configuration, for example a model or a dataset.</p>
+     * <p>Register artifact</p>
+     * <p>Register an artifact for use in a configuration, for example a model or a dataset.</p>
      * <p><b>201</b> - The artifact has been registered successfully
      * <p><b>400</b> - The specification of the resource was incorrect
-* @param aiResourceGroup
-        Specify a resource group id
-* @param aiArtifactPostData
-            The value for the parameter aiArtifactPostData
-* @return AiArtifactCreationResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @param aiArtifactPostData
+     *      The value for the parameter aiArtifactPostData
+     * @return AiArtifactCreationResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiArtifactCreationResponse artifactCreate( @Nonnull final String aiResourceGroup,  @Nonnull final AiArtifactPostData aiArtifactPostData) throws OpenApiRequestException {
+    @Nonnull
+    public AiArtifactCreationResponse create( @Nonnull final String aiResourceGroup,  @Nonnull final AiArtifactPostData aiArtifactPostData) throws OpenApiRequestException {
         final Object localVarPostBody = aiArtifactPostData;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling create");
         }
         
         // verify the required parameter 'aiArtifactPostData' is set
         if (aiArtifactPostData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiArtifactPostData' when calling artifactCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiArtifactPostData' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/artifacts").build().toUriString();
@@ -203,17 +205,18 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @return AiArtifact
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public AiArtifact artifactGet( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId,  @Nullable final String $expand) throws OpenApiRequestException {
+    @Nonnull
+    public AiArtifact get( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId,  @Nullable final String $expand) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactGet");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
         }
         
         // verify the required parameter 'artifactId' is set
         if (artifactId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'artifactId' when calling artifactGet");
+            throw new OpenApiRequestException("Missing the required parameter 'artifactId' when calling get");
         }
         
         // create path and map variables
@@ -245,20 +248,21 @@ public class ArtifactApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get artifact by ID</p>
-     *<p>Retrieve details for artifact with artifactId.</p>
+     * <p>Get artifact by ID</p>
+     * <p>Retrieve details for artifact with artifactId.</p>
      * <p><b>200</b> - An artifact
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>404</b> - The specified resource was not found
-* @param aiResourceGroup
-        Specify a resource group id
-* @param artifactId
-        Artifact identifier
-* @return AiArtifact
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @param artifactId
+     *      Artifact identifier
+     * @return AiArtifact
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiArtifact artifactGet( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId) throws OpenApiRequestException {
-        return artifactGet(aiResourceGroup, artifactId, null);
+    @Nonnull
+    public AiArtifact get( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId) throws OpenApiRequestException {
+        return get(aiResourceGroup, artifactId, null);
     }
 
     /**
@@ -291,12 +295,13 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @return AiArtifactList
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public AiArtifactList artifactQuery( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final List<String> artifactLabelSelector,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final String $expand) throws OpenApiRequestException {
+    @Nonnull
+    public AiArtifactList query( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final List<String> artifactLabelSelector,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final String $expand) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactQuery");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/artifacts").build().toUriString();
@@ -334,16 +339,17 @@ public class ArtifactApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get list of artifacts</p>
-     *<p>Retrieve a list of artifacts that matches the specified filter criteria. Filter criteria include scenario ID, execution ID, an artifact name, artifact kind, or artifact labels. Use top/skip parameters to paginate the result list. Search by substring of artifact name or description, if required. </p>
+     * <p>Get list of artifacts</p>
+     * <p>Retrieve a list of artifacts that matches the specified filter criteria. Filter criteria include scenario ID, execution ID, an artifact name, artifact kind, or artifact labels. Use top/skip parameters to paginate the result list. Search by substring of artifact name or description, if required. </p>
      * <p><b>200</b> - A list of artifacts
      * <p><b>400</b> - The specification of the resource was incorrect
-* @param aiResourceGroup
-        Specify a resource group id
-* @return AiArtifactList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return AiArtifactList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public AiArtifactList artifactQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return artifactQuery(aiResourceGroup, null, null, null, null, null, null, null, null, null, null);
+    @Nonnull
+    public AiArtifactList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return query(aiResourceGroup, null, null, null, null, null, null, null, null, null, null);
     }
 }
