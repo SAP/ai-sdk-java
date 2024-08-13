@@ -50,11 +50,6 @@
       <artifactId>system-stubs-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-generator</artifactId>
-      <version>5.12.0-SNAPSHOT</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -90,64 +85,7 @@
           <!-- Do not delete the output directory because it contains non-generated code -->
           <!-- The generated client is instead deleted by the maven-clean-plugin here above -->
           <deleteOutputDirectory>false</deleteOutputDirectory>
-          <inputSpec>${project.basedir}/src/main/resources/spec/aicore.yaml</inputSpec>
-          <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
-          <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
-          <additionalProperties>
-            <operationIdNames>
-              kubesubmit.v4.object_store_secrets.create=objectStoreSecretsCreate
-              kubesubmit.v4.object_store_secrets.query=objectStoreSecretsQuery
-              kubesubmit.v4.object_store_secrets.get=objectStoreSecretsGet
-              kubesubmit.v4.object_store_secrets.delete=objectStoreSecretsDelete
-              kubesubmit.v4.object_store_secrets.patch=objectStoreSecretsPatch
-              kubesubmit.v4.generic_secrets.create=genericSecretsCreate
-              kubesubmit.v4.generic_secrets.get=genericSecretsGet
-              kubesubmit.v4.generic_secrets.update=genericSecretsUpdate
-              kubesubmit.v4.generic_secrets.delete=genericSecretsDelete
-              kubesubmit.v4.resourcegroups.create=resourceGroupsCreate
-              kubesubmit.v4.resourcegroups.get_all=resourceGroupsGetAll
-              kubesubmit.v4.resourcegroups.get=resourceGroupsGet
-              kubesubmit.v4.resourcegroups.delete=resourceGroupsDelete
-              kubesubmit.v4.resourcegroups.patch=resourceGroupsPatch
-              kubesubmit.v4.resources.patch=resourcesPatch
-              kubesubmit.v4.resources.get=resourcesGet
-              kubesubmit.v4.executions.get_logs=executionsGetLogs
-              kubesubmit.v4.deployments.get_logs=deploymentsGetLogs
-              kubesubmit.v4.repositories.create=repositoriesCreate
-              kubesubmit.v4.repositories.get_all=repositoriesGetAll
-              kubesubmit.v4.repositories.get=repositoriesGet
-              kubesubmit.v4.repositories.update=repositoriesUpdate
-              kubesubmit.v4.repositories.delete=repositoriesDelete
-              kubesubmit.v4.applications.create=applicationsCreate
-              kubesubmit.v4.applications.get_all=applicationsGetAll
-              kubesubmit.v4.applications.get_status=applicationsGetStatus
-              kubesubmit.v4.applications.update=applicationsUpdate
-              kubesubmit.v4.applications.get=applicationsGet
-              kubesubmit.v4.applications.delete=applicationsDelete
-              kubesubmit.v4.applications.refresh=applicationsRefresh
-              kubesubmit.v4.docker_registry_secrets.get=dockerRegistrySecretsGet
-              kubesubmit.v4.docker_registry_secrets.delete=dockerRegistrySecretsDelete
-              kubesubmit.v4.docker_registry_secrets.patch=dockerRegistrySecretsPatch
-              kubesubmit.v4.docker_registry_secrets.create=dockerRegistrySecretsCreate
-              kubesubmit.v4.docker_registry_secrets.query=dockerRegistrySecretsQuery
-              kubesubmit.v4.aiservices.get_all=aiservicesGetAll
-              kubesubmit.v4.aiservices.get=aiservicesGet
-              kubesubmit.v4.resource_quota.get_resource_group_quota=resourceQuotaGetResourceGroupQuota
-              kubesubmit.v4.resource_quota.get_executable_quota=resourceQuotaGetExecutableQuota
-              kubesubmit.v4.resource_quota.get_application_quota=resourceQuotaGetApplicationQuota
-              kubesubmit.v4.resource_quota.get_repository_quota=resourceQuotaGetRepositoryQuota
-              kubesubmit.v4.resource_quota.get_generic_secret_quota=resourceQuotaGetGenericSecretQuota
-              kubesubmit.v4.resource_quota.get_docker_registry_secret_quota=resourceQuotaGetDockerRegistrySecretQuota
-            </operationIdNames>
-          </additionalProperties>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.sap.cloud.sdk.datamodel</groupId>
-            <artifactId>openapi-generator</artifactId>
-            <version>5.12.0-SNAPSHOT</version>
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <id>aicore</id>
@@ -156,6 +94,56 @@
             </goals>
             <phase>generate-sources</phase>
             <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/spec/aicore.yaml</inputSpec>
+              <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
+              <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
+              <additionalProperties>
+                <operationIdNames>
+                  kubesubmit.v4.objectStoreSecrets.create=objectStoreSecretsCreate
+                  kubesubmit.v4.objectStoreSecrets.query=objectStoreSecretsQuery
+                  kubesubmit.v4.objectStoreSecrets.get=objectStoreSecretsGet
+                  kubesubmit.v4.objectStoreSecrets.delete=objectStoreSecretsDelete
+                  kubesubmit.v4.objectStoreSecrets.patch=objectStoreSecretsPatch
+                  kubesubmit.v4.genericSecrets.create=genericSecretsCreate
+                  kubesubmit.v4.genericSecrets.get=genericSecretsGet
+                  kubesubmit.v4.genericSecrets.update=genericSecretsUpdate
+                  kubesubmit.v4.genericSecrets.delete=genericSecretsDelete
+                  kubesubmit.v4.resourcegroups.create=resourceGroupsCreate
+                  kubesubmit.v4.resourcegroups.getAll=resourceGroupsGetAll
+                  kubesubmit.v4.resourcegroups.get=resourceGroupsGet
+                  kubesubmit.v4.resourcegroups.delete=resourceGroupsDelete
+                  kubesubmit.v4.resourcegroups.patch=resourceGroupsPatch
+                  kubesubmit.v4.resources.patch=resourcesPatch
+                  kubesubmit.v4.resources.get=resourcesGet
+                  kubesubmit.v4.executions.getLogs=executionsGetLogs
+                  kubesubmit.v4.deployments.getLogs=deploymentsGetLogs
+                  kubesubmit.v4.repositories.create=repositoriesCreate
+                  kubesubmit.v4.repositories.getAll=repositoriesGetAll
+                  kubesubmit.v4.repositories.get=repositoriesGet
+                  kubesubmit.v4.repositories.update=repositoriesUpdate
+                  kubesubmit.v4.repositories.delete=repositoriesDelete
+                  kubesubmit.v4.applications.create=applicationsCreate
+                  kubesubmit.v4.applications.getAll=applicationsGetAll
+                  kubesubmit.v4.applications.getStatus=applicationsGetStatus
+                  kubesubmit.v4.applications.update=applicationsUpdate
+                  kubesubmit.v4.applications.get=applicationsGet
+                  kubesubmit.v4.applications.delete=applicationsDelete
+                  kubesubmit.v4.applications.refresh=applicationsRefresh
+                  kubesubmit.v4.dockerRegistrySecrets.get=dockerRegistrySecretsGet
+                  kubesubmit.v4.dockerRegistrySecrets.delete=dockerRegistrySecretsDelete
+                  kubesubmit.v4.dockerRegistrySecrets.patch=dockerRegistrySecretsPatch
+                  kubesubmit.v4.dockerRegistrySecrets.create=dockerRegistrySecretsCreate
+                  kubesubmit.v4.dockerRegistrySecrets.query=dockerRegistrySecretsQuery
+                  kubesubmit.v4.aiservices.getAll=aiservicesGetAll
+                  kubesubmit.v4.aiservices.get=aiservicesGet
+                  kubesubmit.v4.resourceQuota.getResourceGroupQuota=resourceQuotaGetResourceGroupQuota
+                  kubesubmit.v4.resourceQuota.getExecutableQuota=resourceQuotaGetExecutableQuota
+                  kubesubmit.v4.resourceQuota.getApplicationQuota=resourceQuotaGetApplicationQuota
+                  kubesubmit.v4.resourceQuota.getRepositoryQuota=resourceQuotaGetRepositoryQuota
+                  kubesubmit.v4.resourceQuota.getGenericSecretQuota=resourceQuotaGetGenericSecretQuota
+                  kubesubmit.v4.resourceQuota.getDockerRegistrySecretQuota=resourceQuotaGetDockerRegistrySecretQuota
+                </operationIdNames>
+              </additionalProperties>
             </configuration>
           </execution>
         </executions>

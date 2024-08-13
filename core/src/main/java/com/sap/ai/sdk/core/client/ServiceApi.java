@@ -137,7 +137,7 @@ public class ServiceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndServiceList kubesubmitV4AiservicesGetAll( @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndServiceList aiservicesGetAll( @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/services").build().toUriString();
@@ -172,7 +172,7 @@ public class ServiceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndServiceList kubesubmitV4AiservicesGetAll() throws OpenApiRequestException {
-        return kubesubmitV4AiservicesGetAll(null);
+    public BckndServiceList aiservicesGetAll() throws OpenApiRequestException {
+        return aiservicesGetAll(null);
     }
 }

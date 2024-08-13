@@ -66,68 +66,6 @@ public class RepositoryApi extends AbstractOpenApiService {
 
     
     /**
-     * <p>List all GitOps repositories for a tenant</p>
-     *<p>Retrieve a list of all GitOps repositories for a tenant.</p>
-     * <p><b>200</b> - Returns a list of all GitOps repositories for the tenant.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param authorization  (optional)
-        Authorization bearer token containing a JWT token.
-     * @param $top  (optional)
-        Number of results to display
-     * @param $skip  (optional)
-        Number of results to be skipped from the ordered list of results
-     * @param $count  (optional)
-        When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
-     * @return BckndArgoCDRepositoryDataResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public BckndArgoCDRepositoryDataResponse kubesubmitV4RepositoriesGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        final String localVarPath = UriComponentsBuilder.fromPath("/admin/repositories").build().toUriString();
-
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
-
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-        
-
-        if (authorization != null)
-            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
-
-        final ParameterizedTypeReference<BckndArgoCDRepositoryDataResponse> localVarReturnType = new ParameterizedTypeReference<BckndArgoCDRepositoryDataResponse>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
-
-    /**
-     * <p>List all GitOps repositories for a tenant</p>
-     * <p>Retrieve a list of all GitOps repositories for a tenant.</p>
-     * <p><b>200</b> - Returns a list of all GitOps repositories for the tenant.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndArgoCDRepositoryDataResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public BckndArgoCDRepositoryDataResponse kubesubmitV4RepositoriesGetAll() throws OpenApiRequestException {
-        return kubesubmitV4RepositoriesGetAll(null, null, null, null);
-    }
-
-    /**
      * <p>On-board a new GitOps repository</p>
      *<p>On-board a new GitOps repository as specified in the content payload</p>
      * <p><b>200</b> - The repository has been on-boarded
@@ -319,6 +257,68 @@ public class RepositoryApi extends AbstractOpenApiService {
     @Nonnull
     public BckndArgoCDRepositoryDetails repositoriesGet( @Nonnull final String repositoryName) throws OpenApiRequestException {
         return repositoriesGet(repositoryName, null);
+    }
+
+    /**
+     * <p>List all GitOps repositories for a tenant</p>
+     *<p>Retrieve a list of all GitOps repositories for a tenant.</p>
+     * <p><b>200</b> - Returns a list of all GitOps repositories for the tenant.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param authorization  (optional)
+        Authorization bearer token containing a JWT token.
+     * @param $top  (optional)
+        Number of results to display
+     * @param $skip  (optional)
+        Number of results to be skipped from the ordered list of results
+     * @param $count  (optional)
+        When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
+     * @return BckndArgoCDRepositoryDataResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public BckndArgoCDRepositoryDataResponse repositoriesGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        final String localVarPath = UriComponentsBuilder.fromPath("/admin/repositories").build().toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
+        
+
+        if (authorization != null)
+            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<BckndArgoCDRepositoryDataResponse> localVarReturnType = new ParameterizedTypeReference<BckndArgoCDRepositoryDataResponse>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * <p>List all GitOps repositories for a tenant</p>
+     * <p>Retrieve a list of all GitOps repositories for a tenant.</p>
+     * <p><b>200</b> - Returns a list of all GitOps repositories for the tenant.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @return BckndArgoCDRepositoryDataResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public BckndArgoCDRepositoryDataResponse repositoriesGetAll() throws OpenApiRequestException {
+        return repositoriesGetAll(null, null, null, null);
     }
 
     /**

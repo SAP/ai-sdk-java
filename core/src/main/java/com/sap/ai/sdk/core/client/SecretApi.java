@@ -80,12 +80,12 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsCreate( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    public BckndGenericSecretDataResponse genericSecretsCreate( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = bckndGenericSecretPostBody;
         
         // verify the required parameter 'bckndGenericSecretPostBody' is set
         if (bckndGenericSecretPostBody == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPostBody' when calling kubesubmitV4GenericSecretsCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPostBody' when calling genericSecretsCreate");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/secrets").build().toUriString();
@@ -128,8 +128,8 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsCreate( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody) throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsCreate(bckndGenericSecretPostBody, null, null, null);
+    public BckndGenericSecretDataResponse genericSecretsCreate( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody) throws OpenApiRequestException {
+        return genericSecretsCreate(bckndGenericSecretPostBody, null, null, null);
     }
 
     /**
@@ -151,12 +151,12 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse kubesubmitV4GenericSecretsDelete( @Nonnull final String secretName,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    public OpenApiResponse genericSecretsDelete( @Nonnull final String secretName,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'secretName' is set
         if (secretName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling kubesubmitV4GenericSecretsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling genericSecretsDelete");
         }
         
         // create path and map variables
@@ -202,8 +202,8 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse kubesubmitV4GenericSecretsDelete( @Nonnull final String secretName) throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsDelete(secretName, null, null, null);
+    public OpenApiResponse genericSecretsDelete( @Nonnull final String secretName) throws OpenApiRequestException {
+        return genericSecretsDelete(secretName, null, null, null);
     }
 
     /**
@@ -228,7 +228,7 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndListGenericSecretsResponse kubesubmitV4GenericSecretsGet( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    public BckndListGenericSecretsResponse genericSecretsGet( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/secrets").build().toUriString();
@@ -272,8 +272,8 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndListGenericSecretsResponse kubesubmitV4GenericSecretsGet() throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsGet(null, null, null, null, null, null);
+    public BckndListGenericSecretsResponse genericSecretsGet() throws OpenApiRequestException {
+        return genericSecretsGet(null, null, null, null, null, null);
     }
 
     /**
@@ -297,17 +297,17 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsUpdate( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    public BckndGenericSecretDataResponse genericSecretsUpdate( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = bckndGenericSecretPatchBody;
         
         // verify the required parameter 'secretName' is set
         if (secretName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling kubesubmitV4GenericSecretsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling genericSecretsUpdate");
         }
         
         // verify the required parameter 'bckndGenericSecretPatchBody' is set
         if (bckndGenericSecretPatchBody == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPatchBody' when calling kubesubmitV4GenericSecretsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPatchBody' when calling genericSecretsUpdate");
         }
         
         // create path and map variables
@@ -356,7 +356,7 @@ public class SecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsUpdate( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody) throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsUpdate(secretName, bckndGenericSecretPatchBody, null, null, null);
+    public BckndGenericSecretDataResponse genericSecretsUpdate( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody) throws OpenApiRequestException {
+        return genericSecretsUpdate(secretName, bckndGenericSecretPatchBody, null, null, null);
     }
 }
