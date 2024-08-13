@@ -8,6 +8,8 @@ import com.sap.ai.sdk.core.client.model.AiScenarioList;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Nullable;
+
 /** Endpoint for Scenario operations */
 @RestController
 @SuppressWarnings("unused") // debug method that doesn't need to be tested
@@ -31,6 +33,7 @@ public class ScenarioController {
    * @return the list of available models
    */
   @GetMapping("/models")
+  @Nullable
   public AiModelList getModels() {
     return API.modelsGet("foundation-models", "default");
   }
