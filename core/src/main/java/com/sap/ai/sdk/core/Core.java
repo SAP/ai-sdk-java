@@ -61,7 +61,7 @@ public class Core {
    */
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments = new DeploymentApi(getClient(getDestination())).query(resourceGroup);
+    final var deployments = new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
     Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()
@@ -243,7 +243,7 @@ public class Core {
   private static String getDeploymentForModel(
       @Nonnull final String modelName, @Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments = new DeploymentApi(getClient()).query(resourceGroup);
+    final var deployments = new DeploymentApi(getClient()).deploymentQuery(resourceGroup);
     Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()

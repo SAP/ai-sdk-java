@@ -82,17 +82,17 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionBulkModificationResponse batchModify( @Nonnull final String aiResourceGroup,  @Nonnull final AiExecutionBulkModificationRequest aiExecutionBulkModificationRequest) throws OpenApiRequestException {
+    public AiExecutionBulkModificationResponse executionBatchModify( @Nonnull final String aiResourceGroup,  @Nonnull final AiExecutionBulkModificationRequest aiExecutionBulkModificationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiExecutionBulkModificationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling batchModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionBatchModify");
         }
         
         // verify the required parameter 'aiExecutionBulkModificationRequest' is set
         if (aiExecutionBulkModificationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionBulkModificationRequest' when calling batchModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionBulkModificationRequest' when calling executionBatchModify");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executions").build().toUriString();
@@ -140,12 +140,12 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer count( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String executionScheduleId,  @Nullable final String status) throws OpenApiRequestException {
+    public Integer executionCount( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String executionScheduleId,  @Nullable final String status) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling count");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionCount");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executions/$count").build().toUriString();
@@ -188,8 +188,8 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer count( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return count(aiResourceGroup, null, null, null, null, null);
+    public Integer executionCount( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return executionCount(aiResourceGroup, null, null, null, null, null);
     }
     /**
      * <p>Create execution</p>
@@ -204,17 +204,17 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionCreationResponse create( @Nonnull final String aiResourceGroup,  @Nonnull final AiEnactmentCreationRequest aiEnactmentCreationRequest) throws OpenApiRequestException {
+    public AiExecutionCreationResponse executionCreate( @Nonnull final String aiResourceGroup,  @Nonnull final AiEnactmentCreationRequest aiEnactmentCreationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiEnactmentCreationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling create");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionCreate");
         }
         
         // verify the required parameter 'aiEnactmentCreationRequest' is set
         if (aiEnactmentCreationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiEnactmentCreationRequest' when calling create");
+            throw new OpenApiRequestException("Missing the required parameter 'aiEnactmentCreationRequest' when calling executionCreate");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executions").build().toUriString();
@@ -255,17 +255,17 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionDeletionResponse delete( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId) throws OpenApiRequestException {
+    public AiExecutionDeletionResponse executionDelete( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling delete");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionDelete");
         }
         
         // verify the required parameter 'executionId' is set
         if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling delete");
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling executionDelete");
         }
         
         // create path and map variables
@@ -309,17 +309,17 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionResponseWithDetails get( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId,  @Nullable final String $select) throws OpenApiRequestException {
+    public AiExecutionResponseWithDetails executionGet( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId,  @Nullable final String $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionGet");
         }
         
         // verify the required parameter 'executionId' is set
         if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling get");
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling executionGet");
         }
         
         // create path and map variables
@@ -364,89 +364,8 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionResponseWithDetails get( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId) throws OpenApiRequestException {
-        return get(aiResourceGroup, executionId, null);
-    }
-
-    /**
-     * <p>Get logs of specific execution</p>
-     *<p>Retrieve logs of an execution for getting insight into the execution results or failures.</p>
-     * <p><b>200</b> - The query was processed successfully and logs of the requested execution will be returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param executionId  (required)
-        Execution identifier
-     * @param authorization  (optional)
-        Authorization bearer token containing a JWT token.
-     * @param $top  (optional, default to 1000)
-        The max number of entries to return. Defaults to 1000. Limited to 5000 max.
-     * @param start  (optional)
-        The start time for the query as a RFC 3339 datetime format. Defaults to one hour ago. + in timezone need to be encoded to %2B.
-     * @param end  (optional)
-        The end time for the query as a RFC 3339 datetime format. Defaults to now. + in timezone need to be encoded to %2B.
-     * @param $order  (optional)
-        Determines the sort order. Supported values are asc or desc. Defaults to asc. Sort order:   * &#x60;asc&#x60; - Ascending, earliest in the order will appear at the top of the list   * &#x60;desc&#x60; - Descending, last in the order will appear at the top of the list 
-     * @return RTALogCommonResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public RTALogCommonResponse getLogs( @Nonnull final String executionId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        // verify the required parameter 'executionId' is set
-        if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling getLogs");
-        }
-        
-        // create path and map variables
-        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-        localVarPathParams.put("executionId", executionId);
-        final String localVarPath = UriComponentsBuilder.fromPath("/lm/executions/{executionId}/logs").buildAndExpand(localVarPathParams).toUriString();
-
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
-
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "start", start));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "end", end));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$order", $order));
-        
-
-        if (authorization != null)
-            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
-
-        final ParameterizedTypeReference<RTALogCommonResponse> localVarReturnType = new ParameterizedTypeReference<RTALogCommonResponse>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
-
-    /**
-     * <p>Get logs of specific execution</p>
-     * <p>Retrieve logs of an execution for getting insight into the execution results or failures.</p>
-     * <p><b>200</b> - The query was processed successfully and logs of the requested execution will be returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param executionId
-     *      Execution identifier
-     * @return RTALogCommonResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public RTALogCommonResponse getLogs( @Nonnull final String executionId) throws OpenApiRequestException {
-        return getLogs(executionId, null, null, null, null, null);
+    public AiExecutionResponseWithDetails executionGet( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId) throws OpenApiRequestException {
+        return executionGet(aiResourceGroup, executionId, null);
     }
     /**
      * <p>Update target status of an execution</p>
@@ -465,22 +384,22 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionModificationResponse modify( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId,  @Nonnull final AiExecutionModificationRequest aiExecutionModificationRequest) throws OpenApiRequestException {
+    public AiExecutionModificationResponse executionModify( @Nonnull final String aiResourceGroup,  @Nonnull final String executionId,  @Nonnull final AiExecutionModificationRequest aiExecutionModificationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiExecutionModificationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling modify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionModify");
         }
         
         // verify the required parameter 'executionId' is set
         if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling modify");
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling executionModify");
         }
         
         // verify the required parameter 'aiExecutionModificationRequest' is set
         if (aiExecutionModificationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionModificationRequest' when calling modify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionModificationRequest' when calling executionModify");
         }
         
         // create path and map variables
@@ -537,12 +456,12 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionList query( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String executionScheduleId,  @Nullable final String status,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $select) throws OpenApiRequestException {
+    public AiExecutionList executionQuery( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String executionScheduleId,  @Nullable final String status,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionQuery");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executions").build().toUriString();
@@ -588,7 +507,88 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return query(aiResourceGroup, null, null, null, null, null, null, null, null);
+    public AiExecutionList executionQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return executionQuery(aiResourceGroup, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * <p>Get logs of specific execution</p>
+     *<p>Retrieve logs of an execution for getting insight into the execution results or failures.</p>
+     * <p><b>200</b> - The query was processed successfully and logs of the requested execution will be returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
+     * <p><b>404</b> - The specified resource was not found
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param executionId  (required)
+        Execution identifier
+     * @param authorization  (optional)
+        Authorization bearer token containing a JWT token.
+     * @param $top  (optional, default to 1000)
+        The max number of entries to return. Defaults to 1000. Limited to 5000 max.
+     * @param start  (optional)
+        The start time for the query as a RFC 3339 datetime format. Defaults to one hour ago. + in timezone need to be encoded to %2B.
+     * @param end  (optional)
+        The end time for the query as a RFC 3339 datetime format. Defaults to now. + in timezone need to be encoded to %2B.
+     * @param $order  (optional)
+        Determines the sort order. Supported values are asc or desc. Defaults to asc. Sort order:   * &#x60;asc&#x60; - Ascending, earliest in the order will appear at the top of the list   * &#x60;desc&#x60; - Descending, last in the order will appear at the top of the list 
+     * @return RTALogCommonResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public RTALogCommonResponse kubesubmitV4ExecutionsGetLogs( @Nonnull final String executionId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        // verify the required parameter 'executionId' is set
+        if (executionId == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling kubesubmitV4ExecutionsGetLogs");
+        }
+        
+        // create path and map variables
+        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+        localVarPathParams.put("executionId", executionId);
+        final String localVarPath = UriComponentsBuilder.fromPath("/lm/executions/{executionId}/logs").buildAndExpand(localVarPathParams).toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "start", start));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "end", end));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$order", $order));
+        
+
+        if (authorization != null)
+            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<RTALogCommonResponse> localVarReturnType = new ParameterizedTypeReference<RTALogCommonResponse>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * <p>Get logs of specific execution</p>
+     * <p>Retrieve logs of an execution for getting insight into the execution results or failures.</p>
+     * <p><b>200</b> - The query was processed successfully and logs of the requested execution will be returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
+     * <p><b>404</b> - The specified resource was not found
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param executionId
+     *      Execution identifier
+     * @return RTALogCommonResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public RTALogCommonResponse kubesubmitV4ExecutionsGetLogs( @Nonnull final String executionId) throws OpenApiRequestException {
+        return kubesubmitV4ExecutionsGetLogs(executionId, null, null, null, null, null);
     }
 }

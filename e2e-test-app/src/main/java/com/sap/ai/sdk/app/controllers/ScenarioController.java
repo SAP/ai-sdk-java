@@ -23,7 +23,7 @@ public class ScenarioController {
    */
   @GetMapping("/scenarios")
   AiScenarioList getScenarios() {
-    return API.query("default");
+    return API.scenarioQuery("default");
   }
 
   /**
@@ -34,6 +34,6 @@ public class ScenarioController {
   @GetMapping("/models")
   @Nullable
   public AiModelList getModels() {
-    return API.get_0("foundation-models", "default");
+    return API.modelsGet("foundation-models", "default");
   }
 }

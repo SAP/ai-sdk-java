@@ -59,7 +59,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         """)));
 
     final AiConfigurationList configurationList =
-        new ConfigurationApi(getClient(destination)).query("default");
+        new ConfigurationApi(getClient(destination)).configurationQuery("default");
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
     assertThat(configurationList.getResources().size()).isEqualTo(1);
@@ -103,7 +103,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7")
                         .key("spam-data")));
     final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi(getClient(destination)).create("default", configurationBaseData);
+        new ConfigurationApi(getClient(destination)).configurationCreate("default", configurationBaseData);
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");

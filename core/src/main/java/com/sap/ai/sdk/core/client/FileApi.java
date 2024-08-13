@@ -74,12 +74,12 @@ public class FileApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse delete( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
+    public OpenApiResponse fileDelete( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'path' is set
         if (path == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'path' when calling delete");
+            throw new OpenApiRequestException("Missing the required parameter 'path' when calling fileDelete");
         }
         
         // create path and map variables
@@ -120,8 +120,8 @@ public class FileApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse delete( @Nonnull final String path) throws OpenApiRequestException {
-        return delete(path, null);
+    public OpenApiResponse fileDelete( @Nonnull final String path) throws OpenApiRequestException {
+        return fileDelete(path, null);
     }
 
     /**
@@ -138,12 +138,12 @@ public class FileApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public File download( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
+    public File fileDownload( @Nonnull final String path,  @Nullable final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'path' is set
         if (path == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'path' when calling download");
+            throw new OpenApiRequestException("Missing the required parameter 'path' when calling fileDownload");
         }
         
         // create path and map variables
@@ -183,8 +183,8 @@ public class FileApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public File download( @Nonnull final String path) throws OpenApiRequestException {
-        return download(path, null);
+    public File fileDownload( @Nonnull final String path) throws OpenApiRequestException {
+        return fileDownload(path, null);
     }
 
     /**
@@ -206,12 +206,12 @@ public class FileApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public DSetFileCreationResponse upload( @Nonnull final String path,  @Nullable final String aiResourceGroup,  @Nullable final Boolean overwrite,  @Nullable final String body) throws OpenApiRequestException {
+    public DSetFileCreationResponse fileUpload( @Nonnull final String path,  @Nullable final String aiResourceGroup,  @Nullable final Boolean overwrite,  @Nullable final String body) throws OpenApiRequestException {
         final Object localVarPostBody = body;
         
         // verify the required parameter 'path' is set
         if (path == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'path' when calling upload");
+            throw new OpenApiRequestException("Missing the required parameter 'path' when calling fileUpload");
         }
         
         // create path and map variables
@@ -255,7 +255,7 @@ public class FileApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public DSetFileCreationResponse upload( @Nonnull final String path) throws OpenApiRequestException {
-        return upload(path, null, null, null);
+    public DSetFileCreationResponse fileUpload( @Nonnull final String path) throws OpenApiRequestException {
+        return fileUpload(path, null, null, null);
     }
 }

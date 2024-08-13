@@ -49,7 +49,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         """)));
 
     final AiScenarioList scenarioList =
-            new ScenarioApi(getClient(destination)).query("default");
+            new ScenarioApi(getClient(destination)).scenarioQuery("default");
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
     assertThat(scenarioList.getResources().size()).isEqualTo(1);

@@ -73,7 +73,7 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGetResponse get( @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourceGetResponse kubesubmitV4ResourcesGet( @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resources/nodes").build().toUriString();
@@ -108,8 +108,8 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGetResponse get() throws OpenApiRequestException {
-        return get(null);
+    public BckndResourceGetResponse kubesubmitV4ResourcesGet() throws OpenApiRequestException {
+        return kubesubmitV4ResourcesGet(null);
     }
 
     /**
@@ -126,12 +126,12 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourcePatchResponse patch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourcePatchResponse kubesubmitV4ResourcesPatch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndResourcePatchBody;
         
         // verify the required parameter 'bckndResourcePatchBody' is set
         if (bckndResourcePatchBody == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndResourcePatchBody' when calling patch");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndResourcePatchBody' when calling kubesubmitV4ResourcesPatch");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resources/nodes").build().toUriString();
@@ -170,7 +170,7 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourcePatchResponse patch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody) throws OpenApiRequestException {
-        return patch(bckndResourcePatchBody, null);
+    public BckndResourcePatchResponse kubesubmitV4ResourcesPatch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody) throws OpenApiRequestException {
+        return kubesubmitV4ResourcesPatch(bckndResourcePatchBody, null);
     }
 }

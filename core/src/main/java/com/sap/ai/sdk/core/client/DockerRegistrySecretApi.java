@@ -79,12 +79,12 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretCreationResponse create( @Nonnull final KubesubmitV4DockerRegistrySecretsCreateRequest kubesubmitV4DockerRegistrySecretsCreateRequest,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BcknddockerRegistrySecretCreationResponse kubesubmitV4DockerRegistrySecretsCreate( @Nonnull final KubesubmitV4DockerRegistrySecretsCreateRequest kubesubmitV4DockerRegistrySecretsCreateRequest,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = kubesubmitV4DockerRegistrySecretsCreateRequest;
         
         // verify the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' is set
         if (kubesubmitV4DockerRegistrySecretsCreateRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' when calling create");
+            throw new OpenApiRequestException("Missing the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' when calling kubesubmitV4DockerRegistrySecretsCreate");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets").build().toUriString();
@@ -123,8 +123,8 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretCreationResponse create( @Nonnull final KubesubmitV4DockerRegistrySecretsCreateRequest kubesubmitV4DockerRegistrySecretsCreateRequest) throws OpenApiRequestException {
-        return create(kubesubmitV4DockerRegistrySecretsCreateRequest, null);
+    public BcknddockerRegistrySecretCreationResponse kubesubmitV4DockerRegistrySecretsCreate( @Nonnull final KubesubmitV4DockerRegistrySecretsCreateRequest kubesubmitV4DockerRegistrySecretsCreateRequest) throws OpenApiRequestException {
+        return kubesubmitV4DockerRegistrySecretsCreate(kubesubmitV4DockerRegistrySecretsCreateRequest, null);
     }
 
     /**
@@ -142,12 +142,12 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretDeletionResponse delete( @Nonnull final String dockerRegistryName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BcknddockerRegistrySecretDeletionResponse kubesubmitV4DockerRegistrySecretsDelete( @Nonnull final String dockerRegistryName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'dockerRegistryName' is set
         if (dockerRegistryName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'dockerRegistryName' when calling delete");
+            throw new OpenApiRequestException("Missing the required parameter 'dockerRegistryName' when calling kubesubmitV4DockerRegistrySecretsDelete");
         }
         
         // create path and map variables
@@ -188,8 +188,8 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretDeletionResponse delete( @Nonnull final String dockerRegistryName) throws OpenApiRequestException {
-        return delete(dockerRegistryName, null);
+    public BcknddockerRegistrySecretDeletionResponse kubesubmitV4DockerRegistrySecretsDelete( @Nonnull final String dockerRegistryName) throws OpenApiRequestException {
+        return kubesubmitV4DockerRegistrySecretsDelete(dockerRegistryName, null);
     }
 
     /**
@@ -207,12 +207,12 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretStatus get( @Nonnull final String dockerRegistryName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BcknddockerRegistrySecretStatus kubesubmitV4DockerRegistrySecretsGet( @Nonnull final String dockerRegistryName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'dockerRegistryName' is set
         if (dockerRegistryName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'dockerRegistryName' when calling get");
+            throw new OpenApiRequestException("Missing the required parameter 'dockerRegistryName' when calling kubesubmitV4DockerRegistrySecretsGet");
         }
         
         // create path and map variables
@@ -253,8 +253,8 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretStatus get( @Nonnull final String dockerRegistryName) throws OpenApiRequestException {
-        return get(dockerRegistryName, null);
+    public BcknddockerRegistrySecretStatus kubesubmitV4DockerRegistrySecretsGet( @Nonnull final String dockerRegistryName) throws OpenApiRequestException {
+        return kubesubmitV4DockerRegistrySecretsGet(dockerRegistryName, null);
     }
 
     /**
@@ -274,17 +274,17 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretModificationResponse patch( @Nonnull final String dockerRegistryName,  @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequest bcknddockerRegistrySecretWithSensitiveDataRequest,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BcknddockerRegistrySecretModificationResponse kubesubmitV4DockerRegistrySecretsPatch( @Nonnull final String dockerRegistryName,  @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequest bcknddockerRegistrySecretWithSensitiveDataRequest,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bcknddockerRegistrySecretWithSensitiveDataRequest;
         
         // verify the required parameter 'dockerRegistryName' is set
         if (dockerRegistryName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'dockerRegistryName' when calling patch");
+            throw new OpenApiRequestException("Missing the required parameter 'dockerRegistryName' when calling kubesubmitV4DockerRegistrySecretsPatch");
         }
         
         // verify the required parameter 'bcknddockerRegistrySecretWithSensitiveDataRequest' is set
         if (bcknddockerRegistrySecretWithSensitiveDataRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bcknddockerRegistrySecretWithSensitiveDataRequest' when calling patch");
+            throw new OpenApiRequestException("Missing the required parameter 'bcknddockerRegistrySecretWithSensitiveDataRequest' when calling kubesubmitV4DockerRegistrySecretsPatch");
         }
         
         // create path and map variables
@@ -329,8 +329,8 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretModificationResponse patch( @Nonnull final String dockerRegistryName,  @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequest bcknddockerRegistrySecretWithSensitiveDataRequest) throws OpenApiRequestException {
-        return patch(dockerRegistryName, bcknddockerRegistrySecretWithSensitiveDataRequest, null);
+    public BcknddockerRegistrySecretModificationResponse kubesubmitV4DockerRegistrySecretsPatch( @Nonnull final String dockerRegistryName,  @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequest bcknddockerRegistrySecretWithSensitiveDataRequest) throws OpenApiRequestException {
+        return kubesubmitV4DockerRegistrySecretsPatch(dockerRegistryName, bcknddockerRegistrySecretWithSensitiveDataRequest, null);
     }
 
     /**
@@ -351,7 +351,7 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretStatusResponse query( @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BcknddockerRegistrySecretStatusResponse kubesubmitV4DockerRegistrySecretsQuery( @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets").build().toUriString();
@@ -391,7 +391,7 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BcknddockerRegistrySecretStatusResponse query() throws OpenApiRequestException {
-        return query(null, null, null, null);
+    public BcknddockerRegistrySecretStatusResponse kubesubmitV4DockerRegistrySecretsQuery() throws OpenApiRequestException {
+        return kubesubmitV4DockerRegistrySecretsQuery(null, null, null, null);
     }
 }
