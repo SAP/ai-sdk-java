@@ -260,6 +260,133 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
+     * <p>Return all applications</p>
+     *<p>Return all Argo CD application data objects. </p>
+     * <p><b>200</b> - All applications have been found and returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param authorization  (optional)
+        Authorization bearer token containing a JWT token.
+     * @param $top  (optional)
+        Number of results to display
+     * @param $skip  (optional)
+        Number of results to be skipped from the ordered list of results
+     * @param $count  (optional)
+        When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
+     * @return BckndAllArgoCDApplicationData
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public BckndAllArgoCDApplicationData applicationsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
+        
+
+        if (authorization != null)
+            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<BckndAllArgoCDApplicationData> localVarReturnType = new ParameterizedTypeReference<BckndAllArgoCDApplicationData>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * <p>Return all applications</p>
+     * <p>Return all Argo CD application data objects. </p>
+     * <p><b>200</b> - All applications have been found and returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @return BckndAllArgoCDApplicationData
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public BckndAllArgoCDApplicationData applicationsGetAll() throws OpenApiRequestException {
+        return applicationsGetAll(null, null, null, null);
+    }
+
+    /**
+     * <p>Returns the ArgoCD application status</p>
+     *<p>Returns the ArgoCD application health and sync status. </p>
+     * <p><b>200</b> - The application status has been found and returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>404</b> - The specified resource was not found
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param applicationName  (required)
+        Name of the ArgoCD application
+     * @param authorization  (optional)
+        Authorization bearer token containing a JWT token.
+     * @return BckndArgoCDApplicationStatus
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public BckndArgoCDApplicationStatus applicationsGetStatus( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        // verify the required parameter 'applicationName' is set
+        if (applicationName == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling applicationsGetStatus");
+        }
+        
+        // create path and map variables
+        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+        localVarPathParams.put("applicationName", applicationName);
+        final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications/{applicationName}/status").buildAndExpand(localVarPathParams).toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+        if (authorization != null)
+            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<BckndArgoCDApplicationStatus> localVarReturnType = new ParameterizedTypeReference<BckndArgoCDApplicationStatus>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * <p>Returns the ArgoCD application status</p>
+     * <p>Returns the ArgoCD application health and sync status. </p>
+     * <p><b>200</b> - The application status has been found and returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>404</b> - The specified resource was not found
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param applicationName
+     *      Name of the ArgoCD application
+     * @return BckndArgoCDApplicationStatus
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public BckndArgoCDApplicationStatus applicationsGetStatus( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return applicationsGetStatus(applicationName, null);
+    }
+
+    /**
      * <p>Makes ArgoDC refresh the specified application</p>
      *<p>Schedules a refresh of the specified application that will be picked up by ArgoCD asynchronously </p>
      * <p><b>202</b> - A refresh of the application has been scheduled
@@ -398,132 +525,5 @@ public class ApplicationApi extends AbstractOpenApiService {
     @Nonnull
     public BckndArgoCDApplicationModificationResponse applicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData) throws OpenApiRequestException {
         return applicationsUpdate(applicationName, bckndArgoCDApplicationBaseData, null);
-    }
-
-    /**
-     * <p>Return all applications</p>
-     *<p>Return all Argo CD application data objects. </p>
-     * <p><b>200</b> - All applications have been found and returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param authorization  (optional)
-        Authorization bearer token containing a JWT token.
-     * @param $top  (optional)
-        Number of results to display
-     * @param $skip  (optional)
-        Number of results to be skipped from the ordered list of results
-     * @param $count  (optional)
-        When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
-     * @return BckndAllArgoCDApplicationData
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public BckndAllArgoCDApplicationData kubesubmitV4ApplicationsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
-
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
-
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-        
-
-        if (authorization != null)
-            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
-
-        final ParameterizedTypeReference<BckndAllArgoCDApplicationData> localVarReturnType = new ParameterizedTypeReference<BckndAllArgoCDApplicationData>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
-
-    /**
-     * <p>Return all applications</p>
-     * <p>Return all Argo CD application data objects. </p>
-     * <p><b>200</b> - All applications have been found and returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndAllArgoCDApplicationData
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public BckndAllArgoCDApplicationData kubesubmitV4ApplicationsGetAll() throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsGetAll(null, null, null, null);
-    }
-
-    /**
-     * <p>Returns the ArgoCD application status</p>
-     *<p>Returns the ArgoCD application health and sync status. </p>
-     * <p><b>200</b> - The application status has been found and returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName  (required)
-        Name of the ArgoCD application
-     * @param authorization  (optional)
-        Authorization bearer token containing a JWT token.
-     * @return BckndArgoCDApplicationStatus
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public BckndArgoCDApplicationStatus kubesubmitV4ApplicationsGetStatus( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        // verify the required parameter 'applicationName' is set
-        if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsGetStatus");
-        }
-        
-        // create path and map variables
-        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-        localVarPathParams.put("applicationName", applicationName);
-        final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications/{applicationName}/status").buildAndExpand(localVarPathParams).toUriString();
-
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
-
-        if (authorization != null)
-            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
-
-        final ParameterizedTypeReference<BckndArgoCDApplicationStatus> localVarReturnType = new ParameterizedTypeReference<BckndArgoCDApplicationStatus>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
-
-    /**
-     * <p>Returns the ArgoCD application status</p>
-     * <p>Returns the ArgoCD application health and sync status. </p>
-     * <p><b>200</b> - The application status has been found and returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName
-     *      Name of the ArgoCD application
-     * @return BckndArgoCDApplicationStatus
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public BckndArgoCDApplicationStatus kubesubmitV4ApplicationsGetStatus( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsGetStatus(applicationName, null);
     }
 }
