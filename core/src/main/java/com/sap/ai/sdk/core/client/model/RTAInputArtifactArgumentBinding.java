@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * Required for execution
  */
+
 // CHECKSTYLE:OFF
 public class RTAInputArtifactArgumentBinding 
 // CHECKSTYLE:ON
@@ -56,85 +57,85 @@ public class RTAInputArtifactArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the name of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
-    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
-    */
+   * Set the name of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
+   * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
+   */
    @Nonnull public RTAInputArtifactArgumentBinding name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Get name
-    * @return name  The name of this {@link RTAInputArtifactArgumentBinding} instance.
-    */
+   * Get name
+   * @return name  The name of this {@link RTAInputArtifactArgumentBinding} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link RTAInputArtifactArgumentBinding} instance.
-   *
-   * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
-   */
+  * Set the name of this {@link RTAInputArtifactArgumentBinding} instance.
+  *
+  * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the url of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
-    */
+   * Set the url of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
+   */
    @Nonnull public RTAInputArtifactArgumentBinding url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-    * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return url  The url of this {@link RTAInputArtifactArgumentBinding} instance.
-    */
+   * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return url  The url of this {@link RTAInputArtifactArgumentBinding} instance.
+  **/
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-   * Set the url of this {@link RTAInputArtifactArgumentBinding} instance.
-   *
-   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-   */
+  * Set the url of this {@link RTAInputArtifactArgumentBinding} instance.
+  *
+  * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+  */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
 
    /**
-    * Set the signature of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
-    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
-    */
+   * Set the signature of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
+   * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
+   */
    @Nonnull public RTAInputArtifactArgumentBinding signature(@Nonnull final String signature) {
     this.signature = signature;
     return this;
   }
 
    /**
-    * Get signature
-    * @return signature  The signature of this {@link RTAInputArtifactArgumentBinding} instance.
-    */
+   * Get signature
+   * @return signature  The signature of this {@link RTAInputArtifactArgumentBinding} instance.
+  **/
   @Nonnull public String getSignature() {
     return signature;
   }
 
   /**
-   * Set the signature of this {@link RTAInputArtifactArgumentBinding} instance.
-   *
-   * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
-   */
+  * Set the signature of this {@link RTAInputArtifactArgumentBinding} instance.
+  *
+  * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
+  */
   public void setSignature( @Nonnull final String signature) {
     this.signature = signature;
   }
@@ -218,7 +219,6 @@ public class RTAInputArtifactArgumentBinding
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

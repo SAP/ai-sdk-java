@@ -41,6 +41,7 @@ import javax.annotation.Nullable;
 /**
  * MetaExtensionsDatasetLimits
  */
+
 // CHECKSTYLE:OFF
 public class MetaExtensionsDatasetLimits 
 // CHECKSTYLE:ON
@@ -59,77 +60,77 @@ public class MetaExtensionsDatasetLimits
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
-    *
-    * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
-    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
-    */
+   * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
+   *
+   * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
+   * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
+   */
    @Nonnull public MetaExtensionsDatasetLimits maxUploadFileSize(@Nonnull final Integer maxUploadFileSize) {
     this.maxUploadFileSize = maxUploadFileSize;
     return this;
   }
 
    /**
-    * Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
-    * @return maxUploadFileSize  The maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance.
-    */
+   * Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
+   * @return maxUploadFileSize  The maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance.
+  **/
   @Nonnull public Integer getMaxUploadFileSize() {
     return maxUploadFileSize;
   }
 
   /**
-   * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance.
-   *
-   * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
-   */
+  * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance.
+  *
+  * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
+  */
   public void setMaxUploadFileSize( @Nonnull final Integer maxUploadFileSize) {
     this.maxUploadFileSize = maxUploadFileSize;
   }
 
    /**
-    * Set the maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
-    *
-    * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
-    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
-    */
+   * Set the maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
+   *
+   * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
+   * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
+   */
    @Nonnull public MetaExtensionsDatasetLimits maxFilesPerDataset(@Nonnull final Integer maxFilesPerDataset) {
     this.maxFilesPerDataset = maxFilesPerDataset;
     return this;
   }
 
    /**
-    * Max number of files per dataset. &lt;0 means unlimited.
-    * @return maxFilesPerDataset  The maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance.
-    */
+   * Max number of files per dataset. &lt;0 means unlimited.
+   * @return maxFilesPerDataset  The maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance.
+  **/
   @Nonnull public Integer getMaxFilesPerDataset() {
     return maxFilesPerDataset;
   }
 
   /**
-   * Set the maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance.
-   *
-   * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
-   */
+  * Set the maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance.
+  *
+  * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
+  */
   public void setMaxFilesPerDataset( @Nonnull final Integer maxFilesPerDataset) {
     this.maxFilesPerDataset = maxFilesPerDataset;
   }
 
    /**
-    * Set the acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
-    *
-    * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
-    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
-    */
+   * Set the acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
+   *
+   * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
+   * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
+   */
    @Nonnull public MetaExtensionsDatasetLimits acceptedContentTypes(@Nonnull final List<String> acceptedContentTypes) {
     this.acceptedContentTypes = acceptedContentTypes;
     return this;
   }
   /**
-   * Add one acceptedContentTypes instance to this {@link MetaExtensionsDatasetLimits}.
-   * @param acceptedContentTypesItem The acceptedContentTypes that should be added
-   * @return The same instance of type {@link MetaExtensionsDatasetLimits}
-   */
-  @Nonnull public MetaExtensionsDatasetLimits addAcceptedContentTypesItem( @Nonnull final String acceptedContentTypesItem) {
+  * Add one acceptedContentTypes instance to this {@link MetaExtensionsDatasetLimits}.
+  * @param acceptedContentTypesItem The acceptedContentTypes that should be added
+  * @return The same instance of type {@link MetaExtensionsDatasetLimits}
+  */
+  @Nonnull public MetaExtensionsDatasetLimits addacceptedContentTypesItem( @Nonnull final String acceptedContentTypesItem) {
     if (this.acceptedContentTypes == null) {
       this.acceptedContentTypes = new ArrayList<>();
     }
@@ -138,18 +139,18 @@ public class MetaExtensionsDatasetLimits
   }
 
    /**
-    * Get acceptedContentTypes
-    * @return acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance.
-    */
+   * Get acceptedContentTypes
+   * @return acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance.
+  **/
   @Nonnull public List<String> getAcceptedContentTypes() {
     return acceptedContentTypes;
   }
 
   /**
-   * Set the acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance.
-   *
-   * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
-   */
+  * Set the acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance.
+  *
+  * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
+  */
   public void setAcceptedContentTypes( @Nonnull final List<String> acceptedContentTypes) {
     this.acceptedContentTypes = acceptedContentTypes;
   }
@@ -233,7 +234,6 @@ public class MetaExtensionsDatasetLimits
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

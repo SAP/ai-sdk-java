@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * Request object for changing the target status of multiple deployments
  */
+
 // CHECKSTYLE:OFF
 public class AiDeploymentBulkModificationRequest 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class AiDeploymentBulkModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the deployments of this {@link AiDeploymentBulkModificationRequest} instance and return the same instance.
-    *
-    * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
-    * @return The same instance of this {@link AiDeploymentBulkModificationRequest} class
-    */
+   * Set the deployments of this {@link AiDeploymentBulkModificationRequest} instance and return the same instance.
+   *
+   * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
+   * @return The same instance of this {@link AiDeploymentBulkModificationRequest} class
+   */
    @Nonnull public AiDeploymentBulkModificationRequest deployments(@Nonnull final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
     this.deployments = deployments;
     return this;
   }
   /**
-   * Add one deployments instance to this {@link AiDeploymentBulkModificationRequest}.
-   * @param deploymentsItem The deployments that should be added
-   * @return The same instance of type {@link AiDeploymentBulkModificationRequest}
-   */
-  @Nonnull public AiDeploymentBulkModificationRequest addDeploymentsItem( @Nonnull final AiDeploymentModificationRequestWithIdentifier deploymentsItem) {
+  * Add one deployments instance to this {@link AiDeploymentBulkModificationRequest}.
+  * @param deploymentsItem The deployments that should be added
+  * @return The same instance of type {@link AiDeploymentBulkModificationRequest}
+  */
+  @Nonnull public AiDeploymentBulkModificationRequest adddeploymentsItem( @Nonnull final AiDeploymentModificationRequestWithIdentifier deploymentsItem) {
     if (this.deployments == null) {
       this.deployments = new LinkedHashSet<>();
     }
@@ -77,18 +78,18 @@ public class AiDeploymentBulkModificationRequest
   }
 
    /**
-    * Get deployments
-    * @return deployments  The deployments of this {@link AiDeploymentBulkModificationRequest} instance.
-    */
+   * Get deployments
+   * @return deployments  The deployments of this {@link AiDeploymentBulkModificationRequest} instance.
+  **/
   @Nonnull public Set<AiDeploymentModificationRequestWithIdentifier> getDeployments() {
     return deployments;
   }
 
   /**
-   * Set the deployments of this {@link AiDeploymentBulkModificationRequest} instance.
-   *
-   * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
-   */
+  * Set the deployments of this {@link AiDeploymentBulkModificationRequest} instance.
+  *
+  * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
+  */
   public void setDeployments( @Nonnull final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
     this.deployments = deployments;
   }
@@ -168,7 +169,6 @@ public class AiDeploymentBulkModificationRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

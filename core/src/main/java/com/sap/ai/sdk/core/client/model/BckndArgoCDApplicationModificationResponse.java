@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndArgoCDApplicationModificationResponse
  */
+
 // CHECKSTYLE:OFF
 public class BckndArgoCDApplicationModificationResponse 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class BckndArgoCDApplicationModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the id of this {@link BckndArgoCDApplicationModificationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link BckndArgoCDApplicationModificationResponse} class
-    */
+   * Set the id of this {@link BckndArgoCDApplicationModificationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link BckndArgoCDApplicationModificationResponse} class
+   */
    @Nonnull public BckndArgoCDApplicationModificationResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-    * Generic ID
-    * @return id  The id of this {@link BckndArgoCDApplicationModificationResponse} instance.
-    */
+   * Generic ID
+   * @return id  The id of this {@link BckndArgoCDApplicationModificationResponse} instance.
+  **/
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-   * Set the id of this {@link BckndArgoCDApplicationModificationResponse} instance.
-   *
-   * @param id  Generic ID
-   */
+  * Set the id of this {@link BckndArgoCDApplicationModificationResponse} instance.
+  *
+  * @param id  Generic ID
+  */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-    * Set the message of this {@link BckndArgoCDApplicationModificationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BckndArgoCDApplicationModificationResponse} class
-    */
+   * Set the message of this {@link BckndArgoCDApplicationModificationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BckndArgoCDApplicationModificationResponse} class
+   */
    @Nonnull public BckndArgoCDApplicationModificationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Message
-    * @return message  The message of this {@link BckndArgoCDApplicationModificationResponse} instance.
-    */
+   * Message
+   * @return message  The message of this {@link BckndArgoCDApplicationModificationResponse} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link BckndArgoCDApplicationModificationResponse} instance.
-   *
-   * @param message  Message
-   */
+  * Set the message of this {@link BckndArgoCDApplicationModificationResponse} instance.
+  *
+  * @param message  Message
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -185,7 +186,6 @@ public class BckndArgoCDApplicationModificationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

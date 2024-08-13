@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGroup
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourceGroup 
 // CHECKSTYLE:ON
@@ -132,133 +133,133 @@ public class BckndResourceGroup
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the resourceGroupId of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param resourceGroupId  resource group id
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the resourceGroupId of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param resourceGroupId  resource group id
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup resourceGroupId(@Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
 
    /**
-    * resource group id
-    * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroup} instance.
-    */
+   * resource group id
+   * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public String getResourceGroupId() {
     return resourceGroupId;
   }
 
   /**
-   * Set the resourceGroupId of this {@link BckndResourceGroup} instance.
-   *
-   * @param resourceGroupId  resource group id
-   */
+  * Set the resourceGroupId of this {@link BckndResourceGroup} instance.
+  *
+  * @param resourceGroupId  resource group id
+  */
   public void setResourceGroupId( @Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
    /**
-    * Set the tenantId of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param tenantId  tenant id
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the tenantId of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param tenantId  tenant id
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup tenantId(@Nonnull final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
    /**
-    * tenant id
-    * @return tenantId  The tenantId of this {@link BckndResourceGroup} instance.
-    */
+   * tenant id
+   * @return tenantId  The tenantId of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public String getTenantId() {
     return tenantId;
   }
 
   /**
-   * Set the tenantId of this {@link BckndResourceGroup} instance.
-   *
-   * @param tenantId  tenant id
-   */
+  * Set the tenantId of this {@link BckndResourceGroup} instance.
+  *
+  * @param tenantId  tenant id
+  */
   public void setTenantId( @Nonnull final String tenantId) {
     this.tenantId = tenantId;
   }
 
    /**
-    * Set the zoneId of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param zoneId  zone id
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the zoneId of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param zoneId  zone id
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup zoneId(@Nonnull final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
 
    /**
-    * zone id
-    * @return zoneId  The zoneId of this {@link BckndResourceGroup} instance.
-    */
+   * zone id
+   * @return zoneId  The zoneId of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public String getZoneId() {
     return zoneId;
   }
 
   /**
-   * Set the zoneId of this {@link BckndResourceGroup} instance.
-   *
-   * @param zoneId  zone id
-   */
+  * Set the zoneId of this {@link BckndResourceGroup} instance.
+  *
+  * @param zoneId  zone id
+  */
   public void setZoneId( @Nonnull final String zoneId) {
     this.zoneId = zoneId;
   }
 
    /**
-    * Set the createdAt of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource group creation
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the createdAt of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource group creation
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup createdAt(@Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-    * Timestamp of resource group creation
-    * @return createdAt  The createdAt of this {@link BckndResourceGroup} instance.
-    */
+   * Timestamp of resource group creation
+   * @return createdAt  The createdAt of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-   * Set the createdAt of this {@link BckndResourceGroup} instance.
-   *
-   * @param createdAt  Timestamp of resource group creation
-   */
+  * Set the createdAt of this {@link BckndResourceGroup} instance.
+  *
+  * @param createdAt  Timestamp of resource group creation
+  */
   public void setCreatedAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
    /**
-    * Set the labels of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the labels of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link BckndResourceGroup}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link BckndResourceGroup}
-   */
-  @Nonnull public BckndResourceGroup addLabelsItem( @Nonnull final BckndResourceGroupLabel labelsItem) {
+  * Add one labels instance to this {@link BckndResourceGroup}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link BckndResourceGroup}
+  */
+  @Nonnull public BckndResourceGroup addlabelsItem( @Nonnull final BckndResourceGroupLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -267,74 +268,74 @@ public class BckndResourceGroup
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link BckndResourceGroup} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public List<BckndResourceGroupLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link BckndResourceGroup} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link BckndResourceGroup} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 
    /**
-    * Set the status of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param status  aggregated status of the onboarding process
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the status of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param status  aggregated status of the onboarding process
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup status(@Nonnull final StatusEnum status) {
     this.status = status;
     return this;
   }
 
    /**
-    * aggregated status of the onboarding process
-    * @return status  The status of this {@link BckndResourceGroup} instance.
-    */
+   * aggregated status of the onboarding process
+   * @return status  The status of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
 
   /**
-   * Set the status of this {@link BckndResourceGroup} instance.
-   *
-   * @param status  aggregated status of the onboarding process
-   */
+  * Set the status of this {@link BckndResourceGroup} instance.
+  *
+  * @param status  aggregated status of the onboarding process
+  */
   public void setStatus( @Nonnull final StatusEnum status) {
     this.status = status;
   }
 
    /**
-    * Set the statusMessage of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param statusMessage  status message
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
+   * Set the statusMessage of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param statusMessage  status message
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
    @Nonnull public BckndResourceGroup statusMessage(@Nonnull final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
    /**
-    * status message
-    * @return statusMessage  The statusMessage of this {@link BckndResourceGroup} instance.
-    */
+   * status message
+   * @return statusMessage  The statusMessage of this {@link BckndResourceGroup} instance.
+  **/
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
 
   /**
-   * Set the statusMessage of this {@link BckndResourceGroup} instance.
-   *
-   * @param statusMessage  status message
-   */
+  * Set the statusMessage of this {@link BckndResourceGroup} instance.
+  *
+  * @param statusMessage  status message
+  */
   public void setStatusMessage( @Nonnull final String statusMessage) {
     this.statusMessage = statusMessage;
   }
@@ -426,7 +427,6 @@ public class BckndResourceGroup
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

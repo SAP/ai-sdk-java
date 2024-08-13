@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * MetaCapabilities
  */
+
 // CHECKSTYLE:OFF
 public class MetaCapabilities 
 // CHECKSTYLE:ON
@@ -64,141 +65,141 @@ public class MetaCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the runtimeIdentifier of this {@link MetaCapabilities} instance and return the same instance.
-    *
-    * @param runtimeIdentifier  The name of the runtime
-    * @return The same instance of this {@link MetaCapabilities} class
-    */
+   * Set the runtimeIdentifier of this {@link MetaCapabilities} instance and return the same instance.
+   *
+   * @param runtimeIdentifier  The name of the runtime
+   * @return The same instance of this {@link MetaCapabilities} class
+   */
    @Nonnull public MetaCapabilities runtimeIdentifier(@Nonnull final String runtimeIdentifier) {
     this.runtimeIdentifier = runtimeIdentifier;
     return this;
   }
 
    /**
-    * The name of the runtime
-    * @return runtimeIdentifier  The runtimeIdentifier of this {@link MetaCapabilities} instance.
-    */
+   * The name of the runtime
+   * @return runtimeIdentifier  The runtimeIdentifier of this {@link MetaCapabilities} instance.
+  **/
   @Nonnull public String getRuntimeIdentifier() {
     return runtimeIdentifier;
   }
 
   /**
-   * Set the runtimeIdentifier of this {@link MetaCapabilities} instance.
-   *
-   * @param runtimeIdentifier  The name of the runtime
-   */
+  * Set the runtimeIdentifier of this {@link MetaCapabilities} instance.
+  *
+  * @param runtimeIdentifier  The name of the runtime
+  */
   public void setRuntimeIdentifier( @Nonnull final String runtimeIdentifier) {
     this.runtimeIdentifier = runtimeIdentifier;
   }
 
    /**
-    * Set the runtimeApiVersion of this {@link MetaCapabilities} instance and return the same instance.
-    *
-    * @param runtimeApiVersion  The runtimeApiVersion of this {@link MetaCapabilities}
-    * @return The same instance of this {@link MetaCapabilities} class
-    */
+   * Set the runtimeApiVersion of this {@link MetaCapabilities} instance and return the same instance.
+   *
+   * @param runtimeApiVersion  The runtimeApiVersion of this {@link MetaCapabilities}
+   * @return The same instance of this {@link MetaCapabilities} class
+   */
    @Nonnull public MetaCapabilities runtimeApiVersion(@Nonnull final String runtimeApiVersion) {
     this.runtimeApiVersion = runtimeApiVersion;
     return this;
   }
 
    /**
-    * Get runtimeApiVersion
-    * @return runtimeApiVersion  The runtimeApiVersion of this {@link MetaCapabilities} instance.
-    */
+   * Get runtimeApiVersion
+   * @return runtimeApiVersion  The runtimeApiVersion of this {@link MetaCapabilities} instance.
+  **/
   @Nonnull public String getRuntimeApiVersion() {
     return runtimeApiVersion;
   }
 
   /**
-   * Set the runtimeApiVersion of this {@link MetaCapabilities} instance.
-   *
-   * @param runtimeApiVersion  The runtimeApiVersion of this {@link MetaCapabilities}
-   */
+  * Set the runtimeApiVersion of this {@link MetaCapabilities} instance.
+  *
+  * @param runtimeApiVersion  The runtimeApiVersion of this {@link MetaCapabilities}
+  */
   public void setRuntimeApiVersion( @Nonnull final String runtimeApiVersion) {
     this.runtimeApiVersion = runtimeApiVersion;
   }
 
    /**
-    * Set the description of this {@link MetaCapabilities} instance and return the same instance.
-    *
-    * @param description  The description of this {@link MetaCapabilities}
-    * @return The same instance of this {@link MetaCapabilities} class
-    */
+   * Set the description of this {@link MetaCapabilities} instance and return the same instance.
+   *
+   * @param description  The description of this {@link MetaCapabilities}
+   * @return The same instance of this {@link MetaCapabilities} class
+   */
    @Nonnull public MetaCapabilities description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Get description
-    * @return description  The description of this {@link MetaCapabilities} instance.
-    */
+   * Get description
+   * @return description  The description of this {@link MetaCapabilities} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link MetaCapabilities} instance.
-   *
-   * @param description  The description of this {@link MetaCapabilities}
-   */
+  * Set the description of this {@link MetaCapabilities} instance.
+  *
+  * @param description  The description of this {@link MetaCapabilities}
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the aiApi of this {@link MetaCapabilities} instance and return the same instance.
-    *
-    * @param aiApi  The aiApi of this {@link MetaCapabilities}
-    * @return The same instance of this {@link MetaCapabilities} class
-    */
+   * Set the aiApi of this {@link MetaCapabilities} instance and return the same instance.
+   *
+   * @param aiApi  The aiApi of this {@link MetaCapabilities}
+   * @return The same instance of this {@link MetaCapabilities} class
+   */
    @Nonnull public MetaCapabilities aiApi(@Nonnull final MetaAiApi aiApi) {
     this.aiApi = aiApi;
     return this;
   }
 
    /**
-    * Get aiApi
-    * @return aiApi  The aiApi of this {@link MetaCapabilities} instance.
-    */
+   * Get aiApi
+   * @return aiApi  The aiApi of this {@link MetaCapabilities} instance.
+  **/
   @Nonnull public MetaAiApi getAiApi() {
     return aiApi;
   }
 
   /**
-   * Set the aiApi of this {@link MetaCapabilities} instance.
-   *
-   * @param aiApi  The aiApi of this {@link MetaCapabilities}
-   */
+  * Set the aiApi of this {@link MetaCapabilities} instance.
+  *
+  * @param aiApi  The aiApi of this {@link MetaCapabilities}
+  */
   public void setAiApi( @Nonnull final MetaAiApi aiApi) {
     this.aiApi = aiApi;
   }
 
    /**
-    * Set the extensions of this {@link MetaCapabilities} instance and return the same instance.
-    *
-    * @param extensions  The extensions of this {@link MetaCapabilities}
-    * @return The same instance of this {@link MetaCapabilities} class
-    */
+   * Set the extensions of this {@link MetaCapabilities} instance and return the same instance.
+   *
+   * @param extensions  The extensions of this {@link MetaCapabilities}
+   * @return The same instance of this {@link MetaCapabilities} class
+   */
    @Nonnull public MetaCapabilities extensions(@Nonnull final MetaExtensions extensions) {
     this.extensions = extensions;
     return this;
   }
 
    /**
-    * Get extensions
-    * @return extensions  The extensions of this {@link MetaCapabilities} instance.
-    */
+   * Get extensions
+   * @return extensions  The extensions of this {@link MetaCapabilities} instance.
+  **/
   @Nonnull public MetaExtensions getExtensions() {
     return extensions;
   }
 
   /**
-   * Set the extensions of this {@link MetaCapabilities} instance.
-   *
-   * @param extensions  The extensions of this {@link MetaCapabilities}
-   */
+  * Set the extensions of this {@link MetaCapabilities} instance.
+  *
+  * @param extensions  The extensions of this {@link MetaCapabilities}
+  */
   public void setExtensions( @Nonnull final MetaExtensions extensions) {
     this.extensions = extensions;
   }
@@ -286,7 +287,6 @@ public class MetaCapabilities
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -36,6 +36,7 @@ import javax.annotation.Nullable;
 /**
  * MaskingEntitiesInner
  */
+
 // CHECKSTYLE:OFF
 public class MaskingEntitiesInner 
 // CHECKSTYLE:ON
@@ -117,7 +118,6 @@ public class MaskingEntitiesInner
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

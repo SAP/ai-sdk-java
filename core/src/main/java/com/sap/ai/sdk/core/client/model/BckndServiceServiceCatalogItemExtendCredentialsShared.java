@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceServiceCatalogItemExtendCredentialsShared
  */
+
 // CHECKSTYLE:OFF
 public class BckndServiceServiceCatalogItemExtendCredentialsShared 
 // CHECKSTYLE:ON
@@ -51,29 +52,29 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance and return the same instance.
-    *
-    * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} class
-    */
+   * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance and return the same instance.
+   *
+   * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} class
+   */
    @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsShared serviceUrls(@Nonnull final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
     this.serviceUrls = serviceUrls;
     return this;
   }
 
    /**
-    * Get serviceUrls
-    * @return serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance.
-    */
+   * Get serviceUrls
+   * @return serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance.
+  **/
   @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls getServiceUrls() {
     return serviceUrls;
   }
 
   /**
-   * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance.
-   *
-   * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
-   */
+  * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance.
+  *
+  * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
+  */
   public void setServiceUrls( @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
     this.serviceUrls = serviceUrls;
   }
@@ -153,7 +154,6 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

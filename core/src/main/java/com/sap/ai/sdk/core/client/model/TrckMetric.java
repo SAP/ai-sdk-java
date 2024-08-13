@@ -44,6 +44,7 @@ import javax.annotation.Nullable;
 /**
  * Key-value metrics, where the value is numeric. Metric can also have optional step and label fields.
  */
+
 // CHECKSTYLE:OFF
 public class TrckMetric 
 // CHECKSTYLE:ON
@@ -68,136 +69,136 @@ public class TrckMetric
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the name of this {@link TrckMetric} instance and return the same instance.
-    *
-    * @param name  Name of the metric
-    * @return The same instance of this {@link TrckMetric} class
-    */
+   * Set the name of this {@link TrckMetric} instance and return the same instance.
+   *
+   * @param name  Name of the metric
+   * @return The same instance of this {@link TrckMetric} class
+   */
    @Nonnull public TrckMetric name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the metric
-    * @return name  The name of this {@link TrckMetric} instance.
-    */
+   * Name of the metric
+   * @return name  The name of this {@link TrckMetric} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link TrckMetric} instance.
-   *
-   * @param name  Name of the metric
-   */
+  * Set the name of this {@link TrckMetric} instance.
+  *
+  * @param name  Name of the metric
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the value of this {@link TrckMetric} instance and return the same instance.
-    *
-    * @param value  Numeric Value of the metric
-    * @return The same instance of this {@link TrckMetric} class
-    */
+   * Set the value of this {@link TrckMetric} instance and return the same instance.
+   *
+   * @param value  Numeric Value of the metric
+   * @return The same instance of this {@link TrckMetric} class
+   */
    @Nonnull public TrckMetric value(@Nonnull final BigDecimal value) {
     this.value = value;
     return this;
   }
 
    /**
-    * Numeric Value of the metric
-    * @return value  The value of this {@link TrckMetric} instance.
-    */
+   * Numeric Value of the metric
+   * @return value  The value of this {@link TrckMetric} instance.
+  **/
   @Nonnull public BigDecimal getValue() {
     return value;
   }
 
   /**
-   * Set the value of this {@link TrckMetric} instance.
-   *
-   * @param value  Numeric Value of the metric
-   */
+  * Set the value of this {@link TrckMetric} instance.
+  *
+  * @param value  Numeric Value of the metric
+  */
   public void setValue( @Nonnull final BigDecimal value) {
     this.value = value;
   }
 
    /**
-    * Set the timestamp of this {@link TrckMetric} instance and return the same instance.
-    *
-    * @param timestamp  Time when the metric was created or logged in RFC3339 format
-    * @return The same instance of this {@link TrckMetric} class
-    */
+   * Set the timestamp of this {@link TrckMetric} instance and return the same instance.
+   *
+   * @param timestamp  Time when the metric was created or logged in RFC3339 format
+   * @return The same instance of this {@link TrckMetric} class
+   */
    @Nonnull public TrckMetric timestamp(@Nonnull final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
 
    /**
-    * Time when the metric was created or logged in RFC3339 format
-    * @return timestamp  The timestamp of this {@link TrckMetric} instance.
-    */
+   * Time when the metric was created or logged in RFC3339 format
+   * @return timestamp  The timestamp of this {@link TrckMetric} instance.
+  **/
   @Nonnull public OffsetDateTime getTimestamp() {
     return timestamp;
   }
 
   /**
-   * Set the timestamp of this {@link TrckMetric} instance.
-   *
-   * @param timestamp  Time when the metric was created or logged in RFC3339 format
-   */
+  * Set the timestamp of this {@link TrckMetric} instance.
+  *
+  * @param timestamp  Time when the metric was created or logged in RFC3339 format
+  */
   public void setTimestamp( @Nonnull final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
    /**
-    * Set the step of this {@link TrckMetric} instance and return the same instance.
-    *
-    * @param step  step is an optional integer that represents any measurement of training progress (number of training iterations, number of epochs, and so on) for the metric
-    * Minimum: 0
-    * @return The same instance of this {@link TrckMetric} class
-    */
+   * Set the step of this {@link TrckMetric} instance and return the same instance.
+   *
+   * @param step  step is an optional integer that represents any measurement of training progress (number of training iterations, number of epochs, and so on) for the metric
+   * Minimum: 0
+   * @return The same instance of this {@link TrckMetric} class
+   */
    @Nonnull public TrckMetric step(@Nonnull final Integer step) {
     this.step = step;
     return this;
   }
 
    /**
-    * step is an optional integer that represents any measurement of training progress (number of training iterations, number of epochs, and so on) for the metric
-    * minimum: 0
-    * @return step  The step of this {@link TrckMetric} instance.
-    */
+   * step is an optional integer that represents any measurement of training progress (number of training iterations, number of epochs, and so on) for the metric
+   * minimum: 0
+   * @return step  The step of this {@link TrckMetric} instance.
+  **/
   @Nonnull public Integer getStep() {
     return step;
   }
 
   /**
-   * Set the step of this {@link TrckMetric} instance.
-   *
-   * @param step  step is an optional integer that represents any measurement of training progress (number of training iterations, number of epochs, and so on) for the metric
-   * Minimum: 0
-   */
+  * Set the step of this {@link TrckMetric} instance.
+  *
+  * @param step  step is an optional integer that represents any measurement of training progress (number of training iterations, number of epochs, and so on) for the metric
+  * Minimum: 0
+  */
   public void setStep( @Nonnull final Integer step) {
     this.step = step;
   }
 
    /**
-    * Set the labels of this {@link TrckMetric} instance and return the same instance.
-    *
-    * @param labels  a list of name-value object pairs associated with some metric.
-    * @return The same instance of this {@link TrckMetric} class
-    */
+   * Set the labels of this {@link TrckMetric} instance and return the same instance.
+   *
+   * @param labels  a list of name-value object pairs associated with some metric.
+   * @return The same instance of this {@link TrckMetric} class
+   */
    @Nonnull public TrckMetric labels(@Nonnull final List<TrckLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link TrckMetric}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link TrckMetric}
-   */
-  @Nonnull public TrckMetric addLabelsItem( @Nonnull final TrckLabel labelsItem) {
+  * Add one labels instance to this {@link TrckMetric}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link TrckMetric}
+  */
+  @Nonnull public TrckMetric addlabelsItem( @Nonnull final TrckLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -206,18 +207,18 @@ public class TrckMetric
   }
 
    /**
-    * a list of name-value object pairs associated with some metric.
-    * @return labels  The labels of this {@link TrckMetric} instance.
-    */
+   * a list of name-value object pairs associated with some metric.
+   * @return labels  The labels of this {@link TrckMetric} instance.
+  **/
   @Nonnull public List<TrckLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link TrckMetric} instance.
-   *
-   * @param labels  a list of name-value object pairs associated with some metric.
-   */
+  * Set the labels of this {@link TrckMetric} instance.
+  *
+  * @param labels  a list of name-value object pairs associated with some metric.
+  */
   public void setLabels( @Nonnull final List<TrckLabel> labels) {
     this.labels = labels;
   }
@@ -305,7 +306,6 @@ public class TrckMetric
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

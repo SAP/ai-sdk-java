@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * Filters classifiers to be used
  */
+
 // CHECKSTYLE:OFF
 public class FilterConfig 
 // CHECKSTYLE:ON
@@ -61,113 +62,113 @@ public class FilterConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the hate of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param hate  The hate of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
+   * Set the hate of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param hate  The hate of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
    @Nonnull public FilterConfig hate(@Nonnull final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
 
    /**
-    * Get hate
-    * @return hate  The hate of this {@link FilterConfig} instance.
-    */
+   * Get hate
+   * @return hate  The hate of this {@link FilterConfig} instance.
+  **/
   @Nonnull public AzureThreshold getHate() {
     return hate;
   }
 
   /**
-   * Set the hate of this {@link FilterConfig} instance.
-   *
-   * @param hate  The hate of this {@link FilterConfig}
-   */
+  * Set the hate of this {@link FilterConfig} instance.
+  *
+  * @param hate  The hate of this {@link FilterConfig}
+  */
   public void setHate( @Nonnull final AzureThreshold hate) {
     this.hate = hate;
   }
 
    /**
-    * Set the selfHarm of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param selfHarm  The selfHarm of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
+   * Set the selfHarm of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param selfHarm  The selfHarm of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
    @Nonnull public FilterConfig selfHarm(@Nonnull final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
 
    /**
-    * Get selfHarm
-    * @return selfHarm  The selfHarm of this {@link FilterConfig} instance.
-    */
+   * Get selfHarm
+   * @return selfHarm  The selfHarm of this {@link FilterConfig} instance.
+  **/
   @Nonnull public AzureThreshold getSelfHarm() {
     return selfHarm;
   }
 
   /**
-   * Set the selfHarm of this {@link FilterConfig} instance.
-   *
-   * @param selfHarm  The selfHarm of this {@link FilterConfig}
-   */
+  * Set the selfHarm of this {@link FilterConfig} instance.
+  *
+  * @param selfHarm  The selfHarm of this {@link FilterConfig}
+  */
   public void setSelfHarm( @Nonnull final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
    /**
-    * Set the sexual of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param sexual  The sexual of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
+   * Set the sexual of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param sexual  The sexual of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
    @Nonnull public FilterConfig sexual(@Nonnull final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
 
    /**
-    * Get sexual
-    * @return sexual  The sexual of this {@link FilterConfig} instance.
-    */
+   * Get sexual
+   * @return sexual  The sexual of this {@link FilterConfig} instance.
+  **/
   @Nonnull public AzureThreshold getSexual() {
     return sexual;
   }
 
   /**
-   * Set the sexual of this {@link FilterConfig} instance.
-   *
-   * @param sexual  The sexual of this {@link FilterConfig}
-   */
+  * Set the sexual of this {@link FilterConfig} instance.
+  *
+  * @param sexual  The sexual of this {@link FilterConfig}
+  */
   public void setSexual( @Nonnull final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
    /**
-    * Set the violence of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param violence  The violence of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
+   * Set the violence of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param violence  The violence of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
    @Nonnull public FilterConfig violence(@Nonnull final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
 
    /**
-    * Get violence
-    * @return violence  The violence of this {@link FilterConfig} instance.
-    */
+   * Get violence
+   * @return violence  The violence of this {@link FilterConfig} instance.
+  **/
   @Nonnull public AzureThreshold getViolence() {
     return violence;
   }
 
   /**
-   * Set the violence of this {@link FilterConfig} instance.
-   *
-   * @param violence  The violence of this {@link FilterConfig}
-   */
+  * Set the violence of this {@link FilterConfig} instance.
+  *
+  * @param violence  The violence of this {@link FilterConfig}
+  */
   public void setViolence( @Nonnull final AzureThreshold violence) {
     this.violence = violence;
   }
@@ -253,7 +254,6 @@ public class FilterConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

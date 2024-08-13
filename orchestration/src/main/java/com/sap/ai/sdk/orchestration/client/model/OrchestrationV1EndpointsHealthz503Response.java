@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * OrchestrationV1EndpointsHealthz503Response
  */
+
 // CHECKSTYLE:OFF
 public class OrchestrationV1EndpointsHealthz503Response 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class OrchestrationV1EndpointsHealthz503Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance and return the same instance.
-    *
-    * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
-    * @return The same instance of this {@link OrchestrationV1EndpointsHealthz503Response} class
-    */
+   * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance and return the same instance.
+   *
+   * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
+   * @return The same instance of this {@link OrchestrationV1EndpointsHealthz503Response} class
+   */
    @Nonnull public OrchestrationV1EndpointsHealthz503Response status(@Nonnull final String status) {
     this.status = status;
     return this;
   }
 
    /**
-    * Get status
-    * @return status  The status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
-    */
+   * Get status
+   * @return status  The status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
+  **/
   @Nonnull public String getStatus() {
     return status;
   }
 
   /**
-   * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
-   *
-   * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
-   */
+  * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
+  *
+  * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
+  */
   public void setStatus( @Nonnull final String status) {
     this.status = status;
   }
@@ -152,7 +153,6 @@ public class OrchestrationV1EndpointsHealthz503Response
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

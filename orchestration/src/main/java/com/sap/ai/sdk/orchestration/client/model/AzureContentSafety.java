@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * AzureContentSafety
  */
+
 // CHECKSTYLE:OFF
 public class AzureContentSafety 
 // CHECKSTYLE:ON
@@ -60,113 +61,113 @@ public class AzureContentSafety
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the hate of this {@link AzureContentSafety} instance and return the same instance.
-    *
-    * @param hate  The hate of this {@link AzureContentSafety}
-    * @return The same instance of this {@link AzureContentSafety} class
-    */
+   * Set the hate of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param hate  The hate of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
    @Nonnull public AzureContentSafety hate(@Nonnull final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
 
    /**
-    * Get hate
-    * @return hate  The hate of this {@link AzureContentSafety} instance.
-    */
+   * Get hate
+   * @return hate  The hate of this {@link AzureContentSafety} instance.
+  **/
   @Nonnull public AzureThreshold getHate() {
     return hate;
   }
 
   /**
-   * Set the hate of this {@link AzureContentSafety} instance.
-   *
-   * @param hate  The hate of this {@link AzureContentSafety}
-   */
+  * Set the hate of this {@link AzureContentSafety} instance.
+  *
+  * @param hate  The hate of this {@link AzureContentSafety}
+  */
   public void setHate( @Nonnull final AzureThreshold hate) {
     this.hate = hate;
   }
 
    /**
-    * Set the selfHarm of this {@link AzureContentSafety} instance and return the same instance.
-    *
-    * @param selfHarm  The selfHarm of this {@link AzureContentSafety}
-    * @return The same instance of this {@link AzureContentSafety} class
-    */
+   * Set the selfHarm of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param selfHarm  The selfHarm of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
    @Nonnull public AzureContentSafety selfHarm(@Nonnull final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
 
    /**
-    * Get selfHarm
-    * @return selfHarm  The selfHarm of this {@link AzureContentSafety} instance.
-    */
+   * Get selfHarm
+   * @return selfHarm  The selfHarm of this {@link AzureContentSafety} instance.
+  **/
   @Nonnull public AzureThreshold getSelfHarm() {
     return selfHarm;
   }
 
   /**
-   * Set the selfHarm of this {@link AzureContentSafety} instance.
-   *
-   * @param selfHarm  The selfHarm of this {@link AzureContentSafety}
-   */
+  * Set the selfHarm of this {@link AzureContentSafety} instance.
+  *
+  * @param selfHarm  The selfHarm of this {@link AzureContentSafety}
+  */
   public void setSelfHarm( @Nonnull final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
    /**
-    * Set the sexual of this {@link AzureContentSafety} instance and return the same instance.
-    *
-    * @param sexual  The sexual of this {@link AzureContentSafety}
-    * @return The same instance of this {@link AzureContentSafety} class
-    */
+   * Set the sexual of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param sexual  The sexual of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
    @Nonnull public AzureContentSafety sexual(@Nonnull final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
 
    /**
-    * Get sexual
-    * @return sexual  The sexual of this {@link AzureContentSafety} instance.
-    */
+   * Get sexual
+   * @return sexual  The sexual of this {@link AzureContentSafety} instance.
+  **/
   @Nonnull public AzureThreshold getSexual() {
     return sexual;
   }
 
   /**
-   * Set the sexual of this {@link AzureContentSafety} instance.
-   *
-   * @param sexual  The sexual of this {@link AzureContentSafety}
-   */
+  * Set the sexual of this {@link AzureContentSafety} instance.
+  *
+  * @param sexual  The sexual of this {@link AzureContentSafety}
+  */
   public void setSexual( @Nonnull final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
    /**
-    * Set the violence of this {@link AzureContentSafety} instance and return the same instance.
-    *
-    * @param violence  The violence of this {@link AzureContentSafety}
-    * @return The same instance of this {@link AzureContentSafety} class
-    */
+   * Set the violence of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param violence  The violence of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
    @Nonnull public AzureContentSafety violence(@Nonnull final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
 
    /**
-    * Get violence
-    * @return violence  The violence of this {@link AzureContentSafety} instance.
-    */
+   * Get violence
+   * @return violence  The violence of this {@link AzureContentSafety} instance.
+  **/
   @Nonnull public AzureThreshold getViolence() {
     return violence;
   }
 
   /**
-   * Set the violence of this {@link AzureContentSafety} instance.
-   *
-   * @param violence  The violence of this {@link AzureContentSafety}
-   */
+  * Set the violence of this {@link AzureContentSafety} instance.
+  *
+  * @param violence  The violence of this {@link AzureContentSafety}
+  */
   public void setViolence( @Nonnull final AzureThreshold violence) {
     this.violence = violence;
   }
@@ -252,7 +253,6 @@ public class AzureContentSafety
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

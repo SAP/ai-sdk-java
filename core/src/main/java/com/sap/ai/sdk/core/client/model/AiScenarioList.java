@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * AiScenarioList
  */
+
 // CHECKSTYLE:OFF
 public class AiScenarioList 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class AiScenarioList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link AiScenarioList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiScenarioList} class
-    */
+   * Set the count of this {@link AiScenarioList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiScenarioList} class
+   */
    @Nonnull public AiScenarioList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiScenarioList} instance.
-    */
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiScenarioList} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link AiScenarioList} instance.
-   *
-   * @param count  Number of the resource instances in the list
-   */
+  * Set the count of this {@link AiScenarioList} instance.
+  *
+  * @param count  Number of the resource instances in the list
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resources of this {@link AiScenarioList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiScenarioList}
-    * @return The same instance of this {@link AiScenarioList} class
-    */
+   * Set the resources of this {@link AiScenarioList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiScenarioList}
+   * @return The same instance of this {@link AiScenarioList} class
+   */
    @Nonnull public AiScenarioList resources(@Nonnull final List<AiScenario> resources) {
     this.resources = resources;
     return this;
   }
   /**
-   * Add one resources instance to this {@link AiScenarioList}.
-   * @param resourcesItem The resources that should be added
-   * @return The same instance of type {@link AiScenarioList}
-   */
-  @Nonnull public AiScenarioList addResourcesItem( @Nonnull final AiScenario resourcesItem) {
+  * Add one resources instance to this {@link AiScenarioList}.
+  * @param resourcesItem The resources that should be added
+  * @return The same instance of type {@link AiScenarioList}
+  */
+  @Nonnull public AiScenarioList addresourcesItem( @Nonnull final AiScenario resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class AiScenarioList
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link AiScenarioList} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link AiScenarioList} instance.
+  **/
   @Nonnull public List<AiScenario> getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link AiScenarioList} instance.
-   *
-   * @param resources  The resources of this {@link AiScenarioList}
-   */
+  * Set the resources of this {@link AiScenarioList} instance.
+  *
+  * @param resources  The resources of this {@link AiScenarioList}
+  */
   public void setResources( @Nonnull final List<AiScenario> resources) {
     this.resources = resources;
   }
@@ -201,7 +202,6 @@ public class AiScenarioList
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

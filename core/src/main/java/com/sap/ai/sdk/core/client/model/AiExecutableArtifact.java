@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * AiExecutableArtifact
  */
+
 // CHECKSTYLE:OFF
 public class AiExecutableArtifact 
 // CHECKSTYLE:ON
@@ -63,105 +64,105 @@ public class AiExecutableArtifact
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the name of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param name  Name of the executable input artifacts
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
+   * Set the name of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param name  Name of the executable input artifacts
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
    @Nonnull public AiExecutableArtifact name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the executable input artifacts
-    * @return name  The name of this {@link AiExecutableArtifact} instance.
-    */
+   * Name of the executable input artifacts
+   * @return name  The name of this {@link AiExecutableArtifact} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link AiExecutableArtifact} instance.
-   *
-   * @param name  Name of the executable input artifacts
-   */
+  * Set the name of this {@link AiExecutableArtifact} instance.
+  *
+  * @param name  Name of the executable input artifacts
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the kind of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param kind  Artifact kind (model, dataset, other)
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
+   * Set the kind of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param kind  Artifact kind (model, dataset, other)
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
    @Nonnull public AiExecutableArtifact kind(@Nonnull final String kind) {
     this.kind = kind;
     return this;
   }
 
    /**
-    * Artifact kind (model, dataset, other)
-    * @return kind  The kind of this {@link AiExecutableArtifact} instance.
-    */
+   * Artifact kind (model, dataset, other)
+   * @return kind  The kind of this {@link AiExecutableArtifact} instance.
+  **/
   @Nonnull public String getKind() {
     return kind;
   }
 
   /**
-   * Set the kind of this {@link AiExecutableArtifact} instance.
-   *
-   * @param kind  Artifact kind (model, dataset, other)
-   */
+  * Set the kind of this {@link AiExecutableArtifact} instance.
+  *
+  * @param kind  Artifact kind (model, dataset, other)
+  */
   public void setKind( @Nonnull final String kind) {
     this.kind = kind;
   }
 
    /**
-    * Set the description of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param description  Description of the signature argument
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
+   * Set the description of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param description  Description of the signature argument
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
    @Nonnull public AiExecutableArtifact description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Description of the signature argument
-    * @return description  The description of this {@link AiExecutableArtifact} instance.
-    */
+   * Description of the signature argument
+   * @return description  The description of this {@link AiExecutableArtifact} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link AiExecutableArtifact} instance.
-   *
-   * @param description  Description of the signature argument
-   */
+  * Set the description of this {@link AiExecutableArtifact} instance.
+  *
+  * @param description  Description of the signature argument
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the labels of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
+   * Set the labels of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
    @Nonnull public AiExecutableArtifact labels(@Nonnull final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link AiExecutableArtifact}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link AiExecutableArtifact}
-   */
-  @Nonnull public AiExecutableArtifact addLabelsItem( @Nonnull final AiLabel labelsItem) {
+  * Add one labels instance to this {@link AiExecutableArtifact}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link AiExecutableArtifact}
+  */
+  @Nonnull public AiExecutableArtifact addlabelsItem( @Nonnull final AiLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -170,18 +171,18 @@ public class AiExecutableArtifact
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link AiExecutableArtifact} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link AiExecutableArtifact} instance.
+  **/
   @Nonnull public List<AiLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link AiExecutableArtifact} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link AiExecutableArtifact} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<AiLabel> labels) {
     this.labels = labels;
   }
@@ -267,7 +268,6 @@ public class AiExecutableArtifact
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * Generic module result
  */
+
 // CHECKSTYLE:OFF
 public class GenericModuleResult 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class GenericModuleResult
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the message of this {@link GenericModuleResult} instance and return the same instance.
-    *
-    * @param message  Some message created from the module
-    * @return The same instance of this {@link GenericModuleResult} class
-    */
+   * Set the message of this {@link GenericModuleResult} instance and return the same instance.
+   *
+   * @param message  Some message created from the module
+   * @return The same instance of this {@link GenericModuleResult} class
+   */
    @Nonnull public GenericModuleResult message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Some message created from the module
-    * @return message  The message of this {@link GenericModuleResult} instance.
-    */
+   * Some message created from the module
+   * @return message  The message of this {@link GenericModuleResult} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link GenericModuleResult} instance.
-   *
-   * @param message  Some message created from the module
-   */
+  * Set the message of this {@link GenericModuleResult} instance.
+  *
+  * @param message  Some message created from the module
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-    * Set the data of this {@link GenericModuleResult} instance and return the same instance.
-    *
-    * @param data  Additional data object from the module
-    * @return The same instance of this {@link GenericModuleResult} class
-    */
+   * Set the data of this {@link GenericModuleResult} instance and return the same instance.
+   *
+   * @param data  Additional data object from the module
+   * @return The same instance of this {@link GenericModuleResult} class
+   */
    @Nonnull public GenericModuleResult data(@Nonnull final Object data) {
     this.data = data;
     return this;
   }
 
    /**
-    * Additional data object from the module
-    * @return data  The data of this {@link GenericModuleResult} instance.
-    */
+   * Additional data object from the module
+   * @return data  The data of this {@link GenericModuleResult} instance.
+  **/
   @Nonnull public Object getData() {
     return data;
   }
 
   /**
-   * Set the data of this {@link GenericModuleResult} instance.
-   *
-   * @param data  Additional data object from the module
-   */
+  * Set the data of this {@link GenericModuleResult} instance.
+  *
+  * @param data  Additional data object from the module
+  */
   public void setData( @Nonnull final Object data) {
     this.data = data;
   }
@@ -185,7 +186,6 @@ public class GenericModuleResult
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

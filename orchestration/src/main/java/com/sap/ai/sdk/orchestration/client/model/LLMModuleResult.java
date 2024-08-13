@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * Output of LLM module. Follows the OpenAI spec.
  */
+
 // CHECKSTYLE:OFF
 public class LLMModuleResult 
 // CHECKSTYLE:ON
@@ -73,161 +74,161 @@ public class LLMModuleResult
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the id of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param id  ID of the response
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the id of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param id  ID of the response
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-    * ID of the response
-    * @return id  The id of this {@link LLMModuleResult} instance.
-    */
+   * ID of the response
+   * @return id  The id of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-   * Set the id of this {@link LLMModuleResult} instance.
-   *
-   * @param id  ID of the response
-   */
+  * Set the id of this {@link LLMModuleResult} instance.
+  *
+  * @param id  ID of the response
+  */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-    * Set the _object of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param _object  Object type
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the _object of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param _object  Object type
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult _object(@Nonnull final String _object) {
     this._object = _object;
     return this;
   }
 
    /**
-    * Object type
-    * @return _object  The _object of this {@link LLMModuleResult} instance.
-    */
+   * Object type
+   * @return _object  The _object of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public String getObject() {
     return _object;
   }
 
   /**
-   * Set the _object of this {@link LLMModuleResult} instance.
-   *
-   * @param _object  Object type
-   */
+  * Set the _object of this {@link LLMModuleResult} instance.
+  *
+  * @param _object  Object type
+  */
   public void setObject( @Nonnull final String _object) {
     this._object = _object;
   }
 
    /**
-    * Set the created of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param created  Unix timestamp
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the created of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param created  Unix timestamp
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult created(@Nonnull final Integer created) {
     this.created = created;
     return this;
   }
 
    /**
-    * Unix timestamp
-    * @return created  The created of this {@link LLMModuleResult} instance.
-    */
+   * Unix timestamp
+   * @return created  The created of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public Integer getCreated() {
     return created;
   }
 
   /**
-   * Set the created of this {@link LLMModuleResult} instance.
-   *
-   * @param created  Unix timestamp
-   */
+  * Set the created of this {@link LLMModuleResult} instance.
+  *
+  * @param created  Unix timestamp
+  */
   public void setCreated( @Nonnull final Integer created) {
     this.created = created;
   }
 
    /**
-    * Set the model of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param model  Model name
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the model of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param model  Model name
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult model(@Nonnull final String model) {
     this.model = model;
     return this;
   }
 
    /**
-    * Model name
-    * @return model  The model of this {@link LLMModuleResult} instance.
-    */
+   * Model name
+   * @return model  The model of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public String getModel() {
     return model;
   }
 
   /**
-   * Set the model of this {@link LLMModuleResult} instance.
-   *
-   * @param model  Model name
-   */
+  * Set the model of this {@link LLMModuleResult} instance.
+  *
+  * @param model  Model name
+  */
   public void setModel( @Nonnull final String model) {
     this.model = model;
   }
 
    /**
-    * Set the systemFingerprint of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param systemFingerprint  System fingerprint
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the systemFingerprint of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param systemFingerprint  System fingerprint
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult systemFingerprint(@Nonnull final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
     return this;
   }
 
    /**
-    * System fingerprint
-    * @return systemFingerprint  The systemFingerprint of this {@link LLMModuleResult} instance.
-    */
+   * System fingerprint
+   * @return systemFingerprint  The systemFingerprint of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public String getSystemFingerprint() {
     return systemFingerprint;
   }
 
   /**
-   * Set the systemFingerprint of this {@link LLMModuleResult} instance.
-   *
-   * @param systemFingerprint  System fingerprint
-   */
+  * Set the systemFingerprint of this {@link LLMModuleResult} instance.
+  *
+  * @param systemFingerprint  System fingerprint
+  */
   public void setSystemFingerprint( @Nonnull final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
   }
 
    /**
-    * Set the choices of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param choices  Choices
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the choices of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param choices  Choices
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult choices(@Nonnull final List<LLMChoice> choices) {
     this.choices = choices;
     return this;
   }
   /**
-   * Add one choices instance to this {@link LLMModuleResult}.
-   * @param choicesItem The choices that should be added
-   * @return The same instance of type {@link LLMModuleResult}
-   */
-  @Nonnull public LLMModuleResult addChoicesItem( @Nonnull final LLMChoice choicesItem) {
+  * Add one choices instance to this {@link LLMModuleResult}.
+  * @param choicesItem The choices that should be added
+  * @return The same instance of type {@link LLMModuleResult}
+  */
+  @Nonnull public LLMModuleResult addchoicesItem( @Nonnull final LLMChoice choicesItem) {
     if (this.choices == null) {
       this.choices = new ArrayList<>();
     }
@@ -236,46 +237,46 @@ public class LLMModuleResult
   }
 
    /**
-    * Choices
-    * @return choices  The choices of this {@link LLMModuleResult} instance.
-    */
+   * Choices
+   * @return choices  The choices of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public List<LLMChoice> getChoices() {
     return choices;
   }
 
   /**
-   * Set the choices of this {@link LLMModuleResult} instance.
-   *
-   * @param choices  Choices
-   */
+  * Set the choices of this {@link LLMModuleResult} instance.
+  *
+  * @param choices  Choices
+  */
   public void setChoices( @Nonnull final List<LLMChoice> choices) {
     this.choices = choices;
   }
 
    /**
-    * Set the usage of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link LLMModuleResult}
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
+   * Set the usage of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link LLMModuleResult}
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
    @Nonnull public LLMModuleResult usage(@Nonnull final TokenUsage usage) {
     this.usage = usage;
     return this;
   }
 
    /**
-    * Get usage
-    * @return usage  The usage of this {@link LLMModuleResult} instance.
-    */
+   * Get usage
+   * @return usage  The usage of this {@link LLMModuleResult} instance.
+  **/
   @Nonnull public TokenUsage getUsage() {
     return usage;
   }
 
   /**
-   * Set the usage of this {@link LLMModuleResult} instance.
-   *
-   * @param usage  The usage of this {@link LLMModuleResult}
-   */
+  * Set the usage of this {@link LLMModuleResult} instance.
+  *
+  * @param usage  The usage of this {@link LLMModuleResult}
+  */
   public void setUsage( @Nonnull final TokenUsage usage) {
     this.usage = usage;
   }
@@ -367,7 +368,6 @@ public class LLMModuleResult
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

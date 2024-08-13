@@ -48,8 +48,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactList artifactList =
-        new ArtifactApi(getClient(destination)).artifactQuery("default");
+    final AiArtifactList artifactList = new ArtifactApi(getClient(destination)).query("default");
     assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
     assertThat(artifactList.getResources().size()).isEqualTo(1);
@@ -90,7 +89,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
             .scenarioId("foundation-models")
             .url("ai://default/spam/data");
     final AiArtifactCreationResponse artifact =
-        new ArtifactApi(getClient(destination)).artifactCreate("default", artifactPostData);
+        new ArtifactApi(getClient(destination)).create("default", artifactPostData);
     assertThat(artifact).isNotNull();
     assertThat(artifact.getId()).isEqualTo("1a84bb38-4a84-4d12-a5aa-300ae7d33fb4");
     assertThat(artifact.getMessage()).isEqualTo("AiArtifact acknowledged");

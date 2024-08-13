@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * Request object to change status of multiple executions
  */
+
 // CHECKSTYLE:OFF
 public class AiExecutionBulkModificationRequest 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class AiExecutionBulkModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the executions of this {@link AiExecutionBulkModificationRequest} instance and return the same instance.
-    *
-    * @param executions  The executions of this {@link AiExecutionBulkModificationRequest}
-    * @return The same instance of this {@link AiExecutionBulkModificationRequest} class
-    */
+   * Set the executions of this {@link AiExecutionBulkModificationRequest} instance and return the same instance.
+   *
+   * @param executions  The executions of this {@link AiExecutionBulkModificationRequest}
+   * @return The same instance of this {@link AiExecutionBulkModificationRequest} class
+   */
    @Nonnull public AiExecutionBulkModificationRequest executions(@Nonnull final Set<AiExecutionModificationRequestWithIdentifier> executions) {
     this.executions = executions;
     return this;
   }
   /**
-   * Add one executions instance to this {@link AiExecutionBulkModificationRequest}.
-   * @param executionsItem The executions that should be added
-   * @return The same instance of type {@link AiExecutionBulkModificationRequest}
-   */
-  @Nonnull public AiExecutionBulkModificationRequest addExecutionsItem( @Nonnull final AiExecutionModificationRequestWithIdentifier executionsItem) {
+  * Add one executions instance to this {@link AiExecutionBulkModificationRequest}.
+  * @param executionsItem The executions that should be added
+  * @return The same instance of type {@link AiExecutionBulkModificationRequest}
+  */
+  @Nonnull public AiExecutionBulkModificationRequest addexecutionsItem( @Nonnull final AiExecutionModificationRequestWithIdentifier executionsItem) {
     if (this.executions == null) {
       this.executions = new LinkedHashSet<>();
     }
@@ -77,18 +78,18 @@ public class AiExecutionBulkModificationRequest
   }
 
    /**
-    * Get executions
-    * @return executions  The executions of this {@link AiExecutionBulkModificationRequest} instance.
-    */
+   * Get executions
+   * @return executions  The executions of this {@link AiExecutionBulkModificationRequest} instance.
+  **/
   @Nonnull public Set<AiExecutionModificationRequestWithIdentifier> getExecutions() {
     return executions;
   }
 
   /**
-   * Set the executions of this {@link AiExecutionBulkModificationRequest} instance.
-   *
-   * @param executions  The executions of this {@link AiExecutionBulkModificationRequest}
-   */
+  * Set the executions of this {@link AiExecutionBulkModificationRequest} instance.
+  *
+  * @param executions  The executions of this {@link AiExecutionBulkModificationRequest}
+  */
   public void setExecutions( @Nonnull final Set<AiExecutionModificationRequestWithIdentifier> executions) {
     this.executions = executions;
   }
@@ -168,7 +169,6 @@ public class AiExecutionBulkModificationRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

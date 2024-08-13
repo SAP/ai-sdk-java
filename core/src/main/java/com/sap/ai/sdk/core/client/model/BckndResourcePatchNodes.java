@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourcePatchNodes
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourcePatchNodes 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class BckndResourcePatchNodes
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the name of this {@link BckndResourcePatchNodes} instance and return the same instance.
-    *
-    * @param name  The name of this {@link BckndResourcePatchNodes}
-    * @return The same instance of this {@link BckndResourcePatchNodes} class
-    */
+   * Set the name of this {@link BckndResourcePatchNodes} instance and return the same instance.
+   *
+   * @param name  The name of this {@link BckndResourcePatchNodes}
+   * @return The same instance of this {@link BckndResourcePatchNodes} class
+   */
    @Nonnull public BckndResourcePatchNodes name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Get name
-    * @return name  The name of this {@link BckndResourcePatchNodes} instance.
-    */
+   * Get name
+   * @return name  The name of this {@link BckndResourcePatchNodes} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link BckndResourcePatchNodes} instance.
-   *
-   * @param name  The name of this {@link BckndResourcePatchNodes}
-   */
+  * Set the name of this {@link BckndResourcePatchNodes} instance.
+  *
+  * @param name  The name of this {@link BckndResourcePatchNodes}
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the request of this {@link BckndResourcePatchNodes} instance and return the same instance.
-    *
-    * @param request  The request of this {@link BckndResourcePatchNodes}
-    * @return The same instance of this {@link BckndResourcePatchNodes} class
-    */
+   * Set the request of this {@link BckndResourcePatchNodes} instance and return the same instance.
+   *
+   * @param request  The request of this {@link BckndResourcePatchNodes}
+   * @return The same instance of this {@link BckndResourcePatchNodes} class
+   */
    @Nonnull public BckndResourcePatchNodes request(@Nonnull final Integer request) {
     this.request = request;
     return this;
   }
 
    /**
-    * Get request
-    * @return request  The request of this {@link BckndResourcePatchNodes} instance.
-    */
+   * Get request
+   * @return request  The request of this {@link BckndResourcePatchNodes} instance.
+  **/
   @Nonnull public Integer getRequest() {
     return request;
   }
 
   /**
-   * Set the request of this {@link BckndResourcePatchNodes} instance.
-   *
-   * @param request  The request of this {@link BckndResourcePatchNodes}
-   */
+  * Set the request of this {@link BckndResourcePatchNodes} instance.
+  *
+  * @param request  The request of this {@link BckndResourcePatchNodes}
+  */
   public void setRequest( @Nonnull final Integer request) {
     this.request = request;
   }
@@ -185,7 +186,6 @@ public class BckndResourcePatchNodes
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

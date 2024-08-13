@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndNestedUsageItem
  */
+
 // CHECKSTYLE:OFF
 public class BckndNestedUsageItem 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class BckndNestedUsageItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the id of this {@link BckndNestedUsageItem} instance and return the same instance.
-    *
-    * @param id  The id of this {@link BckndNestedUsageItem}
-    * @return The same instance of this {@link BckndNestedUsageItem} class
-    */
+   * Set the id of this {@link BckndNestedUsageItem} instance and return the same instance.
+   *
+   * @param id  The id of this {@link BckndNestedUsageItem}
+   * @return The same instance of this {@link BckndNestedUsageItem} class
+   */
    @Nonnull public BckndNestedUsageItem id(@Nonnull final Integer id) {
     this.id = id;
     return this;
   }
 
    /**
-    * Get id
-    * @return id  The id of this {@link BckndNestedUsageItem} instance.
-    */
+   * Get id
+   * @return id  The id of this {@link BckndNestedUsageItem} instance.
+  **/
   @Nonnull public Integer getId() {
     return id;
   }
 
   /**
-   * Set the id of this {@link BckndNestedUsageItem} instance.
-   *
-   * @param id  The id of this {@link BckndNestedUsageItem}
-   */
+  * Set the id of this {@link BckndNestedUsageItem} instance.
+  *
+  * @param id  The id of this {@link BckndNestedUsageItem}
+  */
   public void setId( @Nonnull final Integer id) {
     this.id = id;
   }
 
    /**
-    * Set the usage of this {@link BckndNestedUsageItem} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link BckndNestedUsageItem}
-    * @return The same instance of this {@link BckndNestedUsageItem} class
-    */
+   * Set the usage of this {@link BckndNestedUsageItem} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link BckndNestedUsageItem}
+   * @return The same instance of this {@link BckndNestedUsageItem} class
+   */
    @Nonnull public BckndNestedUsageItem usage(@Nonnull final List<BckndKeyValuePair> usage) {
     this.usage = usage;
     return this;
   }
   /**
-   * Add one usage instance to this {@link BckndNestedUsageItem}.
-   * @param usageItem The usage that should be added
-   * @return The same instance of type {@link BckndNestedUsageItem}
-   */
-  @Nonnull public BckndNestedUsageItem addUsageItem( @Nonnull final BckndKeyValuePair usageItem) {
+  * Add one usage instance to this {@link BckndNestedUsageItem}.
+  * @param usageItem The usage that should be added
+  * @return The same instance of type {@link BckndNestedUsageItem}
+  */
+  @Nonnull public BckndNestedUsageItem addusageItem( @Nonnull final BckndKeyValuePair usageItem) {
     if (this.usage == null) {
       this.usage = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class BckndNestedUsageItem
   }
 
    /**
-    * Get usage
-    * @return usage  The usage of this {@link BckndNestedUsageItem} instance.
-    */
+   * Get usage
+   * @return usage  The usage of this {@link BckndNestedUsageItem} instance.
+  **/
   @Nonnull public List<BckndKeyValuePair> getUsage() {
     return usage;
   }
 
   /**
-   * Set the usage of this {@link BckndNestedUsageItem} instance.
-   *
-   * @param usage  The usage of this {@link BckndNestedUsageItem}
-   */
+  * Set the usage of this {@link BckndNestedUsageItem} instance.
+  *
+  * @param usage  The usage of this {@link BckndNestedUsageItem}
+  */
   public void setUsage( @Nonnull final List<BckndKeyValuePair> usage) {
     this.usage = usage;
   }
@@ -201,7 +202,6 @@ public class BckndNestedUsageItem
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

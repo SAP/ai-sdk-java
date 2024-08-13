@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGroupList
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourceGroupList 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class BckndResourceGroupList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link BckndResourceGroupList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BckndResourceGroupList} class
-    */
+   * Set the count of this {@link BckndResourceGroupList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BckndResourceGroupList} class
+   */
    @Nonnull public BckndResourceGroupList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BckndResourceGroupList} instance.
-    */
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BckndResourceGroupList} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link BckndResourceGroupList} instance.
-   *
-   * @param count  Number of the resource instances in the list
-   */
+  * Set the count of this {@link BckndResourceGroupList} instance.
+  *
+  * @param count  Number of the resource instances in the list
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resources of this {@link BckndResourceGroupList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BckndResourceGroupList}
-    * @return The same instance of this {@link BckndResourceGroupList} class
-    */
+   * Set the resources of this {@link BckndResourceGroupList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BckndResourceGroupList}
+   * @return The same instance of this {@link BckndResourceGroupList} class
+   */
    @Nonnull public BckndResourceGroupList resources(@Nonnull final List<BckndResourceGroup> resources) {
     this.resources = resources;
     return this;
   }
   /**
-   * Add one resources instance to this {@link BckndResourceGroupList}.
-   * @param resourcesItem The resources that should be added
-   * @return The same instance of type {@link BckndResourceGroupList}
-   */
-  @Nonnull public BckndResourceGroupList addResourcesItem( @Nonnull final BckndResourceGroup resourcesItem) {
+  * Add one resources instance to this {@link BckndResourceGroupList}.
+  * @param resourcesItem The resources that should be added
+  * @return The same instance of type {@link BckndResourceGroupList}
+  */
+  @Nonnull public BckndResourceGroupList addresourcesItem( @Nonnull final BckndResourceGroup resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class BckndResourceGroupList
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link BckndResourceGroupList} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link BckndResourceGroupList} instance.
+  **/
   @Nonnull public List<BckndResourceGroup> getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link BckndResourceGroupList} instance.
-   *
-   * @param resources  The resources of this {@link BckndResourceGroupList}
-   */
+  * Set the resources of this {@link BckndResourceGroupList} instance.
+  *
+  * @param resources  The resources of this {@link BckndResourceGroupList}
+  */
   public void setResources( @Nonnull final List<BckndResourceGroup> resources) {
     this.resources = resources;
   }
@@ -201,7 +202,6 @@ public class BckndResourceGroupList
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

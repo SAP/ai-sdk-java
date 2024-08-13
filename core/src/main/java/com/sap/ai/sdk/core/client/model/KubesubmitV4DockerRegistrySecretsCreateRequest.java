@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * KubesubmitV4DockerRegistrySecretsCreateRequest
  */
+
 // CHECKSTYLE:OFF
 public class KubesubmitV4DockerRegistrySecretsCreateRequest 
 // CHECKSTYLE:ON
@@ -54,57 +55,57 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
-    *
-    * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
-    * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
-    */
+   * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
+   *
+   * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
+   * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
+   */
    @Nonnull public KubesubmitV4DockerRegistrySecretsCreateRequest data(@Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
     this.data = data;
     return this;
   }
 
    /**
-    * Get data
-    * @return data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-    */
+   * Get data
+   * @return data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
+  **/
   @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequestData getData() {
     return data;
   }
 
   /**
-   * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-   *
-   * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
-   */
+  * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
+  *
+  * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
+  */
   public void setData( @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
     this.data = data;
   }
 
    /**
-    * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
-    *
-    * @param name  Name of the docker Registry store for the secret.
-    * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
-    */
+   * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
+   *
+   * @param name  Name of the docker Registry store for the secret.
+   * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
+   */
    @Nonnull public KubesubmitV4DockerRegistrySecretsCreateRequest name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the docker Registry store for the secret.
-    * @return name  The name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-    */
+   * Name of the docker Registry store for the secret.
+   * @return name  The name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-   *
-   * @param name  Name of the docker Registry store for the secret.
-   */
+  * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
+  *
+  * @param name  Name of the docker Registry store for the secret.
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
@@ -186,7 +187,6 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

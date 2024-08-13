@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * BckndCommonResourceQuotaResponse
  */
+
 // CHECKSTYLE:OFF
 public class BckndCommonResourceQuotaResponse 
 // CHECKSTYLE:ON
@@ -55,57 +56,57 @@ public class BckndCommonResourceQuotaResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the usage of this {@link BckndCommonResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link BckndCommonResourceQuotaResponse}
-    * @return The same instance of this {@link BckndCommonResourceQuotaResponse} class
-    */
+   * Set the usage of this {@link BckndCommonResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link BckndCommonResourceQuotaResponse}
+   * @return The same instance of this {@link BckndCommonResourceQuotaResponse} class
+   */
    @Nonnull public BckndCommonResourceQuotaResponse usage(@Nonnull final BckndCommonResourceQuotaResponseUsage usage) {
     this.usage = usage;
     return this;
   }
 
    /**
-    * Get usage
-    * @return usage  The usage of this {@link BckndCommonResourceQuotaResponse} instance.
-    */
+   * Get usage
+   * @return usage  The usage of this {@link BckndCommonResourceQuotaResponse} instance.
+  **/
   @Nonnull public BckndCommonResourceQuotaResponseUsage getUsage() {
     return usage;
   }
 
   /**
-   * Set the usage of this {@link BckndCommonResourceQuotaResponse} instance.
-   *
-   * @param usage  The usage of this {@link BckndCommonResourceQuotaResponse}
-   */
+  * Set the usage of this {@link BckndCommonResourceQuotaResponse} instance.
+  *
+  * @param usage  The usage of this {@link BckndCommonResourceQuotaResponse}
+  */
   public void setUsage( @Nonnull final BckndCommonResourceQuotaResponseUsage usage) {
     this.usage = usage;
   }
 
    /**
-    * Set the quota of this {@link BckndCommonResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param quota  The quota of this {@link BckndCommonResourceQuotaResponse}
-    * @return The same instance of this {@link BckndCommonResourceQuotaResponse} class
-    */
+   * Set the quota of this {@link BckndCommonResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param quota  The quota of this {@link BckndCommonResourceQuotaResponse}
+   * @return The same instance of this {@link BckndCommonResourceQuotaResponse} class
+   */
    @Nonnull public BckndCommonResourceQuotaResponse quota(@Nonnull final BckndCommonResourceQuotaResponseQuota quota) {
     this.quota = quota;
     return this;
   }
 
    /**
-    * Get quota
-    * @return quota  The quota of this {@link BckndCommonResourceQuotaResponse} instance.
-    */
+   * Get quota
+   * @return quota  The quota of this {@link BckndCommonResourceQuotaResponse} instance.
+  **/
   @Nonnull public BckndCommonResourceQuotaResponseQuota getQuota() {
     return quota;
   }
 
   /**
-   * Set the quota of this {@link BckndCommonResourceQuotaResponse} instance.
-   *
-   * @param quota  The quota of this {@link BckndCommonResourceQuotaResponse}
-   */
+  * Set the quota of this {@link BckndCommonResourceQuotaResponse} instance.
+  *
+  * @param quota  The quota of this {@link BckndCommonResourceQuotaResponse}
+  */
   public void setQuota( @Nonnull final BckndCommonResourceQuotaResponseQuota quota) {
     this.quota = quota;
   }
@@ -187,7 +188,6 @@ public class BckndCommonResourceQuotaResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

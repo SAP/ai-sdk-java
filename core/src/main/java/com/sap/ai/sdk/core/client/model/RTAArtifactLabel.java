@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * RTAArtifactLabel
  */
+
 // CHECKSTYLE:OFF
 public class RTAArtifactLabel 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class RTAArtifactLabel
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the key of this {@link RTAArtifactLabel} instance and return the same instance.
-    *
-    * @param key  The key of this {@link RTAArtifactLabel}
-    * @return The same instance of this {@link RTAArtifactLabel} class
-    */
+   * Set the key of this {@link RTAArtifactLabel} instance and return the same instance.
+   *
+   * @param key  The key of this {@link RTAArtifactLabel}
+   * @return The same instance of this {@link RTAArtifactLabel} class
+   */
    @Nonnull public RTAArtifactLabel key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-    * Get key
-    * @return key  The key of this {@link RTAArtifactLabel} instance.
-    */
+   * Get key
+   * @return key  The key of this {@link RTAArtifactLabel} instance.
+  **/
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-   * Set the key of this {@link RTAArtifactLabel} instance.
-   *
-   * @param key  The key of this {@link RTAArtifactLabel}
-   */
+  * Set the key of this {@link RTAArtifactLabel} instance.
+  *
+  * @param key  The key of this {@link RTAArtifactLabel}
+  */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-    * Set the value of this {@link RTAArtifactLabel} instance and return the same instance.
-    *
-    * @param value  The value of this {@link RTAArtifactLabel}
-    * @return The same instance of this {@link RTAArtifactLabel} class
-    */
+   * Set the value of this {@link RTAArtifactLabel} instance and return the same instance.
+   *
+   * @param value  The value of this {@link RTAArtifactLabel}
+   * @return The same instance of this {@link RTAArtifactLabel} class
+   */
    @Nonnull public RTAArtifactLabel value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-    * Get value
-    * @return value  The value of this {@link RTAArtifactLabel} instance.
-    */
+   * Get value
+   * @return value  The value of this {@link RTAArtifactLabel} instance.
+  **/
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-   * Set the value of this {@link RTAArtifactLabel} instance.
-   *
-   * @param value  The value of this {@link RTAArtifactLabel}
-   */
+  * Set the value of this {@link RTAArtifactLabel} instance.
+  *
+  * @param value  The value of this {@link RTAArtifactLabel}
+  */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -185,7 +186,6 @@ public class RTAArtifactLabel
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

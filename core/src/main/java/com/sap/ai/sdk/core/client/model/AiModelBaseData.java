@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * AiModelBaseData
  */
+
 // CHECKSTYLE:OFF
 public class AiModelBaseData 
 // CHECKSTYLE:ON
@@ -63,105 +64,105 @@ public class AiModelBaseData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the model of this {@link AiModelBaseData} instance and return the same instance.
-    *
-    * @param model  Name of the model
-    * @return The same instance of this {@link AiModelBaseData} class
-    */
+   * Set the model of this {@link AiModelBaseData} instance and return the same instance.
+   *
+   * @param model  Name of the model
+   * @return The same instance of this {@link AiModelBaseData} class
+   */
    @Nonnull public AiModelBaseData model(@Nonnull final String model) {
     this.model = model;
     return this;
   }
 
    /**
-    * Name of the model
-    * @return model  The model of this {@link AiModelBaseData} instance.
-    */
+   * Name of the model
+   * @return model  The model of this {@link AiModelBaseData} instance.
+  **/
   @Nonnull public String getModel() {
     return model;
   }
 
   /**
-   * Set the model of this {@link AiModelBaseData} instance.
-   *
-   * @param model  Name of the model
-   */
+  * Set the model of this {@link AiModelBaseData} instance.
+  *
+  * @param model  Name of the model
+  */
   public void setModel( @Nonnull final String model) {
     this.model = model;
   }
 
    /**
-    * Set the executableId of this {@link AiModelBaseData} instance and return the same instance.
-    *
-    * @param executableId  ID of the executable
-    * @return The same instance of this {@link AiModelBaseData} class
-    */
+   * Set the executableId of this {@link AiModelBaseData} instance and return the same instance.
+   *
+   * @param executableId  ID of the executable
+   * @return The same instance of this {@link AiModelBaseData} class
+   */
    @Nonnull public AiModelBaseData executableId(@Nonnull final String executableId) {
     this.executableId = executableId;
     return this;
   }
 
    /**
-    * ID of the executable
-    * @return executableId  The executableId of this {@link AiModelBaseData} instance.
-    */
+   * ID of the executable
+   * @return executableId  The executableId of this {@link AiModelBaseData} instance.
+  **/
   @Nonnull public String getExecutableId() {
     return executableId;
   }
 
   /**
-   * Set the executableId of this {@link AiModelBaseData} instance.
-   *
-   * @param executableId  ID of the executable
-   */
+  * Set the executableId of this {@link AiModelBaseData} instance.
+  *
+  * @param executableId  ID of the executable
+  */
   public void setExecutableId( @Nonnull final String executableId) {
     this.executableId = executableId;
   }
 
    /**
-    * Set the description of this {@link AiModelBaseData} instance and return the same instance.
-    *
-    * @param description  Description of the model and its capabilities
-    * @return The same instance of this {@link AiModelBaseData} class
-    */
+   * Set the description of this {@link AiModelBaseData} instance and return the same instance.
+   *
+   * @param description  Description of the model and its capabilities
+   * @return The same instance of this {@link AiModelBaseData} class
+   */
    @Nonnull public AiModelBaseData description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Description of the model and its capabilities
-    * @return description  The description of this {@link AiModelBaseData} instance.
-    */
+   * Description of the model and its capabilities
+   * @return description  The description of this {@link AiModelBaseData} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link AiModelBaseData} instance.
-   *
-   * @param description  Description of the model and its capabilities
-   */
+  * Set the description of this {@link AiModelBaseData} instance.
+  *
+  * @param description  Description of the model and its capabilities
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the versions of this {@link AiModelBaseData} instance and return the same instance.
-    *
-    * @param versions  List of model versions that the model object has
-    * @return The same instance of this {@link AiModelBaseData} class
-    */
+   * Set the versions of this {@link AiModelBaseData} instance and return the same instance.
+   *
+   * @param versions  List of model versions that the model object has
+   * @return The same instance of this {@link AiModelBaseData} class
+   */
    @Nonnull public AiModelBaseData versions(@Nonnull final List<AiModelVersion> versions) {
     this.versions = versions;
     return this;
   }
   /**
-   * Add one versions instance to this {@link AiModelBaseData}.
-   * @param versionsItem The versions that should be added
-   * @return The same instance of type {@link AiModelBaseData}
-   */
-  @Nonnull public AiModelBaseData addVersionsItem( @Nonnull final AiModelVersion versionsItem) {
+  * Add one versions instance to this {@link AiModelBaseData}.
+  * @param versionsItem The versions that should be added
+  * @return The same instance of type {@link AiModelBaseData}
+  */
+  @Nonnull public AiModelBaseData addversionsItem( @Nonnull final AiModelVersion versionsItem) {
     if (this.versions == null) {
       this.versions = new ArrayList<>();
     }
@@ -170,18 +171,18 @@ public class AiModelBaseData
   }
 
    /**
-    * List of model versions that the model object has
-    * @return versions  The versions of this {@link AiModelBaseData} instance.
-    */
+   * List of model versions that the model object has
+   * @return versions  The versions of this {@link AiModelBaseData} instance.
+  **/
   @Nonnull public List<AiModelVersion> getVersions() {
     return versions;
   }
 
   /**
-   * Set the versions of this {@link AiModelBaseData} instance.
-   *
-   * @param versions  List of model versions that the model object has
-   */
+  * Set the versions of this {@link AiModelBaseData} instance.
+  *
+  * @param versions  List of model versions that the model object has
+  */
   public void setVersions( @Nonnull final List<AiModelVersion> versions) {
     this.versions = versions;
   }
@@ -267,7 +268,6 @@ public class AiModelBaseData
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

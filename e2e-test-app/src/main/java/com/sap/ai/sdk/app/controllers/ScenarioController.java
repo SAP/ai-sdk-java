@@ -21,6 +21,6 @@ public class ScenarioController {
    */
   @GetMapping("/scenarios")
   AiScenarioList getScenarios() {
-    return API.scenarioQuery("default");
+    return API.query("default");
   }
 }

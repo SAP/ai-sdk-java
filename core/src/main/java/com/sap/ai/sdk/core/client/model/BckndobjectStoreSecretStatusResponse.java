@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * This represents a list of meta-data of a stored secret. The &#39;data&#39; field of the secret is never retrieved.
  */
+
 // CHECKSTYLE:OFF
 public class BckndobjectStoreSecretStatusResponse 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class BckndobjectStoreSecretStatusResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
-    */
+   * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
+   */
    @Nonnull public BckndobjectStoreSecretStatusResponse count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BckndobjectStoreSecretStatusResponse} instance.
-    */
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BckndobjectStoreSecretStatusResponse} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance.
-   *
-   * @param count  Number of the resource instances in the list
-   */
+  * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance.
+  *
+  * @param count  Number of the resource instances in the list
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
-    */
+   * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
+   */
    @Nonnull public BckndobjectStoreSecretStatusResponse resources(@Nonnull final List<BckndobjectStoreSecretStatus> resources) {
     this.resources = resources;
     return this;
   }
   /**
-   * Add one resources instance to this {@link BckndobjectStoreSecretStatusResponse}.
-   * @param resourcesItem The resources that should be added
-   * @return The same instance of type {@link BckndobjectStoreSecretStatusResponse}
-   */
-  @Nonnull public BckndobjectStoreSecretStatusResponse addResourcesItem( @Nonnull final BckndobjectStoreSecretStatus resourcesItem) {
+  * Add one resources instance to this {@link BckndobjectStoreSecretStatusResponse}.
+  * @param resourcesItem The resources that should be added
+  * @return The same instance of type {@link BckndobjectStoreSecretStatusResponse}
+  */
+  @Nonnull public BckndobjectStoreSecretStatusResponse addresourcesItem( @Nonnull final BckndobjectStoreSecretStatus resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class BckndobjectStoreSecretStatusResponse
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
+  **/
   @Nonnull public List<BckndobjectStoreSecretStatus> getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
-   *
-   * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
-   */
+  * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
+  *
+  * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
+  */
   public void setResources( @Nonnull final List<BckndobjectStoreSecretStatus> resources) {
     this.resources = resources;
   }
@@ -201,7 +202,6 @@ public class BckndobjectStoreSecretStatusResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

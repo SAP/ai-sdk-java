@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * A dictionary of name-value pairs to support segregation at execution level.
  */
+
 // CHECKSTYLE:OFF
 public class TrckTag 
 // CHECKSTYLE:ON
@@ -54,57 +55,57 @@ public class TrckTag
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the name of this {@link TrckTag} instance and return the same instance.
-    *
-    * @param name  The name of this {@link TrckTag}
-    * @return The same instance of this {@link TrckTag} class
-    */
+   * Set the name of this {@link TrckTag} instance and return the same instance.
+   *
+   * @param name  The name of this {@link TrckTag}
+   * @return The same instance of this {@link TrckTag} class
+   */
    @Nonnull public TrckTag name(@Nonnull final TrckTagName name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Get name
-    * @return name  The name of this {@link TrckTag} instance.
-    */
+   * Get name
+   * @return name  The name of this {@link TrckTag} instance.
+  **/
   @Nonnull public TrckTagName getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link TrckTag} instance.
-   *
-   * @param name  The name of this {@link TrckTag}
-   */
+  * Set the name of this {@link TrckTag} instance.
+  *
+  * @param name  The name of this {@link TrckTag}
+  */
   public void setName( @Nonnull final TrckTagName name) {
     this.name = name;
   }
 
    /**
-    * Set the value of this {@link TrckTag} instance and return the same instance.
-    *
-    * @param value  tag value
-    * @return The same instance of this {@link TrckTag} class
-    */
+   * Set the value of this {@link TrckTag} instance and return the same instance.
+   *
+   * @param value  tag value
+   * @return The same instance of this {@link TrckTag} class
+   */
    @Nonnull public TrckTag value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-    * tag value
-    * @return value  The value of this {@link TrckTag} instance.
-    */
+   * tag value
+   * @return value  The value of this {@link TrckTag} instance.
+  **/
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-   * Set the value of this {@link TrckTag} instance.
-   *
-   * @param value  tag value
-   */
+  * Set the value of this {@link TrckTag} instance.
+  *
+  * @param value  tag value
+  */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -186,7 +187,6 @@ public class TrckTag
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

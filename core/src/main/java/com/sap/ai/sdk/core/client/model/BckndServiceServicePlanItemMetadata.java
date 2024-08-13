@@ -41,6 +41,7 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceServicePlanItemMetadata
  */
+
 // CHECKSTYLE:OFF
 public class BckndServiceServicePlanItemMetadata 
 // CHECKSTYLE:ON
@@ -112,21 +113,21 @@ public class BckndServiceServicePlanItemMetadata
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance and return the same instance.
-    *
-    * @param supportedPlatforms  supported platforms of the service plan
-    * @return The same instance of this {@link BckndServiceServicePlanItemMetadata} class
-    */
+   * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance and return the same instance.
+   *
+   * @param supportedPlatforms  supported platforms of the service plan
+   * @return The same instance of this {@link BckndServiceServicePlanItemMetadata} class
+   */
    @Nonnull public BckndServiceServicePlanItemMetadata supportedPlatforms(@Nonnull final List<SupportedPlatformsEnum> supportedPlatforms) {
     this.supportedPlatforms = supportedPlatforms;
     return this;
   }
   /**
-   * Add one supportedPlatforms instance to this {@link BckndServiceServicePlanItemMetadata}.
-   * @param supportedPlatformsItem The supportedPlatforms that should be added
-   * @return The same instance of type {@link BckndServiceServicePlanItemMetadata}
-   */
-  @Nonnull public BckndServiceServicePlanItemMetadata addSupportedPlatformsItem( @Nonnull final SupportedPlatformsEnum supportedPlatformsItem) {
+  * Add one supportedPlatforms instance to this {@link BckndServiceServicePlanItemMetadata}.
+  * @param supportedPlatformsItem The supportedPlatforms that should be added
+  * @return The same instance of type {@link BckndServiceServicePlanItemMetadata}
+  */
+  @Nonnull public BckndServiceServicePlanItemMetadata addsupportedPlatformsItem( @Nonnull final SupportedPlatformsEnum supportedPlatformsItem) {
     if (this.supportedPlatforms == null) {
       this.supportedPlatforms = new ArrayList<>();
     }
@@ -135,18 +136,18 @@ public class BckndServiceServicePlanItemMetadata
   }
 
    /**
-    * supported platforms of the service plan
-    * @return supportedPlatforms  The supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance.
-    */
+   * supported platforms of the service plan
+   * @return supportedPlatforms  The supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance.
+  **/
   @Nonnull public List<SupportedPlatformsEnum> getSupportedPlatforms() {
     return supportedPlatforms;
   }
 
   /**
-   * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance.
-   *
-   * @param supportedPlatforms  supported platforms of the service plan
-   */
+  * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance.
+  *
+  * @param supportedPlatforms  supported platforms of the service plan
+  */
   public void setSupportedPlatforms( @Nonnull final List<SupportedPlatformsEnum> supportedPlatforms) {
     this.supportedPlatforms = supportedPlatforms;
   }
@@ -226,7 +227,6 @@ public class BckndServiceServicePlanItemMetadata
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

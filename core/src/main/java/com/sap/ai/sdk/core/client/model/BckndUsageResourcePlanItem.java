@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndUsageResourcePlanItem
  */
+
 // CHECKSTYLE:OFF
 public class BckndUsageResourcePlanItem 
 // CHECKSTYLE:ON
@@ -60,77 +61,77 @@ public class BckndUsageResourcePlanItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the plan of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
-    *
-    * @param plan  The plan of this {@link BckndUsageResourcePlanItem}
-    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
-    */
+   * Set the plan of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
+   *
+   * @param plan  The plan of this {@link BckndUsageResourcePlanItem}
+   * @return The same instance of this {@link BckndUsageResourcePlanItem} class
+   */
    @Nonnull public BckndUsageResourcePlanItem plan(@Nonnull final String plan) {
     this.plan = plan;
     return this;
   }
 
    /**
-    * Get plan
-    * @return plan  The plan of this {@link BckndUsageResourcePlanItem} instance.
-    */
+   * Get plan
+   * @return plan  The plan of this {@link BckndUsageResourcePlanItem} instance.
+  **/
   @Nonnull public String getPlan() {
     return plan;
   }
 
   /**
-   * Set the plan of this {@link BckndUsageResourcePlanItem} instance.
-   *
-   * @param plan  The plan of this {@link BckndUsageResourcePlanItem}
-   */
+  * Set the plan of this {@link BckndUsageResourcePlanItem} instance.
+  *
+  * @param plan  The plan of this {@link BckndUsageResourcePlanItem}
+  */
   public void setPlan( @Nonnull final String plan) {
     this.plan = plan;
   }
 
    /**
-    * Set the count of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
-    *
-    * @param count  The count of this {@link BckndUsageResourcePlanItem}
-    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
-    */
+   * Set the count of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
+   *
+   * @param count  The count of this {@link BckndUsageResourcePlanItem}
+   * @return The same instance of this {@link BckndUsageResourcePlanItem} class
+   */
    @Nonnull public BckndUsageResourcePlanItem count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Get count
-    * @return count  The count of this {@link BckndUsageResourcePlanItem} instance.
-    */
+   * Get count
+   * @return count  The count of this {@link BckndUsageResourcePlanItem} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link BckndUsageResourcePlanItem} instance.
-   *
-   * @param count  The count of this {@link BckndUsageResourcePlanItem}
-   */
+  * Set the count of this {@link BckndUsageResourcePlanItem} instance.
+  *
+  * @param count  The count of this {@link BckndUsageResourcePlanItem}
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the usage of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link BckndUsageResourcePlanItem}
-    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
-    */
+   * Set the usage of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link BckndUsageResourcePlanItem}
+   * @return The same instance of this {@link BckndUsageResourcePlanItem} class
+   */
    @Nonnull public BckndUsageResourcePlanItem usage(@Nonnull final List<BckndNestedUsageItem> usage) {
     this.usage = usage;
     return this;
   }
   /**
-   * Add one usage instance to this {@link BckndUsageResourcePlanItem}.
-   * @param usageItem The usage that should be added
-   * @return The same instance of type {@link BckndUsageResourcePlanItem}
-   */
-  @Nonnull public BckndUsageResourcePlanItem addUsageItem( @Nonnull final BckndNestedUsageItem usageItem) {
+  * Add one usage instance to this {@link BckndUsageResourcePlanItem}.
+  * @param usageItem The usage that should be added
+  * @return The same instance of type {@link BckndUsageResourcePlanItem}
+  */
+  @Nonnull public BckndUsageResourcePlanItem addusageItem( @Nonnull final BckndNestedUsageItem usageItem) {
     if (this.usage == null) {
       this.usage = new ArrayList<>();
     }
@@ -139,18 +140,18 @@ public class BckndUsageResourcePlanItem
   }
 
    /**
-    * Get usage
-    * @return usage  The usage of this {@link BckndUsageResourcePlanItem} instance.
-    */
+   * Get usage
+   * @return usage  The usage of this {@link BckndUsageResourcePlanItem} instance.
+  **/
   @Nonnull public List<BckndNestedUsageItem> getUsage() {
     return usage;
   }
 
   /**
-   * Set the usage of this {@link BckndUsageResourcePlanItem} instance.
-   *
-   * @param usage  The usage of this {@link BckndUsageResourcePlanItem}
-   */
+  * Set the usage of this {@link BckndUsageResourcePlanItem} instance.
+  *
+  * @param usage  The usage of this {@link BckndUsageResourcePlanItem}
+  */
   public void setUsage( @Nonnull final List<BckndNestedUsageItem> usage) {
     this.usage = usage;
   }
@@ -234,7 +235,6 @@ public class BckndUsageResourcePlanItem
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

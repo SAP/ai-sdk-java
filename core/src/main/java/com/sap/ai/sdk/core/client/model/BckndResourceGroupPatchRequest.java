@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGroupPatchRequest
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourceGroupPatchRequest 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class BckndResourceGroupPatchRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the labels of this {@link BckndResourceGroupPatchRequest} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link BckndResourceGroupPatchRequest} class
-    */
+   * Set the labels of this {@link BckndResourceGroupPatchRequest} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndResourceGroupPatchRequest} class
+   */
    @Nonnull public BckndResourceGroupPatchRequest labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link BckndResourceGroupPatchRequest}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link BckndResourceGroupPatchRequest}
-   */
-  @Nonnull public BckndResourceGroupPatchRequest addLabelsItem( @Nonnull final BckndResourceGroupLabel labelsItem) {
+  * Add one labels instance to this {@link BckndResourceGroupPatchRequest}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link BckndResourceGroupPatchRequest}
+  */
+  @Nonnull public BckndResourceGroupPatchRequest addlabelsItem( @Nonnull final BckndResourceGroupLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -77,18 +78,18 @@ public class BckndResourceGroupPatchRequest
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link BckndResourceGroupPatchRequest} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link BckndResourceGroupPatchRequest} instance.
+  **/
   @Nonnull public List<BckndResourceGroupLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link BckndResourceGroupPatchRequest} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link BckndResourceGroupPatchRequest} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
@@ -168,7 +169,6 @@ public class BckndResourceGroupPatchRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

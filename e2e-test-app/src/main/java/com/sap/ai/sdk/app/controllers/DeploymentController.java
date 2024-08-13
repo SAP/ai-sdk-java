@@ -39,12 +39,11 @@ class DeploymentController {
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
-        API.deploymentCreate(
-            "default", new AiDeploymentCreationRequest().configurationId(configId));
+        API.create("default", new AiDeploymentCreationRequest().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
-    return API.deploymentDelete("default", Objects.requireNonNull(deployment).getId());
+    return API.delete("default", Objects.requireNonNull(deployment).getId());
   }
 
   /**
@@ -67,7 +66,7 @@ class DeploymentController {
     return myDeployments.stream()
         .map(
             deployment ->
-                API.deploymentModify(
+                API.modify(
                     "default",
                     deployment.getId(),
                     new AiDeploymentModificationRequest()
@@ -93,7 +92,7 @@ class DeploymentController {
 
     // DELETE my deployments
     return myDeployments.stream()
-        .map(deployment -> API.deploymentDelete("default", deployment.getId()))
+        .map(deployment -> API.delete("default", deployment.getId()))
         .toList();
   }
 
@@ -106,7 +105,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
-    final AiDeploymentList deploymentList = API.deploymentQuery("default");
+    final AiDeploymentList deploymentList = API.query("default");
 
     return Objects.requireNonNull(deploymentList).getResources().stream()
         .filter(deployment -> configId.equals(deployment.getConfigurationId()))
@@ -121,6 +120,6 @@ class DeploymentController {
   @GetMapping("/getAll")
   @Nullable
   public AiDeploymentList getAll() {
-    return API.deploymentQuery("default");
+    return API.query("default");
   }
 }

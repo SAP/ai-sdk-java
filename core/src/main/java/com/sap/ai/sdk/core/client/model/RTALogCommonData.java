@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * RTALogCommonData
  */
+
 // CHECKSTYLE:OFF
 public class RTALogCommonData 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class RTALogCommonData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the result of this {@link RTALogCommonData} instance and return the same instance.
-    *
-    * @param result  The result of this {@link RTALogCommonData}
-    * @return The same instance of this {@link RTALogCommonData} class
-    */
+   * Set the result of this {@link RTALogCommonData} instance and return the same instance.
+   *
+   * @param result  The result of this {@link RTALogCommonData}
+   * @return The same instance of this {@link RTALogCommonData} class
+   */
    @Nonnull public RTALogCommonData result(@Nonnull final List<RTALogCommonResultItem> result) {
     this.result = result;
     return this;
   }
   /**
-   * Add one result instance to this {@link RTALogCommonData}.
-   * @param resultItem The result that should be added
-   * @return The same instance of type {@link RTALogCommonData}
-   */
-  @Nonnull public RTALogCommonData addResultItem( @Nonnull final RTALogCommonResultItem resultItem) {
+  * Add one result instance to this {@link RTALogCommonData}.
+  * @param resultItem The result that should be added
+  * @return The same instance of type {@link RTALogCommonData}
+  */
+  @Nonnull public RTALogCommonData addresultItem( @Nonnull final RTALogCommonResultItem resultItem) {
     if (this.result == null) {
       this.result = new ArrayList<>();
     }
@@ -77,18 +78,18 @@ public class RTALogCommonData
   }
 
    /**
-    * Get result
-    * @return result  The result of this {@link RTALogCommonData} instance.
-    */
+   * Get result
+   * @return result  The result of this {@link RTALogCommonData} instance.
+  **/
   @Nonnull public List<RTALogCommonResultItem> getResult() {
     return result;
   }
 
   /**
-   * Set the result of this {@link RTALogCommonData} instance.
-   *
-   * @param result  The result of this {@link RTALogCommonData}
-   */
+  * Set the result of this {@link RTALogCommonData} instance.
+  *
+  * @param result  The result of this {@link RTALogCommonData}
+  */
   public void setResult( @Nonnull final List<RTALogCommonResultItem> result) {
     this.result = result;
   }
@@ -168,7 +169,6 @@ public class RTALogCommonData
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

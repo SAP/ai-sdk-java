@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * A common log query response. 
  */
+
 // CHECKSTYLE:OFF
 public class RTALogCommonResponse 
 // CHECKSTYLE:ON
@@ -51,29 +52,29 @@ public class RTALogCommonResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the data of this {@link RTALogCommonResponse} instance and return the same instance.
-    *
-    * @param data  The data of this {@link RTALogCommonResponse}
-    * @return The same instance of this {@link RTALogCommonResponse} class
-    */
+   * Set the data of this {@link RTALogCommonResponse} instance and return the same instance.
+   *
+   * @param data  The data of this {@link RTALogCommonResponse}
+   * @return The same instance of this {@link RTALogCommonResponse} class
+   */
    @Nonnull public RTALogCommonResponse data(@Nonnull final RTALogCommonData data) {
     this.data = data;
     return this;
   }
 
    /**
-    * Get data
-    * @return data  The data of this {@link RTALogCommonResponse} instance.
-    */
+   * Get data
+   * @return data  The data of this {@link RTALogCommonResponse} instance.
+  **/
   @Nonnull public RTALogCommonData getData() {
     return data;
   }
 
   /**
-   * Set the data of this {@link RTALogCommonResponse} instance.
-   *
-   * @param data  The data of this {@link RTALogCommonResponse}
-   */
+  * Set the data of this {@link RTALogCommonResponse} instance.
+  *
+  * @param data  The data of this {@link RTALogCommonResponse}
+  */
   public void setData( @Nonnull final RTALogCommonData data) {
     this.data = data;
   }
@@ -153,7 +154,6 @@ public class RTALogCommonResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

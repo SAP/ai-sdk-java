@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * FilteringConfig
  */
+
 // CHECKSTYLE:OFF
 public class FilteringConfig 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class FilteringConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the filters of this {@link FilteringConfig} instance and return the same instance.
-    *
-    * @param filters  Filters to be used
-    * @return The same instance of this {@link FilteringConfig} class
-    */
+   * Set the filters of this {@link FilteringConfig} instance and return the same instance.
+   *
+   * @param filters  Filters to be used
+   * @return The same instance of this {@link FilteringConfig} class
+   */
    @Nonnull public FilteringConfig filters(@Nonnull final List<Filter> filters) {
     this.filters = filters;
     return this;
   }
   /**
-   * Add one filters instance to this {@link FilteringConfig}.
-   * @param filtersItem The filters that should be added
-   * @return The same instance of type {@link FilteringConfig}
-   */
-  @Nonnull public FilteringConfig addFiltersItem( @Nonnull final Filter filtersItem) {
+  * Add one filters instance to this {@link FilteringConfig}.
+  * @param filtersItem The filters that should be added
+  * @return The same instance of type {@link FilteringConfig}
+  */
+  @Nonnull public FilteringConfig addfiltersItem( @Nonnull final Filter filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -77,18 +78,18 @@ public class FilteringConfig
   }
 
    /**
-    * Filters to be used
-    * @return filters  The filters of this {@link FilteringConfig} instance.
-    */
+   * Filters to be used
+   * @return filters  The filters of this {@link FilteringConfig} instance.
+  **/
   @Nonnull public List<Filter> getFilters() {
     return filters;
   }
 
   /**
-   * Set the filters of this {@link FilteringConfig} instance.
-   *
-   * @param filters  Filters to be used
-   */
+  * Set the filters of this {@link FilteringConfig} instance.
+  *
+  * @param filters  Filters to be used
+  */
   public void setFilters( @Nonnull final List<Filter> filters) {
     this.filters = filters;
   }
@@ -168,7 +169,6 @@ public class FilteringConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

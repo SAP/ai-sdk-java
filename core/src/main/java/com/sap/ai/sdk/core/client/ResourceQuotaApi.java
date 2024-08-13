@@ -7,9 +7,9 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.BckndCommonResourceQuotaResponse;
-import com.sap.ai.sdk.core.client.model.BckndErrorResponse;
-import com.sap.ai.sdk.core.client.model.BckndExecutableResourceQuotaResponse;
+import com.sap.ai.sdk.core.client.model.BckndCommonResourceQuotaResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndErrorResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndExecutableResourceQuotaResponse ; //NOPMD
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,27 +32,28 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
- *
- * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
- */
+* AI Core in version 2.32.1.
+*
+* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+*/
+
 public class ResourceQuotaApi extends AbstractOpenApiService {
     /**
-     * Instantiates this API class to invoke operations on the AI Core.
-     *
-     * @param httpDestination The destination that API should be used with
-     */
+    * Instantiates this API class to invoke operations on the AI Core.
+    *
+    * @param httpDestination The destination that API should be used with
+    */
     public ResourceQuotaApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-     *
-     * @param apiClient
-     *            ApiClient to invoke the API on
-     */
+    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+    *
+    * @param apiClient
+    *            ApiClient to invoke the API on
+    */
     @Beta
     public ResourceQuotaApi( @Nonnull final ApiClient apiClient )
     {
@@ -72,8 +73,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @return BckndCommonResourceQuotaResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetApplicationQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    @Nullable  public BckndCommonResourceQuotaResponse getApplicationQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/applications").build().toUriString();
@@ -102,16 +102,15 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get the quota for applications</p>
-     * <p>Get the details about quota and usage for applications</p>
+    * <p>Get the quota for applications</p>
+     *<p>Get the details about quota and usage for applications</p>
      * <p><b>200</b> - quota for applications
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndCommonResourceQuotaResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndCommonResourceQuotaResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetApplicationQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetApplicationQuota(null, null);
+    @Nullable   public BckndCommonResourceQuotaResponse getApplicationQuota() throws OpenApiRequestException {
+        return getApplicationQuota(null, null);
     }
 
     /**
@@ -126,8 +125,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @return BckndCommonResourceQuotaResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    @Nullable  public BckndCommonResourceQuotaResponse getDockerRegistrySecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/dockerRegistrySecrets").build().toUriString();
@@ -156,16 +154,15 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get the quota for docker registry secrets</p>
-     * <p>Get the details about quota and usage for docker registry secrets</p>
+    * <p>Get the quota for docker registry secrets</p>
+     *<p>Get the details about quota and usage for docker registry secrets</p>
      * <p><b>200</b> - quota for generic secrets on the tenant level
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndCommonResourceQuotaResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndCommonResourceQuotaResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota(null, null);
+    @Nullable   public BckndCommonResourceQuotaResponse getDockerRegistrySecretQuota() throws OpenApiRequestException {
+        return getDockerRegistrySecretQuota(null, null);
     }
 
     /**
@@ -180,8 +177,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @return BckndExecutableResourceQuotaResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndExecutableResourceQuotaResponse kubesubmitV4ResourceQuotaGetExecutableQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    @Nullable  public BckndExecutableResourceQuotaResponse getExecutableQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/executables").build().toUriString();
@@ -210,16 +206,15 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get the quota for executables</p>
-     * <p>Get the details about quota and usage for executables</p>
+    * <p>Get the quota for executables</p>
+     *<p>Get the details about quota and usage for executables</p>
      * <p><b>200</b> - quota for executable
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndExecutableResourceQuotaResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndExecutableResourceQuotaResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndExecutableResourceQuotaResponse kubesubmitV4ResourceQuotaGetExecutableQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetExecutableQuota(null, null);
+    @Nullable   public BckndExecutableResourceQuotaResponse getExecutableQuota() throws OpenApiRequestException {
+        return getExecutableQuota(null, null);
     }
 
     /**
@@ -234,8 +229,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @return BckndCommonResourceQuotaResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetGenericSecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    @Nullable  public BckndCommonResourceQuotaResponse getGenericSecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/secrets").build().toUriString();
@@ -264,16 +258,15 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get the quota for tenant-level generic secrets</p>
-     * <p>Get the details about quota and usage for tenant-level generic secrets</p>
+    * <p>Get the quota for tenant-level generic secrets</p>
+     *<p>Get the details about quota and usage for tenant-level generic secrets</p>
      * <p><b>200</b> - quota for generic secrets on the tenant level
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndCommonResourceQuotaResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndCommonResourceQuotaResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetGenericSecretQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetGenericSecretQuota(null, null);
+    @Nullable   public BckndCommonResourceQuotaResponse getGenericSecretQuota() throws OpenApiRequestException {
+        return getGenericSecretQuota(null, null);
     }
 
     /**
@@ -288,8 +281,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @return BckndCommonResourceQuotaResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetRepositoryQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    @Nullable  public BckndCommonResourceQuotaResponse getRepositoryQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/repositories").build().toUriString();
@@ -318,16 +310,15 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get the quota for repositories</p>
-     * <p>Get the details about quota and usage for repositories</p>
+    * <p>Get the quota for repositories</p>
+     *<p>Get the details about quota and usage for repositories</p>
      * <p><b>200</b> - quota for repositories
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndCommonResourceQuotaResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndCommonResourceQuotaResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetRepositoryQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetRepositoryQuota(null, null);
+    @Nullable   public BckndCommonResourceQuotaResponse getRepositoryQuota() throws OpenApiRequestException {
+        return getRepositoryQuota(null, null);
     }
 
     /**
@@ -342,8 +333,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @return BckndCommonResourceQuotaResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetResourceGroupQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    @Nullable  public BckndCommonResourceQuotaResponse getResourceGroupQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/resourceGroups").build().toUriString();
@@ -372,15 +362,14 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get the quota for resource groups</p>
-     * <p>Get the details about quota and usage for resource groups</p>
+    * <p>Get the quota for resource groups</p>
+     *<p>Get the details about quota and usage for resource groups</p>
      * <p><b>200</b> - quota for resourcegroups
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndCommonResourceQuotaResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndCommonResourceQuotaResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetResourceGroupQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetResourceGroupQuota(null, null);
+    @Nullable   public BckndCommonResourceQuotaResponse getResourceGroupQuota() throws OpenApiRequestException {
+        return getResourceGroupQuota(null, null);
     }
 }

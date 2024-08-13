@@ -77,7 +77,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     final AiDeploymentList deploymentList =
-        new DeploymentApi(getClient(destination)).deploymentQuery("default");
+        new DeploymentApi(getClient(destination)).query("default");
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
     assertThat(deploymentList.getResources().size()).isEqualTo(1);
@@ -121,8 +121,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     AiDeploymentCreationRequest deploymentCreationRequest =
         new AiDeploymentCreationRequest().configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(getClient(destination))
-            .deploymentCreate("default", deploymentCreationRequest);
+        new DeploymentApi(getClient(destination)).create("default", deploymentCreationRequest);
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEqualTo("");
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -150,7 +149,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         new AiDeploymentModificationRequest().targetStatus(AiDeploymentTargetStatus.STOPPED);
     AiDeploymentModificationResponse deployment =
         new DeploymentApi(getClient(destination))
-            .deploymentModify("default", "d19b998f347341aa", configModification);
+            .modify("default", "d19b998f347341aa", configModification);
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment modification scheduled");
@@ -187,7 +186,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     final AiDeploymentDeletionResponse deployment =
-        new DeploymentApi(getClient(destination)).deploymentDelete("default", "d5b764fe55b3e87c");
+        new DeploymentApi(getClient(destination)).delete("default", "d5b764fe55b3e87c");
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     // targetStatus is not in the generated client, but we can still get it from the

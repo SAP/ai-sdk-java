@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndDeploymentUsage
  */
+
 // CHECKSTYLE:OFF
 public class BckndDeploymentUsage 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class BckndDeploymentUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
-    *
-    * @param count  The count of this {@link BckndDeploymentUsage}
-    * @return The same instance of this {@link BckndDeploymentUsage} class
-    */
+   * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
+   *
+   * @param count  The count of this {@link BckndDeploymentUsage}
+   * @return The same instance of this {@link BckndDeploymentUsage} class
+   */
    @Nonnull public BckndDeploymentUsage count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Get count
-    * @return count  The count of this {@link BckndDeploymentUsage} instance.
-    */
+   * Get count
+   * @return count  The count of this {@link BckndDeploymentUsage} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link BckndDeploymentUsage} instance.
-   *
-   * @param count  The count of this {@link BckndDeploymentUsage}
-   */
+  * Set the count of this {@link BckndDeploymentUsage} instance.
+  *
+  * @param count  The count of this {@link BckndDeploymentUsage}
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resourcePlans of this {@link BckndDeploymentUsage} instance and return the same instance.
-    *
-    * @param resourcePlans  The resourcePlans of this {@link BckndDeploymentUsage}
-    * @return The same instance of this {@link BckndDeploymentUsage} class
-    */
+   * Set the resourcePlans of this {@link BckndDeploymentUsage} instance and return the same instance.
+   *
+   * @param resourcePlans  The resourcePlans of this {@link BckndDeploymentUsage}
+   * @return The same instance of this {@link BckndDeploymentUsage} class
+   */
    @Nonnull public BckndDeploymentUsage resourcePlans(@Nonnull final List<BckndUsageResourcePlanItem> resourcePlans) {
     this.resourcePlans = resourcePlans;
     return this;
   }
   /**
-   * Add one resourcePlans instance to this {@link BckndDeploymentUsage}.
-   * @param resourcePlansItem The resourcePlans that should be added
-   * @return The same instance of type {@link BckndDeploymentUsage}
-   */
-  @Nonnull public BckndDeploymentUsage addResourcePlansItem( @Nonnull final BckndUsageResourcePlanItem resourcePlansItem) {
+  * Add one resourcePlans instance to this {@link BckndDeploymentUsage}.
+  * @param resourcePlansItem The resourcePlans that should be added
+  * @return The same instance of type {@link BckndDeploymentUsage}
+  */
+  @Nonnull public BckndDeploymentUsage addresourcePlansItem( @Nonnull final BckndUsageResourcePlanItem resourcePlansItem) {
     if (this.resourcePlans == null) {
       this.resourcePlans = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class BckndDeploymentUsage
   }
 
    /**
-    * Get resourcePlans
-    * @return resourcePlans  The resourcePlans of this {@link BckndDeploymentUsage} instance.
-    */
+   * Get resourcePlans
+   * @return resourcePlans  The resourcePlans of this {@link BckndDeploymentUsage} instance.
+  **/
   @Nonnull public List<BckndUsageResourcePlanItem> getResourcePlans() {
     return resourcePlans;
   }
 
   /**
-   * Set the resourcePlans of this {@link BckndDeploymentUsage} instance.
-   *
-   * @param resourcePlans  The resourcePlans of this {@link BckndDeploymentUsage}
-   */
+  * Set the resourcePlans of this {@link BckndDeploymentUsage} instance.
+  *
+  * @param resourcePlans  The resourcePlans of this {@link BckndDeploymentUsage}
+  */
   public void setResourcePlans( @Nonnull final List<BckndUsageResourcePlanItem> resourcePlans) {
     this.resourcePlans = resourcePlans;
   }
@@ -201,7 +202,6 @@ public class BckndDeploymentUsage
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceServiceCatalogItemExtendCredentials
  */
+
 // CHECKSTYLE:OFF
 public class BckndServiceServiceCatalogItemExtendCredentials 
 // CHECKSTYLE:ON
@@ -51,29 +52,29 @@ public class BckndServiceServiceCatalogItemExtendCredentials
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the shared of this {@link BckndServiceServiceCatalogItemExtendCredentials} instance and return the same instance.
-    *
-    * @param shared  The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentials} class
-    */
+   * Set the shared of this {@link BckndServiceServiceCatalogItemExtendCredentials} instance and return the same instance.
+   *
+   * @param shared  The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentials} class
+   */
    @Nonnull public BckndServiceServiceCatalogItemExtendCredentials shared(@Nonnull final BckndServiceServiceCatalogItemExtendCredentialsShared shared) {
     this.shared = shared;
     return this;
   }
 
    /**
-    * Get shared
-    * @return shared  The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials} instance.
-    */
+   * Get shared
+   * @return shared  The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials} instance.
+  **/
   @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsShared getShared() {
     return shared;
   }
 
   /**
-   * Set the shared of this {@link BckndServiceServiceCatalogItemExtendCredentials} instance.
-   *
-   * @param shared  The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials}
-   */
+  * Set the shared of this {@link BckndServiceServiceCatalogItemExtendCredentials} instance.
+  *
+  * @param shared  The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials}
+  */
   public void setShared( @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsShared shared) {
     this.shared = shared;
   }
@@ -153,7 +154,6 @@ public class BckndServiceServiceCatalogItemExtendCredentials
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

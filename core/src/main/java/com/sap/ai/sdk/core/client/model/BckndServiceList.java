@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceList
  */
+
 // CHECKSTYLE:OFF
 public class BckndServiceList 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class BckndServiceList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link BckndServiceList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BckndServiceList} class
-    */
+   * Set the count of this {@link BckndServiceList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BckndServiceList} class
+   */
    @Nonnull public BckndServiceList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BckndServiceList} instance.
-    */
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BckndServiceList} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link BckndServiceList} instance.
-   *
-   * @param count  Number of the resource instances in the list
-   */
+  * Set the count of this {@link BckndServiceList} instance.
+  *
+  * @param count  Number of the resource instances in the list
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resources of this {@link BckndServiceList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BckndServiceList}
-    * @return The same instance of this {@link BckndServiceList} class
-    */
+   * Set the resources of this {@link BckndServiceList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BckndServiceList}
+   * @return The same instance of this {@link BckndServiceList} class
+   */
    @Nonnull public BckndServiceList resources(@Nonnull final List<BckndService> resources) {
     this.resources = resources;
     return this;
   }
   /**
-   * Add one resources instance to this {@link BckndServiceList}.
-   * @param resourcesItem The resources that should be added
-   * @return The same instance of type {@link BckndServiceList}
-   */
-  @Nonnull public BckndServiceList addResourcesItem( @Nonnull final BckndService resourcesItem) {
+  * Add one resources instance to this {@link BckndServiceList}.
+  * @param resourcesItem The resources that should be added
+  * @return The same instance of type {@link BckndServiceList}
+  */
+  @Nonnull public BckndServiceList addresourcesItem( @Nonnull final BckndService resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class BckndServiceList
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link BckndServiceList} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link BckndServiceList} instance.
+  **/
   @Nonnull public List<BckndService> getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link BckndServiceList} instance.
-   *
-   * @param resources  The resources of this {@link BckndServiceList}
-   */
+  * Set the resources of this {@link BckndServiceList} instance.
+  *
+  * @param resources  The resources of this {@link BckndServiceList}
+  */
   public void setResources( @Nonnull final List<BckndService> resources) {
     this.resources = resources;
   }
@@ -201,7 +202,6 @@ public class BckndServiceList
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

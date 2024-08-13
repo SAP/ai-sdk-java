@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourcePatchResponse
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourcePatchResponse 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class BckndResourcePatchResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the message of this {@link BckndResourcePatchResponse} instance and return the same instance.
-    *
-    * @param message  The message of this {@link BckndResourcePatchResponse}
-    * @return The same instance of this {@link BckndResourcePatchResponse} class
-    */
+   * Set the message of this {@link BckndResourcePatchResponse} instance and return the same instance.
+   *
+   * @param message  The message of this {@link BckndResourcePatchResponse}
+   * @return The same instance of this {@link BckndResourcePatchResponse} class
+   */
    @Nonnull public BckndResourcePatchResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Get message
-    * @return message  The message of this {@link BckndResourcePatchResponse} instance.
-    */
+   * Get message
+   * @return message  The message of this {@link BckndResourcePatchResponse} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link BckndResourcePatchResponse} instance.
-   *
-   * @param message  The message of this {@link BckndResourcePatchResponse}
-   */
+  * Set the message of this {@link BckndResourcePatchResponse} instance.
+  *
+  * @param message  The message of this {@link BckndResourcePatchResponse}
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -152,7 +153,6 @@ public class BckndResourcePatchResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

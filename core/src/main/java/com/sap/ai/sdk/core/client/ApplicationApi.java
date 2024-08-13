@@ -7,16 +7,16 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.BckndAllArgoCDApplicationData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationBaseData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationCreationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationDeletionResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationModificationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationRefreshResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationStatus;
-import com.sap.ai.sdk.core.client.model.BckndErrorResponse;
-import com.sap.ai.sdk.core.client.model.KubesubmitV4ApplicationsCreateRequest;
+import com.sap.ai.sdk.core.client.model.BckndAllArgoCDApplicationData ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationBaseData ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationCreationResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationData ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationDeletionResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationModificationResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationRefreshResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationStatus ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndErrorResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.KubesubmitV4ApplicationsCreateRequest ; //NOPMD
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,27 +39,28 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
- *
- * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
- */
+* AI Core in version 2.32.1.
+*
+* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+*/
+
 public class ApplicationApi extends AbstractOpenApiService {
     /**
-     * Instantiates this API class to invoke operations on the AI Core.
-     *
-     * @param httpDestination The destination that API should be used with
-     */
+    * Instantiates this API class to invoke operations on the AI Core.
+    *
+    * @param httpDestination The destination that API should be used with
+    */
     public ApplicationApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-     *
-     * @param apiClient
-     *            ApiClient to invoke the API on
-     */
+    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+    *
+    * @param apiClient
+    *            ApiClient to invoke the API on
+    */
     @Beta
     public ApplicationApi( @Nonnull final ApiClient apiClient )
     {
@@ -80,13 +81,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndArgoCDApplicationCreationResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationCreationResponse kubesubmitV4ApplicationsCreate( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nullable  public BckndArgoCDApplicationCreationResponse create( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = kubesubmitV4ApplicationsCreateRequest;
         
         // verify the required parameter 'kubesubmitV4ApplicationsCreateRequest' is set
         if (kubesubmitV4ApplicationsCreateRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'kubesubmitV4ApplicationsCreateRequest' when calling kubesubmitV4ApplicationsCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'kubesubmitV4ApplicationsCreateRequest' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
@@ -114,19 +114,18 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Create an application</p>
-     * <p>Create an ArgoCD application to synchronise a repository. </p>
+    * <p>Create an application</p>
+     *<p>Create an ArgoCD application to synchronise a repository. </p>
      * <p><b>200</b> - The ArgoCD application has been created and will be eventually synchronised with the repository.
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param kubesubmitV4ApplicationsCreateRequest
-     *      The value for the parameter kubesubmitV4ApplicationsCreateRequest
-     * @return BckndArgoCDApplicationCreationResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param kubesubmitV4ApplicationsCreateRequest
+            The value for the parameter kubesubmitV4ApplicationsCreateRequest
+* @return BckndArgoCDApplicationCreationResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationCreationResponse kubesubmitV4ApplicationsCreate( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsCreate(kubesubmitV4ApplicationsCreateRequest, null);
+    @Nullable   public BckndArgoCDApplicationCreationResponse create( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest) throws OpenApiRequestException {
+        return create(kubesubmitV4ApplicationsCreateRequest, null);
     }
 
     /**
@@ -143,13 +142,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndArgoCDApplicationDeletionResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationDeletionResponse kubesubmitV4ApplicationsDelete( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nullable  public BckndArgoCDApplicationDeletionResponse delete( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling delete");
         }
         
         // create path and map variables
@@ -178,20 +176,19 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Delete application</p>
-     * <p>Delete an ArgoCD application</p>
+    * <p>Delete application</p>
+     *<p>Delete an ArgoCD application</p>
      * <p><b>200</b> - The argoCD application has been deleted successfully.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName
-     *      Name of the ArgoCD application
-     * @return BckndArgoCDApplicationDeletionResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param applicationName
+        Name of the ArgoCD application
+* @return BckndArgoCDApplicationDeletionResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationDeletionResponse kubesubmitV4ApplicationsDelete( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsDelete(applicationName, null);
+    @Nullable   public BckndArgoCDApplicationDeletionResponse delete( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return delete(applicationName, null);
     }
 
     /**
@@ -208,13 +205,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndArgoCDApplicationData
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationData kubesubmitV4ApplicationsGet( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nullable  public BckndArgoCDApplicationData get( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsGet");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling get");
         }
         
         // create path and map variables
@@ -243,20 +239,19 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Get ArgoCD application</p>
-     * <p>Retrieve the ArgoCD application details. </p>
+    * <p>Get ArgoCD application</p>
+     *<p>Retrieve the ArgoCD application details. </p>
      * <p><b>200</b> - The application has been found and returned.
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName
-     *      Name of the ArgoCD application
-     * @return BckndArgoCDApplicationData
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param applicationName
+        Name of the ArgoCD application
+* @return BckndArgoCDApplicationData
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationData kubesubmitV4ApplicationsGet( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsGet(applicationName, null);
+    @Nullable   public BckndArgoCDApplicationData get( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return get(applicationName, null);
     }
 
     /**
@@ -276,8 +271,7 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndAllArgoCDApplicationData
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndAllArgoCDApplicationData kubesubmitV4ApplicationsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
+    @Nullable  public BckndAllArgoCDApplicationData getAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
@@ -308,17 +302,16 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Return all applications</p>
-     * <p>Return all Argo CD application data objects. </p>
+    * <p>Return all applications</p>
+     *<p>Return all Argo CD application data objects. </p>
      * <p><b>200</b> - All applications have been found and returned.
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndAllArgoCDApplicationData
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndAllArgoCDApplicationData
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndAllArgoCDApplicationData kubesubmitV4ApplicationsGetAll() throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsGetAll(null, null, null, null);
+    @Nullable   public BckndAllArgoCDApplicationData getAll() throws OpenApiRequestException {
+        return getAll(null, null, null, null);
     }
 
     /**
@@ -335,13 +328,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndArgoCDApplicationStatus
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationStatus kubesubmitV4ApplicationsGetStatus( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nullable  public BckndArgoCDApplicationStatus getStatus( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsGetStatus");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling getStatus");
         }
         
         // create path and map variables
@@ -370,20 +362,19 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Returns the ArgoCD application status</p>
-     * <p>Returns the ArgoCD application health and sync status. </p>
+    * <p>Returns the ArgoCD application status</p>
+     *<p>Returns the ArgoCD application health and sync status. </p>
      * <p><b>200</b> - The application status has been found and returned.
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName
-     *      Name of the ArgoCD application
-     * @return BckndArgoCDApplicationStatus
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param applicationName
+        Name of the ArgoCD application
+* @return BckndArgoCDApplicationStatus
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationStatus kubesubmitV4ApplicationsGetStatus( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsGetStatus(applicationName, null);
+    @Nullable   public BckndArgoCDApplicationStatus getStatus( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return getStatus(applicationName, null);
     }
 
     /**
@@ -400,13 +391,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndArgoCDApplicationRefreshResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationRefreshResponse kubesubmitV4ApplicationsRefresh( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nullable  public BckndArgoCDApplicationRefreshResponse refresh( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsRefresh");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling refresh");
         }
         
         // create path and map variables
@@ -435,20 +425,19 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Makes ArgoDC refresh the specified application</p>
-     * <p>Schedules a refresh of the specified application that will be picked up by ArgoCD asynchronously </p>
+    * <p>Makes ArgoDC refresh the specified application</p>
+     *<p>Schedules a refresh of the specified application that will be picked up by ArgoCD asynchronously </p>
      * <p><b>202</b> - A refresh of the application has been scheduled
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName
-     *      Name of the ArgoCD application
-     * @return BckndArgoCDApplicationRefreshResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param applicationName
+        Name of the ArgoCD application
+* @return BckndArgoCDApplicationRefreshResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationRefreshResponse kubesubmitV4ApplicationsRefresh( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsRefresh(applicationName, null);
+    @Nullable   public BckndArgoCDApplicationRefreshResponse refresh( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return refresh(applicationName, null);
     }
 
     /**
@@ -467,18 +456,17 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @return BckndArgoCDApplicationModificationResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationModificationResponse kubesubmitV4ApplicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData,  @Nullable final String authorization) throws OpenApiRequestException {
+    @Nullable  public BckndArgoCDApplicationModificationResponse update( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndArgoCDApplicationBaseData;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling update");
         }
         
         // verify the required parameter 'bckndArgoCDApplicationBaseData' is set
         if (bckndArgoCDApplicationBaseData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDApplicationBaseData' when calling kubesubmitV4ApplicationsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDApplicationBaseData' when calling update");
         }
         
         // create path and map variables
@@ -509,21 +497,20 @@ public class ApplicationApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Update the ArgoCD application.</p>
-     * <p>Update the referenced ArgoCD application to synchronize the repository. </p>
+    * <p>Update the ArgoCD application.</p>
+     *<p>Update the referenced ArgoCD application to synchronize the repository. </p>
      * <p><b>200</b> - The ArgoCD application has been created and will be eventually synchronised with the repository.
      * <p><b>404</b> - The specified resource was not found
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param applicationName
-     *      Name of the ArgoCD application
-     * @param bckndArgoCDApplicationBaseData
-     *      The value for the parameter bckndArgoCDApplicationBaseData
-     * @return BckndArgoCDApplicationModificationResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param applicationName
+        Name of the ArgoCD application
+* @param bckndArgoCDApplicationBaseData
+            The value for the parameter bckndArgoCDApplicationBaseData
+* @return BckndArgoCDApplicationModificationResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndArgoCDApplicationModificationResponse kubesubmitV4ApplicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData) throws OpenApiRequestException {
-        return kubesubmitV4ApplicationsUpdate(applicationName, bckndArgoCDApplicationBaseData, null);
+    @Nullable   public BckndArgoCDApplicationModificationResponse update( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData) throws OpenApiRequestException {
+        return update(applicationName, bckndArgoCDApplicationBaseData, null);
     }
 }

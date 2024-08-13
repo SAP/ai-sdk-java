@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * Response for successful file creation
  */
+
 // CHECKSTYLE:OFF
 public class DSetFileCreationResponse 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class DSetFileCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the message of this {@link DSetFileCreationResponse} instance and return the same instance.
-    *
-    * @param message  File creation response message
-    * @return The same instance of this {@link DSetFileCreationResponse} class
-    */
+   * Set the message of this {@link DSetFileCreationResponse} instance and return the same instance.
+   *
+   * @param message  File creation response message
+   * @return The same instance of this {@link DSetFileCreationResponse} class
+   */
    @Nonnull public DSetFileCreationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * File creation response message
-    * @return message  The message of this {@link DSetFileCreationResponse} instance.
-    */
+   * File creation response message
+   * @return message  The message of this {@link DSetFileCreationResponse} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link DSetFileCreationResponse} instance.
-   *
-   * @param message  File creation response message
-   */
+  * Set the message of this {@link DSetFileCreationResponse} instance.
+  *
+  * @param message  File creation response message
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-    * Set the url of this {@link DSetFileCreationResponse} instance and return the same instance.
-    *
-    * @param url  The url of this {@link DSetFileCreationResponse}
-    * @return The same instance of this {@link DSetFileCreationResponse} class
-    */
+   * Set the url of this {@link DSetFileCreationResponse} instance and return the same instance.
+   *
+   * @param url  The url of this {@link DSetFileCreationResponse}
+   * @return The same instance of this {@link DSetFileCreationResponse} class
+   */
    @Nonnull public DSetFileCreationResponse url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-    * Get url
-    * @return url  The url of this {@link DSetFileCreationResponse} instance.
-    */
+   * Get url
+   * @return url  The url of this {@link DSetFileCreationResponse} instance.
+  **/
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-   * Set the url of this {@link DSetFileCreationResponse} instance.
-   *
-   * @param url  The url of this {@link DSetFileCreationResponse}
-   */
+  * Set the url of this {@link DSetFileCreationResponse} instance.
+  *
+  * @param url  The url of this {@link DSetFileCreationResponse}
+  */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
@@ -185,7 +186,6 @@ public class DSetFileCreationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

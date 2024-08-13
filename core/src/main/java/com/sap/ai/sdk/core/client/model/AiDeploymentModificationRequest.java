@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * Request object for changing the target status of a deployment (currently only STOPPED is supported)
  */
+
 // CHECKSTYLE:OFF
 public class AiDeploymentModificationRequest 
 // CHECKSTYLE:ON
@@ -54,57 +55,57 @@ public class AiDeploymentModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance and return the same instance.
-    *
-    * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
-    * @return The same instance of this {@link AiDeploymentModificationRequest} class
-    */
+   * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance and return the same instance.
+   *
+   * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
+   * @return The same instance of this {@link AiDeploymentModificationRequest} class
+   */
    @Nonnull public AiDeploymentModificationRequest targetStatus(@Nonnull final AiDeploymentTargetStatus targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
    /**
-    * Get targetStatus
-    * @return targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest} instance.
-    */
+   * Get targetStatus
+   * @return targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest} instance.
+  **/
   @Nonnull public AiDeploymentTargetStatus getTargetStatus() {
     return targetStatus;
   }
 
   /**
-   * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance.
-   *
-   * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
-   */
+  * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance.
+  *
+  * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
+  */
   public void setTargetStatus( @Nonnull final AiDeploymentTargetStatus targetStatus) {
     this.targetStatus = targetStatus;
   }
 
    /**
-    * Set the configurationId of this {@link AiDeploymentModificationRequest} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiDeploymentModificationRequest} class
-    */
+   * Set the configurationId of this {@link AiDeploymentModificationRequest} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiDeploymentModificationRequest} class
+   */
    @Nonnull public AiDeploymentModificationRequest configurationId(@Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
    /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiDeploymentModificationRequest} instance.
-    */
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiDeploymentModificationRequest} instance.
+  **/
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
 
   /**
-   * Set the configurationId of this {@link AiDeploymentModificationRequest} instance.
-   *
-   * @param configurationId  ID of the configuration
-   */
+  * Set the configurationId of this {@link AiDeploymentModificationRequest} instance.
+  *
+  * @param configurationId  ID of the configuration
+  */
   public void setConfigurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
   }
@@ -186,7 +187,6 @@ public class AiDeploymentModificationRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

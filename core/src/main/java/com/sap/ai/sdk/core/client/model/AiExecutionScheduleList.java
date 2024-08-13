@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * AiExecutionScheduleList
  */
+
 // CHECKSTYLE:OFF
 public class AiExecutionScheduleList 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class AiExecutionScheduleList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link AiExecutionScheduleList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiExecutionScheduleList} class
-    */
+   * Set the count of this {@link AiExecutionScheduleList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiExecutionScheduleList} class
+   */
    @Nonnull public AiExecutionScheduleList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiExecutionScheduleList} instance.
-    */
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiExecutionScheduleList} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link AiExecutionScheduleList} instance.
-   *
-   * @param count  Number of the resource instances in the list
-   */
+  * Set the count of this {@link AiExecutionScheduleList} instance.
+  *
+  * @param count  Number of the resource instances in the list
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resources of this {@link AiExecutionScheduleList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiExecutionScheduleList}
-    * @return The same instance of this {@link AiExecutionScheduleList} class
-    */
+   * Set the resources of this {@link AiExecutionScheduleList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiExecutionScheduleList}
+   * @return The same instance of this {@link AiExecutionScheduleList} class
+   */
    @Nonnull public AiExecutionScheduleList resources(@Nonnull final List<AiExecutionSchedule> resources) {
     this.resources = resources;
     return this;
   }
   /**
-   * Add one resources instance to this {@link AiExecutionScheduleList}.
-   * @param resourcesItem The resources that should be added
-   * @return The same instance of type {@link AiExecutionScheduleList}
-   */
-  @Nonnull public AiExecutionScheduleList addResourcesItem( @Nonnull final AiExecutionSchedule resourcesItem) {
+  * Add one resources instance to this {@link AiExecutionScheduleList}.
+  * @param resourcesItem The resources that should be added
+  * @return The same instance of type {@link AiExecutionScheduleList}
+  */
+  @Nonnull public AiExecutionScheduleList addresourcesItem( @Nonnull final AiExecutionSchedule resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class AiExecutionScheduleList
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link AiExecutionScheduleList} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link AiExecutionScheduleList} instance.
+  **/
   @Nonnull public List<AiExecutionSchedule> getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link AiExecutionScheduleList} instance.
-   *
-   * @param resources  The resources of this {@link AiExecutionScheduleList}
-   */
+  * Set the resources of this {@link AiExecutionScheduleList} instance.
+  *
+  * @param resources  The resources of this {@link AiExecutionScheduleList}
+  */
   public void setResources( @Nonnull final List<AiExecutionSchedule> resources) {
     this.resources = resources;
   }
@@ -201,7 +202,6 @@ public class AiExecutionScheduleList
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

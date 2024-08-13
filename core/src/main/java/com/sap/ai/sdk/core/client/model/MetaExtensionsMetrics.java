@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * MetaExtensionsMetrics
  */
+
 // CHECKSTYLE:OFF
 public class MetaExtensionsMetrics 
 // CHECKSTYLE:ON
@@ -54,57 +55,57 @@ public class MetaExtensionsMetrics
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the version of this {@link MetaExtensionsMetrics} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaExtensionsMetrics}
-    * @return The same instance of this {@link MetaExtensionsMetrics} class
-    */
+   * Set the version of this {@link MetaExtensionsMetrics} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaExtensionsMetrics}
+   * @return The same instance of this {@link MetaExtensionsMetrics} class
+   */
    @Nonnull public MetaExtensionsMetrics version(@Nonnull final String version) {
     this.version = version;
     return this;
   }
 
    /**
-    * Get version
-    * @return version  The version of this {@link MetaExtensionsMetrics} instance.
-    */
+   * Get version
+   * @return version  The version of this {@link MetaExtensionsMetrics} instance.
+  **/
   @Nonnull public String getVersion() {
     return version;
   }
 
   /**
-   * Set the version of this {@link MetaExtensionsMetrics} instance.
-   *
-   * @param version  The version of this {@link MetaExtensionsMetrics}
-   */
+  * Set the version of this {@link MetaExtensionsMetrics} instance.
+  *
+  * @param version  The version of this {@link MetaExtensionsMetrics}
+  */
   public void setVersion( @Nonnull final String version) {
     this.version = version;
   }
 
    /**
-    * Set the capabilities of this {@link MetaExtensionsMetrics} instance and return the same instance.
-    *
-    * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
-    * @return The same instance of this {@link MetaExtensionsMetrics} class
-    */
+   * Set the capabilities of this {@link MetaExtensionsMetrics} instance and return the same instance.
+   *
+   * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
+   * @return The same instance of this {@link MetaExtensionsMetrics} class
+   */
    @Nonnull public MetaExtensionsMetrics capabilities(@Nonnull final MetaExtensionsMetricsCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
 
    /**
-    * Get capabilities
-    * @return capabilities  The capabilities of this {@link MetaExtensionsMetrics} instance.
-    */
+   * Get capabilities
+   * @return capabilities  The capabilities of this {@link MetaExtensionsMetrics} instance.
+  **/
   @Nonnull public MetaExtensionsMetricsCapabilities getCapabilities() {
     return capabilities;
   }
 
   /**
-   * Set the capabilities of this {@link MetaExtensionsMetrics} instance.
-   *
-   * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
-   */
+  * Set the capabilities of this {@link MetaExtensionsMetrics} instance.
+  *
+  * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
+  */
   public void setCapabilities( @Nonnull final MetaExtensionsMetricsCapabilities capabilities) {
     this.capabilities = capabilities;
   }
@@ -186,7 +187,6 @@ public class MetaExtensionsMetrics
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

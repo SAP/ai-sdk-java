@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndArgoCDApplicationRefreshResponse
  */
+
 // CHECKSTYLE:OFF
 public class BckndArgoCDApplicationRefreshResponse 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class BckndArgoCDApplicationRefreshResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the id of this {@link BckndArgoCDApplicationRefreshResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link BckndArgoCDApplicationRefreshResponse} class
-    */
+   * Set the id of this {@link BckndArgoCDApplicationRefreshResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link BckndArgoCDApplicationRefreshResponse} class
+   */
    @Nonnull public BckndArgoCDApplicationRefreshResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-    * Generic ID
-    * @return id  The id of this {@link BckndArgoCDApplicationRefreshResponse} instance.
-    */
+   * Generic ID
+   * @return id  The id of this {@link BckndArgoCDApplicationRefreshResponse} instance.
+  **/
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-   * Set the id of this {@link BckndArgoCDApplicationRefreshResponse} instance.
-   *
-   * @param id  Generic ID
-   */
+  * Set the id of this {@link BckndArgoCDApplicationRefreshResponse} instance.
+  *
+  * @param id  Generic ID
+  */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-    * Set the message of this {@link BckndArgoCDApplicationRefreshResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BckndArgoCDApplicationRefreshResponse} class
-    */
+   * Set the message of this {@link BckndArgoCDApplicationRefreshResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BckndArgoCDApplicationRefreshResponse} class
+   */
    @Nonnull public BckndArgoCDApplicationRefreshResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Message
-    * @return message  The message of this {@link BckndArgoCDApplicationRefreshResponse} instance.
-    */
+   * Message
+   * @return message  The message of this {@link BckndArgoCDApplicationRefreshResponse} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link BckndArgoCDApplicationRefreshResponse} instance.
-   *
-   * @param message  Message
-   */
+  * Set the message of this {@link BckndArgoCDApplicationRefreshResponse} instance.
+  *
+  * @param message  Message
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -185,7 +186,6 @@ public class BckndArgoCDApplicationRefreshResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

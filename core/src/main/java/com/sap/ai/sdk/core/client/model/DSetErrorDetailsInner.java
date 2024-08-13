@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * DSetErrorDetailsInner
  */
+
 // CHECKSTYLE:OFF
 public class DSetErrorDetailsInner 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class DSetErrorDetailsInner
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the code of this {@link DSetErrorDetailsInner} instance and return the same instance.
-    *
-    * @param code  The code of this {@link DSetErrorDetailsInner}
-    * @return The same instance of this {@link DSetErrorDetailsInner} class
-    */
+   * Set the code of this {@link DSetErrorDetailsInner} instance and return the same instance.
+   *
+   * @param code  The code of this {@link DSetErrorDetailsInner}
+   * @return The same instance of this {@link DSetErrorDetailsInner} class
+   */
    @Nonnull public DSetErrorDetailsInner code(@Nonnull final String code) {
     this.code = code;
     return this;
   }
 
    /**
-    * Get code
-    * @return code  The code of this {@link DSetErrorDetailsInner} instance.
-    */
+   * Get code
+   * @return code  The code of this {@link DSetErrorDetailsInner} instance.
+  **/
   @Nonnull public String getCode() {
     return code;
   }
 
   /**
-   * Set the code of this {@link DSetErrorDetailsInner} instance.
-   *
-   * @param code  The code of this {@link DSetErrorDetailsInner}
-   */
+  * Set the code of this {@link DSetErrorDetailsInner} instance.
+  *
+  * @param code  The code of this {@link DSetErrorDetailsInner}
+  */
   public void setCode( @Nonnull final String code) {
     this.code = code;
   }
 
    /**
-    * Set the message of this {@link DSetErrorDetailsInner} instance and return the same instance.
-    *
-    * @param message  The message of this {@link DSetErrorDetailsInner}
-    * @return The same instance of this {@link DSetErrorDetailsInner} class
-    */
+   * Set the message of this {@link DSetErrorDetailsInner} instance and return the same instance.
+   *
+   * @param message  The message of this {@link DSetErrorDetailsInner}
+   * @return The same instance of this {@link DSetErrorDetailsInner} class
+   */
    @Nonnull public DSetErrorDetailsInner message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Get message
-    * @return message  The message of this {@link DSetErrorDetailsInner} instance.
-    */
+   * Get message
+   * @return message  The message of this {@link DSetErrorDetailsInner} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link DSetErrorDetailsInner} instance.
-   *
-   * @param message  The message of this {@link DSetErrorDetailsInner}
-   */
+  * Set the message of this {@link DSetErrorDetailsInner} instance.
+  *
+  * @param message  The message of this {@link DSetErrorDetailsInner}
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -185,7 +186,6 @@ public class DSetErrorDetailsInner
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

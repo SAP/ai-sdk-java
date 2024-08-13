@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
  */
+
 // CHECKSTYLE:OFF
 public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance and return the same instance.
-    *
-    * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} class
-    */
+   * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance and return the same instance.
+   *
+   * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} class
+   */
    @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls AI_API_URL(@Nonnull final String AI_API_URL) {
     this.AI_API_URL = AI_API_URL;
     return this;
   }
 
    /**
-    * Get AI_API_URL
-    * @return AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance.
-    */
+   * Get AI_API_URL
+   * @return AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance.
+  **/
   @Nonnull public String getAIAPIURL() {
     return AI_API_URL;
   }
 
   /**
-   * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance.
-   *
-   * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
-   */
+  * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance.
+  *
+  * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
+  */
   public void setAIAPIURL( @Nonnull final String AI_API_URL) {
     this.AI_API_URL = AI_API_URL;
   }
@@ -152,7 +153,6 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

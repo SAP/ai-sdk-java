@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 /**
  * ID of the deployment/execution
  */
+
 // CHECKSTYLE:OFF
 public class TrckExecutionId 
 // CHECKSTYLE:ON
@@ -114,7 +115,6 @@ public class TrckExecutionId
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

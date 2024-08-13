@@ -46,6 +46,7 @@ import javax.annotation.Nullable;
 /**
  * KpiResultSet
  */
+
 // CHECKSTYLE:OFF
 public class KpiResultSet 
 // CHECKSTYLE:ON
@@ -60,29 +61,29 @@ public class KpiResultSet
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
    /**
-    * Get header
-    * @return header  The header of this {@link KpiResultSet} instance.
-    */
+   * Get header
+   * @return header  The header of this {@link KpiResultSet} instance.
+  **/
   @Nonnull public Set<KpiColumnName> getHeader() {
     return header;
   }
 
    /**
-    * Set the rows of this {@link KpiResultSet} instance and return the same instance.
-    *
-    * @param rows  The rows of this {@link KpiResultSet}
-    * @return The same instance of this {@link KpiResultSet} class
-    */
+   * Set the rows of this {@link KpiResultSet} instance and return the same instance.
+   *
+   * @param rows  The rows of this {@link KpiResultSet}
+   * @return The same instance of this {@link KpiResultSet} class
+   */
    @Nonnull public KpiResultSet rows(@Nonnull final List<List<KpiResultRowItem>> rows) {
     this.rows = rows;
     return this;
   }
   /**
-   * Add one rows instance to this {@link KpiResultSet}.
-   * @param rowsItem The rows that should be added
-   * @return The same instance of type {@link KpiResultSet}
-   */
-  @Nonnull public KpiResultSet addRowsItem( @Nonnull final List<KpiResultRowItem> rowsItem) {
+  * Add one rows instance to this {@link KpiResultSet}.
+  * @param rowsItem The rows that should be added
+  * @return The same instance of type {@link KpiResultSet}
+  */
+  @Nonnull public KpiResultSet addrowsItem( @Nonnull final List<KpiResultRowItem> rowsItem) {
     if (this.rows == null) {
       this.rows = new ArrayList<>();
     }
@@ -91,18 +92,18 @@ public class KpiResultSet
   }
 
    /**
-    * Get rows
-    * @return rows  The rows of this {@link KpiResultSet} instance.
-    */
+   * Get rows
+   * @return rows  The rows of this {@link KpiResultSet} instance.
+  **/
   @Nonnull public List<List<KpiResultRowItem>> getRows() {
     return rows;
   }
 
   /**
-   * Set the rows of this {@link KpiResultSet} instance.
-   *
-   * @param rows  The rows of this {@link KpiResultSet}
-   */
+  * Set the rows of this {@link KpiResultSet} instance.
+  *
+  * @param rows  The rows of this {@link KpiResultSet}
+  */
   public void setRows( @Nonnull final List<List<KpiResultRowItem>> rows) {
     this.rows = rows;
   }
@@ -184,7 +185,6 @@ public class KpiResultSet
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

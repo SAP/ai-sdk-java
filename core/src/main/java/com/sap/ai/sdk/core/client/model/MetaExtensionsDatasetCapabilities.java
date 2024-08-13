@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * List of Dataset extension capabilities
  */
+
 // CHECKSTYLE:OFF
 public class MetaExtensionsDatasetCapabilities 
 // CHECKSTYLE:ON
@@ -56,85 +57,85 @@ public class MetaExtensionsDatasetCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
-    *
-    * @param upload  Support for uploading of files
-    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
-    */
+   * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
+   *
+   * @param upload  Support for uploading of files
+   * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
+   */
    @Nonnull public MetaExtensionsDatasetCapabilities upload(@Nonnull final Boolean upload) {
     this.upload = upload;
     return this;
   }
 
    /**
-    * Support for uploading of files
-    * @return upload  The upload of this {@link MetaExtensionsDatasetCapabilities} instance.
-    */
+   * Support for uploading of files
+   * @return upload  The upload of this {@link MetaExtensionsDatasetCapabilities} instance.
+  **/
   @Nonnull public Boolean isUpload() {
     return upload;
   }
 
   /**
-   * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance.
-   *
-   * @param upload  Support for uploading of files
-   */
+  * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance.
+  *
+  * @param upload  Support for uploading of files
+  */
   public void setUpload( @Nonnull final Boolean upload) {
     this.upload = upload;
   }
 
    /**
-    * Set the download of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
-    *
-    * @param download  Support for downloading of files
-    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
-    */
+   * Set the download of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
+   *
+   * @param download  Support for downloading of files
+   * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
+   */
    @Nonnull public MetaExtensionsDatasetCapabilities download(@Nonnull final Boolean download) {
     this.download = download;
     return this;
   }
 
    /**
-    * Support for downloading of files
-    * @return download  The download of this {@link MetaExtensionsDatasetCapabilities} instance.
-    */
+   * Support for downloading of files
+   * @return download  The download of this {@link MetaExtensionsDatasetCapabilities} instance.
+  **/
   @Nonnull public Boolean isDownload() {
     return download;
   }
 
   /**
-   * Set the download of this {@link MetaExtensionsDatasetCapabilities} instance.
-   *
-   * @param download  Support for downloading of files
-   */
+  * Set the download of this {@link MetaExtensionsDatasetCapabilities} instance.
+  *
+  * @param download  Support for downloading of files
+  */
   public void setDownload( @Nonnull final Boolean download) {
     this.download = download;
   }
 
    /**
-    * Set the delete of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
-    *
-    * @param delete  Support for deletion of files
-    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
-    */
+   * Set the delete of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
+   *
+   * @param delete  Support for deletion of files
+   * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
+   */
    @Nonnull public MetaExtensionsDatasetCapabilities delete(@Nonnull final Boolean delete) {
     this.delete = delete;
     return this;
   }
 
    /**
-    * Support for deletion of files
-    * @return delete  The delete of this {@link MetaExtensionsDatasetCapabilities} instance.
-    */
+   * Support for deletion of files
+   * @return delete  The delete of this {@link MetaExtensionsDatasetCapabilities} instance.
+  **/
   @Nonnull public Boolean isDelete() {
     return delete;
   }
 
   /**
-   * Set the delete of this {@link MetaExtensionsDatasetCapabilities} instance.
-   *
-   * @param delete  Support for deletion of files
-   */
+  * Set the delete of this {@link MetaExtensionsDatasetCapabilities} instance.
+  *
+  * @param delete  Support for deletion of files
+  */
   public void setDelete( @Nonnull final Boolean delete) {
     this.delete = delete;
   }
@@ -218,7 +219,6 @@ public class MetaExtensionsDatasetCapabilities
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

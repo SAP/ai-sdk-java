@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * AiExecutionList
  */
+
 // CHECKSTYLE:OFF
 public class AiExecutionList 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class AiExecutionList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the count of this {@link AiExecutionList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiExecutionList} class
-    */
+   * Set the count of this {@link AiExecutionList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiExecutionList} class
+   */
    @Nonnull public AiExecutionList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiExecutionList} instance.
-    */
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiExecutionList} instance.
+  **/
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-   * Set the count of this {@link AiExecutionList} instance.
-   *
-   * @param count  Number of the resource instances in the list
-   */
+  * Set the count of this {@link AiExecutionList} instance.
+  *
+  * @param count  Number of the resource instances in the list
+  */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-    * Set the resources of this {@link AiExecutionList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiExecutionList}
-    * @return The same instance of this {@link AiExecutionList} class
-    */
+   * Set the resources of this {@link AiExecutionList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiExecutionList}
+   * @return The same instance of this {@link AiExecutionList} class
+   */
    @Nonnull public AiExecutionList resources(@Nonnull final List<AiExecution> resources) {
     this.resources = resources;
     return this;
   }
   /**
-   * Add one resources instance to this {@link AiExecutionList}.
-   * @param resourcesItem The resources that should be added
-   * @return The same instance of type {@link AiExecutionList}
-   */
-  @Nonnull public AiExecutionList addResourcesItem( @Nonnull final AiExecution resourcesItem) {
+  * Add one resources instance to this {@link AiExecutionList}.
+  * @param resourcesItem The resources that should be added
+  * @return The same instance of type {@link AiExecutionList}
+  */
+  @Nonnull public AiExecutionList addresourcesItem( @Nonnull final AiExecution resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class AiExecutionList
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link AiExecutionList} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link AiExecutionList} instance.
+  **/
   @Nonnull public List<AiExecution> getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link AiExecutionList} instance.
-   *
-   * @param resources  The resources of this {@link AiExecutionList}
-   */
+  * Set the resources of this {@link AiExecutionList} instance.
+  *
+  * @param resources  The resources of this {@link AiExecutionList}
+  */
   public void setResources( @Nonnull final List<AiExecution> resources) {
     this.resources = resources;
   }
@@ -201,7 +202,6 @@ public class AiExecutionList
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

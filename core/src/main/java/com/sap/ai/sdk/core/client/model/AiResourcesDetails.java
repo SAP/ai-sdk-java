@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * Resources details of a deployment
  */
+
 // CHECKSTYLE:OFF
 public class AiResourcesDetails 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class AiResourcesDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the backendDetails of this {@link AiResourcesDetails} instance and return the same instance.
-    *
-    * @param backendDetails  backend-specific details of the deployment
-    * @return The same instance of this {@link AiResourcesDetails} class
-    */
+   * Set the backendDetails of this {@link AiResourcesDetails} instance and return the same instance.
+   *
+   * @param backendDetails  backend-specific details of the deployment
+   * @return The same instance of this {@link AiResourcesDetails} class
+   */
    @Nonnull public AiResourcesDetails backendDetails(@Nonnull final Object backendDetails) {
     this.backendDetails = backendDetails;
     return this;
   }
 
    /**
-    * backend-specific details of the deployment
-    * @return backendDetails  The backendDetails of this {@link AiResourcesDetails} instance.
-    */
+   * backend-specific details of the deployment
+   * @return backendDetails  The backendDetails of this {@link AiResourcesDetails} instance.
+  **/
   @Nonnull public Object getBackendDetails() {
     return backendDetails;
   }
 
   /**
-   * Set the backendDetails of this {@link AiResourcesDetails} instance.
-   *
-   * @param backendDetails  backend-specific details of the deployment
-   */
+  * Set the backendDetails of this {@link AiResourcesDetails} instance.
+  *
+  * @param backendDetails  backend-specific details of the deployment
+  */
   public void setBackendDetails( @Nonnull final Object backendDetails) {
     this.backendDetails = backendDetails;
   }
@@ -152,7 +153,6 @@ public class AiResourcesDetails
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * Request object for creating an execution or an deployment
  */
+
 // CHECKSTYLE:OFF
 public class AiEnactmentCreationRequest 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class AiEnactmentCreationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the configurationId of this {@link AiEnactmentCreationRequest} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiEnactmentCreationRequest} class
-    */
+   * Set the configurationId of this {@link AiEnactmentCreationRequest} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiEnactmentCreationRequest} class
+   */
    @Nonnull public AiEnactmentCreationRequest configurationId(@Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
    /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiEnactmentCreationRequest} instance.
-    */
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiEnactmentCreationRequest} instance.
+  **/
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
 
   /**
-   * Set the configurationId of this {@link AiEnactmentCreationRequest} instance.
-   *
-   * @param configurationId  ID of the configuration
-   */
+  * Set the configurationId of this {@link AiEnactmentCreationRequest} instance.
+  *
+  * @param configurationId  ID of the configuration
+  */
   public void setConfigurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
   }
@@ -152,7 +153,6 @@ public class AiEnactmentCreationRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * AiLogCommonData
  */
+
 // CHECKSTYLE:OFF
 public class AiLogCommonData 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class AiLogCommonData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the result of this {@link AiLogCommonData} instance and return the same instance.
-    *
-    * @param result  The result of this {@link AiLogCommonData}
-    * @return The same instance of this {@link AiLogCommonData} class
-    */
+   * Set the result of this {@link AiLogCommonData} instance and return the same instance.
+   *
+   * @param result  The result of this {@link AiLogCommonData}
+   * @return The same instance of this {@link AiLogCommonData} class
+   */
    @Nonnull public AiLogCommonData result(@Nonnull final List<AiLogCommonResultItem> result) {
     this.result = result;
     return this;
   }
   /**
-   * Add one result instance to this {@link AiLogCommonData}.
-   * @param resultItem The result that should be added
-   * @return The same instance of type {@link AiLogCommonData}
-   */
-  @Nonnull public AiLogCommonData addResultItem( @Nonnull final AiLogCommonResultItem resultItem) {
+  * Add one result instance to this {@link AiLogCommonData}.
+  * @param resultItem The result that should be added
+  * @return The same instance of type {@link AiLogCommonData}
+  */
+  @Nonnull public AiLogCommonData addresultItem( @Nonnull final AiLogCommonResultItem resultItem) {
     if (this.result == null) {
       this.result = new ArrayList<>();
     }
@@ -77,18 +78,18 @@ public class AiLogCommonData
   }
 
    /**
-    * Get result
-    * @return result  The result of this {@link AiLogCommonData} instance.
-    */
+   * Get result
+   * @return result  The result of this {@link AiLogCommonData} instance.
+  **/
   @Nonnull public List<AiLogCommonResultItem> getResult() {
     return result;
   }
 
   /**
-   * Set the result of this {@link AiLogCommonData} instance.
-   *
-   * @param result  The result of this {@link AiLogCommonData}
-   */
+  * Set the result of this {@link AiLogCommonData} instance.
+  *
+  * @param result  The result of this {@link AiLogCommonData}
+  */
   public void setResult( @Nonnull final List<AiLogCommonResultItem> result) {
     this.result = result;
   }
@@ -168,7 +169,6 @@ public class AiLogCommonData
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

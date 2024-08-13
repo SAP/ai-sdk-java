@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 /**
  * Common log record.
  */
+
 // CHECKSTYLE:OFF
 public class RTALogCommonResultItem 
 // CHECKSTYLE:ON
@@ -54,57 +55,57 @@ public class RTALogCommonResultItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the timestamp of this {@link RTALogCommonResultItem} instance and return the same instance.
-    *
-    * @param timestamp  Datetime in RFC 3339.
-    * @return The same instance of this {@link RTALogCommonResultItem} class
-    */
+   * Set the timestamp of this {@link RTALogCommonResultItem} instance and return the same instance.
+   *
+   * @param timestamp  Datetime in RFC 3339.
+   * @return The same instance of this {@link RTALogCommonResultItem} class
+   */
    @Nonnull public RTALogCommonResultItem timestamp(@Nonnull final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
 
    /**
-    * Datetime in RFC 3339.
-    * @return timestamp  The timestamp of this {@link RTALogCommonResultItem} instance.
-    */
+   * Datetime in RFC 3339.
+   * @return timestamp  The timestamp of this {@link RTALogCommonResultItem} instance.
+  **/
   @Nonnull public OffsetDateTime getTimestamp() {
     return timestamp;
   }
 
   /**
-   * Set the timestamp of this {@link RTALogCommonResultItem} instance.
-   *
-   * @param timestamp  Datetime in RFC 3339.
-   */
+  * Set the timestamp of this {@link RTALogCommonResultItem} instance.
+  *
+  * @param timestamp  Datetime in RFC 3339.
+  */
   public void setTimestamp( @Nonnull final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
    /**
-    * Set the msg of this {@link RTALogCommonResultItem} instance and return the same instance.
-    *
-    * @param msg  message content.
-    * @return The same instance of this {@link RTALogCommonResultItem} class
-    */
+   * Set the msg of this {@link RTALogCommonResultItem} instance and return the same instance.
+   *
+   * @param msg  message content.
+   * @return The same instance of this {@link RTALogCommonResultItem} class
+   */
    @Nonnull public RTALogCommonResultItem msg(@Nonnull final String msg) {
     this.msg = msg;
     return this;
   }
 
    /**
-    * message content.
-    * @return msg  The msg of this {@link RTALogCommonResultItem} instance.
-    */
+   * message content.
+   * @return msg  The msg of this {@link RTALogCommonResultItem} instance.
+  **/
   @Nonnull public String getMsg() {
     return msg;
   }
 
   /**
-   * Set the msg of this {@link RTALogCommonResultItem} instance.
-   *
-   * @param msg  message content.
-   */
+  * Set the msg of this {@link RTALogCommonResultItem} instance.
+  *
+  * @param msg  message content.
+  */
   public void setMsg( @Nonnull final String msg) {
     this.msg = msg;
   }
@@ -186,7 +187,6 @@ public class RTALogCommonResultItem
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

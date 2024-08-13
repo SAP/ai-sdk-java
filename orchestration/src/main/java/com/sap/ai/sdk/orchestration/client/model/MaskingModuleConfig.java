@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * MaskingModuleConfig
  */
+
 // CHECKSTYLE:OFF
 public class MaskingModuleConfig 
 // CHECKSTYLE:ON
@@ -58,21 +59,21 @@ public class MaskingModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the masking of this {@link MaskingModuleConfig} instance and return the same instance.
-    *
-    * @param masking  Masking services to be used
-    * @return The same instance of this {@link MaskingModuleConfig} class
-    */
+   * Set the masking of this {@link MaskingModuleConfig} instance and return the same instance.
+   *
+   * @param masking  Masking services to be used
+   * @return The same instance of this {@link MaskingModuleConfig} class
+   */
    @Nonnull public MaskingModuleConfig masking(@Nonnull final List<Masking> masking) {
     this.masking = masking;
     return this;
   }
   /**
-   * Add one masking instance to this {@link MaskingModuleConfig}.
-   * @param maskingItem The masking that should be added
-   * @return The same instance of type {@link MaskingModuleConfig}
-   */
-  @Nonnull public MaskingModuleConfig addMaskingItem( @Nonnull final Masking maskingItem) {
+  * Add one masking instance to this {@link MaskingModuleConfig}.
+  * @param maskingItem The masking that should be added
+  * @return The same instance of type {@link MaskingModuleConfig}
+  */
+  @Nonnull public MaskingModuleConfig addmaskingItem( @Nonnull final Masking maskingItem) {
     if (this.masking == null) {
       this.masking = new ArrayList<>();
     }
@@ -81,46 +82,46 @@ public class MaskingModuleConfig
   }
 
    /**
-    * Masking services to be used
-    * @return masking  The masking of this {@link MaskingModuleConfig} instance.
-    */
+   * Masking services to be used
+   * @return masking  The masking of this {@link MaskingModuleConfig} instance.
+  **/
   @Nonnull public List<Masking> getMasking() {
     return masking;
   }
 
   /**
-   * Set the masking of this {@link MaskingModuleConfig} instance.
-   *
-   * @param masking  Masking services to be used
-   */
+  * Set the masking of this {@link MaskingModuleConfig} instance.
+  *
+  * @param masking  Masking services to be used
+  */
   public void setMasking( @Nonnull final List<Masking> masking) {
     this.masking = masking;
   }
 
    /**
-    * Set the unmasking of this {@link MaskingModuleConfig} instance and return the same instance.
-    *
-    * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
-    * @return The same instance of this {@link MaskingModuleConfig} class
-    */
+   * Set the unmasking of this {@link MaskingModuleConfig} instance and return the same instance.
+   *
+   * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
+   * @return The same instance of this {@link MaskingModuleConfig} class
+   */
    @Nonnull public MaskingModuleConfig unmasking(@Nonnull final UnmaskingConfig unmasking) {
     this.unmasking = unmasking;
     return this;
   }
 
    /**
-    * Get unmasking
-    * @return unmasking  The unmasking of this {@link MaskingModuleConfig} instance.
-    */
+   * Get unmasking
+   * @return unmasking  The unmasking of this {@link MaskingModuleConfig} instance.
+  **/
   @Nonnull public UnmaskingConfig getUnmasking() {
     return unmasking;
   }
 
   /**
-   * Set the unmasking of this {@link MaskingModuleConfig} instance.
-   *
-   * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
-   */
+  * Set the unmasking of this {@link MaskingModuleConfig} instance.
+  *
+  * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
+  */
   public void setUnmasking( @Nonnull final UnmaskingConfig unmasking) {
     this.unmasking = unmasking;
   }
@@ -202,7 +203,6 @@ public class MaskingModuleConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

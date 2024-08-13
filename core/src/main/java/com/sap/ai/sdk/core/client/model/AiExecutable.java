@@ -45,6 +45,7 @@ import javax.annotation.Nullable;
 /**
  * An ML executable consists of a set of ML tasks, flows between tasks, dependencies between tasks, models (or model versions?). 
  */
+
 // CHECKSTYLE:OFF
 public class AiExecutable 
 // CHECKSTYLE:ON
@@ -90,21 +91,21 @@ public class AiExecutable
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the labels of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the labels of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable labels(@Nonnull final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link AiExecutable}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link AiExecutable}
-   */
-  @Nonnull public AiExecutable addLabelsItem( @Nonnull final AiLabel labelsItem) {
+  * Add one labels instance to this {@link AiExecutable}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link AiExecutable}
+  */
+  @Nonnull public AiExecutable addlabelsItem( @Nonnull final AiLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -113,178 +114,178 @@ public class AiExecutable
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link AiExecutable} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link AiExecutable} instance.
+  **/
   @Nonnull public List<AiLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link AiExecutable} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link AiExecutable} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<AiLabel> labels) {
     this.labels = labels;
   }
 
    /**
-    * Set the name of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param name  Name of the executable
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the name of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param name  Name of the executable
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the executable
-    * @return name  The name of this {@link AiExecutable} instance.
-    */
+   * Name of the executable
+   * @return name  The name of this {@link AiExecutable} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link AiExecutable} instance.
-   *
-   * @param name  Name of the executable
-   */
+  * Set the name of this {@link AiExecutable} instance.
+  *
+  * @param name  Name of the executable
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the description of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param description  Description of the executable
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the description of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param description  Description of the executable
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Description of the executable
-    * @return description  The description of this {@link AiExecutable} instance.
-    */
+   * Description of the executable
+   * @return description  The description of this {@link AiExecutable} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link AiExecutable} instance.
-   *
-   * @param description  Description of the executable
-   */
+  * Set the description of this {@link AiExecutable} instance.
+  *
+  * @param description  Description of the executable
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the id of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param id  ID of the executable
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the id of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param id  ID of the executable
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-    * ID of the executable
-    * @return id  The id of this {@link AiExecutable} instance.
-    */
+   * ID of the executable
+   * @return id  The id of this {@link AiExecutable} instance.
+  **/
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-   * Set the id of this {@link AiExecutable} instance.
-   *
-   * @param id  ID of the executable
-   */
+  * Set the id of this {@link AiExecutable} instance.
+  *
+  * @param id  ID of the executable
+  */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-    * Set the scenarioId of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the scenarioId of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable scenarioId(@Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
    /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link AiExecutable} instance.
-    */
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link AiExecutable} instance.
+  **/
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
 
   /**
-   * Set the scenarioId of this {@link AiExecutable} instance.
-   *
-   * @param scenarioId  ID of the scenario
-   */
+  * Set the scenarioId of this {@link AiExecutable} instance.
+  *
+  * @param scenarioId  ID of the scenario
+  */
   public void setScenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
    /**
-    * Set the versionId of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param versionId  Version ID
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the versionId of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param versionId  Version ID
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable versionId(@Nonnull final String versionId) {
     this.versionId = versionId;
     return this;
   }
 
    /**
-    * Version ID
-    * @return versionId  The versionId of this {@link AiExecutable} instance.
-    */
+   * Version ID
+   * @return versionId  The versionId of this {@link AiExecutable} instance.
+  **/
   @Nonnull public String getVersionId() {
     return versionId;
   }
 
   /**
-   * Set the versionId of this {@link AiExecutable} instance.
-   *
-   * @param versionId  Version ID
-   */
+  * Set the versionId of this {@link AiExecutable} instance.
+  *
+  * @param versionId  Version ID
+  */
   public void setVersionId( @Nonnull final String versionId) {
     this.versionId = versionId;
   }
 
    /**
-    * Set the parameters of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param parameters  Executable parameters
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the parameters of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param parameters  Executable parameters
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable parameters(@Nonnull final List<AiExecutableParameter> parameters) {
     this.parameters = parameters;
     return this;
   }
   /**
-   * Add one parameters instance to this {@link AiExecutable}.
-   * @param parametersItem The parameters that should be added
-   * @return The same instance of type {@link AiExecutable}
-   */
-  @Nonnull public AiExecutable addParametersItem( @Nonnull final AiExecutableParameter parametersItem) {
+  * Add one parameters instance to this {@link AiExecutable}.
+  * @param parametersItem The parameters that should be added
+  * @return The same instance of type {@link AiExecutable}
+  */
+  @Nonnull public AiExecutable addparametersItem( @Nonnull final AiExecutableParameter parametersItem) {
     if (this.parameters == null) {
       this.parameters = new ArrayList<>();
     }
@@ -293,38 +294,38 @@ public class AiExecutable
   }
 
    /**
-    * Executable parameters
-    * @return parameters  The parameters of this {@link AiExecutable} instance.
-    */
+   * Executable parameters
+   * @return parameters  The parameters of this {@link AiExecutable} instance.
+  **/
   @Nonnull public List<AiExecutableParameter> getParameters() {
     return parameters;
   }
 
   /**
-   * Set the parameters of this {@link AiExecutable} instance.
-   *
-   * @param parameters  Executable parameters
-   */
+  * Set the parameters of this {@link AiExecutable} instance.
+  *
+  * @param parameters  Executable parameters
+  */
   public void setParameters( @Nonnull final List<AiExecutableParameter> parameters) {
     this.parameters = parameters;
   }
 
    /**
-    * Set the inputArtifacts of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param inputArtifacts  Executable parameters
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the inputArtifacts of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param inputArtifacts  Executable parameters
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable inputArtifacts(@Nonnull final List<AiExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
     return this;
   }
   /**
-   * Add one inputArtifacts instance to this {@link AiExecutable}.
-   * @param inputArtifactsItem The inputArtifacts that should be added
-   * @return The same instance of type {@link AiExecutable}
-   */
-  @Nonnull public AiExecutable addInputArtifactsItem( @Nonnull final AiExecutableArtifact inputArtifactsItem) {
+  * Add one inputArtifacts instance to this {@link AiExecutable}.
+  * @param inputArtifactsItem The inputArtifacts that should be added
+  * @return The same instance of type {@link AiExecutable}
+  */
+  @Nonnull public AiExecutable addinputArtifactsItem( @Nonnull final AiExecutableArtifact inputArtifactsItem) {
     if (this.inputArtifacts == null) {
       this.inputArtifacts = new ArrayList<>();
     }
@@ -333,38 +334,38 @@ public class AiExecutable
   }
 
    /**
-    * Executable parameters
-    * @return inputArtifacts  The inputArtifacts of this {@link AiExecutable} instance.
-    */
+   * Executable parameters
+   * @return inputArtifacts  The inputArtifacts of this {@link AiExecutable} instance.
+  **/
   @Nonnull public List<AiExecutableArtifact> getInputArtifacts() {
     return inputArtifacts;
   }
 
   /**
-   * Set the inputArtifacts of this {@link AiExecutable} instance.
-   *
-   * @param inputArtifacts  Executable parameters
-   */
+  * Set the inputArtifacts of this {@link AiExecutable} instance.
+  *
+  * @param inputArtifacts  Executable parameters
+  */
   public void setInputArtifacts( @Nonnull final List<AiExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
   }
 
    /**
-    * Set the outputArtifacts of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param outputArtifacts  Executable parameters
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the outputArtifacts of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param outputArtifacts  Executable parameters
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable outputArtifacts(@Nonnull final List<AiExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
   /**
-   * Add one outputArtifacts instance to this {@link AiExecutable}.
-   * @param outputArtifactsItem The outputArtifacts that should be added
-   * @return The same instance of type {@link AiExecutable}
-   */
-  @Nonnull public AiExecutable addOutputArtifactsItem( @Nonnull final AiExecutableArtifact outputArtifactsItem) {
+  * Add one outputArtifacts instance to this {@link AiExecutable}.
+  * @param outputArtifactsItem The outputArtifacts that should be added
+  * @return The same instance of type {@link AiExecutable}
+  */
+  @Nonnull public AiExecutable addoutputArtifactsItem( @Nonnull final AiExecutableArtifact outputArtifactsItem) {
     if (this.outputArtifacts == null) {
       this.outputArtifacts = new ArrayList<>();
     }
@@ -373,102 +374,102 @@ public class AiExecutable
   }
 
    /**
-    * Executable parameters
-    * @return outputArtifacts  The outputArtifacts of this {@link AiExecutable} instance.
-    */
+   * Executable parameters
+   * @return outputArtifacts  The outputArtifacts of this {@link AiExecutable} instance.
+  **/
   @Nonnull public List<AiExecutableArtifact> getOutputArtifacts() {
     return outputArtifacts;
   }
 
   /**
-   * Set the outputArtifacts of this {@link AiExecutable} instance.
-   *
-   * @param outputArtifacts  Executable parameters
-   */
+  * Set the outputArtifacts of this {@link AiExecutable} instance.
+  *
+  * @param outputArtifacts  Executable parameters
+  */
   public void setOutputArtifacts( @Nonnull final List<AiExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 
    /**
-    * Set the deployable of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param deployable  Whether this executable is deployable
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the deployable of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param deployable  Whether this executable is deployable
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable deployable(@Nonnull final Boolean deployable) {
     this.deployable = deployable;
     return this;
   }
 
    /**
-    * Whether this executable is deployable
-    * @return deployable  The deployable of this {@link AiExecutable} instance.
-    */
+   * Whether this executable is deployable
+   * @return deployable  The deployable of this {@link AiExecutable} instance.
+  **/
   @Nonnull public Boolean isDeployable() {
     return deployable;
   }
 
   /**
-   * Set the deployable of this {@link AiExecutable} instance.
-   *
-   * @param deployable  Whether this executable is deployable
-   */
+  * Set the deployable of this {@link AiExecutable} instance.
+  *
+  * @param deployable  Whether this executable is deployable
+  */
   public void setDeployable( @Nonnull final Boolean deployable) {
     this.deployable = deployable;
   }
 
    /**
-    * Set the createdAt of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the createdAt of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable createdAt(@Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link AiExecutable} instance.
-    */
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link AiExecutable} instance.
+  **/
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-   * Set the createdAt of this {@link AiExecutable} instance.
-   *
-   * @param createdAt  Timestamp of resource creation
-   */
+  * Set the createdAt of this {@link AiExecutable} instance.
+  *
+  * @param createdAt  Timestamp of resource creation
+  */
   public void setCreatedAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
    /**
-    * Set the modifiedAt of this {@link AiExecutable} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link AiExecutable} class
-    */
+   * Set the modifiedAt of this {@link AiExecutable} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link AiExecutable} class
+   */
    @Nonnull public AiExecutable modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
    /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link AiExecutable} instance.
-    */
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link AiExecutable} instance.
+  **/
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
 
   /**
-   * Set the modifiedAt of this {@link AiExecutable} instance.
-   *
-   * @param modifiedAt  Timestamp of latest resource modification
-   */
+  * Set the modifiedAt of this {@link AiExecutable} instance.
+  *
+  * @param modifiedAt  Timestamp of latest resource modification
+  */
   public void setModifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
   }
@@ -570,7 +571,6 @@ public class AiExecutable
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

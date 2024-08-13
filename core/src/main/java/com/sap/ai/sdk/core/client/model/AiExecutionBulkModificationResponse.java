@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * Response object with array of executions and its status
  */
+
 // CHECKSTYLE:OFF
 public class AiExecutionBulkModificationResponse 
 // CHECKSTYLE:ON
@@ -54,21 +55,21 @@ public class AiExecutionBulkModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the executions of this {@link AiExecutionBulkModificationResponse} instance and return the same instance.
-    *
-    * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
-    * @return The same instance of this {@link AiExecutionBulkModificationResponse} class
-    */
+   * Set the executions of this {@link AiExecutionBulkModificationResponse} instance and return the same instance.
+   *
+   * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
+   * @return The same instance of this {@link AiExecutionBulkModificationResponse} class
+   */
    @Nonnull public AiExecutionBulkModificationResponse executions(@Nonnull final List<AiExecutionModificationResponseListInner> executions) {
     this.executions = executions;
     return this;
   }
   /**
-   * Add one executions instance to this {@link AiExecutionBulkModificationResponse}.
-   * @param executionsItem The executions that should be added
-   * @return The same instance of type {@link AiExecutionBulkModificationResponse}
-   */
-  @Nonnull public AiExecutionBulkModificationResponse addExecutionsItem( @Nonnull final AiExecutionModificationResponseListInner executionsItem) {
+  * Add one executions instance to this {@link AiExecutionBulkModificationResponse}.
+  * @param executionsItem The executions that should be added
+  * @return The same instance of type {@link AiExecutionBulkModificationResponse}
+  */
+  @Nonnull public AiExecutionBulkModificationResponse addexecutionsItem( @Nonnull final AiExecutionModificationResponseListInner executionsItem) {
     if (this.executions == null) {
       this.executions = new ArrayList<>();
     }
@@ -77,18 +78,18 @@ public class AiExecutionBulkModificationResponse
   }
 
    /**
-    * Get executions
-    * @return executions  The executions of this {@link AiExecutionBulkModificationResponse} instance.
-    */
+   * Get executions
+   * @return executions  The executions of this {@link AiExecutionBulkModificationResponse} instance.
+  **/
   @Nonnull public List<AiExecutionModificationResponseListInner> getExecutions() {
     return executions;
   }
 
   /**
-   * Set the executions of this {@link AiExecutionBulkModificationResponse} instance.
-   *
-   * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
-   */
+  * Set the executions of this {@link AiExecutionBulkModificationResponse} instance.
+  *
+  * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
+  */
   public void setExecutions( @Nonnull final List<AiExecutionModificationResponseListInner> executions) {
     this.executions = executions;
   }
@@ -168,7 +169,6 @@ public class AiExecutionBulkModificationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

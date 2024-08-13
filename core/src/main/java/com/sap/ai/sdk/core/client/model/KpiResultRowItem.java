@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 /**
  * KpiResultRowItem
  */
+
 // CHECKSTYLE:OFF
 public class KpiResultRowItem 
 // CHECKSTYLE:ON
@@ -114,7 +115,6 @@ public class KpiResultRowItem
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

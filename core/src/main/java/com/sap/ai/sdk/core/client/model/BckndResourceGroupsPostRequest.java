@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGroupsPostRequest
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourceGroupsPostRequest 
 // CHECKSTYLE:ON
@@ -57,49 +58,49 @@ public class BckndResourceGroupsPostRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
-    *
-    * @param resourceGroupId  resource group id
-    * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
-    */
+   * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
+   *
+   * @param resourceGroupId  resource group id
+   * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
+   */
    @Nonnull public BckndResourceGroupsPostRequest resourceGroupId(@Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
 
    /**
-    * resource group id
-    * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance.
-    */
+   * resource group id
+   * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance.
+  **/
   @Nonnull public String getResourceGroupId() {
     return resourceGroupId;
   }
 
   /**
-   * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance.
-   *
-   * @param resourceGroupId  resource group id
-   */
+  * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance.
+  *
+  * @param resourceGroupId  resource group id
+  */
   public void setResourceGroupId( @Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
    /**
-    * Set the labels of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
-    */
+   * Set the labels of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
+   */
    @Nonnull public BckndResourceGroupsPostRequest labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link BckndResourceGroupsPostRequest}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link BckndResourceGroupsPostRequest}
-   */
-  @Nonnull public BckndResourceGroupsPostRequest addLabelsItem( @Nonnull final BckndResourceGroupLabel labelsItem) {
+  * Add one labels instance to this {@link BckndResourceGroupsPostRequest}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link BckndResourceGroupsPostRequest}
+  */
+  @Nonnull public BckndResourceGroupsPostRequest addlabelsItem( @Nonnull final BckndResourceGroupLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -108,18 +109,18 @@ public class BckndResourceGroupsPostRequest
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link BckndResourceGroupsPostRequest} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link BckndResourceGroupsPostRequest} instance.
+  **/
   @Nonnull public List<BckndResourceGroupLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link BckndResourceGroupsPostRequest} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link BckndResourceGroupsPostRequest} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
@@ -201,7 +202,6 @@ public class BckndResourceGroupsPostRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

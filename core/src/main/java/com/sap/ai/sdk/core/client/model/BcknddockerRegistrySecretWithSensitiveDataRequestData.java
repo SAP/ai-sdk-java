@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * key:value pairs of data
  */
+
 // CHECKSTYLE:OFF
 public class BcknddockerRegistrySecretWithSensitiveDataRequestData 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance and return the same instance.
-    *
-    * @param dockerconfigjson  .dockerconfigjson data
-    * @return The same instance of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} class
-    */
+   * Set the dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance and return the same instance.
+   *
+   * @param dockerconfigjson  .dockerconfigjson data
+   * @return The same instance of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} class
+   */
    @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequestData dockerconfigjson(@Nonnull final String dockerconfigjson) {
     this.dockerconfigjson = dockerconfigjson;
     return this;
   }
 
    /**
-    * .dockerconfigjson data
-    * @return dockerconfigjson  The dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance.
-    */
+   * .dockerconfigjson data
+   * @return dockerconfigjson  The dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance.
+  **/
   @Nonnull public String getDockerconfigjson() {
     return dockerconfigjson;
   }
 
   /**
-   * Set the dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance.
-   *
-   * @param dockerconfigjson  .dockerconfigjson data
-   */
+  * Set the dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance.
+  *
+  * @param dockerconfigjson  .dockerconfigjson data
+  */
   public void setDockerconfigjson( @Nonnull final String dockerconfigjson) {
     this.dockerconfigjson = dockerconfigjson;
   }
@@ -152,7 +153,6 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

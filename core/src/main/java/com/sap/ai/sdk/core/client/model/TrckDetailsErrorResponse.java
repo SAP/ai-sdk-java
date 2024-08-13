@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * TrckDetailsErrorResponse
  */
+
 // CHECKSTYLE:OFF
 public class TrckDetailsErrorResponse 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class TrckDetailsErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the code of this {@link TrckDetailsErrorResponse} instance and return the same instance.
-    *
-    * @param code  Descriptive error code (not http status code)
-    * @return The same instance of this {@link TrckDetailsErrorResponse} class
-    */
+   * Set the code of this {@link TrckDetailsErrorResponse} instance and return the same instance.
+   *
+   * @param code  Descriptive error code (not http status code)
+   * @return The same instance of this {@link TrckDetailsErrorResponse} class
+   */
    @Nonnull public TrckDetailsErrorResponse code(@Nonnull final String code) {
     this.code = code;
     return this;
   }
 
    /**
-    * Descriptive error code (not http status code)
-    * @return code  The code of this {@link TrckDetailsErrorResponse} instance.
-    */
+   * Descriptive error code (not http status code)
+   * @return code  The code of this {@link TrckDetailsErrorResponse} instance.
+  **/
   @Nonnull public String getCode() {
     return code;
   }
 
   /**
-   * Set the code of this {@link TrckDetailsErrorResponse} instance.
-   *
-   * @param code  Descriptive error code (not http status code)
-   */
+  * Set the code of this {@link TrckDetailsErrorResponse} instance.
+  *
+  * @param code  Descriptive error code (not http status code)
+  */
   public void setCode( @Nonnull final String code) {
     this.code = code;
   }
 
    /**
-    * Set the message of this {@link TrckDetailsErrorResponse} instance and return the same instance.
-    *
-    * @param message  Plaintext error description
-    * @return The same instance of this {@link TrckDetailsErrorResponse} class
-    */
+   * Set the message of this {@link TrckDetailsErrorResponse} instance and return the same instance.
+   *
+   * @param message  Plaintext error description
+   * @return The same instance of this {@link TrckDetailsErrorResponse} class
+   */
    @Nonnull public TrckDetailsErrorResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Plaintext error description
-    * @return message  The message of this {@link TrckDetailsErrorResponse} instance.
-    */
+   * Plaintext error description
+   * @return message  The message of this {@link TrckDetailsErrorResponse} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link TrckDetailsErrorResponse} instance.
-   *
-   * @param message  Plaintext error description
-   */
+  * Set the message of this {@link TrckDetailsErrorResponse} instance.
+  *
+  * @param message  Plaintext error description
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -185,7 +186,6 @@ public class TrckDetailsErrorResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

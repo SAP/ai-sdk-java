@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * MetaAiApiLimitsTimeToLiveDeployments
  */
+
 // CHECKSTYLE:OFF
 public class MetaAiApiLimitsTimeToLiveDeployments 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class MetaAiApiLimitsTimeToLiveDeployments
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
-    *
-    * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
-    * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
-    */
+   * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
+   *
+   * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
+   * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
+   */
    @Nonnull public MetaAiApiLimitsTimeToLiveDeployments minimum(@Nonnull final String minimum) {
     this.minimum = minimum;
     return this;
   }
 
    /**
-    * Get minimum
-    * @return minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
-    */
+   * Get minimum
+   * @return minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
+  **/
   @Nonnull public String getMinimum() {
     return minimum;
   }
 
   /**
-   * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
-   *
-   * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
-   */
+  * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
+  *
+  * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
+  */
   public void setMinimum( @Nonnull final String minimum) {
     this.minimum = minimum;
   }
 
    /**
-    * Set the maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
-    *
-    * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
-    * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
-    */
+   * Set the maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
+   *
+   * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
+   * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
+   */
    @Nonnull public MetaAiApiLimitsTimeToLiveDeployments maximum(@Nonnull final String maximum) {
     this.maximum = maximum;
     return this;
   }
 
    /**
-    * Get maximum
-    * @return maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
-    */
+   * Get maximum
+   * @return maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
+  **/
   @Nonnull public String getMaximum() {
     return maximum;
   }
 
   /**
-   * Set the maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
-   *
-   * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
-   */
+  * Set the maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
+  *
+  * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
+  */
   public void setMaximum( @Nonnull final String maximum) {
     this.maximum = maximum;
   }
@@ -185,7 +186,6 @@ public class MetaAiApiLimitsTimeToLiveDeployments
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -97,6 +97,10 @@
               <inputSpec>${project.basedir}/src/main/resources/spec/aicore.yaml</inputSpec>
               <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
               <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
+              <additionalProperties>
+                <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
+                <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
+              </additionalProperties>
             </configuration>
           </execution>
         </executions>

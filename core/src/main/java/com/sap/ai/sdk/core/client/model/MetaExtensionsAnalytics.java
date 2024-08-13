@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * MetaExtensionsAnalytics
  */
+
 // CHECKSTYLE:OFF
 public class MetaExtensionsAnalytics 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class MetaExtensionsAnalytics
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the version of this {@link MetaExtensionsAnalytics} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaExtensionsAnalytics}
-    * @return The same instance of this {@link MetaExtensionsAnalytics} class
-    */
+   * Set the version of this {@link MetaExtensionsAnalytics} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaExtensionsAnalytics}
+   * @return The same instance of this {@link MetaExtensionsAnalytics} class
+   */
    @Nonnull public MetaExtensionsAnalytics version(@Nonnull final String version) {
     this.version = version;
     return this;
   }
 
    /**
-    * Get version
-    * @return version  The version of this {@link MetaExtensionsAnalytics} instance.
-    */
+   * Get version
+   * @return version  The version of this {@link MetaExtensionsAnalytics} instance.
+  **/
   @Nonnull public String getVersion() {
     return version;
   }
 
   /**
-   * Set the version of this {@link MetaExtensionsAnalytics} instance.
-   *
-   * @param version  The version of this {@link MetaExtensionsAnalytics}
-   */
+  * Set the version of this {@link MetaExtensionsAnalytics} instance.
+  *
+  * @param version  The version of this {@link MetaExtensionsAnalytics}
+  */
   public void setVersion( @Nonnull final String version) {
     this.version = version;
   }
@@ -152,7 +153,6 @@ public class MetaExtensionsAnalytics
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

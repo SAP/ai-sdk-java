@@ -41,6 +41,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGetResponse
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourceGetResponse 
 // CHECKSTYLE:ON
@@ -53,22 +54,22 @@ public class BckndResourceGetResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the resourcePlans of this {@link BckndResourceGetResponse} instance and return the same instance.
-    *
-    * @param resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse}
-    * @return The same instance of this {@link BckndResourceGetResponse} class
-    */
+   * Set the resourcePlans of this {@link BckndResourceGetResponse} instance and return the same instance.
+   *
+   * @param resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse}
+   * @return The same instance of this {@link BckndResourceGetResponse} class
+   */
    @Nonnull public BckndResourceGetResponse resourcePlans(@Nonnull final Map<String, BckndResourceGetResourcePlansValue> resourcePlans) {
     this.resourcePlans = resourcePlans;
     return this;
   }
 
    /**
-    * Put one resourcePlans instance to this {@link BckndResourceGetResponse} instance.
-    * @param key The String key of this resourcePlans instance
-    * @param resourcePlansItem The resourcePlans that should be added under the given key
-    * @return The same instance of type {@link BckndResourceGetResponse}
-    */
+   * Put one resourcePlans instance to this {@link BckndResourceGetResponse} instance.
+   * @param key The String key of this resourcePlans instance
+   * @param resourcePlansItem The resourcePlans that should be added under the given key
+   * @return The same instance of type {@link BckndResourceGetResponse}
+   */
    @Nonnull public BckndResourceGetResponse putresourcePlansItem(@Nonnull final String key, @Nonnull final BckndResourceGetResourcePlansValue resourcePlansItem) {
       this.resourcePlans = new HashMap<>();
     this.resourcePlans.put(key, resourcePlansItem);
@@ -76,18 +77,18 @@ public class BckndResourceGetResponse
   }
 
    /**
-    * Get resourcePlans
-    * @return resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse} instance.
-    */
+   * Get resourcePlans
+   * @return resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse} instance.
+  **/
   @Nonnull public Map<String, BckndResourceGetResourcePlansValue> getResourcePlans() {
     return resourcePlans;
   }
 
   /**
-   * Set the resourcePlans of this {@link BckndResourceGetResponse} instance.
-   *
-   * @param resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse}
-   */
+  * Set the resourcePlans of this {@link BckndResourceGetResponse} instance.
+  *
+  * @param resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse}
+  */
   public void setResourcePlans( @Nonnull final Map<String, BckndResourceGetResourcePlansValue> resourcePlans) {
     this.resourcePlans = resourcePlans;
   }
@@ -167,7 +168,6 @@ public class BckndResourceGetResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

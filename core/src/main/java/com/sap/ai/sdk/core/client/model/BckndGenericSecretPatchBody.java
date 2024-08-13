@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * BckndGenericSecretPatchBody
  */
+
 // CHECKSTYLE:OFF
 public class BckndGenericSecretPatchBody 
 // CHECKSTYLE:ON
@@ -52,22 +53,22 @@ public class BckndGenericSecretPatchBody
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the data of this {@link BckndGenericSecretPatchBody} instance and return the same instance.
-    *
-    * @param data  Base64 encoded secret data
-    * @return The same instance of this {@link BckndGenericSecretPatchBody} class
-    */
+   * Set the data of this {@link BckndGenericSecretPatchBody} instance and return the same instance.
+   *
+   * @param data  Base64 encoded secret data
+   * @return The same instance of this {@link BckndGenericSecretPatchBody} class
+   */
    @Nonnull public BckndGenericSecretPatchBody data(@Nonnull final Map<String, String> data) {
     this.data = data;
     return this;
   }
 
    /**
-    * Put one data instance to this {@link BckndGenericSecretPatchBody} instance.
-    * @param key The String key of this data instance
-    * @param dataItem The data that should be added under the given key
-    * @return The same instance of type {@link BckndGenericSecretPatchBody}
-    */
+   * Put one data instance to this {@link BckndGenericSecretPatchBody} instance.
+   * @param key The String key of this data instance
+   * @param dataItem The data that should be added under the given key
+   * @return The same instance of type {@link BckndGenericSecretPatchBody}
+   */
    @Nonnull public BckndGenericSecretPatchBody putdataItem(@Nonnull final String key, @Nonnull final String dataItem) {
       this.data = new HashMap<>();
     this.data.put(key, dataItem);
@@ -75,18 +76,18 @@ public class BckndGenericSecretPatchBody
   }
 
    /**
-    * Base64 encoded secret data
-    * @return data  The data of this {@link BckndGenericSecretPatchBody} instance.
-    */
+   * Base64 encoded secret data
+   * @return data  The data of this {@link BckndGenericSecretPatchBody} instance.
+  **/
   @Nonnull public Map<String, String> getData() {
     return data;
   }
 
   /**
-   * Set the data of this {@link BckndGenericSecretPatchBody} instance.
-   *
-   * @param data  Base64 encoded secret data
-   */
+  * Set the data of this {@link BckndGenericSecretPatchBody} instance.
+  *
+  * @param data  Base64 encoded secret data
+  */
   public void setData( @Nonnull final Map<String, String> data) {
     this.data = data;
   }
@@ -166,7 +167,6 @@ public class BckndGenericSecretPatchBody
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

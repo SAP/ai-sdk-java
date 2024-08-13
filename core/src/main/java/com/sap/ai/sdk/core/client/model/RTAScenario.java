@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * Entity having labels
  */
+
 // CHECKSTYLE:OFF
 public class RTAScenario 
 // CHECKSTYLE:ON
@@ -70,105 +71,105 @@ public class RTAScenario
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the id of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param id  ID of the scenario
-    * @return The same instance of this {@link RTAScenario} class
-    */
+   * Set the id of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param id  ID of the scenario
+   * @return The same instance of this {@link RTAScenario} class
+   */
    @Nonnull public RTAScenario id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-    * ID of the scenario
-    * @return id  The id of this {@link RTAScenario} instance.
-    */
+   * ID of the scenario
+   * @return id  The id of this {@link RTAScenario} instance.
+  **/
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-   * Set the id of this {@link RTAScenario} instance.
-   *
-   * @param id  ID of the scenario
-   */
+  * Set the id of this {@link RTAScenario} instance.
+  *
+  * @param id  ID of the scenario
+  */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-    * Set the name of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param name  Name of the scenario
-    * @return The same instance of this {@link RTAScenario} class
-    */
+   * Set the name of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param name  Name of the scenario
+   * @return The same instance of this {@link RTAScenario} class
+   */
    @Nonnull public RTAScenario name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the scenario
-    * @return name  The name of this {@link RTAScenario} instance.
-    */
+   * Name of the scenario
+   * @return name  The name of this {@link RTAScenario} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link RTAScenario} instance.
-   *
-   * @param name  Name of the scenario
-   */
+  * Set the name of this {@link RTAScenario} instance.
+  *
+  * @param name  Name of the scenario
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the description of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param description  Description of the scenario
-    * @return The same instance of this {@link RTAScenario} class
-    */
+   * Set the description of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param description  Description of the scenario
+   * @return The same instance of this {@link RTAScenario} class
+   */
    @Nonnull public RTAScenario description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Description of the scenario
-    * @return description  The description of this {@link RTAScenario} instance.
-    */
+   * Description of the scenario
+   * @return description  The description of this {@link RTAScenario} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link RTAScenario} instance.
-   *
-   * @param description  Description of the scenario
-   */
+  * Set the description of this {@link RTAScenario} instance.
+  *
+  * @param description  Description of the scenario
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the labels of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link RTAScenario} class
-    */
+   * Set the labels of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link RTAScenario} class
+   */
    @Nonnull public RTAScenario labels(@Nonnull final List<RTALabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link RTAScenario}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link RTAScenario}
-   */
-  @Nonnull public RTAScenario addLabelsItem( @Nonnull final RTALabel labelsItem) {
+  * Add one labels instance to this {@link RTAScenario}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link RTAScenario}
+  */
+  @Nonnull public RTAScenario addlabelsItem( @Nonnull final RTALabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -177,74 +178,74 @@ public class RTAScenario
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link RTAScenario} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link RTAScenario} instance.
+  **/
   @Nonnull public List<RTALabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link RTAScenario} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link RTAScenario} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<RTALabel> labels) {
     this.labels = labels;
   }
 
    /**
-    * Set the createdAt of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link RTAScenario} class
-    */
+   * Set the createdAt of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link RTAScenario} class
+   */
    @Nonnull public RTAScenario createdAt(@Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link RTAScenario} instance.
-    */
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link RTAScenario} instance.
+  **/
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-   * Set the createdAt of this {@link RTAScenario} instance.
-   *
-   * @param createdAt  Timestamp of resource creation
-   */
+  * Set the createdAt of this {@link RTAScenario} instance.
+  *
+  * @param createdAt  Timestamp of resource creation
+  */
   public void setCreatedAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
    /**
-    * Set the modifiedAt of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link RTAScenario} class
-    */
+   * Set the modifiedAt of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link RTAScenario} class
+   */
    @Nonnull public RTAScenario modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
    /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link RTAScenario} instance.
-    */
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link RTAScenario} instance.
+  **/
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
 
   /**
-   * Set the modifiedAt of this {@link RTAScenario} instance.
-   *
-   * @param modifiedAt  Timestamp of latest resource modification
-   */
+  * Set the modifiedAt of this {@link RTAScenario} instance.
+  *
+  * @param modifiedAt  Timestamp of latest resource modification
+  */
   public void setModifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
   }
@@ -334,7 +335,6 @@ public class RTAScenario
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

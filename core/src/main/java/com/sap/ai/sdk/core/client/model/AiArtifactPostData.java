@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * Base data of the artifact; this is the data that can be provided when the artifact is created; &#x60;name&#x60; and &#x60;kind&#x60; are required because they constitute important semantic filtering criteria for use in training / inference executables (&#x60;name&#x60; is a semantic handle of the artifact within a scenario and &#x60;kind&#x60; specifies the type of usage, e.g. you would only want to allow models in the model operator). 
  */
+
 // CHECKSTYLE:OFF
 public class AiArtifactPostData 
 // CHECKSTYLE:ON
@@ -133,21 +134,21 @@ public class AiArtifactPostData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the labels of this {@link AiArtifactPostData} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link AiArtifactPostData} class
-    */
+   * Set the labels of this {@link AiArtifactPostData} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link AiArtifactPostData} class
+   */
    @Nonnull public AiArtifactPostData labels(@Nonnull final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link AiArtifactPostData}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link AiArtifactPostData}
-   */
-  @Nonnull public AiArtifactPostData addLabelsItem( @Nonnull final AiLabel labelsItem) {
+  * Add one labels instance to this {@link AiArtifactPostData}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link AiArtifactPostData}
+  */
+  @Nonnull public AiArtifactPostData addlabelsItem( @Nonnull final AiLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -156,158 +157,158 @@ public class AiArtifactPostData
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link AiArtifactPostData} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link AiArtifactPostData} instance.
+  **/
   @Nonnull public List<AiLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link AiArtifactPostData} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link AiArtifactPostData} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<AiLabel> labels) {
     this.labels = labels;
   }
 
    /**
-    * Set the name of this {@link AiArtifactPostData} instance and return the same instance.
-    *
-    * @param name  Name of the artifact
-    * @return The same instance of this {@link AiArtifactPostData} class
-    */
+   * Set the name of this {@link AiArtifactPostData} instance and return the same instance.
+   *
+   * @param name  Name of the artifact
+   * @return The same instance of this {@link AiArtifactPostData} class
+   */
    @Nonnull public AiArtifactPostData name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the artifact
-    * @return name  The name of this {@link AiArtifactPostData} instance.
-    */
+   * Name of the artifact
+   * @return name  The name of this {@link AiArtifactPostData} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link AiArtifactPostData} instance.
-   *
-   * @param name  Name of the artifact
-   */
+  * Set the name of this {@link AiArtifactPostData} instance.
+  *
+  * @param name  Name of the artifact
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the kind of this {@link AiArtifactPostData} instance and return the same instance.
-    *
-    * @param kind  Kind of the artifact, i.e. model or dataset
-    * @return The same instance of this {@link AiArtifactPostData} class
-    */
+   * Set the kind of this {@link AiArtifactPostData} instance and return the same instance.
+   *
+   * @param kind  Kind of the artifact, i.e. model or dataset
+   * @return The same instance of this {@link AiArtifactPostData} class
+   */
    @Nonnull public AiArtifactPostData kind(@Nonnull final KindEnum kind) {
     this.kind = kind;
     return this;
   }
 
    /**
-    * Kind of the artifact, i.e. model or dataset
-    * @return kind  The kind of this {@link AiArtifactPostData} instance.
-    */
+   * Kind of the artifact, i.e. model or dataset
+   * @return kind  The kind of this {@link AiArtifactPostData} instance.
+  **/
   @Nonnull public KindEnum getKind() {
     return kind;
   }
 
   /**
-   * Set the kind of this {@link AiArtifactPostData} instance.
-   *
-   * @param kind  Kind of the artifact, i.e. model or dataset
-   */
+  * Set the kind of this {@link AiArtifactPostData} instance.
+  *
+  * @param kind  Kind of the artifact, i.e. model or dataset
+  */
   public void setKind( @Nonnull final KindEnum kind) {
     this.kind = kind;
   }
 
    /**
-    * Set the url of this {@link AiArtifactPostData} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. 
-    * @return The same instance of this {@link AiArtifactPostData} class
-    */
+   * Set the url of this {@link AiArtifactPostData} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. 
+   * @return The same instance of this {@link AiArtifactPostData} class
+   */
    @Nonnull public AiArtifactPostData url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-    * Reference to the location of the artifact. 
-    * @return url  The url of this {@link AiArtifactPostData} instance.
-    */
+   * Reference to the location of the artifact. 
+   * @return url  The url of this {@link AiArtifactPostData} instance.
+  **/
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-   * Set the url of this {@link AiArtifactPostData} instance.
-   *
-   * @param url  Reference to the location of the artifact. 
-   */
+  * Set the url of this {@link AiArtifactPostData} instance.
+  *
+  * @param url  Reference to the location of the artifact. 
+  */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
 
    /**
-    * Set the description of this {@link AiArtifactPostData} instance and return the same instance.
-    *
-    * @param description  Description of the artifact
-    * @return The same instance of this {@link AiArtifactPostData} class
-    */
+   * Set the description of this {@link AiArtifactPostData} instance and return the same instance.
+   *
+   * @param description  Description of the artifact
+   * @return The same instance of this {@link AiArtifactPostData} class
+   */
    @Nonnull public AiArtifactPostData description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Description of the artifact
-    * @return description  The description of this {@link AiArtifactPostData} instance.
-    */
+   * Description of the artifact
+   * @return description  The description of this {@link AiArtifactPostData} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link AiArtifactPostData} instance.
-   *
-   * @param description  Description of the artifact
-   */
+  * Set the description of this {@link AiArtifactPostData} instance.
+  *
+  * @param description  Description of the artifact
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the scenarioId of this {@link AiArtifactPostData} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link AiArtifactPostData} class
-    */
+   * Set the scenarioId of this {@link AiArtifactPostData} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link AiArtifactPostData} class
+   */
    @Nonnull public AiArtifactPostData scenarioId(@Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
    /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link AiArtifactPostData} instance.
-    */
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link AiArtifactPostData} instance.
+  **/
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
 
   /**
-   * Set the scenarioId of this {@link AiArtifactPostData} instance.
-   *
-   * @param scenarioId  ID of the scenario
-   */
+  * Set the scenarioId of this {@link AiArtifactPostData} instance.
+  *
+  * @param scenarioId  ID of the scenario
+  */
   public void setScenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
   }
@@ -397,7 +398,6 @@ public class AiArtifactPostData
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * There are (currently) the following types of execution engines  1) complete runtimes that offer executions and deployments, 2) runtimes that do only batch inference and therefore don&#39;t support deployments 3) runtimes that allow deployments, but with predefined models and therefore don&#39;t need executions 4) runtimes that have fixed endpoints and therefore only need listing deployments
  */
+
 // CHECKSTYLE:OFF
 public class MetaAiApi 
 // CHECKSTYLE:ON
@@ -58,85 +59,85 @@ public class MetaAiApi
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the version of this {@link MetaAiApi} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaAiApi}
-    * @return The same instance of this {@link MetaAiApi} class
-    */
+   * Set the version of this {@link MetaAiApi} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaAiApi}
+   * @return The same instance of this {@link MetaAiApi} class
+   */
    @Nonnull public MetaAiApi version(@Nonnull final String version) {
     this.version = version;
     return this;
   }
 
    /**
-    * Get version
-    * @return version  The version of this {@link MetaAiApi} instance.
-    */
+   * Get version
+   * @return version  The version of this {@link MetaAiApi} instance.
+  **/
   @Nonnull public String getVersion() {
     return version;
   }
 
   /**
-   * Set the version of this {@link MetaAiApi} instance.
-   *
-   * @param version  The version of this {@link MetaAiApi}
-   */
+  * Set the version of this {@link MetaAiApi} instance.
+  *
+  * @param version  The version of this {@link MetaAiApi}
+  */
   public void setVersion( @Nonnull final String version) {
     this.version = version;
   }
 
    /**
-    * Set the capabilities of this {@link MetaAiApi} instance and return the same instance.
-    *
-    * @param capabilities  The capabilities of this {@link MetaAiApi}
-    * @return The same instance of this {@link MetaAiApi} class
-    */
+   * Set the capabilities of this {@link MetaAiApi} instance and return the same instance.
+   *
+   * @param capabilities  The capabilities of this {@link MetaAiApi}
+   * @return The same instance of this {@link MetaAiApi} class
+   */
    @Nonnull public MetaAiApi capabilities(@Nonnull final MetaAiApiCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
 
    /**
-    * Get capabilities
-    * @return capabilities  The capabilities of this {@link MetaAiApi} instance.
-    */
+   * Get capabilities
+   * @return capabilities  The capabilities of this {@link MetaAiApi} instance.
+  **/
   @Nonnull public MetaAiApiCapabilities getCapabilities() {
     return capabilities;
   }
 
   /**
-   * Set the capabilities of this {@link MetaAiApi} instance.
-   *
-   * @param capabilities  The capabilities of this {@link MetaAiApi}
-   */
+  * Set the capabilities of this {@link MetaAiApi} instance.
+  *
+  * @param capabilities  The capabilities of this {@link MetaAiApi}
+  */
   public void setCapabilities( @Nonnull final MetaAiApiCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
    /**
-    * Set the limits of this {@link MetaAiApi} instance and return the same instance.
-    *
-    * @param limits  The limits of this {@link MetaAiApi}
-    * @return The same instance of this {@link MetaAiApi} class
-    */
+   * Set the limits of this {@link MetaAiApi} instance and return the same instance.
+   *
+   * @param limits  The limits of this {@link MetaAiApi}
+   * @return The same instance of this {@link MetaAiApi} class
+   */
    @Nonnull public MetaAiApi limits(@Nonnull final MetaAiApiLimits limits) {
     this.limits = limits;
     return this;
   }
 
    /**
-    * Get limits
-    * @return limits  The limits of this {@link MetaAiApi} instance.
-    */
+   * Get limits
+   * @return limits  The limits of this {@link MetaAiApi} instance.
+  **/
   @Nonnull public MetaAiApiLimits getLimits() {
     return limits;
   }
 
   /**
-   * Set the limits of this {@link MetaAiApi} instance.
-   *
-   * @param limits  The limits of this {@link MetaAiApi}
-   */
+  * Set the limits of this {@link MetaAiApi} instance.
+  *
+  * @param limits  The limits of this {@link MetaAiApi}
+  */
   public void setLimits( @Nonnull final MetaAiApiLimits limits) {
     this.limits = limits;
   }
@@ -220,7 +221,6 @@ public class MetaAiApi
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

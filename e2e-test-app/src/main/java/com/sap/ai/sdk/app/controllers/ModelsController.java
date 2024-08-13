@@ -31,6 +31,6 @@ public class ModelsController {
   @GetMapping("/models")
   @Nullable
   public AiModelList getModels() {
-    return API.modelsGet("foundation-models");
+    return API.get("foundation-models");
   }
 }

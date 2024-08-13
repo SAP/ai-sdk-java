@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 /**
  * TrckTagName
  */
+
 // CHECKSTYLE:OFF
 public class TrckTagName 
 // CHECKSTYLE:ON
@@ -115,7 +116,6 @@ public class TrckTagName
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

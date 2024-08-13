@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGroupLabel
  */
+
 // CHECKSTYLE:OFF
 public class BckndResourceGroupLabel 
 // CHECKSTYLE:ON
@@ -53,57 +54,57 @@ public class BckndResourceGroupLabel
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the key of this {@link BckndResourceGroupLabel} instance and return the same instance.
-    *
-    * @param key  The key of this {@link BckndResourceGroupLabel}
-    * @return The same instance of this {@link BckndResourceGroupLabel} class
-    */
+   * Set the key of this {@link BckndResourceGroupLabel} instance and return the same instance.
+   *
+   * @param key  The key of this {@link BckndResourceGroupLabel}
+   * @return The same instance of this {@link BckndResourceGroupLabel} class
+   */
    @Nonnull public BckndResourceGroupLabel key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-    * Get key
-    * @return key  The key of this {@link BckndResourceGroupLabel} instance.
-    */
+   * Get key
+   * @return key  The key of this {@link BckndResourceGroupLabel} instance.
+  **/
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-   * Set the key of this {@link BckndResourceGroupLabel} instance.
-   *
-   * @param key  The key of this {@link BckndResourceGroupLabel}
-   */
+  * Set the key of this {@link BckndResourceGroupLabel} instance.
+  *
+  * @param key  The key of this {@link BckndResourceGroupLabel}
+  */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-    * Set the value of this {@link BckndResourceGroupLabel} instance and return the same instance.
-    *
-    * @param value  The value of this {@link BckndResourceGroupLabel}
-    * @return The same instance of this {@link BckndResourceGroupLabel} class
-    */
+   * Set the value of this {@link BckndResourceGroupLabel} instance and return the same instance.
+   *
+   * @param value  The value of this {@link BckndResourceGroupLabel}
+   * @return The same instance of this {@link BckndResourceGroupLabel} class
+   */
    @Nonnull public BckndResourceGroupLabel value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-    * Get value
-    * @return value  The value of this {@link BckndResourceGroupLabel} instance.
-    */
+   * Get value
+   * @return value  The value of this {@link BckndResourceGroupLabel} instance.
+  **/
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-   * Set the value of this {@link BckndResourceGroupLabel} instance.
-   *
-   * @param value  The value of this {@link BckndResourceGroupLabel}
-   */
+  * Set the value of this {@link BckndResourceGroupLabel} instance.
+  *
+  * @param value  The value of this {@link BckndResourceGroupLabel}
+  */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -185,7 +186,6 @@ public class BckndResourceGroupLabel
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

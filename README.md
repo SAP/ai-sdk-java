@@ -73,7 +73,7 @@ public AiDeploymentCreationResponse createDeployment() {
 
   final AiDeploymentCreationResponse deployment =
       new DeploymentApi(getClient())
-          .deploymentCreate(
+          .create(
               "default",
               new AiDeploymentCreationRequest().configurationId("12345-123-123-123-123456abcdefg"));
 
@@ -97,14 +97,14 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 
   if (deployment.getStatus() == Status.RUNNING) {
     // Only RUNNING deployments can be STOPPED
-    client.deploymentModify(
+    client.modify(
         "default",
         deployment.getId(),
         new AiDeploymentModificationRequest().targetStatus(Status.STOPPED));
   }
   // Wait a few seconds for the deployment to stop
   // Only UNKNOWN and STOPPED deployments can be DELETED
-  return client.deploymentDelete("default", deployment.getId());
+  return client.delete("default", deployment.getId());
 }
 ```
 

@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * BckndExecutableResourceQuotaResponse
  */
+
 // CHECKSTYLE:OFF
 public class BckndExecutableResourceQuotaResponse 
 // CHECKSTYLE:ON
@@ -55,57 +56,57 @@ public class BckndExecutableResourceQuotaResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
-    * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
-    */
+   * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
+   * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
+   */
    @Nonnull public BckndExecutableResourceQuotaResponse usage(@Nonnull final BckndExecutableResourceQuotaResponseUsage usage) {
     this.usage = usage;
     return this;
   }
 
    /**
-    * Get usage
-    * @return usage  The usage of this {@link BckndExecutableResourceQuotaResponse} instance.
-    */
+   * Get usage
+   * @return usage  The usage of this {@link BckndExecutableResourceQuotaResponse} instance.
+  **/
   @Nonnull public BckndExecutableResourceQuotaResponseUsage getUsage() {
     return usage;
   }
 
   /**
-   * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance.
-   *
-   * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
-   */
+  * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance.
+  *
+  * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
+  */
   public void setUsage( @Nonnull final BckndExecutableResourceQuotaResponseUsage usage) {
     this.usage = usage;
   }
 
    /**
-    * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
-    * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
-    */
+   * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
+   * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
+   */
    @Nonnull public BckndExecutableResourceQuotaResponse quota(@Nonnull final BckndExecutableResourceQuotaResponseQuota quota) {
     this.quota = quota;
     return this;
   }
 
    /**
-    * Get quota
-    * @return quota  The quota of this {@link BckndExecutableResourceQuotaResponse} instance.
-    */
+   * Get quota
+   * @return quota  The quota of this {@link BckndExecutableResourceQuotaResponse} instance.
+  **/
   @Nonnull public BckndExecutableResourceQuotaResponseQuota getQuota() {
     return quota;
   }
 
   /**
-   * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance.
-   *
-   * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
-   */
+  * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance.
+  *
+  * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
+  */
   public void setQuota( @Nonnull final BckndExecutableResourceQuotaResponseQuota quota) {
     this.quota = quota;
   }
@@ -187,7 +188,6 @@ public class BckndExecutableResourceQuotaResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

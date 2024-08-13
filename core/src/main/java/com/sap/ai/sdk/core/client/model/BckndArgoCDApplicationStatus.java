@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * ArgoCD application definition and status
  */
+
 // CHECKSTYLE:OFF
 public class BckndArgoCDApplicationStatus 
 // CHECKSTYLE:ON
@@ -79,217 +80,217 @@ public class BckndArgoCDApplicationStatus
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the healthStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param healthStatus  ArgoCD application health status
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the healthStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param healthStatus  ArgoCD application health status
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus healthStatus(@Nonnull final String healthStatus) {
     this.healthStatus = healthStatus;
     return this;
   }
 
    /**
-    * ArgoCD application health status
-    * @return healthStatus  The healthStatus of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * ArgoCD application health status
+   * @return healthStatus  The healthStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public String getHealthStatus() {
     return healthStatus;
   }
 
   /**
-   * Set the healthStatus of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param healthStatus  ArgoCD application health status
-   */
+  * Set the healthStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param healthStatus  ArgoCD application health status
+  */
   public void setHealthStatus( @Nonnull final String healthStatus) {
     this.healthStatus = healthStatus;
   }
 
    /**
-    * Set the syncStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param syncStatus  ArgoCD application sync status
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the syncStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param syncStatus  ArgoCD application sync status
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus syncStatus(@Nonnull final String syncStatus) {
     this.syncStatus = syncStatus;
     return this;
   }
 
    /**
-    * ArgoCD application sync status
-    * @return syncStatus  The syncStatus of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * ArgoCD application sync status
+   * @return syncStatus  The syncStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public String getSyncStatus() {
     return syncStatus;
   }
 
   /**
-   * Set the syncStatus of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param syncStatus  ArgoCD application sync status
-   */
+  * Set the syncStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param syncStatus  ArgoCD application sync status
+  */
   public void setSyncStatus( @Nonnull final String syncStatus) {
     this.syncStatus = syncStatus;
   }
 
    /**
-    * Set the message of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param message  ArgoCD application health status message
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the message of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param message  ArgoCD application health status message
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * ArgoCD application health status message
-    * @return message  The message of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * ArgoCD application health status message
+   * @return message  The message of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param message  ArgoCD application health status message
-   */
+  * Set the message of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param message  ArgoCD application health status message
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-    * Set the source of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param source  The source of this {@link BckndArgoCDApplicationStatus}
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the source of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param source  The source of this {@link BckndArgoCDApplicationStatus}
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus source(@Nonnull final BckndArgoCDApplicationStatusSource source) {
     this.source = source;
     return this;
   }
 
    /**
-    * Get source
-    * @return source  The source of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * Get source
+   * @return source  The source of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public BckndArgoCDApplicationStatusSource getSource() {
     return source;
   }
 
   /**
-   * Set the source of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param source  The source of this {@link BckndArgoCDApplicationStatus}
-   */
+  * Set the source of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param source  The source of this {@link BckndArgoCDApplicationStatus}
+  */
   public void setSource( @Nonnull final BckndArgoCDApplicationStatusSource source) {
     this.source = source;
   }
 
    /**
-    * Set the syncFinishedAt of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param syncFinishedAt  Gets the timestamp information related to the sync state of the ArgoCD application
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the syncFinishedAt of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param syncFinishedAt  Gets the timestamp information related to the sync state of the ArgoCD application
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus syncFinishedAt(@Nonnull final String syncFinishedAt) {
     this.syncFinishedAt = syncFinishedAt;
     return this;
   }
 
    /**
-    * Gets the timestamp information related to the sync state of the ArgoCD application
-    * @return syncFinishedAt  The syncFinishedAt of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * Gets the timestamp information related to the sync state of the ArgoCD application
+   * @return syncFinishedAt  The syncFinishedAt of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public String getSyncFinishedAt() {
     return syncFinishedAt;
   }
 
   /**
-   * Set the syncFinishedAt of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param syncFinishedAt  Gets the timestamp information related to the sync state of the ArgoCD application
-   */
+  * Set the syncFinishedAt of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param syncFinishedAt  Gets the timestamp information related to the sync state of the ArgoCD application
+  */
   public void setSyncFinishedAt( @Nonnull final String syncFinishedAt) {
     this.syncFinishedAt = syncFinishedAt;
   }
 
    /**
-    * Set the syncStartedAt of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param syncStartedAt  Get timestamp information related to the sync state of the ArgoCD application
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the syncStartedAt of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param syncStartedAt  Get timestamp information related to the sync state of the ArgoCD application
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus syncStartedAt(@Nonnull final String syncStartedAt) {
     this.syncStartedAt = syncStartedAt;
     return this;
   }
 
    /**
-    * Get timestamp information related to the sync state of the ArgoCD application
-    * @return syncStartedAt  The syncStartedAt of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * Get timestamp information related to the sync state of the ArgoCD application
+   * @return syncStartedAt  The syncStartedAt of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public String getSyncStartedAt() {
     return syncStartedAt;
   }
 
   /**
-   * Set the syncStartedAt of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param syncStartedAt  Get timestamp information related to the sync state of the ArgoCD application
-   */
+  * Set the syncStartedAt of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param syncStartedAt  Get timestamp information related to the sync state of the ArgoCD application
+  */
   public void setSyncStartedAt( @Nonnull final String syncStartedAt) {
     this.syncStartedAt = syncStartedAt;
   }
 
    /**
-    * Set the reconciledAt of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param reconciledAt  Get timestamp information related to the sync state of the ArgoCD application
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the reconciledAt of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param reconciledAt  Get timestamp information related to the sync state of the ArgoCD application
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus reconciledAt(@Nonnull final String reconciledAt) {
     this.reconciledAt = reconciledAt;
     return this;
   }
 
    /**
-    * Get timestamp information related to the sync state of the ArgoCD application
-    * @return reconciledAt  The reconciledAt of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * Get timestamp information related to the sync state of the ArgoCD application
+   * @return reconciledAt  The reconciledAt of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public String getReconciledAt() {
     return reconciledAt;
   }
 
   /**
-   * Set the reconciledAt of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param reconciledAt  Get timestamp information related to the sync state of the ArgoCD application
-   */
+  * Set the reconciledAt of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param reconciledAt  Get timestamp information related to the sync state of the ArgoCD application
+  */
   public void setReconciledAt( @Nonnull final String reconciledAt) {
     this.reconciledAt = reconciledAt;
   }
 
    /**
-    * Set the syncResourcesStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param syncResourcesStatus  Status of all resources that need to be synchronized with the gitops repo
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the syncResourcesStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param syncResourcesStatus  Status of all resources that need to be synchronized with the gitops repo
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus syncResourcesStatus(@Nonnull final List<BckndArgoCDApplicationStatusSyncResourcesStatusInner> syncResourcesStatus) {
     this.syncResourcesStatus = syncResourcesStatus;
     return this;
   }
   /**
-   * Add one syncResourcesStatus instance to this {@link BckndArgoCDApplicationStatus}.
-   * @param syncResourcesStatusItem The syncResourcesStatus that should be added
-   * @return The same instance of type {@link BckndArgoCDApplicationStatus}
-   */
-  @Nonnull public BckndArgoCDApplicationStatus addSyncResourcesStatusItem( @Nonnull final BckndArgoCDApplicationStatusSyncResourcesStatusInner syncResourcesStatusItem) {
+  * Add one syncResourcesStatus instance to this {@link BckndArgoCDApplicationStatus}.
+  * @param syncResourcesStatusItem The syncResourcesStatus that should be added
+  * @return The same instance of type {@link BckndArgoCDApplicationStatus}
+  */
+  @Nonnull public BckndArgoCDApplicationStatus addsyncResourcesStatusItem( @Nonnull final BckndArgoCDApplicationStatusSyncResourcesStatusInner syncResourcesStatusItem) {
     if (this.syncResourcesStatus == null) {
       this.syncResourcesStatus = new ArrayList<>();
     }
@@ -298,38 +299,38 @@ public class BckndArgoCDApplicationStatus
   }
 
    /**
-    * Status of all resources that need to be synchronized with the gitops repo
-    * @return syncResourcesStatus  The syncResourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
-    */
+   * Status of all resources that need to be synchronized with the gitops repo
+   * @return syncResourcesStatus  The syncResourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  **/
   @Nonnull public List<BckndArgoCDApplicationStatusSyncResourcesStatusInner> getSyncResourcesStatus() {
     return syncResourcesStatus;
   }
 
   /**
-   * Set the syncResourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param syncResourcesStatus  Status of all resources that need to be synchronized with the gitops repo
-   */
+  * Set the syncResourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param syncResourcesStatus  Status of all resources that need to be synchronized with the gitops repo
+  */
   public void setSyncResourcesStatus( @Nonnull final List<BckndArgoCDApplicationStatusSyncResourcesStatusInner> syncResourcesStatus) {
     this.syncResourcesStatus = syncResourcesStatus;
   }
 
    /**
-    * Set the syncRessourcesStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
-    *
-    * @param syncRessourcesStatus  Status of all resources that need to be synchronized with the gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
-    * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
-    */
+   * Set the syncRessourcesStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
+   *
+   * @param syncRessourcesStatus  Status of all resources that need to be synchronized with the gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
+   * @return The same instance of this {@link BckndArgoCDApplicationStatus} class
+   */
    @Nonnull public BckndArgoCDApplicationStatus syncRessourcesStatus(@Nonnull final List<BckndArgoCDApplicationStatusSyncResourcesStatusInner> syncRessourcesStatus) {
     this.syncRessourcesStatus = syncRessourcesStatus;
     return this;
   }
   /**
-   * Add one syncRessourcesStatus instance to this {@link BckndArgoCDApplicationStatus}.
-   * @param syncRessourcesStatusItem The syncRessourcesStatus that should be added
-   * @return The same instance of type {@link BckndArgoCDApplicationStatus}
-   */
-  @Nonnull public BckndArgoCDApplicationStatus addSyncRessourcesStatusItem( @Nonnull final BckndArgoCDApplicationStatusSyncResourcesStatusInner syncRessourcesStatusItem) {
+  * Add one syncRessourcesStatus instance to this {@link BckndArgoCDApplicationStatus}.
+  * @param syncRessourcesStatusItem The syncRessourcesStatus that should be added
+  * @return The same instance of type {@link BckndArgoCDApplicationStatus}
+  */
+  @Nonnull public BckndArgoCDApplicationStatus addsyncRessourcesStatusItem( @Nonnull final BckndArgoCDApplicationStatusSyncResourcesStatusInner syncRessourcesStatusItem) {
     if (this.syncRessourcesStatus == null) {
       this.syncRessourcesStatus = new ArrayList<>();
     }
@@ -338,20 +339,20 @@ public class BckndArgoCDApplicationStatus
   }
 
    /**
-    * Status of all resources that need to be synchronized with the gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
-    * @return syncRessourcesStatus  The syncRessourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
-    * @deprecated
-    */
+   * Status of all resources that need to be synchronized with the gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
+   * @return syncRessourcesStatus  The syncRessourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
+   * @deprecated
+  **/
    @Deprecated
   @Nonnull public List<BckndArgoCDApplicationStatusSyncResourcesStatusInner> getSyncRessourcesStatus() {
     return syncRessourcesStatus;
   }
 
   /**
-   * Set the syncRessourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
-   *
-   * @param syncRessourcesStatus  Status of all resources that need to be synchronized with the gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
-   */
+  * Set the syncRessourcesStatus of this {@link BckndArgoCDApplicationStatus} instance.
+  *
+  * @param syncRessourcesStatus  Status of all resources that need to be synchronized with the gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
+  */
   public void setSyncRessourcesStatus( @Nonnull final List<BckndArgoCDApplicationStatusSyncResourcesStatusInner> syncRessourcesStatus) {
     this.syncRessourcesStatus = syncRessourcesStatus;
   }
@@ -447,7 +448,6 @@ public class BckndArgoCDApplicationStatus
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

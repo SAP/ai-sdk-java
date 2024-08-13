@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * Detail information about a deployment (including predefined sections: &#x60;scaling&#x60; and &#x60;resources&#x60;). JSON String representation of this object is limited to 5000 characters 
  */
+
 // CHECKSTYLE:OFF
 public class AiDeploymentDetails 
 // CHECKSTYLE:ON
@@ -55,57 +56,57 @@ public class AiDeploymentDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the scaling of this {@link AiDeploymentDetails} instance and return the same instance.
-    *
-    * @param scaling  The scaling of this {@link AiDeploymentDetails}
-    * @return The same instance of this {@link AiDeploymentDetails} class
-    */
+   * Set the scaling of this {@link AiDeploymentDetails} instance and return the same instance.
+   *
+   * @param scaling  The scaling of this {@link AiDeploymentDetails}
+   * @return The same instance of this {@link AiDeploymentDetails} class
+   */
    @Nonnull public AiDeploymentDetails scaling(@Nonnull final AiScalingDetails scaling) {
     this.scaling = scaling;
     return this;
   }
 
    /**
-    * Get scaling
-    * @return scaling  The scaling of this {@link AiDeploymentDetails} instance.
-    */
+   * Get scaling
+   * @return scaling  The scaling of this {@link AiDeploymentDetails} instance.
+  **/
   @Nonnull public AiScalingDetails getScaling() {
     return scaling;
   }
 
   /**
-   * Set the scaling of this {@link AiDeploymentDetails} instance.
-   *
-   * @param scaling  The scaling of this {@link AiDeploymentDetails}
-   */
+  * Set the scaling of this {@link AiDeploymentDetails} instance.
+  *
+  * @param scaling  The scaling of this {@link AiDeploymentDetails}
+  */
   public void setScaling( @Nonnull final AiScalingDetails scaling) {
     this.scaling = scaling;
   }
 
    /**
-    * Set the resources of this {@link AiDeploymentDetails} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiDeploymentDetails}
-    * @return The same instance of this {@link AiDeploymentDetails} class
-    */
+   * Set the resources of this {@link AiDeploymentDetails} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiDeploymentDetails}
+   * @return The same instance of this {@link AiDeploymentDetails} class
+   */
    @Nonnull public AiDeploymentDetails resources(@Nonnull final AiResourcesDetails resources) {
     this.resources = resources;
     return this;
   }
 
    /**
-    * Get resources
-    * @return resources  The resources of this {@link AiDeploymentDetails} instance.
-    */
+   * Get resources
+   * @return resources  The resources of this {@link AiDeploymentDetails} instance.
+  **/
   @Nonnull public AiResourcesDetails getResources() {
     return resources;
   }
 
   /**
-   * Set the resources of this {@link AiDeploymentDetails} instance.
-   *
-   * @param resources  The resources of this {@link AiDeploymentDetails}
-   */
+  * Set the resources of this {@link AiDeploymentDetails} instance.
+  *
+  * @param resources  The resources of this {@link AiDeploymentDetails}
+  */
   public void setResources( @Nonnull final AiResourcesDetails resources) {
     this.resources = resources;
   }
@@ -187,7 +188,6 @@ public class AiDeploymentDetails
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

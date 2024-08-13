@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * Masking
  */
+
 // CHECKSTYLE:OFF
 public class Masking 
 // CHECKSTYLE:ON
@@ -58,49 +59,49 @@ public class Masking
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the type of this {@link Masking} instance and return the same instance.
-    *
-    * @param type  The type of this {@link Masking}
-    * @return The same instance of this {@link Masking} class
-    */
+   * Set the type of this {@link Masking} instance and return the same instance.
+   *
+   * @param type  The type of this {@link Masking}
+   * @return The same instance of this {@link Masking} class
+   */
    @Nonnull public Masking type(@Nonnull final MaskingProviderType type) {
     this.type = type;
     return this;
   }
 
    /**
-    * Get type
-    * @return type  The type of this {@link Masking} instance.
-    */
+   * Get type
+   * @return type  The type of this {@link Masking} instance.
+  **/
   @Nonnull public MaskingProviderType getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link Masking} instance.
-   *
-   * @param type  The type of this {@link Masking}
-   */
+  * Set the type of this {@link Masking} instance.
+  *
+  * @param type  The type of this {@link Masking}
+  */
   public void setType( @Nonnull final MaskingProviderType type) {
     this.type = type;
   }
 
    /**
-    * Set the entities of this {@link Masking} instance and return the same instance.
-    *
-    * @param entities  List of entities to be masked
-    * @return The same instance of this {@link Masking} class
-    */
+   * Set the entities of this {@link Masking} instance and return the same instance.
+   *
+   * @param entities  List of entities to be masked
+   * @return The same instance of this {@link Masking} class
+   */
    @Nonnull public Masking entities(@Nonnull final List<MaskingEntitiesInner> entities) {
     this.entities = entities;
     return this;
   }
   /**
-   * Add one entities instance to this {@link Masking}.
-   * @param entitiesItem The entities that should be added
-   * @return The same instance of type {@link Masking}
-   */
-  @Nonnull public Masking addEntitiesItem( @Nonnull final MaskingEntitiesInner entitiesItem) {
+  * Add one entities instance to this {@link Masking}.
+  * @param entitiesItem The entities that should be added
+  * @return The same instance of type {@link Masking}
+  */
+  @Nonnull public Masking addentitiesItem( @Nonnull final MaskingEntitiesInner entitiesItem) {
     if (this.entities == null) {
       this.entities = new ArrayList<>();
     }
@@ -109,18 +110,18 @@ public class Masking
   }
 
    /**
-    * List of entities to be masked
-    * @return entities  The entities of this {@link Masking} instance.
-    */
+   * List of entities to be masked
+   * @return entities  The entities of this {@link Masking} instance.
+  **/
   @Nonnull public List<MaskingEntitiesInner> getEntities() {
     return entities;
   }
 
   /**
-   * Set the entities of this {@link Masking} instance.
-   *
-   * @param entities  List of entities to be masked
-   */
+  * Set the entities of this {@link Masking} instance.
+  *
+  * @param entities  List of entities to be masked
+  */
   public void setEntities( @Nonnull final List<MaskingEntitiesInner> entities) {
     this.entities = entities;
   }
@@ -202,7 +203,6 @@ public class Masking
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

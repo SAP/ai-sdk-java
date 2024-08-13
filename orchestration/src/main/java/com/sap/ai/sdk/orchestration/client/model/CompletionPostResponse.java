@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 /**
  * CompletionPostResponse
  */
+
 // CHECKSTYLE:OFF
 public class CompletionPostResponse 
 // CHECKSTYLE:ON
@@ -58,85 +59,85 @@ public class CompletionPostResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the requestId of this {@link CompletionPostResponse} instance and return the same instance.
-    *
-    * @param requestId  ID of the request
-    * @return The same instance of this {@link CompletionPostResponse} class
-    */
+   * Set the requestId of this {@link CompletionPostResponse} instance and return the same instance.
+   *
+   * @param requestId  ID of the request
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
    @Nonnull public CompletionPostResponse requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
    /**
-    * ID of the request
-    * @return requestId  The requestId of this {@link CompletionPostResponse} instance.
-    */
+   * ID of the request
+   * @return requestId  The requestId of this {@link CompletionPostResponse} instance.
+  **/
   @Nonnull public String getRequestId() {
     return requestId;
   }
 
   /**
-   * Set the requestId of this {@link CompletionPostResponse} instance.
-   *
-   * @param requestId  ID of the request
-   */
+  * Set the requestId of this {@link CompletionPostResponse} instance.
+  *
+  * @param requestId  ID of the request
+  */
   public void setRequestId( @Nonnull final String requestId) {
     this.requestId = requestId;
   }
 
    /**
-    * Set the moduleResults of this {@link CompletionPostResponse} instance and return the same instance.
-    *
-    * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
-    * @return The same instance of this {@link CompletionPostResponse} class
-    */
+   * Set the moduleResults of this {@link CompletionPostResponse} instance and return the same instance.
+   *
+   * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
    @Nonnull public CompletionPostResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
 
    /**
-    * Get moduleResults
-    * @return moduleResults  The moduleResults of this {@link CompletionPostResponse} instance.
-    */
+   * Get moduleResults
+   * @return moduleResults  The moduleResults of this {@link CompletionPostResponse} instance.
+  **/
   @Nonnull public ModuleResults getModuleResults() {
     return moduleResults;
   }
 
   /**
-   * Set the moduleResults of this {@link CompletionPostResponse} instance.
-   *
-   * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
-   */
+  * Set the moduleResults of this {@link CompletionPostResponse} instance.
+  *
+  * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
+  */
   public void setModuleResults( @Nonnull final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 
    /**
-    * Set the orchestrationResult of this {@link CompletionPostResponse} instance and return the same instance.
-    *
-    * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
-    * @return The same instance of this {@link CompletionPostResponse} class
-    */
+   * Set the orchestrationResult of this {@link CompletionPostResponse} instance and return the same instance.
+   *
+   * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
    @Nonnull public CompletionPostResponse orchestrationResult(@Nonnull final LLMModuleResult orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
     return this;
   }
 
    /**
-    * Get orchestrationResult
-    * @return orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse} instance.
-    */
+   * Get orchestrationResult
+   * @return orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse} instance.
+  **/
   @Nonnull public LLMModuleResult getOrchestrationResult() {
     return orchestrationResult;
   }
 
   /**
-   * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
-   *
-   * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
-   */
+  * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
+  *
+  * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
+  */
   public void setOrchestrationResult( @Nonnull final LLMModuleResult orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
   }
@@ -220,7 +221,6 @@ public class CompletionPostResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

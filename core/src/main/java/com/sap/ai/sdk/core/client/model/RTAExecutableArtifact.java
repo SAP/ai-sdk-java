@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * Input or output artifact
  */
+
 // CHECKSTYLE:OFF
 public class RTAExecutableArtifact 
 // CHECKSTYLE:ON
@@ -63,105 +64,105 @@ public class RTAExecutableArtifact
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the name of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param name  Name of the signature argument
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
+   * Set the name of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param name  Name of the signature argument
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
    @Nonnull public RTAExecutableArtifact name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-    * Name of the signature argument
-    * @return name  The name of this {@link RTAExecutableArtifact} instance.
-    */
+   * Name of the signature argument
+   * @return name  The name of this {@link RTAExecutableArtifact} instance.
+  **/
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-   * Set the name of this {@link RTAExecutableArtifact} instance.
-   *
-   * @param name  Name of the signature argument
-   */
+  * Set the name of this {@link RTAExecutableArtifact} instance.
+  *
+  * @param name  Name of the signature argument
+  */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-    * Set the description of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param description  Description of the signature argument
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
+   * Set the description of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param description  Description of the signature argument
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
    @Nonnull public RTAExecutableArtifact description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-    * Description of the signature argument
-    * @return description  The description of this {@link RTAExecutableArtifact} instance.
-    */
+   * Description of the signature argument
+   * @return description  The description of this {@link RTAExecutableArtifact} instance.
+  **/
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-   * Set the description of this {@link RTAExecutableArtifact} instance.
-   *
-   * @param description  Description of the signature argument
-   */
+  * Set the description of this {@link RTAExecutableArtifact} instance.
+  *
+  * @param description  Description of the signature argument
+  */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-    * Set the kind of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param kind  Kind of the artifact, i.e. model or dataset
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
+   * Set the kind of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param kind  Kind of the artifact, i.e. model or dataset
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
    @Nonnull public RTAExecutableArtifact kind(@Nonnull final String kind) {
     this.kind = kind;
     return this;
   }
 
    /**
-    * Kind of the artifact, i.e. model or dataset
-    * @return kind  The kind of this {@link RTAExecutableArtifact} instance.
-    */
+   * Kind of the artifact, i.e. model or dataset
+   * @return kind  The kind of this {@link RTAExecutableArtifact} instance.
+  **/
   @Nonnull public String getKind() {
     return kind;
   }
 
   /**
-   * Set the kind of this {@link RTAExecutableArtifact} instance.
-   *
-   * @param kind  Kind of the artifact, i.e. model or dataset
-   */
+  * Set the kind of this {@link RTAExecutableArtifact} instance.
+  *
+  * @param kind  Kind of the artifact, i.e. model or dataset
+  */
   public void setKind( @Nonnull final String kind) {
     this.kind = kind;
   }
 
    /**
-    * Set the labels of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
+   * Set the labels of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
    @Nonnull public RTAExecutableArtifact labels(@Nonnull final List<RTAArtifactLabel> labels) {
     this.labels = labels;
     return this;
   }
   /**
-   * Add one labels instance to this {@link RTAExecutableArtifact}.
-   * @param labelsItem The labels that should be added
-   * @return The same instance of type {@link RTAExecutableArtifact}
-   */
-  @Nonnull public RTAExecutableArtifact addLabelsItem( @Nonnull final RTAArtifactLabel labelsItem) {
+  * Add one labels instance to this {@link RTAExecutableArtifact}.
+  * @param labelsItem The labels that should be added
+  * @return The same instance of type {@link RTAExecutableArtifact}
+  */
+  @Nonnull public RTAExecutableArtifact addlabelsItem( @Nonnull final RTAArtifactLabel labelsItem) {
     if (this.labels == null) {
       this.labels = new ArrayList<>();
     }
@@ -170,18 +171,18 @@ public class RTAExecutableArtifact
   }
 
    /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link RTAExecutableArtifact} instance.
-    */
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link RTAExecutableArtifact} instance.
+  **/
   @Nonnull public List<RTAArtifactLabel> getLabels() {
     return labels;
   }
 
   /**
-   * Set the labels of this {@link RTAExecutableArtifact} instance.
-   *
-   * @param labels  Arbitrary labels as meta information
-   */
+  * Set the labels of this {@link RTAExecutableArtifact} instance.
+  *
+  * @param labels  Arbitrary labels as meta information
+  */
   public void setLabels( @Nonnull final List<RTAArtifactLabel> labels) {
     this.labels = labels;
   }
@@ -267,7 +268,6 @@ public class RTAExecutableArtifact
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

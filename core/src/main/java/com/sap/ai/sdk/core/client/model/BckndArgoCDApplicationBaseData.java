@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * BckndArgoCDApplicationBaseData
  */
+
 // CHECKSTYLE:OFF
 public class BckndArgoCDApplicationBaseData 
 // CHECKSTYLE:ON
@@ -56,85 +57,85 @@ public class BckndArgoCDApplicationBaseData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
-    *
-    * @param repositoryUrl  URL of the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
-    */
+   * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
+   *
+   * @param repositoryUrl  URL of the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
+   */
    @Nonnull public BckndArgoCDApplicationBaseData repositoryUrl(@Nonnull final String repositoryUrl) {
     this.repositoryUrl = repositoryUrl;
     return this;
   }
 
    /**
-    * URL of the repository to synchronise
-    * @return repositoryUrl  The repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
-    */
+   * URL of the repository to synchronise
+   * @return repositoryUrl  The repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
+  **/
   @Nonnull public String getRepositoryUrl() {
     return repositoryUrl;
   }
 
   /**
-   * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
-   *
-   * @param repositoryUrl  URL of the repository to synchronise
-   */
+  * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
+  *
+  * @param repositoryUrl  URL of the repository to synchronise
+  */
   public void setRepositoryUrl( @Nonnull final String repositoryUrl) {
     this.repositoryUrl = repositoryUrl;
   }
 
    /**
-    * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
-    *
-    * @param revision  revision to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
-    */
+   * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
+   *
+   * @param revision  revision to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
+   */
    @Nonnull public BckndArgoCDApplicationBaseData revision(@Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
 
    /**
-    * revision to synchronise
-    * @return revision  The revision of this {@link BckndArgoCDApplicationBaseData} instance.
-    */
+   * revision to synchronise
+   * @return revision  The revision of this {@link BckndArgoCDApplicationBaseData} instance.
+  **/
   @Nonnull public String getRevision() {
     return revision;
   }
 
   /**
-   * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance.
-   *
-   * @param revision  revision to synchronise
-   */
+  * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance.
+  *
+  * @param revision  revision to synchronise
+  */
   public void setRevision( @Nonnull final String revision) {
     this.revision = revision;
   }
 
    /**
-    * Set the path of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
-    *
-    * @param path  path within the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
-    */
+   * Set the path of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
+   *
+   * @param path  path within the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
+   */
    @Nonnull public BckndArgoCDApplicationBaseData path(@Nonnull final String path) {
     this.path = path;
     return this;
   }
 
    /**
-    * path within the repository to synchronise
-    * @return path  The path of this {@link BckndArgoCDApplicationBaseData} instance.
-    */
+   * path within the repository to synchronise
+   * @return path  The path of this {@link BckndArgoCDApplicationBaseData} instance.
+  **/
   @Nonnull public String getPath() {
     return path;
   }
 
   /**
-   * Set the path of this {@link BckndArgoCDApplicationBaseData} instance.
-   *
-   * @param path  path within the repository to synchronise
-   */
+  * Set the path of this {@link BckndArgoCDApplicationBaseData} instance.
+  *
+  * @param path  path within the repository to synchronise
+  */
   public void setPath( @Nonnull final String path) {
     this.path = path;
   }
@@ -218,7 +219,6 @@ public class BckndArgoCDApplicationBaseData
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

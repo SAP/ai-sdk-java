@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 /**
  * Error Response
  */
+
 // CHECKSTYLE:OFF
 public class DSetError 
 // CHECKSTYLE:ON
@@ -66,133 +67,133 @@ public class DSetError
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the code of this {@link DSetError} instance and return the same instance.
-    *
-    * @param code  The code of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
+   * Set the code of this {@link DSetError} instance and return the same instance.
+   *
+   * @param code  The code of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
    @Nonnull public DSetError code(@Nonnull final String code) {
     this.code = code;
     return this;
   }
 
    /**
-    * Get code
-    * @return code  The code of this {@link DSetError} instance.
-    */
+   * Get code
+   * @return code  The code of this {@link DSetError} instance.
+  **/
   @Nonnull public String getCode() {
     return code;
   }
 
   /**
-   * Set the code of this {@link DSetError} instance.
-   *
-   * @param code  The code of this {@link DSetError}
-   */
+  * Set the code of this {@link DSetError} instance.
+  *
+  * @param code  The code of this {@link DSetError}
+  */
   public void setCode( @Nonnull final String code) {
     this.code = code;
   }
 
    /**
-    * Set the message of this {@link DSetError} instance and return the same instance.
-    *
-    * @param message  The message of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
+   * Set the message of this {@link DSetError} instance and return the same instance.
+   *
+   * @param message  The message of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
    @Nonnull public DSetError message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Get message
-    * @return message  The message of this {@link DSetError} instance.
-    */
+   * Get message
+   * @return message  The message of this {@link DSetError} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link DSetError} instance.
-   *
-   * @param message  The message of this {@link DSetError}
-   */
+  * Set the message of this {@link DSetError} instance.
+  *
+  * @param message  The message of this {@link DSetError}
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-    * Set the target of this {@link DSetError} instance and return the same instance.
-    *
-    * @param target  The target of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
+   * Set the target of this {@link DSetError} instance and return the same instance.
+   *
+   * @param target  The target of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
    @Nonnull public DSetError target(@Nonnull final String target) {
     this.target = target;
     return this;
   }
 
    /**
-    * Get target
-    * @return target  The target of this {@link DSetError} instance.
-    */
+   * Get target
+   * @return target  The target of this {@link DSetError} instance.
+  **/
   @Nonnull public String getTarget() {
     return target;
   }
 
   /**
-   * Set the target of this {@link DSetError} instance.
-   *
-   * @param target  The target of this {@link DSetError}
-   */
+  * Set the target of this {@link DSetError} instance.
+  *
+  * @param target  The target of this {@link DSetError}
+  */
   public void setTarget( @Nonnull final String target) {
     this.target = target;
   }
 
    /**
-    * Set the requestId of this {@link DSetError} instance and return the same instance.
-    *
-    * @param requestId  The requestId of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
+   * Set the requestId of this {@link DSetError} instance and return the same instance.
+   *
+   * @param requestId  The requestId of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
    @Nonnull public DSetError requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
    /**
-    * Get requestId
-    * @return requestId  The requestId of this {@link DSetError} instance.
-    */
+   * Get requestId
+   * @return requestId  The requestId of this {@link DSetError} instance.
+  **/
   @Nonnull public String getRequestId() {
     return requestId;
   }
 
   /**
-   * Set the requestId of this {@link DSetError} instance.
-   *
-   * @param requestId  The requestId of this {@link DSetError}
-   */
+  * Set the requestId of this {@link DSetError} instance.
+  *
+  * @param requestId  The requestId of this {@link DSetError}
+  */
   public void setRequestId( @Nonnull final String requestId) {
     this.requestId = requestId;
   }
 
    /**
-    * Set the details of this {@link DSetError} instance and return the same instance.
-    *
-    * @param details  The details of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
+   * Set the details of this {@link DSetError} instance and return the same instance.
+   *
+   * @param details  The details of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
    @Nonnull public DSetError details(@Nonnull final Set<DSetErrorDetailsInner> details) {
     this.details = details;
     return this;
   }
   /**
-   * Add one details instance to this {@link DSetError}.
-   * @param detailsItem The details that should be added
-   * @return The same instance of type {@link DSetError}
-   */
-  @Nonnull public DSetError addDetailsItem( @Nonnull final DSetErrorDetailsInner detailsItem) {
+  * Add one details instance to this {@link DSetError}.
+  * @param detailsItem The details that should be added
+  * @return The same instance of type {@link DSetError}
+  */
+  @Nonnull public DSetError adddetailsItem( @Nonnull final DSetErrorDetailsInner detailsItem) {
     if (this.details == null) {
       this.details = new LinkedHashSet<>();
     }
@@ -201,18 +202,18 @@ public class DSetError
   }
 
    /**
-    * Get details
-    * @return details  The details of this {@link DSetError} instance.
-    */
+   * Get details
+   * @return details  The details of this {@link DSetError} instance.
+  **/
   @Nonnull public Set<DSetErrorDetailsInner> getDetails() {
     return details;
   }
 
   /**
-   * Set the details of this {@link DSetError} instance.
-   *
-   * @param details  The details of this {@link DSetError}
-   */
+  * Set the details of this {@link DSetError} instance.
+  *
+  * @param details  The details of this {@link DSetError}
+  */
   public void setDetails( @Nonnull final Set<DSetErrorDetailsInner> details) {
     this.details = details;
   }
@@ -300,7 +301,6 @@ public class DSetError
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 

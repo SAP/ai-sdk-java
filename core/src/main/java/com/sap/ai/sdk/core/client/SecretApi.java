@@ -7,11 +7,11 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.BckndErrorResponse;
-import com.sap.ai.sdk.core.client.model.BckndGenericSecretDataResponse;
-import com.sap.ai.sdk.core.client.model.BckndGenericSecretPatchBody;
-import com.sap.ai.sdk.core.client.model.BckndGenericSecretPostBody;
-import com.sap.ai.sdk.core.client.model.BckndListGenericSecretsResponse;
+import com.sap.ai.sdk.core.client.model.BckndErrorResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndGenericSecretDataResponse ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndGenericSecretPatchBody ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndGenericSecretPostBody ; //NOPMD
+import com.sap.ai.sdk.core.client.model.BckndListGenericSecretsResponse ; //NOPMD
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,27 +34,28 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
- *
- * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
- */
+* AI Core in version 2.32.1.
+*
+* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+*/
+
 public class SecretApi extends AbstractOpenApiService {
     /**
-     * Instantiates this API class to invoke operations on the AI Core.
-     *
-     * @param httpDestination The destination that API should be used with
-     */
+    * Instantiates this API class to invoke operations on the AI Core.
+    *
+    * @param httpDestination The destination that API should be used with
+    */
     public SecretApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-     *
-     * @param apiClient
-     *            ApiClient to invoke the API on
-     */
+    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+    *
+    * @param apiClient
+    *            ApiClient to invoke the API on
+    */
     @Beta
     public SecretApi( @Nonnull final ApiClient apiClient )
     {
@@ -79,13 +80,12 @@ public class SecretApi extends AbstractOpenApiService {
      * @return BckndGenericSecretDataResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsCreate( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    @Nullable  public BckndGenericSecretDataResponse create( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = bckndGenericSecretPostBody;
         
         // verify the required parameter 'bckndGenericSecretPostBody' is set
         if (bckndGenericSecretPostBody == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPostBody' when calling kubesubmitV4GenericSecretsCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPostBody' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/secrets").build().toUriString();
@@ -117,19 +117,18 @@ public class SecretApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Create a new generic secret</p>
-     * <p>Create a new generic secret in the corresponding resource group or at main tenant level.</p>
+    * <p>Create a new generic secret</p>
+     *<p>Create a new generic secret in the corresponding resource group or at main tenant level.</p>
      * <p><b>200</b> - Secret has been created
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param bckndGenericSecretPostBody
-     *      The value for the parameter bckndGenericSecretPostBody
-     * @return BckndGenericSecretDataResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param bckndGenericSecretPostBody
+            The value for the parameter bckndGenericSecretPostBody
+* @return BckndGenericSecretDataResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsCreate( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody) throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsCreate(bckndGenericSecretPostBody, null, null, null);
+    @Nullable   public BckndGenericSecretDataResponse create( @Nonnull final BckndGenericSecretPostBody bckndGenericSecretPostBody) throws OpenApiRequestException {
+        return create(bckndGenericSecretPostBody, null, null, null);
     }
 
     /**
@@ -150,13 +149,12 @@ public class SecretApi extends AbstractOpenApiService {
      * @return An OpenApiResponse containing the status code of the HttpResponse.
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public OpenApiResponse kubesubmitV4GenericSecretsDelete( @Nonnull final String secretName,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+     @Nonnull public OpenApiResponse delete( @Nonnull final String secretName,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'secretName' is set
         if (secretName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling kubesubmitV4GenericSecretsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling delete");
         }
         
         // create path and map variables
@@ -190,20 +188,19 @@ public class SecretApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Deletes the secret</p>
-     * <p>Deletes the secret from provided resource group namespace</p>
+    * <p>Deletes the secret</p>
+     *<p>Deletes the secret from provided resource group namespace</p>
      * <p><b>200</b> - The secret has been removed
      * <p><b>404</b> - The specified resource was not found
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param secretName
-     *      The value for the parameter secretName
-     * @return An OpenApiResponse containing the status code of the HttpResponse.
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param secretName
+            The value for the parameter secretName
+* @return An OpenApiResponse containing the status code of the HttpResponse.
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public OpenApiResponse kubesubmitV4GenericSecretsDelete( @Nonnull final String secretName) throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsDelete(secretName, null, null, null);
+     @Nonnull  public OpenApiResponse delete( @Nonnull final String secretName) throws OpenApiRequestException {
+        return delete(secretName, null, null, null);
     }
 
     /**
@@ -227,8 +224,7 @@ public class SecretApi extends AbstractOpenApiService {
      * @return BckndListGenericSecretsResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndListGenericSecretsResponse kubesubmitV4GenericSecretsGet( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    @Nullable  public BckndListGenericSecretsResponse get( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/secrets").build().toUriString();
@@ -263,17 +259,16 @@ public class SecretApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Lists all secrets corresponding to tenant</p>
-     * <p>Lists all secrets corresponding to tenant. This retrieves metadata only, not the secret data itself.</p>
+    * <p>Lists all secrets corresponding to tenant</p>
+     *<p>Lists all secrets corresponding to tenant. This retrieves metadata only, not the secret data itself.</p>
      * <p><b>200</b> - The secrets were fetched
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @return BckndListGenericSecretsResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @return BckndListGenericSecretsResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndListGenericSecretsResponse kubesubmitV4GenericSecretsGet() throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsGet(null, null, null, null, null, null);
+    @Nullable   public BckndListGenericSecretsResponse get() throws OpenApiRequestException {
+        return get(null, null, null, null, null, null);
     }
 
     /**
@@ -296,18 +291,17 @@ public class SecretApi extends AbstractOpenApiService {
      * @return BckndGenericSecretDataResponse
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsUpdate( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
+    @Nullable  public BckndGenericSecretDataResponse update( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody,  @Nullable final String authorization,  @Nullable final String aiResourceGroup,  @Nullable final Boolean aiTenantScope) throws OpenApiRequestException {
         final Object localVarPostBody = bckndGenericSecretPatchBody;
         
         // verify the required parameter 'secretName' is set
         if (secretName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling kubesubmitV4GenericSecretsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'secretName' when calling update");
         }
         
         // verify the required parameter 'bckndGenericSecretPatchBody' is set
         if (bckndGenericSecretPatchBody == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPatchBody' when calling kubesubmitV4GenericSecretsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndGenericSecretPatchBody' when calling update");
         }
         
         // create path and map variables
@@ -342,21 +336,20 @@ public class SecretApi extends AbstractOpenApiService {
     }
 
     /**
-     * <p>Update secret credentials</p>
-     * <p>Update secret credentials. Replace secret data with the provided data.</p>
+    * <p>Update secret credentials</p>
+     *<p>Update secret credentials. Replace secret data with the provided data.</p>
      * <p><b>200</b> - The secret has been updated
      * <p><b>404</b> - The specified resource was not found
      * <p><b>400</b> - The request was malformed and could thus not be processed.
      * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param secretName
-     *      The value for the parameter secretName
-     * @param bckndGenericSecretPatchBody
-     *      The value for the parameter bckndGenericSecretPatchBody
-     * @return BckndGenericSecretDataResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+* @param secretName
+            The value for the parameter secretName
+* @param bckndGenericSecretPatchBody
+            The value for the parameter bckndGenericSecretPatchBody
+* @return BckndGenericSecretDataResponse
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nonnull
-    public BckndGenericSecretDataResponse kubesubmitV4GenericSecretsUpdate( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody) throws OpenApiRequestException {
-        return kubesubmitV4GenericSecretsUpdate(secretName, bckndGenericSecretPatchBody, null, null, null);
+    @Nullable   public BckndGenericSecretDataResponse update( @Nonnull final String secretName,  @Nonnull final BckndGenericSecretPatchBody bckndGenericSecretPatchBody) throws OpenApiRequestException {
+        return update(secretName, bckndGenericSecretPatchBody, null, null, null);
     }
 }

@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 /**
  * Message
  */
+
 // CHECKSTYLE:OFF
 public class BckndobjectStoreSecretCreationResponse 
 // CHECKSTYLE:ON
@@ -50,29 +51,29 @@ public class BckndobjectStoreSecretCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-    * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BckndobjectStoreSecretCreationResponse} class
-    */
+   * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BckndobjectStoreSecretCreationResponse} class
+   */
    @Nonnull public BckndobjectStoreSecretCreationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-    * Message
-    * @return message  The message of this {@link BckndobjectStoreSecretCreationResponse} instance.
-    */
+   * Message
+   * @return message  The message of this {@link BckndobjectStoreSecretCreationResponse} instance.
+  **/
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-   * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance.
-   *
-   * @param message  Message
-   */
+  * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance.
+  *
+  * @param message  Message
+  */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -152,7 +153,6 @@ public class BckndobjectStoreSecretCreationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 
 }
 
