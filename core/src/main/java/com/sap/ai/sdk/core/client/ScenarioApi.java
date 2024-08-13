@@ -7,6 +7,7 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
+import com.sap.ai.sdk.core.client.model.AiModelList ; //NOPMD
 import com.sap.ai.sdk.core.client.model.AiScenario ; //NOPMD
 import com.sap.ai.sdk.core.client.model.AiScenarioList ; //NOPMD
 import com.sap.ai.sdk.core.client.model.AiVersionList ; //NOPMD
@@ -33,7 +34,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.32.1.
+* AI Core in version 2.33.0.
 *
 * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
 */
@@ -62,6 +63,55 @@ public class ScenarioApi extends AbstractOpenApiService {
     }
 
         /**
+    * <p>Get information about all models available in LLM global scenario</p>
+     *<p>Retrieve information about all models available in LLM global scenario</p>
+     * <p><b>200</b> - The request was successful and information of all LLM models will be returned.
+     * <p><b>400</b> - The specification of the resource was incorrect
+* @param scenarioId
+        Scenario identifier
+* @param aiResourceGroup
+        Specify a resource group id
+* @return AiModelList
+* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nullable   public AiModelList modelsGet( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        // verify the required parameter 'scenarioId' is set
+        if (scenarioId == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling modelsGet");
+        }
+        
+        // verify the required parameter 'aiResourceGroup' is set
+        if (aiResourceGroup == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling modelsGet");
+        }
+        
+        // create path and map variables
+        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+        localVarPathParams.put("scenarioId", scenarioId);
+        final String localVarPath = UriComponentsBuilder.fromPath("/lm/scenarios/{scenarioId}/models").buildAndExpand(localVarPathParams).toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+        if (aiResourceGroup != null)
+        localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<AiModelList> localVarReturnType = new ParameterizedTypeReference<AiModelList>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+    /**
     * <p>Get scenario by id</p>
      *<p>Retrieve details for a scenario specified by scenarioId.</p>
      * <p><b>200</b> - A scenario
