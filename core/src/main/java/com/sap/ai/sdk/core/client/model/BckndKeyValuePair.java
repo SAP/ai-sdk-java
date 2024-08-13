@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndKeyValuePair
  */
-
 // CHECKSTYLE:OFF
 public class BckndKeyValuePair 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndKeyValuePair
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link BckndKeyValuePair} instance and return the same instance.
-   *
-   * @param key  The key of this {@link BckndKeyValuePair}
-   * @return The same instance of this {@link BckndKeyValuePair} class
-   */
+    * Set the key of this {@link BckndKeyValuePair} instance and return the same instance.
+    *
+    * @param key  The key of this {@link BckndKeyValuePair}
+    * @return The same instance of this {@link BckndKeyValuePair} class
+    */
    @Nonnull public BckndKeyValuePair key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link BckndKeyValuePair} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link BckndKeyValuePair} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link BckndKeyValuePair} instance.
-  *
-  * @param key  The key of this {@link BckndKeyValuePair}
-  */
+   * Set the key of this {@link BckndKeyValuePair} instance.
+   *
+   * @param key  The key of this {@link BckndKeyValuePair}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the value of this {@link BckndKeyValuePair} instance and return the same instance.
-   *
-   * @param value  The value of this {@link BckndKeyValuePair}
-   * @return The same instance of this {@link BckndKeyValuePair} class
-   */
+    * Set the value of this {@link BckndKeyValuePair} instance and return the same instance.
+    *
+    * @param value  The value of this {@link BckndKeyValuePair}
+    * @return The same instance of this {@link BckndKeyValuePair} class
+    */
    @Nonnull public BckndKeyValuePair value(@Nonnull final Integer value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Get value
-   * @return value  The value of this {@link BckndKeyValuePair} instance.
-  **/
+    * Get value
+    * @return value  The value of this {@link BckndKeyValuePair} instance.
+    */
   @Nonnull public Integer getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link BckndKeyValuePair} instance.
-  *
-  * @param value  The value of this {@link BckndKeyValuePair}
-  */
+   * Set the value of this {@link BckndKeyValuePair} instance.
+   *
+   * @param value  The value of this {@link BckndKeyValuePair}
+   */
   public void setValue( @Nonnull final Integer value) {
     this.value = value;
   }
@@ -186,6 +185,7 @@ public class BckndKeyValuePair
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

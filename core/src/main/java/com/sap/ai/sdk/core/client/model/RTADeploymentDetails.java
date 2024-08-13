@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * RTADeploymentDetails
  */
-
 // CHECKSTYLE:OFF
 public class RTADeploymentDetails 
 // CHECKSTYLE:ON
@@ -55,57 +54,57 @@ public class RTADeploymentDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the scaling of this {@link RTADeploymentDetails} instance and return the same instance.
-   *
-   * @param scaling  The scaling of this {@link RTADeploymentDetails}
-   * @return The same instance of this {@link RTADeploymentDetails} class
-   */
+    * Set the scaling of this {@link RTADeploymentDetails} instance and return the same instance.
+    *
+    * @param scaling  The scaling of this {@link RTADeploymentDetails}
+    * @return The same instance of this {@link RTADeploymentDetails} class
+    */
    @Nonnull public RTADeploymentDetails scaling(@Nonnull final RTABackendDetails scaling) {
     this.scaling = scaling;
     return this;
   }
 
    /**
-   * Get scaling
-   * @return scaling  The scaling of this {@link RTADeploymentDetails} instance.
-  **/
+    * Get scaling
+    * @return scaling  The scaling of this {@link RTADeploymentDetails} instance.
+    */
   @Nonnull public RTABackendDetails getScaling() {
     return scaling;
   }
 
   /**
-  * Set the scaling of this {@link RTADeploymentDetails} instance.
-  *
-  * @param scaling  The scaling of this {@link RTADeploymentDetails}
-  */
+   * Set the scaling of this {@link RTADeploymentDetails} instance.
+   *
+   * @param scaling  The scaling of this {@link RTADeploymentDetails}
+   */
   public void setScaling( @Nonnull final RTABackendDetails scaling) {
     this.scaling = scaling;
   }
 
    /**
-   * Set the resources of this {@link RTADeploymentDetails} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link RTADeploymentDetails}
-   * @return The same instance of this {@link RTADeploymentDetails} class
-   */
+    * Set the resources of this {@link RTADeploymentDetails} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link RTADeploymentDetails}
+    * @return The same instance of this {@link RTADeploymentDetails} class
+    */
    @Nonnull public RTADeploymentDetails resources(@Nonnull final RTABackendDetails resources) {
     this.resources = resources;
     return this;
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link RTADeploymentDetails} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link RTADeploymentDetails} instance.
+    */
   @Nonnull public RTABackendDetails getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link RTADeploymentDetails} instance.
-  *
-  * @param resources  The resources of this {@link RTADeploymentDetails}
-  */
+   * Set the resources of this {@link RTADeploymentDetails} instance.
+   *
+   * @param resources  The resources of this {@link RTADeploymentDetails}
+   */
   public void setResources( @Nonnull final RTABackendDetails resources) {
     this.resources = resources;
   }
@@ -187,6 +186,7 @@ public class RTADeploymentDetails
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

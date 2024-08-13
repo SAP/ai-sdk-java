@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Model version information including whether it is latest version
  */
-
 // CHECKSTYLE:OFF
 public class AiModelVersion 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiModelVersion
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link AiModelVersion} instance and return the same instance.
-   *
-   * @param name  Name of model version
-   * @return The same instance of this {@link AiModelVersion} class
-   */
+    * Set the name of this {@link AiModelVersion} instance and return the same instance.
+    *
+    * @param name  Name of model version
+    * @return The same instance of this {@link AiModelVersion} class
+    */
    @Nonnull public AiModelVersion name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name of model version
-   * @return name  The name of this {@link AiModelVersion} instance.
-  **/
+    * Name of model version
+    * @return name  The name of this {@link AiModelVersion} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link AiModelVersion} instance.
-  *
-  * @param name  Name of model version
-  */
+   * Set the name of this {@link AiModelVersion} instance.
+   *
+   * @param name  Name of model version
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the isLatest of this {@link AiModelVersion} instance and return the same instance.
-   *
-   * @param isLatest  Displays whether it is the latest version offered for the model
-   * @return The same instance of this {@link AiModelVersion} class
-   */
+    * Set the isLatest of this {@link AiModelVersion} instance and return the same instance.
+    *
+    * @param isLatest  Displays whether it is the latest version offered for the model
+    * @return The same instance of this {@link AiModelVersion} class
+    */
    @Nonnull public AiModelVersion isLatest(@Nonnull final Boolean isLatest) {
     this.isLatest = isLatest;
     return this;
   }
 
    /**
-   * Displays whether it is the latest version offered for the model
-   * @return isLatest  The isLatest of this {@link AiModelVersion} instance.
-  **/
+    * Displays whether it is the latest version offered for the model
+    * @return isLatest  The isLatest of this {@link AiModelVersion} instance.
+    */
   @Nonnull public Boolean isIsLatest() {
     return isLatest;
   }
 
   /**
-  * Set the isLatest of this {@link AiModelVersion} instance.
-  *
-  * @param isLatest  Displays whether it is the latest version offered for the model
-  */
+   * Set the isLatest of this {@link AiModelVersion} instance.
+   *
+   * @param isLatest  Displays whether it is the latest version offered for the model
+   */
   public void setIsLatest( @Nonnull final Boolean isLatest) {
     this.isLatest = isLatest;
   }
@@ -186,6 +185,7 @@ public class AiModelVersion
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

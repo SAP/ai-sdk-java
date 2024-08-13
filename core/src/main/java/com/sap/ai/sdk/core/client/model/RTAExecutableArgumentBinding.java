@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Required for execution Result of activation 
  */
-
 // CHECKSTYLE:OFF
 public class RTAExecutableArgumentBinding 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class RTAExecutableArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
-   *
-   * @param key  The key of this {@link RTAExecutableArgumentBinding}
-   * @return The same instance of this {@link RTAExecutableArgumentBinding} class
-   */
+    * Set the key of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
+    *
+    * @param key  The key of this {@link RTAExecutableArgumentBinding}
+    * @return The same instance of this {@link RTAExecutableArgumentBinding} class
+    */
    @Nonnull public RTAExecutableArgumentBinding key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link RTAExecutableArgumentBinding} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link RTAExecutableArgumentBinding} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link RTAExecutableArgumentBinding} instance.
-  *
-  * @param key  The key of this {@link RTAExecutableArgumentBinding}
-  */
+   * Set the key of this {@link RTAExecutableArgumentBinding} instance.
+   *
+   * @param key  The key of this {@link RTAExecutableArgumentBinding}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the value of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
-   *
-   * @param value  The value of this {@link RTAExecutableArgumentBinding}
-   * @return The same instance of this {@link RTAExecutableArgumentBinding} class
-   */
+    * Set the value of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
+    *
+    * @param value  The value of this {@link RTAExecutableArgumentBinding}
+    * @return The same instance of this {@link RTAExecutableArgumentBinding} class
+    */
    @Nonnull public RTAExecutableArgumentBinding value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Get value
-   * @return value  The value of this {@link RTAExecutableArgumentBinding} instance.
-  **/
+    * Get value
+    * @return value  The value of this {@link RTAExecutableArgumentBinding} instance.
+    */
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link RTAExecutableArgumentBinding} instance.
-  *
-  * @param value  The value of this {@link RTAExecutableArgumentBinding}
-  */
+   * Set the value of this {@link RTAExecutableArgumentBinding} instance.
+   *
+   * @param value  The value of this {@link RTAExecutableArgumentBinding}
+   */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -186,6 +185,7 @@ public class RTAExecutableArgumentBinding
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * ArtifactQuery400Response
  */
-
 // CHECKSTYLE:OFF
 public class ArtifactQuery400Response 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class ArtifactQuery400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link ArtifactQuery400Response} instance and return the same instance.
-   *
-   * @param error  The error of this {@link ArtifactQuery400Response}
-   * @return The same instance of this {@link ArtifactQuery400Response} class
-   */
+    * Set the error of this {@link ArtifactQuery400Response} instance and return the same instance.
+    *
+    * @param error  The error of this {@link ArtifactQuery400Response}
+    * @return The same instance of this {@link ArtifactQuery400Response} class
+    */
    @Nonnull public ArtifactQuery400Response error(@Nonnull final AiApiError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link ArtifactQuery400Response} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link ArtifactQuery400Response} instance.
+    */
   @Nonnull public AiApiError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link ArtifactQuery400Response} instance.
-  *
-  * @param error  The error of this {@link ArtifactQuery400Response}
-  */
+   * Set the error of this {@link ArtifactQuery400Response} instance.
+   *
+   * @param error  The error of this {@link ArtifactQuery400Response}
+   */
   public void setError( @Nonnull final AiApiError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class ArtifactQuery400Response
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

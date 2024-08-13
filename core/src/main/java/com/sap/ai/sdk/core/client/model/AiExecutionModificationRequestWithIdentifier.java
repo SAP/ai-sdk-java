@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Request object for changing the target status of an execution (currently STOPPED and DELETED are supported)
  */
-
 // CHECKSTYLE:OFF
 public class AiExecutionModificationRequestWithIdentifier 
 // CHECKSTYLE:ON
@@ -108,57 +107,57 @@ public class AiExecutionModificationRequestWithIdentifier
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
-   *
-   * @param id  ID of the execution
-   * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
-   */
+    * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
+    *
+    * @param id  ID of the execution
+    * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
+    */
    @Nonnull public AiExecutionModificationRequestWithIdentifier id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * ID of the execution
-   * @return id  The id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
-  **/
+    * ID of the execution
+    * @return id  The id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
-  *
-  * @param id  ID of the execution
-  */
+   * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+   *
+   * @param id  ID of the execution
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
-   *
-   * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
-   * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
-   */
+    * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
+    *
+    * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
+    * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
+    */
    @Nonnull public AiExecutionModificationRequestWithIdentifier targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
    /**
-   * Desired target status of the execution (currently STOPPED and DELETED are supported)
-   * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
-  **/
+    * Desired target status of the execution (currently STOPPED and DELETED are supported)
+    * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+    */
   @Nonnull public TargetStatusEnum getTargetStatus() {
     return targetStatus;
   }
 
   /**
-  * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
-  *
-  * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
-  */
+   * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+   *
+   * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
+   */
   public void setTargetStatus( @Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
@@ -240,6 +239,7 @@ public class AiExecutionModificationRequestWithIdentifier
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

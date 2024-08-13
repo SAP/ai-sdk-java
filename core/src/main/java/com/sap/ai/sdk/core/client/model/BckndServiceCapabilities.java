@@ -40,7 +40,6 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceCapabilities
  */
-
 // CHECKSTYLE:OFF
 public class BckndServiceCapabilities 
 // CHECKSTYLE:ON
@@ -56,57 +55,57 @@ public class BckndServiceCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the logs of this {@link BckndServiceCapabilities} instance and return the same instance.
-   *
-   * @param logs  The logs of this {@link BckndServiceCapabilities}
-   * @return The same instance of this {@link BckndServiceCapabilities} class
-   */
+    * Set the logs of this {@link BckndServiceCapabilities} instance and return the same instance.
+    *
+    * @param logs  The logs of this {@link BckndServiceCapabilities}
+    * @return The same instance of this {@link BckndServiceCapabilities} class
+    */
    @Nonnull public BckndServiceCapabilities logs(@Nonnull final BckndServiceCapabilitiesLogs logs) {
     this.logs = logs;
     return this;
   }
 
    /**
-   * Get logs
-   * @return logs  The logs of this {@link BckndServiceCapabilities} instance.
-  **/
+    * Get logs
+    * @return logs  The logs of this {@link BckndServiceCapabilities} instance.
+    */
   @Nonnull public BckndServiceCapabilitiesLogs getLogs() {
     return logs;
   }
 
   /**
-  * Set the logs of this {@link BckndServiceCapabilities} instance.
-  *
-  * @param logs  The logs of this {@link BckndServiceCapabilities}
-  */
+   * Set the logs of this {@link BckndServiceCapabilities} instance.
+   *
+   * @param logs  The logs of this {@link BckndServiceCapabilities}
+   */
   public void setLogs( @Nonnull final BckndServiceCapabilitiesLogs logs) {
     this.logs = logs;
   }
 
    /**
-   * Set the basic of this {@link BckndServiceCapabilities} instance and return the same instance.
-   *
-   * @param basic  The basic of this {@link BckndServiceCapabilities}
-   * @return The same instance of this {@link BckndServiceCapabilities} class
-   */
+    * Set the basic of this {@link BckndServiceCapabilities} instance and return the same instance.
+    *
+    * @param basic  The basic of this {@link BckndServiceCapabilities}
+    * @return The same instance of this {@link BckndServiceCapabilities} class
+    */
    @Nonnull public BckndServiceCapabilities basic(@Nonnull final BckndServiceCapabilitiesBasic basic) {
     this.basic = basic;
     return this;
   }
 
    /**
-   * Get basic
-   * @return basic  The basic of this {@link BckndServiceCapabilities} instance.
-  **/
+    * Get basic
+    * @return basic  The basic of this {@link BckndServiceCapabilities} instance.
+    */
   @Nonnull public BckndServiceCapabilitiesBasic getBasic() {
     return basic;
   }
 
   /**
-  * Set the basic of this {@link BckndServiceCapabilities} instance.
-  *
-  * @param basic  The basic of this {@link BckndServiceCapabilities}
-  */
+   * Set the basic of this {@link BckndServiceCapabilities} instance.
+   *
+   * @param basic  The basic of this {@link BckndServiceCapabilities}
+   */
   public void setBasic( @Nonnull final BckndServiceCapabilitiesBasic basic) {
     this.basic = basic;
   }
@@ -188,6 +187,7 @@ public class BckndServiceCapabilities
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Request object for changing the target status of an execution (currently only STOPPED is supported)
  */
-
 // CHECKSTYLE:OFF
 public class AiExecutionModificationRequest 
 // CHECKSTYLE:ON
@@ -100,29 +99,29 @@ public class AiExecutionModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the targetStatus of this {@link AiExecutionModificationRequest} instance and return the same instance.
-   *
-   * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
-   * @return The same instance of this {@link AiExecutionModificationRequest} class
-   */
+    * Set the targetStatus of this {@link AiExecutionModificationRequest} instance and return the same instance.
+    *
+    * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
+    * @return The same instance of this {@link AiExecutionModificationRequest} class
+    */
    @Nonnull public AiExecutionModificationRequest targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
    /**
-   * Desired target status of the execution (currently only STOPPED is supported)
-   * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequest} instance.
-  **/
+    * Desired target status of the execution (currently only STOPPED is supported)
+    * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequest} instance.
+    */
   @Nonnull public TargetStatusEnum getTargetStatus() {
     return targetStatus;
   }
 
   /**
-  * Set the targetStatus of this {@link AiExecutionModificationRequest} instance.
-  *
-  * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
-  */
+   * Set the targetStatus of this {@link AiExecutionModificationRequest} instance.
+   *
+   * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
+   */
   public void setTargetStatus( @Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
@@ -202,6 +201,7 @@ public class AiExecutionModificationRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

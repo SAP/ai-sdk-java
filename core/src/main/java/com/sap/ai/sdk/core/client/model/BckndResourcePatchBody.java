@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * BckndResourcePatchBody
  */
-
 // CHECKSTYLE:OFF
 public class BckndResourcePatchBody 
 // CHECKSTYLE:ON
@@ -55,21 +54,21 @@ public class BckndResourcePatchBody
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the resourcePlans of this {@link BckndResourcePatchBody} instance and return the same instance.
-   *
-   * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
-   * @return The same instance of this {@link BckndResourcePatchBody} class
-   */
+    * Set the resourcePlans of this {@link BckndResourcePatchBody} instance and return the same instance.
+    *
+    * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
+    * @return The same instance of this {@link BckndResourcePatchBody} class
+    */
    @Nonnull public BckndResourcePatchBody resourcePlans(@Nonnull final List<BckndResourcePatchNodes> resourcePlans) {
     this.resourcePlans = resourcePlans;
     return this;
   }
   /**
-  * Add one resourcePlans instance to this {@link BckndResourcePatchBody}.
-  * @param resourcePlansItem The resourcePlans that should be added
-  * @return The same instance of type {@link BckndResourcePatchBody}
-  */
-  @Nonnull public BckndResourcePatchBody addresourcePlansItem( @Nonnull final BckndResourcePatchNodes resourcePlansItem) {
+   * Add one resourcePlans instance to this {@link BckndResourcePatchBody}.
+   * @param resourcePlansItem The resourcePlans that should be added
+   * @return The same instance of type {@link BckndResourcePatchBody}
+   */
+  @Nonnull public BckndResourcePatchBody addResourcePlansItem( @Nonnull final BckndResourcePatchNodes resourcePlansItem) {
     if (this.resourcePlans == null) {
       this.resourcePlans = new ArrayList<>();
     }
@@ -78,18 +77,18 @@ public class BckndResourcePatchBody
   }
 
    /**
-   * Get resourcePlans
-   * @return resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody} instance.
-  **/
+    * Get resourcePlans
+    * @return resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody} instance.
+    */
   @Nonnull public List<BckndResourcePatchNodes> getResourcePlans() {
     return resourcePlans;
   }
 
   /**
-  * Set the resourcePlans of this {@link BckndResourcePatchBody} instance.
-  *
-  * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
-  */
+   * Set the resourcePlans of this {@link BckndResourcePatchBody} instance.
+   *
+   * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
+   */
   public void setResourcePlans( @Nonnull final List<BckndResourcePatchNodes> resourcePlans) {
     this.resourcePlans = resourcePlans;
   }
@@ -169,6 +168,7 @@ public class BckndResourcePatchBody
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

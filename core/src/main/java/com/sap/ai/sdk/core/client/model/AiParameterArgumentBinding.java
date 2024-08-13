@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Required for execution Result of activation 
  */
-
 // CHECKSTYLE:OFF
 public class AiParameterArgumentBinding 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiParameterArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link AiParameterArgumentBinding} instance and return the same instance.
-   *
-   * @param key  The key of this {@link AiParameterArgumentBinding}
-   * @return The same instance of this {@link AiParameterArgumentBinding} class
-   */
+    * Set the key of this {@link AiParameterArgumentBinding} instance and return the same instance.
+    *
+    * @param key  The key of this {@link AiParameterArgumentBinding}
+    * @return The same instance of this {@link AiParameterArgumentBinding} class
+    */
    @Nonnull public AiParameterArgumentBinding key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link AiParameterArgumentBinding} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link AiParameterArgumentBinding} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link AiParameterArgumentBinding} instance.
-  *
-  * @param key  The key of this {@link AiParameterArgumentBinding}
-  */
+   * Set the key of this {@link AiParameterArgumentBinding} instance.
+   *
+   * @param key  The key of this {@link AiParameterArgumentBinding}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the value of this {@link AiParameterArgumentBinding} instance and return the same instance.
-   *
-   * @param value  The value of this {@link AiParameterArgumentBinding}
-   * @return The same instance of this {@link AiParameterArgumentBinding} class
-   */
+    * Set the value of this {@link AiParameterArgumentBinding} instance and return the same instance.
+    *
+    * @param value  The value of this {@link AiParameterArgumentBinding}
+    * @return The same instance of this {@link AiParameterArgumentBinding} class
+    */
    @Nonnull public AiParameterArgumentBinding value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Get value
-   * @return value  The value of this {@link AiParameterArgumentBinding} instance.
-  **/
+    * Get value
+    * @return value  The value of this {@link AiParameterArgumentBinding} instance.
+    */
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link AiParameterArgumentBinding} instance.
-  *
-  * @param value  The value of this {@link AiParameterArgumentBinding}
-  */
+   * Set the value of this {@link AiParameterArgumentBinding} instance.
+   *
+   * @param value  The value of this {@link AiParameterArgumentBinding}
+   */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -186,6 +185,7 @@ public class AiParameterArgumentBinding
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

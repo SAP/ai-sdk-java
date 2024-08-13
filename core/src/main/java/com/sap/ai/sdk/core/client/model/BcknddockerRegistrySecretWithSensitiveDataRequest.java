@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * This represents all the meta-data and extra information to be stored as a k8-secret
  */
-
 // CHECKSTYLE:OFF
 public class BcknddockerRegistrySecretWithSensitiveDataRequest 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance and return the same instance.
-   *
-   * @param data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest}
-   * @return The same instance of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} class
-   */
+    * Set the data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance and return the same instance.
+    *
+    * @param data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest}
+    * @return The same instance of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} class
+    */
    @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequest data(@Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
     this.data = data;
     return this;
   }
 
    /**
-   * Get data
-   * @return data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance.
-  **/
+    * Get data
+    * @return data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance.
+    */
   @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequestData getData() {
     return data;
   }
 
   /**
-  * Set the data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance.
-  *
-  * @param data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest}
-  */
+   * Set the data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance.
+   *
+   * @param data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest}
+   */
   public void setData( @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
     this.data = data;
   }
@@ -154,6 +153,7 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

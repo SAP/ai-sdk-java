@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndArgoCDApplicationDataRepoName
  */
-
 // CHECKSTYLE:OFF
 public class BckndArgoCDApplicationDataRepoName 
 // CHECKSTYLE:ON
@@ -60,113 +59,113 @@ public class BckndArgoCDApplicationDataRepoName
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-   *
-   * @param repositoryName  Name of the repository to synchronise
-   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-   */
+    * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+    *
+    * @param repositoryName  Name of the repository to synchronise
+    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+    */
    @Nonnull public BckndArgoCDApplicationDataRepoName repositoryName(@Nonnull final String repositoryName) {
     this.repositoryName = repositoryName;
     return this;
   }
 
    /**
-   * Name of the repository to synchronise
-   * @return repositoryName  The repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  **/
+    * Name of the repository to synchronise
+    * @return repositoryName  The repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
+    */
   @Nonnull public String getRepositoryName() {
     return repositoryName;
   }
 
   /**
-  * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  *
-  * @param repositoryName  Name of the repository to synchronise
-  */
+   * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   *
+   * @param repositoryName  Name of the repository to synchronise
+   */
   public void setRepositoryName( @Nonnull final String repositoryName) {
     this.repositoryName = repositoryName;
   }
 
    /**
-   * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-   *
-   * @param revision  revision to synchronise
-   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-   */
+    * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+    *
+    * @param revision  revision to synchronise
+    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+    */
    @Nonnull public BckndArgoCDApplicationDataRepoName revision(@Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
 
    /**
-   * revision to synchronise
-   * @return revision  The revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  **/
+    * revision to synchronise
+    * @return revision  The revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
+    */
   @Nonnull public String getRevision() {
     return revision;
   }
 
   /**
-  * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  *
-  * @param revision  revision to synchronise
-  */
+   * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   *
+   * @param revision  revision to synchronise
+   */
   public void setRevision( @Nonnull final String revision) {
     this.revision = revision;
   }
 
    /**
-   * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-   *
-   * @param path  path within the repository to synchronise
-   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-   */
+    * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+    *
+    * @param path  path within the repository to synchronise
+    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+    */
    @Nonnull public BckndArgoCDApplicationDataRepoName path(@Nonnull final String path) {
     this.path = path;
     return this;
   }
 
    /**
-   * path within the repository to synchronise
-   * @return path  The path of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  **/
+    * path within the repository to synchronise
+    * @return path  The path of this {@link BckndArgoCDApplicationDataRepoName} instance.
+    */
   @Nonnull public String getPath() {
     return path;
   }
 
   /**
-  * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  *
-  * @param path  path within the repository to synchronise
-  */
+   * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   *
+   * @param path  path within the repository to synchronise
+   */
   public void setPath( @Nonnull final String path) {
     this.path = path;
   }
 
    /**
-   * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-   *
-   * @param applicationName  ArgoCD application name
-   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-   */
+    * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+    *
+    * @param applicationName  ArgoCD application name
+    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+    */
    @Nonnull public BckndArgoCDApplicationDataRepoName applicationName(@Nonnull final String applicationName) {
     this.applicationName = applicationName;
     return this;
   }
 
    /**
-   * ArgoCD application name
-   * @return applicationName  The applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  **/
+    * ArgoCD application name
+    * @return applicationName  The applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
+    */
   @Nonnull public String getApplicationName() {
     return applicationName;
   }
 
   /**
-  * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-  *
-  * @param applicationName  ArgoCD application name
-  */
+   * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   *
+   * @param applicationName  ArgoCD application name
+   */
   public void setApplicationName( @Nonnull final String applicationName) {
     this.applicationName = applicationName;
   }
@@ -252,6 +251,7 @@ public class BckndArgoCDApplicationDataRepoName
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

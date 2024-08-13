@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * MetaAiApiLimitsDeployments
  */
-
 // CHECKSTYLE:OFF
 public class MetaAiApiLimitsDeployments 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class MetaAiApiLimitsDeployments
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance and return the same instance.
-   *
-   * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
-   * @return The same instance of this {@link MetaAiApiLimitsDeployments} class
-   */
+    * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance and return the same instance.
+    *
+    * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
+    * @return The same instance of this {@link MetaAiApiLimitsDeployments} class
+    */
    @Nonnull public MetaAiApiLimitsDeployments maxRunningCount(@Nonnull final Integer maxRunningCount) {
     this.maxRunningCount = maxRunningCount;
     return this;
   }
 
    /**
-   * Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
-   * @return maxRunningCount  The maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance.
-  **/
+    * Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
+    * @return maxRunningCount  The maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance.
+    */
   @Nonnull public Integer getMaxRunningCount() {
     return maxRunningCount;
   }
 
   /**
-  * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance.
-  *
-  * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
-  */
+   * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance.
+   *
+   * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
+   */
   public void setMaxRunningCount( @Nonnull final Integer maxRunningCount) {
     this.maxRunningCount = maxRunningCount;
   }
@@ -153,6 +152,7 @@ public class MetaAiApiLimitsDeployments
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

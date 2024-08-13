@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * AiScenarioLabel
  */
-
 // CHECKSTYLE:OFF
 public class AiScenarioLabel 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiScenarioLabel
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link AiScenarioLabel} instance and return the same instance.
-   *
-   * @param key  The key of this {@link AiScenarioLabel}
-   * @return The same instance of this {@link AiScenarioLabel} class
-   */
+    * Set the key of this {@link AiScenarioLabel} instance and return the same instance.
+    *
+    * @param key  The key of this {@link AiScenarioLabel}
+    * @return The same instance of this {@link AiScenarioLabel} class
+    */
    @Nonnull public AiScenarioLabel key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link AiScenarioLabel} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link AiScenarioLabel} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link AiScenarioLabel} instance.
-  *
-  * @param key  The key of this {@link AiScenarioLabel}
-  */
+   * Set the key of this {@link AiScenarioLabel} instance.
+   *
+   * @param key  The key of this {@link AiScenarioLabel}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the value of this {@link AiScenarioLabel} instance and return the same instance.
-   *
-   * @param value  The value of this {@link AiScenarioLabel}
-   * @return The same instance of this {@link AiScenarioLabel} class
-   */
+    * Set the value of this {@link AiScenarioLabel} instance and return the same instance.
+    *
+    * @param value  The value of this {@link AiScenarioLabel}
+    * @return The same instance of this {@link AiScenarioLabel} class
+    */
    @Nonnull public AiScenarioLabel value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Get value
-   * @return value  The value of this {@link AiScenarioLabel} instance.
-  **/
+    * Get value
+    * @return value  The value of this {@link AiScenarioLabel} instance.
+    */
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link AiScenarioLabel} instance.
-  *
-  * @param value  The value of this {@link AiScenarioLabel}
-  */
+   * Set the value of this {@link AiScenarioLabel} instance.
+   *
+   * @param value  The value of this {@link AiScenarioLabel}
+   */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -186,6 +185,7 @@ public class AiScenarioLabel
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

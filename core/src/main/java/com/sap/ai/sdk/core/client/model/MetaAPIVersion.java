@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * API version description
  */
-
 // CHECKSTYLE:OFF
 public class MetaAPIVersion 
 // CHECKSTYLE:ON
@@ -57,85 +56,85 @@ public class MetaAPIVersion
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the versionId of this {@link MetaAPIVersion} instance and return the same instance.
-   *
-   * @param versionId  API version identifier
-   * @return The same instance of this {@link MetaAPIVersion} class
-   */
+    * Set the versionId of this {@link MetaAPIVersion} instance and return the same instance.
+    *
+    * @param versionId  API version identifier
+    * @return The same instance of this {@link MetaAPIVersion} class
+    */
    @Nonnull public MetaAPIVersion versionId(@Nonnull final String versionId) {
     this.versionId = versionId;
     return this;
   }
 
    /**
-   * API version identifier
-   * @return versionId  The versionId of this {@link MetaAPIVersion} instance.
-  **/
+    * API version identifier
+    * @return versionId  The versionId of this {@link MetaAPIVersion} instance.
+    */
   @Nonnull public String getVersionId() {
     return versionId;
   }
 
   /**
-  * Set the versionId of this {@link MetaAPIVersion} instance.
-  *
-  * @param versionId  API version identifier
-  */
+   * Set the versionId of this {@link MetaAPIVersion} instance.
+   *
+   * @param versionId  API version identifier
+   */
   public void setVersionId( @Nonnull final String versionId) {
     this.versionId = versionId;
   }
 
    /**
-   * Set the url of this {@link MetaAPIVersion} instance and return the same instance.
-   *
-   * @param url  URL of the API version
-   * @return The same instance of this {@link MetaAPIVersion} class
-   */
+    * Set the url of this {@link MetaAPIVersion} instance and return the same instance.
+    *
+    * @param url  URL of the API version
+    * @return The same instance of this {@link MetaAPIVersion} class
+    */
    @Nonnull public MetaAPIVersion url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-   * URL of the API version
-   * @return url  The url of this {@link MetaAPIVersion} instance.
-  **/
+    * URL of the API version
+    * @return url  The url of this {@link MetaAPIVersion} instance.
+    */
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-  * Set the url of this {@link MetaAPIVersion} instance.
-  *
-  * @param url  URL of the API version
-  */
+   * Set the url of this {@link MetaAPIVersion} instance.
+   *
+   * @param url  URL of the API version
+   */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
 
    /**
-   * Set the description of this {@link MetaAPIVersion} instance and return the same instance.
-   *
-   * @param description  version description
-   * @return The same instance of this {@link MetaAPIVersion} class
-   */
+    * Set the description of this {@link MetaAPIVersion} instance and return the same instance.
+    *
+    * @param description  version description
+    * @return The same instance of this {@link MetaAPIVersion} class
+    */
    @Nonnull public MetaAPIVersion description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-   * version description
-   * @return description  The description of this {@link MetaAPIVersion} instance.
-  **/
+    * version description
+    * @return description  The description of this {@link MetaAPIVersion} instance.
+    */
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-  * Set the description of this {@link MetaAPIVersion} instance.
-  *
-  * @param description  version description
-  */
+   * Set the description of this {@link MetaAPIVersion} instance.
+   *
+   * @param description  version description
+   */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
@@ -219,6 +218,7 @@ public class MetaAPIVersion
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

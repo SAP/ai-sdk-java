@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * AiExecutionScheduleModificationResponse
  */
-
 // CHECKSTYLE:OFF
 public class AiExecutionScheduleModificationResponse 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiExecutionScheduleModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiExecutionScheduleModificationResponse} instance and return the same instance.
-   *
-   * @param id  Generic ID
-   * @return The same instance of this {@link AiExecutionScheduleModificationResponse} class
-   */
+    * Set the id of this {@link AiExecutionScheduleModificationResponse} instance and return the same instance.
+    *
+    * @param id  Generic ID
+    * @return The same instance of this {@link AiExecutionScheduleModificationResponse} class
+    */
    @Nonnull public AiExecutionScheduleModificationResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Generic ID
-   * @return id  The id of this {@link AiExecutionScheduleModificationResponse} instance.
-  **/
+    * Generic ID
+    * @return id  The id of this {@link AiExecutionScheduleModificationResponse} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiExecutionScheduleModificationResponse} instance.
-  *
-  * @param id  Generic ID
-  */
+   * Set the id of this {@link AiExecutionScheduleModificationResponse} instance.
+   *
+   * @param id  Generic ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the message of this {@link AiExecutionScheduleModificationResponse} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link AiExecutionScheduleModificationResponse} class
-   */
+    * Set the message of this {@link AiExecutionScheduleModificationResponse} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link AiExecutionScheduleModificationResponse} class
+    */
    @Nonnull public AiExecutionScheduleModificationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link AiExecutionScheduleModificationResponse} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link AiExecutionScheduleModificationResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link AiExecutionScheduleModificationResponse} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link AiExecutionScheduleModificationResponse} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -186,6 +185,7 @@ public class AiExecutionScheduleModificationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

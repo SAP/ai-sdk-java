@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndCommonResourceQuotaResponseQuota
  */
-
 // CHECKSTYLE:OFF
 public class BckndCommonResourceQuotaResponseQuota 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class BckndCommonResourceQuotaResponseQuota
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance and return the same instance.
-   *
-   * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-   * @return The same instance of this {@link BckndCommonResourceQuotaResponseQuota} class
-   */
+    * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance and return the same instance.
+    *
+    * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+    * @return The same instance of this {@link BckndCommonResourceQuotaResponseQuota} class
+    */
    @Nonnull public BckndCommonResourceQuotaResponseQuota maxCount(@Nonnull final Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
 
    /**
-   * The value can be 0(disabled) or a positive integer defining the maximum allowed number
-   * @return maxCount  The maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance.
-  **/
+    * The value can be 0(disabled) or a positive integer defining the maximum allowed number
+    * @return maxCount  The maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance.
+    */
   @Nonnull public Integer getMaxCount() {
     return maxCount;
   }
 
   /**
-  * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance.
-  *
-  * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-  */
+   * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance.
+   *
+   * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   */
   public void setMaxCount( @Nonnull final Integer maxCount) {
     this.maxCount = maxCount;
   }
@@ -153,6 +152,7 @@ public class BckndCommonResourceQuotaResponseQuota
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

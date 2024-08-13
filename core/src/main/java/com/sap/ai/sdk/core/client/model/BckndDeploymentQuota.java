@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndDeploymentQuota
  */
-
 // CHECKSTYLE:OFF
 public class BckndDeploymentQuota 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndDeploymentQuota
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the maxCount of this {@link BckndDeploymentQuota} instance and return the same instance.
-   *
-   * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-   * @return The same instance of this {@link BckndDeploymentQuota} class
-   */
+    * Set the maxCount of this {@link BckndDeploymentQuota} instance and return the same instance.
+    *
+    * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+    * @return The same instance of this {@link BckndDeploymentQuota} class
+    */
    @Nonnull public BckndDeploymentQuota maxCount(@Nonnull final Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
 
    /**
-   * The value can be 0(disabled) or a positive integer defining the maximum allowed number
-   * @return maxCount  The maxCount of this {@link BckndDeploymentQuota} instance.
-  **/
+    * The value can be 0(disabled) or a positive integer defining the maximum allowed number
+    * @return maxCount  The maxCount of this {@link BckndDeploymentQuota} instance.
+    */
   @Nonnull public Integer getMaxCount() {
     return maxCount;
   }
 
   /**
-  * Set the maxCount of this {@link BckndDeploymentQuota} instance.
-  *
-  * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-  */
+   * Set the maxCount of this {@link BckndDeploymentQuota} instance.
+   *
+   * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   */
   public void setMaxCount( @Nonnull final Integer maxCount) {
     this.maxCount = maxCount;
   }
 
    /**
-   * Set the maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance and return the same instance.
-   *
-   * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
-   * @return The same instance of this {@link BckndDeploymentQuota} class
-   */
+    * Set the maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance and return the same instance.
+    *
+    * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
+    * @return The same instance of this {@link BckndDeploymentQuota} class
+    */
    @Nonnull public BckndDeploymentQuota maxReplicaPerDeployment(@Nonnull final Integer maxReplicaPerDeployment) {
     this.maxReplicaPerDeployment = maxReplicaPerDeployment;
     return this;
   }
 
    /**
-   * Get maxReplicaPerDeployment
-   * @return maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance.
-  **/
+    * Get maxReplicaPerDeployment
+    * @return maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance.
+    */
   @Nonnull public Integer getMaxReplicaPerDeployment() {
     return maxReplicaPerDeployment;
   }
 
   /**
-  * Set the maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance.
-  *
-  * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
-  */
+   * Set the maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance.
+   *
+   * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
+   */
   public void setMaxReplicaPerDeployment( @Nonnull final Integer maxReplicaPerDeployment) {
     this.maxReplicaPerDeployment = maxReplicaPerDeployment;
   }
@@ -186,6 +185,7 @@ public class BckndDeploymentQuota
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 
