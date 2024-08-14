@@ -2,6 +2,7 @@
 ![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
 
+
 # AI SDK for Java
 
 # ⚠️ This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change ⚠️
