@@ -52,6 +52,7 @@ public class FilteringConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected FilteringConfig() {  }
 
    /**
     * Set the filters of this {@link FilteringConfig} instance and return the same instance.
@@ -169,6 +170,33 @@ public class FilteringConfig
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link FilteringConfig} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (filters) -> new FilteringConfig().filters(filters);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the filters of this {@link FilteringConfig} instance.
+        *
+        * @param filters  Filters to be used
+        * @return The FilteringConfig instance.
+        */
+        FilteringConfig filters( @Nonnull final List<Filter> filters);
+        /**
+        * Set the filters of this {@link FilteringConfig} instance.
+        *
+        * @param filters  Filters to be used
+        * @return The FilteringConfig instance.
+        */
+        default FilteringConfig filters( @Nonnull final Filter... filters) {
+            return filters(Arrays.asList(filters));
+        }
+    }
 
 }
 

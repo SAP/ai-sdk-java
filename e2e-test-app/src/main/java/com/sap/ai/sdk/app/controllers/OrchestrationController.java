@@ -37,17 +37,18 @@ class OrchestrationController {
   static final String MODEL = "gpt-35-turbo";
 
   private static final LLMModuleConfig LLM_CONFIG =
-      new LLMModuleConfig().modelName(MODEL).modelParams(Map.of());
+      LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
 
   private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
       (TemplatingModuleConfig templatingModuleConfig) ->
-          new CompletionPostRequest()
+          CompletionPostRequest.create()
               .orchestrationConfig(
-                  new OrchestrationConfig()
+                  OrchestrationConfig.create()
                       .moduleConfigurations(
-                          new ModuleConfigs()
-                              .templatingModuleConfig(templatingModuleConfig)
-                              .llmModuleConfig(LLM_CONFIG)));
+                          ModuleConfigs.create()
+                              .llmModuleConfig(LLM_CONFIG)
+                              .templatingModuleConfig(templatingModuleConfig)))
+              .inputParams(Map.of());
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
@@ -60,35 +61,35 @@ class OrchestrationController {
                 "disclaimer",
                 "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
         final var template =
-            new ChatMessage()
+            ChatMessage.create()
+                .role("user")
                 .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}")
-                .role("user");
-        final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
+        final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
         final var filter =
-            new Filter()
+            Filter.create()
                 .type(ProviderType.AZURE_CONTENT_SAFETY)
                 .config(
-                    new FilterConfig()
+                    FilterConfig.create()
                         .hate(filterThreshold)
                         .selfHarm(filterThreshold)
                         .sexual(filterThreshold)
                         .violence(filterThreshold));
 
         final var filteringConfig =
-            new FilteringModuleConfig()
-                .input(new FilteringConfig().filters(List.of(filter)))
-                .output(new FilteringConfig().filters(List.of(filter)));
+            FilteringModuleConfig.create()
+                .input(FilteringConfig.create().filters(List.of(filter)))
+                .output(FilteringConfig.create().filters(List.of(filter)));
 
-        return new CompletionPostRequest()
+        return CompletionPostRequest.create()
             .orchestrationConfig(
-                new OrchestrationConfig()
+                OrchestrationConfig.create()
                     .moduleConfigurations(
-                        new ModuleConfigs()
+                        ModuleConfigs.create()
+                            .llmModuleConfig(LLM_CONFIG)
                             .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)
-                            .llmModuleConfig(LLM_CONFIG)))
+                            .filteringModuleConfig(filteringConfig)))
             .inputParams(inputParams);
       };
 
@@ -101,13 +102,13 @@ class OrchestrationController {
   @Nullable
   public CompletionPostResponse template() {
 
-    final var template = new ChatMessage().content("{{?input}}").role("user");
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
     final var config =
         TEMPLATE_CONFIG
-            .apply(new TemplatingModuleConfig().template(List.of(template)))
+            .apply(TemplatingModuleConfig.create().template(template))
             .inputParams(inputParams);
 
     return API.orchestrationV1EndpointsCreate(config);
@@ -140,13 +141,14 @@ class OrchestrationController {
   public CompletionPostResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
-            new ChatMessage().content("What is the capital of France?").role("user"),
-            new ChatMessage().content("The capital of France is Paris.").role("assistant"));
-    final var message = new ChatMessage().content("What is the typical food there?").role("user");
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
     final var config =
         TEMPLATE_CONFIG
-            .apply(new TemplatingModuleConfig().template(List.of(message)))
+            .apply(TemplatingModuleConfig.create().template(message))
             .messagesHistory(messagesHistory);
 
     return API.orchestrationV1EndpointsCreate(config);

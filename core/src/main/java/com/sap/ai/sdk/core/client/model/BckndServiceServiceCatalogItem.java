@@ -53,6 +53,7 @@ public class BckndServiceServiceCatalogItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndServiceServiceCatalogItem() {  }
 
    /**
     * Set the extendCatalog of this {@link BckndServiceServiceCatalogItem} instance and return the same instance.
@@ -188,6 +189,12 @@ public class BckndServiceServiceCatalogItem
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndServiceServiceCatalogItem} instance. No arguments are required.
+    */
+    public static BckndServiceServiceCatalogItem create() {
+        return new BckndServiceServiceCatalogItem();
+    }
 
 }
 

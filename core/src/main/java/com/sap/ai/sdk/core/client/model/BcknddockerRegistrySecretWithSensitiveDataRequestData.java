@@ -48,6 +48,7 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BcknddockerRegistrySecretWithSensitiveDataRequestData() {  }
 
    /**
     * Set the dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance and return the same instance.
@@ -153,6 +154,24 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (dockerconfigjson) -> new BcknddockerRegistrySecretWithSensitiveDataRequestData().dockerconfigjson(dockerconfigjson);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the dockerconfigjson of this {@link BcknddockerRegistrySecretWithSensitiveDataRequestData} instance.
+        *
+        * @param dockerconfigjson  .dockerconfigjson data
+        * @return The BcknddockerRegistrySecretWithSensitiveDataRequestData instance.
+        */
+        BcknddockerRegistrySecretWithSensitiveDataRequestData dockerconfigjson( @Nonnull final String dockerconfigjson);
+    }
 
 }
 

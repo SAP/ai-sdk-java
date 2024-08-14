@@ -72,6 +72,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndobjectStoreSecretWithSensitiveDataRequestForPostCall() {  }
 
    /**
     * Set the name of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
@@ -417,6 +418,48 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (type) -> (data) -> new BckndobjectStoreSecretWithSensitiveDataRequestForPostCall().name(name).type(type).data(data);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+        *
+        * @param name  Name of the object store for the secret object to be created. Can be used later on check for existence of the secret.
+        * @return The BckndobjectStoreSecretWithSensitiveDataRequestForPostCall builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the type of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+        *
+        * @param type  Storage type e.g. S3, GCS,...
+        * @return The BckndobjectStoreSecretWithSensitiveDataRequestForPostCall builder.
+        */
+        Builder2 type( @Nonnull final String type);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the data of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+        *
+        * @param data  key:value pairs of data
+        * @return The BckndobjectStoreSecretWithSensitiveDataRequestForPostCall instance.
+        */
+        BckndobjectStoreSecretWithSensitiveDataRequestForPostCall data( @Nonnull final Object data);
+    }
 
 }
 

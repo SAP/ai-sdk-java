@@ -54,6 +54,7 @@ public class BckndArgoCDApplicationBaseData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndArgoCDApplicationBaseData() {  }
 
    /**
     * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
@@ -219,6 +220,48 @@ public class BckndArgoCDApplicationBaseData
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDApplicationBaseData} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (repositoryUrl) -> (revision) -> (path) -> new BckndArgoCDApplicationBaseData().repositoryUrl(repositoryUrl).revision(revision).path(path);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
+        *
+        * @param repositoryUrl  URL of the repository to synchronise
+        * @return The BckndArgoCDApplicationBaseData builder.
+        */
+        Builder1 repositoryUrl( @Nonnull final String repositoryUrl);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance.
+        *
+        * @param revision  revision to synchronise
+        * @return The BckndArgoCDApplicationBaseData builder.
+        */
+        Builder2 revision( @Nonnull final String revision);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the path of this {@link BckndArgoCDApplicationBaseData} instance.
+        *
+        * @param path  path within the repository to synchronise
+        * @return The BckndArgoCDApplicationBaseData instance.
+        */
+        BckndArgoCDApplicationBaseData path( @Nonnull final String path);
+    }
 
 }
 

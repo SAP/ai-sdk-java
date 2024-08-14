@@ -86,6 +86,11 @@
               <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
               <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
               <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+              <additionalProperties>
+                <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                <pojoBuildMethodName/>
+                <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+              </additionalProperties>
             </configuration>
           </execution>
         </executions>

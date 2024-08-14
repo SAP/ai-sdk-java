@@ -61,6 +61,7 @@ public class AiExecutableArtifact
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutableArtifact() {  }
 
    /**
     * Set the name of this {@link AiExecutableArtifact} instance and return the same instance.
@@ -268,6 +269,24 @@ public class AiExecutableArtifact
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutableArtifact} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> new AiExecutableArtifact().name(name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link AiExecutableArtifact} instance.
+        *
+        * @param name  Name of the executable input artifacts
+        * @return The AiExecutableArtifact instance.
+        */
+        AiExecutableArtifact name( @Nonnull final String name);
+    }
 
 }
 

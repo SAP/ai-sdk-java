@@ -49,6 +49,7 @@ public class RTALogCommonResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTALogCommonResponse() {  }
 
    /**
     * Set the data of this {@link RTALogCommonResponse} instance and return the same instance.
@@ -154,6 +155,12 @@ public class RTALogCommonResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link RTALogCommonResponse} instance. No arguments are required.
+    */
+    public static RTALogCommonResponse create() {
+        return new RTALogCommonResponse();
+    }
 
 }
 

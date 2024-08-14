@@ -56,6 +56,7 @@ public class CompletionPostResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected CompletionPostResponse() {  }
 
    /**
     * Set the requestId of this {@link CompletionPostResponse} instance and return the same instance.
@@ -221,6 +222,48 @@ public class CompletionPostResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link CompletionPostResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (requestId) -> (moduleResults) -> (orchestrationResult) -> new CompletionPostResponse().requestId(requestId).moduleResults(moduleResults).orchestrationResult(orchestrationResult);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the requestId of this {@link CompletionPostResponse} instance.
+        *
+        * @param requestId  ID of the request
+        * @return The CompletionPostResponse builder.
+        */
+        Builder1 requestId( @Nonnull final String requestId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the moduleResults of this {@link CompletionPostResponse} instance.
+        *
+        * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
+        * @return The CompletionPostResponse builder.
+        */
+        Builder2 moduleResults( @Nonnull final ModuleResults moduleResults);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
+        *
+        * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
+        * @return The CompletionPostResponse instance.
+        */
+        CompletionPostResponse orchestrationResult( @Nonnull final LLMModuleResult orchestrationResult);
+    }
 
 }
 

@@ -48,6 +48,7 @@ public class AiScalingDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiScalingDetails() {  }
 
    /**
     * Set the backendDetails of this {@link AiScalingDetails} instance and return the same instance.
@@ -153,6 +154,12 @@ public class AiScalingDetails
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link AiScalingDetails} instance. No arguments are required.
+    */
+    public static AiScalingDetails create() {
+        return new AiScalingDetails();
+    }
 
 }
 

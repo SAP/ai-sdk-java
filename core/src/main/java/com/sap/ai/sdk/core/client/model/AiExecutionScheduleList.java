@@ -55,6 +55,7 @@ public class AiExecutionScheduleList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionScheduleList() {  }
 
    /**
     * Set the count of this {@link AiExecutionScheduleList} instance and return the same instance.
@@ -202,6 +203,45 @@ public class AiExecutionScheduleList
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionScheduleList} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (count) -> (resources) -> new AiExecutionScheduleList().count(count).resources(resources);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the count of this {@link AiExecutionScheduleList} instance.
+        *
+        * @param count  Number of the resource instances in the list
+        * @return The AiExecutionScheduleList builder.
+        */
+        Builder1 count( @Nonnull final Integer count);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the resources of this {@link AiExecutionScheduleList} instance.
+        *
+        * @param resources  The resources of this {@link AiExecutionScheduleList}
+        * @return The AiExecutionScheduleList instance.
+        */
+        AiExecutionScheduleList resources( @Nonnull final List<AiExecutionSchedule> resources);
+        /**
+        * Set the resources of this {@link AiExecutionScheduleList} instance.
+        *
+        * @param resources  The resources of this {@link AiExecutionScheduleList}
+        * @return The AiExecutionScheduleList instance.
+        */
+        default AiExecutionScheduleList resources( @Nonnull final AiExecutionSchedule... resources) {
+            return resources(Arrays.asList(resources));
+        }
+    }
 
 }
 

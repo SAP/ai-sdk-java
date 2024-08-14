@@ -55,6 +55,7 @@ public class BckndResourceGroupsPostRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndResourceGroupsPostRequest() {  }
 
    /**
     * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
@@ -202,6 +203,12 @@ public class BckndResourceGroupsPostRequest
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndResourceGroupsPostRequest} instance. No arguments are required.
+    */
+    public static BckndResourceGroupsPostRequest create() {
+        return new BckndResourceGroupsPostRequest();
+    }
 
 }
 

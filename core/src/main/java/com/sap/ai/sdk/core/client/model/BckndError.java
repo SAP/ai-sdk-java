@@ -60,6 +60,7 @@ public class BckndError
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndError() {  }
 
    /**
     * Set the code of this {@link BckndError} instance and return the same instance.
@@ -285,6 +286,36 @@ public class BckndError
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndError} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (code) -> (message) -> new BckndError().code(code).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the code of this {@link BckndError} instance.
+        *
+        * @param code  Descriptive error code (not http status code)
+        * @return The BckndError builder.
+        */
+        Builder1 code( @Nonnull final String code);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link BckndError} instance.
+        *
+        * @param message  Plaintext error description
+        * @return The BckndError instance.
+        */
+        BckndError message( @Nonnull final String message);
+    }
 
 }
 

@@ -52,6 +52,7 @@ public class BckndDeploymentQuotaItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndDeploymentQuotaItem() {  }
 
    /**
     * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
@@ -187,6 +188,12 @@ public class BckndDeploymentQuotaItem
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndDeploymentQuotaItem} instance. No arguments are required.
+    */
+    public static BckndDeploymentQuotaItem create() {
+        return new BckndDeploymentQuotaItem();
+    }
 
 }
 

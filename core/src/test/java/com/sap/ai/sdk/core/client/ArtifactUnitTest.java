@@ -82,12 +82,12 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         """)));
 
     AiArtifactPostData artifactPostData =
-        new AiArtifactPostData()
-            .description("dataset for aicore training")
-            .kind(AiArtifactPostData.KindEnum.DATASET)
-            .name("default")
-            .scenarioId("foundation-models")
-            .url("ai://default/spam/data");
+            AiArtifactPostData.create()
+                .name("default")
+                .kind(AiArtifactPostData.KindEnum.DATASET)
+                .url("ai://default/spam/data")
+                .scenarioId("foundation-models")
+                .description("dataset for aicore training");
     final AiArtifactCreationResponse artifact =
         new ArtifactApi(getClient(destination)).artifactCreate("default", artifactPostData);
     assertThat(artifact).isNotNull();

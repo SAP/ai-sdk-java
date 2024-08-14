@@ -101,6 +101,7 @@ public class GroundingModuleConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected GroundingModuleConfig() {  }
 
    /**
     * Set the groundingService of this {@link GroundingModuleConfig} instance and return the same instance.
@@ -236,6 +237,24 @@ public class GroundingModuleConfig
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfig} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (groundingService) -> new GroundingModuleConfig().groundingService(groundingService);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the groundingService of this {@link GroundingModuleConfig} instance.
+        *
+        * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
+        * @return The GroundingModuleConfig instance.
+        */
+        GroundingModuleConfig groundingService( @Nonnull final GroundingServiceEnum groundingService);
+    }
 
 }
 

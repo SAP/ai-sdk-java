@@ -54,6 +54,7 @@ public class BckndServiceBrokerSecret
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndServiceBrokerSecret() {  }
 
    /**
     * Set the name of this {@link BckndServiceBrokerSecret} instance and return the same instance.
@@ -219,6 +220,12 @@ public class BckndServiceBrokerSecret
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndServiceBrokerSecret} instance. No arguments are required.
+    */
+    public static BckndServiceBrokerSecret create() {
+        return new BckndServiceBrokerSecret();
+    }
 
 }
 

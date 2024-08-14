@@ -55,6 +55,7 @@ public class BckndListGenericSecretsResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndListGenericSecretsResponse() {  }
 
    /**
     * Set the count of this {@link BckndListGenericSecretsResponse} instance and return the same instance.
@@ -202,6 +203,45 @@ public class BckndListGenericSecretsResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndListGenericSecretsResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (count) -> (resources) -> new BckndListGenericSecretsResponse().count(count).resources(resources);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the count of this {@link BckndListGenericSecretsResponse} instance.
+        *
+        * @param count  Number of the resource instances in the list
+        * @return The BckndListGenericSecretsResponse builder.
+        */
+        Builder1 count( @Nonnull final Integer count);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the resources of this {@link BckndListGenericSecretsResponse} instance.
+        *
+        * @param resources  The resources of this {@link BckndListGenericSecretsResponse}
+        * @return The BckndListGenericSecretsResponse instance.
+        */
+        BckndListGenericSecretsResponse resources( @Nonnull final List<BckndGenericSecretDetails> resources);
+        /**
+        * Set the resources of this {@link BckndListGenericSecretsResponse} instance.
+        *
+        * @param resources  The resources of this {@link BckndListGenericSecretsResponse}
+        * @return The BckndListGenericSecretsResponse instance.
+        */
+        default BckndListGenericSecretsResponse resources( @Nonnull final BckndGenericSecretDetails... resources) {
+            return resources(Arrays.asList(resources));
+        }
+    }
 
 }
 

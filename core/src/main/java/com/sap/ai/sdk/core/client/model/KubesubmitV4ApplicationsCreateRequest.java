@@ -62,6 +62,7 @@ public class KubesubmitV4ApplicationsCreateRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected KubesubmitV4ApplicationsCreateRequest() {  }
 
    /**
     * Set the repositoryUrl of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
@@ -287,6 +288,60 @@ public class KubesubmitV4ApplicationsCreateRequest
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link KubesubmitV4ApplicationsCreateRequest} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (repositoryUrl) -> (revision) -> (path) -> (repositoryName) -> new KubesubmitV4ApplicationsCreateRequest().repositoryUrl(repositoryUrl).revision(revision).path(path).repositoryName(repositoryName);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the repositoryUrl of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+        *
+        * @param repositoryUrl  URL of the repository to synchronise
+        * @return The KubesubmitV4ApplicationsCreateRequest builder.
+        */
+        Builder1 repositoryUrl( @Nonnull final String repositoryUrl);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the revision of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+        *
+        * @param revision  revision to synchronise
+        * @return The KubesubmitV4ApplicationsCreateRequest builder.
+        */
+        Builder2 revision( @Nonnull final String revision);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the path of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+        *
+        * @param path  path within the repository to synchronise
+        * @return The KubesubmitV4ApplicationsCreateRequest builder.
+        */
+        Builder3 path( @Nonnull final String path);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the repositoryName of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+        *
+        * @param repositoryName  Name of the repository to synchronise
+        * @return The KubesubmitV4ApplicationsCreateRequest instance.
+        */
+        KubesubmitV4ApplicationsCreateRequest repositoryName( @Nonnull final String repositoryName);
+    }
 
 }
 

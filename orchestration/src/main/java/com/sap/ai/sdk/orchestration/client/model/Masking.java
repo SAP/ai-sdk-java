@@ -56,6 +56,7 @@ public class Masking
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected Masking() {  }
 
    /**
     * Set the type of this {@link Masking} instance and return the same instance.
@@ -203,6 +204,45 @@ public class Masking
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link Masking} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (type) -> (entities) -> new Masking().type(type).entities(entities);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the type of this {@link Masking} instance.
+        *
+        * @param type  The type of this {@link Masking}
+        * @return The Masking builder.
+        */
+        Builder1 type( @Nonnull final MaskingProviderType type);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the entities of this {@link Masking} instance.
+        *
+        * @param entities  List of entities to be masked
+        * @return The Masking instance.
+        */
+        Masking entities( @Nonnull final List<MaskingEntitiesInner> entities);
+        /**
+        * Set the entities of this {@link Masking} instance.
+        *
+        * @param entities  List of entities to be masked
+        * @return The Masking instance.
+        */
+        default Masking entities( @Nonnull final MaskingEntitiesInner... entities) {
+            return entities(Arrays.asList(entities));
+        }
+    }
 
 }
 

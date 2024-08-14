@@ -51,6 +51,7 @@ public class RTAExecutableArgumentBinding
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAExecutableArgumentBinding() {  }
 
    /**
     * Set the key of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
@@ -186,6 +187,36 @@ public class RTAExecutableArgumentBinding
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAExecutableArgumentBinding} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (key) -> (value) -> new RTAExecutableArgumentBinding().key(key).value(value);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the key of this {@link RTAExecutableArgumentBinding} instance.
+        *
+        * @param key  The key of this {@link RTAExecutableArgumentBinding}
+        * @return The RTAExecutableArgumentBinding builder.
+        */
+        Builder1 key( @Nonnull final String key);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the value of this {@link RTAExecutableArgumentBinding} instance.
+        *
+        * @param value  The value of this {@link RTAExecutableArgumentBinding}
+        * @return The RTAExecutableArgumentBinding instance.
+        */
+        RTAExecutableArgumentBinding value( @Nonnull final String value);
+    }
 
 }
 

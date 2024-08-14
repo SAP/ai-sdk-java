@@ -52,6 +52,7 @@ public class TrckTag
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected TrckTag() {  }
 
    /**
     * Set the name of this {@link TrckTag} instance and return the same instance.
@@ -187,6 +188,36 @@ public class TrckTag
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link TrckTag} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (value) -> new TrckTag().name(name).value(value);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link TrckTag} instance.
+        *
+        * @param name  The name of this {@link TrckTag}
+        * @return The TrckTag builder.
+        */
+        Builder1 name( @Nonnull final TrckTagName name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the value of this {@link TrckTag} instance.
+        *
+        * @param value  tag value
+        * @return The TrckTag instance.
+        */
+        TrckTag value( @Nonnull final String value);
+    }
 
 }
 

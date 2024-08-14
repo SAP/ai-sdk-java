@@ -51,6 +51,7 @@ public class MetaAiApiCapabilitiesLogs
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaAiApiCapabilitiesLogs() {  }
 
    /**
     * Set the executions of this {@link MetaAiApiCapabilitiesLogs} instance and return the same instance.
@@ -186,6 +187,12 @@ public class MetaAiApiCapabilitiesLogs
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaAiApiCapabilitiesLogs} instance. No arguments are required.
+    */
+    public static MetaAiApiCapabilitiesLogs create() {
+        return new MetaAiApiCapabilitiesLogs();
+    }
 
 }
 

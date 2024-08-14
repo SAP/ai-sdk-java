@@ -57,6 +57,7 @@ public class BckndServiceCapabilitiesBasic
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndServiceCapabilitiesBasic() {  }
 
    /**
     * Set the staticDeployments of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
@@ -252,6 +253,12 @@ public class BckndServiceCapabilitiesBasic
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndServiceCapabilitiesBasic} instance. No arguments are required.
+    */
+    public static BckndServiceCapabilitiesBasic create() {
+        return new BckndServiceCapabilitiesBasic();
+    }
 
 }
 

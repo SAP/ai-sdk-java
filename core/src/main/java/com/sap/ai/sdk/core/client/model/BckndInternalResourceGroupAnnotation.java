@@ -51,6 +51,7 @@ public class BckndInternalResourceGroupAnnotation
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndInternalResourceGroupAnnotation() {  }
 
    /**
     * Set the key of this {@link BckndInternalResourceGroupAnnotation} instance and return the same instance.
@@ -186,6 +187,36 @@ public class BckndInternalResourceGroupAnnotation
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndInternalResourceGroupAnnotation} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (key) -> (value) -> new BckndInternalResourceGroupAnnotation().key(key).value(value);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the key of this {@link BckndInternalResourceGroupAnnotation} instance.
+        *
+        * @param key  The key of this {@link BckndInternalResourceGroupAnnotation}
+        * @return The BckndInternalResourceGroupAnnotation builder.
+        */
+        Builder1 key( @Nonnull final String key);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the value of this {@link BckndInternalResourceGroupAnnotation} instance.
+        *
+        * @param value  The value of this {@link BckndInternalResourceGroupAnnotation}
+        * @return The BckndInternalResourceGroupAnnotation instance.
+        */
+        BckndInternalResourceGroupAnnotation value( @Nonnull final String value);
+    }
 
 }
 

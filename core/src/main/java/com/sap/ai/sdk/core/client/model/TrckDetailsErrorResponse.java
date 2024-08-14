@@ -51,6 +51,7 @@ public class TrckDetailsErrorResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected TrckDetailsErrorResponse() {  }
 
    /**
     * Set the code of this {@link TrckDetailsErrorResponse} instance and return the same instance.
@@ -186,6 +187,12 @@ public class TrckDetailsErrorResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link TrckDetailsErrorResponse} instance. No arguments are required.
+    */
+    public static TrckDetailsErrorResponse create() {
+        return new TrckDetailsErrorResponse();
+    }
 
 }
 

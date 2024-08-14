@@ -61,6 +61,7 @@ public class AiModelBaseData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiModelBaseData() {  }
 
    /**
     * Set the model of this {@link AiModelBaseData} instance and return the same instance.
@@ -268,6 +269,69 @@ public class AiModelBaseData
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiModelBaseData} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (model) -> (executableId) -> (description) -> (versions) -> new AiModelBaseData().model(model).executableId(executableId).description(description).versions(versions);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the model of this {@link AiModelBaseData} instance.
+        *
+        * @param model  Name of the model
+        * @return The AiModelBaseData builder.
+        */
+        Builder1 model( @Nonnull final String model);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the executableId of this {@link AiModelBaseData} instance.
+        *
+        * @param executableId  ID of the executable
+        * @return The AiModelBaseData builder.
+        */
+        Builder2 executableId( @Nonnull final String executableId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the description of this {@link AiModelBaseData} instance.
+        *
+        * @param description  Description of the model and its capabilities
+        * @return The AiModelBaseData builder.
+        */
+        Builder3 description( @Nonnull final String description);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the versions of this {@link AiModelBaseData} instance.
+        *
+        * @param versions  List of model versions that the model object has
+        * @return The AiModelBaseData instance.
+        */
+        AiModelBaseData versions( @Nonnull final List<AiModelVersion> versions);
+        /**
+        * Set the versions of this {@link AiModelBaseData} instance.
+        *
+        * @param versions  List of model versions that the model object has
+        * @return The AiModelBaseData instance.
+        */
+        default AiModelBaseData versions( @Nonnull final AiModelVersion... versions) {
+            return versions(Arrays.asList(versions));
+        }
+    }
 
 }
 

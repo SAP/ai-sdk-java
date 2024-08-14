@@ -60,6 +60,7 @@ public class RTAError
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAError() {  }
 
    /**
     * Set the code of this {@link RTAError} instance and return the same instance.
@@ -285,6 +286,36 @@ public class RTAError
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAError} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (code) -> (message) -> new RTAError().code(code).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the code of this {@link RTAError} instance.
+        *
+        * @param code  Descriptive error code (not http status code)
+        * @return The RTAError builder.
+        */
+        Builder1 code( @Nonnull final String code);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link RTAError} instance.
+        *
+        * @param message  Plaintext error description
+        * @return The RTAError instance.
+        */
+        RTAError message( @Nonnull final String message);
+    }
 
 }
 

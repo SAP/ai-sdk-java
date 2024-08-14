@@ -49,6 +49,7 @@ public class ArtifactQuery400Response
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected ArtifactQuery400Response() {  }
 
    /**
     * Set the error of this {@link ArtifactQuery400Response} instance and return the same instance.
@@ -154,6 +155,12 @@ public class ArtifactQuery400Response
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link ArtifactQuery400Response} instance. No arguments are required.
+    */
+    public static ArtifactQuery400Response create() {
+        return new ArtifactQuery400Response();
+    }
 
 }
 

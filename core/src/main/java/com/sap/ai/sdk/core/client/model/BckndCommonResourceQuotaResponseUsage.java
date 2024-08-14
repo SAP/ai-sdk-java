@@ -48,6 +48,7 @@ public class BckndCommonResourceQuotaResponseUsage
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndCommonResourceQuotaResponseUsage() {  }
 
    /**
     * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance and return the same instance.
@@ -153,6 +154,12 @@ public class BckndCommonResourceQuotaResponseUsage
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndCommonResourceQuotaResponseUsage} instance. No arguments are required.
+    */
+    public static BckndCommonResourceQuotaResponseUsage create() {
+        return new BckndCommonResourceQuotaResponseUsage();
+    }
 
 }
 
