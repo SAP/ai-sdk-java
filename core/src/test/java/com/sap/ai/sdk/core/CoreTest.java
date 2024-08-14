@@ -22,7 +22,7 @@ public class CoreTest {
     variables.set("AICORE_SERVICE_KEY", null);
     assertThatThrownBy(Core::getDestination)
         .isExactlyInstanceOf(DestinationAccessException.class)
-        .hasMessage("Could not find any matching service bindings for service identifier 'AICORE_SERVICE_KEY'");
+        .hasMessage("Could not find any matching service bindings for service identifier 'aicore'");
   }
 
   @Test
