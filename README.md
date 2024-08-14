@@ -1,5 +1,7 @@
+![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg)
+![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
-
+[![Fosstars security rating](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_report.md)
 
 # AI SDK for Java
 
