@@ -74,7 +74,7 @@ public class Core {
 
   /**
    * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
-   * aicore}.</b>
+   * AICORE}.</b>
    *
    * @return a generic <code>AI Core</code> ApiClient.
    */
@@ -115,13 +115,13 @@ public class Core {
 
   /**
    * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
-   * aicore}.</b>
+   * AICORE}.</b>
    *
    * @return a destination pointing to the AI Core service.
    */
   @Nonnull
   public static Destination getDestination() {
-    final var serviceKey = System.getenv("aicore");
+    final var serviceKey = System.getenv("AICORE");
     final var serviceKeyPresent = serviceKey != null;
     final var aiCoreBindingPresent =
         DefaultServiceBindingAccessor.getInstance().getServiceBindings().stream()
@@ -160,7 +160,7 @@ public class Core {
   private static void addServiceBinding(@Nonnull final String serviceKey) {
     log.info(
         """
-          Found a service key in environment variable "aicore".
+          Found a service key in environment variable "AICORE".
           Using a service key is recommended for local testing only.
           Bind the AI Core service to the application for productive usage.""");
 
@@ -169,7 +169,7 @@ public class Core {
       credentials = new ObjectMapper().readValue(serviceKey, new TypeReference<>() {});
     } catch (JsonProcessingException e) {
       throw new AiCoreCredentialsInvalidException(
-          "Error in parsing service key from the \"aicore\" environment variable.", e);
+          "Error in parsing service key from the \"AICORE\" environment variable.", e);
     }
 
     final var binding =
