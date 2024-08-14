@@ -67,7 +67,7 @@ public class MetaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public MetaCapabilities get() throws OpenApiRequestException {
+    public MetaCapabilities metaGet() throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/meta").build().toUriString();

@@ -75,22 +75,22 @@ public class ExecutableApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutable get( @Nonnull final String scenarioId,  @Nonnull final String executableId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    public AiExecutable executableGet( @Nonnull final String scenarioId,  @Nonnull final String executableId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'scenarioId' is set
         if (scenarioId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling get");
+            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling executableGet");
         }
         
         // verify the required parameter 'executableId' is set
         if (executableId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executableId' when calling get");
+            throw new OpenApiRequestException("Missing the required parameter 'executableId' when calling executableGet");
         }
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executableGet");
         }
         
         // create path and map variables
@@ -134,17 +134,17 @@ public class ExecutableApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutableList query( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup,  @Nullable final String versionId) throws OpenApiRequestException {
+    public AiExecutableList executableQuery( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup,  @Nullable final String versionId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'scenarioId' is set
         if (scenarioId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling query");
+            throw new OpenApiRequestException("Missing the required parameter 'scenarioId' when calling executableQuery");
         }
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executableQuery");
         }
         
         // create path and map variables
@@ -188,7 +188,7 @@ public class ExecutableApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutableList query( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return query(scenarioId, aiResourceGroup, null);
+    public AiExecutableList executableQuery( @Nonnull final String scenarioId,  @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return executableQuery(scenarioId, aiResourceGroup, null);
     }
 }
