@@ -49,7 +49,6 @@ public class MetricsFind400Response
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetricsFind400Response() {  }
 
    /**
     * Set the error of this {@link MetricsFind400Response} instance and return the same instance.
@@ -155,12 +154,6 @@ public class MetricsFind400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MetricsFind400Response} instance. No arguments are required.
-    */
-    public static MetricsFind400Response create() {
-        return new MetricsFind400Response();
-    }
 
 }
 

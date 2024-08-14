@@ -51,7 +51,6 @@ public class BckndDeploymentQuota
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndDeploymentQuota() {  }
 
    /**
     * Set the maxCount of this {@link BckndDeploymentQuota} instance and return the same instance.
@@ -187,12 +186,6 @@ public class BckndDeploymentQuota
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndDeploymentQuota} instance. No arguments are required.
-    */
-    public static BckndDeploymentQuota create() {
-        return new BckndDeploymentQuota();
-    }
 
 }
 

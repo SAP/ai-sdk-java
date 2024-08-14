@@ -50,7 +50,6 @@ public class BckndGenericSecretPatchBody
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndGenericSecretPatchBody() {  }
 
    /**
     * Set the data of this {@link BckndGenericSecretPatchBody} instance and return the same instance.
@@ -168,24 +167,6 @@ public class BckndGenericSecretPatchBody
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndGenericSecretPatchBody} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (data) -> new BckndGenericSecretPatchBody().data(data);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the data of this {@link BckndGenericSecretPatchBody} instance.
-        *
-        * @param data  Base64 encoded secret data
-        * @return The BckndGenericSecretPatchBody instance.
-        */
-        BckndGenericSecretPatchBody data( @Nonnull final Map<String, String> data);
-    }
 
 }
 

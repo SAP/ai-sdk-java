@@ -55,7 +55,6 @@ public class BckndDeploymentUsage
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndDeploymentUsage() {  }
 
    /**
     * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
@@ -203,45 +202,6 @@ public class BckndDeploymentUsage
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndDeploymentUsage} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (items) -> new BckndDeploymentUsage().count(count).items(items);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link BckndDeploymentUsage} instance.
-        *
-        * @param count  The count of this {@link BckndDeploymentUsage}
-        * @return The BckndDeploymentUsage builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the items of this {@link BckndDeploymentUsage} instance.
-        *
-        * @param items  The items of this {@link BckndDeploymentUsage}
-        * @return The BckndDeploymentUsage instance.
-        */
-        BckndDeploymentUsage items( @Nonnull final List<BckndUsageResourcePlanItem> items);
-        /**
-        * Set the items of this {@link BckndDeploymentUsage} instance.
-        *
-        * @param items  The items of this {@link BckndDeploymentUsage}
-        * @return The BckndDeploymentUsage instance.
-        */
-        default BckndDeploymentUsage items( @Nonnull final BckndUsageResourcePlanItem... items) {
-            return items(Arrays.asList(items));
-        }
-    }
 
 }
 

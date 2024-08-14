@@ -40,7 +40,6 @@ public class KpiResultRowItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected KpiResultRowItem() {  }
 
   /**
    * Get the names of the unrecognizable properties of the {@link KpiResultRowItem}.
@@ -116,12 +115,6 @@ public class KpiResultRowItem
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link KpiResultRowItem} instance. No arguments are required.
-    */
-    public static KpiResultRowItem create() {
-        return new KpiResultRowItem();
-    }
 
 }
 

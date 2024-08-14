@@ -220,7 +220,6 @@ public class RTADeployment
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTADeployment() {  }
 
    /**
     * Set the scenarioId of this {@link RTADeployment} instance and return the same instance.
@@ -656,60 +655,6 @@ public class RTADeployment
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link RTADeployment} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (scenarioId) -> (executableId) -> (createdAt) -> (modifiedAt) -> new RTADeployment().scenarioId(scenarioId).executableId(executableId).createdAt(createdAt).modifiedAt(modifiedAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the scenarioId of this {@link RTADeployment} instance.
-        *
-        * @param scenarioId  ID of the scenario
-        * @return The RTADeployment builder.
-        */
-        Builder1 scenarioId( @Nonnull final String scenarioId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the executableId of this {@link RTADeployment} instance.
-        *
-        * @param executableId  ID of the executable
-        * @return The RTADeployment builder.
-        */
-        Builder2 executableId( @Nonnull final String executableId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the createdAt of this {@link RTADeployment} instance.
-        *
-        * @param createdAt  Timestamp of resource creation
-        * @return The RTADeployment builder.
-        */
-        Builder3 createdAt( @Nonnull final OffsetDateTime createdAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the modifiedAt of this {@link RTADeployment} instance.
-        *
-        * @param modifiedAt  Timestamp of latest resource modification
-        * @return The RTADeployment instance.
-        */
-        RTADeployment modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
-    }
 
 }
 

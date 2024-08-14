@@ -40,7 +40,6 @@ public class TrckExecutionId
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TrckExecutionId() {  }
 
   /**
    * Get the names of the unrecognizable properties of the {@link TrckExecutionId}.
@@ -116,12 +115,6 @@ public class TrckExecutionId
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link TrckExecutionId} instance. No arguments are required.
-    */
-    public static TrckExecutionId create() {
-        return new TrckExecutionId();
-    }
 
 }
 

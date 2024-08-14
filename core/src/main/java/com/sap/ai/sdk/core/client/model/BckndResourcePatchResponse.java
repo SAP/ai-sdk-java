@@ -48,7 +48,6 @@ public class BckndResourcePatchResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndResourcePatchResponse() {  }
 
    /**
     * Set the message of this {@link BckndResourcePatchResponse} instance and return the same instance.
@@ -154,24 +153,6 @@ public class BckndResourcePatchResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndResourcePatchResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (message) -> new BckndResourcePatchResponse().message(message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the message of this {@link BckndResourcePatchResponse} instance.
-        *
-        * @param message  The message of this {@link BckndResourcePatchResponse}
-        * @return The BckndResourcePatchResponse instance.
-        */
-        BckndResourcePatchResponse message( @Nonnull final String message);
-    }
 
 }
 

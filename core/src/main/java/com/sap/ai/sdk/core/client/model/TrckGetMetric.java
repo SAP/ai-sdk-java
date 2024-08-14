@@ -66,7 +66,6 @@ public class TrckGetMetric
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TrckGetMetric() {  }
 
    /**
     * Set the name of this {@link TrckGetMetric} instance and return the same instance.
@@ -307,48 +306,6 @@ public class TrckGetMetric
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link TrckGetMetric} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (value) -> (timestamp) -> new TrckGetMetric().name(name).value(value).timestamp(timestamp);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link TrckGetMetric} instance.
-        *
-        * @param name  Name of the metric
-        * @return The TrckGetMetric builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the value of this {@link TrckGetMetric} instance.
-        *
-        * @param value  Numeric Value of the metric
-        * @return The TrckGetMetric builder.
-        */
-        Builder2 value( @Nonnull final BigDecimal value);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the timestamp of this {@link TrckGetMetric} instance.
-        *
-        * @param timestamp  Time when the metric was created or logged in RFC3339 format
-        * @return The TrckGetMetric instance.
-        */
-        TrckGetMetric timestamp( @Nonnull final OffsetDateTime timestamp);
-    }
 
 }
 

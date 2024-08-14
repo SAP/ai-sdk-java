@@ -131,7 +131,6 @@ public class AiArtifactPostData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiArtifactPostData() {  }
 
    /**
     * Set the labels of this {@link AiArtifactPostData} instance and return the same instance.
@@ -399,60 +398,6 @@ public class AiArtifactPostData
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiArtifactPostData} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (kind) -> (url) -> (scenarioId) -> new AiArtifactPostData().name(name).kind(kind).url(url).scenarioId(scenarioId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link AiArtifactPostData} instance.
-        *
-        * @param name  Name of the artifact
-        * @return The AiArtifactPostData builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the kind of this {@link AiArtifactPostData} instance.
-        *
-        * @param kind  Kind of the artifact, i.e. model or dataset
-        * @return The AiArtifactPostData builder.
-        */
-        Builder2 kind( @Nonnull final KindEnum kind);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the url of this {@link AiArtifactPostData} instance.
-        *
-        * @param url  Reference to the location of the artifact. 
-        * @return The AiArtifactPostData builder.
-        */
-        Builder3 url( @Nonnull final String url);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the scenarioId of this {@link AiArtifactPostData} instance.
-        *
-        * @param scenarioId  ID of the scenario
-        * @return The AiArtifactPostData instance.
-        */
-        AiArtifactPostData scenarioId( @Nonnull final String scenarioId);
-    }
 
 }
 

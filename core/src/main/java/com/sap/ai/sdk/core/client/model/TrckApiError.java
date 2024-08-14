@@ -64,7 +64,6 @@ public class TrckApiError
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TrckApiError() {  }
 
    /**
     * Set the code of this {@link TrckApiError} instance and return the same instance.
@@ -302,36 +301,6 @@ public class TrckApiError
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link TrckApiError} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (code) -> (message) -> new TrckApiError().code(code).message(message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the code of this {@link TrckApiError} instance.
-        *
-        * @param code  Descriptive error code (not http status code).
-        * @return The TrckApiError builder.
-        */
-        Builder1 code( @Nonnull final String code);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link TrckApiError} instance.
-        *
-        * @param message  plaintext error description
-        * @return The TrckApiError instance.
-        */
-        TrckApiError message( @Nonnull final String message);
-    }
 
 }
 

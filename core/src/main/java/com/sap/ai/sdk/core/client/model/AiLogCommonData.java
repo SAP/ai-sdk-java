@@ -52,7 +52,6 @@ public class AiLogCommonData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiLogCommonData() {  }
 
    /**
     * Set the result of this {@link AiLogCommonData} instance and return the same instance.
@@ -170,12 +169,6 @@ public class AiLogCommonData
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link AiLogCommonData} instance. No arguments are required.
-    */
-    public static AiLogCommonData create() {
-        return new AiLogCommonData();
-    }
 
 }
 

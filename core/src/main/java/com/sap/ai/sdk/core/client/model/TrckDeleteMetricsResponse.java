@@ -52,7 +52,6 @@ public class TrckDeleteMetricsResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TrckDeleteMetricsResponse() {  }
 
    /**
     * Set the id of this {@link TrckDeleteMetricsResponse} instance and return the same instance.
@@ -188,12 +187,6 @@ public class TrckDeleteMetricsResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link TrckDeleteMetricsResponse} instance. No arguments are required.
-    */
-    public static TrckDeleteMetricsResponse create() {
-        return new TrckDeleteMetricsResponse();
-    }
 
 }
 

@@ -59,7 +59,6 @@ public class KpiResultSet
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected KpiResultSet() {  }
    /**
     * Get header
     * @return header  The header of this {@link KpiResultSet} instance.
@@ -186,12 +185,6 @@ public class KpiResultSet
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link KpiResultSet} instance. No arguments are required.
-    */
-    public static KpiResultSet create() {
-        return new KpiResultSet();
-    }
 
 }
 

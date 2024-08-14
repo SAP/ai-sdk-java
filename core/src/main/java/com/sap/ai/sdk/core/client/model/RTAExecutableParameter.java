@@ -106,7 +106,6 @@ public class RTAExecutableParameter
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTAExecutableParameter() {  }
 
    /**
     * Set the name of this {@link RTAExecutableParameter} instance and return the same instance.
@@ -302,24 +301,6 @@ public class RTAExecutableParameter
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link RTAExecutableParameter} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> new RTAExecutableParameter().name(name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link RTAExecutableParameter} instance.
-        *
-        * @param name  Name of the signature argument
-        * @return The RTAExecutableParameter instance.
-        */
-        RTAExecutableParameter name( @Nonnull final String name);
-    }
 
 }
 

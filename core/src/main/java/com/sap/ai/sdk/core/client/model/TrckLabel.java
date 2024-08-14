@@ -51,7 +51,6 @@ public class TrckLabel
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TrckLabel() {  }
 
    /**
     * Set the name of this {@link TrckLabel} instance and return the same instance.
@@ -187,36 +186,6 @@ public class TrckLabel
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link TrckLabel} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (value) -> new TrckLabel().name(name).value(value);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link TrckLabel} instance.
-        *
-        * @param name  Label name to label one or more metrics. \&quot;metrics.ai.sap.com/Artifact.name\&quot; is a reserved label to associate an artifact with the metrics
-        * @return The TrckLabel builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the value of this {@link TrckLabel} instance.
-        *
-        * @param value  Metric Label Value
-        * @return The TrckLabel instance.
-        */
-        TrckLabel value( @Nonnull final String value);
-    }
 
 }
 

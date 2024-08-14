@@ -55,7 +55,6 @@ public class AiModelList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiModelList() {  }
 
    /**
     * Set the count of this {@link AiModelList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class AiModelList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiModelList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new AiModelList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link AiModelList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The AiModelList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link AiModelList} instance.
-        *
-        * @param resources  The resources of this {@link AiModelList}
-        * @return The AiModelList instance.
-        */
-        AiModelList resources( @Nonnull final List<AiModelBaseData> resources);
-        /**
-        * Set the resources of this {@link AiModelList} instance.
-        *
-        * @param resources  The resources of this {@link AiModelList}
-        * @return The AiModelList instance.
-        */
-        default AiModelList resources( @Nonnull final AiModelBaseData... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

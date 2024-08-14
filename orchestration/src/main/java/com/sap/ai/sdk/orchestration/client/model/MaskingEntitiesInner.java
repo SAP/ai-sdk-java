@@ -43,7 +43,6 @@ public class MaskingEntitiesInner
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MaskingEntitiesInner() {  }
 
   /**
    * Get the names of the unrecognizable properties of the {@link MaskingEntitiesInner}.
@@ -119,12 +118,6 @@ public class MaskingEntitiesInner
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MaskingEntitiesInner} instance. No arguments are required.
-    */
-    public static MaskingEntitiesInner create() {
-        return new MaskingEntitiesInner();
-    }
 
 }
 

@@ -57,7 +57,6 @@ public class AiDeploymentModificationResponseListInner
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiDeploymentModificationResponseListInner() {  }
 
    /**
     * Set the id of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
@@ -223,48 +222,6 @@ public class AiDeploymentModificationResponseListInner
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiDeploymentModificationResponseListInner} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (message) -> (error) -> new AiDeploymentModificationResponseListInner().id(id).message(message).error(error);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link AiDeploymentModificationResponseListInner} instance.
-        *
-        * @param id  Generic ID
-        * @return The AiDeploymentModificationResponseListInner builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link AiDeploymentModificationResponseListInner} instance.
-        *
-        * @param message  Message
-        * @return The AiDeploymentModificationResponseListInner builder.
-        */
-        Builder2 message( @Nonnull final String message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the error of this {@link AiDeploymentModificationResponseListInner} instance.
-        *
-        * @param error  The error of this {@link AiDeploymentModificationResponseListInner}
-        * @return The AiDeploymentModificationResponseListInner instance.
-        */
-        AiDeploymentModificationResponseListInner error( @Nonnull final AiApiError error);
-    }
 
 }
 

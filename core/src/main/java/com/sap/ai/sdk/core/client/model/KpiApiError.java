@@ -60,7 +60,6 @@ public class KpiApiError
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected KpiApiError() {  }
 
    /**
     * Set the code of this {@link KpiApiError} instance and return the same instance.
@@ -286,36 +285,6 @@ public class KpiApiError
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link KpiApiError} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (code) -> (message) -> new KpiApiError().code(code).message(message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the code of this {@link KpiApiError} instance.
-        *
-        * @param code  Descriptive error code (not http status code)
-        * @return The KpiApiError builder.
-        */
-        Builder1 code( @Nonnull final String code);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link KpiApiError} instance.
-        *
-        * @param message  Plaintext error description
-        * @return The KpiApiError instance.
-        */
-        KpiApiError message( @Nonnull final String message);
-    }
 
 }
 

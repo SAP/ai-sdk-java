@@ -74,7 +74,6 @@ public class AiExecutionSchedule
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutionSchedule() {  }
 
    /**
     * Set the cron of this {@link AiExecutionSchedule} instance and return the same instance.
@@ -420,72 +419,6 @@ public class AiExecutionSchedule
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionSchedule} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (cron) -> (name) -> (configurationId) -> (createdAt) -> (modifiedAt) -> new AiExecutionSchedule().cron(cron).name(name).configurationId(configurationId).createdAt(createdAt).modifiedAt(modifiedAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the cron of this {@link AiExecutionSchedule} instance.
-        *
-        * @param cron  Cron defining the schedule to run the executions.
-        * @return The AiExecutionSchedule builder.
-        */
-        Builder1 cron( @Nonnull final String cron);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the name of this {@link AiExecutionSchedule} instance.
-        *
-        * @param name  Name of the execution schedule
-        * @return The AiExecutionSchedule builder.
-        */
-        Builder2 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the configurationId of this {@link AiExecutionSchedule} instance.
-        *
-        * @param configurationId  ID of the configuration
-        * @return The AiExecutionSchedule builder.
-        */
-        Builder3 configurationId( @Nonnull final String configurationId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the createdAt of this {@link AiExecutionSchedule} instance.
-        *
-        * @param createdAt  Timestamp of resource creation
-        * @return The AiExecutionSchedule builder.
-        */
-        Builder4 createdAt( @Nonnull final OffsetDateTime createdAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder4 {
-        /**
-        * Set the modifiedAt of this {@link AiExecutionSchedule} instance.
-        *
-        * @param modifiedAt  Timestamp of latest resource modification
-        * @return The AiExecutionSchedule instance.
-        */
-        AiExecutionSchedule modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
-    }
 
 }
 

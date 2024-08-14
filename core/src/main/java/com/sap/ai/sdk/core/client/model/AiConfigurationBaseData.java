@@ -65,7 +65,6 @@ public class AiConfigurationBaseData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiConfigurationBaseData() {  }
 
    /**
     * Set the name of this {@link AiConfigurationBaseData} instance and return the same instance.
@@ -315,48 +314,6 @@ public class AiConfigurationBaseData
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiConfigurationBaseData} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (executableId) -> (scenarioId) -> new AiConfigurationBaseData().name(name).executableId(executableId).scenarioId(scenarioId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link AiConfigurationBaseData} instance.
-        *
-        * @param name  Name of the configuration
-        * @return The AiConfigurationBaseData builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the executableId of this {@link AiConfigurationBaseData} instance.
-        *
-        * @param executableId  ID of the executable
-        * @return The AiConfigurationBaseData builder.
-        */
-        Builder2 executableId( @Nonnull final String executableId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the scenarioId of this {@link AiConfigurationBaseData} instance.
-        *
-        * @param scenarioId  ID of the scenario
-        * @return The AiConfigurationBaseData instance.
-        */
-        AiConfigurationBaseData scenarioId( @Nonnull final String scenarioId);
-    }
 
 }
 

@@ -51,7 +51,6 @@ public class BckndobjectStoreSecretModificationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndobjectStoreSecretModificationResponse() {  }
 
    /**
     * Set the id of this {@link BckndobjectStoreSecretModificationResponse} instance and return the same instance.
@@ -187,36 +186,6 @@ public class BckndobjectStoreSecretModificationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndobjectStoreSecretModificationResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (message) -> new BckndobjectStoreSecretModificationResponse().id(id).message(message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link BckndobjectStoreSecretModificationResponse} instance.
-        *
-        * @param id  Generic ID
-        * @return The BckndobjectStoreSecretModificationResponse builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link BckndobjectStoreSecretModificationResponse} instance.
-        *
-        * @param message  Message
-        * @return The BckndobjectStoreSecretModificationResponse instance.
-        */
-        BckndobjectStoreSecretModificationResponse message( @Nonnull final String message);
-    }
 
 }
 

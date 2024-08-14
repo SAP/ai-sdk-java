@@ -55,7 +55,6 @@ public class TemplatingModuleConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TemplatingModuleConfig() {  }
 
    /**
     * Set the template of this {@link TemplatingModuleConfig} instance and return the same instance.
@@ -203,33 +202,6 @@ public class TemplatingModuleConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link TemplatingModuleConfig} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (template) -> new TemplatingModuleConfig().template(template);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the template of this {@link TemplatingModuleConfig} instance.
-        *
-        * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-        * @return The TemplatingModuleConfig instance.
-        */
-        TemplatingModuleConfig template( @Nonnull final List<ChatMessage> template);
-        /**
-        * Set the template of this {@link TemplatingModuleConfig} instance.
-        *
-        * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-        * @return The TemplatingModuleConfig instance.
-        */
-        default TemplatingModuleConfig template( @Nonnull final ChatMessage... template) {
-            return template(Arrays.asList(template));
-        }
-    }
 
 }
 

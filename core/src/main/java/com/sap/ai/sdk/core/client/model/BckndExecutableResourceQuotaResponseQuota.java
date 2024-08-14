@@ -51,7 +51,6 @@ public class BckndExecutableResourceQuotaResponseQuota
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndExecutableResourceQuotaResponseQuota() {  }
 
    /**
     * Set the servingTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance and return the same instance.
@@ -187,12 +186,6 @@ public class BckndExecutableResourceQuotaResponseQuota
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndExecutableResourceQuotaResponseQuota} instance. No arguments are required.
-    */
-    public static BckndExecutableResourceQuotaResponseQuota create() {
-        return new BckndExecutableResourceQuotaResponseQuota();
-    }
 
 }
 

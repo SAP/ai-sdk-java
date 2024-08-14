@@ -54,7 +54,6 @@ public class MetaAPIVersion
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetaAPIVersion() {  }
 
    /**
     * Set the versionId of this {@link MetaAPIVersion} instance and return the same instance.
@@ -220,12 +219,6 @@ public class MetaAPIVersion
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MetaAPIVersion} instance. No arguments are required.
-    */
-    public static MetaAPIVersion create() {
-        return new MetaAPIVersion();
-    }
 
 }
 

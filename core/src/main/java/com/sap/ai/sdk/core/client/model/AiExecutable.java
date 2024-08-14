@@ -88,7 +88,6 @@ public class AiExecutable
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutable() {  }
 
    /**
     * Set the labels of this {@link AiExecutable} instance and return the same instance.
@@ -572,84 +571,6 @@ public class AiExecutable
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutable} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (id) -> (versionId) -> (deployable) -> (createdAt) -> (modifiedAt) -> new AiExecutable().name(name).id(id).versionId(versionId).deployable(deployable).createdAt(createdAt).modifiedAt(modifiedAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link AiExecutable} instance.
-        *
-        * @param name  Name of the executable
-        * @return The AiExecutable builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the id of this {@link AiExecutable} instance.
-        *
-        * @param id  ID of the executable
-        * @return The AiExecutable builder.
-        */
-        Builder2 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the versionId of this {@link AiExecutable} instance.
-        *
-        * @param versionId  Version ID
-        * @return The AiExecutable builder.
-        */
-        Builder3 versionId( @Nonnull final String versionId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the deployable of this {@link AiExecutable} instance.
-        *
-        * @param deployable  Whether this executable is deployable
-        * @return The AiExecutable builder.
-        */
-        Builder4 deployable( @Nonnull final Boolean deployable);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder4 {
-        /**
-        * Set the createdAt of this {@link AiExecutable} instance.
-        *
-        * @param createdAt  Timestamp of resource creation
-        * @return The AiExecutable builder.
-        */
-        Builder5 createdAt( @Nonnull final OffsetDateTime createdAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder5 {
-        /**
-        * Set the modifiedAt of this {@link AiExecutable} instance.
-        *
-        * @param modifiedAt  Timestamp of latest resource modification
-        * @return The AiExecutable instance.
-        */
-        AiExecutable modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
-    }
 
 }
 

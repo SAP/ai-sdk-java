@@ -64,7 +64,6 @@ public class TrckGetMetricResource
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TrckGetMetricResource() {  }
 
    /**
     * Set the executionId of this {@link TrckGetMetricResource} instance and return the same instance.
@@ -296,24 +295,6 @@ public class TrckGetMetricResource
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link TrckGetMetricResource} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (executionId) -> new TrckGetMetricResource().executionId(executionId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the executionId of this {@link TrckGetMetricResource} instance.
-        *
-        * @param executionId  The executionId of this {@link TrckGetMetricResource}
-        * @return The TrckGetMetricResource instance.
-        */
-        TrckGetMetricResource executionId( @Nonnull final TrckExecutionId executionId);
-    }
 
 }
 

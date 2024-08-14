@@ -56,7 +56,6 @@ public class MaskingModuleConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MaskingModuleConfig() {  }
 
    /**
     * Set the masking of this {@link MaskingModuleConfig} instance and return the same instance.
@@ -204,33 +203,6 @@ public class MaskingModuleConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link MaskingModuleConfig} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (masking) -> new MaskingModuleConfig().masking(masking);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the masking of this {@link MaskingModuleConfig} instance.
-        *
-        * @param masking  Masking services to be used
-        * @return The MaskingModuleConfig instance.
-        */
-        MaskingModuleConfig masking( @Nonnull final List<Masking> masking);
-        /**
-        * Set the masking of this {@link MaskingModuleConfig} instance.
-        *
-        * @param masking  Masking services to be used
-        * @return The MaskingModuleConfig instance.
-        */
-        default MaskingModuleConfig masking( @Nonnull final Masking... masking) {
-            return masking(Arrays.asList(masking));
-        }
-    }
 
 }
 

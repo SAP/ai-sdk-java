@@ -48,7 +48,6 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls() {  }
 
    /**
     * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance and return the same instance.
@@ -154,12 +153,6 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance. No arguments are required.
-    */
-    public static BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls create() {
-        return new BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls();
-    }
 
 }
 

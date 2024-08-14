@@ -55,7 +55,6 @@ public class BckndobjectStoreSecretStatusResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndobjectStoreSecretStatusResponse() {  }
 
    /**
     * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
@@ -203,45 +202,6 @@ public class BckndobjectStoreSecretStatusResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndobjectStoreSecretStatusResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new BckndobjectStoreSecretStatusResponse().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The BckndobjectStoreSecretStatusResponse builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
-        *
-        * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
-        * @return The BckndobjectStoreSecretStatusResponse instance.
-        */
-        BckndobjectStoreSecretStatusResponse resources( @Nonnull final List<BckndobjectStoreSecretStatus> resources);
-        /**
-        * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
-        *
-        * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
-        * @return The BckndobjectStoreSecretStatusResponse instance.
-        */
-        default BckndobjectStoreSecretStatusResponse resources( @Nonnull final BckndobjectStoreSecretStatus... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

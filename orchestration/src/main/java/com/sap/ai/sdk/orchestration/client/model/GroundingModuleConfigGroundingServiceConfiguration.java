@@ -61,7 +61,6 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected GroundingModuleConfigGroundingServiceConfiguration() {  }
 
    /**
     * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
@@ -281,57 +280,6 @@ public class GroundingModuleConfigGroundingServiceConfiguration
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfigGroundingServiceConfiguration} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (secretName) -> (groundingInputParameters) -> (groundingOutputParameter) -> new GroundingModuleConfigGroundingServiceConfiguration().secretName(secretName).groundingInputParameters(groundingInputParameters).groundingOutputParameter(groundingOutputParameter);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-        *
-        * @param secretName  Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
-        * @return The GroundingModuleConfigGroundingServiceConfiguration builder.
-        */
-        Builder1 secretName( @Nonnull final String secretName);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-        *
-        * @param groundingInputParameters  Contains the input parameters used for grounding input questions
-        * @return The GroundingModuleConfigGroundingServiceConfiguration builder.
-        */
-        Builder2 groundingInputParameters( @Nonnull final List<String> groundingInputParameters);
-        /**
-        * Set the groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-        *
-        * @param groundingInputParameters  Contains the input parameters used for grounding input questions
-        * @return The GroundingModuleConfigGroundingServiceConfiguration builder.
-        */
-        default Builder2 groundingInputParameters( @Nonnull final String... groundingInputParameters) {
-            return groundingInputParameters(Arrays.asList(groundingInputParameters));
-        }
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-        *
-        * @param groundingOutputParameter  Parameter name used for grounding output
-        * @return The GroundingModuleConfigGroundingServiceConfiguration instance.
-        */
-        GroundingModuleConfigGroundingServiceConfiguration groundingOutputParameter( @Nonnull final String groundingOutputParameter);
-    }
 
 }
 

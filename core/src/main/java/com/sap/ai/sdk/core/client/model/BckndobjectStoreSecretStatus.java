@@ -52,7 +52,6 @@ public class BckndobjectStoreSecretStatus
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndobjectStoreSecretStatus() {  }
 
    /**
     * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
@@ -188,12 +187,6 @@ public class BckndobjectStoreSecretStatus
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndobjectStoreSecretStatus} instance. No arguments are required.
-    */
-    public static BckndobjectStoreSecretStatus create() {
-        return new BckndobjectStoreSecretStatus();
-    }
 
 }
 

@@ -52,7 +52,6 @@ public class BckndResourcePatchBody
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndResourcePatchBody() {  }
 
    /**
     * Set the resourcePlans of this {@link BckndResourcePatchBody} instance and return the same instance.
@@ -170,33 +169,6 @@ public class BckndResourcePatchBody
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndResourcePatchBody} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (resourcePlans) -> new BckndResourcePatchBody().resourcePlans(resourcePlans);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the resourcePlans of this {@link BckndResourcePatchBody} instance.
-        *
-        * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
-        * @return The BckndResourcePatchBody instance.
-        */
-        BckndResourcePatchBody resourcePlans( @Nonnull final List<BckndResourcePatchNodes> resourcePlans);
-        /**
-        * Set the resourcePlans of this {@link BckndResourcePatchBody} instance.
-        *
-        * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
-        * @return The BckndResourcePatchBody instance.
-        */
-        default BckndResourcePatchBody resourcePlans( @Nonnull final BckndResourcePatchNodes... resourcePlans) {
-            return resourcePlans(Arrays.asList(resourcePlans));
-        }
-    }
 
 }
 

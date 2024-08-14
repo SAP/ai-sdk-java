@@ -62,7 +62,6 @@ public class LLMChoice
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected LLMChoice() {  }
 
    /**
     * Set the index of this {@link LLMChoice} instance and return the same instance.
@@ -270,48 +269,6 @@ public class LLMChoice
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoice} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (index) -> (message) -> (finishReason) -> new LLMChoice().index(index).message(message).finishReason(finishReason);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the index of this {@link LLMChoice} instance.
-        *
-        * @param index  Index of the choice
-        * @return The LLMChoice builder.
-        */
-        Builder1 index( @Nonnull final Integer index);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link LLMChoice} instance.
-        *
-        * @param message  The message of this {@link LLMChoice}
-        * @return The LLMChoice builder.
-        */
-        Builder2 message( @Nonnull final ChatMessage message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the finishReason of this {@link LLMChoice} instance.
-        *
-        * @param finishReason  Reason for stopping the model
-        * @return The LLMChoice instance.
-        */
-        LLMChoice finishReason( @Nonnull final String finishReason);
-    }
 
 }
 

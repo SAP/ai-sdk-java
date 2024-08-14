@@ -55,7 +55,6 @@ public class AiExecutionList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutionList() {  }
 
    /**
     * Set the count of this {@link AiExecutionList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class AiExecutionList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new AiExecutionList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link AiExecutionList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The AiExecutionList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link AiExecutionList} instance.
-        *
-        * @param resources  The resources of this {@link AiExecutionList}
-        * @return The AiExecutionList instance.
-        */
-        AiExecutionList resources( @Nonnull final List<AiExecution> resources);
-        /**
-        * Set the resources of this {@link AiExecutionList} instance.
-        *
-        * @param resources  The resources of this {@link AiExecutionList}
-        * @return The AiExecutionList instance.
-        */
-        default AiExecutionList resources( @Nonnull final AiExecution... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

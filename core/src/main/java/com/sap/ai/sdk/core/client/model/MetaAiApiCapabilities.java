@@ -74,7 +74,6 @@ public class MetaAiApiCapabilities
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetaAiApiCapabilities() {  }
 
    /**
     * Set the multitenant of this {@link MetaAiApiCapabilities} instance and return the same instance.
@@ -420,12 +419,6 @@ public class MetaAiApiCapabilities
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MetaAiApiCapabilities} instance. No arguments are required.
-    */
-    public static MetaAiApiCapabilities create() {
-        return new MetaAiApiCapabilities();
-    }
 
 }
 

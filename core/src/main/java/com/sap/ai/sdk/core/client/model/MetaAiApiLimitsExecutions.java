@@ -48,7 +48,6 @@ public class MetaAiApiLimitsExecutions
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetaAiApiLimitsExecutions() {  }
 
    /**
     * Set the maxRunningCount of this {@link MetaAiApiLimitsExecutions} instance and return the same instance.
@@ -154,12 +153,6 @@ public class MetaAiApiLimitsExecutions
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MetaAiApiLimitsExecutions} instance. No arguments are required.
-    */
-    public static MetaAiApiLimitsExecutions create() {
-        return new MetaAiApiLimitsExecutions();
-    }
 
 }
 

@@ -62,7 +62,6 @@ public class AiExecutionScheduleModificationRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutionScheduleModificationRequest() {  }
 
    /**
     * Set the cron of this {@link AiExecutionScheduleModificationRequest} instance and return the same instance.
@@ -288,12 +287,6 @@ public class AiExecutionScheduleModificationRequest
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link AiExecutionScheduleModificationRequest} instance. No arguments are required.
-    */
-    public static AiExecutionScheduleModificationRequest create() {
-        return new AiExecutionScheduleModificationRequest();
-    }
 
 }
 

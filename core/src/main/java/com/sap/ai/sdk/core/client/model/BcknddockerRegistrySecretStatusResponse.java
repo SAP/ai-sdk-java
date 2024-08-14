@@ -55,7 +55,6 @@ public class BcknddockerRegistrySecretStatusResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BcknddockerRegistrySecretStatusResponse() {  }
 
    /**
     * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
@@ -203,45 +202,6 @@ public class BcknddockerRegistrySecretStatusResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BcknddockerRegistrySecretStatusResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new BcknddockerRegistrySecretStatusResponse().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The BcknddockerRegistrySecretStatusResponse builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-        *
-        * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
-        * @return The BcknddockerRegistrySecretStatusResponse instance.
-        */
-        BcknddockerRegistrySecretStatusResponse resources( @Nonnull final List<BcknddockerRegistrySecretStatus> resources);
-        /**
-        * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-        *
-        * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
-        * @return The BcknddockerRegistrySecretStatusResponse instance.
-        */
-        default BcknddockerRegistrySecretStatusResponse resources( @Nonnull final BcknddockerRegistrySecretStatus... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

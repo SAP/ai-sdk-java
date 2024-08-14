@@ -55,7 +55,6 @@ public class BckndAllArgoCDApplicationData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndAllArgoCDApplicationData() {  }
 
    /**
     * Set the count of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
@@ -203,45 +202,6 @@ public class BckndAllArgoCDApplicationData
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndAllArgoCDApplicationData} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new BckndAllArgoCDApplicationData().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link BckndAllArgoCDApplicationData} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The BckndAllArgoCDApplicationData builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link BckndAllArgoCDApplicationData} instance.
-        *
-        * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
-        * @return The BckndAllArgoCDApplicationData instance.
-        */
-        BckndAllArgoCDApplicationData resources( @Nonnull final List<BckndArgoCDApplicationData> resources);
-        /**
-        * Set the resources of this {@link BckndAllArgoCDApplicationData} instance.
-        *
-        * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
-        * @return The BckndAllArgoCDApplicationData instance.
-        */
-        default BckndAllArgoCDApplicationData resources( @Nonnull final BckndArgoCDApplicationData... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

@@ -51,7 +51,6 @@ public class AiArtifactArgumentBinding
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiArtifactArgumentBinding() {  }
 
    /**
     * Set the key of this {@link AiArtifactArgumentBinding} instance and return the same instance.
@@ -187,36 +186,6 @@ public class AiArtifactArgumentBinding
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiArtifactArgumentBinding} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (key) -> (artifactId) -> new AiArtifactArgumentBinding().key(key).artifactId(artifactId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the key of this {@link AiArtifactArgumentBinding} instance.
-        *
-        * @param key  The key of this {@link AiArtifactArgumentBinding}
-        * @return The AiArtifactArgumentBinding builder.
-        */
-        Builder1 key( @Nonnull final String key);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the artifactId of this {@link AiArtifactArgumentBinding} instance.
-        *
-        * @param artifactId  ID of the artifact
-        * @return The AiArtifactArgumentBinding instance.
-        */
-        AiArtifactArgumentBinding artifactId( @Nonnull final String artifactId);
-    }
 
 }
 

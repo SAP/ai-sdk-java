@@ -55,7 +55,6 @@ public class BckndServiceList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndServiceList() {  }
 
    /**
     * Set the count of this {@link BckndServiceList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class BckndServiceList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndServiceList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new BckndServiceList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link BckndServiceList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The BckndServiceList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link BckndServiceList} instance.
-        *
-        * @param resources  The resources of this {@link BckndServiceList}
-        * @return The BckndServiceList instance.
-        */
-        BckndServiceList resources( @Nonnull final List<BckndService> resources);
-        /**
-        * Set the resources of this {@link BckndServiceList} instance.
-        *
-        * @param resources  The resources of this {@link BckndServiceList}
-        * @return The BckndServiceList instance.
-        */
-        default BckndServiceList resources( @Nonnull final BckndService... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

@@ -51,7 +51,6 @@ public class ChatMessage
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected ChatMessage() {  }
 
    /**
     * Set the role of this {@link ChatMessage} instance and return the same instance.
@@ -187,36 +186,6 @@ public class ChatMessage
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link ChatMessage} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (role) -> (content) -> new ChatMessage().role(role).content(content);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the role of this {@link ChatMessage} instance.
-        *
-        * @param role  The role of this {@link ChatMessage}
-        * @return The ChatMessage builder.
-        */
-        Builder1 role( @Nonnull final String role);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the content of this {@link ChatMessage} instance.
-        *
-        * @param content  The content of this {@link ChatMessage}
-        * @return The ChatMessage instance.
-        */
-        ChatMessage content( @Nonnull final String content);
-    }
 
 }
 

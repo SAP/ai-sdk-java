@@ -55,7 +55,6 @@ public class BckndArgoCDRepositoryDataResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndArgoCDRepositoryDataResponse() {  }
 
    /**
     * Set the count of this {@link BckndArgoCDRepositoryDataResponse} instance and return the same instance.
@@ -203,45 +202,6 @@ public class BckndArgoCDRepositoryDataResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDRepositoryDataResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new BckndArgoCDRepositoryDataResponse().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link BckndArgoCDRepositoryDataResponse} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The BckndArgoCDRepositoryDataResponse builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link BckndArgoCDRepositoryDataResponse} instance.
-        *
-        * @param resources  The resources of this {@link BckndArgoCDRepositoryDataResponse}
-        * @return The BckndArgoCDRepositoryDataResponse instance.
-        */
-        BckndArgoCDRepositoryDataResponse resources( @Nonnull final List<BckndArgoCDRepositoryDetails> resources);
-        /**
-        * Set the resources of this {@link BckndArgoCDRepositoryDataResponse} instance.
-        *
-        * @param resources  The resources of this {@link BckndArgoCDRepositoryDataResponse}
-        * @return The BckndArgoCDRepositoryDataResponse instance.
-        */
-        default BckndArgoCDRepositoryDataResponse resources( @Nonnull final BckndArgoCDRepositoryDetails... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

@@ -55,7 +55,6 @@ public class AiExecutableList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutableList() {  }
 
    /**
     * Set the count of this {@link AiExecutableList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class AiExecutableList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutableList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new AiExecutableList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link AiExecutableList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The AiExecutableList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link AiExecutableList} instance.
-        *
-        * @param resources  The resources of this {@link AiExecutableList}
-        * @return The AiExecutableList instance.
-        */
-        AiExecutableList resources( @Nonnull final List<AiExecutable> resources);
-        /**
-        * Set the resources of this {@link AiExecutableList} instance.
-        *
-        * @param resources  The resources of this {@link AiExecutableList}
-        * @return The AiExecutableList instance.
-        */
-        default AiExecutableList resources( @Nonnull final AiExecutable... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

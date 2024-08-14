@@ -54,7 +54,6 @@ public class BckndArgoCDApplicationStatusSource
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndArgoCDApplicationStatusSource() {  }
 
    /**
     * Set the repoURL of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
@@ -220,12 +219,6 @@ public class BckndArgoCDApplicationStatusSource
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndArgoCDApplicationStatusSource} instance. No arguments are required.
-    */
-    public static BckndArgoCDApplicationStatusSource create() {
-        return new BckndArgoCDApplicationStatusSource();
-    }
 
 }
 

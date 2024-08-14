@@ -51,7 +51,6 @@ public class AiDeploymentCreationRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiDeploymentCreationRequest() {  }
 
    /**
     * Set the ttl of this {@link AiDeploymentCreationRequest} instance and return the same instance.
@@ -187,24 +186,6 @@ public class AiDeploymentCreationRequest
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiDeploymentCreationRequest} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (configurationId) -> new AiDeploymentCreationRequest().configurationId(configurationId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the configurationId of this {@link AiDeploymentCreationRequest} instance.
-        *
-        * @param configurationId  ID of the configuration
-        * @return The AiDeploymentCreationRequest instance.
-        */
-        AiDeploymentCreationRequest configurationId( @Nonnull final String configurationId);
-    }
 
 }
 

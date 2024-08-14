@@ -53,7 +53,6 @@ public class BckndCommonResourceQuotaResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndCommonResourceQuotaResponse() {  }
 
    /**
     * Set the usage of this {@link BckndCommonResourceQuotaResponse} instance and return the same instance.
@@ -189,24 +188,6 @@ public class BckndCommonResourceQuotaResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndCommonResourceQuotaResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (quota) -> new BckndCommonResourceQuotaResponse().quota(quota);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the quota of this {@link BckndCommonResourceQuotaResponse} instance.
-        *
-        * @param quota  The quota of this {@link BckndCommonResourceQuotaResponse}
-        * @return The BckndCommonResourceQuotaResponse instance.
-        */
-        BckndCommonResourceQuotaResponse quota( @Nonnull final BckndCommonResourceQuotaResponseQuota quota);
-    }
 
 }
 

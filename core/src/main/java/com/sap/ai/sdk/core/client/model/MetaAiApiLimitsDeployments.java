@@ -48,7 +48,6 @@ public class MetaAiApiLimitsDeployments
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetaAiApiLimitsDeployments() {  }
 
    /**
     * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance and return the same instance.
@@ -154,12 +153,6 @@ public class MetaAiApiLimitsDeployments
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MetaAiApiLimitsDeployments} instance. No arguments are required.
-    */
-    public static MetaAiApiLimitsDeployments create() {
-        return new MetaAiApiLimitsDeployments();
-    }
 
 }
 

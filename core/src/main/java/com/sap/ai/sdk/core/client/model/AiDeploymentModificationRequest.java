@@ -52,7 +52,6 @@ public class AiDeploymentModificationRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiDeploymentModificationRequest() {  }
 
    /**
     * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance and return the same instance.
@@ -188,12 +187,6 @@ public class AiDeploymentModificationRequest
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link AiDeploymentModificationRequest} instance. No arguments are required.
-    */
-    public static AiDeploymentModificationRequest create() {
-        return new AiDeploymentModificationRequest();
-    }
 
 }
 

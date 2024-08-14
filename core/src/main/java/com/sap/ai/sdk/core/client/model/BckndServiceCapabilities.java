@@ -53,7 +53,6 @@ public class BckndServiceCapabilities
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndServiceCapabilities() {  }
 
    /**
     * Set the logs of this {@link BckndServiceCapabilities} instance and return the same instance.
@@ -189,12 +188,6 @@ public class BckndServiceCapabilities
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndServiceCapabilities} instance. No arguments are required.
-    */
-    public static BckndServiceCapabilities create() {
-        return new BckndServiceCapabilities();
-    }
 
 }
 

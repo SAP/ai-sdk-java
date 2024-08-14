@@ -130,7 +130,6 @@ public class BckndResourceGroup
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndResourceGroup() {  }
 
    /**
     * Set the resourceGroupId of this {@link BckndResourceGroup} instance and return the same instance.
@@ -428,48 +427,6 @@ public class BckndResourceGroup
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndResourceGroup} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (resourceGroupId) -> (createdAt) -> (status) -> new BckndResourceGroup().resourceGroupId(resourceGroupId).createdAt(createdAt).status(status);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the resourceGroupId of this {@link BckndResourceGroup} instance.
-        *
-        * @param resourceGroupId  resource group id
-        * @return The BckndResourceGroup builder.
-        */
-        Builder1 resourceGroupId( @Nonnull final String resourceGroupId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the createdAt of this {@link BckndResourceGroup} instance.
-        *
-        * @param createdAt  Timestamp of resource group creation
-        * @return The BckndResourceGroup builder.
-        */
-        Builder2 createdAt( @Nonnull final OffsetDateTime createdAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the status of this {@link BckndResourceGroup} instance.
-        *
-        * @param status  aggregated status of the onboarding process
-        * @return The BckndResourceGroup instance.
-        */
-        BckndResourceGroup status( @Nonnull final StatusEnum status);
-    }
 
 }
 

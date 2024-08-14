@@ -54,7 +54,6 @@ public class LLMModuleConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected LLMModuleConfig() {  }
 
    /**
     * Set the modelName of this {@link LLMModuleConfig} instance and return the same instance.
@@ -220,36 +219,6 @@ public class LLMModuleConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link LLMModuleConfig} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (modelName) -> (modelParams) -> new LLMModuleConfig().modelName(modelName).modelParams(modelParams);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the modelName of this {@link LLMModuleConfig} instance.
-        *
-        * @param modelName  Model name as in LLM Access configuration
-        * @return The LLMModuleConfig builder.
-        */
-        Builder1 modelName( @Nonnull final String modelName);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the modelParams of this {@link LLMModuleConfig} instance.
-        *
-        * @param modelParams  Model parameters
-        * @return The LLMModuleConfig instance.
-        */
-        LLMModuleConfig modelParams( @Nonnull final Object modelParams);
-    }
 
 }
 

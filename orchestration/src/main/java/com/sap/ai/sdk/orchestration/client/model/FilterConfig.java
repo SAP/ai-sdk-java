@@ -59,7 +59,6 @@ public class FilterConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected FilterConfig() {  }
 
    /**
     * Set the hate of this {@link FilterConfig} instance and return the same instance.
@@ -255,12 +254,6 @@ public class FilterConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link FilterConfig} instance. No arguments are required.
-    */
-    public static FilterConfig create() {
-        return new FilterConfig();
-    }
 
 }
 

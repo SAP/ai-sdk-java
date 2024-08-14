@@ -76,7 +76,6 @@ public class AiConfiguration
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiConfiguration() {  }
 
    /**
     * Set the name of this {@link AiConfiguration} instance and return the same instance.
@@ -416,72 +415,6 @@ public class AiConfiguration
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiConfiguration} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (executableId) -> (scenarioId) -> (id) -> (createdAt) -> new AiConfiguration().name(name).executableId(executableId).scenarioId(scenarioId).id(id).createdAt(createdAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link AiConfiguration} instance.
-        *
-        * @param name  Name of the configuration
-        * @return The AiConfiguration builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the executableId of this {@link AiConfiguration} instance.
-        *
-        * @param executableId  ID of the executable
-        * @return The AiConfiguration builder.
-        */
-        Builder2 executableId( @Nonnull final String executableId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the scenarioId of this {@link AiConfiguration} instance.
-        *
-        * @param scenarioId  ID of the scenario
-        * @return The AiConfiguration builder.
-        */
-        Builder3 scenarioId( @Nonnull final String scenarioId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the id of this {@link AiConfiguration} instance.
-        *
-        * @param id  ID of the configuration
-        * @return The AiConfiguration builder.
-        */
-        Builder4 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder4 {
-        /**
-        * Set the createdAt of this {@link AiConfiguration} instance.
-        *
-        * @param createdAt  Timestamp of resource creation
-        * @return The AiConfiguration instance.
-        */
-        AiConfiguration createdAt( @Nonnull final OffsetDateTime createdAt);
-    }
 
 }
 

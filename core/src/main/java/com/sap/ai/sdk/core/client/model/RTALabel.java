@@ -51,7 +51,6 @@ public class RTALabel
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTALabel() {  }
 
    /**
     * Set the key of this {@link RTALabel} instance and return the same instance.
@@ -187,36 +186,6 @@ public class RTALabel
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link RTALabel} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (key) -> (value) -> new RTALabel().key(key).value(value);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the key of this {@link RTALabel} instance.
-        *
-        * @param key  The key of this {@link RTALabel}
-        * @return The RTALabel builder.
-        */
-        Builder1 key( @Nonnull final String key);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the value of this {@link RTALabel} instance.
-        *
-        * @param value  The value of this {@link RTALabel}
-        * @return The RTALabel instance.
-        */
-        RTALabel value( @Nonnull final String value);
-    }
 
 }
 

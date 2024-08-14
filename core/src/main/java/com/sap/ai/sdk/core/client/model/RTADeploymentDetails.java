@@ -52,7 +52,6 @@ public class RTADeploymentDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTADeploymentDetails() {  }
 
    /**
     * Set the scaling of this {@link RTADeploymentDetails} instance and return the same instance.
@@ -188,12 +187,6 @@ public class RTADeploymentDetails
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link RTADeploymentDetails} instance. No arguments are required.
-    */
-    public static RTADeploymentDetails create() {
-        return new RTADeploymentDetails();
-    }
 
 }
 

@@ -52,7 +52,6 @@ public class AiApiErrorWithId
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiApiErrorWithId() {  }
 
    /**
     * Set the id of this {@link AiApiErrorWithId} instance and return the same instance.
@@ -188,36 +187,6 @@ public class AiApiErrorWithId
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiApiErrorWithId} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (error) -> new AiApiErrorWithId().id(id).error(error);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link AiApiErrorWithId} instance.
-        *
-        * @param id  Generic ID
-        * @return The AiApiErrorWithId builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the error of this {@link AiApiErrorWithId} instance.
-        *
-        * @param error  The error of this {@link AiApiErrorWithId}
-        * @return The AiApiErrorWithId instance.
-        */
-        AiApiErrorWithId error( @Nonnull final AiApiError error);
-    }
 
 }
 

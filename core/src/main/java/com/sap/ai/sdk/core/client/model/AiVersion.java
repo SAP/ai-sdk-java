@@ -61,7 +61,6 @@ public class AiVersion
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiVersion() {  }
 
    /**
     * Set the description of this {@link AiVersion} instance and return the same instance.
@@ -287,48 +286,6 @@ public class AiVersion
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiVersion} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (createdAt) -> (modifiedAt) -> new AiVersion().id(id).createdAt(createdAt).modifiedAt(modifiedAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link AiVersion} instance.
-        *
-        * @param id  Version ID
-        * @return The AiVersion builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the createdAt of this {@link AiVersion} instance.
-        *
-        * @param createdAt  Timestamp of resource creation
-        * @return The AiVersion builder.
-        */
-        Builder2 createdAt( @Nonnull final OffsetDateTime createdAt);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the modifiedAt of this {@link AiVersion} instance.
-        *
-        * @param modifiedAt  Timestamp of latest resource modification
-        * @return The AiVersion instance.
-        */
-        AiVersion modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
-    }
 
 }
 

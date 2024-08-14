@@ -64,7 +64,6 @@ public class BckndServiceServiceCatalogItemExtendCatalog
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndServiceServiceCatalogItemExtendCatalog() {  }
 
    /**
     * Set the bindable of this {@link BckndServiceServiceCatalogItemExtendCatalog} instance and return the same instance.
@@ -302,12 +301,6 @@ public class BckndServiceServiceCatalogItemExtendCatalog
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndServiceServiceCatalogItemExtendCatalog} instance. No arguments are required.
-    */
-    public static BckndServiceServiceCatalogItemExtendCatalog create() {
-        return new BckndServiceServiceCatalogItemExtendCatalog();
-    }
 
 }
 

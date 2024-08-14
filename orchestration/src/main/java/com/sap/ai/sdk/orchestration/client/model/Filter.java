@@ -53,7 +53,6 @@ public class Filter
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected Filter() {  }
 
    /**
     * Set the type of this {@link Filter} instance and return the same instance.
@@ -189,24 +188,6 @@ public class Filter
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link Filter} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (type) -> new Filter().type(type);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the type of this {@link Filter} instance.
-        *
-        * @param type  The type of this {@link Filter}
-        * @return The Filter instance.
-        */
-        Filter type( @Nonnull final ProviderType type);
-    }
 
 }
 

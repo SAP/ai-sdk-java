@@ -54,7 +54,6 @@ public class RTAInputArtifactArgumentBinding
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTAInputArtifactArgumentBinding() {  }
 
    /**
     * Set the name of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
@@ -220,36 +219,6 @@ public class RTAInputArtifactArgumentBinding
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link RTAInputArtifactArgumentBinding} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (name) -> (url) -> new RTAInputArtifactArgumentBinding().name(name).url(url);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the name of this {@link RTAInputArtifactArgumentBinding} instance.
-        *
-        * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
-        * @return The RTAInputArtifactArgumentBinding builder.
-        */
-        Builder1 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the url of this {@link RTAInputArtifactArgumentBinding} instance.
-        *
-        * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-        * @return The RTAInputArtifactArgumentBinding instance.
-        */
-        RTAInputArtifactArgumentBinding url( @Nonnull final String url);
-    }
 
 }
 

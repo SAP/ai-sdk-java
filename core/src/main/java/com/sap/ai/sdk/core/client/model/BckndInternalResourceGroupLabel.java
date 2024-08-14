@@ -51,7 +51,6 @@ public class BckndInternalResourceGroupLabel
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndInternalResourceGroupLabel() {  }
 
    /**
     * Set the key of this {@link BckndInternalResourceGroupLabel} instance and return the same instance.
@@ -187,36 +186,6 @@ public class BckndInternalResourceGroupLabel
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndInternalResourceGroupLabel} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (key) -> (value) -> new BckndInternalResourceGroupLabel().key(key).value(value);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the key of this {@link BckndInternalResourceGroupLabel} instance.
-        *
-        * @param key  The key of this {@link BckndInternalResourceGroupLabel}
-        * @return The BckndInternalResourceGroupLabel builder.
-        */
-        Builder1 key( @Nonnull final String key);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the value of this {@link BckndInternalResourceGroupLabel} instance.
-        *
-        * @param value  The value of this {@link BckndInternalResourceGroupLabel}
-        * @return The BckndInternalResourceGroupLabel instance.
-        */
-        BckndInternalResourceGroupLabel value( @Nonnull final String value);
-    }
 
 }
 

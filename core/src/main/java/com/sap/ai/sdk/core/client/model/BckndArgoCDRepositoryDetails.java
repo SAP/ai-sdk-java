@@ -113,7 +113,6 @@ public class BckndArgoCDRepositoryDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndArgoCDRepositoryDetails() {  }
 
    /**
     * Set the name of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
@@ -279,12 +278,6 @@ public class BckndArgoCDRepositoryDetails
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndArgoCDRepositoryDetails} instance. No arguments are required.
-    */
-    public static BckndArgoCDRepositoryDetails create() {
-        return new BckndArgoCDRepositoryDetails();
-    }
 
 }
 

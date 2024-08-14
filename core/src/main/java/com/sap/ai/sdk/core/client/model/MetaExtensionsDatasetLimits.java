@@ -57,7 +57,6 @@ public class MetaExtensionsDatasetLimits
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetaExtensionsDatasetLimits() {  }
 
    /**
     * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
@@ -235,12 +234,6 @@ public class MetaExtensionsDatasetLimits
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link MetaExtensionsDatasetLimits} instance. No arguments are required.
-    */
-    public static MetaExtensionsDatasetLimits create() {
-        return new MetaExtensionsDatasetLimits();
-    }
 
 }
 

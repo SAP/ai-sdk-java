@@ -55,7 +55,6 @@ public class AiDeploymentList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiDeploymentList() {  }
 
    /**
     * Set the count of this {@link AiDeploymentList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class AiDeploymentList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiDeploymentList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new AiDeploymentList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link AiDeploymentList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The AiDeploymentList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link AiDeploymentList} instance.
-        *
-        * @param resources  The resources of this {@link AiDeploymentList}
-        * @return The AiDeploymentList instance.
-        */
-        AiDeploymentList resources( @Nonnull final List<AiDeployment> resources);
-        /**
-        * Set the resources of this {@link AiDeploymentList} instance.
-        *
-        * @param resources  The resources of this {@link AiDeploymentList}
-        * @return The AiDeploymentList instance.
-        */
-        default AiDeploymentList resources( @Nonnull final AiDeployment... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

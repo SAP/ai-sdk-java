@@ -49,7 +49,6 @@ public class FileDownload400Response
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected FileDownload400Response() {  }
 
    /**
     * Set the error of this {@link FileDownload400Response} instance and return the same instance.
@@ -155,12 +154,6 @@ public class FileDownload400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link FileDownload400Response} instance. No arguments are required.
-    */
-    public static FileDownload400Response create() {
-        return new FileDownload400Response();
-    }
 
 }
 

@@ -55,7 +55,6 @@ public class AiVersionList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiVersionList() {  }
 
    /**
     * Set the count of this {@link AiVersionList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class AiVersionList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiVersionList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new AiVersionList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link AiVersionList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The AiVersionList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link AiVersionList} instance.
-        *
-        * @param resources  The resources of this {@link AiVersionList}
-        * @return The AiVersionList instance.
-        */
-        AiVersionList resources( @Nonnull final List<AiVersion> resources);
-        /**
-        * Set the resources of this {@link AiVersionList} instance.
-        *
-        * @param resources  The resources of this {@link AiVersionList}
-        * @return The AiVersionList instance.
-        */
-        default AiVersionList resources( @Nonnull final AiVersion... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

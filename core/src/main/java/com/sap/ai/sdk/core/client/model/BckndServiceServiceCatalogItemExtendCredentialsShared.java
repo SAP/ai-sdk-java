@@ -49,7 +49,6 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndServiceServiceCatalogItemExtendCredentialsShared() {  }
 
    /**
     * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance and return the same instance.
@@ -155,12 +154,6 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance. No arguments are required.
-    */
-    public static BckndServiceServiceCatalogItemExtendCredentialsShared create() {
-        return new BckndServiceServiceCatalogItemExtendCredentialsShared();
-    }
 
 }
 

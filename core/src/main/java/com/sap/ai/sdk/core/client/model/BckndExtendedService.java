@@ -139,7 +139,6 @@ public class BckndExtendedService
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndExtendedService() {  }
 
    /**
     * Set the name of this {@link BckndExtendedService} instance and return the same instance.
@@ -467,12 +466,6 @@ public class BckndExtendedService
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndExtendedService} instance. No arguments are required.
-    */
-    public static BckndExtendedService create() {
-        return new BckndExtendedService();
-    }
 
 }
 

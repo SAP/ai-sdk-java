@@ -51,7 +51,6 @@ public class BckndArgoCDRepositoryCreationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndArgoCDRepositoryCreationResponse() {  }
 
    /**
     * Set the id of this {@link BckndArgoCDRepositoryCreationResponse} instance and return the same instance.
@@ -187,36 +186,6 @@ public class BckndArgoCDRepositoryCreationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDRepositoryCreationResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (message) -> new BckndArgoCDRepositoryCreationResponse().id(id).message(message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link BckndArgoCDRepositoryCreationResponse} instance.
-        *
-        * @param id  Generic ID
-        * @return The BckndArgoCDRepositoryCreationResponse builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link BckndArgoCDRepositoryCreationResponse} instance.
-        *
-        * @param message  Message
-        * @return The BckndArgoCDRepositoryCreationResponse instance.
-        */
-        BckndArgoCDRepositoryCreationResponse message( @Nonnull final String message);
-    }
 
 }
 

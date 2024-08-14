@@ -61,7 +61,6 @@ public class RTAModelBaseData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTAModelBaseData() {  }
 
    /**
     * Set the model of this {@link RTAModelBaseData} instance and return the same instance.
@@ -269,69 +268,6 @@ public class RTAModelBaseData
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link RTAModelBaseData} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (model) -> (executableId) -> (description) -> (versions) -> new RTAModelBaseData().model(model).executableId(executableId).description(description).versions(versions);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the model of this {@link RTAModelBaseData} instance.
-        *
-        * @param model  Name of the model
-        * @return The RTAModelBaseData builder.
-        */
-        Builder1 model( @Nonnull final String model);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the executableId of this {@link RTAModelBaseData} instance.
-        *
-        * @param executableId  ID of the executable
-        * @return The RTAModelBaseData builder.
-        */
-        Builder2 executableId( @Nonnull final String executableId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the description of this {@link RTAModelBaseData} instance.
-        *
-        * @param description  Description of the model and its capabilities
-        * @return The RTAModelBaseData builder.
-        */
-        Builder3 description( @Nonnull final String description);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the versions of this {@link RTAModelBaseData} instance.
-        *
-        * @param versions  List of model versions that the model object has
-        * @return The RTAModelBaseData instance.
-        */
-        RTAModelBaseData versions( @Nonnull final List<RTAModelVersion> versions);
-        /**
-        * Set the versions of this {@link RTAModelBaseData} instance.
-        *
-        * @param versions  List of model versions that the model object has
-        * @return The RTAModelBaseData instance.
-        */
-        default RTAModelBaseData versions( @Nonnull final RTAModelVersion... versions) {
-            return versions(Arrays.asList(versions));
-        }
-    }
 
 }
 

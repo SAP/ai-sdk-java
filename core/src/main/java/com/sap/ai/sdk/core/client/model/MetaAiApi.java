@@ -56,7 +56,6 @@ public class MetaAiApi
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected MetaAiApi() {  }
 
    /**
     * Set the version of this {@link MetaAiApi} instance and return the same instance.
@@ -222,24 +221,6 @@ public class MetaAiApi
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link MetaAiApi} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (version) -> new MetaAiApi().version(version);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the version of this {@link MetaAiApi} instance.
-        *
-        * @param version  The version of this {@link MetaAiApi}
-        * @return The MetaAiApi instance.
-        */
-        MetaAiApi version( @Nonnull final String version);
-    }
 
 }
 

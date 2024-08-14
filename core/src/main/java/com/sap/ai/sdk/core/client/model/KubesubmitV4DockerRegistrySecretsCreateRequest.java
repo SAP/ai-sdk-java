@@ -52,7 +52,6 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected KubesubmitV4DockerRegistrySecretsCreateRequest() {  }
 
    /**
     * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
@@ -188,36 +187,6 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (data) -> (name) -> new KubesubmitV4DockerRegistrySecretsCreateRequest().data(data).name(name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-        *
-        * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
-        * @return The KubesubmitV4DockerRegistrySecretsCreateRequest builder.
-        */
-        Builder1 data( @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-        *
-        * @param name  Name of the docker Registry store for the secret.
-        * @return The KubesubmitV4DockerRegistrySecretsCreateRequest instance.
-        */
-        KubesubmitV4DockerRegistrySecretsCreateRequest name( @Nonnull final String name);
-    }
 
 }
 

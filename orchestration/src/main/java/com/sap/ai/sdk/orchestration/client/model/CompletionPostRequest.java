@@ -61,7 +61,6 @@ public class CompletionPostRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected CompletionPostRequest() {  }
 
    /**
     * Set the orchestrationConfig of this {@link CompletionPostRequest} instance and return the same instance.
@@ -251,36 +250,6 @@ public class CompletionPostRequest
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link CompletionPostRequest} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (orchestrationConfig) -> (inputParams) -> new CompletionPostRequest().orchestrationConfig(orchestrationConfig).inputParams(inputParams);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
-        *
-        * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
-        * @return The CompletionPostRequest builder.
-        */
-        Builder1 orchestrationConfig( @Nonnull final OrchestrationConfig orchestrationConfig);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the inputParams of this {@link CompletionPostRequest} instance.
-        *
-        * @param inputParams  The inputParams of this {@link CompletionPostRequest}
-        * @return The CompletionPostRequest instance.
-        */
-        CompletionPostRequest inputParams( @Nonnull final Map<String, String> inputParams);
-    }
 
 }
 

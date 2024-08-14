@@ -61,7 +61,6 @@ public class AiExecutionScheduleCreationData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutionScheduleCreationData() {  }
 
    /**
     * Set the cron of this {@link AiExecutionScheduleCreationData} instance and return the same instance.
@@ -287,48 +286,6 @@ public class AiExecutionScheduleCreationData
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionScheduleCreationData} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (cron) -> (name) -> (configurationId) -> new AiExecutionScheduleCreationData().cron(cron).name(name).configurationId(configurationId);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the cron of this {@link AiExecutionScheduleCreationData} instance.
-        *
-        * @param cron  Cron defining the schedule to run the executions.
-        * @return The AiExecutionScheduleCreationData builder.
-        */
-        Builder1 cron( @Nonnull final String cron);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the name of this {@link AiExecutionScheduleCreationData} instance.
-        *
-        * @param name  Name of the execution schedule
-        * @return The AiExecutionScheduleCreationData builder.
-        */
-        Builder2 name( @Nonnull final String name);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the configurationId of this {@link AiExecutionScheduleCreationData} instance.
-        *
-        * @param configurationId  ID of the configuration
-        * @return The AiExecutionScheduleCreationData instance.
-        */
-        AiExecutionScheduleCreationData configurationId( @Nonnull final String configurationId);
-    }
 
 }
 

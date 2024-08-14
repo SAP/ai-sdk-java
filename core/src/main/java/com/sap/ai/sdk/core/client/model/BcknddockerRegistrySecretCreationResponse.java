@@ -48,7 +48,6 @@ public class BcknddockerRegistrySecretCreationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BcknddockerRegistrySecretCreationResponse() {  }
 
    /**
     * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance and return the same instance.
@@ -154,12 +153,6 @@ public class BcknddockerRegistrySecretCreationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BcknddockerRegistrySecretCreationResponse} instance. No arguments are required.
-    */
-    public static BcknddockerRegistrySecretCreationResponse create() {
-        return new BcknddockerRegistrySecretCreationResponse();
-    }
 
 }
 

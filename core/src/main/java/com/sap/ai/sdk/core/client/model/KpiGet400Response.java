@@ -49,7 +49,6 @@ public class KpiGet400Response
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected KpiGet400Response() {  }
 
    /**
     * Set the error of this {@link KpiGet400Response} instance and return the same instance.
@@ -155,12 +154,6 @@ public class KpiGet400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link KpiGet400Response} instance. No arguments are required.
-    */
-    public static KpiGet400Response create() {
-        return new KpiGet400Response();
-    }
 
 }
 

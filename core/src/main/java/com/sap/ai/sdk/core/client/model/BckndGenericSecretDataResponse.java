@@ -51,7 +51,6 @@ public class BckndGenericSecretDataResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndGenericSecretDataResponse() {  }
 
    /**
     * Set the message of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
@@ -187,12 +186,6 @@ public class BckndGenericSecretDataResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link BckndGenericSecretDataResponse} instance. No arguments are required.
-    */
-    public static BckndGenericSecretDataResponse create() {
-        return new BckndGenericSecretDataResponse();
-    }
 
 }
 

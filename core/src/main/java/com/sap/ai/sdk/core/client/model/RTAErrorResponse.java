@@ -49,7 +49,6 @@ public class RTAErrorResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTAErrorResponse() {  }
 
    /**
     * Set the error of this {@link RTAErrorResponse} instance and return the same instance.
@@ -155,12 +154,6 @@ public class RTAErrorResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link RTAErrorResponse} instance. No arguments are required.
-    */
-    public static RTAErrorResponse create() {
-        return new RTAErrorResponse();
-    }
 
 }
 

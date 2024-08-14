@@ -51,7 +51,6 @@ public class RTAArtifactLabel
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected RTAArtifactLabel() {  }
 
    /**
     * Set the key of this {@link RTAArtifactLabel} instance and return the same instance.
@@ -187,36 +186,6 @@ public class RTAArtifactLabel
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link RTAArtifactLabel} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (key) -> (value) -> new RTAArtifactLabel().key(key).value(value);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the key of this {@link RTAArtifactLabel} instance.
-        *
-        * @param key  The key of this {@link RTAArtifactLabel}
-        * @return The RTAArtifactLabel builder.
-        */
-        Builder1 key( @Nonnull final String key);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the value of this {@link RTAArtifactLabel} instance.
-        *
-        * @param value  The value of this {@link RTAArtifactLabel}
-        * @return The RTAArtifactLabel instance.
-        */
-        RTAArtifactLabel value( @Nonnull final String value);
-    }
 
 }
 

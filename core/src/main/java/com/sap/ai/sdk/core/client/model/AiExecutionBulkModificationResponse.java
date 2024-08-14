@@ -52,7 +52,6 @@ public class AiExecutionBulkModificationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiExecutionBulkModificationResponse() {  }
 
    /**
     * Set the executions of this {@link AiExecutionBulkModificationResponse} instance and return the same instance.
@@ -170,12 +169,6 @@ public class AiExecutionBulkModificationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a new {@link AiExecutionBulkModificationResponse} instance. No arguments are required.
-    */
-    public static AiExecutionBulkModificationResponse create() {
-        return new AiExecutionBulkModificationResponse();
-    }
 
 }
 

@@ -51,7 +51,6 @@ public class BckndArgoCDRepositoryDeletionResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndArgoCDRepositoryDeletionResponse() {  }
 
    /**
     * Set the id of this {@link BckndArgoCDRepositoryDeletionResponse} instance and return the same instance.
@@ -187,36 +186,6 @@ public class BckndArgoCDRepositoryDeletionResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDRepositoryDeletionResponse} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (message) -> new BckndArgoCDRepositoryDeletionResponse().id(id).message(message);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link BckndArgoCDRepositoryDeletionResponse} instance.
-        *
-        * @param id  Generic ID
-        * @return The BckndArgoCDRepositoryDeletionResponse builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the message of this {@link BckndArgoCDRepositoryDeletionResponse} instance.
-        *
-        * @param message  Message
-        * @return The BckndArgoCDRepositoryDeletionResponse instance.
-        */
-        BckndArgoCDRepositoryDeletionResponse message( @Nonnull final String message);
-    }
 
 }
 

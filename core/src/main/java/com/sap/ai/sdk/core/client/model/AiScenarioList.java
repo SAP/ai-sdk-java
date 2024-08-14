@@ -55,7 +55,6 @@ public class AiScenarioList
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected AiScenarioList() {  }
 
    /**
     * Set the count of this {@link AiScenarioList} instance and return the same instance.
@@ -203,45 +202,6 @@ public class AiScenarioList
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link AiScenarioList} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (count) -> (resources) -> new AiScenarioList().count(count).resources(resources);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the count of this {@link AiScenarioList} instance.
-        *
-        * @param count  Number of the resource instances in the list
-        * @return The AiScenarioList builder.
-        */
-        Builder1 count( @Nonnull final Integer count);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the resources of this {@link AiScenarioList} instance.
-        *
-        * @param resources  The resources of this {@link AiScenarioList}
-        * @return The AiScenarioList instance.
-        */
-        AiScenarioList resources( @Nonnull final List<AiScenario> resources);
-        /**
-        * Set the resources of this {@link AiScenarioList} instance.
-        *
-        * @param resources  The resources of this {@link AiScenarioList}
-        * @return The AiScenarioList instance.
-        */
-        default AiScenarioList resources( @Nonnull final AiScenario... resources) {
-            return resources(Arrays.asList(resources));
-        }
-    }
 
 }
 

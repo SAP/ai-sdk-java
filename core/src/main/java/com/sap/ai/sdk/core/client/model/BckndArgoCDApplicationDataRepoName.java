@@ -57,7 +57,6 @@ public class BckndArgoCDApplicationDataRepoName
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected BckndArgoCDApplicationDataRepoName() {  }
 
    /**
     * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
@@ -253,48 +252,6 @@ public class BckndArgoCDApplicationDataRepoName
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDApplicationDataRepoName} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (repositoryName) -> (revision) -> (path) -> new BckndArgoCDApplicationDataRepoName().repositoryName(repositoryName).revision(revision).path(path);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-        *
-        * @param repositoryName  Name of the repository to synchronise
-        * @return The BckndArgoCDApplicationDataRepoName builder.
-        */
-        Builder1 repositoryName( @Nonnull final String repositoryName);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
-        *
-        * @param revision  revision to synchronise
-        * @return The BckndArgoCDApplicationDataRepoName builder.
-        */
-        Builder2 revision( @Nonnull final String revision);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance.
-        *
-        * @param path  path within the repository to synchronise
-        * @return The BckndArgoCDApplicationDataRepoName instance.
-        */
-        BckndArgoCDApplicationDataRepoName path( @Nonnull final String path);
-    }
 
 }
 

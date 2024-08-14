@@ -71,7 +71,6 @@ public class LLMModuleResult
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected LLMModuleResult() {  }
 
    /**
     * Set the id of this {@link LLMModuleResult} instance and return the same instance.
@@ -369,93 +368,6 @@ public class LLMModuleResult
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link LLMModuleResult} instance with all required arguments.
-    */
-    public static Builder create() {
-        return (id) -> (_object) -> (created) -> (model) -> (choices) -> (usage) -> new LLMModuleResult().id(id)._object(_object).created(created).model(model).choices(choices).usage(usage);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the id of this {@link LLMModuleResult} instance.
-        *
-        * @param id  ID of the response
-        * @return The LLMModuleResult builder.
-        */
-        Builder1 id( @Nonnull final String id);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the _object of this {@link LLMModuleResult} instance.
-        *
-        * @param _object  Object type
-        * @return The LLMModuleResult builder.
-        */
-        Builder2 _object( @Nonnull final String _object);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder2 {
-        /**
-        * Set the created of this {@link LLMModuleResult} instance.
-        *
-        * @param created  Unix timestamp
-        * @return The LLMModuleResult builder.
-        */
-        Builder3 created( @Nonnull final Integer created);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder3 {
-        /**
-        * Set the model of this {@link LLMModuleResult} instance.
-        *
-        * @param model  Model name
-        * @return The LLMModuleResult builder.
-        */
-        Builder4 model( @Nonnull final String model);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder4 {
-        /**
-        * Set the choices of this {@link LLMModuleResult} instance.
-        *
-        * @param choices  Choices
-        * @return The LLMModuleResult builder.
-        */
-        Builder5 choices( @Nonnull final List<LLMChoice> choices);
-        /**
-        * Set the choices of this {@link LLMModuleResult} instance.
-        *
-        * @param choices  Choices
-        * @return The LLMModuleResult builder.
-        */
-        default Builder5 choices( @Nonnull final LLMChoice... choices) {
-            return choices(Arrays.asList(choices));
-        }
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder5 {
-        /**
-        * Set the usage of this {@link LLMModuleResult} instance.
-        *
-        * @param usage  The usage of this {@link LLMModuleResult}
-        * @return The LLMModuleResult instance.
-        */
-        LLMModuleResult usage( @Nonnull final TokenUsage usage);
-    }
 
 }
 
