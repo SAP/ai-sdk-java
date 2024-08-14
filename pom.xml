@@ -37,7 +37,7 @@
     <spotless.version>2.43.0</spotless.version>
     <checkstyle.version>10.17.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
-    <surefire.version>3.2.2</surefire.version>
+    <surefire.version>3.3.1</surefire.version>
   </properties>
 
   <dependencyManagement>
@@ -163,7 +163,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.23.0</version>
+        <version>3.24.0</version>
         <configuration>
           <rulesets>
             <ruleset>.pipeline/pmd.xml</ruleset>
@@ -184,7 +184,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.1</version>
+        <version>4.8.6.2</version>
         <configuration>
           <includeFilterFile>.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
