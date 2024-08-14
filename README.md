@@ -360,7 +360,7 @@ final var config =
             OrchestrationConfig.create()
                 .moduleConfigurations(
                     ModuleConfigs.create()
-                          .llmModuleConfig(llmConfig)
+                        .llmModuleConfig(llmConfig)
                         .templatingModuleConfig(templatingConfig)
                         .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
