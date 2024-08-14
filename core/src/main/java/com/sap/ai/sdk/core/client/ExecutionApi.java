@@ -535,12 +535,12 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse kubesubmitV4ExecutionsGetLogs( @Nonnull final String executionId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
+    public RTALogCommonResponse executionsGetLogs( @Nonnull final String executionId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'executionId' is set
         if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling kubesubmitV4ExecutionsGetLogs");
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling executionsGetLogs");
         }
         
         // create path and map variables
@@ -588,7 +588,7 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse kubesubmitV4ExecutionsGetLogs( @Nonnull final String executionId) throws OpenApiRequestException {
-        return kubesubmitV4ExecutionsGetLogs(executionId, null, null, null, null, null);
+    public RTALogCommonResponse executionsGetLogs( @Nonnull final String executionId) throws OpenApiRequestException {
+        return executionsGetLogs(executionId, null, null, null, null, null);
     }
 }

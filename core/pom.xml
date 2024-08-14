@@ -98,8 +98,7 @@
               <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
               <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
               <additionalProperties>
-                <operationIdNames>
-                  kubesubmit.v4.objectStoreSecrets.create=objectStoreSecretsCreate
+                <operationIdNames>kubesubmit.v4.objectStoreSecrets.create=objectStoreSecretsCreate
                   kubesubmit.v4.objectStoreSecrets.query=objectStoreSecretsQuery
                   kubesubmit.v4.objectStoreSecrets.get=objectStoreSecretsGet
                   kubesubmit.v4.objectStoreSecrets.delete=objectStoreSecretsDelete
@@ -141,8 +140,7 @@
                   kubesubmit.v4.resourceQuota.getApplicationQuota=resourceQuotaGetApplicationQuota
                   kubesubmit.v4.resourceQuota.getRepositoryQuota=resourceQuotaGetRepositoryQuota
                   kubesubmit.v4.resourceQuota.getGenericSecretQuota=resourceQuotaGetGenericSecretQuota
-                  kubesubmit.v4.resourceQuota.getDockerRegistrySecretQuota=resourceQuotaGetDockerRegistrySecretQuota
-                </operationIdNames>
+                  kubesubmit.v4.resourceQuota.getDockerRegistrySecretQuota=resourceQuotaGetDockerRegistrySecretQuota</operationIdNames>
               </additionalProperties>
             </configuration>
           </execution>

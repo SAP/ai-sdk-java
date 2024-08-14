@@ -529,12 +529,12 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs( @Nonnull final String deploymentId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
+    public RTALogCommonResponse deploymentsGetLogs( @Nonnull final String deploymentId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'deploymentId' is set
         if (deploymentId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling kubesubmitV4DeploymentsGetLogs");
+            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling deploymentsGetLogs");
         }
         
         // create path and map variables
@@ -582,7 +582,7 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs( @Nonnull final String deploymentId) throws OpenApiRequestException {
-        return kubesubmitV4DeploymentsGetLogs(deploymentId, null, null, null, null, null);
+    public RTALogCommonResponse deploymentsGetLogs( @Nonnull final String deploymentId) throws OpenApiRequestException {
+        return deploymentsGetLogs(deploymentId, null, null, null, null, null);
     }
 }
