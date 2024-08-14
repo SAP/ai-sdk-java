@@ -1,23 +1,14 @@
 package com.sap.ai.sdk.app;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
 @ServletComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
-class Application extends SpringBootServletInitializer {
-  @Override
-  protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
-    return application.sources(Application.class);
-  }
-
+class Application {
   /**
    * Main method to start the Spring Boot application.
    *
@@ -25,15 +16,5 @@ class Application extends SpringBootServletInitializer {
    */
   public static void main(final String[] args) {
     SpringApplication.run(Application.class, args);
-  }
-
-  /**
-   * This exists only to import ServletException. This import exists only to justify the dependency
-   * jetty-jakarta-servlet-api for the maven-dependency-plugin to succeed.
-   */
-  @SuppressWarnings("PMD.UselessOverridingMethod")
-  @Override
-  public void onStartup(final ServletContext servletContext) throws ServletException {
-    super.onStartup(servletContext);
   }
 }

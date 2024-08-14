@@ -51,12 +51,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>org.eclipse.jetty.toolchain</groupId>
-        <artifactId>jetty-jakarta-servlet-api</artifactId>
-        <version>5.0.2</version>
-        <scope>compile</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -113,10 +107,6 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty.toolchain</groupId>
-      <artifactId>jetty-jakarta-servlet-api</artifactId>
-    </dependency>
     <!-- scope "runtime" -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -128,6 +118,11 @@
       <groupId>com.sap.hcp.cf.logging</groupId>
       <artifactId>cf-java-logging-support-logback</artifactId>
       <version>${cf-logging.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
       <scope>runtime</scope>
     </dependency>
     <!-- scope "provided" -->
