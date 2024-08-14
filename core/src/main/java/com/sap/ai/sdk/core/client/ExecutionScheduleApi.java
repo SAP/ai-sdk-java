@@ -80,12 +80,12 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer executionScheduleCount( @Nonnull final String aiResourceGroup,  @Nullable final String configurationId,  @Nullable final String status) throws OpenApiRequestException {
+    public Integer count( @Nonnull final String aiResourceGroup,  @Nullable final String configurationId,  @Nullable final String status) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionScheduleCount");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling count");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executionSchedules/$count").build().toUriString();
@@ -125,8 +125,8 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer executionScheduleCount( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return executionScheduleCount(aiResourceGroup, null, null);
+    public Integer count( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return count(aiResourceGroup, null, null);
     }
     /**
      * <p>Create execution schedule</p>
@@ -141,17 +141,17 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionScheduleCreationResponse executionScheduleCreate( @Nonnull final String aiResourceGroup,  @Nonnull final AiExecutionScheduleCreationData aiExecutionScheduleCreationData) throws OpenApiRequestException {
+    public AiExecutionScheduleCreationResponse create( @Nonnull final String aiResourceGroup,  @Nonnull final AiExecutionScheduleCreationData aiExecutionScheduleCreationData) throws OpenApiRequestException {
         final Object localVarPostBody = aiExecutionScheduleCreationData;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionScheduleCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling create");
         }
         
         // verify the required parameter 'aiExecutionScheduleCreationData' is set
         if (aiExecutionScheduleCreationData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionScheduleCreationData' when calling executionScheduleCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionScheduleCreationData' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executionSchedules").build().toUriString();
@@ -191,17 +191,17 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionScheduleDeletionResponse executionScheduleDelete( @Nonnull final String aiResourceGroup,  @Nonnull final String executionScheduleId) throws OpenApiRequestException {
+    public AiExecutionScheduleDeletionResponse delete( @Nonnull final String aiResourceGroup,  @Nonnull final String executionScheduleId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionScheduleDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling delete");
         }
         
         // verify the required parameter 'executionScheduleId' is set
         if (executionScheduleId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionScheduleId' when calling executionScheduleDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'executionScheduleId' when calling delete");
         }
         
         // create path and map variables
@@ -242,17 +242,17 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionSchedule executionScheduleGet( @Nonnull final String aiResourceGroup,  @Nonnull final String executionScheduleId) throws OpenApiRequestException {
+    public AiExecutionSchedule get( @Nonnull final String aiResourceGroup,  @Nonnull final String executionScheduleId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionScheduleGet");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
         }
         
         // verify the required parameter 'executionScheduleId' is set
         if (executionScheduleId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionScheduleId' when calling executionScheduleGet");
+            throw new OpenApiRequestException("Missing the required parameter 'executionScheduleId' when calling get");
         }
         
         // create path and map variables
@@ -295,22 +295,22 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionScheduleModificationResponse executionScheduleModify( @Nonnull final String aiResourceGroup,  @Nonnull final String executionScheduleId,  @Nonnull final AiExecutionScheduleModificationRequest aiExecutionScheduleModificationRequest) throws OpenApiRequestException {
+    public AiExecutionScheduleModificationResponse modify( @Nonnull final String aiResourceGroup,  @Nonnull final String executionScheduleId,  @Nonnull final AiExecutionScheduleModificationRequest aiExecutionScheduleModificationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiExecutionScheduleModificationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionScheduleModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling modify");
         }
         
         // verify the required parameter 'executionScheduleId' is set
         if (executionScheduleId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionScheduleId' when calling executionScheduleModify");
+            throw new OpenApiRequestException("Missing the required parameter 'executionScheduleId' when calling modify");
         }
         
         // verify the required parameter 'aiExecutionScheduleModificationRequest' is set
         if (aiExecutionScheduleModificationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionScheduleModificationRequest' when calling executionScheduleModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiExecutionScheduleModificationRequest' when calling modify");
         }
         
         // create path and map variables
@@ -359,12 +359,12 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionScheduleList executionScheduleQuery( @Nonnull final String aiResourceGroup,  @Nullable final String configurationId,  @Nullable final String status,  @Nullable final Integer $top,  @Nullable final Integer $skip) throws OpenApiRequestException {
+    public AiExecutionScheduleList query( @Nonnull final String aiResourceGroup,  @Nullable final String configurationId,  @Nullable final String status,  @Nullable final Integer $top,  @Nullable final Integer $skip) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling executionScheduleQuery");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/executionSchedules").build().toUriString();
@@ -406,7 +406,7 @@ public class ExecutionScheduleApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiExecutionScheduleList executionScheduleQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return executionScheduleQuery(aiResourceGroup, null, null, null, null);
+    public AiExecutionScheduleList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return query(aiResourceGroup, null, null, null, null);
     }
 }

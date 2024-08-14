@@ -75,12 +75,12 @@ public class ServiceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndExtendedService kubesubmitV4AiservicesGet( @Nonnull final String serviceName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndExtendedService get( @Nonnull final String serviceName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'serviceName' is set
         if (serviceName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'serviceName' when calling kubesubmitV4AiservicesGet");
+            throw new OpenApiRequestException("Missing the required parameter 'serviceName' when calling get");
         }
         
         // create path and map variables
@@ -121,8 +121,8 @@ public class ServiceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndExtendedService kubesubmitV4AiservicesGet( @Nonnull final String serviceName) throws OpenApiRequestException {
-        return kubesubmitV4AiservicesGet(serviceName, null);
+    public BckndExtendedService get( @Nonnull final String serviceName) throws OpenApiRequestException {
+        return get(serviceName, null);
     }
 
     /**
@@ -137,7 +137,7 @@ public class ServiceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndServiceList kubesubmitV4AiservicesGetAll( @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndServiceList getAll( @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/services").build().toUriString();
@@ -172,7 +172,7 @@ public class ServiceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndServiceList kubesubmitV4AiservicesGetAll() throws OpenApiRequestException {
-        return kubesubmitV4AiservicesGetAll(null);
+    public BckndServiceList getAll() throws OpenApiRequestException {
+        return getAll(null);
     }
 }

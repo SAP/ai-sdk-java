@@ -81,12 +81,12 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer configurationCount( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final List<String> executableIds) throws OpenApiRequestException {
+    public Integer count( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final List<String> executableIds) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling configurationCount");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling count");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/configurations/$count").build().toUriString();
@@ -128,8 +128,8 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer configurationCount( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return configurationCount(aiResourceGroup, null, null, null, null);
+    public Integer count( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return count(aiResourceGroup, null, null, null, null);
     }
     /**
      * <p>Create configuration</p>
@@ -144,17 +144,17 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiConfigurationCreationResponse configurationCreate( @Nonnull final String aiResourceGroup,  @Nonnull final AiConfigurationBaseData aiConfigurationBaseData) throws OpenApiRequestException {
+    public AiConfigurationCreationResponse create( @Nonnull final String aiResourceGroup,  @Nonnull final AiConfigurationBaseData aiConfigurationBaseData) throws OpenApiRequestException {
         final Object localVarPostBody = aiConfigurationBaseData;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling configurationCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling create");
         }
         
         // verify the required parameter 'aiConfigurationBaseData' is set
         if (aiConfigurationBaseData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiConfigurationBaseData' when calling configurationCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiConfigurationBaseData' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/configurations").build().toUriString();
@@ -197,17 +197,17 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiConfiguration configurationGet( @Nonnull final String aiResourceGroup,  @Nonnull final String configurationId,  @Nullable final String $expand) throws OpenApiRequestException {
+    public AiConfiguration get( @Nonnull final String aiResourceGroup,  @Nonnull final String configurationId,  @Nullable final String $expand) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling configurationGet");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
         }
         
         // verify the required parameter 'configurationId' is set
         if (configurationId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'configurationId' when calling configurationGet");
+            throw new OpenApiRequestException("Missing the required parameter 'configurationId' when calling get");
         }
         
         // create path and map variables
@@ -252,8 +252,8 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiConfiguration configurationGet( @Nonnull final String aiResourceGroup,  @Nonnull final String configurationId) throws OpenApiRequestException {
-        return configurationGet(aiResourceGroup, configurationId, null);
+    public AiConfiguration get( @Nonnull final String aiResourceGroup,  @Nonnull final String configurationId) throws OpenApiRequestException {
+        return get(aiResourceGroup, configurationId, null);
     }
 
     /**
@@ -281,12 +281,12 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiConfigurationList configurationQuery( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final List<String> executableIds,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final String $expand) throws OpenApiRequestException {
+    public AiConfigurationList query( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final List<String> executableIds,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final String $expand) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling configurationQuery");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/configurations").build().toUriString();
@@ -331,7 +331,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiConfigurationList configurationQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return configurationQuery(aiResourceGroup, null, null, null, null, null, null, null);
+    public AiConfigurationList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return query(aiResourceGroup, null, null, null, null, null, null, null);
     }
 }

@@ -74,17 +74,17 @@ public class MetricsApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public TrckDeleteMetricsResponse metricsDelete( @Nonnull final String aiResourceGroup,  @Nonnull final TrckExecutionId executionId) throws OpenApiRequestException {
+    public TrckDeleteMetricsResponse delete( @Nonnull final String aiResourceGroup,  @Nonnull final TrckExecutionId executionId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling metricsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling delete");
         }
         
         // verify the required parameter 'executionId' is set
         if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling metricsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling delete");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/metrics").build().toUriString();
@@ -129,12 +129,12 @@ public class MetricsApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public TrckGetMetricResourceList metricsFind( @Nonnull final String aiResourceGroup,  @Nullable final String $filter,  @Nullable final List<String> executionIds,  @Nullable final List<String> $select) throws OpenApiRequestException {
+    public TrckGetMetricResourceList find( @Nonnull final String aiResourceGroup,  @Nullable final String $filter,  @Nullable final List<String> executionIds,  @Nullable final List<String> $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling metricsFind");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling find");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/metrics").build().toUriString();
@@ -176,8 +176,8 @@ public class MetricsApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public TrckGetMetricResourceList metricsFind( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return metricsFind(aiResourceGroup, null, null, null);
+    public TrckGetMetricResourceList find( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return find(aiResourceGroup, null, null, null);
     }
     /**
      * <p>Create or update metrics, tags, or labels</p>
@@ -193,17 +193,17 @@ public class MetricsApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse metricsPatch( @Nonnull final String aiResourceGroup,  @Nonnull final TrckMetricResource trckMetricResource) throws OpenApiRequestException {
+    public OpenApiResponse patch( @Nonnull final String aiResourceGroup,  @Nonnull final TrckMetricResource trckMetricResource) throws OpenApiRequestException {
         final Object localVarPostBody = trckMetricResource;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling metricsPatch");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling patch");
         }
         
         // verify the required parameter 'trckMetricResource' is set
         if (trckMetricResource == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'trckMetricResource' when calling metricsPatch");
+            throw new OpenApiRequestException("Missing the required parameter 'trckMetricResource' when calling patch");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/metrics").build().toUriString();

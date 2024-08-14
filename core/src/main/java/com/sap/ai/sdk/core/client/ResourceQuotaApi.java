@@ -74,7 +74,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetApplicationQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndCommonResourceQuotaResponse getApplicationQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/applications").build().toUriString();
@@ -111,8 +111,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetApplicationQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetApplicationQuota(null, null);
+    public BckndCommonResourceQuotaResponse getApplicationQuota() throws OpenApiRequestException {
+        return getApplicationQuota(null, null);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndDeploymentResourceQuotaResponse kubesubmitV4ResourceQuotaGetDeploymentQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndDeploymentResourceQuotaResponse getDeploymentQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/deployments").build().toUriString();
@@ -167,8 +167,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndDeploymentResourceQuotaResponse kubesubmitV4ResourceQuotaGetDeploymentQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetDeploymentQuota(null, null);
+    public BckndDeploymentResourceQuotaResponse getDeploymentQuota() throws OpenApiRequestException {
+        return getDeploymentQuota(null, null);
     }
 
     /**
@@ -184,7 +184,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndCommonResourceQuotaResponse getDockerRegistrySecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/dockerRegistrySecrets").build().toUriString();
@@ -221,8 +221,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota(null, null);
+    public BckndCommonResourceQuotaResponse getDockerRegistrySecretQuota() throws OpenApiRequestException {
+        return getDockerRegistrySecretQuota(null, null);
     }
 
     /**
@@ -238,7 +238,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndExecutableResourceQuotaResponse kubesubmitV4ResourceQuotaGetExecutableQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndExecutableResourceQuotaResponse getExecutableQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/executables").build().toUriString();
@@ -275,8 +275,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndExecutableResourceQuotaResponse kubesubmitV4ResourceQuotaGetExecutableQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetExecutableQuota(null, null);
+    public BckndExecutableResourceQuotaResponse getExecutableQuota() throws OpenApiRequestException {
+        return getExecutableQuota(null, null);
     }
 
     /**
@@ -292,7 +292,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetGenericSecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndCommonResourceQuotaResponse getGenericSecretQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/secrets").build().toUriString();
@@ -329,8 +329,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetGenericSecretQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetGenericSecretQuota(null, null);
+    public BckndCommonResourceQuotaResponse getGenericSecretQuota() throws OpenApiRequestException {
+        return getGenericSecretQuota(null, null);
     }
 
     /**
@@ -346,7 +346,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetRepositoryQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndCommonResourceQuotaResponse getRepositoryQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/repositories").build().toUriString();
@@ -383,8 +383,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetRepositoryQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetRepositoryQuota(null, null);
+    public BckndCommonResourceQuotaResponse getRepositoryQuota() throws OpenApiRequestException {
+        return getRepositoryQuota(null, null);
     }
 
     /**
@@ -400,7 +400,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetResourceGroupQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
+    public BckndCommonResourceQuotaResponse getResourceGroupQuota( @Nullable final String authorization,  @Nullable final Boolean quotaOnly) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceQuota/resourceGroups").build().toUriString();
@@ -437,7 +437,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetResourceGroupQuota() throws OpenApiRequestException {
-        return kubesubmitV4ResourceQuotaGetResourceGroupQuota(null, null);
+    public BckndCommonResourceQuotaResponse getResourceGroupQuota() throws OpenApiRequestException {
+        return getResourceGroupQuota(null, null);
     }
 }

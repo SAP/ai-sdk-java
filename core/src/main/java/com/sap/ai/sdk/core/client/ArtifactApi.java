@@ -87,12 +87,12 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer artifactCount( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final List<String> artifactLabelSelector) throws OpenApiRequestException {
+    public Integer count( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final List<String> artifactLabelSelector) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactCount");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling count");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/artifacts/$count").build().toUriString();
@@ -137,8 +137,8 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer artifactCount( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return artifactCount(aiResourceGroup, null, null, null, null, null, null, null);
+    public Integer count( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return count(aiResourceGroup, null, null, null, null, null, null, null);
     }
     /**
      * <p>Register artifact</p>
@@ -153,17 +153,17 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiArtifactCreationResponse artifactCreate( @Nonnull final String aiResourceGroup,  @Nonnull final AiArtifactPostData aiArtifactPostData) throws OpenApiRequestException {
+    public AiArtifactCreationResponse create( @Nonnull final String aiResourceGroup,  @Nonnull final AiArtifactPostData aiArtifactPostData) throws OpenApiRequestException {
         final Object localVarPostBody = aiArtifactPostData;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling create");
         }
         
         // verify the required parameter 'aiArtifactPostData' is set
         if (aiArtifactPostData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiArtifactPostData' when calling artifactCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiArtifactPostData' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/artifacts").build().toUriString();
@@ -206,17 +206,17 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiArtifact artifactGet( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId,  @Nullable final String $expand) throws OpenApiRequestException {
+    public AiArtifact get( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId,  @Nullable final String $expand) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactGet");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
         }
         
         // verify the required parameter 'artifactId' is set
         if (artifactId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'artifactId' when calling artifactGet");
+            throw new OpenApiRequestException("Missing the required parameter 'artifactId' when calling get");
         }
         
         // create path and map variables
@@ -261,8 +261,8 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiArtifact artifactGet( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId) throws OpenApiRequestException {
-        return artifactGet(aiResourceGroup, artifactId, null);
+    public AiArtifact get( @Nonnull final String aiResourceGroup,  @Nonnull final String artifactId) throws OpenApiRequestException {
+        return get(aiResourceGroup, artifactId, null);
     }
 
     /**
@@ -296,12 +296,12 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiArtifactList artifactQuery( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final List<String> artifactLabelSelector,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final String $expand) throws OpenApiRequestException {
+    public AiArtifactList query( @Nonnull final String aiResourceGroup,  @Nullable final String scenarioId,  @Nullable final String executionId,  @Nullable final String name,  @Nullable final String kind,  @Nullable final List<String> artifactLabelSelector,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $search,  @Nullable final Boolean searchCaseInsensitive,  @Nullable final String $expand) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling artifactQuery");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/artifacts").build().toUriString();
@@ -349,7 +349,7 @@ public class ArtifactApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiArtifactList artifactQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return artifactQuery(aiResourceGroup, null, null, null, null, null, null, null, null, null, null);
+    public AiArtifactList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return query(aiResourceGroup, null, null, null, null, null, null, null, null, null, null);
     }
 }

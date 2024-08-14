@@ -82,17 +82,17 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentBulkModificationResponse deploymentBatchModify( @Nonnull final String aiResourceGroup,  @Nonnull final AiDeploymentBulkModificationRequest aiDeploymentBulkModificationRequest) throws OpenApiRequestException {
+    public AiDeploymentBulkModificationResponse batchModify( @Nonnull final String aiResourceGroup,  @Nonnull final AiDeploymentBulkModificationRequest aiDeploymentBulkModificationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiDeploymentBulkModificationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentBatchModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling batchModify");
         }
         
         // verify the required parameter 'aiDeploymentBulkModificationRequest' is set
         if (aiDeploymentBulkModificationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiDeploymentBulkModificationRequest' when calling deploymentBatchModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiDeploymentBulkModificationRequest' when calling batchModify");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/deployments").build().toUriString();
@@ -138,12 +138,12 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer deploymentCount( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String status) throws OpenApiRequestException {
+    public Integer count( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String status) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentCount");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling count");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/deployments/$count").build().toUriString();
@@ -185,8 +185,8 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public Integer deploymentCount( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return deploymentCount(aiResourceGroup, null, null, null, null);
+    public Integer count( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return count(aiResourceGroup, null, null, null, null);
     }
     /**
      * <p>Create deployment</p>
@@ -201,17 +201,17 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentCreationResponse deploymentCreate( @Nonnull final String aiResourceGroup,  @Nonnull final AiDeploymentCreationRequest aiDeploymentCreationRequest) throws OpenApiRequestException {
+    public AiDeploymentCreationResponse create( @Nonnull final String aiResourceGroup,  @Nonnull final AiDeploymentCreationRequest aiDeploymentCreationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiDeploymentCreationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling create");
         }
         
         // verify the required parameter 'aiDeploymentCreationRequest' is set
         if (aiDeploymentCreationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiDeploymentCreationRequest' when calling deploymentCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'aiDeploymentCreationRequest' when calling create");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/deployments").build().toUriString();
@@ -252,17 +252,17 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentDeletionResponse deploymentDelete( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId) throws OpenApiRequestException {
+    public AiDeploymentDeletionResponse delete( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling delete");
         }
         
         // verify the required parameter 'deploymentId' is set
         if (deploymentId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling deploymentDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling delete");
         }
         
         // create path and map variables
@@ -306,17 +306,17 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentResponseWithDetails deploymentGet( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId,  @Nullable final String $select) throws OpenApiRequestException {
+    public AiDeploymentResponseWithDetails get( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId,  @Nullable final String $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentGet");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling get");
         }
         
         // verify the required parameter 'deploymentId' is set
         if (deploymentId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling deploymentGet");
+            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling get");
         }
         
         // create path and map variables
@@ -361,8 +361,89 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentResponseWithDetails deploymentGet( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId) throws OpenApiRequestException {
-        return deploymentGet(aiResourceGroup, deploymentId, null);
+    public AiDeploymentResponseWithDetails get( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId) throws OpenApiRequestException {
+        return get(aiResourceGroup, deploymentId, null);
+    }
+
+    /**
+     * <p>Get logs of specific deployment</p>
+     *<p>Retrieve logs of a deployment for getting insight into the deployment results or failures.</p>
+     * <p><b>200</b> - The query was processed successfully and logs of the requested deployment will be returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
+     * <p><b>404</b> - The specified resource was not found
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param deploymentId  (required)
+        Deployment identifier
+     * @param authorization  (optional)
+        Authorization bearer token containing a JWT token.
+     * @param $top  (optional, default to 1000)
+        The max number of entries to return. Defaults to 1000. Limited to 5000 max.
+     * @param start  (optional)
+        The start time for the query as a RFC 3339 datetime format. Defaults to one hour ago. + in timezone need to be encoded to %2B.
+     * @param end  (optional)
+        The end time for the query as a RFC 3339 datetime format. Defaults to now. + in timezone need to be encoded to %2B.
+     * @param $order  (optional)
+        Determines the sort order. Supported values are asc or desc. Defaults to asc. Sort order:   * &#x60;asc&#x60; - Ascending, earliest in the order will appear at the top of the list   * &#x60;desc&#x60; - Descending, last in the order will appear at the top of the list 
+     * @return RTALogCommonResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public RTALogCommonResponse getLogs( @Nonnull final String deploymentId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
+        final Object localVarPostBody = null;
+        
+        // verify the required parameter 'deploymentId' is set
+        if (deploymentId == null) {
+            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling getLogs");
+        }
+        
+        // create path and map variables
+        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+        localVarPathParams.put("deploymentId", deploymentId);
+        final String localVarPath = UriComponentsBuilder.fromPath("/lm/deployments/{deploymentId}/logs").buildAndExpand(localVarPathParams).toUriString();
+
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders localVarHeaderParams = new HttpHeaders();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "start", start));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "end", end));
+                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$order", $order));
+        
+
+        if (authorization != null)
+            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+
+        final String[] localVarAccepts = { 
+            "application/json"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        final String[] localVarAuthNames = new String[] { "Oauth2" };
+
+        final ParameterizedTypeReference<RTALogCommonResponse> localVarReturnType = new ParameterizedTypeReference<RTALogCommonResponse>() {};
+        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * <p>Get logs of specific deployment</p>
+     * <p>Retrieve logs of a deployment for getting insight into the deployment results or failures.</p>
+     * <p><b>200</b> - The query was processed successfully and logs of the requested deployment will be returned.
+     * <p><b>400</b> - The request was malformed and could thus not be processed.
+     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
+     * <p><b>404</b> - The specified resource was not found
+     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+     * @param deploymentId
+     *      Deployment identifier
+     * @return RTALogCommonResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     */
+    @Nonnull
+    public RTALogCommonResponse getLogs( @Nonnull final String deploymentId) throws OpenApiRequestException {
+        return getLogs(deploymentId, null, null, null, null, null);
     }
     /**
      * <p>Update target status or configuration of a deployment</p>
@@ -381,22 +462,22 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentModificationResponse deploymentModify( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId,  @Nonnull final AiDeploymentModificationRequest aiDeploymentModificationRequest) throws OpenApiRequestException {
+    public AiDeploymentModificationResponse modify( @Nonnull final String aiResourceGroup,  @Nonnull final String deploymentId,  @Nonnull final AiDeploymentModificationRequest aiDeploymentModificationRequest) throws OpenApiRequestException {
         final Object localVarPostBody = aiDeploymentModificationRequest;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling modify");
         }
         
         // verify the required parameter 'deploymentId' is set
         if (deploymentId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling deploymentModify");
+            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling modify");
         }
         
         // verify the required parameter 'aiDeploymentModificationRequest' is set
         if (aiDeploymentModificationRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiDeploymentModificationRequest' when calling deploymentModify");
+            throw new OpenApiRequestException("Missing the required parameter 'aiDeploymentModificationRequest' when calling modify");
         }
         
         // create path and map variables
@@ -451,12 +532,12 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentList deploymentQuery( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String status,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $select) throws OpenApiRequestException {
+    public AiDeploymentList query( @Nonnull final String aiResourceGroup,  @Nullable final List<String> executableIds,  @Nullable final String configurationId,  @Nullable final String scenarioId,  @Nullable final String status,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final String $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
         if (aiResourceGroup == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling deploymentQuery");
+            throw new OpenApiRequestException("Missing the required parameter 'aiResourceGroup' when calling query");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/lm/deployments").build().toUriString();
@@ -501,88 +582,7 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public AiDeploymentList deploymentQuery( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-        return deploymentQuery(aiResourceGroup, null, null, null, null, null, null, null);
-    }
-
-    /**
-     * <p>Get logs of specific deployment</p>
-     *<p>Retrieve logs of a deployment for getting insight into the deployment results or failures.</p>
-     * <p><b>200</b> - The query was processed successfully and logs of the requested deployment will be returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param deploymentId  (required)
-        Deployment identifier
-     * @param authorization  (optional)
-        Authorization bearer token containing a JWT token.
-     * @param $top  (optional, default to 1000)
-        The max number of entries to return. Defaults to 1000. Limited to 5000 max.
-     * @param start  (optional)
-        The start time for the query as a RFC 3339 datetime format. Defaults to one hour ago. + in timezone need to be encoded to %2B.
-     * @param end  (optional)
-        The end time for the query as a RFC 3339 datetime format. Defaults to now. + in timezone need to be encoded to %2B.
-     * @param $order  (optional)
-        Determines the sort order. Supported values are asc or desc. Defaults to asc. Sort order:   * &#x60;asc&#x60; - Ascending, earliest in the order will appear at the top of the list   * &#x60;desc&#x60; - Descending, last in the order will appear at the top of the list 
-     * @return RTALogCommonResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs( @Nonnull final String deploymentId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        // verify the required parameter 'deploymentId' is set
-        if (deploymentId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling kubesubmitV4DeploymentsGetLogs");
-        }
-        
-        // create path and map variables
-        final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-        localVarPathParams.put("deploymentId", deploymentId);
-        final String localVarPath = UriComponentsBuilder.fromPath("/lm/deployments/{deploymentId}/logs").buildAndExpand(localVarPathParams).toUriString();
-
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
-
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "start", start));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "end", end));
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$order", $order));
-        
-
-        if (authorization != null)
-            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
-
-        final ParameterizedTypeReference<RTALogCommonResponse> localVarReturnType = new ParameterizedTypeReference<RTALogCommonResponse>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
-
-    /**
-     * <p>Get logs of specific deployment</p>
-     * <p>Retrieve logs of a deployment for getting insight into the deployment results or failures.</p>
-     * <p><b>200</b> - The query was processed successfully and logs of the requested deployment will be returned.
-     * <p><b>400</b> - The request was malformed and could thus not be processed.
-     * <p><b>401</b> - Lacks valid authentication credentials for the target resource.
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
-     * @param deploymentId
-     *      Deployment identifier
-     * @return RTALogCommonResponse
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs( @Nonnull final String deploymentId) throws OpenApiRequestException {
-        return kubesubmitV4DeploymentsGetLogs(deploymentId, null, null, null, null, null);
+    public AiDeploymentList query( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+        return query(aiResourceGroup, null, null, null, null, null, null, null);
     }
 }
