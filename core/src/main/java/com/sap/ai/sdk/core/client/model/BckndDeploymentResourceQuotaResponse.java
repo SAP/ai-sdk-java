@@ -56,6 +56,7 @@ public class BckndDeploymentResourceQuotaResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndDeploymentResourceQuotaResponse() {  }
 
    /**
     * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
@@ -203,6 +204,33 @@ public class BckndDeploymentResourceQuotaResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndDeploymentResourceQuotaResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (quotas) -> new BckndDeploymentResourceQuotaResponse().quotas(quotas);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
+        *
+        * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
+        * @return The BckndDeploymentResourceQuotaResponse instance.
+        */
+        BckndDeploymentResourceQuotaResponse quotas( @Nonnull final List<BckndDeploymentQuotaItem> quotas);
+        /**
+        * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
+        *
+        * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
+        * @return The BckndDeploymentResourceQuotaResponse instance.
+        */
+        default BckndDeploymentResourceQuotaResponse quotas( @Nonnull final BckndDeploymentQuotaItem... quotas) {
+            return quotas(Arrays.asList(quotas));
+        }
+    }
 
 }
 

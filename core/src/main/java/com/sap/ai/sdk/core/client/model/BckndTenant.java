@@ -57,6 +57,7 @@ public class BckndTenant
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndTenant() {  }
 
    /**
     * Set the tenantId of this {@link BckndTenant} instance and return the same instance.
@@ -252,6 +253,12 @@ public class BckndTenant
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndTenant} instance. No arguments are required.
+    */
+    public static BckndTenant create() {
+        return new BckndTenant();
+    }
 
 }
 

@@ -58,6 +58,7 @@ public class AzureContentSafety
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AzureContentSafety() {  }
 
    /**
     * Set the hate of this {@link AzureContentSafety} instance and return the same instance.
@@ -253,6 +254,12 @@ public class AzureContentSafety
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link AzureContentSafety} instance. No arguments are required.
+    */
+    public static AzureContentSafety create() {
+        return new AzureContentSafety();
+    }
 
 }
 

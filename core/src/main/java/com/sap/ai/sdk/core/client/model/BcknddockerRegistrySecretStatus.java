@@ -48,6 +48,7 @@ public class BcknddockerRegistrySecretStatus
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BcknddockerRegistrySecretStatus() {  }
 
    /**
     * Set the name of this {@link BcknddockerRegistrySecretStatus} instance and return the same instance.
@@ -153,6 +154,12 @@ public class BcknddockerRegistrySecretStatus
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BcknddockerRegistrySecretStatus} instance. No arguments are required.
+    */
+    public static BcknddockerRegistrySecretStatus create() {
+        return new BcknddockerRegistrySecretStatus();
+    }
 
 }
 

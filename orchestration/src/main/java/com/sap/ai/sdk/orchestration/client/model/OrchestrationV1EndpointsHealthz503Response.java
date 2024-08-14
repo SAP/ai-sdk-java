@@ -48,6 +48,7 @@ public class OrchestrationV1EndpointsHealthz503Response
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected OrchestrationV1EndpointsHealthz503Response() {  }
 
    /**
     * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance and return the same instance.
@@ -153,6 +154,12 @@ public class OrchestrationV1EndpointsHealthz503Response
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link OrchestrationV1EndpointsHealthz503Response} instance. No arguments are required.
+    */
+    public static OrchestrationV1EndpointsHealthz503Response create() {
+        return new OrchestrationV1EndpointsHealthz503Response();
+    }
 
 }
 

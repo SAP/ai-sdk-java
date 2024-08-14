@@ -57,6 +57,7 @@ public class BckndArgoCDApplicationStatusSyncResourcesStatusInner
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndArgoCDApplicationStatusSyncResourcesStatusInner() {  }
 
    /**
     * Set the name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
@@ -252,6 +253,12 @@ public class BckndArgoCDApplicationStatusSyncResourcesStatusInner
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance. No arguments are required.
+    */
+    public static BckndArgoCDApplicationStatusSyncResourcesStatusInner create() {
+        return new BckndArgoCDApplicationStatusSyncResourcesStatusInner();
+    }
 
 }
 

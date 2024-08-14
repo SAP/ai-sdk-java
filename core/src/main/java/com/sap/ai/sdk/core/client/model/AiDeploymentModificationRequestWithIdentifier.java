@@ -105,6 +105,7 @@ public class AiDeploymentModificationRequestWithIdentifier
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiDeploymentModificationRequestWithIdentifier() {  }
 
    /**
     * Set the id of this {@link AiDeploymentModificationRequestWithIdentifier} instance and return the same instance.
@@ -240,6 +241,36 @@ public class AiDeploymentModificationRequestWithIdentifier
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiDeploymentModificationRequestWithIdentifier} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (targetStatus) -> new AiDeploymentModificationRequestWithIdentifier().id(id).targetStatus(targetStatus);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link AiDeploymentModificationRequestWithIdentifier} instance.
+        *
+        * @param id  ID of the deployment
+        * @return The AiDeploymentModificationRequestWithIdentifier builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the targetStatus of this {@link AiDeploymentModificationRequestWithIdentifier} instance.
+        *
+        * @param targetStatus  Deployment target status
+        * @return The AiDeploymentModificationRequestWithIdentifier instance.
+        */
+        AiDeploymentModificationRequestWithIdentifier targetStatus( @Nonnull final TargetStatusEnum targetStatus);
+    }
 
 }
 

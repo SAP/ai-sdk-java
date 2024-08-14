@@ -77,6 +77,7 @@ public class BckndArgoCDApplicationStatus
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndArgoCDApplicationStatus() {  }
 
    /**
     * Set the healthStatus of this {@link BckndArgoCDApplicationStatus} instance and return the same instance.
@@ -448,6 +449,12 @@ public class BckndArgoCDApplicationStatus
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndArgoCDApplicationStatus} instance. No arguments are required.
+    */
+    public static BckndArgoCDApplicationStatus create() {
+        return new BckndArgoCDApplicationStatus();
+    }
 
 }
 

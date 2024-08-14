@@ -105,6 +105,7 @@ public class AiExecutionModificationRequestWithIdentifier
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionModificationRequestWithIdentifier() {  }
 
    /**
     * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
@@ -240,6 +241,36 @@ public class AiExecutionModificationRequestWithIdentifier
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionModificationRequestWithIdentifier} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (targetStatus) -> new AiExecutionModificationRequestWithIdentifier().id(id).targetStatus(targetStatus);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+        *
+        * @param id  ID of the execution
+        * @return The AiExecutionModificationRequestWithIdentifier builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+        *
+        * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
+        * @return The AiExecutionModificationRequestWithIdentifier instance.
+        */
+        AiExecutionModificationRequestWithIdentifier targetStatus( @Nonnull final TargetStatusEnum targetStatus);
+    }
 
 }
 

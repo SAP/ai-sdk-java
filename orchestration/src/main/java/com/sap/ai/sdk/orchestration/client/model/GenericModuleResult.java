@@ -51,6 +51,7 @@ public class GenericModuleResult
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected GenericModuleResult() {  }
 
    /**
     * Set the message of this {@link GenericModuleResult} instance and return the same instance.
@@ -186,6 +187,24 @@ public class GenericModuleResult
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link GenericModuleResult} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (message) -> new GenericModuleResult().message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the message of this {@link GenericModuleResult} instance.
+        *
+        * @param message  Some message created from the module
+        * @return The GenericModuleResult instance.
+        */
+        GenericModuleResult message( @Nonnull final String message);
+    }
 
 }
 

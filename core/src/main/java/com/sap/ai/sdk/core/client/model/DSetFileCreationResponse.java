@@ -51,6 +51,7 @@ public class DSetFileCreationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected DSetFileCreationResponse() {  }
 
    /**
     * Set the message of this {@link DSetFileCreationResponse} instance and return the same instance.
@@ -186,6 +187,36 @@ public class DSetFileCreationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link DSetFileCreationResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (message) -> (url) -> new DSetFileCreationResponse().message(message).url(url);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the message of this {@link DSetFileCreationResponse} instance.
+        *
+        * @param message  File creation response message
+        * @return The DSetFileCreationResponse builder.
+        */
+        Builder1 message( @Nonnull final String message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the url of this {@link DSetFileCreationResponse} instance.
+        *
+        * @param url  The url of this {@link DSetFileCreationResponse}
+        * @return The DSetFileCreationResponse instance.
+        */
+        DSetFileCreationResponse url( @Nonnull final String url);
+    }
 
 }
 

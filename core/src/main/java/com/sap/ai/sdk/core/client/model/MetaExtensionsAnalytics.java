@@ -48,6 +48,7 @@ public class MetaExtensionsAnalytics
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaExtensionsAnalytics() {  }
 
    /**
     * Set the version of this {@link MetaExtensionsAnalytics} instance and return the same instance.
@@ -153,6 +154,24 @@ public class MetaExtensionsAnalytics
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link MetaExtensionsAnalytics} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (version) -> new MetaExtensionsAnalytics().version(version);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the version of this {@link MetaExtensionsAnalytics} instance.
+        *
+        * @param version  The version of this {@link MetaExtensionsAnalytics}
+        * @return The MetaExtensionsAnalytics instance.
+        */
+        MetaExtensionsAnalytics version( @Nonnull final String version);
+    }
 
 }
 

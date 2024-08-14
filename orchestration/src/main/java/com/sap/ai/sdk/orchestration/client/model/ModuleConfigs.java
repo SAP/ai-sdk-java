@@ -65,6 +65,7 @@ public class ModuleConfigs
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected ModuleConfigs() {  }
 
    /**
     * Set the llmModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
@@ -290,6 +291,36 @@ public class ModuleConfigs
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link ModuleConfigs} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (llmModuleConfig) -> (templatingModuleConfig) -> new ModuleConfigs().llmModuleConfig(llmModuleConfig).templatingModuleConfig(templatingModuleConfig);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the llmModuleConfig of this {@link ModuleConfigs} instance.
+        *
+        * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
+        * @return The ModuleConfigs builder.
+        */
+        Builder1 llmModuleConfig( @Nonnull final LLMModuleConfig llmModuleConfig);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the templatingModuleConfig of this {@link ModuleConfigs} instance.
+        *
+        * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
+        * @return The ModuleConfigs instance.
+        */
+        ModuleConfigs templatingModuleConfig( @Nonnull final TemplatingModuleConfig templatingModuleConfig);
+    }
 
 }
 

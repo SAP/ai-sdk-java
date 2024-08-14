@@ -41,6 +41,7 @@ public class TrckTagName
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected TrckTagName() {  }
 
   /**
    * Get the names of the unrecognizable properties of the {@link TrckTagName}.
@@ -116,6 +117,12 @@ public class TrckTagName
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link TrckTagName} instance. No arguments are required.
+    */
+    public static TrckTagName create() {
+        return new TrckTagName();
+    }
 
 }
 

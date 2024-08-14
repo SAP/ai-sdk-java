@@ -48,6 +48,7 @@ public class AiResourcesDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiResourcesDetails() {  }
 
    /**
     * Set the backendDetails of this {@link AiResourcesDetails} instance and return the same instance.
@@ -153,6 +154,12 @@ public class AiResourcesDetails
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link AiResourcesDetails} instance. No arguments are required.
+    */
+    public static AiResourcesDetails create() {
+        return new AiResourcesDetails();
+    }
 
 }
 

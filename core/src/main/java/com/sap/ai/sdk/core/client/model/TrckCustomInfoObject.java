@@ -52,6 +52,7 @@ public class TrckCustomInfoObject
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected TrckCustomInfoObject() {  }
 
    /**
     * Set the name of this {@link TrckCustomInfoObject} instance and return the same instance.
@@ -187,6 +188,36 @@ public class TrckCustomInfoObject
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link TrckCustomInfoObject} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (value) -> new TrckCustomInfoObject().name(name).value(value);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link TrckCustomInfoObject} instance.
+        *
+        * @param name  The name of this {@link TrckCustomInfoObject}
+        * @return The TrckCustomInfoObject builder.
+        */
+        Builder1 name( @Nonnull final TrckTagName name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the value of this {@link TrckCustomInfoObject} instance.
+        *
+        * @param value  Message
+        * @return The TrckCustomInfoObject instance.
+        */
+        TrckCustomInfoObject value( @Nonnull final String value);
+    }
 
 }
 

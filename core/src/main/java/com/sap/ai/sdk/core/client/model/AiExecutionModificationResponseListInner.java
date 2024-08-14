@@ -57,6 +57,7 @@ public class AiExecutionModificationResponseListInner
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionModificationResponseListInner() {  }
 
    /**
     * Set the id of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
@@ -222,6 +223,48 @@ public class AiExecutionModificationResponseListInner
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionModificationResponseListInner} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (message) -> (error) -> new AiExecutionModificationResponseListInner().id(id).message(message).error(error);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link AiExecutionModificationResponseListInner} instance.
+        *
+        * @param id  Generic ID
+        * @return The AiExecutionModificationResponseListInner builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link AiExecutionModificationResponseListInner} instance.
+        *
+        * @param message  Message
+        * @return The AiExecutionModificationResponseListInner builder.
+        */
+        Builder2 message( @Nonnull final String message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the error of this {@link AiExecutionModificationResponseListInner} instance.
+        *
+        * @param error  The error of this {@link AiExecutionModificationResponseListInner}
+        * @return The AiExecutionModificationResponseListInner instance.
+        */
+        AiExecutionModificationResponseListInner error( @Nonnull final AiApiError error);
+    }
 
 }
 

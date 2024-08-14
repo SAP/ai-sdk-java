@@ -54,6 +54,7 @@ public class BckndUsageResourcePlanItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndUsageResourcePlanItem() {  }
 
    /**
     * Set the id of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
@@ -219,6 +220,24 @@ public class BckndUsageResourcePlanItem
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndUsageResourcePlanItem} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> new BckndUsageResourcePlanItem().id(id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link BckndUsageResourcePlanItem} instance.
+        *
+        * @param id  The id of this {@link BckndUsageResourcePlanItem}
+        * @return The BckndUsageResourcePlanItem instance.
+        */
+        BckndUsageResourcePlanItem id( @Nonnull final String id);
+    }
 
 }
 

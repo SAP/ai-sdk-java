@@ -72,6 +72,7 @@ public class ModuleResults
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected ModuleResults() {  }
 
    /**
     * Set the grounding of this {@link ModuleResults} instance and return the same instance.
@@ -369,6 +370,12 @@ public class ModuleResults
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link ModuleResults} instance. No arguments are required.
+    */
+    public static ModuleResults create() {
+        return new ModuleResults();
+    }
 
 }
 

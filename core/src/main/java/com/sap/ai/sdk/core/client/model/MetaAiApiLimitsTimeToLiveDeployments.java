@@ -51,6 +51,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaAiApiLimitsTimeToLiveDeployments() {  }
 
    /**
     * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
@@ -186,6 +187,12 @@ public class MetaAiApiLimitsTimeToLiveDeployments
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaAiApiLimitsTimeToLiveDeployments} instance. No arguments are required.
+    */
+    public static MetaAiApiLimitsTimeToLiveDeployments create() {
+        return new MetaAiApiLimitsTimeToLiveDeployments();
+    }
 
 }
 

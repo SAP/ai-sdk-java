@@ -51,6 +51,7 @@ public class BckndGenericSecretDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndGenericSecretDetails() {  }
 
    /**
     * Set the name of this {@link BckndGenericSecretDetails} instance and return the same instance.
@@ -186,6 +187,12 @@ public class BckndGenericSecretDetails
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndGenericSecretDetails} instance. No arguments are required.
+    */
+    public static BckndGenericSecretDetails create() {
+        return new BckndGenericSecretDetails();
+    }
 
 }
 
