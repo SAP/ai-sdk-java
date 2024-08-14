@@ -37,7 +37,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
+ * AI Core in version 2.33.0.
  *
  * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
  */
@@ -80,12 +80,12 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryCreationResponse repositoriesCreate( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDRepositoryCreationResponse kubesubmitV4RepositoriesCreate( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndArgoCDRepositoryData;
         
         // verify the required parameter 'bckndArgoCDRepositoryData' is set
         if (bckndArgoCDRepositoryData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDRepositoryData' when calling repositoriesCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDRepositoryData' when calling kubesubmitV4RepositoriesCreate");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/repositories").build().toUriString();
@@ -125,8 +125,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryCreationResponse repositoriesCreate( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData) throws OpenApiRequestException {
-        return repositoriesCreate(bckndArgoCDRepositoryData, null);
+    public BckndArgoCDRepositoryCreationResponse kubesubmitV4RepositoriesCreate( @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData) throws OpenApiRequestException {
+        return kubesubmitV4RepositoriesCreate(bckndArgoCDRepositoryData, null);
     }
 
     /**
@@ -144,12 +144,12 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryDeletionResponse repositoriesDelete( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDRepositoryDeletionResponse kubesubmitV4RepositoriesDelete( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'repositoryName' is set
         if (repositoryName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'repositoryName' when calling repositoriesDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'repositoryName' when calling kubesubmitV4RepositoriesDelete");
         }
         
         // create path and map variables
@@ -190,8 +190,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryDeletionResponse repositoriesDelete( @Nonnull final String repositoryName) throws OpenApiRequestException {
-        return repositoriesDelete(repositoryName, null);
+    public BckndArgoCDRepositoryDeletionResponse kubesubmitV4RepositoriesDelete( @Nonnull final String repositoryName) throws OpenApiRequestException {
+        return kubesubmitV4RepositoriesDelete(repositoryName, null);
     }
 
     /**
@@ -209,12 +209,12 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryDetails repositoriesGet( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDRepositoryDetails kubesubmitV4RepositoriesGet( @Nonnull final String repositoryName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'repositoryName' is set
         if (repositoryName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'repositoryName' when calling repositoriesGet");
+            throw new OpenApiRequestException("Missing the required parameter 'repositoryName' when calling kubesubmitV4RepositoriesGet");
         }
         
         // create path and map variables
@@ -255,8 +255,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryDetails repositoriesGet( @Nonnull final String repositoryName) throws OpenApiRequestException {
-        return repositoriesGet(repositoryName, null);
+    public BckndArgoCDRepositoryDetails kubesubmitV4RepositoriesGet( @Nonnull final String repositoryName) throws OpenApiRequestException {
+        return kubesubmitV4RepositoriesGet(repositoryName, null);
     }
 
     /**
@@ -277,7 +277,7 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryDataResponse repositoriesGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
+    public BckndArgoCDRepositoryDataResponse kubesubmitV4RepositoriesGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/repositories").build().toUriString();
@@ -317,8 +317,8 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryDataResponse repositoriesGetAll() throws OpenApiRequestException {
-        return repositoriesGetAll(null, null, null, null);
+    public BckndArgoCDRepositoryDataResponse kubesubmitV4RepositoriesGetAll() throws OpenApiRequestException {
+        return kubesubmitV4RepositoriesGetAll(null, null, null, null);
     }
 
     /**
@@ -338,17 +338,17 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryModificationResponse repositoriesUpdate( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDRepositoryModificationResponse kubesubmitV4RepositoriesUpdate( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndArgoCDRepositoryCredentials;
         
         // verify the required parameter 'repositoryName' is set
         if (repositoryName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'repositoryName' when calling repositoriesUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'repositoryName' when calling kubesubmitV4RepositoriesUpdate");
         }
         
         // verify the required parameter 'bckndArgoCDRepositoryCredentials' is set
         if (bckndArgoCDRepositoryCredentials == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDRepositoryCredentials' when calling repositoriesUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDRepositoryCredentials' when calling kubesubmitV4RepositoriesUpdate");
         }
         
         // create path and map variables
@@ -393,7 +393,7 @@ public class RepositoryApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDRepositoryModificationResponse repositoriesUpdate( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials) throws OpenApiRequestException {
-        return repositoriesUpdate(repositoryName, bckndArgoCDRepositoryCredentials, null);
+    public BckndArgoCDRepositoryModificationResponse kubesubmitV4RepositoriesUpdate( @Nonnull final String repositoryName,  @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials) throws OpenApiRequestException {
+        return kubesubmitV4RepositoriesUpdate(repositoryName, bckndArgoCDRepositoryCredentials, null);
     }
 }

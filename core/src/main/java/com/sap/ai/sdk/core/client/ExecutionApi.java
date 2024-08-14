@@ -42,7 +42,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
+ * AI Core in version 2.33.0.
  *
  * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
  */
@@ -535,12 +535,12 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse executionsGetLogs( @Nonnull final String executionId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
+    public RTALogCommonResponse kubesubmitV4ExecutionsGetLogs( @Nonnull final String executionId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'executionId' is set
         if (executionId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling executionsGetLogs");
+            throw new OpenApiRequestException("Missing the required parameter 'executionId' when calling kubesubmitV4ExecutionsGetLogs");
         }
         
         // create path and map variables
@@ -588,7 +588,7 @@ public class ExecutionApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse executionsGetLogs( @Nonnull final String executionId) throws OpenApiRequestException {
-        return executionsGetLogs(executionId, null, null, null, null, null);
+    public RTALogCommonResponse kubesubmitV4ExecutionsGetLogs( @Nonnull final String executionId) throws OpenApiRequestException {
+        return kubesubmitV4ExecutionsGetLogs(executionId, null, null, null, null, null);
     }
 }

@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * GroundingModuleConfigGroundingServiceConfiguration
  */
-
 // CHECKSTYLE:OFF
 public class GroundingModuleConfigGroundingServiceConfiguration 
 // CHECKSTYLE:ON
@@ -64,49 +63,49 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
-   *
-   * @param secretName  Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
-   * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
-   */
+    * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
+    *
+    * @param secretName  Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
+    * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
+    */
    @Nonnull public GroundingModuleConfigGroundingServiceConfiguration secretName(@Nonnull final String secretName) {
     this.secretName = secretName;
     return this;
   }
 
    /**
-   * Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
-   * @return secretName  The secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  **/
+    * Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
+    * @return secretName  The secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+    */
   @Nonnull public String getSecretName() {
     return secretName;
   }
 
   /**
-  * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  *
-  * @param secretName  Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
-  */
+   * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+   *
+   * @param secretName  Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
+   */
   public void setSecretName( @Nonnull final String secretName) {
     this.secretName = secretName;
   }
 
    /**
-   * Set the filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
-   *
-   * @param filters  Document grounding service filters to be used
-   * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
-   */
+    * Set the filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
+    *
+    * @param filters  Document grounding service filters to be used
+    * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
+    */
    @Nonnull public GroundingModuleConfigGroundingServiceConfiguration filters(@Nonnull final List<GroundingFilter> filters) {
     this.filters = filters;
     return this;
   }
   /**
-  * Add one filters instance to this {@link GroundingModuleConfigGroundingServiceConfiguration}.
-  * @param filtersItem The filters that should be added
-  * @return The same instance of type {@link GroundingModuleConfigGroundingServiceConfiguration}
-  */
-  @Nonnull public GroundingModuleConfigGroundingServiceConfiguration addfiltersItem( @Nonnull final GroundingFilter filtersItem) {
+   * Add one filters instance to this {@link GroundingModuleConfigGroundingServiceConfiguration}.
+   * @param filtersItem The filters that should be added
+   * @return The same instance of type {@link GroundingModuleConfigGroundingServiceConfiguration}
+   */
+  @Nonnull public GroundingModuleConfigGroundingServiceConfiguration addFiltersItem( @Nonnull final GroundingFilter filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -115,38 +114,38 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   }
 
    /**
-   * Document grounding service filters to be used
-   * @return filters  The filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  **/
+    * Document grounding service filters to be used
+    * @return filters  The filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+    */
   @Nonnull public List<GroundingFilter> getFilters() {
     return filters;
   }
 
   /**
-  * Set the filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  *
-  * @param filters  Document grounding service filters to be used
-  */
+   * Set the filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+   *
+   * @param filters  Document grounding service filters to be used
+   */
   public void setFilters( @Nonnull final List<GroundingFilter> filters) {
     this.filters = filters;
   }
 
    /**
-   * Set the groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
-   *
-   * @param groundingInputParameters  Contains the input parameters used for grounding input questions
-   * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
-   */
+    * Set the groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
+    *
+    * @param groundingInputParameters  Contains the input parameters used for grounding input questions
+    * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
+    */
    @Nonnull public GroundingModuleConfigGroundingServiceConfiguration groundingInputParameters(@Nonnull final List<String> groundingInputParameters) {
     this.groundingInputParameters = groundingInputParameters;
     return this;
   }
   /**
-  * Add one groundingInputParameters instance to this {@link GroundingModuleConfigGroundingServiceConfiguration}.
-  * @param groundingInputParametersItem The groundingInputParameters that should be added
-  * @return The same instance of type {@link GroundingModuleConfigGroundingServiceConfiguration}
-  */
-  @Nonnull public GroundingModuleConfigGroundingServiceConfiguration addgroundingInputParametersItem( @Nonnull final String groundingInputParametersItem) {
+   * Add one groundingInputParameters instance to this {@link GroundingModuleConfigGroundingServiceConfiguration}.
+   * @param groundingInputParametersItem The groundingInputParameters that should be added
+   * @return The same instance of type {@link GroundingModuleConfigGroundingServiceConfiguration}
+   */
+  @Nonnull public GroundingModuleConfigGroundingServiceConfiguration addGroundingInputParametersItem( @Nonnull final String groundingInputParametersItem) {
     if (this.groundingInputParameters == null) {
       this.groundingInputParameters = new ArrayList<>();
     }
@@ -155,46 +154,46 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   }
 
    /**
-   * Contains the input parameters used for grounding input questions
-   * @return groundingInputParameters  The groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  **/
+    * Contains the input parameters used for grounding input questions
+    * @return groundingInputParameters  The groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+    */
   @Nonnull public List<String> getGroundingInputParameters() {
     return groundingInputParameters;
   }
 
   /**
-  * Set the groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  *
-  * @param groundingInputParameters  Contains the input parameters used for grounding input questions
-  */
+   * Set the groundingInputParameters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+   *
+   * @param groundingInputParameters  Contains the input parameters used for grounding input questions
+   */
   public void setGroundingInputParameters( @Nonnull final List<String> groundingInputParameters) {
     this.groundingInputParameters = groundingInputParameters;
   }
 
    /**
-   * Set the groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
-   *
-   * @param groundingOutputParameter  Parameter name used for grounding output
-   * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
-   */
+    * Set the groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and return the same instance.
+    *
+    * @param groundingOutputParameter  Parameter name used for grounding output
+    * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration} class
+    */
    @Nonnull public GroundingModuleConfigGroundingServiceConfiguration groundingOutputParameter(@Nonnull final String groundingOutputParameter) {
     this.groundingOutputParameter = groundingOutputParameter;
     return this;
   }
 
    /**
-   * Parameter name used for grounding output
-   * @return groundingOutputParameter  The groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  **/
+    * Parameter name used for grounding output
+    * @return groundingOutputParameter  The groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+    */
   @Nonnull public String getGroundingOutputParameter() {
     return groundingOutputParameter;
   }
 
   /**
-  * Set the groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-  *
-  * @param groundingOutputParameter  Parameter name used for grounding output
-  */
+   * Set the groundingOutputParameter of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
+   *
+   * @param groundingOutputParameter  Parameter name used for grounding output
+   */
   public void setGroundingOutputParameter( @Nonnull final String groundingOutputParameter) {
     this.groundingOutputParameter = groundingOutputParameter;
   }
@@ -280,6 +279,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

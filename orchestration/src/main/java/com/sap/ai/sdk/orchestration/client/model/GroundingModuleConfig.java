@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * GroundingModuleConfig
  */
-
 // CHECKSTYLE:OFF
 public class GroundingModuleConfig 
 // CHECKSTYLE:ON
@@ -104,57 +103,57 @@ public class GroundingModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the groundingService of this {@link GroundingModuleConfig} instance and return the same instance.
-   *
-   * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
-   */
+    * Set the groundingService of this {@link GroundingModuleConfig} instance and return the same instance.
+    *
+    * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
+    * @return The same instance of this {@link GroundingModuleConfig} class
+    */
    @Nonnull public GroundingModuleConfig groundingService(@Nonnull final GroundingServiceEnum groundingService) {
     this.groundingService = groundingService;
     return this;
   }
 
    /**
-   * Get groundingService
-   * @return groundingService  The groundingService of this {@link GroundingModuleConfig} instance.
-  **/
+    * Get groundingService
+    * @return groundingService  The groundingService of this {@link GroundingModuleConfig} instance.
+    */
   @Nonnull public GroundingServiceEnum getGroundingService() {
     return groundingService;
   }
 
   /**
-  * Set the groundingService of this {@link GroundingModuleConfig} instance.
-  *
-  * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
-  */
+   * Set the groundingService of this {@link GroundingModuleConfig} instance.
+   *
+   * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
+   */
   public void setGroundingService( @Nonnull final GroundingServiceEnum groundingService) {
     this.groundingService = groundingService;
   }
 
    /**
-   * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance and return the same instance.
-   *
-   * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
-   */
+    * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance and return the same instance.
+    *
+    * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
+    * @return The same instance of this {@link GroundingModuleConfig} class
+    */
    @Nonnull public GroundingModuleConfig groundingServiceConfiguration(@Nonnull final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
     return this;
   }
 
    /**
-   * Get groundingServiceConfiguration
-   * @return groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
-  **/
+    * Get groundingServiceConfiguration
+    * @return groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
+    */
   @Nonnull public GroundingModuleConfigGroundingServiceConfiguration getGroundingServiceConfiguration() {
     return groundingServiceConfiguration;
   }
 
   /**
-  * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
-  *
-  * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
-  */
+   * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
+   *
+   * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
+   */
   public void setGroundingServiceConfiguration( @Nonnull final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
   }
@@ -236,6 +235,7 @@ public class GroundingModuleConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

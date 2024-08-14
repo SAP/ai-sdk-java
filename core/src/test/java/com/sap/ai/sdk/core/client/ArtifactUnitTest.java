@@ -48,8 +48,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactList artifactList =
-        new ArtifactApi(getClient(destination)).artifactQuery("default");
+    final AiArtifactList artifactList = new ArtifactApi(getClient(destination)).artifactQuery("default");
     assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
     assertThat(artifactList.getResources().size()).isEqualTo(1);

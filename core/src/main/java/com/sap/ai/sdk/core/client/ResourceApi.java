@@ -33,7 +33,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
+ * AI Core in version 2.33.0.
  *
  * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
  */
@@ -73,7 +73,7 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGetResponse resourcesGet( @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourceGetResponse kubesubmitV4ResourcesGet( @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resources/nodes").build().toUriString();
@@ -108,8 +108,8 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGetResponse resourcesGet() throws OpenApiRequestException {
-        return resourcesGet(null);
+    public BckndResourceGetResponse kubesubmitV4ResourcesGet() throws OpenApiRequestException {
+        return kubesubmitV4ResourcesGet(null);
     }
 
     /**
@@ -126,12 +126,12 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourcePatchResponse resourcesPatch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourcePatchResponse kubesubmitV4ResourcesPatch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndResourcePatchBody;
         
         // verify the required parameter 'bckndResourcePatchBody' is set
         if (bckndResourcePatchBody == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndResourcePatchBody' when calling resourcesPatch");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndResourcePatchBody' when calling kubesubmitV4ResourcesPatch");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resources/nodes").build().toUriString();
@@ -170,7 +170,7 @@ public class ResourceApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourcePatchResponse resourcesPatch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody) throws OpenApiRequestException {
-        return resourcesPatch(bckndResourcePatchBody, null);
+    public BckndResourcePatchResponse kubesubmitV4ResourcesPatch( @Nonnull final BckndResourcePatchBody bckndResourcePatchBody) throws OpenApiRequestException {
+        return kubesubmitV4ResourcesPatch(bckndResourcePatchBody, null);
     }
 }

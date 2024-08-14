@@ -39,7 +39,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
+ * AI Core in version 2.33.0.
  *
  * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
  */
@@ -81,12 +81,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationCreationResponse applicationsCreate( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDApplicationCreationResponse kubesubmitV4ApplicationsCreate( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = kubesubmitV4ApplicationsCreateRequest;
         
         // verify the required parameter 'kubesubmitV4ApplicationsCreateRequest' is set
         if (kubesubmitV4ApplicationsCreateRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'kubesubmitV4ApplicationsCreateRequest' when calling applicationsCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'kubesubmitV4ApplicationsCreateRequest' when calling kubesubmitV4ApplicationsCreate");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
@@ -125,8 +125,8 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationCreationResponse applicationsCreate( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest) throws OpenApiRequestException {
-        return applicationsCreate(kubesubmitV4ApplicationsCreateRequest, null);
+    public BckndArgoCDApplicationCreationResponse kubesubmitV4ApplicationsCreate( @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest) throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsCreate(kubesubmitV4ApplicationsCreateRequest, null);
     }
 
     /**
@@ -144,12 +144,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationDeletionResponse applicationsDelete( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDApplicationDeletionResponse kubesubmitV4ApplicationsDelete( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling applicationsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsDelete");
         }
         
         // create path and map variables
@@ -190,8 +190,8 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationDeletionResponse applicationsDelete( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return applicationsDelete(applicationName, null);
+    public BckndArgoCDApplicationDeletionResponse kubesubmitV4ApplicationsDelete( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsDelete(applicationName, null);
     }
 
     /**
@@ -209,12 +209,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationData applicationsGet( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDApplicationData kubesubmitV4ApplicationsGet( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling applicationsGet");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsGet");
         }
         
         // create path and map variables
@@ -255,8 +255,8 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationData applicationsGet( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return applicationsGet(applicationName, null);
+    public BckndArgoCDApplicationData kubesubmitV4ApplicationsGet( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsGet(applicationName, null);
     }
 
     /**
@@ -277,7 +277,7 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndAllArgoCDApplicationData applicationsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
+    public BckndAllArgoCDApplicationData kubesubmitV4ApplicationsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
@@ -317,8 +317,8 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndAllArgoCDApplicationData applicationsGetAll() throws OpenApiRequestException {
-        return applicationsGetAll(null, null, null, null);
+    public BckndAllArgoCDApplicationData kubesubmitV4ApplicationsGetAll() throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsGetAll(null, null, null, null);
     }
 
     /**
@@ -336,12 +336,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationStatus applicationsGetStatus( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDApplicationStatus kubesubmitV4ApplicationsGetStatus( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling applicationsGetStatus");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsGetStatus");
         }
         
         // create path and map variables
@@ -382,8 +382,8 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationStatus applicationsGetStatus( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return applicationsGetStatus(applicationName, null);
+    public BckndArgoCDApplicationStatus kubesubmitV4ApplicationsGetStatus( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsGetStatus(applicationName, null);
     }
 
     /**
@@ -401,12 +401,12 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationRefreshResponse applicationsRefresh( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDApplicationRefreshResponse kubesubmitV4ApplicationsRefresh( @Nonnull final String applicationName,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling applicationsRefresh");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsRefresh");
         }
         
         // create path and map variables
@@ -447,8 +447,8 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationRefreshResponse applicationsRefresh( @Nonnull final String applicationName) throws OpenApiRequestException {
-        return applicationsRefresh(applicationName, null);
+    public BckndArgoCDApplicationRefreshResponse kubesubmitV4ApplicationsRefresh( @Nonnull final String applicationName) throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsRefresh(applicationName, null);
     }
 
     /**
@@ -468,17 +468,17 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationModificationResponse applicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndArgoCDApplicationModificationResponse kubesubmitV4ApplicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndArgoCDApplicationBaseData;
         
         // verify the required parameter 'applicationName' is set
         if (applicationName == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling applicationsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'applicationName' when calling kubesubmitV4ApplicationsUpdate");
         }
         
         // verify the required parameter 'bckndArgoCDApplicationBaseData' is set
         if (bckndArgoCDApplicationBaseData == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDApplicationBaseData' when calling applicationsUpdate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndArgoCDApplicationBaseData' when calling kubesubmitV4ApplicationsUpdate");
         }
         
         // create path and map variables
@@ -523,7 +523,7 @@ public class ApplicationApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndArgoCDApplicationModificationResponse applicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData) throws OpenApiRequestException {
-        return applicationsUpdate(applicationName, bckndArgoCDApplicationBaseData, null);
+    public BckndArgoCDApplicationModificationResponse kubesubmitV4ApplicationsUpdate( @Nonnull final String applicationName,  @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData) throws OpenApiRequestException {
+        return kubesubmitV4ApplicationsUpdate(applicationName, bckndArgoCDApplicationBaseData, null);
     }
 }

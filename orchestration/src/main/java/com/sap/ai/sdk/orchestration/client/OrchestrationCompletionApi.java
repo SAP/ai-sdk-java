@@ -7,9 +7,9 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest ; //NOPMD
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse ; //NOPMD
-import com.sap.ai.sdk.orchestration.client.model.ErrorResponse ; //NOPMD
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.ErrorResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,28 +32,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* Internal Orchestration Service API in version 0.0.1.
-*
-* SAP AI Core - Orchestration Service API
-*/
-
+ * Internal Orchestration Service API in version 0.0.1.
+ *
+ * SAP AI Core - Orchestration Service API
+ */
 public class OrchestrationCompletionApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the Internal Orchestration Service API.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the Internal Orchestration Service API.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public OrchestrationCompletionApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the Internal Orchestration Service API based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the Internal Orchestration Service API based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public OrchestrationCompletionApi( @Nonnull final ApiClient apiClient )
     {
@@ -61,17 +60,18 @@ public class OrchestrationCompletionApi extends AbstractOpenApiService {
     }
 
         /**
-    * <p></p>
-     *<p></p>
+     * <p></p>
+     * <p></p>
      * <p><b>200</b> - Successful response
      * <p><b>400</b> - Bad Request
      * <p><b>0</b> - Common Error
-* @param completionPostRequest
-            The value for the parameter completionPostRequest
-* @return CompletionPostResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param completionPostRequest
+     *      The value for the parameter completionPostRequest
+     * @return CompletionPostResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public CompletionPostResponse orchestrationV1EndpointsCreate( @Nonnull final CompletionPostRequest completionPostRequest) throws OpenApiRequestException {
+    @Nonnull
+    public CompletionPostResponse orchestrationV1EndpointsCreate( @Nonnull final CompletionPostRequest completionPostRequest) throws OpenApiRequestException {
         final Object localVarPostBody = completionPostRequest;
         
         // verify the required parameter 'completionPostRequest' is set

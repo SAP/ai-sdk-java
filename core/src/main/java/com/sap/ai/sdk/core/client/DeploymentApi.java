@@ -42,7 +42,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
+ * AI Core in version 2.33.0.
  *
  * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
  */
@@ -529,12 +529,12 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse deploymentsGetLogs( @Nonnull final String deploymentId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
+    public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs( @Nonnull final String deploymentId,  @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final OffsetDateTime start,  @Nullable final OffsetDateTime end,  @Nullable final String $order) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'deploymentId' is set
         if (deploymentId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling deploymentsGetLogs");
+            throw new OpenApiRequestException("Missing the required parameter 'deploymentId' when calling kubesubmitV4DeploymentsGetLogs");
         }
         
         // create path and map variables
@@ -582,7 +582,7 @@ public class DeploymentApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public RTALogCommonResponse deploymentsGetLogs( @Nonnull final String deploymentId) throws OpenApiRequestException {
-        return deploymentsGetLogs(deploymentId, null, null, null, null, null);
+    public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs( @Nonnull final String deploymentId) throws OpenApiRequestException {
+        return kubesubmitV4DeploymentsGetLogs(deploymentId, null, null, null, null, null);
     }
 }

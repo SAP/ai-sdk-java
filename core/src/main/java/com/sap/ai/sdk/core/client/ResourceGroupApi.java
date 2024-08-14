@@ -36,7 +36,7 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
- * AI Core in version 2.32.1.
+ * AI Core in version 2.33.0.
  *
  * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
  */
@@ -78,12 +78,12 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroupBase resourceGroupsCreate( @Nonnull final BckndResourceGroupsPostRequest bckndResourceGroupsPostRequest,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourceGroupBase kubesubmitV4ResourcegroupsCreate( @Nonnull final BckndResourceGroupsPostRequest bckndResourceGroupsPostRequest,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndResourceGroupsPostRequest;
         
         // verify the required parameter 'bckndResourceGroupsPostRequest' is set
         if (bckndResourceGroupsPostRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndResourceGroupsPostRequest' when calling resourceGroupsCreate");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndResourceGroupsPostRequest' when calling kubesubmitV4ResourcegroupsCreate");
         }
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceGroups").build().toUriString();
@@ -122,8 +122,8 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroupBase resourceGroupsCreate( @Nonnull final BckndResourceGroupsPostRequest bckndResourceGroupsPostRequest) throws OpenApiRequestException {
-        return resourceGroupsCreate(bckndResourceGroupsPostRequest, null);
+    public BckndResourceGroupBase kubesubmitV4ResourcegroupsCreate( @Nonnull final BckndResourceGroupsPostRequest bckndResourceGroupsPostRequest) throws OpenApiRequestException {
+        return kubesubmitV4ResourcegroupsCreate(bckndResourceGroupsPostRequest, null);
     }
 
     /**
@@ -141,12 +141,12 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroupDeletionResponse resourceGroupsDelete( @Nonnull final String resourceGroupId,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourceGroupDeletionResponse kubesubmitV4ResourcegroupsDelete( @Nonnull final String resourceGroupId,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'resourceGroupId' is set
         if (resourceGroupId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'resourceGroupId' when calling resourceGroupsDelete");
+            throw new OpenApiRequestException("Missing the required parameter 'resourceGroupId' when calling kubesubmitV4ResourcegroupsDelete");
         }
         
         // create path and map variables
@@ -187,8 +187,8 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroupDeletionResponse resourceGroupsDelete( @Nonnull final String resourceGroupId) throws OpenApiRequestException {
-        return resourceGroupsDelete(resourceGroupId, null);
+    public BckndResourceGroupDeletionResponse kubesubmitV4ResourcegroupsDelete( @Nonnull final String resourceGroupId) throws OpenApiRequestException {
+        return kubesubmitV4ResourcegroupsDelete(resourceGroupId, null);
     }
 
     /**
@@ -206,12 +206,12 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroup resourceGroupsGet( @Nonnull final String resourceGroupId,  @Nullable final String authorization) throws OpenApiRequestException {
+    public BckndResourceGroup kubesubmitV4ResourcegroupsGet( @Nonnull final String resourceGroupId,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'resourceGroupId' is set
         if (resourceGroupId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'resourceGroupId' when calling resourceGroupsGet");
+            throw new OpenApiRequestException("Missing the required parameter 'resourceGroupId' when calling kubesubmitV4ResourcegroupsGet");
         }
         
         // create path and map variables
@@ -252,8 +252,8 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroup resourceGroupsGet( @Nonnull final String resourceGroupId) throws OpenApiRequestException {
-        return resourceGroupsGet(resourceGroupId, null);
+    public BckndResourceGroup kubesubmitV4ResourcegroupsGet( @Nonnull final String resourceGroupId) throws OpenApiRequestException {
+        return kubesubmitV4ResourcegroupsGet(resourceGroupId, null);
     }
 
     /**
@@ -280,7 +280,7 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroupList resourceGroupsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String prefer,  @Nullable final String continueToken,  @Nullable final List<String> labelSelector) throws OpenApiRequestException {
+    public BckndResourceGroupList kubesubmitV4ResourcegroupsGetAll( @Nullable final String authorization,  @Nullable final Integer $top,  @Nullable final Integer $skip,  @Nullable final Boolean $count,  @Nullable final String prefer,  @Nullable final String continueToken,  @Nullable final List<String> labelSelector) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         final String localVarPath = UriComponentsBuilder.fromPath("/admin/resourceGroups").build().toUriString();
@@ -324,8 +324,8 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public BckndResourceGroupList resourceGroupsGetAll() throws OpenApiRequestException {
-        return resourceGroupsGetAll(null, null, null, null, null, null, null);
+    public BckndResourceGroupList kubesubmitV4ResourcegroupsGetAll() throws OpenApiRequestException {
+        return kubesubmitV4ResourcegroupsGetAll(null, null, null, null, null, null, null);
     }
 
     /**
@@ -344,17 +344,17 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse resourceGroupsPatch( @Nonnull final String resourceGroupId,  @Nonnull final BckndResourceGroupPatchRequest bckndResourceGroupPatchRequest,  @Nullable final String authorization) throws OpenApiRequestException {
+    public OpenApiResponse kubesubmitV4ResourcegroupsPatch( @Nonnull final String resourceGroupId,  @Nonnull final BckndResourceGroupPatchRequest bckndResourceGroupPatchRequest,  @Nullable final String authorization) throws OpenApiRequestException {
         final Object localVarPostBody = bckndResourceGroupPatchRequest;
         
         // verify the required parameter 'resourceGroupId' is set
         if (resourceGroupId == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'resourceGroupId' when calling resourceGroupsPatch");
+            throw new OpenApiRequestException("Missing the required parameter 'resourceGroupId' when calling kubesubmitV4ResourcegroupsPatch");
         }
         
         // verify the required parameter 'bckndResourceGroupPatchRequest' is set
         if (bckndResourceGroupPatchRequest == null) {
-            throw new OpenApiRequestException("Missing the required parameter 'bckndResourceGroupPatchRequest' when calling resourceGroupsPatch");
+            throw new OpenApiRequestException("Missing the required parameter 'bckndResourceGroupPatchRequest' when calling kubesubmitV4ResourcegroupsPatch");
         }
         
         // create path and map variables
@@ -399,7 +399,7 @@ public class ResourceGroupApi extends AbstractOpenApiService {
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
     @Nonnull
-    public OpenApiResponse resourceGroupsPatch( @Nonnull final String resourceGroupId,  @Nonnull final BckndResourceGroupPatchRequest bckndResourceGroupPatchRequest) throws OpenApiRequestException {
-        return resourceGroupsPatch(resourceGroupId, bckndResourceGroupPatchRequest, null);
+    public OpenApiResponse kubesubmitV4ResourcegroupsPatch( @Nonnull final String resourceGroupId,  @Nonnull final BckndResourceGroupPatchRequest bckndResourceGroupPatchRequest) throws OpenApiRequestException {
+        return kubesubmitV4ResourcegroupsPatch(resourceGroupId, bckndResourceGroupPatchRequest, null);
     }
 }

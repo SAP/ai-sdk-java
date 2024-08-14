@@ -47,9 +47,8 @@ public class Core {
    */
   @Nonnull
   public static ApiClient getOrchestrationClient(@Nonnull final String resourceGroup) {
-     return getClient(
-         getDestinationForDeployment(getOrchestrationDeployment(resourceGroup), resourceGroup));
-
+    return getClient(
+        getDestinationForDeployment(getOrchestrationDeployment(resourceGroup), resourceGroup));
   }
 
   /**
@@ -62,8 +61,7 @@ public class Core {
    */
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments =
-        new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
+    final var deployments = new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
     Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()
