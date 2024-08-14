@@ -43,10 +43,21 @@ jobs:
             git push
           fi
 
+      - name: "Initialize CodeQL"
+        uses: github/codeql-action/init@v3
+        with:
+          languages: "java"
+          queries: security-extended
+
       - name: "Build SDK"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
+
+      - name: "Perform CodeQL Analysis"
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:java"
 
       - name: "Verify Local Changes"
         run: |
@@ -97,5 +108,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      #TODO: CodeQL step
       #TODO: Blackduck and security rating steps
