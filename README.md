@@ -75,7 +75,7 @@ public AiDeploymentCreationResponse createDeployment() {
       new DeploymentApi(getClient())
           .deploymentCreate(
               "default",
-              new AiDeploymentCreationRequest().configurationId("12345-123-123-123-123456abcdefg"));
+              AiDeploymentCreationRequest.create().configurationId("12345-123-123-123-123456abcdefg"));
 
   Objects.requireNonNull(deployment, "Deployment creation failed");
 
@@ -100,7 +100,7 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
     client.deploymentModify(
         "default",
         deployment.getId(),
-        new AiDeploymentModificationRequest().targetStatus(Status.STOPPED));
+        AiDeploymentModificationRequest.create().targetStatus(Status.STOPPED));
   }
   // Wait a few seconds for the deployment to stop
   // Only UNKNOWN and STOPPED deployments can be DELETED
@@ -253,21 +253,21 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 ### Chat completion template
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 final var inputParams =
     Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-final var template = new ChatMessage().content("{{?input}}").role("user");
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+final var template = ChatMessage.create().content("{{?input}}").role("user");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
-                        .templatingModuleConfig(templatingConfig)
-                        .llmModuleConfig(llmConfig)))
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
+                        .templatingModuleConfig(templatingConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
@@ -283,24 +283,25 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 ### Messages history
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 List<ChatMessage> messagesHistory =
     List.of(
-        new ChatMessage().content("What is the capital of France?").role("user"),
-        new ChatMessage().content("The capital of France is Paris.").role("assistant"));
-final var message = new ChatMessage().content("What is the typical food there?").role("user");
+        ChatMessage.create().role("user").content("What is the capital of France?"),
+        ChatMessage.create().role("assistant").content("The capital of France is Paris."));
 
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(message));
+final var message = ChatMessage.create().role("user").content("What is the typical food there?");
+final var templatingConfig = TemplatingModuleConfig.create().template(message);
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
-                        .templatingModuleConfig(templatingConfig)
-                        .llmModuleConfig(llmConfig)))
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
+                        .templatingModuleConfig(templatingConfig)))
+        .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
 final CompletionPostResponse result =
@@ -316,52 +317,52 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 ### Chat completion filter
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 final var inputParams =
     Map.of(
         "disclaimer",
         "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
 final var template =
-    new ChatMessage()
+    ChatMessage.create()
+            .role("user")
         .content(
-            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}")
-        .role("user");
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
 final var filterStrict =
-    new Filter()
+    Filter.create()
         .type(ProviderType.AZURE_CONTENT_SAFETY)
         .config(
-            new FilterConfig()
+            FilterConfig.create()
                 .hate(NUMBER_0)
                 .selfHarm(NUMBER_0)
                 .sexual(NUMBER_0)
                 .violence(NUMBER_0));
 final var filterLoose =
-    new Filter()
+    Filter.create()
         .type(ProviderType.AZURE_CONTENT_SAFETY)
         .config(
-            new FilterConfig()
+            FilterConfig.create()
                 .hate(NUMBER_4)
                 .selfHarm(NUMBER_4)
                 .sexual(NUMBER_4)
                 .violence(NUMBER_4));
 
 final var filteringConfig =
-    new FilteringModuleConfig()
-        .input(new FilteringConfig().filters(List.of(filterStrict))) // changing the input to filterLoose will allow the message to pass
-        .output(new FilteringConfig().filters(List.of(filterStrict)));
+    FilteringModuleConfig.create()
+        .input(FilteringConfig.create().filters(filterStrict)) // changing the input to filterLoose will allow the message to pass
+        .output(FilteringConfig.create().filters(filterStrict));
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
+                    ModuleConfigs.create()
+                          .llmModuleConfig(llmConfig)
                         .templatingModuleConfig(templatingConfig)
-                        .filteringModuleConfig(filteringConfig)
-                        .llmModuleConfig(llmConfig)))
+                        .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
@@ -381,7 +382,7 @@ Change your LLM module configuration to add model parameters:
 
 ```java
 var llmModuleConfig =
-    new LLMModuleConfig()
+    LLMModuleConfig.create()
         .modelName("gpt-35-turbo")
         .modelParams(
             Map.of(
