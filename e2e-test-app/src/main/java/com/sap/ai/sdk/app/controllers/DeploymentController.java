@@ -40,7 +40,7 @@ class DeploymentController {
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
         API.deploymentCreate(
-            "default", new AiDeploymentCreationRequest().configurationId(configId));
+            "default", AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
@@ -70,7 +70,7 @@ class DeploymentController {
                 API.deploymentModify(
                     "default",
                     deployment.getId(),
-                    new AiDeploymentModificationRequest()
+                    AiDeploymentModificationRequest.create()
                         .targetStatus(AiDeploymentTargetStatus.STOPPED)))
         .toList();
   }

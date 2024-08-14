@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * UnmaskingConfig
  */
-
 // CHECKSTYLE:OFF
 public class UnmaskingConfig 
 // CHECKSTYLE:ON
@@ -53,23 +52,24 @@ public class UnmaskingConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected UnmaskingConfig() {  }
 
    /**
-   * Set the entities of this {@link UnmaskingConfig} instance and return the same instance.
-   *
-   * @param entities  List of entities to be unmasked
-   * @return The same instance of this {@link UnmaskingConfig} class
-   */
+    * Set the entities of this {@link UnmaskingConfig} instance and return the same instance.
+    *
+    * @param entities  List of entities to be unmasked
+    * @return The same instance of this {@link UnmaskingConfig} class
+    */
    @Nonnull public UnmaskingConfig entities(@Nonnull final List<UnmaskingConfigEntitiesInner> entities) {
     this.entities = entities;
     return this;
   }
   /**
-  * Add one entities instance to this {@link UnmaskingConfig}.
-  * @param entitiesItem The entities that should be added
-  * @return The same instance of type {@link UnmaskingConfig}
-  */
-  @Nonnull public UnmaskingConfig addentitiesItem( @Nonnull final UnmaskingConfigEntitiesInner entitiesItem) {
+   * Add one entities instance to this {@link UnmaskingConfig}.
+   * @param entitiesItem The entities that should be added
+   * @return The same instance of type {@link UnmaskingConfig}
+   */
+  @Nonnull public UnmaskingConfig addEntitiesItem( @Nonnull final UnmaskingConfigEntitiesInner entitiesItem) {
     if (this.entities == null) {
       this.entities = new ArrayList<>();
     }
@@ -78,18 +78,18 @@ public class UnmaskingConfig
   }
 
    /**
-   * List of entities to be unmasked
-   * @return entities  The entities of this {@link UnmaskingConfig} instance.
-  **/
+    * List of entities to be unmasked
+    * @return entities  The entities of this {@link UnmaskingConfig} instance.
+    */
   @Nonnull public List<UnmaskingConfigEntitiesInner> getEntities() {
     return entities;
   }
 
   /**
-  * Set the entities of this {@link UnmaskingConfig} instance.
-  *
-  * @param entities  List of entities to be unmasked
-  */
+   * Set the entities of this {@link UnmaskingConfig} instance.
+   *
+   * @param entities  List of entities to be unmasked
+   */
   public void setEntities( @Nonnull final List<UnmaskingConfigEntitiesInner> entities) {
     this.entities = entities;
   }
@@ -169,6 +169,34 @@ public class UnmaskingConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link UnmaskingConfig} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (entities) -> new UnmaskingConfig().entities(entities);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the entities of this {@link UnmaskingConfig} instance.
+        *
+        * @param entities  List of entities to be unmasked
+        * @return The UnmaskingConfig instance.
+        */
+        UnmaskingConfig entities( @Nonnull final List<UnmaskingConfigEntitiesInner> entities);
+        /**
+        * Set the entities of this {@link UnmaskingConfig} instance.
+        *
+        * @param entities  List of entities to be unmasked
+        * @return The UnmaskingConfig instance.
+        */
+        default UnmaskingConfig entities( @Nonnull final UnmaskingConfigEntitiesInner... entities) {
+            return entities(Arrays.asList(entities));
+        }
+    }
 
 }
 

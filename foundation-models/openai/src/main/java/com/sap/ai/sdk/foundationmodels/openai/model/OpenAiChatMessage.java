@@ -84,17 +84,36 @@ public interface OpenAiChatMessage {
     @Getter(onMethod_ = @Nullable)
     private final List<ContentPart> content = new ArrayList<>();
 
+    /**
+     * Add text to the user message.
+     *
+     * @param content The text content.
+     * @return The user message.
+     */
     @Nonnull
     public OpenAiChatUserMessage addText(@Nonnull final String content) {
       this.content.add(new ContentPartText().setText(content));
       return this;
     }
 
+    /**
+     * Add an image to the user message.
+     *
+     * @param content The image URL.
+     * @return The user message.
+     */
     @Nonnull
     public OpenAiChatUserMessage addImage(@Nonnull final String content) {
       return addImage(content, null);
     }
 
+    /**
+     * Add an image to the user message.
+     *
+     * @param content The image URL.
+     * @param detail The detail level of the image.
+     * @return The user message.
+     */
     @Nonnull
     public OpenAiChatUserMessage addImage(
         @Nonnull final String content, @Nullable final ImageDetailLevel detail) {
@@ -102,6 +121,12 @@ public interface OpenAiChatMessage {
       return this;
     }
 
+    /**
+     * Add images or text to the user message.
+     *
+     * @param content The content(s) to add.
+     * @return The user message.
+     */
     @Nonnull
     public OpenAiChatUserMessage addContent(@Nonnull final ContentPart... content) {
       this.content.addAll(List.of(content));
@@ -147,11 +172,24 @@ public interface OpenAiChatMessage {
       @Nonnull
       private ImageUrl url;
 
+      /**
+       * Set the URL of the image.
+       *
+       * @param url The URL of the image.
+       * @return The image URL.
+       */
       @Nonnull
       public ContentPartImage setUrl(@Nonnull final String url) {
         return setUrl(url, null);
       }
 
+      /**
+       * Set the URL of the image.
+       *
+       * @param url The URL of the image.
+       * @param detailLevel The detail level of the image.
+       * @return The image URL.
+       */
       @Nonnull
       public ContentPartImage setUrl(
           @Nonnull final String url, @Nullable final ImageDetailLevel detailLevel) {
@@ -159,6 +197,7 @@ public interface OpenAiChatMessage {
         return this;
       }
 
+      /** Image URL. */
       // { "url": "website.com/picture.jpg" }
       @JsonFormat(shape = Shape.OBJECT)
       @NoArgsConstructor

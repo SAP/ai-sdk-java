@@ -119,10 +119,9 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     AiDeploymentCreationRequest deploymentCreationRequest =
-        new AiDeploymentCreationRequest().configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
+        AiDeploymentCreationRequest.create().configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(getClient(destination))
-            .deploymentCreate("default", deploymentCreationRequest);
+        new DeploymentApi(getClient(destination)).deploymentCreate("default", deploymentCreationRequest);
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEqualTo("");
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -147,7 +146,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     AiDeploymentModificationRequest configModification =
-        new AiDeploymentModificationRequest().targetStatus(AiDeploymentTargetStatus.STOPPED);
+        AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED);
     AiDeploymentModificationResponse deployment =
         new DeploymentApi(getClient(destination))
             .deploymentModify("default", "d19b998f347341aa", configModification);

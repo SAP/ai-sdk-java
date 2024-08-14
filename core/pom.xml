@@ -140,7 +140,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.3.2</version>
+        <version>3.4.0</version>
         <configuration>
           <filesets>
             <fileset>
@@ -181,6 +181,11 @@
               <inputSpec>${project.basedir}/src/main/resources/spec/aicore.yaml</inputSpec>
               <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
               <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
+              <additionalProperties>
+                <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                <pojoBuildMethodName/>
+                <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+              </additionalProperties>
             </configuration>
           </execution>
         </executions>

@@ -43,7 +43,6 @@ import javax.annotation.Nullable;
 /**
  * LLMChoice
  */
-
 // CHECKSTYLE:OFF
 public class LLMChoice 
 // CHECKSTYLE:ON
@@ -63,80 +62,81 @@ public class LLMChoice
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected LLMChoice() {  }
 
    /**
-   * Set the index of this {@link LLMChoice} instance and return the same instance.
-   *
-   * @param index  Index of the choice
-   * @return The same instance of this {@link LLMChoice} class
-   */
+    * Set the index of this {@link LLMChoice} instance and return the same instance.
+    *
+    * @param index  Index of the choice
+    * @return The same instance of this {@link LLMChoice} class
+    */
    @Nonnull public LLMChoice index(@Nonnull final Integer index) {
     this.index = index;
     return this;
   }
 
    /**
-   * Index of the choice
-   * @return index  The index of this {@link LLMChoice} instance.
-  **/
+    * Index of the choice
+    * @return index  The index of this {@link LLMChoice} instance.
+    */
   @Nonnull public Integer getIndex() {
     return index;
   }
 
   /**
-  * Set the index of this {@link LLMChoice} instance.
-  *
-  * @param index  Index of the choice
-  */
+   * Set the index of this {@link LLMChoice} instance.
+   *
+   * @param index  Index of the choice
+   */
   public void setIndex( @Nonnull final Integer index) {
     this.index = index;
   }
 
    /**
-   * Set the message of this {@link LLMChoice} instance and return the same instance.
-   *
-   * @param message  The message of this {@link LLMChoice}
-   * @return The same instance of this {@link LLMChoice} class
-   */
+    * Set the message of this {@link LLMChoice} instance and return the same instance.
+    *
+    * @param message  The message of this {@link LLMChoice}
+    * @return The same instance of this {@link LLMChoice} class
+    */
    @Nonnull public LLMChoice message(@Nonnull final ChatMessage message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Get message
-   * @return message  The message of this {@link LLMChoice} instance.
-  **/
+    * Get message
+    * @return message  The message of this {@link LLMChoice} instance.
+    */
   @Nonnull public ChatMessage getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link LLMChoice} instance.
-  *
-  * @param message  The message of this {@link LLMChoice}
-  */
+   * Set the message of this {@link LLMChoice} instance.
+   *
+   * @param message  The message of this {@link LLMChoice}
+   */
   public void setMessage( @Nonnull final ChatMessage message) {
     this.message = message;
   }
 
    /**
-   * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
-   *
-   * @param logprobs  Log probabilities
-   * @return The same instance of this {@link LLMChoice} class
-   */
+    * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
+    *
+    * @param logprobs  Log probabilities
+    * @return The same instance of this {@link LLMChoice} class
+    */
    @Nonnull public LLMChoice logprobs(@Nonnull final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
     return this;
   }
 
    /**
-   * Put one logprobs instance to this {@link LLMChoice} instance.
-   * @param key The String key of this logprobs instance
-   * @param logprobsItem The logprobs that should be added under the given key
-   * @return The same instance of type {@link LLMChoice}
-   */
+    * Put one logprobs instance to this {@link LLMChoice} instance.
+    * @param key The String key of this logprobs instance
+    * @param logprobsItem The logprobs that should be added under the given key
+    * @return The same instance of type {@link LLMChoice}
+    */
    @Nonnull public LLMChoice putlogprobsItem(@Nonnull final String key, @Nonnull final List<BigDecimal> logprobsItem) {
       this.logprobs = new HashMap<>();
     this.logprobs.put(key, logprobsItem);
@@ -144,46 +144,46 @@ public class LLMChoice
   }
 
    /**
-   * Log probabilities
-   * @return logprobs  The logprobs of this {@link LLMChoice} instance.
-  **/
+    * Log probabilities
+    * @return logprobs  The logprobs of this {@link LLMChoice} instance.
+    */
   @Nonnull public Map<String, List<BigDecimal>> getLogprobs() {
     return logprobs;
   }
 
   /**
-  * Set the logprobs of this {@link LLMChoice} instance.
-  *
-  * @param logprobs  Log probabilities
-  */
+   * Set the logprobs of this {@link LLMChoice} instance.
+   *
+   * @param logprobs  Log probabilities
+   */
   public void setLogprobs( @Nonnull final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
   }
 
    /**
-   * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
-   *
-   * @param finishReason  Reason for stopping the model
-   * @return The same instance of this {@link LLMChoice} class
-   */
+    * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
+    *
+    * @param finishReason  Reason for stopping the model
+    * @return The same instance of this {@link LLMChoice} class
+    */
    @Nonnull public LLMChoice finishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
     return this;
   }
 
    /**
-   * Reason for stopping the model
-   * @return finishReason  The finishReason of this {@link LLMChoice} instance.
-  **/
+    * Reason for stopping the model
+    * @return finishReason  The finishReason of this {@link LLMChoice} instance.
+    */
   @Nonnull public String getFinishReason() {
     return finishReason;
   }
 
   /**
-  * Set the finishReason of this {@link LLMChoice} instance.
-  *
-  * @param finishReason  Reason for stopping the model
-  */
+   * Set the finishReason of this {@link LLMChoice} instance.
+   *
+   * @param finishReason  Reason for stopping the model
+   */
   public void setFinishReason( @Nonnull final String finishReason) {
     this.finishReason = finishReason;
   }
@@ -269,6 +269,49 @@ public class LLMChoice
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoice} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (index) -> (message) -> (finishReason) -> new LLMChoice().index(index).message(message).finishReason(finishReason);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the index of this {@link LLMChoice} instance.
+        *
+        * @param index  Index of the choice
+        * @return The LLMChoice builder.
+        */
+        Builder1 index( @Nonnull final Integer index);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link LLMChoice} instance.
+        *
+        * @param message  The message of this {@link LLMChoice}
+        * @return The LLMChoice builder.
+        */
+        Builder2 message( @Nonnull final ChatMessage message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the finishReason of this {@link LLMChoice} instance.
+        *
+        * @param finishReason  Reason for stopping the model
+        * @return The LLMChoice instance.
+        */
+        LLMChoice finishReason( @Nonnull final String finishReason);
+    }
 
 }
 

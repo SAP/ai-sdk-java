@@ -28,6 +28,9 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
+      - name: "REUSE Compliance Check"
+        uses: fsfe/reuse-action@v4
+
       - name: "Format code"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} spotless:apply"
@@ -97,5 +100,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      #TODO: CodeQL step
       #TODO: Blackduck and security rating steps

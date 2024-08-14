@@ -45,7 +45,6 @@ import javax.annotation.Nullable;
 /**
  * CompletionPostRequest
  */
-
 // CHECKSTYLE:OFF
 public class CompletionPostRequest 
 // CHECKSTYLE:ON
@@ -62,52 +61,53 @@ public class CompletionPostRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected CompletionPostRequest() {  }
 
    /**
-   * Set the orchestrationConfig of this {@link CompletionPostRequest} instance and return the same instance.
-   *
-   * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
-   * @return The same instance of this {@link CompletionPostRequest} class
-   */
+    * Set the orchestrationConfig of this {@link CompletionPostRequest} instance and return the same instance.
+    *
+    * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
+    * @return The same instance of this {@link CompletionPostRequest} class
+    */
    @Nonnull public CompletionPostRequest orchestrationConfig(@Nonnull final OrchestrationConfig orchestrationConfig) {
     this.orchestrationConfig = orchestrationConfig;
     return this;
   }
 
    /**
-   * Get orchestrationConfig
-   * @return orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest} instance.
-  **/
+    * Get orchestrationConfig
+    * @return orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest} instance.
+    */
   @Nonnull public OrchestrationConfig getOrchestrationConfig() {
     return orchestrationConfig;
   }
 
   /**
-  * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
-  *
-  * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
-  */
+   * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
+   *
+   * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
+   */
   public void setOrchestrationConfig( @Nonnull final OrchestrationConfig orchestrationConfig) {
     this.orchestrationConfig = orchestrationConfig;
   }
 
    /**
-   * Set the inputParams of this {@link CompletionPostRequest} instance and return the same instance.
-   *
-   * @param inputParams  The inputParams of this {@link CompletionPostRequest}
-   * @return The same instance of this {@link CompletionPostRequest} class
-   */
+    * Set the inputParams of this {@link CompletionPostRequest} instance and return the same instance.
+    *
+    * @param inputParams  The inputParams of this {@link CompletionPostRequest}
+    * @return The same instance of this {@link CompletionPostRequest} class
+    */
    @Nonnull public CompletionPostRequest inputParams(@Nonnull final Map<String, String> inputParams) {
     this.inputParams = inputParams;
     return this;
   }
 
    /**
-   * Put one inputParams instance to this {@link CompletionPostRequest} instance.
-   * @param key The String key of this inputParams instance
-   * @param inputParamsItem The inputParams that should be added under the given key
-   * @return The same instance of type {@link CompletionPostRequest}
-   */
+    * Put one inputParams instance to this {@link CompletionPostRequest} instance.
+    * @param key The String key of this inputParams instance
+    * @param inputParamsItem The inputParams that should be added under the given key
+    * @return The same instance of type {@link CompletionPostRequest}
+    */
    @Nonnull public CompletionPostRequest putinputParamsItem(@Nonnull final String key, @Nonnull final String inputParamsItem) {
       this.inputParams = new HashMap<>();
     this.inputParams.put(key, inputParamsItem);
@@ -115,38 +115,38 @@ public class CompletionPostRequest
   }
 
    /**
-   * Get inputParams
-   * @return inputParams  The inputParams of this {@link CompletionPostRequest} instance.
-  **/
+    * Get inputParams
+    * @return inputParams  The inputParams of this {@link CompletionPostRequest} instance.
+    */
   @Nonnull public Map<String, String> getInputParams() {
     return inputParams;
   }
 
   /**
-  * Set the inputParams of this {@link CompletionPostRequest} instance.
-  *
-  * @param inputParams  The inputParams of this {@link CompletionPostRequest}
-  */
+   * Set the inputParams of this {@link CompletionPostRequest} instance.
+   *
+   * @param inputParams  The inputParams of this {@link CompletionPostRequest}
+   */
   public void setInputParams( @Nonnull final Map<String, String> inputParams) {
     this.inputParams = inputParams;
   }
 
    /**
-   * Set the messagesHistory of this {@link CompletionPostRequest} instance and return the same instance.
-   *
-   * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-   * @return The same instance of this {@link CompletionPostRequest} class
-   */
+    * Set the messagesHistory of this {@link CompletionPostRequest} instance and return the same instance.
+    *
+    * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+    * @return The same instance of this {@link CompletionPostRequest} class
+    */
    @Nonnull public CompletionPostRequest messagesHistory(@Nonnull final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
     return this;
   }
   /**
-  * Add one messagesHistory instance to this {@link CompletionPostRequest}.
-  * @param messagesHistoryItem The messagesHistory that should be added
-  * @return The same instance of type {@link CompletionPostRequest}
-  */
-  @Nonnull public CompletionPostRequest addmessagesHistoryItem( @Nonnull final ChatMessage messagesHistoryItem) {
+   * Add one messagesHistory instance to this {@link CompletionPostRequest}.
+   * @param messagesHistoryItem The messagesHistory that should be added
+   * @return The same instance of type {@link CompletionPostRequest}
+   */
+  @Nonnull public CompletionPostRequest addMessagesHistoryItem( @Nonnull final ChatMessage messagesHistoryItem) {
     if (this.messagesHistory == null) {
       this.messagesHistory = new ArrayList<>();
     }
@@ -155,18 +155,18 @@ public class CompletionPostRequest
   }
 
    /**
-   * History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-   * @return messagesHistory  The messagesHistory of this {@link CompletionPostRequest} instance.
-  **/
+    * History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+    * @return messagesHistory  The messagesHistory of this {@link CompletionPostRequest} instance.
+    */
   @Nonnull public List<ChatMessage> getMessagesHistory() {
     return messagesHistory;
   }
 
   /**
-  * Set the messagesHistory of this {@link CompletionPostRequest} instance.
-  *
-  * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-  */
+   * Set the messagesHistory of this {@link CompletionPostRequest} instance.
+   *
+   * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+   */
   public void setMessagesHistory( @Nonnull final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
   }
@@ -250,6 +250,37 @@ public class CompletionPostRequest
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link CompletionPostRequest} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (orchestrationConfig) -> (inputParams) -> new CompletionPostRequest().orchestrationConfig(orchestrationConfig).inputParams(inputParams);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
+        *
+        * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
+        * @return The CompletionPostRequest builder.
+        */
+        Builder1 orchestrationConfig( @Nonnull final OrchestrationConfig orchestrationConfig);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the inputParams of this {@link CompletionPostRequest} instance.
+        *
+        * @param inputParams  The inputParams of this {@link CompletionPostRequest}
+        * @return The CompletionPostRequest instance.
+        */
+        CompletionPostRequest inputParams( @Nonnull final Map<String, String> inputParams);
+    }
 
 }
 

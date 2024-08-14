@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * ErrorResponse
  */
-
 // CHECKSTYLE:OFF
 public class ErrorResponse 
 // CHECKSTYLE:ON
@@ -62,143 +61,144 @@ public class ErrorResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected ErrorResponse() {  }
 
    /**
-   * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param requestId  The requestId of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
+    * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
+    *
+    * @param requestId  The requestId of this {@link ErrorResponse}
+    * @return The same instance of this {@link ErrorResponse} class
+    */
    @Nonnull public ErrorResponse requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
    /**
-   * Get requestId
-   * @return requestId  The requestId of this {@link ErrorResponse} instance.
-  **/
+    * Get requestId
+    * @return requestId  The requestId of this {@link ErrorResponse} instance.
+    */
   @Nonnull public String getRequestId() {
     return requestId;
   }
 
   /**
-  * Set the requestId of this {@link ErrorResponse} instance.
-  *
-  * @param requestId  The requestId of this {@link ErrorResponse}
-  */
+   * Set the requestId of this {@link ErrorResponse} instance.
+   *
+   * @param requestId  The requestId of this {@link ErrorResponse}
+   */
   public void setRequestId( @Nonnull final String requestId) {
     this.requestId = requestId;
   }
 
    /**
-   * Set the code of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param code  The code of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
+    * Set the code of this {@link ErrorResponse} instance and return the same instance.
+    *
+    * @param code  The code of this {@link ErrorResponse}
+    * @return The same instance of this {@link ErrorResponse} class
+    */
    @Nonnull public ErrorResponse code(@Nonnull final Integer code) {
     this.code = code;
     return this;
   }
 
    /**
-   * Get code
-   * @return code  The code of this {@link ErrorResponse} instance.
-  **/
+    * Get code
+    * @return code  The code of this {@link ErrorResponse} instance.
+    */
   @Nonnull public Integer getCode() {
     return code;
   }
 
   /**
-  * Set the code of this {@link ErrorResponse} instance.
-  *
-  * @param code  The code of this {@link ErrorResponse}
-  */
+   * Set the code of this {@link ErrorResponse} instance.
+   *
+   * @param code  The code of this {@link ErrorResponse}
+   */
   public void setCode( @Nonnull final Integer code) {
     this.code = code;
   }
 
    /**
-   * Set the message of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param message  The message of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
+    * Set the message of this {@link ErrorResponse} instance and return the same instance.
+    *
+    * @param message  The message of this {@link ErrorResponse}
+    * @return The same instance of this {@link ErrorResponse} class
+    */
    @Nonnull public ErrorResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Get message
-   * @return message  The message of this {@link ErrorResponse} instance.
-  **/
+    * Get message
+    * @return message  The message of this {@link ErrorResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link ErrorResponse} instance.
-  *
-  * @param message  The message of this {@link ErrorResponse}
-  */
+   * Set the message of this {@link ErrorResponse} instance.
+   *
+   * @param message  The message of this {@link ErrorResponse}
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-   * Set the location of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param location  Where the error occurred
-   * @return The same instance of this {@link ErrorResponse} class
-   */
+    * Set the location of this {@link ErrorResponse} instance and return the same instance.
+    *
+    * @param location  Where the error occurred
+    * @return The same instance of this {@link ErrorResponse} class
+    */
    @Nonnull public ErrorResponse location(@Nonnull final String location) {
     this.location = location;
     return this;
   }
 
    /**
-   * Where the error occurred
-   * @return location  The location of this {@link ErrorResponse} instance.
-  **/
+    * Where the error occurred
+    * @return location  The location of this {@link ErrorResponse} instance.
+    */
   @Nonnull public String getLocation() {
     return location;
   }
 
   /**
-  * Set the location of this {@link ErrorResponse} instance.
-  *
-  * @param location  Where the error occurred
-  */
+   * Set the location of this {@link ErrorResponse} instance.
+   *
+   * @param location  Where the error occurred
+   */
   public void setLocation( @Nonnull final String location) {
     this.location = location;
   }
 
    /**
-   * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param moduleResults  The moduleResults of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
+    * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
+    *
+    * @param moduleResults  The moduleResults of this {@link ErrorResponse}
+    * @return The same instance of this {@link ErrorResponse} class
+    */
    @Nonnull public ErrorResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
 
    /**
-   * Get moduleResults
-   * @return moduleResults  The moduleResults of this {@link ErrorResponse} instance.
-  **/
+    * Get moduleResults
+    * @return moduleResults  The moduleResults of this {@link ErrorResponse} instance.
+    */
   @Nonnull public ModuleResults getModuleResults() {
     return moduleResults;
   }
 
   /**
-  * Set the moduleResults of this {@link ErrorResponse} instance.
-  *
-  * @param moduleResults  The moduleResults of this {@link ErrorResponse}
-  */
+   * Set the moduleResults of this {@link ErrorResponse} instance.
+   *
+   * @param moduleResults  The moduleResults of this {@link ErrorResponse}
+   */
   public void setModuleResults( @Nonnull final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
@@ -286,6 +286,61 @@ public class ErrorResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (requestId) -> (code) -> (message) -> (location) -> new ErrorResponse().requestId(requestId).code(code).message(message).location(location);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the requestId of this {@link ErrorResponse} instance.
+        *
+        * @param requestId  The requestId of this {@link ErrorResponse}
+        * @return The ErrorResponse builder.
+        */
+        Builder1 requestId( @Nonnull final String requestId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the code of this {@link ErrorResponse} instance.
+        *
+        * @param code  The code of this {@link ErrorResponse}
+        * @return The ErrorResponse builder.
+        */
+        Builder2 code( @Nonnull final Integer code);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the message of this {@link ErrorResponse} instance.
+        *
+        * @param message  The message of this {@link ErrorResponse}
+        * @return The ErrorResponse builder.
+        */
+        Builder3 message( @Nonnull final String message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the location of this {@link ErrorResponse} instance.
+        *
+        * @param location  Where the error occurred
+        * @return The ErrorResponse instance.
+        */
+        ErrorResponse location( @Nonnull final String location);
+    }
 
 }
 

@@ -92,7 +92,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.3.2</version>
+        <version>3.4.0</version>
         <configuration>
           <filesets>
             <fileset>
@@ -133,6 +133,11 @@
               <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
               <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
               <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+              <additionalProperties>
+                <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                <pojoBuildMethodName/>
+                <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+              </additionalProperties>
             </configuration>
           </execution>
         </executions>

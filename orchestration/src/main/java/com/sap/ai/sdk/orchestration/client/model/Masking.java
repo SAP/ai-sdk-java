@@ -43,7 +43,6 @@ import javax.annotation.Nullable;
 /**
  * Masking
  */
-
 // CHECKSTYLE:OFF
 public class Masking 
 // CHECKSTYLE:ON
@@ -57,51 +56,52 @@ public class Masking
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected Masking() {  }
 
    /**
-   * Set the type of this {@link Masking} instance and return the same instance.
-   *
-   * @param type  The type of this {@link Masking}
-   * @return The same instance of this {@link Masking} class
-   */
+    * Set the type of this {@link Masking} instance and return the same instance.
+    *
+    * @param type  The type of this {@link Masking}
+    * @return The same instance of this {@link Masking} class
+    */
    @Nonnull public Masking type(@Nonnull final MaskingProviderType type) {
     this.type = type;
     return this;
   }
 
    /**
-   * Get type
-   * @return type  The type of this {@link Masking} instance.
-  **/
+    * Get type
+    * @return type  The type of this {@link Masking} instance.
+    */
   @Nonnull public MaskingProviderType getType() {
     return type;
   }
 
   /**
-  * Set the type of this {@link Masking} instance.
-  *
-  * @param type  The type of this {@link Masking}
-  */
+   * Set the type of this {@link Masking} instance.
+   *
+   * @param type  The type of this {@link Masking}
+   */
   public void setType( @Nonnull final MaskingProviderType type) {
     this.type = type;
   }
 
    /**
-   * Set the entities of this {@link Masking} instance and return the same instance.
-   *
-   * @param entities  List of entities to be masked
-   * @return The same instance of this {@link Masking} class
-   */
+    * Set the entities of this {@link Masking} instance and return the same instance.
+    *
+    * @param entities  List of entities to be masked
+    * @return The same instance of this {@link Masking} class
+    */
    @Nonnull public Masking entities(@Nonnull final List<MaskingEntitiesInner> entities) {
     this.entities = entities;
     return this;
   }
   /**
-  * Add one entities instance to this {@link Masking}.
-  * @param entitiesItem The entities that should be added
-  * @return The same instance of type {@link Masking}
-  */
-  @Nonnull public Masking addentitiesItem( @Nonnull final MaskingEntitiesInner entitiesItem) {
+   * Add one entities instance to this {@link Masking}.
+   * @param entitiesItem The entities that should be added
+   * @return The same instance of type {@link Masking}
+   */
+  @Nonnull public Masking addEntitiesItem( @Nonnull final MaskingEntitiesInner entitiesItem) {
     if (this.entities == null) {
       this.entities = new ArrayList<>();
     }
@@ -110,18 +110,18 @@ public class Masking
   }
 
    /**
-   * List of entities to be masked
-   * @return entities  The entities of this {@link Masking} instance.
-  **/
+    * List of entities to be masked
+    * @return entities  The entities of this {@link Masking} instance.
+    */
   @Nonnull public List<MaskingEntitiesInner> getEntities() {
     return entities;
   }
 
   /**
-  * Set the entities of this {@link Masking} instance.
-  *
-  * @param entities  List of entities to be masked
-  */
+   * Set the entities of this {@link Masking} instance.
+   *
+   * @param entities  List of entities to be masked
+   */
   public void setEntities( @Nonnull final List<MaskingEntitiesInner> entities) {
     this.entities = entities;
   }
@@ -203,6 +203,46 @@ public class Masking
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link Masking} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (type) -> (entities) -> new Masking().type(type).entities(entities);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the type of this {@link Masking} instance.
+        *
+        * @param type  The type of this {@link Masking}
+        * @return The Masking builder.
+        */
+        Builder1 type( @Nonnull final MaskingProviderType type);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the entities of this {@link Masking} instance.
+        *
+        * @param entities  List of entities to be masked
+        * @return The Masking instance.
+        */
+        Masking entities( @Nonnull final List<MaskingEntitiesInner> entities);
+        /**
+        * Set the entities of this {@link Masking} instance.
+        *
+        * @param entities  List of entities to be masked
+        * @return The Masking instance.
+        */
+        default Masking entities( @Nonnull final MaskingEntitiesInner... entities) {
+            return entities(Arrays.asList(entities));
+        }
+    }
 
 }
 
