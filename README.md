@@ -1,3 +1,5 @@
+![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg)
+![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-java)](https://api.reuse.software/info/github.com/SAP/ai-sdk-java)
 
 # AI SDK for Java
