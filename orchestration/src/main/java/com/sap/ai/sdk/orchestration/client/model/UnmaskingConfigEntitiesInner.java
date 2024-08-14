@@ -36,7 +36,6 @@ import javax.annotation.Nullable;
 /**
  * UnmaskingConfigEntitiesInner
  */
-
 // CHECKSTYLE:OFF
 public class UnmaskingConfigEntitiesInner 
 // CHECKSTYLE:ON
@@ -44,6 +43,7 @@ public class UnmaskingConfigEntitiesInner
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected UnmaskingConfigEntitiesInner() {  }
 
   /**
    * Get the names of the unrecognizable properties of the {@link UnmaskingConfigEntitiesInner}.
@@ -118,6 +118,13 @@ public class UnmaskingConfigEntitiesInner
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a new {@link UnmaskingConfigEntitiesInner} instance. No arguments are required.
+    */
+    public static UnmaskingConfigEntitiesInner create() {
+        return new UnmaskingConfigEntitiesInner();
+    }
 
 }
 

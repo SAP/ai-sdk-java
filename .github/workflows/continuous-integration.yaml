@@ -28,6 +28,9 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
+      - name: "REUSE Compliance Check"
+        uses: fsfe/reuse-action@v4
+
       - name: "Format code"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} spotless:apply"

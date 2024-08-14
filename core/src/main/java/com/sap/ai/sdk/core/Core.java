@@ -47,9 +47,8 @@ public class Core {
    */
   @Nonnull
   public static ApiClient getOrchestrationClient(@Nonnull final String resourceGroup) {
-     return getClient(
-         getDestinationForDeployment(getOrchestrationDeployment(resourceGroup), resourceGroup));
-
+    return getClient(
+        getDestinationForDeployment(getOrchestrationDeployment(resourceGroup), resourceGroup));
   }
 
   /**
@@ -62,8 +61,7 @@ public class Core {
    */
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments =
-        new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
+    final var deployments = new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
     Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()
@@ -76,7 +74,7 @@ public class Core {
 
   /**
    * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
-   * aicore}.</b>
+   * AICORE_SERVICE_KEY}.</b>
    *
    * @return a generic <code>AI Core</code> ApiClient.
    */
@@ -117,13 +115,13 @@ public class Core {
 
   /**
    * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
-   * aicore}.</b>
+   * AICORE_SERVICE_KEY}.</b>
    *
    * @return a destination pointing to the AI Core service.
    */
   @Nonnull
   public static Destination getDestination() {
-    final var serviceKey = System.getenv("aicore");
+    final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
     final var serviceKeyPresent = serviceKey != null;
     final var aiCoreBindingPresent =
         DefaultServiceBindingAccessor.getInstance().getServiceBindings().stream()
@@ -162,7 +160,7 @@ public class Core {
   private static void addServiceBinding(@Nonnull final String serviceKey) {
     log.info(
         """
-          Found a service key in environment variable "aicore".
+          Found a service key in environment variable "AICORE_SERVICE_KEY".
           Using a service key is recommended for local testing only.
           Bind the AI Core service to the application for productive usage.""");
 
@@ -171,7 +169,7 @@ public class Core {
       credentials = new ObjectMapper().readValue(serviceKey, new TypeReference<>() {});
     } catch (JsonProcessingException e) {
       throw new AiCoreCredentialsInvalidException(
-          "Error in parsing service key from the \"aicore\" environment variable.", e);
+          "Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.", e);
     }
 
     final var binding =

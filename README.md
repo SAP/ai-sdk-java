@@ -1,4 +1,5 @@
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-java)](https://api.reuse.software/info/github.com/SAP/ai-sdk-java)
+[![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
+
 
 # AI SDK for Java
 
@@ -75,12 +76,13 @@ public AiDeploymentCreationResponse createDeployment() {
       new DeploymentApi(getClient())
           .deploymentCreate(
               "default",
-              new AiDeploymentCreationRequest().configurationId("12345-123-123-123-123456abcdefg"));
+              AiDeploymentCreationRequest.create()
+                  .configurationId("12345-123-123-123-123456abcdefg"));
 
   Objects.requireNonNull(deployment, "Deployment creation failed");
 
   String id = deployment.getId();
-  Status status = deployment.getStatus();
+  AiExecutionStatus status = deployment.getStatus();
 
   return deployment;
 }
@@ -95,12 +97,12 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 
   DeploymentApi client = new DeploymentApi(getClient());
 
-  if (deployment.getStatus() == Status.RUNNING) {
+  if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
     // Only RUNNING deployments can be STOPPED
     client.deploymentModify(
         "default",
         deployment.getId(),
-        new AiDeploymentModificationRequest().targetStatus(Status.STOPPED));
+        AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
   }
   // Wait a few seconds for the deployment to stop
   // Only UNKNOWN and STOPPED deployments can be DELETED
@@ -180,12 +182,15 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 ### Simple chat completion
 
 ```java
+final var systemMessage =
+    new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
 final var userMessage =
-    new OpenAiChatUserMessage().setContent("Hello World! Why is this phrase so famous?");
+    new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
 final var request =
     new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
 
-final OpenAiChatCompletionOutput result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
 final String resultMessage = result.getChoices().get(0).getMessage().getContent();
 ```
@@ -196,7 +201,7 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 
 ```java
 final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(new OpenAiModel(model)).chatCompletion(request);
+    OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
 
 ## Orchestration chat completion
@@ -253,28 +258,28 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 ### Chat completion template
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 final var inputParams =
     Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-final var template = new ChatMessage().content("{{?input}}").role("user");
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+final var template = ChatMessage.create().role("user").content("{{?input}}");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
-                        .templatingModuleConfig(templatingConfig)
-                        .llmModuleConfig(llmConfig)))
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
+                        .templatingModuleConfig(templatingConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
         .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -283,31 +288,33 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 ### Messages history
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 List<ChatMessage> messagesHistory =
     List.of(
-        new ChatMessage().content("What is the capital of France?").role("user"),
-        new ChatMessage().content("The capital of France is Paris.").role("assistant"));
-final var message = new ChatMessage().content("What is the typical food there?").role("user");
+        ChatMessage.create().role("user").content("What is the capital of France?"),
+        ChatMessage.create().role("assistant").content("The capital of France is Paris."));
 
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(message));
+final var message =
+    ChatMessage.create().role("user").content("What is the typical food there?");
+final var templatingConfig = TemplatingModuleConfig.create().template(message);
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
-                        .templatingModuleConfig(templatingConfig)
-                        .llmModuleConfig(llmConfig)))
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
+                        .templatingModuleConfig(templatingConfig)))
+        .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
         .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -316,59 +323,61 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 ### Chat completion filter
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 final var inputParams =
     Map.of(
         "disclaimer",
         "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
 final var template =
-    new ChatMessage()
+    ChatMessage.create()
+        .role("user")
         .content(
-            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}")
-        .role("user");
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
 final var filterStrict =
-    new Filter()
+    Filter.create()
         .type(ProviderType.AZURE_CONTENT_SAFETY)
         .config(
-            new FilterConfig()
+            FilterConfig.create()
                 .hate(NUMBER_0)
                 .selfHarm(NUMBER_0)
                 .sexual(NUMBER_0)
                 .violence(NUMBER_0));
 final var filterLoose =
-    new Filter()
+    Filter.create()
         .type(ProviderType.AZURE_CONTENT_SAFETY)
         .config(
-            new FilterConfig()
+            FilterConfig.create()
                 .hate(NUMBER_4)
                 .selfHarm(NUMBER_4)
                 .sexual(NUMBER_4)
                 .violence(NUMBER_4));
 
 final var filteringConfig =
-    new FilteringModuleConfig()
-        .input(new FilteringConfig().filters(List.of(filterStrict))) // changing the input to filterLoose will allow the message to pass
-        .output(new FilteringConfig().filters(List.of(filterStrict)));
+    FilteringModuleConfig.create()
+        // changing the input to filterLoose will allow the message to pass
+        .input(FilteringConfig.create().filters(filterStrict))
+        .output(FilteringConfig.create().filters(filterStrict));
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
                         .templatingModuleConfig(templatingConfig)
-                        .filteringModuleConfig(filteringConfig)
-                        .llmModuleConfig(llmConfig)))
+                        .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
-        .orchestrationV1EndpointsCreate(config); // this fails with Bad Request because the strict filter prohibits the input message
+        // this fails with Bad Request because the strict filter prohibits the input message
+        .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -380,8 +389,8 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 Change your LLM module configuration to add model parameters:
 
 ```java
-var llmModuleConfig =
-    new LLMModuleConfig()
+var llmConfig =
+    LLMModuleConfig.create()
         .modelName("gpt-35-turbo")
         .modelParams(
             Map.of(
@@ -407,13 +416,16 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 
 ### Set AI Core credentials as environment variable
 
+- Running the application locally without a service binding will throw:
+
+  `Could not find any matching service bindings for service identifier 'aicore'`
 - Go into the BTP Cockpit
 - Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
-- Set it as an environment variable `aicore` in your IDE
+- Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
 
   Or in your terminal:
 ```shell
-export aicore='{   "serviceurls": {     "AI_API_URL": ...'
+export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ```
 
 ### Run the Spring Boot application

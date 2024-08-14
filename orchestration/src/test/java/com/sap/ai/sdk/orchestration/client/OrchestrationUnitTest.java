@@ -47,7 +47,7 @@ public class OrchestrationUnitTest {
   private OrchestrationCompletionApi client;
 
   private static final LLMModuleConfig LLM_CONFIG =
-      new LLMModuleConfig()
+      LLMModuleConfig.create()
           .modelName("gpt-35-turbo-16k")
           .modelParams(
               Map.of(
@@ -58,13 +58,14 @@ public class OrchestrationUnitTest {
 
   private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
       (TemplatingModuleConfig templatingModuleConfig) ->
-          new CompletionPostRequest()
+          CompletionPostRequest.create()
               .orchestrationConfig(
-                  new OrchestrationConfig()
+                  OrchestrationConfig.create()
                       .moduleConfigurations(
-                          new ModuleConfigs()
-                              .templatingModuleConfig(templatingModuleConfig)
-                              .llmModuleConfig(LLM_CONFIG)));
+                          ModuleConfigs.create()
+                              .llmModuleConfig(LLM_CONFIG)
+                              .templatingModuleConfig(templatingModuleConfig)))
+              .inputParams(Map.of());
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
@@ -77,35 +78,35 @@ public class OrchestrationUnitTest {
                 "disclaimer",
                 "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
         final var template =
-            new ChatMessage()
+            ChatMessage.create()
+                .role("user")
                 .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}")
-                .role("user");
-        final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
+        final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
         final var filter =
-            new Filter()
+            Filter.create()
                 .type(ProviderType.AZURE_CONTENT_SAFETY)
                 .config(
-                    new FilterConfig()
+                    FilterConfig.create()
                         .hate(filterThreshold)
                         .selfHarm(filterThreshold)
                         .sexual(filterThreshold)
                         .violence(filterThreshold));
 
         final var filteringConfig =
-            new FilteringModuleConfig()
-                .input(new FilteringConfig().filters(List.of(filter)))
-                .output(new FilteringConfig().filters(List.of(filter)));
+            FilteringModuleConfig.create()
+                .input(FilteringConfig.create().filters(filter))
+                .output(FilteringConfig.create().filters(filter));
 
-        return new CompletionPostRequest()
+        return CompletionPostRequest.create()
             .orchestrationConfig(
-                new OrchestrationConfig()
+                OrchestrationConfig.create()
                     .moduleConfigurations(
-                        new ModuleConfigs()
+                        ModuleConfigs.create()
+                            .llmModuleConfig(LLM_CONFIG)
                             .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)
-                            .llmModuleConfig(LLM_CONFIG)))
+                            .filteringModuleConfig(filteringConfig)))
             .inputParams(inputParams);
       };
 
@@ -117,7 +118,7 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void template() throws IOException {
+  void testTemplating() throws IOException {
     final String response =
         new String(
             getClass()
@@ -126,13 +127,13 @@ public class OrchestrationUnitTest {
                 .readAllBytes());
     stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    final var template = new ChatMessage().content("{{?input}}").role("user");
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
     final var config =
         TEMPLATE_CONFIG
-            .apply(new TemplatingModuleConfig().template(List.of(template)))
+            .apply(TemplatingModuleConfig.create().template(template))
             .inputParams(inputParams);
 
     final var result = client.orchestrationV1EndpointsCreate(config);
@@ -183,7 +184,7 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void templateBadRequest() {
+  void testTemplatingBadRequest() {
     stubFor(
         post(urlPathEqualTo("/completion"))
             .willReturn(
@@ -199,13 +200,13 @@ public class OrchestrationUnitTest {
                     """,
                     SC_BAD_REQUEST)));
 
-    final var template = new ChatMessage().content("{{?input}}").role("user");
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
     // input params are omitted on purpose to trigger an error
     Map<String, String> inputParams = Map.of();
 
     final var config =
         TEMPLATE_CONFIG
-            .apply(new TemplatingModuleConfig().template(List.of(template)))
+            .apply(TemplatingModuleConfig.create().template(template))
             .inputParams(inputParams);
 
     assertThatThrownBy(() -> client.orchestrationV1EndpointsCreate(config))
@@ -215,7 +216,7 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void looseFilter() throws IOException {
+  void testFilteringLoose() throws IOException {
     final String response =
         new String(
             getClass()
@@ -240,10 +241,10 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void strictFilter() {
+  void testFilteringStrict() {
     final String response =
         """
-        {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
+            {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
     stubFor(post(urlPathEqualTo("/completion")).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
     final var config = FILTERING_CONFIG.apply(NUMBER_0);
@@ -254,7 +255,7 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void messagesHistory() throws IOException {
+  void testMessagesHistory() throws IOException {
     final String response =
         new String(
             getClass()
@@ -266,13 +267,14 @@ public class OrchestrationUnitTest {
 
     final List<ChatMessage> messagesHistory =
         List.of(
-            new ChatMessage().content("What is the capital of France?").role("user"),
-            new ChatMessage().content("The capital of France is Paris.").role("assistant"));
-    final var message = new ChatMessage().content("What is the typical food there?").role("user");
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
     final var config =
         TEMPLATE_CONFIG
-            .apply(new TemplatingModuleConfig().template(List.of(message)))
+            .apply(TemplatingModuleConfig.create().template(message))
             .messagesHistory(messagesHistory);
 
     final var result = client.orchestrationV1EndpointsCreate(config);

@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * FilteringModuleConfig
  */
-
 // CHECKSTYLE:OFF
 public class FilteringModuleConfig 
 // CHECKSTYLE:ON
@@ -53,59 +52,60 @@ public class FilteringModuleConfig
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected FilteringModuleConfig() {  }
 
    /**
-   * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
-   *
-   * @param input  The input of this {@link FilteringModuleConfig}
-   * @return The same instance of this {@link FilteringModuleConfig} class
-   */
+    * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
+    *
+    * @param input  The input of this {@link FilteringModuleConfig}
+    * @return The same instance of this {@link FilteringModuleConfig} class
+    */
    @Nonnull public FilteringModuleConfig input(@Nonnull final FilteringConfig input) {
     this.input = input;
     return this;
   }
 
    /**
-   * Get input
-   * @return input  The input of this {@link FilteringModuleConfig} instance.
-  **/
+    * Get input
+    * @return input  The input of this {@link FilteringModuleConfig} instance.
+    */
   @Nonnull public FilteringConfig getInput() {
     return input;
   }
 
   /**
-  * Set the input of this {@link FilteringModuleConfig} instance.
-  *
-  * @param input  The input of this {@link FilteringModuleConfig}
-  */
+   * Set the input of this {@link FilteringModuleConfig} instance.
+   *
+   * @param input  The input of this {@link FilteringModuleConfig}
+   */
   public void setInput( @Nonnull final FilteringConfig input) {
     this.input = input;
   }
 
    /**
-   * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
-   *
-   * @param output  The output of this {@link FilteringModuleConfig}
-   * @return The same instance of this {@link FilteringModuleConfig} class
-   */
+    * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
+    *
+    * @param output  The output of this {@link FilteringModuleConfig}
+    * @return The same instance of this {@link FilteringModuleConfig} class
+    */
    @Nonnull public FilteringModuleConfig output(@Nonnull final FilteringConfig output) {
     this.output = output;
     return this;
   }
 
    /**
-   * Get output
-   * @return output  The output of this {@link FilteringModuleConfig} instance.
-  **/
+    * Get output
+    * @return output  The output of this {@link FilteringModuleConfig} instance.
+    */
   @Nonnull public FilteringConfig getOutput() {
     return output;
   }
 
   /**
-  * Set the output of this {@link FilteringModuleConfig} instance.
-  *
-  * @param output  The output of this {@link FilteringModuleConfig}
-  */
+   * Set the output of this {@link FilteringModuleConfig} instance.
+   *
+   * @param output  The output of this {@link FilteringModuleConfig}
+   */
   public void setOutput( @Nonnull final FilteringConfig output) {
     this.output = output;
   }
@@ -187,6 +187,13 @@ public class FilteringModuleConfig
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a new {@link FilteringModuleConfig} instance. No arguments are required.
+    */
+    public static FilteringModuleConfig create() {
+        return new FilteringModuleConfig();
+    }
 
 }
 

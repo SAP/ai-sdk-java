@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Usage of tokens in the response
  */
-
 // CHECKSTYLE:OFF
 public class TokenUsage 
 // CHECKSTYLE:ON
@@ -55,87 +54,88 @@ public class TokenUsage
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected TokenUsage() {  }
 
    /**
-   * Set the completionTokens of this {@link TokenUsage} instance and return the same instance.
-   *
-   * @param completionTokens  Number of tokens used in the input
-   * @return The same instance of this {@link TokenUsage} class
-   */
+    * Set the completionTokens of this {@link TokenUsage} instance and return the same instance.
+    *
+    * @param completionTokens  Number of tokens used in the input
+    * @return The same instance of this {@link TokenUsage} class
+    */
    @Nonnull public TokenUsage completionTokens(@Nonnull final Integer completionTokens) {
     this.completionTokens = completionTokens;
     return this;
   }
 
    /**
-   * Number of tokens used in the input
-   * @return completionTokens  The completionTokens of this {@link TokenUsage} instance.
-  **/
+    * Number of tokens used in the input
+    * @return completionTokens  The completionTokens of this {@link TokenUsage} instance.
+    */
   @Nonnull public Integer getCompletionTokens() {
     return completionTokens;
   }
 
   /**
-  * Set the completionTokens of this {@link TokenUsage} instance.
-  *
-  * @param completionTokens  Number of tokens used in the input
-  */
+   * Set the completionTokens of this {@link TokenUsage} instance.
+   *
+   * @param completionTokens  Number of tokens used in the input
+   */
   public void setCompletionTokens( @Nonnull final Integer completionTokens) {
     this.completionTokens = completionTokens;
   }
 
    /**
-   * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
-   *
-   * @param promptTokens  Number of tokens used in the output
-   * @return The same instance of this {@link TokenUsage} class
-   */
+    * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
+    *
+    * @param promptTokens  Number of tokens used in the output
+    * @return The same instance of this {@link TokenUsage} class
+    */
    @Nonnull public TokenUsage promptTokens(@Nonnull final Integer promptTokens) {
     this.promptTokens = promptTokens;
     return this;
   }
 
    /**
-   * Number of tokens used in the output
-   * @return promptTokens  The promptTokens of this {@link TokenUsage} instance.
-  **/
+    * Number of tokens used in the output
+    * @return promptTokens  The promptTokens of this {@link TokenUsage} instance.
+    */
   @Nonnull public Integer getPromptTokens() {
     return promptTokens;
   }
 
   /**
-  * Set the promptTokens of this {@link TokenUsage} instance.
-  *
-  * @param promptTokens  Number of tokens used in the output
-  */
+   * Set the promptTokens of this {@link TokenUsage} instance.
+   *
+   * @param promptTokens  Number of tokens used in the output
+   */
   public void setPromptTokens( @Nonnull final Integer promptTokens) {
     this.promptTokens = promptTokens;
   }
 
    /**
-   * Set the totalTokens of this {@link TokenUsage} instance and return the same instance.
-   *
-   * @param totalTokens  Total number of tokens used
-   * @return The same instance of this {@link TokenUsage} class
-   */
+    * Set the totalTokens of this {@link TokenUsage} instance and return the same instance.
+    *
+    * @param totalTokens  Total number of tokens used
+    * @return The same instance of this {@link TokenUsage} class
+    */
    @Nonnull public TokenUsage totalTokens(@Nonnull final Integer totalTokens) {
     this.totalTokens = totalTokens;
     return this;
   }
 
    /**
-   * Total number of tokens used
-   * @return totalTokens  The totalTokens of this {@link TokenUsage} instance.
-  **/
+    * Total number of tokens used
+    * @return totalTokens  The totalTokens of this {@link TokenUsage} instance.
+    */
   @Nonnull public Integer getTotalTokens() {
     return totalTokens;
   }
 
   /**
-  * Set the totalTokens of this {@link TokenUsage} instance.
-  *
-  * @param totalTokens  Total number of tokens used
-  */
+   * Set the totalTokens of this {@link TokenUsage} instance.
+   *
+   * @param totalTokens  Total number of tokens used
+   */
   public void setTotalTokens( @Nonnull final Integer totalTokens) {
     this.totalTokens = totalTokens;
   }
@@ -219,6 +219,49 @@ public class TokenUsage
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link TokenUsage} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (completionTokens) -> (promptTokens) -> (totalTokens) -> new TokenUsage().completionTokens(completionTokens).promptTokens(promptTokens).totalTokens(totalTokens);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the completionTokens of this {@link TokenUsage} instance.
+        *
+        * @param completionTokens  Number of tokens used in the input
+        * @return The TokenUsage builder.
+        */
+        Builder1 completionTokens( @Nonnull final Integer completionTokens);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the promptTokens of this {@link TokenUsage} instance.
+        *
+        * @param promptTokens  Number of tokens used in the output
+        * @return The TokenUsage builder.
+        */
+        Builder2 promptTokens( @Nonnull final Integer promptTokens);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the totalTokens of this {@link TokenUsage} instance.
+        *
+        * @param totalTokens  Total number of tokens used
+        * @return The TokenUsage instance.
+        */
+        TokenUsage totalTokens( @Nonnull final Integer totalTokens);
+    }
 
 }
 

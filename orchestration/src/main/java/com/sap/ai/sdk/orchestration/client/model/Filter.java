@@ -40,7 +40,6 @@ import javax.annotation.Nullable;
 /**
  * Filter
  */
-
 // CHECKSTYLE:OFF
 public class Filter 
 // CHECKSTYLE:ON
@@ -54,59 +53,60 @@ public class Filter
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected Filter() {  }
 
    /**
-   * Set the type of this {@link Filter} instance and return the same instance.
-   *
-   * @param type  The type of this {@link Filter}
-   * @return The same instance of this {@link Filter} class
-   */
+    * Set the type of this {@link Filter} instance and return the same instance.
+    *
+    * @param type  The type of this {@link Filter}
+    * @return The same instance of this {@link Filter} class
+    */
    @Nonnull public Filter type(@Nonnull final ProviderType type) {
     this.type = type;
     return this;
   }
 
    /**
-   * Get type
-   * @return type  The type of this {@link Filter} instance.
-  **/
+    * Get type
+    * @return type  The type of this {@link Filter} instance.
+    */
   @Nonnull public ProviderType getType() {
     return type;
   }
 
   /**
-  * Set the type of this {@link Filter} instance.
-  *
-  * @param type  The type of this {@link Filter}
-  */
+   * Set the type of this {@link Filter} instance.
+   *
+   * @param type  The type of this {@link Filter}
+   */
   public void setType( @Nonnull final ProviderType type) {
     this.type = type;
   }
 
    /**
-   * Set the config of this {@link Filter} instance and return the same instance.
-   *
-   * @param config  The config of this {@link Filter}
-   * @return The same instance of this {@link Filter} class
-   */
+    * Set the config of this {@link Filter} instance and return the same instance.
+    *
+    * @param config  The config of this {@link Filter}
+    * @return The same instance of this {@link Filter} class
+    */
    @Nonnull public Filter config(@Nonnull final FilterConfig config) {
     this.config = config;
     return this;
   }
 
    /**
-   * Get config
-   * @return config  The config of this {@link Filter} instance.
-  **/
+    * Get config
+    * @return config  The config of this {@link Filter} instance.
+    */
   @Nonnull public FilterConfig getConfig() {
     return config;
   }
 
   /**
-  * Set the config of this {@link Filter} instance.
-  *
-  * @param config  The config of this {@link Filter}
-  */
+   * Set the config of this {@link Filter} instance.
+   *
+   * @param config  The config of this {@link Filter}
+   */
   public void setConfig( @Nonnull final FilterConfig config) {
     this.config = config;
   }
@@ -188,6 +188,25 @@ public class Filter
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link Filter} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (type) -> new Filter().type(type);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the type of this {@link Filter} instance.
+        *
+        * @param type  The type of this {@link Filter}
+        * @return The Filter instance.
+        */
+        Filter type( @Nonnull final ProviderType type);
+    }
 
 }
 
