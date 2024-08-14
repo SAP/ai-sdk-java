@@ -75,12 +75,13 @@ public AiDeploymentCreationResponse createDeployment() {
       new DeploymentApi(getClient())
           .deploymentCreate(
               "default",
-              AiDeploymentCreationRequest.create().configurationId("12345-123-123-123-123456abcdefg"));
+              AiDeploymentCreationRequest.create()
+                  .configurationId("12345-123-123-123-123456abcdefg"));
 
   Objects.requireNonNull(deployment, "Deployment creation failed");
 
   String id = deployment.getId();
-  Status status = deployment.getStatus();
+  AiExecutionStatus status = deployment.getStatus();
 
   return deployment;
 }
@@ -95,12 +96,12 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 
   DeploymentApi client = new DeploymentApi(getClient());
 
-  if (deployment.getStatus() == Status.RUNNING) {
+  if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
     // Only RUNNING deployments can be STOPPED
     client.deploymentModify(
         "default",
         deployment.getId(),
-        AiDeploymentModificationRequest.create().targetStatus(Status.STOPPED));
+        AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
   }
   // Wait a few seconds for the deployment to stop
   // Only UNKNOWN and STOPPED deployments can be DELETED
@@ -180,12 +181,15 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 ### Simple chat completion
 
 ```java
+final var systemMessage =
+    new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
 final var userMessage =
-    new OpenAiChatUserMessage().setContent("Hello World! Why is this phrase so famous?");
+    new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
 final var request =
     new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
 
-final OpenAiChatCompletionOutput result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
 final String resultMessage = result.getChoices().get(0).getMessage().getContent();
 ```
@@ -196,7 +200,7 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 
 ```java
 final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(new OpenAiModel(model)).chatCompletion(request);
+    OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
 
 ## Orchestration chat completion
@@ -257,7 +261,7 @@ final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelPa
 
 final var inputParams =
     Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-final var template = ChatMessage.create().content("{{?input}}").role("user");
+final var template = ChatMessage.create().role("user").content("{{?input}}");
 final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
 final var config =
@@ -274,7 +278,7 @@ final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
         .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -290,7 +294,8 @@ List<ChatMessage> messagesHistory =
         ChatMessage.create().role("user").content("What is the capital of France?"),
         ChatMessage.create().role("assistant").content("The capital of France is Paris."));
 
-final var message = ChatMessage.create().role("user").content("What is the typical food there?");
+final var message =
+    ChatMessage.create().role("user").content("What is the typical food there?");
 final var templatingConfig = TemplatingModuleConfig.create().template(message);
 
 final var config =
@@ -308,7 +313,7 @@ final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
         .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -325,7 +330,7 @@ final var inputParams =
         "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
 final var template =
     ChatMessage.create()
-            .role("user")
+        .role("user")
         .content(
             "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
 final var templatingConfig = TemplatingModuleConfig.create().template(template);
@@ -351,7 +356,8 @@ final var filterLoose =
 
 final var filteringConfig =
     FilteringModuleConfig.create()
-        .input(FilteringConfig.create().filters(filterStrict)) // changing the input to filterLoose will allow the message to pass
+        // changing the input to filterLoose will allow the message to pass
+        .input(FilteringConfig.create().filters(filterStrict))
         .output(FilteringConfig.create().filters(filterStrict));
 
 final var config =
@@ -360,16 +366,17 @@ final var config =
             OrchestrationConfig.create()
                 .moduleConfigurations(
                     ModuleConfigs.create()
-                          .llmModuleConfig(llmConfig)
+                        .llmModuleConfig(llmConfig)
                         .templatingModuleConfig(templatingConfig)
                         .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
-        .orchestrationV1EndpointsCreate(config); // this fails with Bad Request because the strict filter prohibits the input message
+        // this fails with Bad Request because the strict filter prohibits the input message
+        .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -381,7 +388,7 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 Change your LLM module configuration to add model parameters:
 
 ```java
-var llmModuleConfig =
+var llmConfig =
     LLMModuleConfig.create()
         .modelName("gpt-35-turbo")
         .modelParams(
