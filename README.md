@@ -1,4 +1,5 @@
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-java)](https://api.reuse.software/info/github.com/SAP/ai-sdk-java)
+[![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
+
 
 # AI SDK for Java
 
