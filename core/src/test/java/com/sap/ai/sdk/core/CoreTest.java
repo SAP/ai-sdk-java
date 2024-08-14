@@ -19,7 +19,7 @@ public class CoreTest {
   @Test
   @SneakyThrows
   void getDestinationWithoutEnvVarFailsLocally() {
-    variables.set("aicore", null);
+    variables.set("AICORE_SERVICE_KEY", null);
     assertThatThrownBy(Core::getDestination)
         .isExactlyInstanceOf(DestinationAccessException.class)
         .hasMessage("Could not find any matching service bindings for service identifier 'aicore'");
@@ -28,17 +28,17 @@ public class CoreTest {
   @Test
   @SneakyThrows
   void getDestinationWithBrokenEnvVarFailsLocally() {
-    variables.set("aicore", "");
+    variables.set("AICORE_SERVICE_KEY", "");
     assertThatThrownBy(Core::getDestination)
         .isExactlyInstanceOf(Core.AiCoreCredentialsInvalidException.class)
-        .hasMessage("Error in parsing service key from the \"aicore\" environment variable.");
+        .hasMessage("Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.");
   }
 
   @Test
   @SneakyThrows
   void getDestinationWithEnvVarSucceedsLocally() {
     variables.set(
-        "aicore",
+        "AICORE_SERVICE_KEY",
         """
         {
           "clientid": "",

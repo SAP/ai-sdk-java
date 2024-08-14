@@ -407,13 +407,16 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 
 ### Set AI Core credentials as environment variable
 
+- Running the application locally without a service binding will throw:
+
+  `Could not find any matching service bindings for service identifier 'aicore'`
 - Go into the BTP Cockpit
 - Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
-- Set it as an environment variable `aicore` in your IDE
+- Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
 
   Or in your terminal:
 ```shell
-export aicore='{   "serviceurls": {     "AI_API_URL": ...'
+export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ```
 
 ### Run the Spring Boot application
