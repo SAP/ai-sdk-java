@@ -51,6 +51,7 @@ public class BckndResourcePatchNodes
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndResourcePatchNodes() {  }
 
    /**
     * Set the name of this {@link BckndResourcePatchNodes} instance and return the same instance.
@@ -186,6 +187,36 @@ public class BckndResourcePatchNodes
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndResourcePatchNodes} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (request) -> new BckndResourcePatchNodes().name(name).request(request);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link BckndResourcePatchNodes} instance.
+        *
+        * @param name  The name of this {@link BckndResourcePatchNodes}
+        * @return The BckndResourcePatchNodes builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the request of this {@link BckndResourcePatchNodes} instance.
+        *
+        * @param request  The request of this {@link BckndResourcePatchNodes}
+        * @return The BckndResourcePatchNodes instance.
+        */
+        BckndResourcePatchNodes request( @Nonnull final Integer request);
+    }
 
 }
 

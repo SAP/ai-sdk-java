@@ -51,6 +51,7 @@ public class RTAOutputArtifactArgumentBinding
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAOutputArtifactArgumentBinding() {  }
 
    /**
     * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
@@ -186,6 +187,24 @@ public class RTAOutputArtifactArgumentBinding
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAOutputArtifactArgumentBinding} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> new RTAOutputArtifactArgumentBinding().name(name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance.
+        *
+        * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
+        * @return The RTAOutputArtifactArgumentBinding instance.
+        */
+        RTAOutputArtifactArgumentBinding name( @Nonnull final String name);
+    }
 
 }
 

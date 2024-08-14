@@ -68,6 +68,7 @@ public class AiScenario
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiScenario() {  }
 
    /**
     * Set the name of this {@link AiScenario} instance and return the same instance.
@@ -335,6 +336,60 @@ public class AiScenario
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiScenario} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (id) -> (createdAt) -> (modifiedAt) -> new AiScenario().name(name).id(id).createdAt(createdAt).modifiedAt(modifiedAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link AiScenario} instance.
+        *
+        * @param name  Name of the scenario
+        * @return The AiScenario builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the id of this {@link AiScenario} instance.
+        *
+        * @param id  ID of the scenario
+        * @return The AiScenario builder.
+        */
+        Builder2 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the createdAt of this {@link AiScenario} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The AiScenario builder.
+        */
+        Builder3 createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the modifiedAt of this {@link AiScenario} instance.
+        *
+        * @param modifiedAt  Timestamp of latest resource modification
+        * @return The AiScenario instance.
+        */
+        AiScenario modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
+    }
 
 }
 

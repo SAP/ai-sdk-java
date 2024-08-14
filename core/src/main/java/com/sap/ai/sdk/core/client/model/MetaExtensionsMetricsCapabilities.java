@@ -48,6 +48,7 @@ public class MetaExtensionsMetricsCapabilities
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaExtensionsMetricsCapabilities() {  }
 
    /**
     * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance and return the same instance.
@@ -153,6 +154,12 @@ public class MetaExtensionsMetricsCapabilities
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaExtensionsMetricsCapabilities} instance. No arguments are required.
+    */
+    public static MetaExtensionsMetricsCapabilities create() {
+        return new MetaExtensionsMetricsCapabilities();
+    }
 
 }
 

@@ -107,7 +107,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         """)));
 
     AiEnactmentCreationRequest enactmentCreationRequest =
-        new AiEnactmentCreationRequest().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
+        AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
     final AiExecutionCreationResponse execution =
         new ExecutionApi(getClient(destination)).executionCreate("default", enactmentCreationRequest);
     assertThat(execution).isNotNull();

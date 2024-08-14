@@ -160,6 +160,7 @@ public class AiExecutionResponseWithDetails
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionResponseWithDetails() {  }
 
    /**
     * Set the id of this {@link AiExecutionResponseWithDetails} instance and return the same instance.
@@ -697,6 +698,72 @@ public class AiExecutionResponseWithDetails
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionResponseWithDetails} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (configurationId) -> (status) -> (createdAt) -> (modifiedAt) -> new AiExecutionResponseWithDetails().id(id).configurationId(configurationId).status(status).createdAt(createdAt).modifiedAt(modifiedAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link AiExecutionResponseWithDetails} instance.
+        *
+        * @param id  ID of the execution
+        * @return The AiExecutionResponseWithDetails builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the configurationId of this {@link AiExecutionResponseWithDetails} instance.
+        *
+        * @param configurationId  ID of the configuration
+        * @return The AiExecutionResponseWithDetails builder.
+        */
+        Builder2 configurationId( @Nonnull final String configurationId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the status of this {@link AiExecutionResponseWithDetails} instance.
+        *
+        * @param status  The status of this {@link AiExecutionResponseWithDetails}
+        * @return The AiExecutionResponseWithDetails builder.
+        */
+        Builder3 status( @Nonnull final AiExecutionStatus status);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the createdAt of this {@link AiExecutionResponseWithDetails} instance.
+        *
+        * @param createdAt  Timestamp of resource creation
+        * @return The AiExecutionResponseWithDetails builder.
+        */
+        Builder4 createdAt( @Nonnull final OffsetDateTime createdAt);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder4 {
+        /**
+        * Set the modifiedAt of this {@link AiExecutionResponseWithDetails} instance.
+        *
+        * @param modifiedAt  Timestamp of latest resource modification
+        * @return The AiExecutionResponseWithDetails instance.
+        */
+        AiExecutionResponseWithDetails modifiedAt( @Nonnull final OffsetDateTime modifiedAt);
+    }
 
 }
 

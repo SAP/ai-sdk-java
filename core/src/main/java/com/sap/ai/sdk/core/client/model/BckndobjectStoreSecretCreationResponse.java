@@ -48,6 +48,7 @@ public class BckndobjectStoreSecretCreationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndobjectStoreSecretCreationResponse() {  }
 
    /**
     * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance and return the same instance.
@@ -153,6 +154,12 @@ public class BckndobjectStoreSecretCreationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndobjectStoreSecretCreationResponse} instance. No arguments are required.
+    */
+    public static BckndobjectStoreSecretCreationResponse create() {
+        return new BckndobjectStoreSecretCreationResponse();
+    }
 
 }
 

@@ -61,6 +61,7 @@ public class BckndServiceServicePlanItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndServiceServicePlanItem() {  }
 
    /**
     * Set the description of this {@link BckndServiceServicePlanItem} instance and return the same instance.
@@ -286,6 +287,12 @@ public class BckndServiceServicePlanItem
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndServiceServicePlanItem} instance. No arguments are required.
+    */
+    public static BckndServiceServicePlanItem create() {
+        return new BckndServiceServicePlanItem();
+    }
 
 }
 

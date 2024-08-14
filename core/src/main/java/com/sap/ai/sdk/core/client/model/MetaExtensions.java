@@ -60,6 +60,7 @@ public class MetaExtensions
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaExtensions() {  }
 
    /**
     * Set the analytics of this {@link MetaExtensions} instance and return the same instance.
@@ -255,6 +256,12 @@ public class MetaExtensions
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaExtensions} instance. No arguments are required.
+    */
+    public static MetaExtensions create() {
+        return new MetaExtensions();
+    }
 
 }
 

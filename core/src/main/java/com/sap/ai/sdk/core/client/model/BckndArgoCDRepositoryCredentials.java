@@ -51,6 +51,7 @@ public class BckndArgoCDRepositoryCredentials
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndArgoCDRepositoryCredentials() {  }
 
    /**
     * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
@@ -186,6 +187,36 @@ public class BckndArgoCDRepositoryCredentials
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDRepositoryCredentials} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (username) -> (password) -> new BckndArgoCDRepositoryCredentials().username(username).password(password);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance.
+        *
+        * @param username  Username for read-access to the repository
+        * @return The BckndArgoCDRepositoryCredentials builder.
+        */
+        Builder1 username( @Nonnull final String username);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance.
+        *
+        * @param password  Password for read-access to the repository
+        * @return The BckndArgoCDRepositoryCredentials instance.
+        */
+        BckndArgoCDRepositoryCredentials password( @Nonnull final String password);
+    }
 
 }
 

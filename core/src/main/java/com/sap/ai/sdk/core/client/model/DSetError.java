@@ -64,6 +64,7 @@ public class DSetError
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected DSetError() {  }
 
    /**
     * Set the code of this {@link DSetError} instance and return the same instance.
@@ -301,6 +302,36 @@ public class DSetError
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link DSetError} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (code) -> (message) -> new DSetError().code(code).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the code of this {@link DSetError} instance.
+        *
+        * @param code  The code of this {@link DSetError}
+        * @return The DSetError builder.
+        */
+        Builder1 code( @Nonnull final String code);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link DSetError} instance.
+        *
+        * @param message  The message of this {@link DSetError}
+        * @return The DSetError instance.
+        */
+        DSetError message( @Nonnull final String message);
+    }
 
 }
 

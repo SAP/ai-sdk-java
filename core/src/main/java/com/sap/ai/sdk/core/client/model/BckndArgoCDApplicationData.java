@@ -57,6 +57,7 @@ public class BckndArgoCDApplicationData
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndArgoCDApplicationData() {  }
 
    /**
     * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance and return the same instance.
@@ -252,6 +253,48 @@ public class BckndArgoCDApplicationData
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndArgoCDApplicationData} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (repositoryUrl) -> (revision) -> (path) -> new BckndArgoCDApplicationData().repositoryUrl(repositoryUrl).revision(revision).path(path);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance.
+        *
+        * @param repositoryUrl  URL of the repository to synchronise
+        * @return The BckndArgoCDApplicationData builder.
+        */
+        Builder1 repositoryUrl( @Nonnull final String repositoryUrl);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the revision of this {@link BckndArgoCDApplicationData} instance.
+        *
+        * @param revision  revision to synchronise
+        * @return The BckndArgoCDApplicationData builder.
+        */
+        Builder2 revision( @Nonnull final String revision);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the path of this {@link BckndArgoCDApplicationData} instance.
+        *
+        * @param path  path within the repository to synchronise
+        * @return The BckndArgoCDApplicationData instance.
+        */
+        BckndArgoCDApplicationData path( @Nonnull final String path);
+    }
 
 }
 

@@ -51,6 +51,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaAiApiCapabilitiesBulkUpdates() {  }
 
    /**
     * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
@@ -186,6 +187,12 @@ public class MetaAiApiCapabilitiesBulkUpdates
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaAiApiCapabilitiesBulkUpdates} instance. No arguments are required.
+    */
+    public static MetaAiApiCapabilitiesBulkUpdates create() {
+        return new MetaAiApiCapabilitiesBulkUpdates();
+    }
 
 }
 

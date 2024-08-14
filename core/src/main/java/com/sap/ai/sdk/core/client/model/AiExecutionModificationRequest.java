@@ -97,6 +97,7 @@ public class AiExecutionModificationRequest
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionModificationRequest() {  }
 
    /**
     * Set the targetStatus of this {@link AiExecutionModificationRequest} instance and return the same instance.
@@ -202,6 +203,24 @@ public class AiExecutionModificationRequest
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionModificationRequest} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (targetStatus) -> new AiExecutionModificationRequest().targetStatus(targetStatus);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the targetStatus of this {@link AiExecutionModificationRequest} instance.
+        *
+        * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
+        * @return The AiExecutionModificationRequest instance.
+        */
+        AiExecutionModificationRequest targetStatus( @Nonnull final TargetStatusEnum targetStatus);
+    }
 
 }
 

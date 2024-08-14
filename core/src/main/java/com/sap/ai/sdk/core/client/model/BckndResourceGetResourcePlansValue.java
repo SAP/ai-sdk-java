@@ -51,6 +51,7 @@ public class BckndResourceGetResourcePlansValue
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndResourceGetResourcePlansValue() {  }
 
    /**
     * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
@@ -186,6 +187,36 @@ public class BckndResourceGetResourcePlansValue
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndResourceGetResourcePlansValue} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (provisioned) -> (requested) -> new BckndResourceGetResourcePlansValue().provisioned(provisioned).requested(requested);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
+        *
+        * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
+        * @return The BckndResourceGetResourcePlansValue builder.
+        */
+        Builder1 provisioned( @Nonnull final Integer provisioned);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance.
+        *
+        * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
+        * @return The BckndResourceGetResourcePlansValue instance.
+        */
+        BckndResourceGetResourcePlansValue requested( @Nonnull final Integer requested);
+    }
 
 }
 

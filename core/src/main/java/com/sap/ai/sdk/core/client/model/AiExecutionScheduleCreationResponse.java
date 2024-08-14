@@ -51,6 +51,7 @@ public class AiExecutionScheduleCreationResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiExecutionScheduleCreationResponse() {  }
 
    /**
     * Set the id of this {@link AiExecutionScheduleCreationResponse} instance and return the same instance.
@@ -186,6 +187,36 @@ public class AiExecutionScheduleCreationResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiExecutionScheduleCreationResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (message) -> new AiExecutionScheduleCreationResponse().id(id).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link AiExecutionScheduleCreationResponse} instance.
+        *
+        * @param id  Generic ID
+        * @return The AiExecutionScheduleCreationResponse builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link AiExecutionScheduleCreationResponse} instance.
+        *
+        * @param message  Message
+        * @return The AiExecutionScheduleCreationResponse instance.
+        */
+        AiExecutionScheduleCreationResponse message( @Nonnull final String message);
+    }
 
 }
 

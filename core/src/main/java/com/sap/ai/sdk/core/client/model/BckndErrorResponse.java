@@ -49,6 +49,7 @@ public class BckndErrorResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndErrorResponse() {  }
 
    /**
     * Set the error of this {@link BckndErrorResponse} instance and return the same instance.
@@ -154,6 +155,12 @@ public class BckndErrorResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndErrorResponse} instance. No arguments are required.
+    */
+    public static BckndErrorResponse create() {
+        return new BckndErrorResponse();
+    }
 
 }
 

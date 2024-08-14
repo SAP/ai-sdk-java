@@ -61,6 +61,7 @@ public class ErrorResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected ErrorResponse() {  }
 
    /**
     * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
@@ -286,6 +287,60 @@ public class ErrorResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (requestId) -> (code) -> (message) -> (location) -> new ErrorResponse().requestId(requestId).code(code).message(message).location(location);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the requestId of this {@link ErrorResponse} instance.
+        *
+        * @param requestId  The requestId of this {@link ErrorResponse}
+        * @return The ErrorResponse builder.
+        */
+        Builder1 requestId( @Nonnull final String requestId);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the code of this {@link ErrorResponse} instance.
+        *
+        * @param code  The code of this {@link ErrorResponse}
+        * @return The ErrorResponse builder.
+        */
+        Builder2 code( @Nonnull final Integer code);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder2 {
+        /**
+        * Set the message of this {@link ErrorResponse} instance.
+        *
+        * @param message  The message of this {@link ErrorResponse}
+        * @return The ErrorResponse builder.
+        */
+        Builder3 message( @Nonnull final String message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder3 {
+        /**
+        * Set the location of this {@link ErrorResponse} instance.
+        *
+        * @param location  Where the error occurred
+        * @return The ErrorResponse instance.
+        */
+        ErrorResponse location( @Nonnull final String location);
+    }
 
 }
 

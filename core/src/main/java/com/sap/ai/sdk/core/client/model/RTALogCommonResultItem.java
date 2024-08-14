@@ -52,6 +52,7 @@ public class RTALogCommonResultItem
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTALogCommonResultItem() {  }
 
    /**
     * Set the timestamp of this {@link RTALogCommonResultItem} instance and return the same instance.
@@ -187,6 +188,12 @@ public class RTALogCommonResultItem
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link RTALogCommonResultItem} instance. No arguments are required.
+    */
+    public static RTALogCommonResultItem create() {
+        return new RTALogCommonResultItem();
+    }
 
 }
 

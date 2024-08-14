@@ -51,6 +51,7 @@ public class AiLabel
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected AiLabel() {  }
 
    /**
     * Set the key of this {@link AiLabel} instance and return the same instance.
@@ -186,6 +187,36 @@ public class AiLabel
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link AiLabel} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (key) -> (value) -> new AiLabel().key(key).value(value);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the key of this {@link AiLabel} instance.
+        *
+        * @param key  The key of this {@link AiLabel}
+        * @return The AiLabel builder.
+        */
+        Builder1 key( @Nonnull final String key);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the value of this {@link AiLabel} instance.
+        *
+        * @param value  The value of this {@link AiLabel}
+        * @return The AiLabel instance.
+        */
+        AiLabel value( @Nonnull final String value);
+    }
 
 }
 

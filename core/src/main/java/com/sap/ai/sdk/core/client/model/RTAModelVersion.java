@@ -51,6 +51,7 @@ public class RTAModelVersion
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected RTAModelVersion() {  }
 
    /**
     * Set the name of this {@link RTAModelVersion} instance and return the same instance.
@@ -186,6 +187,36 @@ public class RTAModelVersion
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link RTAModelVersion} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (isLatest) -> new RTAModelVersion().name(name).isLatest(isLatest);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link RTAModelVersion} instance.
+        *
+        * @param name  Name of model version
+        * @return The RTAModelVersion builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the isLatest of this {@link RTAModelVersion} instance.
+        *
+        * @param isLatest  Displays whether it is the latest version offered for the model
+        * @return The RTAModelVersion instance.
+        */
+        RTAModelVersion isLatest( @Nonnull final Boolean isLatest);
+    }
 
 }
 

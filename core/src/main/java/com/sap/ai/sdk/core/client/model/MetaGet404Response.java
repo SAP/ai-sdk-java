@@ -49,6 +49,7 @@ public class MetaGet404Response
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected MetaGet404Response() {  }
 
    /**
     * Set the error of this {@link MetaGet404Response} instance and return the same instance.
@@ -154,6 +155,12 @@ public class MetaGet404Response
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link MetaGet404Response} instance. No arguments are required.
+    */
+    public static MetaGet404Response create() {
+        return new MetaGet404Response();
+    }
 
 }
 

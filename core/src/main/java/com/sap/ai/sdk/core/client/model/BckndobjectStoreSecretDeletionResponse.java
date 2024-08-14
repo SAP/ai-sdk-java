@@ -51,6 +51,7 @@ public class BckndobjectStoreSecretDeletionResponse
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndobjectStoreSecretDeletionResponse() {  }
 
    /**
     * Set the id of this {@link BckndobjectStoreSecretDeletionResponse} instance and return the same instance.
@@ -186,6 +187,36 @@ public class BckndobjectStoreSecretDeletionResponse
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link BckndobjectStoreSecretDeletionResponse} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (id) -> (message) -> new BckndobjectStoreSecretDeletionResponse().id(id).message(message);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the id of this {@link BckndobjectStoreSecretDeletionResponse} instance.
+        *
+        * @param id  Generic ID
+        * @return The BckndobjectStoreSecretDeletionResponse builder.
+        */
+        Builder1 id( @Nonnull final String id);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the message of this {@link BckndobjectStoreSecretDeletionResponse} instance.
+        *
+        * @param message  Message
+        * @return The BckndobjectStoreSecretDeletionResponse instance.
+        */
+        BckndobjectStoreSecretDeletionResponse message( @Nonnull final String message);
+    }
 
 }
 

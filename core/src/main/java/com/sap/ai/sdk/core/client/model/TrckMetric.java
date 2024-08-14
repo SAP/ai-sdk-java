@@ -66,6 +66,7 @@ public class TrckMetric
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected TrckMetric() {  }
 
    /**
     * Set the name of this {@link TrckMetric} instance and return the same instance.
@@ -306,6 +307,36 @@ public class TrckMetric
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a type-safe, fluent-api builder object to construct a new {@link TrckMetric} instance with all required arguments.
+    */
+    public static Builder create() {
+        return (name) -> (value) -> new TrckMetric().name(name).value(value);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder {
+        /**
+        * Set the name of this {@link TrckMetric} instance.
+        *
+        * @param name  Name of the metric
+        * @return The TrckMetric builder.
+        */
+        Builder1 name( @Nonnull final String name);
+    }
+    /**
+    * Builder helper class.
+    */
+    public interface Builder1 {
+        /**
+        * Set the value of this {@link TrckMetric} instance.
+        *
+        * @param value  Numeric Value of the metric
+        * @return The TrckMetric instance.
+        */
+        TrckMetric value( @Nonnull final BigDecimal value);
+    }
 
 }
 

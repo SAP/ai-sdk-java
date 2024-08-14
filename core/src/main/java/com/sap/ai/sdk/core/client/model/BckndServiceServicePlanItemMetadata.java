@@ -110,6 +110,7 @@ public class BckndServiceServicePlanItemMetadata
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  protected BckndServiceServicePlanItemMetadata() {  }
 
    /**
     * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance and return the same instance.
@@ -227,6 +228,12 @@ public class BckndServiceServicePlanItemMetadata
     return o.toString().replace("\n", "\n    ");
   }
 
+    /**
+    * Create a new {@link BckndServiceServicePlanItemMetadata} instance. No arguments are required.
+    */
+    public static BckndServiceServicePlanItemMetadata create() {
+        return new BckndServiceServicePlanItemMetadata();
+    }
 
 }
 

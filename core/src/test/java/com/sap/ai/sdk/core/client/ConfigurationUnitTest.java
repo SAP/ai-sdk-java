@@ -93,15 +93,14 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         """)));
 
     AiConfigurationBaseData configurationBaseData =
-        new AiConfigurationBaseData()
+        AiConfigurationBaseData.create()
             .name("i538344_exec_config")
             .executableId("aicore-nvidia")
             .scenarioId("foundation-models")
-            .inputArtifactBindings(
-                List.of(
-                    new AiArtifactArgumentBinding()
-                        .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7")
-                        .key("spam-data")));
+            .addInputArtifactBindingsItem(
+                    AiArtifactArgumentBinding.create()
+                            .key("spam-data")
+                        .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7"));
     final AiConfigurationCreationResponse configuration =
         new ConfigurationApi(getClient(destination)).configurationCreate("default", configurationBaseData);
     assertThat(configuration).isNotNull();
