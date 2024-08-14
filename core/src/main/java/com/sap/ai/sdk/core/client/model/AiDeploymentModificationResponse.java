@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * AiDeploymentModificationResponse
  */
-
 // CHECKSTYLE:OFF
 public class AiDeploymentModificationResponse 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiDeploymentModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiDeploymentModificationResponse} instance and return the same instance.
-   *
-   * @param id  Generic ID
-   * @return The same instance of this {@link AiDeploymentModificationResponse} class
-   */
+    * Set the id of this {@link AiDeploymentModificationResponse} instance and return the same instance.
+    *
+    * @param id  Generic ID
+    * @return The same instance of this {@link AiDeploymentModificationResponse} class
+    */
    @Nonnull public AiDeploymentModificationResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Generic ID
-   * @return id  The id of this {@link AiDeploymentModificationResponse} instance.
-  **/
+    * Generic ID
+    * @return id  The id of this {@link AiDeploymentModificationResponse} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiDeploymentModificationResponse} instance.
-  *
-  * @param id  Generic ID
-  */
+   * Set the id of this {@link AiDeploymentModificationResponse} instance.
+   *
+   * @param id  Generic ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the message of this {@link AiDeploymentModificationResponse} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link AiDeploymentModificationResponse} class
-   */
+    * Set the message of this {@link AiDeploymentModificationResponse} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link AiDeploymentModificationResponse} class
+    */
    @Nonnull public AiDeploymentModificationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link AiDeploymentModificationResponse} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link AiDeploymentModificationResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link AiDeploymentModificationResponse} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link AiDeploymentModificationResponse} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -186,6 +185,7 @@ public class AiDeploymentModificationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

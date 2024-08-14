@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * AiLabel
  */
-
 // CHECKSTYLE:OFF
 public class AiLabel 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiLabel
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link AiLabel} instance and return the same instance.
-   *
-   * @param key  The key of this {@link AiLabel}
-   * @return The same instance of this {@link AiLabel} class
-   */
+    * Set the key of this {@link AiLabel} instance and return the same instance.
+    *
+    * @param key  The key of this {@link AiLabel}
+    * @return The same instance of this {@link AiLabel} class
+    */
    @Nonnull public AiLabel key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link AiLabel} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link AiLabel} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link AiLabel} instance.
-  *
-  * @param key  The key of this {@link AiLabel}
-  */
+   * Set the key of this {@link AiLabel} instance.
+   *
+   * @param key  The key of this {@link AiLabel}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the value of this {@link AiLabel} instance and return the same instance.
-   *
-   * @param value  The value of this {@link AiLabel}
-   * @return The same instance of this {@link AiLabel} class
-   */
+    * Set the value of this {@link AiLabel} instance and return the same instance.
+    *
+    * @param value  The value of this {@link AiLabel}
+    * @return The same instance of this {@link AiLabel} class
+    */
    @Nonnull public AiLabel value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Get value
-   * @return value  The value of this {@link AiLabel} instance.
-  **/
+    * Get value
+    * @return value  The value of this {@link AiLabel} instance.
+    */
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link AiLabel} instance.
-  *
-  * @param value  The value of this {@link AiLabel}
-  */
+   * Set the value of this {@link AiLabel} instance.
+   *
+   * @param value  The value of this {@link AiLabel}
+   */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -186,6 +185,7 @@ public class AiLabel
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

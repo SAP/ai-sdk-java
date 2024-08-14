@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * BckndDeploymentUsage
  */
-
 // CHECKSTYLE:OFF
 public class BckndDeploymentUsage 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class BckndDeploymentUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
-   *
-   * @param count  The count of this {@link BckndDeploymentUsage}
-   * @return The same instance of this {@link BckndDeploymentUsage} class
-   */
+    * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
+    *
+    * @param count  The count of this {@link BckndDeploymentUsage}
+    * @return The same instance of this {@link BckndDeploymentUsage} class
+    */
    @Nonnull public BckndDeploymentUsage count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Get count
-   * @return count  The count of this {@link BckndDeploymentUsage} instance.
-  **/
+    * Get count
+    * @return count  The count of this {@link BckndDeploymentUsage} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link BckndDeploymentUsage} instance.
-  *
-  * @param count  The count of this {@link BckndDeploymentUsage}
-  */
+   * Set the count of this {@link BckndDeploymentUsage} instance.
+   *
+   * @param count  The count of this {@link BckndDeploymentUsage}
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the items of this {@link BckndDeploymentUsage} instance and return the same instance.
-   *
-   * @param items  The items of this {@link BckndDeploymentUsage}
-   * @return The same instance of this {@link BckndDeploymentUsage} class
-   */
+    * Set the items of this {@link BckndDeploymentUsage} instance and return the same instance.
+    *
+    * @param items  The items of this {@link BckndDeploymentUsage}
+    * @return The same instance of this {@link BckndDeploymentUsage} class
+    */
    @Nonnull public BckndDeploymentUsage items(@Nonnull final List<BckndUsageResourcePlanItem> items) {
     this.items = items;
     return this;
   }
   /**
-  * Add one items instance to this {@link BckndDeploymentUsage}.
-  * @param itemsItem The items that should be added
-  * @return The same instance of type {@link BckndDeploymentUsage}
-  */
-  @Nonnull public BckndDeploymentUsage additemsItem( @Nonnull final BckndUsageResourcePlanItem itemsItem) {
+   * Add one items instance to this {@link BckndDeploymentUsage}.
+   * @param itemsItem The items that should be added
+   * @return The same instance of type {@link BckndDeploymentUsage}
+   */
+  @Nonnull public BckndDeploymentUsage addItemsItem( @Nonnull final BckndUsageResourcePlanItem itemsItem) {
     if (this.items == null) {
       this.items = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class BckndDeploymentUsage
   }
 
    /**
-   * Get items
-   * @return items  The items of this {@link BckndDeploymentUsage} instance.
-  **/
+    * Get items
+    * @return items  The items of this {@link BckndDeploymentUsage} instance.
+    */
   @Nonnull public List<BckndUsageResourcePlanItem> getItems() {
     return items;
   }
 
   /**
-  * Set the items of this {@link BckndDeploymentUsage} instance.
-  *
-  * @param items  The items of this {@link BckndDeploymentUsage}
-  */
+   * Set the items of this {@link BckndDeploymentUsage} instance.
+   *
+   * @param items  The items of this {@link BckndDeploymentUsage}
+   */
   public void setItems( @Nonnull final List<BckndUsageResourcePlanItem> items) {
     this.items = items;
   }
@@ -202,6 +201,7 @@ public class BckndDeploymentUsage
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

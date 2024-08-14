@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * AiVersion
  */
-
 // CHECKSTYLE:OFF
 public class AiVersion 
 // CHECKSTYLE:ON
@@ -64,141 +63,141 @@ public class AiVersion
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the description of this {@link AiVersion} instance and return the same instance.
-   *
-   * @param description  Version description
-   * @return The same instance of this {@link AiVersion} class
-   */
+    * Set the description of this {@link AiVersion} instance and return the same instance.
+    *
+    * @param description  Version description
+    * @return The same instance of this {@link AiVersion} class
+    */
    @Nonnull public AiVersion description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-   * Version description
-   * @return description  The description of this {@link AiVersion} instance.
-  **/
+    * Version description
+    * @return description  The description of this {@link AiVersion} instance.
+    */
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-  * Set the description of this {@link AiVersion} instance.
-  *
-  * @param description  Version description
-  */
+   * Set the description of this {@link AiVersion} instance.
+   *
+   * @param description  Version description
+   */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-   * Set the id of this {@link AiVersion} instance and return the same instance.
-   *
-   * @param id  Version ID
-   * @return The same instance of this {@link AiVersion} class
-   */
+    * Set the id of this {@link AiVersion} instance and return the same instance.
+    *
+    * @param id  Version ID
+    * @return The same instance of this {@link AiVersion} class
+    */
    @Nonnull public AiVersion id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Version ID
-   * @return id  The id of this {@link AiVersion} instance.
-  **/
+    * Version ID
+    * @return id  The id of this {@link AiVersion} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiVersion} instance.
-  *
-  * @param id  Version ID
-  */
+   * Set the id of this {@link AiVersion} instance.
+   *
+   * @param id  Version ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the scenarioId of this {@link AiVersion} instance and return the same instance.
-   *
-   * @param scenarioId  ID of the scenario
-   * @return The same instance of this {@link AiVersion} class
-   */
+    * Set the scenarioId of this {@link AiVersion} instance and return the same instance.
+    *
+    * @param scenarioId  ID of the scenario
+    * @return The same instance of this {@link AiVersion} class
+    */
    @Nonnull public AiVersion scenarioId(@Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
    /**
-   * ID of the scenario
-   * @return scenarioId  The scenarioId of this {@link AiVersion} instance.
-  **/
+    * ID of the scenario
+    * @return scenarioId  The scenarioId of this {@link AiVersion} instance.
+    */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
 
   /**
-  * Set the scenarioId of this {@link AiVersion} instance.
-  *
-  * @param scenarioId  ID of the scenario
-  */
+   * Set the scenarioId of this {@link AiVersion} instance.
+   *
+   * @param scenarioId  ID of the scenario
+   */
   public void setScenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
    /**
-   * Set the createdAt of this {@link AiVersion} instance and return the same instance.
-   *
-   * @param createdAt  Timestamp of resource creation
-   * @return The same instance of this {@link AiVersion} class
-   */
+    * Set the createdAt of this {@link AiVersion} instance and return the same instance.
+    *
+    * @param createdAt  Timestamp of resource creation
+    * @return The same instance of this {@link AiVersion} class
+    */
    @Nonnull public AiVersion createdAt(@Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Timestamp of resource creation
-   * @return createdAt  The createdAt of this {@link AiVersion} instance.
-  **/
+    * Timestamp of resource creation
+    * @return createdAt  The createdAt of this {@link AiVersion} instance.
+    */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-  * Set the createdAt of this {@link AiVersion} instance.
-  *
-  * @param createdAt  Timestamp of resource creation
-  */
+   * Set the createdAt of this {@link AiVersion} instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   */
   public void setCreatedAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
    /**
-   * Set the modifiedAt of this {@link AiVersion} instance and return the same instance.
-   *
-   * @param modifiedAt  Timestamp of latest resource modification
-   * @return The same instance of this {@link AiVersion} class
-   */
+    * Set the modifiedAt of this {@link AiVersion} instance and return the same instance.
+    *
+    * @param modifiedAt  Timestamp of latest resource modification
+    * @return The same instance of this {@link AiVersion} class
+    */
    @Nonnull public AiVersion modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
    /**
-   * Timestamp of latest resource modification
-   * @return modifiedAt  The modifiedAt of this {@link AiVersion} instance.
-  **/
+    * Timestamp of latest resource modification
+    * @return modifiedAt  The modifiedAt of this {@link AiVersion} instance.
+    */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
 
   /**
-  * Set the modifiedAt of this {@link AiVersion} instance.
-  *
-  * @param modifiedAt  Timestamp of latest resource modification
-  */
+   * Set the modifiedAt of this {@link AiVersion} instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   */
   public void setModifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
   }
@@ -286,6 +285,7 @@ public class AiVersion
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

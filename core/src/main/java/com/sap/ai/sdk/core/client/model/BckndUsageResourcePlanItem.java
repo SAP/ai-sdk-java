@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndUsageResourcePlanItem
  */
-
 // CHECKSTYLE:OFF
 public class BckndUsageResourcePlanItem 
 // CHECKSTYLE:ON
@@ -57,85 +56,85 @@ public class BckndUsageResourcePlanItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
-   *
-   * @param id  The id of this {@link BckndUsageResourcePlanItem}
-   * @return The same instance of this {@link BckndUsageResourcePlanItem} class
-   */
+    * Set the id of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
+    *
+    * @param id  The id of this {@link BckndUsageResourcePlanItem}
+    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
+    */
    @Nonnull public BckndUsageResourcePlanItem id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Get id
-   * @return id  The id of this {@link BckndUsageResourcePlanItem} instance.
-  **/
+    * Get id
+    * @return id  The id of this {@link BckndUsageResourcePlanItem} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link BckndUsageResourcePlanItem} instance.
-  *
-  * @param id  The id of this {@link BckndUsageResourcePlanItem}
-  */
+   * Set the id of this {@link BckndUsageResourcePlanItem} instance.
+   *
+   * @param id  The id of this {@link BckndUsageResourcePlanItem}
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the resourcePlanType of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
-   *
-   * @param resourcePlanType  The resourcePlanType of this {@link BckndUsageResourcePlanItem}
-   * @return The same instance of this {@link BckndUsageResourcePlanItem} class
-   */
+    * Set the resourcePlanType of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
+    *
+    * @param resourcePlanType  The resourcePlanType of this {@link BckndUsageResourcePlanItem}
+    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
+    */
    @Nonnull public BckndUsageResourcePlanItem resourcePlanType(@Nonnull final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
     return this;
   }
 
    /**
-   * Get resourcePlanType
-   * @return resourcePlanType  The resourcePlanType of this {@link BckndUsageResourcePlanItem} instance.
-  **/
+    * Get resourcePlanType
+    * @return resourcePlanType  The resourcePlanType of this {@link BckndUsageResourcePlanItem} instance.
+    */
   @Nonnull public String getResourcePlanType() {
     return resourcePlanType;
   }
 
   /**
-  * Set the resourcePlanType of this {@link BckndUsageResourcePlanItem} instance.
-  *
-  * @param resourcePlanType  The resourcePlanType of this {@link BckndUsageResourcePlanItem}
-  */
+   * Set the resourcePlanType of this {@link BckndUsageResourcePlanItem} instance.
+   *
+   * @param resourcePlanType  The resourcePlanType of this {@link BckndUsageResourcePlanItem}
+   */
   public void setResourcePlanType( @Nonnull final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
   }
 
    /**
-   * Set the configuredMaxReplicas of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
-   *
-   * @param configuredMaxReplicas  The configuredMaxReplicas of this {@link BckndUsageResourcePlanItem}
-   * @return The same instance of this {@link BckndUsageResourcePlanItem} class
-   */
+    * Set the configuredMaxReplicas of this {@link BckndUsageResourcePlanItem} instance and return the same instance.
+    *
+    * @param configuredMaxReplicas  The configuredMaxReplicas of this {@link BckndUsageResourcePlanItem}
+    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
+    */
    @Nonnull public BckndUsageResourcePlanItem configuredMaxReplicas(@Nonnull final Integer configuredMaxReplicas) {
     this.configuredMaxReplicas = configuredMaxReplicas;
     return this;
   }
 
    /**
-   * Get configuredMaxReplicas
-   * @return configuredMaxReplicas  The configuredMaxReplicas of this {@link BckndUsageResourcePlanItem} instance.
-  **/
+    * Get configuredMaxReplicas
+    * @return configuredMaxReplicas  The configuredMaxReplicas of this {@link BckndUsageResourcePlanItem} instance.
+    */
   @Nonnull public Integer getConfiguredMaxReplicas() {
     return configuredMaxReplicas;
   }
 
   /**
-  * Set the configuredMaxReplicas of this {@link BckndUsageResourcePlanItem} instance.
-  *
-  * @param configuredMaxReplicas  The configuredMaxReplicas of this {@link BckndUsageResourcePlanItem}
-  */
+   * Set the configuredMaxReplicas of this {@link BckndUsageResourcePlanItem} instance.
+   *
+   * @param configuredMaxReplicas  The configuredMaxReplicas of this {@link BckndUsageResourcePlanItem}
+   */
   public void setConfiguredMaxReplicas( @Nonnull final Integer configuredMaxReplicas) {
     this.configuredMaxReplicas = configuredMaxReplicas;
   }
@@ -219,6 +218,7 @@ public class BckndUsageResourcePlanItem
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

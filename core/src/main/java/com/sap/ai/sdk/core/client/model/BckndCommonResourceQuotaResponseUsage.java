@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndCommonResourceQuotaResponseUsage
  */
-
 // CHECKSTYLE:OFF
 public class BckndCommonResourceQuotaResponseUsage 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class BckndCommonResourceQuotaResponseUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance and return the same instance.
-   *
-   * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
-   * @return The same instance of this {@link BckndCommonResourceQuotaResponseUsage} class
-   */
+    * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance and return the same instance.
+    *
+    * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
+    * @return The same instance of this {@link BckndCommonResourceQuotaResponseUsage} class
+    */
    @Nonnull public BckndCommonResourceQuotaResponseUsage count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Get count
-   * @return count  The count of this {@link BckndCommonResourceQuotaResponseUsage} instance.
-  **/
+    * Get count
+    * @return count  The count of this {@link BckndCommonResourceQuotaResponseUsage} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance.
-  *
-  * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
-  */
+   * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance.
+   *
+   * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
@@ -153,6 +152,7 @@ public class BckndCommonResourceQuotaResponseUsage
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

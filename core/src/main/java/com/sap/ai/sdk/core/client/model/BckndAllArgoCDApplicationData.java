@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * list of applications
  */
-
 // CHECKSTYLE:OFF
 public class BckndAllArgoCDApplicationData 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class BckndAllArgoCDApplicationData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
-   */
+    * Set the count of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
+    */
    @Nonnull public BckndAllArgoCDApplicationData count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link BckndAllArgoCDApplicationData} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link BckndAllArgoCDApplicationData} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link BckndAllArgoCDApplicationData} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link BckndAllArgoCDApplicationData} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
-   * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
-   */
+    * Set the resources of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
+    * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
+    */
    @Nonnull public BckndAllArgoCDApplicationData resources(@Nonnull final List<BckndArgoCDApplicationData> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link BckndAllArgoCDApplicationData}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link BckndAllArgoCDApplicationData}
-  */
-  @Nonnull public BckndAllArgoCDApplicationData addresourcesItem( @Nonnull final BckndArgoCDApplicationData resourcesItem) {
+   * Add one resources instance to this {@link BckndAllArgoCDApplicationData}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link BckndAllArgoCDApplicationData}
+   */
+  @Nonnull public BckndAllArgoCDApplicationData addResourcesItem( @Nonnull final BckndArgoCDApplicationData resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class BckndAllArgoCDApplicationData
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link BckndAllArgoCDApplicationData} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link BckndAllArgoCDApplicationData} instance.
+    */
   @Nonnull public List<BckndArgoCDApplicationData> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link BckndAllArgoCDApplicationData} instance.
-  *
-  * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
-  */
+   * Set the resources of this {@link BckndAllArgoCDApplicationData} instance.
+   *
+   * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
+   */
   public void setResources( @Nonnull final List<BckndArgoCDApplicationData> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class BckndAllArgoCDApplicationData
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

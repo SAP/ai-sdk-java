@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * BckndDeploymentQuotaItem
  */
-
 // CHECKSTYLE:OFF
 public class BckndDeploymentQuotaItem 
 // CHECKSTYLE:ON
@@ -55,57 +54,57 @@ public class BckndDeploymentQuotaItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
-   *
-   * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
-   * @return The same instance of this {@link BckndDeploymentQuotaItem} class
-   */
+    * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
+    *
+    * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
+    * @return The same instance of this {@link BckndDeploymentQuotaItem} class
+    */
    @Nonnull public BckndDeploymentQuotaItem resourcePlanType(@Nonnull final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
     return this;
   }
 
    /**
-   * Get resourcePlanType
-   * @return resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem} instance.
-  **/
+    * Get resourcePlanType
+    * @return resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem} instance.
+    */
   @Nonnull public String getResourcePlanType() {
     return resourcePlanType;
   }
 
   /**
-  * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance.
-  *
-  * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
-  */
+   * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance.
+   *
+   * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
+   */
   public void setResourcePlanType( @Nonnull final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
   }
 
    /**
-   * Set the deploymentQuota of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
-   *
-   * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
-   * @return The same instance of this {@link BckndDeploymentQuotaItem} class
-   */
+    * Set the deploymentQuota of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
+    *
+    * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
+    * @return The same instance of this {@link BckndDeploymentQuotaItem} class
+    */
    @Nonnull public BckndDeploymentQuotaItem deploymentQuota(@Nonnull final BckndDeploymentQuota deploymentQuota) {
     this.deploymentQuota = deploymentQuota;
     return this;
   }
 
    /**
-   * Get deploymentQuota
-   * @return deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem} instance.
-  **/
+    * Get deploymentQuota
+    * @return deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem} instance.
+    */
   @Nonnull public BckndDeploymentQuota getDeploymentQuota() {
     return deploymentQuota;
   }
 
   /**
-  * Set the deploymentQuota of this {@link BckndDeploymentQuotaItem} instance.
-  *
-  * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
-  */
+   * Set the deploymentQuota of this {@link BckndDeploymentQuotaItem} instance.
+   *
+   * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
+   */
   public void setDeploymentQuota( @Nonnull final BckndDeploymentQuota deploymentQuota) {
     this.deploymentQuota = deploymentQuota;
   }
@@ -187,6 +186,7 @@ public class BckndDeploymentQuotaItem
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

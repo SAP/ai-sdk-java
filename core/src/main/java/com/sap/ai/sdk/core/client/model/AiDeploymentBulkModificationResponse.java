@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * Response object with array of deployments
  */
-
 // CHECKSTYLE:OFF
 public class AiDeploymentBulkModificationResponse 
 // CHECKSTYLE:ON
@@ -55,21 +54,21 @@ public class AiDeploymentBulkModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the deployments of this {@link AiDeploymentBulkModificationResponse} instance and return the same instance.
-   *
-   * @param deployments  The deployments of this {@link AiDeploymentBulkModificationResponse}
-   * @return The same instance of this {@link AiDeploymentBulkModificationResponse} class
-   */
+    * Set the deployments of this {@link AiDeploymentBulkModificationResponse} instance and return the same instance.
+    *
+    * @param deployments  The deployments of this {@link AiDeploymentBulkModificationResponse}
+    * @return The same instance of this {@link AiDeploymentBulkModificationResponse} class
+    */
    @Nonnull public AiDeploymentBulkModificationResponse deployments(@Nonnull final List<AiDeploymentModificationResponseListInner> deployments) {
     this.deployments = deployments;
     return this;
   }
   /**
-  * Add one deployments instance to this {@link AiDeploymentBulkModificationResponse}.
-  * @param deploymentsItem The deployments that should be added
-  * @return The same instance of type {@link AiDeploymentBulkModificationResponse}
-  */
-  @Nonnull public AiDeploymentBulkModificationResponse adddeploymentsItem( @Nonnull final AiDeploymentModificationResponseListInner deploymentsItem) {
+   * Add one deployments instance to this {@link AiDeploymentBulkModificationResponse}.
+   * @param deploymentsItem The deployments that should be added
+   * @return The same instance of type {@link AiDeploymentBulkModificationResponse}
+   */
+  @Nonnull public AiDeploymentBulkModificationResponse addDeploymentsItem( @Nonnull final AiDeploymentModificationResponseListInner deploymentsItem) {
     if (this.deployments == null) {
       this.deployments = new ArrayList<>();
     }
@@ -78,18 +77,18 @@ public class AiDeploymentBulkModificationResponse
   }
 
    /**
-   * Get deployments
-   * @return deployments  The deployments of this {@link AiDeploymentBulkModificationResponse} instance.
-  **/
+    * Get deployments
+    * @return deployments  The deployments of this {@link AiDeploymentBulkModificationResponse} instance.
+    */
   @Nonnull public List<AiDeploymentModificationResponseListInner> getDeployments() {
     return deployments;
   }
 
   /**
-  * Set the deployments of this {@link AiDeploymentBulkModificationResponse} instance.
-  *
-  * @param deployments  The deployments of this {@link AiDeploymentBulkModificationResponse}
-  */
+   * Set the deployments of this {@link AiDeploymentBulkModificationResponse} instance.
+   *
+   * @param deployments  The deployments of this {@link AiDeploymentBulkModificationResponse}
+   */
   public void setDeployments( @Nonnull final List<AiDeploymentModificationResponseListInner> deployments) {
     this.deployments = deployments;
   }
@@ -169,6 +168,7 @@ public class AiDeploymentBulkModificationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

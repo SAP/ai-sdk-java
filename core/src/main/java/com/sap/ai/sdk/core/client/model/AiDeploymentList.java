@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * AiDeploymentList
  */
-
 // CHECKSTYLE:OFF
 public class AiDeploymentList 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class AiDeploymentList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link AiDeploymentList} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link AiDeploymentList} class
-   */
+    * Set the count of this {@link AiDeploymentList} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link AiDeploymentList} class
+    */
    @Nonnull public AiDeploymentList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link AiDeploymentList} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link AiDeploymentList} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link AiDeploymentList} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link AiDeploymentList} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link AiDeploymentList} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link AiDeploymentList}
-   * @return The same instance of this {@link AiDeploymentList} class
-   */
+    * Set the resources of this {@link AiDeploymentList} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link AiDeploymentList}
+    * @return The same instance of this {@link AiDeploymentList} class
+    */
    @Nonnull public AiDeploymentList resources(@Nonnull final List<AiDeployment> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link AiDeploymentList}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link AiDeploymentList}
-  */
-  @Nonnull public AiDeploymentList addresourcesItem( @Nonnull final AiDeployment resourcesItem) {
+   * Add one resources instance to this {@link AiDeploymentList}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link AiDeploymentList}
+   */
+  @Nonnull public AiDeploymentList addResourcesItem( @Nonnull final AiDeployment resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class AiDeploymentList
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link AiDeploymentList} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link AiDeploymentList} instance.
+    */
   @Nonnull public List<AiDeployment> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link AiDeploymentList} instance.
-  *
-  * @param resources  The resources of this {@link AiDeploymentList}
-  */
+   * Set the resources of this {@link AiDeploymentList} instance.
+   *
+   * @param resources  The resources of this {@link AiDeploymentList}
+   */
   public void setResources( @Nonnull final List<AiDeployment> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class AiDeploymentList
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

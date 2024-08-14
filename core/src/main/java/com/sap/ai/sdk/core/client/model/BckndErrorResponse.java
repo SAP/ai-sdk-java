@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * BckndErrorResponse
  */
-
 // CHECKSTYLE:OFF
 public class BckndErrorResponse 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class BckndErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link BckndErrorResponse} instance and return the same instance.
-   *
-   * @param error  The error of this {@link BckndErrorResponse}
-   * @return The same instance of this {@link BckndErrorResponse} class
-   */
+    * Set the error of this {@link BckndErrorResponse} instance and return the same instance.
+    *
+    * @param error  The error of this {@link BckndErrorResponse}
+    * @return The same instance of this {@link BckndErrorResponse} class
+    */
    @Nonnull public BckndErrorResponse error(@Nonnull final BckndError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link BckndErrorResponse} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link BckndErrorResponse} instance.
+    */
   @Nonnull public BckndError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link BckndErrorResponse} instance.
-  *
-  * @param error  The error of this {@link BckndErrorResponse}
-  */
+   * Set the error of this {@link BckndErrorResponse} instance.
+   *
+   * @param error  The error of this {@link BckndErrorResponse}
+   */
   public void setError( @Nonnull final BckndError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class BckndErrorResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

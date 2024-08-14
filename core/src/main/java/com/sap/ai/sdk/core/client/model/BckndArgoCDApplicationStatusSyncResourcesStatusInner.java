@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndArgoCDApplicationStatusSyncResourcesStatusInner
  */
-
 // CHECKSTYLE:OFF
 public class BckndArgoCDApplicationStatusSyncResourcesStatusInner 
 // CHECKSTYLE:ON
@@ -60,113 +59,113 @@ public class BckndArgoCDApplicationStatusSyncResourcesStatusInner
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
-   *
-   * @param name  ArgoCD application object name
-   * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
-   */
+    * Set the name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
+    *
+    * @param name  ArgoCD application object name
+    * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
+    */
    @Nonnull public BckndArgoCDApplicationStatusSyncResourcesStatusInner name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * ArgoCD application object name
-   * @return name  The name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  **/
+    * ArgoCD application object name
+    * @return name  The name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  *
-  * @param name  ArgoCD application object name
-  */
+   * Set the name of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+   *
+   * @param name  ArgoCD application object name
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the kind of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
-   *
-   * @param kind  ArgoCD application object kind
-   * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
-   */
+    * Set the kind of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
+    *
+    * @param kind  ArgoCD application object kind
+    * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
+    */
    @Nonnull public BckndArgoCDApplicationStatusSyncResourcesStatusInner kind(@Nonnull final String kind) {
     this.kind = kind;
     return this;
   }
 
    /**
-   * ArgoCD application object kind
-   * @return kind  The kind of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  **/
+    * ArgoCD application object kind
+    * @return kind  The kind of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+    */
   @Nonnull public String getKind() {
     return kind;
   }
 
   /**
-  * Set the kind of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  *
-  * @param kind  ArgoCD application object kind
-  */
+   * Set the kind of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+   *
+   * @param kind  ArgoCD application object kind
+   */
   public void setKind( @Nonnull final String kind) {
     this.kind = kind;
   }
 
    /**
-   * Set the status of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
-   *
-   * @param status  ArgoCD application object sync status
-   * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
-   */
+    * Set the status of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
+    *
+    * @param status  ArgoCD application object sync status
+    * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
+    */
    @Nonnull public BckndArgoCDApplicationStatusSyncResourcesStatusInner status(@Nonnull final String status) {
     this.status = status;
     return this;
   }
 
    /**
-   * ArgoCD application object sync status
-   * @return status  The status of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  **/
+    * ArgoCD application object sync status
+    * @return status  The status of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+    */
   @Nonnull public String getStatus() {
     return status;
   }
 
   /**
-  * Set the status of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  *
-  * @param status  ArgoCD application object sync status
-  */
+   * Set the status of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+   *
+   * @param status  ArgoCD application object sync status
+   */
   public void setStatus( @Nonnull final String status) {
     this.status = status;
   }
 
    /**
-   * Set the message of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
-   *
-   * @param message  ArgoCD application object message
-   * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
-   */
+    * Set the message of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance and return the same instance.
+    *
+    * @param message  ArgoCD application object message
+    * @return The same instance of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} class
+    */
    @Nonnull public BckndArgoCDApplicationStatusSyncResourcesStatusInner message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * ArgoCD application object message
-   * @return message  The message of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  **/
+    * ArgoCD application object message
+    * @return message  The message of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
-  *
-  * @param message  ArgoCD application object message
-  */
+   * Set the message of this {@link BckndArgoCDApplicationStatusSyncResourcesStatusInner} instance.
+   *
+   * @param message  ArgoCD application object message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -252,6 +251,7 @@ public class BckndArgoCDApplicationStatusSyncResourcesStatusInner
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

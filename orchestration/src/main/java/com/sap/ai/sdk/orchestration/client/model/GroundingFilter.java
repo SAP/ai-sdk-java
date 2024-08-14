@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 /**
  * GroundingFilter
  */
-
 // CHECKSTYLE:OFF
 public class GroundingFilter 
 // CHECKSTYLE:ON
@@ -126,77 +125,77 @@ public class GroundingFilter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param id  The id of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the id of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param id  The id of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Get id
-   * @return id  The id of this {@link GroundingFilter} instance.
-  **/
+    * Get id
+    * @return id  The id of this {@link GroundingFilter} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link GroundingFilter} instance.
-  *
-  * @param id  The id of this {@link GroundingFilter}
-  */
+   * Set the id of this {@link GroundingFilter} instance.
+   *
+   * @param id  The id of this {@link GroundingFilter}
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the searchConfiguration of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param searchConfiguration  The searchConfiguration of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the searchConfiguration of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param searchConfiguration  The searchConfiguration of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter searchConfiguration(@Nonnull final Object searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
     return this;
   }
 
    /**
-   * Get searchConfiguration
-   * @return searchConfiguration  The searchConfiguration of this {@link GroundingFilter} instance.
-  **/
+    * Get searchConfiguration
+    * @return searchConfiguration  The searchConfiguration of this {@link GroundingFilter} instance.
+    */
   @Nonnull public Object getSearchConfiguration() {
     return searchConfiguration;
   }
 
   /**
-  * Set the searchConfiguration of this {@link GroundingFilter} instance.
-  *
-  * @param searchConfiguration  The searchConfiguration of this {@link GroundingFilter}
-  */
+   * Set the searchConfiguration of this {@link GroundingFilter} instance.
+   *
+   * @param searchConfiguration  The searchConfiguration of this {@link GroundingFilter}
+   */
   public void setSearchConfiguration( @Nonnull final Object searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
   }
 
    /**
-   * Set the dataRepositories of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param dataRepositories  The dataRepositories of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the dataRepositories of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param dataRepositories  The dataRepositories of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter dataRepositories(@Nonnull final List<String> dataRepositories) {
     this.dataRepositories = dataRepositories;
     return this;
   }
   /**
-  * Add one dataRepositories instance to this {@link GroundingFilter}.
-  * @param dataRepositoriesItem The dataRepositories that should be added
-  * @return The same instance of type {@link GroundingFilter}
-  */
-  @Nonnull public GroundingFilter adddataRepositoriesItem( @Nonnull final String dataRepositoriesItem) {
+   * Add one dataRepositories instance to this {@link GroundingFilter}.
+   * @param dataRepositoriesItem The dataRepositories that should be added
+   * @return The same instance of type {@link GroundingFilter}
+   */
+  @Nonnull public GroundingFilter addDataRepositoriesItem( @Nonnull final String dataRepositoriesItem) {
     if (this.dataRepositories == null) {
       this.dataRepositories = new ArrayList<>();
     }
@@ -205,66 +204,66 @@ public class GroundingFilter
   }
 
    /**
-   * Get dataRepositories
-   * @return dataRepositories  The dataRepositories of this {@link GroundingFilter} instance.
-  **/
+    * Get dataRepositories
+    * @return dataRepositories  The dataRepositories of this {@link GroundingFilter} instance.
+    */
   @Nonnull public List<String> getDataRepositories() {
     return dataRepositories;
   }
 
   /**
-  * Set the dataRepositories of this {@link GroundingFilter} instance.
-  *
-  * @param dataRepositories  The dataRepositories of this {@link GroundingFilter}
-  */
+   * Set the dataRepositories of this {@link GroundingFilter} instance.
+   *
+   * @param dataRepositories  The dataRepositories of this {@link GroundingFilter}
+   */
   public void setDataRepositories( @Nonnull final List<String> dataRepositories) {
     this.dataRepositories = dataRepositories;
   }
 
    /**
-   * Set the dataRepositoryType of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param dataRepositoryType  The dataRepositoryType of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the dataRepositoryType of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param dataRepositoryType  The dataRepositoryType of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter dataRepositoryType(@Nonnull final DataRepositoryTypeEnum dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
 
    /**
-   * Get dataRepositoryType
-   * @return dataRepositoryType  The dataRepositoryType of this {@link GroundingFilter} instance.
-  **/
+    * Get dataRepositoryType
+    * @return dataRepositoryType  The dataRepositoryType of this {@link GroundingFilter} instance.
+    */
   @Nonnull public DataRepositoryTypeEnum getDataRepositoryType() {
     return dataRepositoryType;
   }
 
   /**
-  * Set the dataRepositoryType of this {@link GroundingFilter} instance.
-  *
-  * @param dataRepositoryType  The dataRepositoryType of this {@link GroundingFilter}
-  */
+   * Set the dataRepositoryType of this {@link GroundingFilter} instance.
+   *
+   * @param dataRepositoryType  The dataRepositoryType of this {@link GroundingFilter}
+   */
   public void setDataRepositoryType( @Nonnull final DataRepositoryTypeEnum dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
   }
 
    /**
-   * Set the dataRepositoryMetadata of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param dataRepositoryMetadata  The dataRepositoryMetadata of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the dataRepositoryMetadata of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param dataRepositoryMetadata  The dataRepositoryMetadata of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter dataRepositoryMetadata(@Nonnull final List<Object> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
   /**
-  * Add one dataRepositoryMetadata instance to this {@link GroundingFilter}.
-  * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
-  * @return The same instance of type {@link GroundingFilter}
-  */
-  @Nonnull public GroundingFilter adddataRepositoryMetadataItem( @Nonnull final Object dataRepositoryMetadataItem) {
+   * Add one dataRepositoryMetadata instance to this {@link GroundingFilter}.
+   * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
+   * @return The same instance of type {@link GroundingFilter}
+   */
+  @Nonnull public GroundingFilter addDataRepositoryMetadataItem( @Nonnull final Object dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -273,38 +272,38 @@ public class GroundingFilter
   }
 
    /**
-   * Get dataRepositoryMetadata
-   * @return dataRepositoryMetadata  The dataRepositoryMetadata of this {@link GroundingFilter} instance.
-  **/
+    * Get dataRepositoryMetadata
+    * @return dataRepositoryMetadata  The dataRepositoryMetadata of this {@link GroundingFilter} instance.
+    */
   @Nonnull public List<Object> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
   /**
-  * Set the dataRepositoryMetadata of this {@link GroundingFilter} instance.
-  *
-  * @param dataRepositoryMetadata  The dataRepositoryMetadata of this {@link GroundingFilter}
-  */
+   * Set the dataRepositoryMetadata of this {@link GroundingFilter} instance.
+   *
+   * @param dataRepositoryMetadata  The dataRepositoryMetadata of this {@link GroundingFilter}
+   */
   public void setDataRepositoryMetadata( @Nonnull final List<Object> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
    /**
-   * Set the documentMetadata of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param documentMetadata  The documentMetadata of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the documentMetadata of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param documentMetadata  The documentMetadata of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter documentMetadata(@Nonnull final List<Object> documentMetadata) {
     this.documentMetadata = documentMetadata;
     return this;
   }
   /**
-  * Add one documentMetadata instance to this {@link GroundingFilter}.
-  * @param documentMetadataItem The documentMetadata that should be added
-  * @return The same instance of type {@link GroundingFilter}
-  */
-  @Nonnull public GroundingFilter adddocumentMetadataItem( @Nonnull final Object documentMetadataItem) {
+   * Add one documentMetadata instance to this {@link GroundingFilter}.
+   * @param documentMetadataItem The documentMetadata that should be added
+   * @return The same instance of type {@link GroundingFilter}
+   */
+  @Nonnull public GroundingFilter addDocumentMetadataItem( @Nonnull final Object documentMetadataItem) {
     if (this.documentMetadata == null) {
       this.documentMetadata = new ArrayList<>();
     }
@@ -313,38 +312,38 @@ public class GroundingFilter
   }
 
    /**
-   * Get documentMetadata
-   * @return documentMetadata  The documentMetadata of this {@link GroundingFilter} instance.
-  **/
+    * Get documentMetadata
+    * @return documentMetadata  The documentMetadata of this {@link GroundingFilter} instance.
+    */
   @Nonnull public List<Object> getDocumentMetadata() {
     return documentMetadata;
   }
 
   /**
-  * Set the documentMetadata of this {@link GroundingFilter} instance.
-  *
-  * @param documentMetadata  The documentMetadata of this {@link GroundingFilter}
-  */
+   * Set the documentMetadata of this {@link GroundingFilter} instance.
+   *
+   * @param documentMetadata  The documentMetadata of this {@link GroundingFilter}
+   */
   public void setDocumentMetadata( @Nonnull final List<Object> documentMetadata) {
     this.documentMetadata = documentMetadata;
   }
 
    /**
-   * Set the chunkMetadata of this {@link GroundingFilter} instance and return the same instance.
-   *
-   * @param chunkMetadata  The chunkMetadata of this {@link GroundingFilter}
-   * @return The same instance of this {@link GroundingFilter} class
-   */
+    * Set the chunkMetadata of this {@link GroundingFilter} instance and return the same instance.
+    *
+    * @param chunkMetadata  The chunkMetadata of this {@link GroundingFilter}
+    * @return The same instance of this {@link GroundingFilter} class
+    */
    @Nonnull public GroundingFilter chunkMetadata(@Nonnull final List<Object> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
     return this;
   }
   /**
-  * Add one chunkMetadata instance to this {@link GroundingFilter}.
-  * @param chunkMetadataItem The chunkMetadata that should be added
-  * @return The same instance of type {@link GroundingFilter}
-  */
-  @Nonnull public GroundingFilter addchunkMetadataItem( @Nonnull final Object chunkMetadataItem) {
+   * Add one chunkMetadata instance to this {@link GroundingFilter}.
+   * @param chunkMetadataItem The chunkMetadata that should be added
+   * @return The same instance of type {@link GroundingFilter}
+   */
+  @Nonnull public GroundingFilter addChunkMetadataItem( @Nonnull final Object chunkMetadataItem) {
     if (this.chunkMetadata == null) {
       this.chunkMetadata = new ArrayList<>();
     }
@@ -353,18 +352,18 @@ public class GroundingFilter
   }
 
    /**
-   * Get chunkMetadata
-   * @return chunkMetadata  The chunkMetadata of this {@link GroundingFilter} instance.
-  **/
+    * Get chunkMetadata
+    * @return chunkMetadata  The chunkMetadata of this {@link GroundingFilter} instance.
+    */
   @Nonnull public List<Object> getChunkMetadata() {
     return chunkMetadata;
   }
 
   /**
-  * Set the chunkMetadata of this {@link GroundingFilter} instance.
-  *
-  * @param chunkMetadata  The chunkMetadata of this {@link GroundingFilter}
-  */
+   * Set the chunkMetadata of this {@link GroundingFilter} instance.
+   *
+   * @param chunkMetadata  The chunkMetadata of this {@link GroundingFilter}
+   */
   public void setChunkMetadata( @Nonnull final List<Object> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
   }
@@ -456,6 +455,7 @@ public class GroundingFilter
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

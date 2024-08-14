@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndGenericSecretDetails
  */
-
 // CHECKSTYLE:OFF
 public class BckndGenericSecretDetails 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndGenericSecretDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link BckndGenericSecretDetails} instance and return the same instance.
-   *
-   * @param name  Name of the secret
-   * @return The same instance of this {@link BckndGenericSecretDetails} class
-   */
+    * Set the name of this {@link BckndGenericSecretDetails} instance and return the same instance.
+    *
+    * @param name  Name of the secret
+    * @return The same instance of this {@link BckndGenericSecretDetails} class
+    */
    @Nonnull public BckndGenericSecretDetails name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Name of the secret
-   * @return name  The name of this {@link BckndGenericSecretDetails} instance.
-  **/
+    * Name of the secret
+    * @return name  The name of this {@link BckndGenericSecretDetails} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndGenericSecretDetails} instance.
-  *
-  * @param name  Name of the secret
-  */
+   * Set the name of this {@link BckndGenericSecretDetails} instance.
+   *
+   * @param name  Name of the secret
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the createdAt of this {@link BckndGenericSecretDetails} instance and return the same instance.
-   *
-   * @param createdAt  Timestamp at which secret was created
-   * @return The same instance of this {@link BckndGenericSecretDetails} class
-   */
+    * Set the createdAt of this {@link BckndGenericSecretDetails} instance and return the same instance.
+    *
+    * @param createdAt  Timestamp at which secret was created
+    * @return The same instance of this {@link BckndGenericSecretDetails} class
+    */
    @Nonnull public BckndGenericSecretDetails createdAt(@Nonnull final String createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Timestamp at which secret was created
-   * @return createdAt  The createdAt of this {@link BckndGenericSecretDetails} instance.
-  **/
+    * Timestamp at which secret was created
+    * @return createdAt  The createdAt of this {@link BckndGenericSecretDetails} instance.
+    */
   @Nonnull public String getCreatedAt() {
     return createdAt;
   }
 
   /**
-  * Set the createdAt of this {@link BckndGenericSecretDetails} instance.
-  *
-  * @param createdAt  Timestamp at which secret was created
-  */
+   * Set the createdAt of this {@link BckndGenericSecretDetails} instance.
+   *
+   * @param createdAt  Timestamp at which secret was created
+   */
   public void setCreatedAt( @Nonnull final String createdAt) {
     this.createdAt = createdAt;
   }
@@ -186,6 +185,7 @@ public class BckndGenericSecretDetails
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

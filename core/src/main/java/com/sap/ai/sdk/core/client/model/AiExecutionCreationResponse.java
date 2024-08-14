@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * AiExecutionCreationResponse
  */
-
 // CHECKSTYLE:OFF
 public class AiExecutionCreationResponse 
 // CHECKSTYLE:ON
@@ -58,85 +57,85 @@ public class AiExecutionCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiExecutionCreationResponse} instance and return the same instance.
-   *
-   * @param id  Generic ID
-   * @return The same instance of this {@link AiExecutionCreationResponse} class
-   */
+    * Set the id of this {@link AiExecutionCreationResponse} instance and return the same instance.
+    *
+    * @param id  Generic ID
+    * @return The same instance of this {@link AiExecutionCreationResponse} class
+    */
    @Nonnull public AiExecutionCreationResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Generic ID
-   * @return id  The id of this {@link AiExecutionCreationResponse} instance.
-  **/
+    * Generic ID
+    * @return id  The id of this {@link AiExecutionCreationResponse} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiExecutionCreationResponse} instance.
-  *
-  * @param id  Generic ID
-  */
+   * Set the id of this {@link AiExecutionCreationResponse} instance.
+   *
+   * @param id  Generic ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the message of this {@link AiExecutionCreationResponse} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link AiExecutionCreationResponse} class
-   */
+    * Set the message of this {@link AiExecutionCreationResponse} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link AiExecutionCreationResponse} class
+    */
    @Nonnull public AiExecutionCreationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link AiExecutionCreationResponse} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link AiExecutionCreationResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link AiExecutionCreationResponse} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link AiExecutionCreationResponse} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-   * Set the status of this {@link AiExecutionCreationResponse} instance and return the same instance.
-   *
-   * @param status  The status of this {@link AiExecutionCreationResponse}
-   * @return The same instance of this {@link AiExecutionCreationResponse} class
-   */
+    * Set the status of this {@link AiExecutionCreationResponse} instance and return the same instance.
+    *
+    * @param status  The status of this {@link AiExecutionCreationResponse}
+    * @return The same instance of this {@link AiExecutionCreationResponse} class
+    */
    @Nonnull public AiExecutionCreationResponse status(@Nonnull final AiExecutionStatus status) {
     this.status = status;
     return this;
   }
 
    /**
-   * Get status
-   * @return status  The status of this {@link AiExecutionCreationResponse} instance.
-  **/
+    * Get status
+    * @return status  The status of this {@link AiExecutionCreationResponse} instance.
+    */
   @Nonnull public AiExecutionStatus getStatus() {
     return status;
   }
 
   /**
-  * Set the status of this {@link AiExecutionCreationResponse} instance.
-  *
-  * @param status  The status of this {@link AiExecutionCreationResponse}
-  */
+   * Set the status of this {@link AiExecutionCreationResponse} instance.
+   *
+   * @param status  The status of this {@link AiExecutionCreationResponse}
+   */
   public void setStatus( @Nonnull final AiExecutionStatus status) {
     this.status = status;
   }
@@ -220,6 +219,7 @@ public class AiExecutionCreationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

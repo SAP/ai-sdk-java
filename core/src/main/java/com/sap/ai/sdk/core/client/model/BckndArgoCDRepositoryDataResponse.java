@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * This represents a list of GitOps repositories for the tenant.
  */
-
 // CHECKSTYLE:OFF
 public class BckndArgoCDRepositoryDataResponse 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class BckndArgoCDRepositoryDataResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BckndArgoCDRepositoryDataResponse} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link BckndArgoCDRepositoryDataResponse} class
-   */
+    * Set the count of this {@link BckndArgoCDRepositoryDataResponse} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link BckndArgoCDRepositoryDataResponse} class
+    */
    @Nonnull public BckndArgoCDRepositoryDataResponse count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link BckndArgoCDRepositoryDataResponse} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link BckndArgoCDRepositoryDataResponse} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link BckndArgoCDRepositoryDataResponse} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link BckndArgoCDRepositoryDataResponse} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link BckndArgoCDRepositoryDataResponse} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link BckndArgoCDRepositoryDataResponse}
-   * @return The same instance of this {@link BckndArgoCDRepositoryDataResponse} class
-   */
+    * Set the resources of this {@link BckndArgoCDRepositoryDataResponse} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link BckndArgoCDRepositoryDataResponse}
+    * @return The same instance of this {@link BckndArgoCDRepositoryDataResponse} class
+    */
    @Nonnull public BckndArgoCDRepositoryDataResponse resources(@Nonnull final List<BckndArgoCDRepositoryDetails> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link BckndArgoCDRepositoryDataResponse}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link BckndArgoCDRepositoryDataResponse}
-  */
-  @Nonnull public BckndArgoCDRepositoryDataResponse addresourcesItem( @Nonnull final BckndArgoCDRepositoryDetails resourcesItem) {
+   * Add one resources instance to this {@link BckndArgoCDRepositoryDataResponse}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link BckndArgoCDRepositoryDataResponse}
+   */
+  @Nonnull public BckndArgoCDRepositoryDataResponse addResourcesItem( @Nonnull final BckndArgoCDRepositoryDetails resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class BckndArgoCDRepositoryDataResponse
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link BckndArgoCDRepositoryDataResponse} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link BckndArgoCDRepositoryDataResponse} instance.
+    */
   @Nonnull public List<BckndArgoCDRepositoryDetails> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link BckndArgoCDRepositoryDataResponse} instance.
-  *
-  * @param resources  The resources of this {@link BckndArgoCDRepositoryDataResponse}
-  */
+   * Set the resources of this {@link BckndArgoCDRepositoryDataResponse} instance.
+   *
+   * @param resources  The resources of this {@link BckndArgoCDRepositoryDataResponse}
+   */
   public void setResources( @Nonnull final List<BckndArgoCDRepositoryDetails> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class BckndArgoCDRepositoryDataResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

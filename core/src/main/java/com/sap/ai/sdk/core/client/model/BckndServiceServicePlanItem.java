@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * BckndServiceServicePlanItem
  */
-
 // CHECKSTYLE:OFF
 public class BckndServiceServicePlanItem 
 // CHECKSTYLE:ON
@@ -64,141 +63,141 @@ public class BckndServiceServicePlanItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the description of this {@link BckndServiceServicePlanItem} instance and return the same instance.
-   *
-   * @param description  description of the service plan
-   * @return The same instance of this {@link BckndServiceServicePlanItem} class
-   */
+    * Set the description of this {@link BckndServiceServicePlanItem} instance and return the same instance.
+    *
+    * @param description  description of the service plan
+    * @return The same instance of this {@link BckndServiceServicePlanItem} class
+    */
    @Nonnull public BckndServiceServicePlanItem description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-   * description of the service plan
-   * @return description  The description of this {@link BckndServiceServicePlanItem} instance.
-  **/
+    * description of the service plan
+    * @return description  The description of this {@link BckndServiceServicePlanItem} instance.
+    */
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-  * Set the description of this {@link BckndServiceServicePlanItem} instance.
-  *
-  * @param description  description of the service plan
-  */
+   * Set the description of this {@link BckndServiceServicePlanItem} instance.
+   *
+   * @param description  description of the service plan
+   */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-   * Set the free of this {@link BckndServiceServicePlanItem} instance and return the same instance.
-   *
-   * @param free  if the service plan free
-   * @return The same instance of this {@link BckndServiceServicePlanItem} class
-   */
+    * Set the free of this {@link BckndServiceServicePlanItem} instance and return the same instance.
+    *
+    * @param free  if the service plan free
+    * @return The same instance of this {@link BckndServiceServicePlanItem} class
+    */
    @Nonnull public BckndServiceServicePlanItem free(@Nonnull final Boolean free) {
     this.free = free;
     return this;
   }
 
    /**
-   * if the service plan free
-   * @return free  The free of this {@link BckndServiceServicePlanItem} instance.
-  **/
+    * if the service plan free
+    * @return free  The free of this {@link BckndServiceServicePlanItem} instance.
+    */
   @Nonnull public Boolean isFree() {
     return free;
   }
 
   /**
-  * Set the free of this {@link BckndServiceServicePlanItem} instance.
-  *
-  * @param free  if the service plan free
-  */
+   * Set the free of this {@link BckndServiceServicePlanItem} instance.
+   *
+   * @param free  if the service plan free
+   */
   public void setFree( @Nonnull final Boolean free) {
     this.free = free;
   }
 
    /**
-   * Set the id of this {@link BckndServiceServicePlanItem} instance and return the same instance.
-   *
-   * @param id  id of the service plan
-   * @return The same instance of this {@link BckndServiceServicePlanItem} class
-   */
+    * Set the id of this {@link BckndServiceServicePlanItem} instance and return the same instance.
+    *
+    * @param id  id of the service plan
+    * @return The same instance of this {@link BckndServiceServicePlanItem} class
+    */
    @Nonnull public BckndServiceServicePlanItem id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * id of the service plan
-   * @return id  The id of this {@link BckndServiceServicePlanItem} instance.
-  **/
+    * id of the service plan
+    * @return id  The id of this {@link BckndServiceServicePlanItem} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link BckndServiceServicePlanItem} instance.
-  *
-  * @param id  id of the service plan
-  */
+   * Set the id of this {@link BckndServiceServicePlanItem} instance.
+   *
+   * @param id  id of the service plan
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the name of this {@link BckndServiceServicePlanItem} instance and return the same instance.
-   *
-   * @param name  name of the service plan
-   * @return The same instance of this {@link BckndServiceServicePlanItem} class
-   */
+    * Set the name of this {@link BckndServiceServicePlanItem} instance and return the same instance.
+    *
+    * @param name  name of the service plan
+    * @return The same instance of this {@link BckndServiceServicePlanItem} class
+    */
    @Nonnull public BckndServiceServicePlanItem name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * name of the service plan
-   * @return name  The name of this {@link BckndServiceServicePlanItem} instance.
-  **/
+    * name of the service plan
+    * @return name  The name of this {@link BckndServiceServicePlanItem} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndServiceServicePlanItem} instance.
-  *
-  * @param name  name of the service plan
-  */
+   * Set the name of this {@link BckndServiceServicePlanItem} instance.
+   *
+   * @param name  name of the service plan
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the metadata of this {@link BckndServiceServicePlanItem} instance and return the same instance.
-   *
-   * @param metadata  The metadata of this {@link BckndServiceServicePlanItem}
-   * @return The same instance of this {@link BckndServiceServicePlanItem} class
-   */
+    * Set the metadata of this {@link BckndServiceServicePlanItem} instance and return the same instance.
+    *
+    * @param metadata  The metadata of this {@link BckndServiceServicePlanItem}
+    * @return The same instance of this {@link BckndServiceServicePlanItem} class
+    */
    @Nonnull public BckndServiceServicePlanItem metadata(@Nonnull final BckndServiceServicePlanItemMetadata metadata) {
     this.metadata = metadata;
     return this;
   }
 
    /**
-   * Get metadata
-   * @return metadata  The metadata of this {@link BckndServiceServicePlanItem} instance.
-  **/
+    * Get metadata
+    * @return metadata  The metadata of this {@link BckndServiceServicePlanItem} instance.
+    */
   @Nonnull public BckndServiceServicePlanItemMetadata getMetadata() {
     return metadata;
   }
 
   /**
-  * Set the metadata of this {@link BckndServiceServicePlanItem} instance.
-  *
-  * @param metadata  The metadata of this {@link BckndServiceServicePlanItem}
-  */
+   * Set the metadata of this {@link BckndServiceServicePlanItem} instance.
+   *
+   * @param metadata  The metadata of this {@link BckndServiceServicePlanItem}
+   */
   public void setMetadata( @Nonnull final BckndServiceServicePlanItemMetadata metadata) {
     this.metadata = metadata;
   }
@@ -286,6 +285,7 @@ public class BckndServiceServicePlanItem
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

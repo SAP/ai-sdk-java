@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * large object which provides rendering/semantic information regarding certain metric for consuming application or can be complex metrics in JSON format
  */
-
 // CHECKSTYLE:OFF
 public class TrckCustomInfoObject 
 // CHECKSTYLE:ON
@@ -55,57 +54,57 @@ public class TrckCustomInfoObject
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link TrckCustomInfoObject} instance and return the same instance.
-   *
-   * @param name  The name of this {@link TrckCustomInfoObject}
-   * @return The same instance of this {@link TrckCustomInfoObject} class
-   */
+    * Set the name of this {@link TrckCustomInfoObject} instance and return the same instance.
+    *
+    * @param name  The name of this {@link TrckCustomInfoObject}
+    * @return The same instance of this {@link TrckCustomInfoObject} class
+    */
    @Nonnull public TrckCustomInfoObject name(@Nonnull final TrckTagName name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Get name
-   * @return name  The name of this {@link TrckCustomInfoObject} instance.
-  **/
+    * Get name
+    * @return name  The name of this {@link TrckCustomInfoObject} instance.
+    */
   @Nonnull public TrckTagName getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link TrckCustomInfoObject} instance.
-  *
-  * @param name  The name of this {@link TrckCustomInfoObject}
-  */
+   * Set the name of this {@link TrckCustomInfoObject} instance.
+   *
+   * @param name  The name of this {@link TrckCustomInfoObject}
+   */
   public void setName( @Nonnull final TrckTagName name) {
     this.name = name;
   }
 
    /**
-   * Set the value of this {@link TrckCustomInfoObject} instance and return the same instance.
-   *
-   * @param value  Message
-   * @return The same instance of this {@link TrckCustomInfoObject} class
-   */
+    * Set the value of this {@link TrckCustomInfoObject} instance and return the same instance.
+    *
+    * @param value  Message
+    * @return The same instance of this {@link TrckCustomInfoObject} class
+    */
    @Nonnull public TrckCustomInfoObject value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
 
    /**
-   * Message
-   * @return value  The value of this {@link TrckCustomInfoObject} instance.
-  **/
+    * Message
+    * @return value  The value of this {@link TrckCustomInfoObject} instance.
+    */
   @Nonnull public String getValue() {
     return value;
   }
 
   /**
-  * Set the value of this {@link TrckCustomInfoObject} instance.
-  *
-  * @param value  Message
-  */
+   * Set the value of this {@link TrckCustomInfoObject} instance.
+   *
+   * @param value  Message
+   */
   public void setValue( @Nonnull final String value) {
     this.value = value;
   }
@@ -187,6 +186,7 @@ public class TrckCustomInfoObject
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

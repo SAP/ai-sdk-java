@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Capabilities to read logs from deployments and executions.
  */
-
 // CHECKSTYLE:OFF
 public class BckndServiceCapabilitiesLogs 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndServiceCapabilitiesLogs
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
-   *
-   * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
-   * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
-   */
+    * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
+    *
+    * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
+    * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
+    */
    @Nonnull public BckndServiceCapabilitiesLogs deployments(@Nonnull final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
 
    /**
-   * Get deployments
-   * @return deployments  The deployments of this {@link BckndServiceCapabilitiesLogs} instance.
-  **/
+    * Get deployments
+    * @return deployments  The deployments of this {@link BckndServiceCapabilitiesLogs} instance.
+    */
   @Nonnull public Boolean isDeployments() {
     return deployments;
   }
 
   /**
-  * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance.
-  *
-  * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
-  */
+   * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance.
+   *
+   * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
+   */
   public void setDeployments( @Nonnull final Boolean deployments) {
     this.deployments = deployments;
   }
 
    /**
-   * Set the executions of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
-   *
-   * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
-   * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
-   */
+    * Set the executions of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
+    *
+    * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
+    * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
+    */
    @Nonnull public BckndServiceCapabilitiesLogs executions(@Nonnull final Boolean executions) {
     this.executions = executions;
     return this;
   }
 
    /**
-   * Get executions
-   * @return executions  The executions of this {@link BckndServiceCapabilitiesLogs} instance.
-  **/
+    * Get executions
+    * @return executions  The executions of this {@link BckndServiceCapabilitiesLogs} instance.
+    */
   @Nonnull public Boolean isExecutions() {
     return executions;
   }
 
   /**
-  * Set the executions of this {@link BckndServiceCapabilitiesLogs} instance.
-  *
-  * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
-  */
+   * Set the executions of this {@link BckndServiceCapabilitiesLogs} instance.
+   *
+   * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
+   */
   public void setExecutions( @Nonnull final Boolean executions) {
     this.executions = executions;
   }
@@ -186,6 +185,7 @@ public class BckndServiceCapabilitiesLogs
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

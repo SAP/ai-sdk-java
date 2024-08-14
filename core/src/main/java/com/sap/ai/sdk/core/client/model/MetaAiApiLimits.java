@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 /**
  * MetaAiApiLimits
  */
-
 // CHECKSTYLE:OFF
 public class MetaAiApiLimits 
 // CHECKSTYLE:ON
@@ -60,85 +59,85 @@ public class MetaAiApiLimits
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the executions of this {@link MetaAiApiLimits} instance and return the same instance.
-   *
-   * @param executions  The executions of this {@link MetaAiApiLimits}
-   * @return The same instance of this {@link MetaAiApiLimits} class
-   */
+    * Set the executions of this {@link MetaAiApiLimits} instance and return the same instance.
+    *
+    * @param executions  The executions of this {@link MetaAiApiLimits}
+    * @return The same instance of this {@link MetaAiApiLimits} class
+    */
    @Nonnull public MetaAiApiLimits executions(@Nonnull final MetaAiApiLimitsExecutions executions) {
     this.executions = executions;
     return this;
   }
 
    /**
-   * Get executions
-   * @return executions  The executions of this {@link MetaAiApiLimits} instance.
-  **/
+    * Get executions
+    * @return executions  The executions of this {@link MetaAiApiLimits} instance.
+    */
   @Nonnull public MetaAiApiLimitsExecutions getExecutions() {
     return executions;
   }
 
   /**
-  * Set the executions of this {@link MetaAiApiLimits} instance.
-  *
-  * @param executions  The executions of this {@link MetaAiApiLimits}
-  */
+   * Set the executions of this {@link MetaAiApiLimits} instance.
+   *
+   * @param executions  The executions of this {@link MetaAiApiLimits}
+   */
   public void setExecutions( @Nonnull final MetaAiApiLimitsExecutions executions) {
     this.executions = executions;
   }
 
    /**
-   * Set the deployments of this {@link MetaAiApiLimits} instance and return the same instance.
-   *
-   * @param deployments  The deployments of this {@link MetaAiApiLimits}
-   * @return The same instance of this {@link MetaAiApiLimits} class
-   */
+    * Set the deployments of this {@link MetaAiApiLimits} instance and return the same instance.
+    *
+    * @param deployments  The deployments of this {@link MetaAiApiLimits}
+    * @return The same instance of this {@link MetaAiApiLimits} class
+    */
    @Nonnull public MetaAiApiLimits deployments(@Nonnull final MetaAiApiLimitsDeployments deployments) {
     this.deployments = deployments;
     return this;
   }
 
    /**
-   * Get deployments
-   * @return deployments  The deployments of this {@link MetaAiApiLimits} instance.
-  **/
+    * Get deployments
+    * @return deployments  The deployments of this {@link MetaAiApiLimits} instance.
+    */
   @Nonnull public MetaAiApiLimitsDeployments getDeployments() {
     return deployments;
   }
 
   /**
-  * Set the deployments of this {@link MetaAiApiLimits} instance.
-  *
-  * @param deployments  The deployments of this {@link MetaAiApiLimits}
-  */
+   * Set the deployments of this {@link MetaAiApiLimits} instance.
+   *
+   * @param deployments  The deployments of this {@link MetaAiApiLimits}
+   */
   public void setDeployments( @Nonnull final MetaAiApiLimitsDeployments deployments) {
     this.deployments = deployments;
   }
 
    /**
-   * Set the timeToLiveDeployments of this {@link MetaAiApiLimits} instance and return the same instance.
-   *
-   * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
-   * @return The same instance of this {@link MetaAiApiLimits} class
-   */
+    * Set the timeToLiveDeployments of this {@link MetaAiApiLimits} instance and return the same instance.
+    *
+    * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
+    * @return The same instance of this {@link MetaAiApiLimits} class
+    */
    @Nonnull public MetaAiApiLimits timeToLiveDeployments(@Nonnull final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
     return this;
   }
 
    /**
-   * Get timeToLiveDeployments
-   * @return timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits} instance.
-  **/
+    * Get timeToLiveDeployments
+    * @return timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits} instance.
+    */
   @Nonnull public MetaAiApiLimitsTimeToLiveDeployments getTimeToLiveDeployments() {
     return timeToLiveDeployments;
   }
 
   /**
-  * Set the timeToLiveDeployments of this {@link MetaAiApiLimits} instance.
-  *
-  * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
-  */
+   * Set the timeToLiveDeployments of this {@link MetaAiApiLimits} instance.
+   *
+   * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
+   */
   public void setTimeToLiveDeployments( @Nonnull final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
   }
@@ -222,6 +221,7 @@ public class MetaAiApiLimits
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

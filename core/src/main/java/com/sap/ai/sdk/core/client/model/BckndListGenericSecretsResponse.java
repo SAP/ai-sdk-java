@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * This represents a list of meta-data of the secret. The &#39;data&#39; field of the secret is never retrieved.
  */
-
 // CHECKSTYLE:OFF
 public class BckndListGenericSecretsResponse 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class BckndListGenericSecretsResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link BckndListGenericSecretsResponse} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link BckndListGenericSecretsResponse} class
-   */
+    * Set the count of this {@link BckndListGenericSecretsResponse} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link BckndListGenericSecretsResponse} class
+    */
    @Nonnull public BckndListGenericSecretsResponse count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link BckndListGenericSecretsResponse} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link BckndListGenericSecretsResponse} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link BckndListGenericSecretsResponse} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link BckndListGenericSecretsResponse} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link BckndListGenericSecretsResponse} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link BckndListGenericSecretsResponse}
-   * @return The same instance of this {@link BckndListGenericSecretsResponse} class
-   */
+    * Set the resources of this {@link BckndListGenericSecretsResponse} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link BckndListGenericSecretsResponse}
+    * @return The same instance of this {@link BckndListGenericSecretsResponse} class
+    */
    @Nonnull public BckndListGenericSecretsResponse resources(@Nonnull final List<BckndGenericSecretDetails> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link BckndListGenericSecretsResponse}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link BckndListGenericSecretsResponse}
-  */
-  @Nonnull public BckndListGenericSecretsResponse addresourcesItem( @Nonnull final BckndGenericSecretDetails resourcesItem) {
+   * Add one resources instance to this {@link BckndListGenericSecretsResponse}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link BckndListGenericSecretsResponse}
+   */
+  @Nonnull public BckndListGenericSecretsResponse addResourcesItem( @Nonnull final BckndGenericSecretDetails resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class BckndListGenericSecretsResponse
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link BckndListGenericSecretsResponse} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link BckndListGenericSecretsResponse} instance.
+    */
   @Nonnull public List<BckndGenericSecretDetails> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link BckndListGenericSecretsResponse} instance.
-  *
-  * @param resources  The resources of this {@link BckndListGenericSecretsResponse}
-  */
+   * Set the resources of this {@link BckndListGenericSecretsResponse} instance.
+   *
+   * @param resources  The resources of this {@link BckndListGenericSecretsResponse}
+   */
   public void setResources( @Nonnull final List<BckndGenericSecretDetails> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class BckndListGenericSecretsResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

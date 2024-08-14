@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 /**
  * AiDeploymentModificationResponseListInner
  */
-
 // CHECKSTYLE:OFF
 public class AiDeploymentModificationResponseListInner 
 // CHECKSTYLE:ON
@@ -60,85 +59,85 @@ public class AiDeploymentModificationResponseListInner
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
-   *
-   * @param id  Generic ID
-   * @return The same instance of this {@link AiDeploymentModificationResponseListInner} class
-   */
+    * Set the id of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
+    *
+    * @param id  Generic ID
+    * @return The same instance of this {@link AiDeploymentModificationResponseListInner} class
+    */
    @Nonnull public AiDeploymentModificationResponseListInner id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Generic ID
-   * @return id  The id of this {@link AiDeploymentModificationResponseListInner} instance.
-  **/
+    * Generic ID
+    * @return id  The id of this {@link AiDeploymentModificationResponseListInner} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiDeploymentModificationResponseListInner} instance.
-  *
-  * @param id  Generic ID
-  */
+   * Set the id of this {@link AiDeploymentModificationResponseListInner} instance.
+   *
+   * @param id  Generic ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the message of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link AiDeploymentModificationResponseListInner} class
-   */
+    * Set the message of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link AiDeploymentModificationResponseListInner} class
+    */
    @Nonnull public AiDeploymentModificationResponseListInner message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link AiDeploymentModificationResponseListInner} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link AiDeploymentModificationResponseListInner} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link AiDeploymentModificationResponseListInner} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link AiDeploymentModificationResponseListInner} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
 
    /**
-   * Set the error of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
-   *
-   * @param error  The error of this {@link AiDeploymentModificationResponseListInner}
-   * @return The same instance of this {@link AiDeploymentModificationResponseListInner} class
-   */
+    * Set the error of this {@link AiDeploymentModificationResponseListInner} instance and return the same instance.
+    *
+    * @param error  The error of this {@link AiDeploymentModificationResponseListInner}
+    * @return The same instance of this {@link AiDeploymentModificationResponseListInner} class
+    */
    @Nonnull public AiDeploymentModificationResponseListInner error(@Nonnull final AiApiError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link AiDeploymentModificationResponseListInner} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link AiDeploymentModificationResponseListInner} instance.
+    */
   @Nonnull public AiApiError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link AiDeploymentModificationResponseListInner} instance.
-  *
-  * @param error  The error of this {@link AiDeploymentModificationResponseListInner}
-  */
+   * Set the error of this {@link AiDeploymentModificationResponseListInner} instance.
+   *
+   * @param error  The error of this {@link AiDeploymentModificationResponseListInner}
+   */
   public void setError( @Nonnull final AiApiError error) {
     this.error = error;
   }
@@ -222,6 +221,7 @@ public class AiDeploymentModificationResponseListInner
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

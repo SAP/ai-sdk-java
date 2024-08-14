@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * KpiGet400Response
  */
-
 // CHECKSTYLE:OFF
 public class KpiGet400Response 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class KpiGet400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link KpiGet400Response} instance and return the same instance.
-   *
-   * @param error  The error of this {@link KpiGet400Response}
-   * @return The same instance of this {@link KpiGet400Response} class
-   */
+    * Set the error of this {@link KpiGet400Response} instance and return the same instance.
+    *
+    * @param error  The error of this {@link KpiGet400Response}
+    * @return The same instance of this {@link KpiGet400Response} class
+    */
    @Nonnull public KpiGet400Response error(@Nonnull final KpiApiError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link KpiGet400Response} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link KpiGet400Response} instance.
+    */
   @Nonnull public KpiApiError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link KpiGet400Response} instance.
-  *
-  * @param error  The error of this {@link KpiGet400Response}
-  */
+   * Set the error of this {@link KpiGet400Response} instance.
+   *
+   * @param error  The error of this {@link KpiGet400Response}
+   */
   public void setError( @Nonnull final KpiApiError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class KpiGet400Response
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

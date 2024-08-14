@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * RTABackendDetails
  */
-
 // CHECKSTYLE:OFF
 public class RTABackendDetails 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class RTABackendDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the backendDetails of this {@link RTABackendDetails} instance and return the same instance.
-   *
-   * @param backendDetails  Current details of the deployment
-   * @return The same instance of this {@link RTABackendDetails} class
-   */
+    * Set the backendDetails of this {@link RTABackendDetails} instance and return the same instance.
+    *
+    * @param backendDetails  Current details of the deployment
+    * @return The same instance of this {@link RTABackendDetails} class
+    */
    @Nonnull public RTABackendDetails backendDetails(@Nonnull final Object backendDetails) {
     this.backendDetails = backendDetails;
     return this;
   }
 
    /**
-   * Current details of the deployment
-   * @return backendDetails  The backendDetails of this {@link RTABackendDetails} instance.
-  **/
+    * Current details of the deployment
+    * @return backendDetails  The backendDetails of this {@link RTABackendDetails} instance.
+    */
   @Nonnull public Object getBackendDetails() {
     return backendDetails;
   }
 
   /**
-  * Set the backendDetails of this {@link RTABackendDetails} instance.
-  *
-  * @param backendDetails  Current details of the deployment
-  */
+   * Set the backendDetails of this {@link RTABackendDetails} instance.
+   *
+   * @param backendDetails  Current details of the deployment
+   */
   public void setBackendDetails( @Nonnull final Object backendDetails) {
     this.backendDetails = backendDetails;
   }
@@ -153,6 +152,7 @@ public class RTABackendDetails
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

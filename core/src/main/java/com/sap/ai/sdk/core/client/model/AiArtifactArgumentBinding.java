@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Required for execution Result of activation 
  */
-
 // CHECKSTYLE:OFF
 public class AiArtifactArgumentBinding 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class AiArtifactArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the key of this {@link AiArtifactArgumentBinding} instance and return the same instance.
-   *
-   * @param key  The key of this {@link AiArtifactArgumentBinding}
-   * @return The same instance of this {@link AiArtifactArgumentBinding} class
-   */
+    * Set the key of this {@link AiArtifactArgumentBinding} instance and return the same instance.
+    *
+    * @param key  The key of this {@link AiArtifactArgumentBinding}
+    * @return The same instance of this {@link AiArtifactArgumentBinding} class
+    */
    @Nonnull public AiArtifactArgumentBinding key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
 
    /**
-   * Get key
-   * @return key  The key of this {@link AiArtifactArgumentBinding} instance.
-  **/
+    * Get key
+    * @return key  The key of this {@link AiArtifactArgumentBinding} instance.
+    */
   @Nonnull public String getKey() {
     return key;
   }
 
   /**
-  * Set the key of this {@link AiArtifactArgumentBinding} instance.
-  *
-  * @param key  The key of this {@link AiArtifactArgumentBinding}
-  */
+   * Set the key of this {@link AiArtifactArgumentBinding} instance.
+   *
+   * @param key  The key of this {@link AiArtifactArgumentBinding}
+   */
   public void setKey( @Nonnull final String key) {
     this.key = key;
   }
 
    /**
-   * Set the artifactId of this {@link AiArtifactArgumentBinding} instance and return the same instance.
-   *
-   * @param artifactId  ID of the artifact
-   * @return The same instance of this {@link AiArtifactArgumentBinding} class
-   */
+    * Set the artifactId of this {@link AiArtifactArgumentBinding} instance and return the same instance.
+    *
+    * @param artifactId  ID of the artifact
+    * @return The same instance of this {@link AiArtifactArgumentBinding} class
+    */
    @Nonnull public AiArtifactArgumentBinding artifactId(@Nonnull final String artifactId) {
     this.artifactId = artifactId;
     return this;
   }
 
    /**
-   * ID of the artifact
-   * @return artifactId  The artifactId of this {@link AiArtifactArgumentBinding} instance.
-  **/
+    * ID of the artifact
+    * @return artifactId  The artifactId of this {@link AiArtifactArgumentBinding} instance.
+    */
   @Nonnull public String getArtifactId() {
     return artifactId;
   }
 
   /**
-  * Set the artifactId of this {@link AiArtifactArgumentBinding} instance.
-  *
-  * @param artifactId  ID of the artifact
-  */
+   * Set the artifactId of this {@link AiArtifactArgumentBinding} instance.
+   *
+   * @param artifactId  ID of the artifact
+   */
   public void setArtifactId( @Nonnull final String artifactId) {
     this.artifactId = artifactId;
   }
@@ -186,6 +185,7 @@ public class AiArtifactArgumentBinding
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

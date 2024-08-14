@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Message
  */
-
 // CHECKSTYLE:OFF
 public class BcknddockerRegistrySecretCreationResponse 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class BcknddockerRegistrySecretCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance and return the same instance.
-   *
-   * @param message  Message
-   * @return The same instance of this {@link BcknddockerRegistrySecretCreationResponse} class
-   */
+    * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance and return the same instance.
+    *
+    * @param message  Message
+    * @return The same instance of this {@link BcknddockerRegistrySecretCreationResponse} class
+    */
    @Nonnull public BcknddockerRegistrySecretCreationResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
 
    /**
-   * Message
-   * @return message  The message of this {@link BcknddockerRegistrySecretCreationResponse} instance.
-  **/
+    * Message
+    * @return message  The message of this {@link BcknddockerRegistrySecretCreationResponse} instance.
+    */
   @Nonnull public String getMessage() {
     return message;
   }
 
   /**
-  * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance.
-  *
-  * @param message  Message
-  */
+   * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance.
+   *
+   * @param message  Message
+   */
   public void setMessage( @Nonnull final String message) {
     this.message = message;
   }
@@ -153,6 +152,7 @@ public class BcknddockerRegistrySecretCreationResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

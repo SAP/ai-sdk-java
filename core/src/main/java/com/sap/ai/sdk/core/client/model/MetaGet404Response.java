@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * MetaGet404Response
  */
-
 // CHECKSTYLE:OFF
 public class MetaGet404Response 
 // CHECKSTYLE:ON
@@ -52,29 +51,29 @@ public class MetaGet404Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the error of this {@link MetaGet404Response} instance and return the same instance.
-   *
-   * @param error  The error of this {@link MetaGet404Response}
-   * @return The same instance of this {@link MetaGet404Response} class
-   */
+    * Set the error of this {@link MetaGet404Response} instance and return the same instance.
+    *
+    * @param error  The error of this {@link MetaGet404Response}
+    * @return The same instance of this {@link MetaGet404Response} class
+    */
    @Nonnull public MetaGet404Response error(@Nonnull final MetaApiError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link MetaGet404Response} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link MetaGet404Response} instance.
+    */
   @Nonnull public MetaApiError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link MetaGet404Response} instance.
-  *
-  * @param error  The error of this {@link MetaGet404Response}
-  */
+   * Set the error of this {@link MetaGet404Response} instance.
+   *
+   * @param error  The error of this {@link MetaGet404Response}
+   */
   public void setError( @Nonnull final MetaApiError error) {
     this.error = error;
   }
@@ -154,6 +153,7 @@ public class MetaGet404Response
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

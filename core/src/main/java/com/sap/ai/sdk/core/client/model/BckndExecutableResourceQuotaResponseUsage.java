@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndExecutableResourceQuotaResponseUsage
  */
-
 // CHECKSTYLE:OFF
 public class BckndExecutableResourceQuotaResponseUsage 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndExecutableResourceQuotaResponseUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance and return the same instance.
-   *
-   * @param servingTemplateCount  The servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
-   * @return The same instance of this {@link BckndExecutableResourceQuotaResponseUsage} class
-   */
+    * Set the servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance and return the same instance.
+    *
+    * @param servingTemplateCount  The servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
+    * @return The same instance of this {@link BckndExecutableResourceQuotaResponseUsage} class
+    */
    @Nonnull public BckndExecutableResourceQuotaResponseUsage servingTemplateCount(@Nonnull final Integer servingTemplateCount) {
     this.servingTemplateCount = servingTemplateCount;
     return this;
   }
 
    /**
-   * Get servingTemplateCount
-   * @return servingTemplateCount  The servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
-  **/
+    * Get servingTemplateCount
+    * @return servingTemplateCount  The servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
+    */
   @Nonnull public Integer getServingTemplateCount() {
     return servingTemplateCount;
   }
 
   /**
-  * Set the servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
-  *
-  * @param servingTemplateCount  The servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
-  */
+   * Set the servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
+   *
+   * @param servingTemplateCount  The servingTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
+   */
   public void setServingTemplateCount( @Nonnull final Integer servingTemplateCount) {
     this.servingTemplateCount = servingTemplateCount;
   }
 
    /**
-   * Set the workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance and return the same instance.
-   *
-   * @param workflowTemplateCount  The workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
-   * @return The same instance of this {@link BckndExecutableResourceQuotaResponseUsage} class
-   */
+    * Set the workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance and return the same instance.
+    *
+    * @param workflowTemplateCount  The workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
+    * @return The same instance of this {@link BckndExecutableResourceQuotaResponseUsage} class
+    */
    @Nonnull public BckndExecutableResourceQuotaResponseUsage workflowTemplateCount(@Nonnull final Integer workflowTemplateCount) {
     this.workflowTemplateCount = workflowTemplateCount;
     return this;
   }
 
    /**
-   * Get workflowTemplateCount
-   * @return workflowTemplateCount  The workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
-  **/
+    * Get workflowTemplateCount
+    * @return workflowTemplateCount  The workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
+    */
   @Nonnull public Integer getWorkflowTemplateCount() {
     return workflowTemplateCount;
   }
 
   /**
-  * Set the workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
-  *
-  * @param workflowTemplateCount  The workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
-  */
+   * Set the workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage} instance.
+   *
+   * @param workflowTemplateCount  The workflowTemplateCount of this {@link BckndExecutableResourceQuotaResponseUsage}
+   */
   public void setWorkflowTemplateCount( @Nonnull final Integer workflowTemplateCount) {
     this.workflowTemplateCount = workflowTemplateCount;
   }
@@ -186,6 +185,7 @@ public class BckndExecutableResourceQuotaResponseUsage
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

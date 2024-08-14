@@ -7,11 +7,11 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 
-import com.sap.ai.sdk.core.client.model.MetricsFind400Response ; //NOPMD
-import com.sap.ai.sdk.core.client.model.TrckDeleteMetricsResponse ; //NOPMD
-import com.sap.ai.sdk.core.client.model.TrckExecutionId ; //NOPMD
-import com.sap.ai.sdk.core.client.model.TrckGetMetricResourceList ; //NOPMD
-import com.sap.ai.sdk.core.client.model.TrckMetricResource ; //NOPMD
+import com.sap.ai.sdk.core.client.model.MetricsFind400Response;
+import com.sap.ai.sdk.core.client.model.TrckDeleteMetricsResponse;
+import com.sap.ai.sdk.core.client.model.TrckExecutionId;
+import com.sap.ai.sdk.core.client.model.TrckGetMetricResourceList;
+import com.sap.ai.sdk.core.client.model.TrckMetricResource;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,28 +34,27 @@ import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 
 /**
-* AI Core in version 2.33.0.
-*
-* Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
-*/
-
+ * AI Core in version 2.33.0.
+ *
+ * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ */
 public class MetricsApi extends AbstractOpenApiService {
     /**
-    * Instantiates this API class to invoke operations on the AI Core.
-    *
-    * @param httpDestination The destination that API should be used with
-    */
+     * Instantiates this API class to invoke operations on the AI Core.
+     *
+     * @param httpDestination The destination that API should be used with
+     */
     public MetricsApi( @Nonnull final Destination httpDestination )
     {
         super(httpDestination);
     }
 
     /**
-    * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-    *
-    * @param apiClient
-    *            ApiClient to invoke the API on
-    */
+     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
+     *
+     * @param apiClient
+     *            ApiClient to invoke the API on
+     */
     @Beta
     public MetricsApi( @Nonnull final ApiClient apiClient )
     {
@@ -63,18 +62,19 @@ public class MetricsApi extends AbstractOpenApiService {
     }
 
         /**
-    * <p>Delete metrics, tags, or labels</p>
-     *<p>Delete metrics, tags, or labels associated with an execution.</p>
+     * <p>Delete metrics, tags, or labels</p>
+     * <p>Delete metrics, tags, or labels associated with an execution.</p>
      * <p><b>200</b> - Metric Resource was successfully deleted
      * <p><b>404</b> - The specified resource was not found
-* @param aiResourceGroup
-        Specify a resource group id
-* @param executionId
-        The Id of an execution
-* @return TrckDeleteMetricsResponse
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @param executionId
+     *      The Id of an execution
+     * @return TrckDeleteMetricsResponse
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public TrckDeleteMetricsResponse metricsDelete( @Nonnull final String aiResourceGroup,  @Nonnull final TrckExecutionId executionId) throws OpenApiRequestException {
+    @Nonnull
+    public TrckDeleteMetricsResponse metricsDelete( @Nonnull final String aiResourceGroup,  @Nonnull final TrckExecutionId executionId) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
@@ -128,7 +128,8 @@ public class MetricsApi extends AbstractOpenApiService {
      * @return TrckGetMetricResourceList
      * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable  public TrckGetMetricResourceList metricsFind( @Nonnull final String aiResourceGroup,  @Nullable final String $filter,  @Nullable final List<String> executionIds,  @Nullable final List<String> $select) throws OpenApiRequestException {
+    @Nonnull
+    public TrckGetMetricResourceList metricsFind( @Nonnull final String aiResourceGroup,  @Nullable final String $filter,  @Nullable final List<String> executionIds,  @Nullable final List<String> $select) throws OpenApiRequestException {
         final Object localVarPostBody = null;
         
         // verify the required parameter 'aiResourceGroup' is set
@@ -164,33 +165,35 @@ public class MetricsApi extends AbstractOpenApiService {
     }
 
     /**
-    * <p>Get metrics according to specified filter conditions. </p>
-     *<p>Retrieve metrics, labels, or tags according to filter conditions.  One query parameter is mandatory, either execution ID or filter.  Use up to 10 execution IDs in a query parameter. </p>
+     * <p>Get metrics according to specified filter conditions. </p>
+     * <p>Retrieve metrics, labels, or tags according to filter conditions.  One query parameter is mandatory, either execution ID or filter.  Use up to 10 execution IDs in a query parameter. </p>
      * <p><b>200</b> - List of tracking metadata, where each item includes metrics, labels, tags and customInfo. If $select query parameter is specified, each item will include only the resources specified in $select.
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>501</b> - Operation is not Supported.
-* @param aiResourceGroup
-        Specify a resource group id
-* @return TrckGetMetricResourceList
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @return TrckGetMetricResourceList
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-    @Nullable   public TrckGetMetricResourceList metricsFind( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    @Nonnull
+    public TrckGetMetricResourceList metricsFind( @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
         return metricsFind(aiResourceGroup, null, null, null);
     }
     /**
-    * <p>Create or update metrics, tags, or labels</p>
-     *<p>Update or create metrics, tags, or labels associated with an execution. </p>
+     * <p>Create or update metrics, tags, or labels</p>
+     * <p>Update or create metrics, tags, or labels associated with an execution. </p>
      * <p><b>204</b> - Metrics was successfully updated/created
      * <p><b>400</b> - The specification of the resource was incorrect
      * <p><b>413</b> - request entity is larger than limits defined by server.
-* @param aiResourceGroup
-        Specify a resource group id
-* @param trckMetricResource
-            The value for the parameter trckMetricResource
-* @return An OpenApiResponse containing the status code of the HttpResponse.
-* @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+     * @param aiResourceGroup
+     *      Specify a resource group id
+     * @param trckMetricResource
+     *      The value for the parameter trckMetricResource
+     * @return An OpenApiResponse containing the status code of the HttpResponse.
+     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
      */
-     @Nonnull  public OpenApiResponse metricsPatch( @Nonnull final String aiResourceGroup,  @Nonnull final TrckMetricResource trckMetricResource) throws OpenApiRequestException {
+    @Nonnull
+    public OpenApiResponse metricsPatch( @Nonnull final String aiResourceGroup,  @Nonnull final TrckMetricResource trckMetricResource) throws OpenApiRequestException {
         final Object localVarPostBody = trckMetricResource;
         
         // verify the required parameter 'aiResourceGroup' is set

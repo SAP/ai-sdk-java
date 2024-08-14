@@ -45,7 +45,6 @@ import javax.annotation.Nullable;
 /**
  * Collection of various metrics/tags/labels associated against some execution/deployment
  */
-
 // CHECKSTYLE:OFF
 public class TrckMetricResource 
 // CHECKSTYLE:ON
@@ -67,49 +66,49 @@ public class TrckMetricResource
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the executionId of this {@link TrckMetricResource} instance and return the same instance.
-   *
-   * @param executionId  The executionId of this {@link TrckMetricResource}
-   * @return The same instance of this {@link TrckMetricResource} class
-   */
+    * Set the executionId of this {@link TrckMetricResource} instance and return the same instance.
+    *
+    * @param executionId  The executionId of this {@link TrckMetricResource}
+    * @return The same instance of this {@link TrckMetricResource} class
+    */
    @Nonnull public TrckMetricResource executionId(@Nonnull final TrckExecutionId executionId) {
     this.executionId = executionId;
     return this;
   }
 
    /**
-   * Get executionId
-   * @return executionId  The executionId of this {@link TrckMetricResource} instance.
-  **/
+    * Get executionId
+    * @return executionId  The executionId of this {@link TrckMetricResource} instance.
+    */
   @Nonnull public TrckExecutionId getExecutionId() {
     return executionId;
   }
 
   /**
-  * Set the executionId of this {@link TrckMetricResource} instance.
-  *
-  * @param executionId  The executionId of this {@link TrckMetricResource}
-  */
+   * Set the executionId of this {@link TrckMetricResource} instance.
+   *
+   * @param executionId  The executionId of this {@link TrckMetricResource}
+   */
   public void setExecutionId( @Nonnull final TrckExecutionId executionId) {
     this.executionId = executionId;
   }
 
    /**
-   * Set the metrics of this {@link TrckMetricResource} instance and return the same instance.
-   *
-   * @param metrics  Array of Metric items
-   * @return The same instance of this {@link TrckMetricResource} class
-   */
+    * Set the metrics of this {@link TrckMetricResource} instance and return the same instance.
+    *
+    * @param metrics  Array of Metric items
+    * @return The same instance of this {@link TrckMetricResource} class
+    */
    @Nonnull public TrckMetricResource metrics(@Nonnull final List<TrckMetric> metrics) {
     this.metrics = metrics;
     return this;
   }
   /**
-  * Add one metrics instance to this {@link TrckMetricResource}.
-  * @param metricsItem The metrics that should be added
-  * @return The same instance of type {@link TrckMetricResource}
-  */
-  @Nonnull public TrckMetricResource addmetricsItem( @Nonnull final TrckMetric metricsItem) {
+   * Add one metrics instance to this {@link TrckMetricResource}.
+   * @param metricsItem The metrics that should be added
+   * @return The same instance of type {@link TrckMetricResource}
+   */
+  @Nonnull public TrckMetricResource addMetricsItem( @Nonnull final TrckMetric metricsItem) {
     if (this.metrics == null) {
       this.metrics = new ArrayList<>();
     }
@@ -118,38 +117,38 @@ public class TrckMetricResource
   }
 
    /**
-   * Array of Metric items
-   * @return metrics  The metrics of this {@link TrckMetricResource} instance.
-  **/
+    * Array of Metric items
+    * @return metrics  The metrics of this {@link TrckMetricResource} instance.
+    */
   @Nonnull public List<TrckMetric> getMetrics() {
     return metrics;
   }
 
   /**
-  * Set the metrics of this {@link TrckMetricResource} instance.
-  *
-  * @param metrics  Array of Metric items
-  */
+   * Set the metrics of this {@link TrckMetricResource} instance.
+   *
+   * @param metrics  Array of Metric items
+   */
   public void setMetrics( @Nonnull final List<TrckMetric> metrics) {
     this.metrics = metrics;
   }
 
    /**
-   * Set the tags of this {@link TrckMetricResource} instance and return the same instance.
-   *
-   * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
-   * @return The same instance of this {@link TrckMetricResource} class
-   */
+    * Set the tags of this {@link TrckMetricResource} instance and return the same instance.
+    *
+    * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
+    * @return The same instance of this {@link TrckMetricResource} class
+    */
    @Nonnull public TrckMetricResource tags(@Nonnull final List<TrckTag> tags) {
     this.tags = tags;
     return this;
   }
   /**
-  * Add one tags instance to this {@link TrckMetricResource}.
-  * @param tagsItem The tags that should be added
-  * @return The same instance of type {@link TrckMetricResource}
-  */
-  @Nonnull public TrckMetricResource addtagsItem( @Nonnull final TrckTag tagsItem) {
+   * Add one tags instance to this {@link TrckMetricResource}.
+   * @param tagsItem The tags that should be added
+   * @return The same instance of type {@link TrckMetricResource}
+   */
+  @Nonnull public TrckMetricResource addTagsItem( @Nonnull final TrckTag tagsItem) {
     if (this.tags == null) {
       this.tags = new ArrayList<>();
     }
@@ -158,38 +157,38 @@ public class TrckMetricResource
   }
 
    /**
-   * a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
-   * @return tags  The tags of this {@link TrckMetricResource} instance.
-  **/
+    * a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
+    * @return tags  The tags of this {@link TrckMetricResource} instance.
+    */
   @Nonnull public List<TrckTag> getTags() {
     return tags;
   }
 
   /**
-  * Set the tags of this {@link TrckMetricResource} instance.
-  *
-  * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
-  */
+   * Set the tags of this {@link TrckMetricResource} instance.
+   *
+   * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
+   */
   public void setTags( @Nonnull final List<TrckTag> tags) {
     this.tags = tags;
   }
 
    /**
-   * Set the customInfo of this {@link TrckMetricResource} instance and return the same instance.
-   *
-   * @param customInfo  
-   * @return The same instance of this {@link TrckMetricResource} class
-   */
+    * Set the customInfo of this {@link TrckMetricResource} instance and return the same instance.
+    *
+    * @param customInfo  
+    * @return The same instance of this {@link TrckMetricResource} class
+    */
    @Nonnull public TrckMetricResource customInfo(@Nonnull final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
     return this;
   }
   /**
-  * Add one customInfo instance to this {@link TrckMetricResource}.
-  * @param customInfoItem The customInfo that should be added
-  * @return The same instance of type {@link TrckMetricResource}
-  */
-  @Nonnull public TrckMetricResource addcustomInfoItem( @Nonnull final TrckCustomInfoObject customInfoItem) {
+   * Add one customInfo instance to this {@link TrckMetricResource}.
+   * @param customInfoItem The customInfo that should be added
+   * @return The same instance of type {@link TrckMetricResource}
+   */
+  @Nonnull public TrckMetricResource addCustomInfoItem( @Nonnull final TrckCustomInfoObject customInfoItem) {
     if (this.customInfo == null) {
       this.customInfo = new ArrayList<>();
     }
@@ -198,18 +197,18 @@ public class TrckMetricResource
   }
 
    /**
-   * 
-   * @return customInfo  The customInfo of this {@link TrckMetricResource} instance.
-  **/
+    * 
+    * @return customInfo  The customInfo of this {@link TrckMetricResource} instance.
+    */
   @Nonnull public List<TrckCustomInfoObject> getCustomInfo() {
     return customInfo;
   }
 
   /**
-  * Set the customInfo of this {@link TrckMetricResource} instance.
-  *
-  * @param customInfo  
-  */
+   * Set the customInfo of this {@link TrckMetricResource} instance.
+   *
+   * @param customInfo  
+   */
   public void setCustomInfo( @Nonnull final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
   }
@@ -295,6 +294,7 @@ public class TrckMetricResource
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 /**
  * AiApiErrorWithId
  */
-
 // CHECKSTYLE:OFF
 public class AiApiErrorWithId 
 // CHECKSTYLE:ON
@@ -55,57 +54,57 @@ public class AiApiErrorWithId
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the id of this {@link AiApiErrorWithId} instance and return the same instance.
-   *
-   * @param id  Generic ID
-   * @return The same instance of this {@link AiApiErrorWithId} class
-   */
+    * Set the id of this {@link AiApiErrorWithId} instance and return the same instance.
+    *
+    * @param id  Generic ID
+    * @return The same instance of this {@link AiApiErrorWithId} class
+    */
    @Nonnull public AiApiErrorWithId id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
 
    /**
-   * Generic ID
-   * @return id  The id of this {@link AiApiErrorWithId} instance.
-  **/
+    * Generic ID
+    * @return id  The id of this {@link AiApiErrorWithId} instance.
+    */
   @Nonnull public String getId() {
     return id;
   }
 
   /**
-  * Set the id of this {@link AiApiErrorWithId} instance.
-  *
-  * @param id  Generic ID
-  */
+   * Set the id of this {@link AiApiErrorWithId} instance.
+   *
+   * @param id  Generic ID
+   */
   public void setId( @Nonnull final String id) {
     this.id = id;
   }
 
    /**
-   * Set the error of this {@link AiApiErrorWithId} instance and return the same instance.
-   *
-   * @param error  The error of this {@link AiApiErrorWithId}
-   * @return The same instance of this {@link AiApiErrorWithId} class
-   */
+    * Set the error of this {@link AiApiErrorWithId} instance and return the same instance.
+    *
+    * @param error  The error of this {@link AiApiErrorWithId}
+    * @return The same instance of this {@link AiApiErrorWithId} class
+    */
    @Nonnull public AiApiErrorWithId error(@Nonnull final AiApiError error) {
     this.error = error;
     return this;
   }
 
    /**
-   * Get error
-   * @return error  The error of this {@link AiApiErrorWithId} instance.
-  **/
+    * Get error
+    * @return error  The error of this {@link AiApiErrorWithId} instance.
+    */
   @Nonnull public AiApiError getError() {
     return error;
   }
 
   /**
-  * Set the error of this {@link AiApiErrorWithId} instance.
-  *
-  * @param error  The error of this {@link AiApiErrorWithId}
-  */
+   * Set the error of this {@link AiApiErrorWithId} instance.
+   *
+   * @param error  The error of this {@link AiApiErrorWithId}
+   */
   public void setError( @Nonnull final AiApiError error) {
     this.error = error;
   }
@@ -187,6 +186,7 @@ public class AiApiErrorWithId
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

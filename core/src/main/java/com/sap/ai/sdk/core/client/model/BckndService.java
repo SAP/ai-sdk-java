@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndService
  */
-
 // CHECKSTYLE:OFF
 public class BckndService 
 // CHECKSTYLE:ON
@@ -127,141 +126,141 @@ public class BckndService
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link BckndService} instance and return the same instance.
-   *
-   * @param name  service name
-   * @return The same instance of this {@link BckndService} class
-   */
+    * Set the name of this {@link BckndService} instance and return the same instance.
+    *
+    * @param name  service name
+    * @return The same instance of this {@link BckndService} class
+    */
    @Nonnull public BckndService name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * service name
-   * @return name  The name of this {@link BckndService} instance.
-  **/
+    * service name
+    * @return name  The name of this {@link BckndService} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link BckndService} instance.
-  *
-  * @param name  service name
-  */
+   * Set the name of this {@link BckndService} instance.
+   *
+   * @param name  service name
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the description of this {@link BckndService} instance and return the same instance.
-   *
-   * @param description  service description
-   * @return The same instance of this {@link BckndService} class
-   */
+    * Set the description of this {@link BckndService} instance and return the same instance.
+    *
+    * @param description  service description
+    * @return The same instance of this {@link BckndService} class
+    */
    @Nonnull public BckndService description(@Nonnull final String description) {
     this.description = description;
     return this;
   }
 
    /**
-   * service description
-   * @return description  The description of this {@link BckndService} instance.
-  **/
+    * service description
+    * @return description  The description of this {@link BckndService} instance.
+    */
   @Nonnull public String getDescription() {
     return description;
   }
 
   /**
-  * Set the description of this {@link BckndService} instance.
-  *
-  * @param description  service description
-  */
+   * Set the description of this {@link BckndService} instance.
+   *
+   * @param description  service description
+   */
   public void setDescription( @Nonnull final String description) {
     this.description = description;
   }
 
    /**
-   * Set the url of this {@link BckndService} instance and return the same instance.
-   *
-   * @param url  service broker url
-   * @return The same instance of this {@link BckndService} class
-   */
+    * Set the url of this {@link BckndService} instance and return the same instance.
+    *
+    * @param url  service broker url
+    * @return The same instance of this {@link BckndService} class
+    */
    @Nonnull public BckndService url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-   * service broker url
-   * @return url  The url of this {@link BckndService} instance.
-  **/
+    * service broker url
+    * @return url  The url of this {@link BckndService} instance.
+    */
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-  * Set the url of this {@link BckndService} instance.
-  *
-  * @param url  service broker url
-  */
+   * Set the url of this {@link BckndService} instance.
+   *
+   * @param url  service broker url
+   */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
 
    /**
-   * Set the status of this {@link BckndService} instance and return the same instance.
-   *
-   * @param status  aggregated status of the service
-   * @return The same instance of this {@link BckndService} class
-   */
+    * Set the status of this {@link BckndService} instance and return the same instance.
+    *
+    * @param status  aggregated status of the service
+    * @return The same instance of this {@link BckndService} class
+    */
    @Nonnull public BckndService status(@Nonnull final StatusEnum status) {
     this.status = status;
     return this;
   }
 
    /**
-   * aggregated status of the service
-   * @return status  The status of this {@link BckndService} instance.
-  **/
+    * aggregated status of the service
+    * @return status  The status of this {@link BckndService} instance.
+    */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
 
   /**
-  * Set the status of this {@link BckndService} instance.
-  *
-  * @param status  aggregated status of the service
-  */
+   * Set the status of this {@link BckndService} instance.
+   *
+   * @param status  aggregated status of the service
+   */
   public void setStatus( @Nonnull final StatusEnum status) {
     this.status = status;
   }
 
    /**
-   * Set the statusMessage of this {@link BckndService} instance and return the same instance.
-   *
-   * @param statusMessage  status message
-   * @return The same instance of this {@link BckndService} class
-   */
+    * Set the statusMessage of this {@link BckndService} instance and return the same instance.
+    *
+    * @param statusMessage  status message
+    * @return The same instance of this {@link BckndService} class
+    */
    @Nonnull public BckndService statusMessage(@Nonnull final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
    /**
-   * status message
-   * @return statusMessage  The statusMessage of this {@link BckndService} instance.
-  **/
+    * status message
+    * @return statusMessage  The statusMessage of this {@link BckndService} instance.
+    */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
 
   /**
-  * Set the statusMessage of this {@link BckndService} instance.
-  *
-  * @param statusMessage  status message
-  */
+   * Set the statusMessage of this {@link BckndService} instance.
+   *
+   * @param statusMessage  status message
+   */
   public void setStatusMessage( @Nonnull final String statusMessage) {
     this.statusMessage = statusMessage;
   }
@@ -349,6 +348,7 @@ public class BckndService
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

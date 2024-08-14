@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * Result of execution
  */
-
 // CHECKSTYLE:OFF
 public class RTAOutputArtifactArgumentBinding 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class RTAOutputArtifactArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
-   *
-   * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
-   * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
-   */
+    * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
+    *
+    * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
+    * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
+    */
    @Nonnull public RTAOutputArtifactArgumentBinding name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Get name
-   * @return name  The name of this {@link RTAOutputArtifactArgumentBinding} instance.
-  **/
+    * Get name
+    * @return name  The name of this {@link RTAOutputArtifactArgumentBinding} instance.
+    */
   @Nonnull public String getName() {
     return name;
   }
 
   /**
-  * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance.
-  *
-  * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
-  */
+   * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance.
+   *
+   * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
+   */
   public void setName( @Nonnull final String name) {
     this.name = name;
   }
 
    /**
-   * Set the url of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
-   *
-   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-   * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
-   */
+    * Set the url of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
+    *
+    * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+    * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
+    */
    @Nonnull public RTAOutputArtifactArgumentBinding url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
 
    /**
-   * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-   * @return url  The url of this {@link RTAOutputArtifactArgumentBinding} instance.
-  **/
+    * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+    * @return url  The url of this {@link RTAOutputArtifactArgumentBinding} instance.
+    */
   @Nonnull public String getUrl() {
     return url;
   }
 
   /**
-  * Set the url of this {@link RTAOutputArtifactArgumentBinding} instance.
-  *
-  * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-  */
+   * Set the url of this {@link RTAOutputArtifactArgumentBinding} instance.
+   *
+   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   */
   public void setUrl( @Nonnull final String url) {
     this.url = url;
   }
@@ -186,6 +185,7 @@ public class RTAOutputArtifactArgumentBinding
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

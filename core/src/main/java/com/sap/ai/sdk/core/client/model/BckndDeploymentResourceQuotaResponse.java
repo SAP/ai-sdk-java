@@ -43,7 +43,6 @@ import javax.annotation.Nullable;
 /**
  * BckndDeploymentResourceQuotaResponse
  */
-
 // CHECKSTYLE:OFF
 public class BckndDeploymentResourceQuotaResponse 
 // CHECKSTYLE:ON
@@ -59,49 +58,49 @@ public class BckndDeploymentResourceQuotaResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
-   *
-   * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
-   * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
-   */
+    * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
+    *
+    * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
+    * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
+    */
    @Nonnull public BckndDeploymentResourceQuotaResponse usage(@Nonnull final BckndDeploymentUsage usage) {
     this.usage = usage;
     return this;
   }
 
    /**
-   * Get usage
-   * @return usage  The usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
-  **/
+    * Get usage
+    * @return usage  The usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
+    */
   @Nonnull public BckndDeploymentUsage getUsage() {
     return usage;
   }
 
   /**
-  * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
-  *
-  * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
-  */
+   * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
+   *
+   * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
+   */
   public void setUsage( @Nonnull final BckndDeploymentUsage usage) {
     this.usage = usage;
   }
 
    /**
-   * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
-   *
-   * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
-   * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
-   */
+    * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
+    *
+    * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
+    * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
+    */
    @Nonnull public BckndDeploymentResourceQuotaResponse quotas(@Nonnull final List<BckndDeploymentQuotaItem> quotas) {
     this.quotas = quotas;
     return this;
   }
   /**
-  * Add one quotas instance to this {@link BckndDeploymentResourceQuotaResponse}.
-  * @param quotasItem The quotas that should be added
-  * @return The same instance of type {@link BckndDeploymentResourceQuotaResponse}
-  */
-  @Nonnull public BckndDeploymentResourceQuotaResponse addquotasItem( @Nonnull final BckndDeploymentQuotaItem quotasItem) {
+   * Add one quotas instance to this {@link BckndDeploymentResourceQuotaResponse}.
+   * @param quotasItem The quotas that should be added
+   * @return The same instance of type {@link BckndDeploymentResourceQuotaResponse}
+   */
+  @Nonnull public BckndDeploymentResourceQuotaResponse addQuotasItem( @Nonnull final BckndDeploymentQuotaItem quotasItem) {
     if (this.quotas == null) {
       this.quotas = new ArrayList<>();
     }
@@ -110,18 +109,18 @@ public class BckndDeploymentResourceQuotaResponse
   }
 
    /**
-   * Get quotas
-   * @return quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
-  **/
+    * Get quotas
+    * @return quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
+    */
   @Nonnull public List<BckndDeploymentQuotaItem> getQuotas() {
     return quotas;
   }
 
   /**
-  * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
-  *
-  * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
-  */
+   * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
+   *
+   * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
+   */
   public void setQuotas( @Nonnull final List<BckndDeploymentQuotaItem> quotas) {
     this.quotas = quotas;
   }
@@ -203,6 +202,7 @@ public class BckndDeploymentResourceQuotaResponse
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

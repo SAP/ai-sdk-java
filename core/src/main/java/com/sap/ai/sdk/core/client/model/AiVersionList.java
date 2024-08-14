@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * AiVersionList
  */
-
 // CHECKSTYLE:OFF
 public class AiVersionList 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class AiVersionList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link AiVersionList} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link AiVersionList} class
-   */
+    * Set the count of this {@link AiVersionList} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link AiVersionList} class
+    */
    @Nonnull public AiVersionList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link AiVersionList} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link AiVersionList} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link AiVersionList} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link AiVersionList} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link AiVersionList} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link AiVersionList}
-   * @return The same instance of this {@link AiVersionList} class
-   */
+    * Set the resources of this {@link AiVersionList} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link AiVersionList}
+    * @return The same instance of this {@link AiVersionList} class
+    */
    @Nonnull public AiVersionList resources(@Nonnull final List<AiVersion> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link AiVersionList}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link AiVersionList}
-  */
-  @Nonnull public AiVersionList addresourcesItem( @Nonnull final AiVersion resourcesItem) {
+   * Add one resources instance to this {@link AiVersionList}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link AiVersionList}
+   */
+  @Nonnull public AiVersionList addResourcesItem( @Nonnull final AiVersion resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class AiVersionList
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link AiVersionList} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link AiVersionList} instance.
+    */
   @Nonnull public List<AiVersion> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link AiVersionList} instance.
-  *
-  * @param resources  The resources of this {@link AiVersionList}
-  */
+   * Set the resources of this {@link AiVersionList} instance.
+   *
+   * @param resources  The resources of this {@link AiVersionList}
+   */
   public void setResources( @Nonnull final List<AiVersion> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class AiVersionList
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

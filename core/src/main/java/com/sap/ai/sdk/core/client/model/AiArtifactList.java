@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 /**
  * AiArtifactList
  */
-
 // CHECKSTYLE:OFF
 public class AiArtifactList 
 // CHECKSTYLE:ON
@@ -58,49 +57,49 @@ public class AiArtifactList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the count of this {@link AiArtifactList} instance and return the same instance.
-   *
-   * @param count  Number of the resource instances in the list
-   * @return The same instance of this {@link AiArtifactList} class
-   */
+    * Set the count of this {@link AiArtifactList} instance and return the same instance.
+    *
+    * @param count  Number of the resource instances in the list
+    * @return The same instance of this {@link AiArtifactList} class
+    */
    @Nonnull public AiArtifactList count(@Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
    /**
-   * Number of the resource instances in the list
-   * @return count  The count of this {@link AiArtifactList} instance.
-  **/
+    * Number of the resource instances in the list
+    * @return count  The count of this {@link AiArtifactList} instance.
+    */
   @Nonnull public Integer getCount() {
     return count;
   }
 
   /**
-  * Set the count of this {@link AiArtifactList} instance.
-  *
-  * @param count  Number of the resource instances in the list
-  */
+   * Set the count of this {@link AiArtifactList} instance.
+   *
+   * @param count  Number of the resource instances in the list
+   */
   public void setCount( @Nonnull final Integer count) {
     this.count = count;
   }
 
    /**
-   * Set the resources of this {@link AiArtifactList} instance and return the same instance.
-   *
-   * @param resources  The resources of this {@link AiArtifactList}
-   * @return The same instance of this {@link AiArtifactList} class
-   */
+    * Set the resources of this {@link AiArtifactList} instance and return the same instance.
+    *
+    * @param resources  The resources of this {@link AiArtifactList}
+    * @return The same instance of this {@link AiArtifactList} class
+    */
    @Nonnull public AiArtifactList resources(@Nonnull final List<AiArtifact> resources) {
     this.resources = resources;
     return this;
   }
   /**
-  * Add one resources instance to this {@link AiArtifactList}.
-  * @param resourcesItem The resources that should be added
-  * @return The same instance of type {@link AiArtifactList}
-  */
-  @Nonnull public AiArtifactList addresourcesItem( @Nonnull final AiArtifact resourcesItem) {
+   * Add one resources instance to this {@link AiArtifactList}.
+   * @param resourcesItem The resources that should be added
+   * @return The same instance of type {@link AiArtifactList}
+   */
+  @Nonnull public AiArtifactList addResourcesItem( @Nonnull final AiArtifact resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -109,18 +108,18 @@ public class AiArtifactList
   }
 
    /**
-   * Get resources
-   * @return resources  The resources of this {@link AiArtifactList} instance.
-  **/
+    * Get resources
+    * @return resources  The resources of this {@link AiArtifactList} instance.
+    */
   @Nonnull public List<AiArtifact> getResources() {
     return resources;
   }
 
   /**
-  * Set the resources of this {@link AiArtifactList} instance.
-  *
-  * @param resources  The resources of this {@link AiArtifactList}
-  */
+   * Set the resources of this {@link AiArtifactList} instance.
+   *
+   * @param resources  The resources of this {@link AiArtifactList}
+   */
   public void setResources( @Nonnull final List<AiArtifact> resources) {
     this.resources = resources;
   }
@@ -202,6 +201,7 @@ public class AiArtifactList
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

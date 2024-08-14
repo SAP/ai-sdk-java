@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * BckndResourceGetResourcePlansValue
  */
-
 // CHECKSTYLE:OFF
 public class BckndResourceGetResourcePlansValue 
 // CHECKSTYLE:ON
@@ -54,57 +53,57 @@ public class BckndResourceGetResourcePlansValue
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
-   *
-   * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
-   * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
-   */
+    * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
+    *
+    * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
+    * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
+    */
    @Nonnull public BckndResourceGetResourcePlansValue provisioned(@Nonnull final Integer provisioned) {
     this.provisioned = provisioned;
     return this;
   }
 
    /**
-   * Get provisioned
-   * @return provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
-  **/
+    * Get provisioned
+    * @return provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
+    */
   @Nonnull public Integer getProvisioned() {
     return provisioned;
   }
 
   /**
-  * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
-  *
-  * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
-  */
+   * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
+   *
+   * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
+   */
   public void setProvisioned( @Nonnull final Integer provisioned) {
     this.provisioned = provisioned;
   }
 
    /**
-   * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
-   *
-   * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
-   * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
-   */
+    * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
+    *
+    * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
+    * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
+    */
    @Nonnull public BckndResourceGetResourcePlansValue requested(@Nonnull final Integer requested) {
     this.requested = requested;
     return this;
   }
 
    /**
-   * Get requested
-   * @return requested  The requested of this {@link BckndResourceGetResourcePlansValue} instance.
-  **/
+    * Get requested
+    * @return requested  The requested of this {@link BckndResourceGetResourcePlansValue} instance.
+    */
   @Nonnull public Integer getRequested() {
     return requested;
   }
 
   /**
-  * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance.
-  *
-  * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
-  */
+   * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance.
+   *
+   * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
+   */
   public void setRequested( @Nonnull final Integer requested) {
     this.requested = requested;
   }
@@ -186,6 +185,7 @@ public class BckndResourceGetResourcePlansValue
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

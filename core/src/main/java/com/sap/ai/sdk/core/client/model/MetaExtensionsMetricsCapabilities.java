@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 /**
  * List of Metrics extension capabilities
  */
-
 // CHECKSTYLE:OFF
 public class MetaExtensionsMetricsCapabilities 
 // CHECKSTYLE:ON
@@ -51,29 +50,29 @@ public class MetaExtensionsMetricsCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance and return the same instance.
-   *
-   * @param extendedResults  Support for returning extended results
-   * @return The same instance of this {@link MetaExtensionsMetricsCapabilities} class
-   */
+    * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance and return the same instance.
+    *
+    * @param extendedResults  Support for returning extended results
+    * @return The same instance of this {@link MetaExtensionsMetricsCapabilities} class
+    */
    @Nonnull public MetaExtensionsMetricsCapabilities extendedResults(@Nonnull final Boolean extendedResults) {
     this.extendedResults = extendedResults;
     return this;
   }
 
    /**
-   * Support for returning extended results
-   * @return extendedResults  The extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance.
-  **/
+    * Support for returning extended results
+    * @return extendedResults  The extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance.
+    */
   @Nonnull public Boolean isExtendedResults() {
     return extendedResults;
   }
 
   /**
-  * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance.
-  *
-  * @param extendedResults  Support for returning extended results
-  */
+   * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance.
+   *
+   * @param extendedResults  Support for returning extended results
+   */
   public void setExtendedResults( @Nonnull final Boolean extendedResults) {
     this.extendedResults = extendedResults;
   }
@@ -153,6 +152,7 @@ public class MetaExtensionsMetricsCapabilities
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 

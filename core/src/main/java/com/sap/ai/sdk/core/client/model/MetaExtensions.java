@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 /**
  * MetaExtensions
  */
-
 // CHECKSTYLE:OFF
 public class MetaExtensions 
 // CHECKSTYLE:ON
@@ -63,113 +62,113 @@ public class MetaExtensions
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
    /**
-   * Set the analytics of this {@link MetaExtensions} instance and return the same instance.
-   *
-   * @param analytics  The analytics of this {@link MetaExtensions}
-   * @return The same instance of this {@link MetaExtensions} class
-   */
+    * Set the analytics of this {@link MetaExtensions} instance and return the same instance.
+    *
+    * @param analytics  The analytics of this {@link MetaExtensions}
+    * @return The same instance of this {@link MetaExtensions} class
+    */
    @Nonnull public MetaExtensions analytics(@Nonnull final MetaExtensionsAnalytics analytics) {
     this.analytics = analytics;
     return this;
   }
 
    /**
-   * Get analytics
-   * @return analytics  The analytics of this {@link MetaExtensions} instance.
-  **/
+    * Get analytics
+    * @return analytics  The analytics of this {@link MetaExtensions} instance.
+    */
   @Nonnull public MetaExtensionsAnalytics getAnalytics() {
     return analytics;
   }
 
   /**
-  * Set the analytics of this {@link MetaExtensions} instance.
-  *
-  * @param analytics  The analytics of this {@link MetaExtensions}
-  */
+   * Set the analytics of this {@link MetaExtensions} instance.
+   *
+   * @param analytics  The analytics of this {@link MetaExtensions}
+   */
   public void setAnalytics( @Nonnull final MetaExtensionsAnalytics analytics) {
     this.analytics = analytics;
   }
 
    /**
-   * Set the resourceGroups of this {@link MetaExtensions} instance and return the same instance.
-   *
-   * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
-   * @return The same instance of this {@link MetaExtensions} class
-   */
+    * Set the resourceGroups of this {@link MetaExtensions} instance and return the same instance.
+    *
+    * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
+    * @return The same instance of this {@link MetaExtensions} class
+    */
    @Nonnull public MetaExtensions resourceGroups(@Nonnull final MetaExtensionsAnalytics resourceGroups) {
     this.resourceGroups = resourceGroups;
     return this;
   }
 
    /**
-   * Get resourceGroups
-   * @return resourceGroups  The resourceGroups of this {@link MetaExtensions} instance.
-  **/
+    * Get resourceGroups
+    * @return resourceGroups  The resourceGroups of this {@link MetaExtensions} instance.
+    */
   @Nonnull public MetaExtensionsAnalytics getResourceGroups() {
     return resourceGroups;
   }
 
   /**
-  * Set the resourceGroups of this {@link MetaExtensions} instance.
-  *
-  * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
-  */
+   * Set the resourceGroups of this {@link MetaExtensions} instance.
+   *
+   * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
+   */
   public void setResourceGroups( @Nonnull final MetaExtensionsAnalytics resourceGroups) {
     this.resourceGroups = resourceGroups;
   }
 
    /**
-   * Set the dataset of this {@link MetaExtensions} instance and return the same instance.
-   *
-   * @param dataset  The dataset of this {@link MetaExtensions}
-   * @return The same instance of this {@link MetaExtensions} class
-   */
+    * Set the dataset of this {@link MetaExtensions} instance and return the same instance.
+    *
+    * @param dataset  The dataset of this {@link MetaExtensions}
+    * @return The same instance of this {@link MetaExtensions} class
+    */
    @Nonnull public MetaExtensions dataset(@Nonnull final MetaExtensionsDataset dataset) {
     this.dataset = dataset;
     return this;
   }
 
    /**
-   * Get dataset
-   * @return dataset  The dataset of this {@link MetaExtensions} instance.
-  **/
+    * Get dataset
+    * @return dataset  The dataset of this {@link MetaExtensions} instance.
+    */
   @Nonnull public MetaExtensionsDataset getDataset() {
     return dataset;
   }
 
   /**
-  * Set the dataset of this {@link MetaExtensions} instance.
-  *
-  * @param dataset  The dataset of this {@link MetaExtensions}
-  */
+   * Set the dataset of this {@link MetaExtensions} instance.
+   *
+   * @param dataset  The dataset of this {@link MetaExtensions}
+   */
   public void setDataset( @Nonnull final MetaExtensionsDataset dataset) {
     this.dataset = dataset;
   }
 
    /**
-   * Set the metrics of this {@link MetaExtensions} instance and return the same instance.
-   *
-   * @param metrics  The metrics of this {@link MetaExtensions}
-   * @return The same instance of this {@link MetaExtensions} class
-   */
+    * Set the metrics of this {@link MetaExtensions} instance and return the same instance.
+    *
+    * @param metrics  The metrics of this {@link MetaExtensions}
+    * @return The same instance of this {@link MetaExtensions} class
+    */
    @Nonnull public MetaExtensions metrics(@Nonnull final MetaExtensionsMetrics metrics) {
     this.metrics = metrics;
     return this;
   }
 
    /**
-   * Get metrics
-   * @return metrics  The metrics of this {@link MetaExtensions} instance.
-  **/
+    * Get metrics
+    * @return metrics  The metrics of this {@link MetaExtensions} instance.
+    */
   @Nonnull public MetaExtensionsMetrics getMetrics() {
     return metrics;
   }
 
   /**
-  * Set the metrics of this {@link MetaExtensions} instance.
-  *
-  * @param metrics  The metrics of this {@link MetaExtensions}
-  */
+   * Set the metrics of this {@link MetaExtensions} instance.
+   *
+   * @param metrics  The metrics of this {@link MetaExtensions}
+   */
   public void setMetrics( @Nonnull final MetaExtensionsMetrics metrics) {
     this.metrics = metrics;
   }
@@ -255,6 +254,7 @@ public class MetaExtensions
     }
     return o.toString().replace("\n", "\n    ");
   }
+
 
 }
 
