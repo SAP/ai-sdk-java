@@ -409,11 +409,11 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 
 - Go into the BTP Cockpit
 - Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
-- Set it as an environment variable `AICORE` in your IDE
+- Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
 
   Or in your terminal:
 ```shell
-export AICORE='{   "serviceurls": {     "AI_API_URL": ...'
+export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ```
 
 ### Run the Spring Boot application
