@@ -14,7 +14,7 @@ import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
 import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiConfigurationList;
 import java.util.List;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 /**

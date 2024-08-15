@@ -14,7 +14,7 @@ import com.sap.ai.sdk.core.client.model.AiExecution;
 import com.sap.ai.sdk.core.client.model.AiExecutionCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionList;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 /**

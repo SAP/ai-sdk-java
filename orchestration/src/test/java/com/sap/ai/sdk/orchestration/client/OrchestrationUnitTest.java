@@ -11,7 +11,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -12,7 +12,7 @@ import com.sap.ai.sdk.core.client.model.AiArtifact;
 import com.sap.ai.sdk.core.client.model.AiArtifactCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiArtifactList;
 import com.sap.ai.sdk.core.client.model.AiArtifactPostData;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 /**
