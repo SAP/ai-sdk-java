@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -137,7 +138,7 @@ public class Core {
    * @param serviceKey The service key in JSON format.
    * @return a destination pointing to the AI Core service.
    */
-  static HttpDestination getDestination(String serviceKey) {
+  static HttpDestination getDestination(@Nullable final String serviceKey) {
     final var serviceKeyPresent = serviceKey != null;
     final var aiCoreBindingPresent =
         DefaultServiceBindingAccessor.getInstance().getServiceBindings().stream()
