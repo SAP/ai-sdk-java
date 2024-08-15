@@ -60,7 +60,6 @@
     <!--  Quality assurance  -->
     <enforcer.skipBanLoggingFrameworks>false</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
-    <enforcer.skipEnforceScopeJavaEE>false</enforcer.skipEnforceScopeJavaEE>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
   </properties>
@@ -225,31 +224,6 @@
                     <include>org.slf4j:jcl-over-slf4j:*:*:test</include>
                     <include>org.slf4j:log4j-over-slf4j:*:*:runtime</include>
                     <include>org.slf4j:log4j-over-slf4j:*:*:test</include>
-                  </includes>
-                </bannedDependencies>
-              </rules>
-            </configuration>
-          </execution>
-          <execution>
-            <id>enforce-scope-javaee</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <skip>${enforcer.skipEnforceScopeJavaEE}</skip>
-              <rules>
-                <bannedDependencies>
-                  <message>Use Java EE modules with scope provided or test.</message>
-                  <excludes>
-                    <exclude>javax:javaee-api</exclude>
-                    <exclude>javax.inject:javax.inject</exclude>
-                    <exclude>javax.ws.rs:javax.ws.rs-api</exclude>
-                  </excludes>
-                  <includes>
-                    <include>javax:javaee-api:*:*:provided</include>
-                    <include>javax:javaee-api:*:*:test</include>
-                    <include>javax.ws.rs:javax.ws.rs-api:*:*:provided</include>
-                    <include>javax.ws.rs:javax.ws.rs-api:*:*:test</include>
                   </includes>
                 </bannedDependencies>
               </rules>
