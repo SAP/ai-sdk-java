@@ -7,11 +7,27 @@
   <packaging>pom</packaging>
   <name>SAP AI SDK - Parent POM</name>
   <description>Parent POM for the SAP AI SDK. Defines dependency versions and plugin configurations</description>
+
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
     <url>https://www.sap.com</url>
   </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>SAP</name>
+      <email>cloudsdk@sap.com</email>
+      <organization>SAP SE</organization>
+      <organizationUrl>https://www.sap.com</organizationUrl>
+    </developer>
+  </developers>
+
   <modules>
     <module>core</module>
     <module>orchestration</module>
