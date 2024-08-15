@@ -81,8 +81,6 @@ public AiDeploymentCreationResponse createDeployment() {
               AiDeploymentCreationRequest.create()
                   .configurationId("12345-123-123-123-123456abcdefg"));
 
-  Objects.requireNonNull(deployment, "Deployment creation failed");
-
   String id = deployment.getId();
   AiExecutionStatus status = deployment.getStatus();
 
