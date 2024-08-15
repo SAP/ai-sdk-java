@@ -19,6 +19,7 @@ import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationLoader;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -61,7 +62,8 @@ public class Core {
    */
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments = new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
+    final var deployments =
+        new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
     Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()
@@ -114,7 +116,9 @@ public class Core {
   }
 
   /**
-   * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
+   * Get a destination pointing to the AI Core service.
+   *
+   * <p><b>Requires an AI Core service binding OR a service key in the environment variable {@code
    * AICORE_SERVICE_KEY}.</b>
    *
    * @return a destination pointing to the AI Core service.
@@ -122,6 +126,18 @@ public class Core {
   @Nonnull
   public static Destination getDestination() {
     final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
+    return getDestination(serviceKey);
+  }
+
+  /**
+   * <b>For testing only</b>
+   *
+   * <p>Get a destination pointing to the AI Core service.
+   *
+   * @param serviceKey The service key in JSON format.
+   * @return a destination pointing to the AI Core service.
+   */
+  static HttpDestination getDestination(String serviceKey) {
     final var serviceKeyPresent = serviceKey != null;
     final var aiCoreBindingPresent =
         DefaultServiceBindingAccessor.getInstance().getServiceBindings().stream()
