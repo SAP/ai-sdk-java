@@ -22,7 +22,7 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 /**
