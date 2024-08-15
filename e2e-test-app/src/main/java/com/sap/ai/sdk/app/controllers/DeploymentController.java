@@ -11,7 +11,6 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +43,7 @@ class DeploymentController {
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
-    return API.deploymentDelete("default", Objects.requireNonNull(deployment).getId());
+    return API.deploymentDelete("default", deployment.getId());
   }
 
   /**
@@ -108,7 +107,7 @@ class DeploymentController {
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
     final AiDeploymentList deploymentList = API.deploymentQuery("default");
 
-    return Objects.requireNonNull(deploymentList).getResources().stream()
+    return deploymentList.getResources().stream()
         .filter(deployment -> configId.equals(deployment.getConfigurationId()))
         .toList();
   }
