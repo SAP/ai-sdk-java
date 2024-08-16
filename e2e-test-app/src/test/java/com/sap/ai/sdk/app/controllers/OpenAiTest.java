@@ -24,6 +24,12 @@ class OpenAiTest {
   }
 
   @Test
+  void stream() {
+    final var emitter = OpenAiController.stream();
+    // TODO: assert on the emitter
+  }
+
+  @Test
   void chatCompletionTools() {
     final var completion = OpenAiController.chatCompletionTools();
 

@@ -14,11 +14,15 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChat
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Endpoints for OpenAI operations */
 @RestController
@@ -36,6 +40,53 @@ class OpenAiController {
             .setMessages(List.of(new OpenAiChatUserMessage().addText("Who is the prettiest")));
 
     return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+  }
+
+  /**
+   * Stream chat request to OpenAI
+   *
+   * @return the emitter that streams the assistant message response
+   */
+  @GetMapping("/chatCompletion")
+  @Nonnull
+  public static ResponseBodyEmitter stream() {
+    final var request =
+        new OpenAiChatCompletionParameters()
+            .setMessages(
+                List.of(
+                    new OpenAiChatUserMessage()
+                        .addText(
+                            "Can you give me the first 100 number of the Fibonacci sequence?")));
+
+    Stream<OpenAiChatCompletionOutput> delta =
+        OpenAiClient.forModel(GPT_35_TURBO).stream(request).getDelta();
+
+    ResponseBodyEmitter emitter = new ResponseBodyEmitter();
+    // Start streaming the content asynchronously
+    ThreadContextExecutors.getExecutor()
+        .submit(
+            () -> {
+              try {
+                delta.forEach(
+                    line -> {
+                      try {
+                        if (!line.getChoices().isEmpty()
+                            && line.getChoices().get(0).getMessage() != null
+                            && line.getChoices().get(0).getMessage().getContent() != null) {
+                          emitter.send(line.getChoices().get(0).getMessage().getContent());
+                        }
+                      } catch (IOException e) {
+                        e.printStackTrace();
+                        emitter.completeWithError(e);
+                      }
+                    });
+                // Once all the data is sent, complete the emitter
+                emitter.complete();
+              } catch (Exception e) {
+                emitter.completeWithError(e);
+              }
+            });
+    return emitter;
   }
 
   /**

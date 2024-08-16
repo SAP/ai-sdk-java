@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionStream;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -30,7 +31,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  private static final ObjectMapper JACKSON;
+  static final ObjectMapper JACKSON;
 
   static {
     JACKSON =
@@ -106,6 +107,20 @@ public final class OpenAiClient {
   }
 
   /**
+   * Generate a completion for the given prompt.
+   *
+   * @param parameters the prompt, including messages and other parameters.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public OpenAiChatCompletionStream stream(@Nonnull final OpenAiChatCompletionParameters parameters)
+      throws OpenAiClientException {
+    parameters.setStream(true);
+    return stream("/chat/completions", parameters, OpenAiChatCompletionStream.class);
+  }
+
+  /**
    * Get a vector representation of a given input that can be easily consumed by machine learning
    * models and algorithms.
    *
@@ -129,6 +144,16 @@ public final class OpenAiClient {
     return executeRequest(request, responseType);
   }
 
+  @Nonnull
+  private <T> T stream(
+      @Nonnull final String path,
+      @Nonnull final Object payload,
+      @Nonnull final Class<T> responseType) {
+    final var request = new HttpPost(path);
+    serializeAndSetHttpEntity(request, payload);
+    return streamRequest(request, responseType);
+  }
+
   private static void serializeAndSetHttpEntity(
       @Nonnull final BasicClassicHttpRequest request, @Nonnull final Object payload) {
     try {
@@ -146,6 +171,18 @@ public final class OpenAiClient {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(request, new OpenAiResponseHandler<>(responseType, JACKSON));
+    } catch (final IOException e) {
+      throw new OpenAiClientException("Request to OpenAI model failed.", e);
+    }
+  }
+
+  @Nonnull
+  private <T> T streamRequest(
+      final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
+    try {
+      @SuppressWarnings("UnstableApiUsage")
+      final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      return (T) OpenAiStreamingHandler.handleResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed.", e);
     }
