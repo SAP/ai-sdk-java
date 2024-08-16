@@ -41,6 +41,13 @@ class OpenAiStreamingHandler {
                     !responseLine.isEmpty() && !"data: [DONE]".equals(responseLine.trim()))
             .map(
                 responseLine -> {
+                  // TODO: handle errors
+                  //       {
+                  //         "error": {
+                  //           "code": "429",
+                  //           "message": "exceeded token rate limit"
+                  //         }
+                  //      }
                   String data = responseLine.substring(5).replace("delta", "message");
                   try {
                     return JACKSON.readValue(data, OpenAiChatCompletionOutput.class);

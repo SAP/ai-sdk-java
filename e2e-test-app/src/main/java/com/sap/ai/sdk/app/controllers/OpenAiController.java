@@ -47,7 +47,7 @@ class OpenAiController {
    *
    * @return the emitter that streams the assistant message response
    */
-  @GetMapping("/chatCompletion")
+  @GetMapping("/stream")
   @Nonnull
   public static ResponseBodyEmitter stream() {
     final var request =
