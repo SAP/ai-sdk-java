@@ -182,6 +182,7 @@ public final class OpenAiClient {
     try {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      // TODO: OpenAiStreamingHandler should return generic T instead of OpenAiChatCompletionStream
       return (T) OpenAiStreamingHandler.handleResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed.", e);

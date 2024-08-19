@@ -58,6 +58,7 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 number of the Fibonacci sequence?")));
 
+    // TODO: close AutoCloseable or make it automatic
     Stream<OpenAiChatCompletionOutput> stream =
         OpenAiClient.forModel(GPT_35_TURBO).stream(request).getDelta();
 
@@ -70,6 +71,8 @@ class OpenAiController {
                 stream.forEach(
                     delta -> {
                       try {
+                        // TODO: Change the types to nullable? Maybe create a class
+                        //   OpenAiChatCompletionDelta...
                         if (!delta.getChoices().isEmpty()
                             && delta.getChoices().get(0).getMessage() != null
                             && delta.getChoices().get(0).getMessage().getContent() != null) {

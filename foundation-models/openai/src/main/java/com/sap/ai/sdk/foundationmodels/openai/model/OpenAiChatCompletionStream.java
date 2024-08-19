@@ -8,11 +8,11 @@ import lombok.Setter;
 @Getter
 public class OpenAiChatCompletionStream implements AutoCloseable {
   @Setter private Stream<OpenAiChatCompletionOutput> delta;
-  private Future<OpenAiChatCompletionOutput> total;
+  private Future<OpenAiChatCompletionOutput> total; // TODO: fill out "total" delta by delta
 
   @Override
   public void close() {
     delta.close();
-    // TODO: fill out total or cancel it
+    // TODO: fill out "total" or cancel it
   }
 }

@@ -47,7 +47,7 @@ class OpenAiStreamingHandler {
                   //           "code": "429",
                   //           "message": "exceeded token rate limit"
                   //         }
-                  //      }
+                  //       }
                   String data = responseLine.substring(5).replace("delta", "message");
                   try {
                     return JACKSON.readValue(data, OpenAiChatCompletionOutput.class);
