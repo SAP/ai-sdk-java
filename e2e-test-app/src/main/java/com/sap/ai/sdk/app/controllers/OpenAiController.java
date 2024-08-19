@@ -58,7 +58,7 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 number of the Fibonacci sequence?")));
 
-    Stream<OpenAiChatCompletionOutput> delta =
+    Stream<OpenAiChatCompletionOutput> stream =
         OpenAiClient.forModel(GPT_35_TURBO).stream(request).getDelta();
 
     ResponseBodyEmitter emitter = new ResponseBodyEmitter();
@@ -67,13 +67,13 @@ class OpenAiController {
         .submit(
             () -> {
               try {
-                delta.forEach(
-                    line -> {
+                stream.forEach(
+                    delta -> {
                       try {
-                        if (!line.getChoices().isEmpty()
-                            && line.getChoices().get(0).getMessage() != null
-                            && line.getChoices().get(0).getMessage().getContent() != null) {
-                          emitter.send(line.getChoices().get(0).getMessage().getContent());
+                        if (!delta.getChoices().isEmpty()
+                            && delta.getChoices().get(0).getMessage() != null
+                            && delta.getChoices().get(0).getMessage().getContent() != null) {
+                          emitter.send(delta.getChoices().get(0).getMessage().getContent());
                         }
                       } catch (IOException e) {
                         e.printStackTrace();
