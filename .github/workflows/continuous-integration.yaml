@@ -1,6 +1,9 @@
 name: "Continuous Integration"
 on:
-  push: # Pull requests and main branch
+  pull_request:
+    branches: [ "*" ]
+  push:
+    branches: [ "main" ]
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
