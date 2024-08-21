@@ -114,10 +114,10 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionStream stream(@Nonnull final OpenAiChatCompletionParameters parameters)
-      throws OpenAiClientException {
+  public OpenAiChatCompletionStream<OpenAiChatCompletionOutput> stream(
+      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     parameters.setStream(true);
-    return stream("/chat/completions", parameters, OpenAiChatCompletionStream.class);
+    return stream("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
   /**
@@ -145,7 +145,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <T> T stream(
+  private <T> OpenAiChatCompletionStream<T> stream(
       @Nonnull final String path,
       @Nonnull final Object payload,
       @Nonnull final Class<T> responseType) {
@@ -170,22 +170,22 @@ public final class OpenAiClient {
     try {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return client.execute(request, new OpenAiResponseHandler<>(responseType, JACKSON));
+      return client.execute(request, new OpenAiResponseHandler<>(responseType));
     } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed.", e);
+      throw new OpenAiClientException(e);
     }
   }
 
   @Nonnull
-  private <T> T streamRequest(
+  private <T> OpenAiChatCompletionStream<T> streamRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
     try {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      // TODO: OpenAiStreamingHandler should return generic T instead of OpenAiChatCompletionStream
-      return (T) OpenAiStreamingHandler.handleResponse(client.executeOpen(null, request, null));
+      return new OpenAiStreamingHandler<>(responseType)
+          .handleResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed.", e);
+      throw new OpenAiClientException(e);
     }
   }
 }

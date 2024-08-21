@@ -5,7 +5,22 @@ import javax.annotation.Nonnull;
 
 /** Generic exception for errors occurring when using OpenAI foundation models. */
 public class OpenAiClientException extends RuntimeException {
+  static final String BASE_ERROR_MESSAGE = "Request to OpenAI model failed";
   @Serial private static final long serialVersionUID = -7345541120979974432L;
+
+  /** Create a new exception with the base message: {@code Request to OpenAI model failed} */
+  public OpenAiClientException() {
+    super(BASE_ERROR_MESSAGE);
+  }
+
+  /**
+   * Create a new exception with the base message: {@code Request to OpenAI model failed}
+   *
+   * @param e the cause
+   */
+  public OpenAiClientException(@Nonnull final Exception e) {
+    super(BASE_ERROR_MESSAGE, e);
+  }
 
   /**
    * Create a new exception with the given message.

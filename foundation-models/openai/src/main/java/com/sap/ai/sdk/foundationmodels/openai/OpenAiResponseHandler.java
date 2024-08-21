@@ -1,7 +1,8 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClient.JACKSON;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
 import io.vavr.control.Try;
 import java.io.IOException;
@@ -21,8 +22,14 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
 
   @Nonnull private final Class<T> responseType;
-  @Nonnull private final ObjectMapper jackson;
 
+  /**
+   * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
+   *
+   * @param response The response to process
+   * @return A model class instantiated from the response
+   * @throws OpenAiClientException in case of a problem or the connection was aborted
+   */
   @Override
   public T handleResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
@@ -35,14 +42,15 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
   @SuppressWarnings("PMD.CloseResource")
   @Nonnull
-  private T parseResponse(@Nonnull final ClassicHttpResponse response) {
+  private T parseResponse(@Nonnull final ClassicHttpResponse response)
+      throws OpenAiClientException {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
       throw new OpenAiClientException("Response from OpenAI model was empty.");
     }
     final var content = getContent(responseEntity);
     try {
-      return jackson.readValue(content, responseType);
+      return JACKSON.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response from OpenAI model: {}", content);
       throw new OpenAiClientException("Failed to parse response from OpenAI model", e);
@@ -60,7 +68,8 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
 
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
   @SuppressWarnings("PMD.CloseResource")
-  private void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response) {
+  static void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response)
+      throws OpenAiClientException {
     final var exception =
         new OpenAiClientException(
             "Request to OpenAI model failed with status %s %s "
@@ -85,19 +94,28 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
       throw exception;
     }
 
-    final var maybeError = Try.of(() -> jackson.readValue(content, OpenAiError.class));
+    parseErrorAndThrow(content, exception);
+  }
+
+  /**
+   * Parse the error response and throw an exception.
+   *
+   * @param errorResponse the error response, most likely a JSON of {@link OpenAiError}.
+   * @param baseException a base exception to add the error message to.
+   */
+  static void parseErrorAndThrow(String errorResponse, OpenAiClientException baseException)
+      throws OpenAiClientException {
+    final var maybeError = Try.of(() -> JACKSON.readValue(errorResponse, OpenAiError.class));
     if (maybeError.isFailure()) {
-      exception.addSuppressed(maybeError.getCause());
-      throw exception;
+      baseException.addSuppressed(maybeError.getCause());
+      throw baseException;
     }
 
     final var error = maybeError.get().getError();
     if (error == null) {
-      throw exception;
+      throw baseException;
     }
-    final var message =
-        "Request to OpenAI model failed with %s %s and error message: '%s'"
-            .formatted(response.getCode(), response.getReasonPhrase(), error.getMessage());
-    throw new OpenAiClientException(message);
+    throw new OpenAiClientException(
+        baseException.getMessage() + "and error message: '%s'".formatted(error.getMessage()));
   }
 }

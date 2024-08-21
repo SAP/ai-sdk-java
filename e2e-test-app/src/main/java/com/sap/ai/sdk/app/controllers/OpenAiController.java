@@ -16,15 +16,21 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Endpoints for OpenAI operations */
+@Slf4j
 @RestController
 class OpenAiController {
   /**
@@ -49,7 +55,7 @@ class OpenAiController {
    */
   @GetMapping("/stream")
   @Nonnull
-  public static ResponseBodyEmitter stream() {
+  public static ResponseEntity<ResponseBodyEmitter> stream() {
     final var request =
         new OpenAiChatCompletionParameters()
             .setMessages(
@@ -58,16 +64,13 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 number of the Fibonacci sequence?")));
 
-    // TODO: close AutoCloseable or make it automatic
-    Stream<OpenAiChatCompletionOutput> stream =
-        OpenAiClient.forModel(GPT_35_TURBO).stream(request).getDelta();
-
     ResponseBodyEmitter emitter = new ResponseBodyEmitter();
     // Start streaming the content asynchronously
     ThreadContextExecutors.getExecutor()
         .submit(
             () -> {
-              try {
+              try (Stream<OpenAiChatCompletionOutput> stream =
+                  OpenAiClient.forModel(GPT_35_TURBO).stream(request).getDeltaStream()) {
                 stream.forEach(
                     delta -> {
                       try {
@@ -79,7 +82,7 @@ class OpenAiController {
                           emitter.send(delta.getChoices().get(0).getMessage().getContent());
                         }
                       } catch (IOException e) {
-                        e.printStackTrace();
+                        log.error(Arrays.toString(e.getStackTrace()));
                         emitter.completeWithError(e);
                       }
                     });
@@ -89,7 +92,7 @@ class OpenAiController {
                 emitter.completeWithError(e);
               }
             });
-    return emitter;
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
   /**

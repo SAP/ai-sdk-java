@@ -23,12 +23,6 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
-
-  /** Whether to stream the response. */
-  @JsonProperty("stream")
-  @Setter(AccessLevel.PUBLIC) // TODO: Change AccessLevel to not be public
-  private Boolean stream;
-
   /** A list of messages comprising the conversation so far. */
   @JsonProperty("messages")
   @Setter(onParam_ = @Nonnull)

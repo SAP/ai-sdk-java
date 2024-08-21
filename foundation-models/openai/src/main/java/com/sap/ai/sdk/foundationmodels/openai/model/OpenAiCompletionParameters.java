@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
@@ -80,7 +79,6 @@ public class OpenAiCompletionParameters {
    * contain the stop sequence.
    */
   @JsonProperty("stop")
-  @Setter(value = AccessLevel.NONE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @Nullable
   private List<String> stop;
@@ -103,18 +101,13 @@ public class OpenAiCompletionParameters {
   private Double frequencyPenalty;
 
   /**
-   * <b>NOTE:</b> This method is currently not supported. Therefore, it stays protected.<br>
-   * <br>
    * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only
    * server-sent events as they become available, with the stream terminated by a `data: [DONE]`
    * message. Default: false.
    */
   @JsonProperty("stream")
-  @Setter(value = AccessLevel.NONE)
-  @Nullable
-  private Boolean stream; // TODO for implementation details, please find
-
-  // https://github.com/Azure/azure-rest-api-specs/blob/3cb1b51638616435470fc10ea00de92512186ece/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-02-01/inference.json#L1149
+  @Setter(onParam_ = @Nullable)
+  private Boolean stream;
 
   /**
    * Up to four sequences where the API will stop generating further tokens. The returned text won't
