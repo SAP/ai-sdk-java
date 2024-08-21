@@ -9,18 +9,17 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionStream;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -72,25 +71,18 @@ class OpenAiController {
               try (var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
                 stream
                     .getDeltaStream()
+                    .filter(delta -> delta.getDeltaContent() != null)
                     .forEach(
                         delta -> {
                           try {
-                            // TODO: Change the types to nullable? Maybe create a class
-                            //   OpenAiChatCompletionDelta...
-                            if (!delta.getChoices().isEmpty()
-                                && delta.getChoices().get(0).getMessage() != null
-                                && delta.getChoices().get(0).getMessage().getContent() != null) {
-                              emitter.send(delta.getChoices().get(0).getMessage().getContent());
-                            }
+                            emitter.send(delta.getDeltaContent());
                           } catch (IOException e) {
                             log.error(Arrays.toString(e.getStackTrace()));
                             emitter.completeWithError(e);
                           }
                         });
-                // Once all the data is sent, complete the emitter
+              } finally{
                 emitter.complete();
-              } catch (Exception e) {
-                emitter.completeWithError(e);
               }
             });
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
