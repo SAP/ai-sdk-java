@@ -15,7 +15,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChat
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +80,7 @@ class OpenAiController {
                             emitter.completeWithError(e);
                           }
                         });
-              } finally{
+              } finally {
                 emitter.complete();
               }
             });

@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 public class OpenAiStreamOutput extends OpenAiChatCompletionOutput {
   /**
    * Get the message content from the delta.
+   *
    * @return the message content from the delta or null.
    */
   @Nullable
