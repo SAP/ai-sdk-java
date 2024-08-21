@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionStream;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
@@ -68,23 +69,24 @@ class OpenAiController {
     ThreadContextExecutors.getExecutor()
         .submit(
             () -> {
-              try (Stream<OpenAiChatCompletionOutput> stream =
-                  OpenAiClient.forModel(GPT_35_TURBO).stream(request).getDeltaStream()) {
-                stream.forEach(
-                    delta -> {
-                      try {
-                        // TODO: Change the types to nullable? Maybe create a class
-                        //   OpenAiChatCompletionDelta...
-                        if (!delta.getChoices().isEmpty()
-                            && delta.getChoices().get(0).getMessage() != null
-                            && delta.getChoices().get(0).getMessage().getContent() != null) {
-                          emitter.send(delta.getChoices().get(0).getMessage().getContent());
-                        }
-                      } catch (IOException e) {
-                        log.error(Arrays.toString(e.getStackTrace()));
-                        emitter.completeWithError(e);
-                      }
-                    });
+              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
+                stream
+                    .getDeltaStream()
+                    .forEach(
+                        delta -> {
+                          try {
+                            // TODO: Change the types to nullable? Maybe create a class
+                            //   OpenAiChatCompletionDelta...
+                            if (!delta.getChoices().isEmpty()
+                                && delta.getChoices().get(0).getMessage() != null
+                                && delta.getChoices().get(0).getMessage().getContent() != null) {
+                              emitter.send(delta.getChoices().get(0).getMessage().getContent());
+                            }
+                          } catch (IOException e) {
+                            log.error(Arrays.toString(e.getStackTrace()));
+                            emitter.completeWithError(e);
+                          }
+                        });
                 // Once all the data is sent, complete the emitter
                 emitter.complete();
               } catch (Exception e) {
