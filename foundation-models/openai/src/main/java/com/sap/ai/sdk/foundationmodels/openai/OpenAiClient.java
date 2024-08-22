@@ -115,10 +115,10 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionStream<OpenAiStreamOutput> stream(
+  public OpenAiChatCompletionStream<OpenAiStreamOutput> streamChatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     parameters.setStream(true);
-    return stream("/chat/completions", parameters, OpenAiStreamOutput.class);
+    return streamChatCompletion("/chat/completions", parameters, OpenAiStreamOutput.class);
   }
 
   /**
@@ -146,7 +146,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <T> OpenAiChatCompletionStream<T> stream(
+  private <T> OpenAiChatCompletionStream<T> streamChatCompletion(
       @Nonnull final String path,
       @Nonnull final Object payload,
       @Nonnull final Class<T> responseType) {

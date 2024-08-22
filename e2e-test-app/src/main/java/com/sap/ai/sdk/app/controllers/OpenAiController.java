@@ -47,13 +47,13 @@ class OpenAiController {
   }
 
   /**
-   * Stream chat request to OpenAI
+   * Asynchronous stream of an OpenAI chat request
    *
    * @return the emitter that streams the assistant message response
    */
-  @GetMapping("/stream")
+  @GetMapping("/streamChatCompletion")
   @Nonnull
-  public static ResponseEntity<ResponseBodyEmitter> stream() {
+  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var request =
         new OpenAiChatCompletionParameters()
             .setMessages(
@@ -63,13 +63,15 @@ class OpenAiController {
                             "Can you give me the first 100 number of the Fibonacci sequence?")));
 
     ResponseBodyEmitter emitter = new ResponseBodyEmitter();
-    // Start streaming the content asynchronously
+    // Cloud SDK's ThreadContext is vital for the request to successfully execute.
     ThreadContextExecutors.getExecutor()
         .submit(
             () -> {
-              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
+              // try-with-resources to ensure the OpenAiChatCompletionStream is closed
+              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
                 stream
                     .getDeltaStream()
+                    // The first two and the last delta do not contain any content
                     .filter(delta -> delta.getDeltaContent() != null)
                     .forEach(
                         delta -> {
@@ -84,6 +86,7 @@ class OpenAiController {
                 emitter.complete();
               }
             });
+    // MediaType.TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 

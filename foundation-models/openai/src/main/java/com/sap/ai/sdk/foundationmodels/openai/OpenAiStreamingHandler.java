@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,21 +47,27 @@ class OpenAiStreamingHandler<T> {
   private OpenAiChatCompletionStream<T> parseResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
 
+    final HttpEntity responseEntity = response.getEntity();
+    if (responseEntity == null) {
+      throw new OpenAiClientException("Response from OpenAI model was empty.");
+    }
+
     InputStream inputStream;
     try {
-      inputStream = response.getEntity().getContent();
+      inputStream = responseEntity.getContent();
     } catch (IOException e) {
       throw new OpenAiClientException("Failed to read response content.", e);
     }
     var output = new OpenAiChatCompletionStream<T>();
-    BufferedReader br =
-        new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+    final var br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
+    // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
     // TODO: set total
     Stream<T> deltaStream =
         br.lines()
             .filter(
                 responseLine ->
+                    // half of the lines are empty newlines, the last line is "data: [DONE]"
                     !responseLine.isEmpty() && !"data: [DONE]".equals(responseLine.trim()))
             .peek(
                 responseLine -> {
