@@ -48,6 +48,8 @@ public class Core {
    */
   @Nonnull
   public static ApiClient getOrchestrationClient(@Nonnull final String resourceGroup) {
+
+    
     return getClient(
         getDestinationForDeployment(getOrchestrationDeployment(resourceGroup), resourceGroup));
   }
