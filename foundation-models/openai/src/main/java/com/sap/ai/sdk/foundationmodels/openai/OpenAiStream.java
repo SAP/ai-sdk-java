@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
  */
 @RequiredArgsConstructor(access = AccessLevel.NONE)
 @NoArgsConstructor
-@Setter // TODO: package private
+@Setter(AccessLevel.PACKAGE)
 @Accessors(chain = true)
 // D extends StreamedDelta but Java generics, oddly enough, use extends for interfaces
 public class OpenAiStream<D extends StreamedDelta, T extends DeltaAggregatable<D>>
