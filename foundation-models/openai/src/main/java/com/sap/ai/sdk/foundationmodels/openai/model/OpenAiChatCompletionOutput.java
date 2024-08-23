@@ -34,6 +34,7 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    * @param delta the delta to add.
    */
   public void addDelta(OpenAiDeltaChatCompletion delta) {
+    super.addDelta(delta);
 
     if (delta.getSystemFingerprint() != null) {
       systemFingerprint = delta.getSystemFingerprint();

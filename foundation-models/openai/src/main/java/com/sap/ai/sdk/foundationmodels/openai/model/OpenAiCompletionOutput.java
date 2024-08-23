@@ -43,4 +43,25 @@ public class OpenAiCompletionOutput {
   @JsonProperty("prompt_filter_results")
   @Getter(onMethod_ = @Nullable)
   private List<OpenAiPromptFilterResult> promptFilterResults;
+
+  void addDelta(OpenAiDeltaChatCompletion delta) {
+    created = delta.getCreated();
+    id = delta.getId();
+    model = delta.getModel();
+    object = delta.getObject();
+
+    if (delta.getUsage() != null) {
+      if (usage == null) {
+        usage = new OpenAiUsage();
+      }
+      usage.addDelta(delta.getUsage());
+    }
+
+    if (delta.getPromptFilterResults() != null) {
+      if (promptFilterResults == null) {
+        promptFilterResults = delta.getPromptFilterResults();
+      }
+      // prompt_filter_results is only present once in the first delta
+    }
+  }
 }
