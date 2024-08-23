@@ -11,7 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-/** Generic OpenAI stream output. */
+/**
+ * Generic OpenAI stream output.
+ *
+ * @param <D> the type of the streamed delta
+ * @param <T> the type of the total output
+ */
 @RequiredArgsConstructor(access = AccessLevel.NONE)
 @NoArgsConstructor
 @Setter // TODO: package private
