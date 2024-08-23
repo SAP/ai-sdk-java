@@ -10,9 +10,17 @@ import lombok.experimental.Accessors;
 /** Content filtering results for a prompt in the request. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class OpenAiContentFilterPromptResults extends OpenAiContentFilterResultsBase {
   @JsonProperty("jailbreak")
   @Getter(onMethod_ = @Nullable)
   private OpenAiContentFilterDetectedResult jailbreak;
+
+  void addDelta(OpenAiContentFilterPromptResults delta) {
+    super.addDelta(delta);
+
+    if (delta.getJailbreak() != null) {
+      jailbreak = delta.getJailbreak();
+    }
+  }
 }

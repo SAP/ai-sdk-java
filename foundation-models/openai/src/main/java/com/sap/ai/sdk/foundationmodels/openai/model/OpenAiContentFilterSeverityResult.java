@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 /** Information about the content filtering results. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class OpenAiContentFilterSeverityResult extends OpenAiContentFilterResultBase {
   /** Severity of the content. */
   @JsonProperty("severity")

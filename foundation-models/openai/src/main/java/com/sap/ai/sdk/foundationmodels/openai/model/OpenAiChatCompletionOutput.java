@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatAssistantMessage;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
@@ -12,9 +12,9 @@ import lombok.experimental.Accessors;
 /** OpenAI chat completion output. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
-    implements DeltaAggregatable<OpenAiChatCompletionDelta> {
+    implements DeltaAggregatable<OpenAiDeltaChatCompletion> {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)
@@ -28,32 +28,23 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
   @Getter(onMethod_ = @Nonnull)
   private String systemFingerprint;
 
-  public void addDelta(OpenAiChatCompletionDelta delta) {
-    // TODO: Assign every field if not null on all parent and children classes.
-    //       Right now we only assign content message.
+  void addDelta(OpenAiDeltaChatCompletion delta) {
 
-    if (delta.getChoices().isEmpty()
-        // Multiple choices are spread out on multiple deltas
-        // A delta only contains one choice with a variable index
-        || delta.getChoices().get(0).getIndex() != 0) {
-      return;
+    if (delta.getSystemFingerprint() != null) {
+      systemFingerprint = delta.getSystemFingerprint();
     }
-    var deltaMessage = delta.getChoices().get(0).getMessage();
-    if (deltaMessage == null) {
-      return;
+
+    if (!delta.getChoices().isEmpty()) {
+      if (choices == null) {
+        choices = new ArrayList<>();
+      }
+      // Multiple choices are spread out on multiple deltas
+      // A delta only contains one choice with a variable index
+      int index = delta.getChoices().get(0).getIndex();
+      for (int i = choices.size(); i < index + 1; i++) {
+        choices.add(new OpenAiChatCompletionChoice());
+      }
+      choices.get(index).addDelta(delta.getChoices().get(0));
     }
-    String deltaContent = deltaMessage.getContent();
-    if (deltaContent == null) {
-      return;
-    }
-    if (choices == null || choices.isEmpty()) {
-      var choice =
-          new OpenAiChatCompletionChoice()
-              .setMessage(new OpenAiChatAssistantMessage().setContent(deltaContent));
-      choices = List.of(choice);
-      return;
-    }
-    var message = choices.get(0).getMessage();
-    message.setContent(message.getContent() + deltaContent);
   }
 }

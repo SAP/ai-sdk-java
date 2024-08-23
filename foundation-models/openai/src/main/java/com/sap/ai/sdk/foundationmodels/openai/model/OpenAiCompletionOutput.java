@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 /** OpenAI completion output . */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString
+@ToString(callSuper = true)
 public class OpenAiCompletionOutput {
   /** Creation date Unix timestamp. */
   @JsonProperty("created")

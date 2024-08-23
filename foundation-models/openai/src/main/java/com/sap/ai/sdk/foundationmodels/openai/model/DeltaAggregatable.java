@@ -9,5 +9,10 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
  */
 public interface DeltaAggregatable<D> {
 
+  /**
+   * Add a streamed delta to the total output.
+   *
+   * @param delta the delta to add.
+   */
   void addDelta(D delta);
 }

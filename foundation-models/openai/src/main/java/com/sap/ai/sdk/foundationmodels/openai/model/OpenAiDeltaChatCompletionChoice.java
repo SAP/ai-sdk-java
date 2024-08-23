@@ -2,7 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatAssistantMessage;
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,21 +14,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
+public class OpenAiDeltaChatCompletionChoice extends OpenAiCompletionChoice {
   /** Completion chat message. */
   @JsonProperty("message")
-  @Getter(onMethod_ = @Nonnull)
-  @Setter(onMethod_ = @Nonnull, value = AccessLevel.PACKAGE)
+  @Getter(onMethod_ = @Nullable)
+  @Setter(onMethod_ = @Nullable, value = AccessLevel.PACKAGE)
   private OpenAiChatAssistantMessage message;
-
-  void addDelta(OpenAiDeltaChatCompletionChoice delta) {
-    super.addDelta(delta);
-
-    if (delta.getMessage() != null) {
-      if (message == null) {
-        message = new OpenAiChatAssistantMessage();
-      }
-      message.addDelta(delta.getMessage());
-    }
-  }
 }

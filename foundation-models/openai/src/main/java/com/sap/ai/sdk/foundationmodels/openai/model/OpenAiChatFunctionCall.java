@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /** The name of the function to call, or, the function that the model called. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString
+@ToString(callSuper = true)
 public class OpenAiChatFunctionCall {
   /** Name of the function call. */
   @JsonProperty("name")

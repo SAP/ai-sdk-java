@@ -12,19 +12,19 @@ import lombok.experimental.Accessors;
 /** OpenAI chat completion output delta for streaming. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@ToString
-public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements StreamedDelta {
+@ToString(callSuper = true)
+public class OpenAiDeltaChatCompletion extends OpenAiCompletionOutput implements StreamedDelta {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)
-  private List<OpenAiChatCompletionChoice> choices;
+  private List<OpenAiDeltaChatCompletionChoice> choices;
 
   /**
    * Can be used in conjunction with the seed request parameter to understand when backend changes
    * have been made that might impact determinism.
    */
   @JsonProperty("system_fingerprint")
-  @Getter(onMethod_ = @Nonnull)
+  @Getter(onMethod_ = @Nullable)
   private String systemFingerprint;
 
   /**
@@ -40,9 +40,7 @@ public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements
         // A delta only contains one choice with a variable index
         && getChoices().get(0).getIndex() == 0
         // Avoid the second delta: "choices":[{"delta":{"content":"","role":"assistant"}}]
-        && getChoices().get(0).getMessage() != null
-        // Avoid the last delta "choices":[{"delta":{}}]
-        && getChoices().get(0).getMessage().getContent() != null) {
+        && getChoices().get(0).getMessage() != null) {
 
       return getChoices().get(0).getMessage().getContent();
     }

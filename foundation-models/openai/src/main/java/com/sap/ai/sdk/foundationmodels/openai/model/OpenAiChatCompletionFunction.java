@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /** OpenAI function signature. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString
+@ToString(callSuper = true)
 public class OpenAiChatCompletionFunction {
   /**
    * Name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes,

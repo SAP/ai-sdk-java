@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /** Result for OpenAI chat completion output. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString
+@ToString(callSuper = true)
 public class OpenAiCompletionChoice {
   /** Reason for finish. */
   @JsonProperty("finish_reason")
@@ -29,4 +29,22 @@ public class OpenAiCompletionChoice {
   @JsonProperty("content_filter_results")
   @Getter(onMethod_ = @Nullable)
   private OpenAiContentFilterPromptResults contentFilterResults;
+
+  void addDelta(OpenAiCompletionChoice delta) {
+
+    if (delta.getFinishReason() != null) {
+      finishReason = delta.getFinishReason();
+    }
+
+    if (delta.getIndex() != null) {
+      index = delta.getIndex();
+    }
+
+    if (delta.getContentFilterResults() != null) {
+      if (contentFilterResults == null) {
+        contentFilterResults = new OpenAiContentFilterPromptResults();
+      }
+      contentFilterResults.addDelta(delta.getContentFilterResults());
+    }
+  }
 }

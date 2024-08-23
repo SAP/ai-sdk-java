@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /** Information about the content filtering results. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString
+@ToString(callSuper = true)
 public class OpenAiContentFilterResultsBase {
   /** Sexual content filter result. */
   @JsonProperty("sexual")
@@ -40,4 +40,29 @@ public class OpenAiContentFilterResultsBase {
   @JsonProperty("error")
   @Getter(onMethod_ = @Nullable)
   private OpenAiErrorBase error;
+
+  void addDelta(OpenAiContentFilterPromptResults delta) {
+    if (delta.getSexual() != null) {
+      sexual = delta.getSexual();
+      System.out.println(sexual.getSeverity());
+      System.out.println(sexual.isFiltered());
+    } else {
+      System.out.println("Sexual is null");
+    }
+    if (delta.getViolence() != null) {
+      violence = delta.getViolence();
+    }
+    if (delta.getHate() != null) {
+      hate = delta.getHate();
+    }
+    if (delta.getSelfHarm() != null) {
+      selfHarm = delta.getSelfHarm();
+    }
+    if (delta.getProfanity() != null) {
+      profanity = delta.getProfanity();
+    }
+    if (delta.getError() != null) {
+      error = delta.getError();
+    }
+  }
 }

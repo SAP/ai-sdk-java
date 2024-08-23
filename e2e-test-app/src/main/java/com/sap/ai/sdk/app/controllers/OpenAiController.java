@@ -5,14 +5,16 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
@@ -73,12 +75,13 @@ class OpenAiController {
             () -> {
               stream
                   .getDeltaStream()
-                  .map(OpenAiChatCompletionDelta::getDeltaContent)
+                  .map(OpenAiDeltaChatCompletion::getDeltaContent)
                   // The first two and the last delta do not contain any message content
                   .filter(Objects::nonNull)
                   .forEach(content -> send(emitter, content));
 
-              send(emitter, "\n\n-----Total Output-----\n\n" + stream.getTotalOutput());
+              String indentedJson = objectToJson(stream.getTotalOutput());
+              send(emitter, "\n\n-----Total Output-----\n\n" + indentedJson);
               emitter.complete();
               stream.close();
             });
@@ -92,6 +95,14 @@ class OpenAiController {
     } catch (IOException e) {
       log.error(Arrays.toString(e.getStackTrace()));
       emitter.completeWithError(e);
+    }
+  }
+
+  private static String objectToJson(Object obj) {
+    try {
+      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+    } catch (JsonProcessingException ignored) {
+      return "Could not parse object to JSON";
     }
   }
 

@@ -8,9 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.foundationmodels.openai.model.DeltaAggregatable;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
@@ -116,13 +116,13 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiStream<OpenAiChatCompletionDelta, OpenAiChatCompletionOutput> stream(
+  public OpenAiStream<OpenAiDeltaChatCompletion, OpenAiChatCompletionOutput> stream(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     parameters.setStream(true);
     return stream(
         "/chat/completions",
         parameters,
-        OpenAiChatCompletionDelta.class,
+        OpenAiDeltaChatCompletion.class,
         OpenAiChatCompletionOutput.class);
   }
 

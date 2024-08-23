@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /** Content filtering results for a single prompt in the request. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString
+@ToString(callSuper = true)
 public class OpenAiPromptFilterResult {
   /** Index of the prompt in the request. */
   @JsonProperty("prompt_index")
