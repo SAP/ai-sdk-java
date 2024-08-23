@@ -60,7 +60,7 @@ class OpenAiController {
                 List.of(
                     new OpenAiChatUserMessage()
                         .addText(
-                            "Can you give me the first 100 number of the Fibonacci sequence?")));
+                            "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
     ResponseBodyEmitter emitter = new ResponseBodyEmitter();
     // Cloud SDK's ThreadContext is vital for the request to successfully execute.
@@ -68,10 +68,11 @@ class OpenAiController {
         .submit(
             () -> {
               // try-with-resources to ensure the OpenAiChatCompletionStream is closed
-              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
+              // TODO: mode to outside the thread to throw
+              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
                 stream
                     .getDeltaStream()
-                    // The first two and the last delta do not contain any content
+                    // The first two and the last delta do not contain any message content
                     .filter(delta -> delta.getDeltaContent() != null)
                     .forEach(
                         delta -> {
@@ -82,6 +83,7 @@ class OpenAiController {
                             emitter.completeWithError(e);
                           }
                         });
+                // TODO: send totalOutput
               } finally {
                 emitter.complete();
               }

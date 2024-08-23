@@ -13,7 +13,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput {
+public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
+    implements Streamable<OpenAiChatCompletionDelta> {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)
@@ -27,9 +28,16 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput {
   @Getter(onMethod_ = @Nonnull)
   private String systemFingerprint;
 
-  public void addDelta(OpenAiChatCompletionOutput delta) {
+  public void addDelta(OpenAiChatCompletionDelta delta) {
     // TODO: Assign every field if not null on all parent and children classes.
     //       Right now we only assign content message.
+
+    if (delta.getChoices().isEmpty()
+        // Multiple choices are spread out on multiple deltas
+        // A delta only contains one choice with a variable index
+        || delta.getChoices().get(0).getIndex() != 0) {
+      return;
+    }
     var deltaMessage = delta.getChoices().get(0).getMessage();
     if (deltaMessage == null) {
       return;
@@ -38,11 +46,11 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput {
     if (deltaContent == null) {
       return;
     }
-    if (choices.isEmpty()) {
+    if (choices == null || choices.isEmpty()) {
       var choice =
           new OpenAiChatCompletionChoice()
               .setMessage(new OpenAiChatAssistantMessage().setContent(deltaContent));
-      choices.add(choice);
+      choices = List.of(choice);
       return;
     }
     var message = choices.get(0).getMessage();

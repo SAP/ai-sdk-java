@@ -4,11 +4,13 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClient.JACKSON;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.buildExceptionAndThrow;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.parseErrorAndThrow;
 
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionStream;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiStream;
+import com.sap.ai.sdk.foundationmodels.openai.model.Streamable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -19,19 +21,20 @@ import org.apache.hc.core5.http.HttpEntity;
 
 @Slf4j
 @RequiredArgsConstructor
-class OpenAiStreamingHandler<T> {
+class OpenAiStreamingHandler<D extends Delta, T extends Streamable<D>> {
 
-  @Nonnull private final Class<T> responseType;
+  @Nonnull private final Class<D> deltaType;
+  @Nonnull private final Class<T> totalType;
 
   /**
    * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
    *
    * @param response The response to process
-   * @return A {@link OpenAiChatCompletionStream} of a model class instantiated from the response
+   * @return A {@link OpenAiStream} of a model class instantiated from the response
    * @throws OpenAiClientException in case of a problem or the connection was aborted
    */
   @Nonnull
-  public OpenAiChatCompletionStream<T> handleResponse(@Nonnull final ClassicHttpResponse response)
+  public OpenAiStream<D, T> handleResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
@@ -41,29 +44,35 @@ class OpenAiStreamingHandler<T> {
 
   /**
    * @param response The response to process
-   * @return A {@link OpenAiChatCompletionStream} of a model class instantiated from the response
+   * @return A {@link OpenAiStream} of a model class instantiated from the response
    * @author stippi
    */
-  private OpenAiChatCompletionStream<T> parseResponse(@Nonnull final ClassicHttpResponse response)
+  private OpenAiStream<D, T> parseResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
-
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
       throw new OpenAiClientException("Response from OpenAI model was empty.");
     }
-
     InputStream inputStream;
     try {
       inputStream = responseEntity.getContent();
     } catch (IOException e) {
       throw new OpenAiClientException("Failed to read response content.", e);
     }
-    var output = new OpenAiChatCompletionStream<T>();
     final var br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
+    OpenAiStream<D, T> output = new OpenAiStream<D, T>();
+    try {
+      output.setTotal(totalType.getDeclaredConstructor().newInstance());
+    } catch (InstantiationException
+        | IllegalAccessException
+        | NoSuchMethodException
+        | InvocationTargetException e) {
+      throw new OpenAiClientException(e);
+    }
+
     // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
-    // TODO: set total
-    Stream<T> deltaStream =
+    Stream<D> deltaStream =
         br.lines()
             .filter(
                 responseLine ->
@@ -79,7 +88,9 @@ class OpenAiStreamingHandler<T> {
                 responseLine -> {
                   String data = responseLine.substring(5).replace("delta", "message");
                   try {
-                    return JACKSON.readValue(data, responseType);
+                    D delta = JACKSON.readValue(data, deltaType);
+                    output.addDelta(delta);
+                    return delta;
                   } catch (IOException e) {
                     throw new RuntimeException(e);
                   }

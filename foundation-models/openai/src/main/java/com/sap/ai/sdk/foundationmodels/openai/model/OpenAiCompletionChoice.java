@@ -19,7 +19,7 @@ public class OpenAiCompletionChoice {
 
   /** Index of choice. */
   @JsonProperty("index")
-  @Getter(onMethod_ = @Nullable)
+  @Getter // Nullable
   private Integer index;
 
   /**

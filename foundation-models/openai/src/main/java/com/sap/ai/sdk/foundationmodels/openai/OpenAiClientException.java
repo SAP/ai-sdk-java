@@ -10,7 +10,7 @@ public class OpenAiClientException extends RuntimeException {
 
   /** Create a new exception with the base message: {@code Request to OpenAI model failed} */
   public OpenAiClientException() {
-    super(BASE_ERROR_MESSAGE);
+    this(BASE_ERROR_MESSAGE);
   }
 
   /**
@@ -19,7 +19,7 @@ public class OpenAiClientException extends RuntimeException {
    * @param e the cause
    */
   public OpenAiClientException(@Nonnull final Exception e) {
-    super(BASE_ERROR_MESSAGE, e);
+    this(BASE_ERROR_MESSAGE, e);
   }
 
   /**
