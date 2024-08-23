@@ -184,10 +184,11 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D extends StreamedDelta, T extends DeltaAggregatable<D>> OpenAiStream<D, T> streamRequest(
-      final BasicClassicHttpRequest request,
-      @Nonnull final Class<D> deltaType,
-      @Nonnull final Class<T> totalType) {
+  private <D extends StreamedDelta, T extends DeltaAggregatable<D>>
+      OpenAiStream<D, T> streamRequest(
+          final BasicClassicHttpRequest request,
+          @Nonnull final Class<D> deltaType,
+          @Nonnull final Class<T> totalType) {
     try {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);

@@ -4,6 +4,8 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClient.JACKSON;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.buildExceptionAndThrow;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.parseErrorAndThrow;
 
+import com.sap.ai.sdk.foundationmodels.openai.model.DeltaAggregatable;
+import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.foundationmodels.openai.model.DeltaAggregatable;
-import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ClassicHttpResponse;

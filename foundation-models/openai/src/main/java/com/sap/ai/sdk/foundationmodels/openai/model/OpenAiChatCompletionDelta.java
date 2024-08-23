@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,8 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements StreamedDelta
-{
+public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements StreamedDelta {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)

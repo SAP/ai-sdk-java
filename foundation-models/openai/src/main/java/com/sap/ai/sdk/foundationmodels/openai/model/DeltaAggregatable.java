@@ -9,5 +9,5 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
  */
 public interface DeltaAggregatable<D> {
 
-  void addDelta( D delta );
+  void addDelta(D delta);
 }

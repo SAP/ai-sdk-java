@@ -1,10 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-
 import com.sap.ai.sdk.foundationmodels.openai.model.DeltaAggregatable;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
+import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
