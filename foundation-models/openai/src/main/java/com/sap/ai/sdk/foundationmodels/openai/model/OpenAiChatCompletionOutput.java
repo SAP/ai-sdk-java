@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
-    implements Streamable<OpenAiChatCompletionDelta> {
+    implements DeltaAggregatable<OpenAiChatCompletionDelta> {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)

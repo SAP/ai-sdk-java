@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sap.ai.sdk.foundationmodels.openai.Delta;
+
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,7 +14,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements Delta {
+public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements StreamedDelta
+{
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)
@@ -31,7 +32,7 @@ public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements
   /**
    * Get the message content from the delta.
    *
-   * @return the message content from the delta or null.
+   * @return the message content or null.
    */
   @Nullable
   public String getDeltaContent() {
@@ -40,7 +41,7 @@ public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements
         // Multiple choices are spread out on multiple deltas
         // A delta only contains one choice with a variable index
         && getChoices().get(0).getIndex() == 0
-        // Avoid the second to last delta: "choices":[{"delta":{"content":"","role":"assistant"}}]
+        // Avoid the second delta: "choices":[{"delta":{"content":"","role":"assistant"}}]
         && getChoices().get(0).getMessage() != null
         // Avoid the last delta "choices":[{"delta":{}}]
         && getChoices().get(0).getMessage().getContent() != null) {

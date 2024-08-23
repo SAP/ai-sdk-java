@@ -6,6 +6,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -62,34 +64,35 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-    ResponseBodyEmitter emitter = new ResponseBodyEmitter();
+    var emitter = new ResponseBodyEmitter();
+    var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request);
+
     // Cloud SDK's ThreadContext is vital for the request to successfully execute.
     ThreadContextExecutors.getExecutor()
         .submit(
             () -> {
-              // try-with-resources to ensure the OpenAiChatCompletionStream is closed
-              // TODO: mode to outside the thread to throw
-              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
-                stream
-                    .getDeltaStream()
-                    // The first two and the last delta do not contain any message content
-                    .filter(delta -> delta.getDeltaContent() != null)
-                    .forEach(
-                        delta -> {
-                          try {
-                            emitter.send(delta.getDeltaContent());
-                          } catch (IOException e) {
-                            log.error(Arrays.toString(e.getStackTrace()));
-                            emitter.completeWithError(e);
-                          }
-                        });
-                // TODO: send totalOutput
-              } finally {
-                emitter.complete();
-              }
+              stream
+                  .getDeltaStream()
+                  .map(OpenAiChatCompletionDelta::getDeltaContent)
+                  // The first two and the last delta do not contain any message content
+                  .filter(Objects::nonNull)
+                  .forEach(content -> send(emitter, content));
+
+              send(emitter, "\n\n-----Total Output-----\n\n" + stream.getTotalOutput());
+              emitter.complete();
+              stream.close();
             });
     // MediaType.TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  private static void send(ResponseBodyEmitter emitter, String chunk) {
+    try {
+      emitter.send(chunk);
+    } catch (IOException e) {
+      log.error(Arrays.toString(e.getStackTrace()));
+      emitter.completeWithError(e);
+    }
   }
 
   /**
