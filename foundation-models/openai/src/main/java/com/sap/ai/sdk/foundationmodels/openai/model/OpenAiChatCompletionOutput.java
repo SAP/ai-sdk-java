@@ -28,7 +28,12 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
   @Getter(onMethod_ = @Nonnull)
   private String systemFingerprint;
 
-  void addDelta(OpenAiDeltaChatCompletion delta) {
+  /**
+   * Add a streamed delta to the total output.
+   *
+   * @param delta the delta to add.
+   */
+  public void addDelta(OpenAiDeltaChatCompletion delta) {
 
     if (delta.getSystemFingerprint() != null) {
       systemFingerprint = delta.getSystemFingerprint();
