@@ -58,21 +58,21 @@ public class CompletionPostResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected CompletionPostResponse() {  }
 
-   /**
-    * Set the requestId of this {@link CompletionPostResponse} instance and return the same instance.
-    *
-    * @param requestId  ID of the request
-    * @return The same instance of this {@link CompletionPostResponse} class
-    */
-   @Nonnull public CompletionPostResponse requestId(@Nonnull final String requestId) {
+  /**
+   * Set the requestId of this {@link CompletionPostResponse} instance and return the same instance.
+   *
+   * @param requestId  ID of the request
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
+  @Nonnull public CompletionPostResponse requestId( @Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
-   /**
-    * ID of the request
-    * @return requestId  The requestId of this {@link CompletionPostResponse} instance.
-    */
+  /**
+   * ID of the request
+   * @return requestId  The requestId of this {@link CompletionPostResponse} instance.
+   */
   @Nonnull public String getRequestId() {
     return requestId;
   }
@@ -86,21 +86,21 @@ public class CompletionPostResponse
     this.requestId = requestId;
   }
 
-   /**
-    * Set the moduleResults of this {@link CompletionPostResponse} instance and return the same instance.
-    *
-    * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
-    * @return The same instance of this {@link CompletionPostResponse} class
-    */
-   @Nonnull public CompletionPostResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
+  /**
+   * Set the moduleResults of this {@link CompletionPostResponse} instance and return the same instance.
+   *
+   * @param moduleResults  The moduleResults of this {@link CompletionPostResponse}
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
+  @Nonnull public CompletionPostResponse moduleResults( @Nonnull final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
 
-   /**
-    * Get moduleResults
-    * @return moduleResults  The moduleResults of this {@link CompletionPostResponse} instance.
-    */
+  /**
+   * Get moduleResults
+   * @return moduleResults  The moduleResults of this {@link CompletionPostResponse} instance.
+   */
   @Nonnull public ModuleResults getModuleResults() {
     return moduleResults;
   }
@@ -114,21 +114,21 @@ public class CompletionPostResponse
     this.moduleResults = moduleResults;
   }
 
-   /**
-    * Set the orchestrationResult of this {@link CompletionPostResponse} instance and return the same instance.
-    *
-    * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
-    * @return The same instance of this {@link CompletionPostResponse} class
-    */
-   @Nonnull public CompletionPostResponse orchestrationResult(@Nonnull final LLMModuleResult orchestrationResult) {
+  /**
+   * Set the orchestrationResult of this {@link CompletionPostResponse} instance and return the same instance.
+   *
+   * @param orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse}
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
+  @Nonnull public CompletionPostResponse orchestrationResult( @Nonnull final LLMModuleResult orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
     return this;
   }
 
-   /**
-    * Get orchestrationResult
-    * @return orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse} instance.
-    */
+  /**
+   * Get orchestrationResult
+   * @return orchestrationResult  The orchestrationResult of this {@link CompletionPostResponse} instance.
+   */
   @Nonnull public LLMModuleResult getOrchestrationResult() {
     return orchestrationResult;
   }
@@ -159,7 +159,7 @@ public class CompletionPostResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("CompletionPostResponse has no field with name '" + name + "'.");
     }

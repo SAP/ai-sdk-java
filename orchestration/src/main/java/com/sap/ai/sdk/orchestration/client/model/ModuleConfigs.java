@@ -67,21 +67,21 @@ public class ModuleConfigs
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected ModuleConfigs() {  }
 
-   /**
-    * Set the llmModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-    *
-    * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
-    * @return The same instance of this {@link ModuleConfigs} class
-    */
-   @Nonnull public ModuleConfigs llmModuleConfig(@Nonnull final LLMModuleConfig llmModuleConfig) {
+  /**
+   * Set the llmModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+   *
+   * @param llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull public ModuleConfigs llmModuleConfig( @Nonnull final LLMModuleConfig llmModuleConfig) {
     this.llmModuleConfig = llmModuleConfig;
     return this;
   }
 
-   /**
-    * Get llmModuleConfig
-    * @return llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs} instance.
-    */
+  /**
+   * Get llmModuleConfig
+   * @return llmModuleConfig  The llmModuleConfig of this {@link ModuleConfigs} instance.
+   */
   @Nonnull public LLMModuleConfig getLlmModuleConfig() {
     return llmModuleConfig;
   }
@@ -95,21 +95,21 @@ public class ModuleConfigs
     this.llmModuleConfig = llmModuleConfig;
   }
 
-   /**
-    * Set the templatingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-    *
-    * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
-    * @return The same instance of this {@link ModuleConfigs} class
-    */
-   @Nonnull public ModuleConfigs templatingModuleConfig(@Nonnull final TemplatingModuleConfig templatingModuleConfig) {
+  /**
+   * Set the templatingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+   *
+   * @param templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull public ModuleConfigs templatingModuleConfig( @Nonnull final TemplatingModuleConfig templatingModuleConfig) {
     this.templatingModuleConfig = templatingModuleConfig;
     return this;
   }
 
-   /**
-    * Get templatingModuleConfig
-    * @return templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs} instance.
-    */
+  /**
+   * Get templatingModuleConfig
+   * @return templatingModuleConfig  The templatingModuleConfig of this {@link ModuleConfigs} instance.
+   */
   @Nonnull public TemplatingModuleConfig getTemplatingModuleConfig() {
     return templatingModuleConfig;
   }
@@ -123,21 +123,21 @@ public class ModuleConfigs
     this.templatingModuleConfig = templatingModuleConfig;
   }
 
-   /**
-    * Set the filteringModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-    *
-    * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
-    * @return The same instance of this {@link ModuleConfigs} class
-    */
-   @Nonnull public ModuleConfigs filteringModuleConfig(@Nonnull final FilteringModuleConfig filteringModuleConfig) {
+  /**
+   * Set the filteringModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+   *
+   * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull public ModuleConfigs filteringModuleConfig( @Nullable final FilteringModuleConfig filteringModuleConfig) {
     this.filteringModuleConfig = filteringModuleConfig;
     return this;
   }
 
-   /**
-    * Get filteringModuleConfig
-    * @return filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs} instance.
-    */
+  /**
+   * Get filteringModuleConfig
+   * @return filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs} instance.
+   */
   @Nonnull public FilteringModuleConfig getFilteringModuleConfig() {
     return filteringModuleConfig;
   }
@@ -147,25 +147,25 @@ public class ModuleConfigs
    *
    * @param filteringModuleConfig  The filteringModuleConfig of this {@link ModuleConfigs}
    */
-  public void setFilteringModuleConfig( @Nonnull final FilteringModuleConfig filteringModuleConfig) {
+  public void setFilteringModuleConfig( @Nullable final FilteringModuleConfig filteringModuleConfig) {
     this.filteringModuleConfig = filteringModuleConfig;
   }
 
-   /**
-    * Set the maskingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-    *
-    * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
-    * @return The same instance of this {@link ModuleConfigs} class
-    */
-   @Nonnull public ModuleConfigs maskingModuleConfig(@Nonnull final MaskingModuleConfig maskingModuleConfig) {
+  /**
+   * Set the maskingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+   *
+   * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull public ModuleConfigs maskingModuleConfig( @Nullable final MaskingModuleConfig maskingModuleConfig) {
     this.maskingModuleConfig = maskingModuleConfig;
     return this;
   }
 
-   /**
-    * Get maskingModuleConfig
-    * @return maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs} instance.
-    */
+  /**
+   * Get maskingModuleConfig
+   * @return maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs} instance.
+   */
   @Nonnull public MaskingModuleConfig getMaskingModuleConfig() {
     return maskingModuleConfig;
   }
@@ -175,25 +175,25 @@ public class ModuleConfigs
    *
    * @param maskingModuleConfig  The maskingModuleConfig of this {@link ModuleConfigs}
    */
-  public void setMaskingModuleConfig( @Nonnull final MaskingModuleConfig maskingModuleConfig) {
+  public void setMaskingModuleConfig( @Nullable final MaskingModuleConfig maskingModuleConfig) {
     this.maskingModuleConfig = maskingModuleConfig;
   }
 
-   /**
-    * Set the groundingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
-    *
-    * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
-    * @return The same instance of this {@link ModuleConfigs} class
-    */
-   @Nonnull public ModuleConfigs groundingModuleConfig(@Nonnull final GroundingModuleConfig groundingModuleConfig) {
+  /**
+   * Set the groundingModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+   *
+   * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull public ModuleConfigs groundingModuleConfig( @Nullable final GroundingModuleConfig groundingModuleConfig) {
     this.groundingModuleConfig = groundingModuleConfig;
     return this;
   }
 
-   /**
-    * Get groundingModuleConfig
-    * @return groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs} instance.
-    */
+  /**
+   * Get groundingModuleConfig
+   * @return groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs} instance.
+   */
   @Nonnull public GroundingModuleConfig getGroundingModuleConfig() {
     return groundingModuleConfig;
   }
@@ -203,7 +203,7 @@ public class ModuleConfigs
    *
    * @param groundingModuleConfig  The groundingModuleConfig of this {@link ModuleConfigs}
    */
-  public void setGroundingModuleConfig( @Nonnull final GroundingModuleConfig groundingModuleConfig) {
+  public void setGroundingModuleConfig( @Nullable final GroundingModuleConfig groundingModuleConfig) {
     this.groundingModuleConfig = groundingModuleConfig;
   }
 
@@ -224,7 +224,7 @@ public class ModuleConfigs
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("ModuleConfigs has no field with name '" + name + "'.");
     }

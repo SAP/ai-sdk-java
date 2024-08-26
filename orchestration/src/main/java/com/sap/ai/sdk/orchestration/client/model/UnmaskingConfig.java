@@ -54,13 +54,13 @@ public class UnmaskingConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected UnmaskingConfig() {  }
 
-   /**
-    * Set the entities of this {@link UnmaskingConfig} instance and return the same instance.
-    *
-    * @param entities  List of entities to be unmasked
-    * @return The same instance of this {@link UnmaskingConfig} class
-    */
-   @Nonnull public UnmaskingConfig entities(@Nonnull final List<UnmaskingConfigEntitiesInner> entities) {
+  /**
+   * Set the entities of this {@link UnmaskingConfig} instance and return the same instance.
+   *
+   * @param entities  List of entities to be unmasked
+   * @return The same instance of this {@link UnmaskingConfig} class
+   */
+  @Nonnull public UnmaskingConfig entities( @Nonnull final List<UnmaskingConfigEntitiesInner> entities) {
     this.entities = entities;
     return this;
   }
@@ -77,10 +77,10 @@ public class UnmaskingConfig
     return this;
   }
 
-   /**
-    * List of entities to be unmasked
-    * @return entities  The entities of this {@link UnmaskingConfig} instance.
-    */
+  /**
+   * List of entities to be unmasked
+   * @return entities  The entities of this {@link UnmaskingConfig} instance.
+   */
   @Nonnull public List<UnmaskingConfigEntitiesInner> getEntities() {
     return entities;
   }
@@ -111,7 +111,7 @@ public class UnmaskingConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("UnmaskingConfig has no field with name '" + name + "'.");
     }

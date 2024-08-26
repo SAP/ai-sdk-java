@@ -56,21 +56,21 @@ public class LLMModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected LLMModuleConfig() {  }
 
-   /**
-    * Set the modelName of this {@link LLMModuleConfig} instance and return the same instance.
-    *
-    * @param modelName  Model name as in LLM Access configuration
-    * @return The same instance of this {@link LLMModuleConfig} class
-    */
-   @Nonnull public LLMModuleConfig modelName(@Nonnull final String modelName) {
+  /**
+   * Set the modelName of this {@link LLMModuleConfig} instance and return the same instance.
+   *
+   * @param modelName  Model name as in LLM Access configuration
+   * @return The same instance of this {@link LLMModuleConfig} class
+   */
+  @Nonnull public LLMModuleConfig modelName( @Nonnull final String modelName) {
     this.modelName = modelName;
     return this;
   }
 
-   /**
-    * Model name as in LLM Access configuration
-    * @return modelName  The modelName of this {@link LLMModuleConfig} instance.
-    */
+  /**
+   * Model name as in LLM Access configuration
+   * @return modelName  The modelName of this {@link LLMModuleConfig} instance.
+   */
   @Nonnull public String getModelName() {
     return modelName;
   }
@@ -84,21 +84,21 @@ public class LLMModuleConfig
     this.modelName = modelName;
   }
 
-   /**
-    * Set the modelParams of this {@link LLMModuleConfig} instance and return the same instance.
-    *
-    * @param modelParams  Model parameters
-    * @return The same instance of this {@link LLMModuleConfig} class
-    */
-   @Nonnull public LLMModuleConfig modelParams(@Nonnull final Object modelParams) {
+  /**
+   * Set the modelParams of this {@link LLMModuleConfig} instance and return the same instance.
+   *
+   * @param modelParams  Model parameters
+   * @return The same instance of this {@link LLMModuleConfig} class
+   */
+  @Nonnull public LLMModuleConfig modelParams( @Nonnull final Object modelParams) {
     this.modelParams = modelParams;
     return this;
   }
 
-   /**
-    * Model parameters
-    * @return modelParams  The modelParams of this {@link LLMModuleConfig} instance.
-    */
+  /**
+   * Model parameters
+   * @return modelParams  The modelParams of this {@link LLMModuleConfig} instance.
+   */
   @Nonnull public Object getModelParams() {
     return modelParams;
   }
@@ -112,21 +112,21 @@ public class LLMModuleConfig
     this.modelParams = modelParams;
   }
 
-   /**
-    * Set the modelVersion of this {@link LLMModuleConfig} instance and return the same instance.
-    *
-    * @param modelVersion  Version of the model to use
-    * @return The same instance of this {@link LLMModuleConfig} class
-    */
-   @Nonnull public LLMModuleConfig modelVersion(@Nonnull final String modelVersion) {
+  /**
+   * Set the modelVersion of this {@link LLMModuleConfig} instance and return the same instance.
+   *
+   * @param modelVersion  Version of the model to use
+   * @return The same instance of this {@link LLMModuleConfig} class
+   */
+  @Nonnull public LLMModuleConfig modelVersion( @Nullable final String modelVersion) {
     this.modelVersion = modelVersion;
     return this;
   }
 
-   /**
-    * Version of the model to use
-    * @return modelVersion  The modelVersion of this {@link LLMModuleConfig} instance.
-    */
+  /**
+   * Version of the model to use
+   * @return modelVersion  The modelVersion of this {@link LLMModuleConfig} instance.
+   */
   @Nonnull public String getModelVersion() {
     return modelVersion;
   }
@@ -136,7 +136,7 @@ public class LLMModuleConfig
    *
    * @param modelVersion  Version of the model to use
    */
-  public void setModelVersion( @Nonnull final String modelVersion) {
+  public void setModelVersion( @Nullable final String modelVersion) {
     this.modelVersion = modelVersion;
   }
 
@@ -157,7 +157,7 @@ public class LLMModuleConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("LLMModuleConfig has no field with name '" + name + "'.");
     }

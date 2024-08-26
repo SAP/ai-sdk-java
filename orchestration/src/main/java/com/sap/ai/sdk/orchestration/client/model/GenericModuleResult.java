@@ -53,21 +53,21 @@ public class GenericModuleResult
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected GenericModuleResult() {  }
 
-   /**
-    * Set the message of this {@link GenericModuleResult} instance and return the same instance.
-    *
-    * @param message  Some message created from the module
-    * @return The same instance of this {@link GenericModuleResult} class
-    */
-   @Nonnull public GenericModuleResult message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link GenericModuleResult} instance and return the same instance.
+   *
+   * @param message  Some message created from the module
+   * @return The same instance of this {@link GenericModuleResult} class
+   */
+  @Nonnull public GenericModuleResult message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Some message created from the module
-    * @return message  The message of this {@link GenericModuleResult} instance.
-    */
+  /**
+   * Some message created from the module
+   * @return message  The message of this {@link GenericModuleResult} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -81,21 +81,21 @@ public class GenericModuleResult
     this.message = message;
   }
 
-   /**
-    * Set the data of this {@link GenericModuleResult} instance and return the same instance.
-    *
-    * @param data  Additional data object from the module
-    * @return The same instance of this {@link GenericModuleResult} class
-    */
-   @Nonnull public GenericModuleResult data(@Nonnull final Object data) {
+  /**
+   * Set the data of this {@link GenericModuleResult} instance and return the same instance.
+   *
+   * @param data  Additional data object from the module
+   * @return The same instance of this {@link GenericModuleResult} class
+   */
+  @Nonnull public GenericModuleResult data( @Nullable final Object data) {
     this.data = data;
     return this;
   }
 
-   /**
-    * Additional data object from the module
-    * @return data  The data of this {@link GenericModuleResult} instance.
-    */
+  /**
+   * Additional data object from the module
+   * @return data  The data of this {@link GenericModuleResult} instance.
+   */
   @Nonnull public Object getData() {
     return data;
   }
@@ -105,7 +105,7 @@ public class GenericModuleResult
    *
    * @param data  Additional data object from the module
    */
-  public void setData( @Nonnull final Object data) {
+  public void setData( @Nullable final Object data) {
     this.data = data;
   }
 
@@ -126,7 +126,7 @@ public class GenericModuleResult
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("GenericModuleResult has no field with name '" + name + "'.");
     }

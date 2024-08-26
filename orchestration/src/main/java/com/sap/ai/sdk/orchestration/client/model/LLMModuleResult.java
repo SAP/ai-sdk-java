@@ -73,21 +73,21 @@ public class LLMModuleResult
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected LLMModuleResult() {  }
 
-   /**
-    * Set the id of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param id  ID of the response
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param id  ID of the response
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the response
-    * @return id  The id of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * ID of the response
+   * @return id  The id of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -101,21 +101,21 @@ public class LLMModuleResult
     this.id = id;
   }
 
-   /**
-    * Set the _object of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param _object  Object type
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult _object(@Nonnull final String _object) {
+  /**
+   * Set the _object of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param _object  Object type
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult _object( @Nonnull final String _object) {
     this._object = _object;
     return this;
   }
 
-   /**
-    * Object type
-    * @return _object  The _object of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * Object type
+   * @return _object  The _object of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public String getObject() {
     return _object;
   }
@@ -129,21 +129,21 @@ public class LLMModuleResult
     this._object = _object;
   }
 
-   /**
-    * Set the created of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param created  Unix timestamp
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult created(@Nonnull final Integer created) {
+  /**
+   * Set the created of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param created  Unix timestamp
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult created( @Nonnull final Integer created) {
     this.created = created;
     return this;
   }
 
-   /**
-    * Unix timestamp
-    * @return created  The created of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * Unix timestamp
+   * @return created  The created of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public Integer getCreated() {
     return created;
   }
@@ -157,21 +157,21 @@ public class LLMModuleResult
     this.created = created;
   }
 
-   /**
-    * Set the model of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param model  Model name
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult model(@Nonnull final String model) {
+  /**
+   * Set the model of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param model  Model name
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult model( @Nonnull final String model) {
     this.model = model;
     return this;
   }
 
-   /**
-    * Model name
-    * @return model  The model of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * Model name
+   * @return model  The model of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public String getModel() {
     return model;
   }
@@ -185,21 +185,21 @@ public class LLMModuleResult
     this.model = model;
   }
 
-   /**
-    * Set the systemFingerprint of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param systemFingerprint  System fingerprint
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult systemFingerprint(@Nonnull final String systemFingerprint) {
+  /**
+   * Set the systemFingerprint of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param systemFingerprint  System fingerprint
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult systemFingerprint( @Nullable final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
     return this;
   }
 
-   /**
-    * System fingerprint
-    * @return systemFingerprint  The systemFingerprint of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * System fingerprint
+   * @return systemFingerprint  The systemFingerprint of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public String getSystemFingerprint() {
     return systemFingerprint;
   }
@@ -209,17 +209,17 @@ public class LLMModuleResult
    *
    * @param systemFingerprint  System fingerprint
    */
-  public void setSystemFingerprint( @Nonnull final String systemFingerprint) {
+  public void setSystemFingerprint( @Nullable final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
   }
 
-   /**
-    * Set the choices of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param choices  Choices
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult choices(@Nonnull final List<LLMChoice> choices) {
+  /**
+   * Set the choices of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param choices  Choices
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult choices( @Nonnull final List<LLMChoice> choices) {
     this.choices = choices;
     return this;
   }
@@ -236,10 +236,10 @@ public class LLMModuleResult
     return this;
   }
 
-   /**
-    * Choices
-    * @return choices  The choices of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * Choices
+   * @return choices  The choices of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public List<LLMChoice> getChoices() {
     return choices;
   }
@@ -253,21 +253,21 @@ public class LLMModuleResult
     this.choices = choices;
   }
 
-   /**
-    * Set the usage of this {@link LLMModuleResult} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link LLMModuleResult}
-    * @return The same instance of this {@link LLMModuleResult} class
-    */
-   @Nonnull public LLMModuleResult usage(@Nonnull final TokenUsage usage) {
+  /**
+   * Set the usage of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link LLMModuleResult}
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull public LLMModuleResult usage( @Nonnull final TokenUsage usage) {
     this.usage = usage;
     return this;
   }
 
-   /**
-    * Get usage
-    * @return usage  The usage of this {@link LLMModuleResult} instance.
-    */
+  /**
+   * Get usage
+   * @return usage  The usage of this {@link LLMModuleResult} instance.
+   */
   @Nonnull public TokenUsage getUsage() {
     return usage;
   }
@@ -298,7 +298,7 @@ public class LLMModuleResult
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("LLMModuleResult has no field with name '" + name + "'.");
     }

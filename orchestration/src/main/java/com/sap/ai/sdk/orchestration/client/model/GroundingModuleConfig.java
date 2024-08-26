@@ -103,21 +103,21 @@ public class GroundingModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected GroundingModuleConfig() {  }
 
-   /**
-    * Set the groundingService of this {@link GroundingModuleConfig} instance and return the same instance.
-    *
-    * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
-    * @return The same instance of this {@link GroundingModuleConfig} class
-    */
-   @Nonnull public GroundingModuleConfig groundingService(@Nonnull final GroundingServiceEnum groundingService) {
+  /**
+   * Set the groundingService of this {@link GroundingModuleConfig} instance and return the same instance.
+   *
+   * @param groundingService  The groundingService of this {@link GroundingModuleConfig}
+   * @return The same instance of this {@link GroundingModuleConfig} class
+   */
+  @Nonnull public GroundingModuleConfig groundingService( @Nonnull final GroundingServiceEnum groundingService) {
     this.groundingService = groundingService;
     return this;
   }
 
-   /**
-    * Get groundingService
-    * @return groundingService  The groundingService of this {@link GroundingModuleConfig} instance.
-    */
+  /**
+   * Get groundingService
+   * @return groundingService  The groundingService of this {@link GroundingModuleConfig} instance.
+   */
   @Nonnull public GroundingServiceEnum getGroundingService() {
     return groundingService;
   }
@@ -131,21 +131,21 @@ public class GroundingModuleConfig
     this.groundingService = groundingService;
   }
 
-   /**
-    * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance and return the same instance.
-    *
-    * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
-    * @return The same instance of this {@link GroundingModuleConfig} class
-    */
-   @Nonnull public GroundingModuleConfig groundingServiceConfiguration(@Nonnull final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
+  /**
+   * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance and return the same instance.
+   *
+   * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
+   * @return The same instance of this {@link GroundingModuleConfig} class
+   */
+  @Nonnull public GroundingModuleConfig groundingServiceConfiguration( @Nullable final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
     return this;
   }
 
-   /**
-    * Get groundingServiceConfiguration
-    * @return groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
-    */
+  /**
+   * Get groundingServiceConfiguration
+   * @return groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
+   */
   @Nonnull public GroundingModuleConfigGroundingServiceConfiguration getGroundingServiceConfiguration() {
     return groundingServiceConfiguration;
   }
@@ -155,7 +155,7 @@ public class GroundingModuleConfig
    *
    * @param groundingServiceConfiguration  The groundingServiceConfiguration of this {@link GroundingModuleConfig}
    */
-  public void setGroundingServiceConfiguration( @Nonnull final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
+  public void setGroundingServiceConfiguration( @Nullable final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
   }
 
@@ -176,7 +176,7 @@ public class GroundingModuleConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("GroundingModuleConfig has no field with name '" + name + "'.");
     }

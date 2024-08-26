@@ -56,21 +56,21 @@ public class TokenUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TokenUsage() {  }
 
-   /**
-    * Set the completionTokens of this {@link TokenUsage} instance and return the same instance.
-    *
-    * @param completionTokens  Number of tokens used in the input
-    * @return The same instance of this {@link TokenUsage} class
-    */
-   @Nonnull public TokenUsage completionTokens(@Nonnull final Integer completionTokens) {
+  /**
+   * Set the completionTokens of this {@link TokenUsage} instance and return the same instance.
+   *
+   * @param completionTokens  Number of tokens used in the input
+   * @return The same instance of this {@link TokenUsage} class
+   */
+  @Nonnull public TokenUsage completionTokens( @Nonnull final Integer completionTokens) {
     this.completionTokens = completionTokens;
     return this;
   }
 
-   /**
-    * Number of tokens used in the input
-    * @return completionTokens  The completionTokens of this {@link TokenUsage} instance.
-    */
+  /**
+   * Number of tokens used in the input
+   * @return completionTokens  The completionTokens of this {@link TokenUsage} instance.
+   */
   @Nonnull public Integer getCompletionTokens() {
     return completionTokens;
   }
@@ -84,21 +84,21 @@ public class TokenUsage
     this.completionTokens = completionTokens;
   }
 
-   /**
-    * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
-    *
-    * @param promptTokens  Number of tokens used in the output
-    * @return The same instance of this {@link TokenUsage} class
-    */
-   @Nonnull public TokenUsage promptTokens(@Nonnull final Integer promptTokens) {
+  /**
+   * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
+   *
+   * @param promptTokens  Number of tokens used in the output
+   * @return The same instance of this {@link TokenUsage} class
+   */
+  @Nonnull public TokenUsage promptTokens( @Nonnull final Integer promptTokens) {
     this.promptTokens = promptTokens;
     return this;
   }
 
-   /**
-    * Number of tokens used in the output
-    * @return promptTokens  The promptTokens of this {@link TokenUsage} instance.
-    */
+  /**
+   * Number of tokens used in the output
+   * @return promptTokens  The promptTokens of this {@link TokenUsage} instance.
+   */
   @Nonnull public Integer getPromptTokens() {
     return promptTokens;
   }
@@ -112,21 +112,21 @@ public class TokenUsage
     this.promptTokens = promptTokens;
   }
 
-   /**
-    * Set the totalTokens of this {@link TokenUsage} instance and return the same instance.
-    *
-    * @param totalTokens  Total number of tokens used
-    * @return The same instance of this {@link TokenUsage} class
-    */
-   @Nonnull public TokenUsage totalTokens(@Nonnull final Integer totalTokens) {
+  /**
+   * Set the totalTokens of this {@link TokenUsage} instance and return the same instance.
+   *
+   * @param totalTokens  Total number of tokens used
+   * @return The same instance of this {@link TokenUsage} class
+   */
+  @Nonnull public TokenUsage totalTokens( @Nonnull final Integer totalTokens) {
     this.totalTokens = totalTokens;
     return this;
   }
 
-   /**
-    * Total number of tokens used
-    * @return totalTokens  The totalTokens of this {@link TokenUsage} instance.
-    */
+  /**
+   * Total number of tokens used
+   * @return totalTokens  The totalTokens of this {@link TokenUsage} instance.
+   */
   @Nonnull public Integer getTotalTokens() {
     return totalTokens;
   }
@@ -157,7 +157,7 @@ public class TokenUsage
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TokenUsage has no field with name '" + name + "'.");
     }

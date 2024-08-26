@@ -57,13 +57,13 @@ public class TemplatingModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TemplatingModuleConfig() {  }
 
-   /**
-    * Set the template of this {@link TemplatingModuleConfig} instance and return the same instance.
-    *
-    * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-    * @return The same instance of this {@link TemplatingModuleConfig} class
-    */
-   @Nonnull public TemplatingModuleConfig template(@Nonnull final List<ChatMessage> template) {
+  /**
+   * Set the template of this {@link TemplatingModuleConfig} instance and return the same instance.
+   *
+   * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+   * @return The same instance of this {@link TemplatingModuleConfig} class
+   */
+  @Nonnull public TemplatingModuleConfig template( @Nonnull final List<ChatMessage> template) {
     this.template = template;
     return this;
   }
@@ -80,10 +80,10 @@ public class TemplatingModuleConfig
     return this;
   }
 
-   /**
-    * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-    * @return template  The template of this {@link TemplatingModuleConfig} instance.
-    */
+  /**
+   * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+   * @return template  The template of this {@link TemplatingModuleConfig} instance.
+   */
   @Nonnull public List<ChatMessage> getTemplate() {
     return template;
   }
@@ -97,21 +97,21 @@ public class TemplatingModuleConfig
     this.template = template;
   }
 
-   /**
-    * Set the defaults of this {@link TemplatingModuleConfig} instance and return the same instance.
-    *
-    * @param defaults  Optional default values for the template. If a parameter has no default it is required.
-    * @return The same instance of this {@link TemplatingModuleConfig} class
-    */
-   @Nonnull public TemplatingModuleConfig defaults(@Nonnull final Object defaults) {
+  /**
+   * Set the defaults of this {@link TemplatingModuleConfig} instance and return the same instance.
+   *
+   * @param defaults  Optional default values for the template. If a parameter has no default it is required.
+   * @return The same instance of this {@link TemplatingModuleConfig} class
+   */
+  @Nonnull public TemplatingModuleConfig defaults( @Nullable final Object defaults) {
     this.defaults = defaults;
     return this;
   }
 
-   /**
-    * Optional default values for the template. If a parameter has no default it is required.
-    * @return defaults  The defaults of this {@link TemplatingModuleConfig} instance.
-    */
+  /**
+   * Optional default values for the template. If a parameter has no default it is required.
+   * @return defaults  The defaults of this {@link TemplatingModuleConfig} instance.
+   */
   @Nonnull public Object getDefaults() {
     return defaults;
   }
@@ -121,7 +121,7 @@ public class TemplatingModuleConfig
    *
    * @param defaults  Optional default values for the template. If a parameter has no default it is required.
    */
-  public void setDefaults( @Nonnull final Object defaults) {
+  public void setDefaults( @Nullable final Object defaults) {
     this.defaults = defaults;
   }
 
@@ -142,7 +142,7 @@ public class TemplatingModuleConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TemplatingModuleConfig has no field with name '" + name + "'.");
     }

@@ -63,21 +63,21 @@ public class ErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected ErrorResponse() {  }
 
-   /**
-    * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
-    *
-    * @param requestId  The requestId of this {@link ErrorResponse}
-    * @return The same instance of this {@link ErrorResponse} class
-    */
-   @Nonnull public ErrorResponse requestId(@Nonnull final String requestId) {
+  /**
+   * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
+   *
+   * @param requestId  The requestId of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
+   */
+  @Nonnull public ErrorResponse requestId( @Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
-   /**
-    * Get requestId
-    * @return requestId  The requestId of this {@link ErrorResponse} instance.
-    */
+  /**
+   * Get requestId
+   * @return requestId  The requestId of this {@link ErrorResponse} instance.
+   */
   @Nonnull public String getRequestId() {
     return requestId;
   }
@@ -91,21 +91,21 @@ public class ErrorResponse
     this.requestId = requestId;
   }
 
-   /**
-    * Set the code of this {@link ErrorResponse} instance and return the same instance.
-    *
-    * @param code  The code of this {@link ErrorResponse}
-    * @return The same instance of this {@link ErrorResponse} class
-    */
-   @Nonnull public ErrorResponse code(@Nonnull final Integer code) {
+  /**
+   * Set the code of this {@link ErrorResponse} instance and return the same instance.
+   *
+   * @param code  The code of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
+   */
+  @Nonnull public ErrorResponse code( @Nonnull final Integer code) {
     this.code = code;
     return this;
   }
 
-   /**
-    * Get code
-    * @return code  The code of this {@link ErrorResponse} instance.
-    */
+  /**
+   * Get code
+   * @return code  The code of this {@link ErrorResponse} instance.
+   */
   @Nonnull public Integer getCode() {
     return code;
   }
@@ -119,21 +119,21 @@ public class ErrorResponse
     this.code = code;
   }
 
-   /**
-    * Set the message of this {@link ErrorResponse} instance and return the same instance.
-    *
-    * @param message  The message of this {@link ErrorResponse}
-    * @return The same instance of this {@link ErrorResponse} class
-    */
-   @Nonnull public ErrorResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link ErrorResponse} instance and return the same instance.
+   *
+   * @param message  The message of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
+   */
+  @Nonnull public ErrorResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Get message
-    * @return message  The message of this {@link ErrorResponse} instance.
-    */
+  /**
+   * Get message
+   * @return message  The message of this {@link ErrorResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -147,21 +147,21 @@ public class ErrorResponse
     this.message = message;
   }
 
-   /**
-    * Set the location of this {@link ErrorResponse} instance and return the same instance.
-    *
-    * @param location  Where the error occurred
-    * @return The same instance of this {@link ErrorResponse} class
-    */
-   @Nonnull public ErrorResponse location(@Nonnull final String location) {
+  /**
+   * Set the location of this {@link ErrorResponse} instance and return the same instance.
+   *
+   * @param location  Where the error occurred
+   * @return The same instance of this {@link ErrorResponse} class
+   */
+  @Nonnull public ErrorResponse location( @Nonnull final String location) {
     this.location = location;
     return this;
   }
 
-   /**
-    * Where the error occurred
-    * @return location  The location of this {@link ErrorResponse} instance.
-    */
+  /**
+   * Where the error occurred
+   * @return location  The location of this {@link ErrorResponse} instance.
+   */
   @Nonnull public String getLocation() {
     return location;
   }
@@ -175,21 +175,21 @@ public class ErrorResponse
     this.location = location;
   }
 
-   /**
-    * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
-    *
-    * @param moduleResults  The moduleResults of this {@link ErrorResponse}
-    * @return The same instance of this {@link ErrorResponse} class
-    */
-   @Nonnull public ErrorResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
+  /**
+   * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
+   *
+   * @param moduleResults  The moduleResults of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
+   */
+  @Nonnull public ErrorResponse moduleResults( @Nullable final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
 
-   /**
-    * Get moduleResults
-    * @return moduleResults  The moduleResults of this {@link ErrorResponse} instance.
-    */
+  /**
+   * Get moduleResults
+   * @return moduleResults  The moduleResults of this {@link ErrorResponse} instance.
+   */
   @Nonnull public ModuleResults getModuleResults() {
     return moduleResults;
   }
@@ -199,7 +199,7 @@ public class ErrorResponse
    *
    * @param moduleResults  The moduleResults of this {@link ErrorResponse}
    */
-  public void setModuleResults( @Nonnull final ModuleResults moduleResults) {
+  public void setModuleResults( @Nullable final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 
@@ -220,7 +220,7 @@ public class ErrorResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("ErrorResponse has no field with name '" + name + "'.");
     }

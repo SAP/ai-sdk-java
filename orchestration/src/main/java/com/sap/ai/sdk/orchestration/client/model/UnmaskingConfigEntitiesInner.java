@@ -62,7 +62,7 @@ public class UnmaskingConfigEntitiesInner
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("UnmaskingConfigEntitiesInner has no field with name '" + name + "'.");
     }

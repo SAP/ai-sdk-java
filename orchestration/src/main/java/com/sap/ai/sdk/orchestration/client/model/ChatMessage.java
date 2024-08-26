@@ -53,21 +53,21 @@ public class ChatMessage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected ChatMessage() {  }
 
-   /**
-    * Set the role of this {@link ChatMessage} instance and return the same instance.
-    *
-    * @param role  The role of this {@link ChatMessage}
-    * @return The same instance of this {@link ChatMessage} class
-    */
-   @Nonnull public ChatMessage role(@Nonnull final String role) {
+  /**
+   * Set the role of this {@link ChatMessage} instance and return the same instance.
+   *
+   * @param role  The role of this {@link ChatMessage}
+   * @return The same instance of this {@link ChatMessage} class
+   */
+  @Nonnull public ChatMessage role( @Nonnull final String role) {
     this.role = role;
     return this;
   }
 
-   /**
-    * Get role
-    * @return role  The role of this {@link ChatMessage} instance.
-    */
+  /**
+   * Get role
+   * @return role  The role of this {@link ChatMessage} instance.
+   */
   @Nonnull public String getRole() {
     return role;
   }
@@ -81,21 +81,21 @@ public class ChatMessage
     this.role = role;
   }
 
-   /**
-    * Set the content of this {@link ChatMessage} instance and return the same instance.
-    *
-    * @param content  The content of this {@link ChatMessage}
-    * @return The same instance of this {@link ChatMessage} class
-    */
-   @Nonnull public ChatMessage content(@Nonnull final String content) {
+  /**
+   * Set the content of this {@link ChatMessage} instance and return the same instance.
+   *
+   * @param content  The content of this {@link ChatMessage}
+   * @return The same instance of this {@link ChatMessage} class
+   */
+  @Nonnull public ChatMessage content( @Nonnull final String content) {
     this.content = content;
     return this;
   }
 
-   /**
-    * Get content
-    * @return content  The content of this {@link ChatMessage} instance.
-    */
+  /**
+   * Get content
+   * @return content  The content of this {@link ChatMessage} instance.
+   */
   @Nonnull public String getContent() {
     return content;
   }
@@ -126,7 +126,7 @@ public class ChatMessage
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("ChatMessage has no field with name '" + name + "'.");
     }

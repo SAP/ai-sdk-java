@@ -61,21 +61,21 @@ public class FilterConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected FilterConfig() {  }
 
-   /**
-    * Set the hate of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param hate  The hate of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
-   @Nonnull public FilterConfig hate(@Nonnull final AzureThreshold hate) {
+  /**
+   * Set the hate of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param hate  The hate of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
+  @Nonnull public FilterConfig hate( @Nullable final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
 
-   /**
-    * Get hate
-    * @return hate  The hate of this {@link FilterConfig} instance.
-    */
+  /**
+   * Get hate
+   * @return hate  The hate of this {@link FilterConfig} instance.
+   */
   @Nonnull public AzureThreshold getHate() {
     return hate;
   }
@@ -85,25 +85,25 @@ public class FilterConfig
    *
    * @param hate  The hate of this {@link FilterConfig}
    */
-  public void setHate( @Nonnull final AzureThreshold hate) {
+  public void setHate( @Nullable final AzureThreshold hate) {
     this.hate = hate;
   }
 
-   /**
-    * Set the selfHarm of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param selfHarm  The selfHarm of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
-   @Nonnull public FilterConfig selfHarm(@Nonnull final AzureThreshold selfHarm) {
+  /**
+   * Set the selfHarm of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param selfHarm  The selfHarm of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
+  @Nonnull public FilterConfig selfHarm( @Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
 
-   /**
-    * Get selfHarm
-    * @return selfHarm  The selfHarm of this {@link FilterConfig} instance.
-    */
+  /**
+   * Get selfHarm
+   * @return selfHarm  The selfHarm of this {@link FilterConfig} instance.
+   */
   @Nonnull public AzureThreshold getSelfHarm() {
     return selfHarm;
   }
@@ -113,25 +113,25 @@ public class FilterConfig
    *
    * @param selfHarm  The selfHarm of this {@link FilterConfig}
    */
-  public void setSelfHarm( @Nonnull final AzureThreshold selfHarm) {
+  public void setSelfHarm( @Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
-   /**
-    * Set the sexual of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param sexual  The sexual of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
-   @Nonnull public FilterConfig sexual(@Nonnull final AzureThreshold sexual) {
+  /**
+   * Set the sexual of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param sexual  The sexual of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
+  @Nonnull public FilterConfig sexual( @Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
 
-   /**
-    * Get sexual
-    * @return sexual  The sexual of this {@link FilterConfig} instance.
-    */
+  /**
+   * Get sexual
+   * @return sexual  The sexual of this {@link FilterConfig} instance.
+   */
   @Nonnull public AzureThreshold getSexual() {
     return sexual;
   }
@@ -141,25 +141,25 @@ public class FilterConfig
    *
    * @param sexual  The sexual of this {@link FilterConfig}
    */
-  public void setSexual( @Nonnull final AzureThreshold sexual) {
+  public void setSexual( @Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
-   /**
-    * Set the violence of this {@link FilterConfig} instance and return the same instance.
-    *
-    * @param violence  The violence of this {@link FilterConfig}
-    * @return The same instance of this {@link FilterConfig} class
-    */
-   @Nonnull public FilterConfig violence(@Nonnull final AzureThreshold violence) {
+  /**
+   * Set the violence of this {@link FilterConfig} instance and return the same instance.
+   *
+   * @param violence  The violence of this {@link FilterConfig}
+   * @return The same instance of this {@link FilterConfig} class
+   */
+  @Nonnull public FilterConfig violence( @Nullable final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
 
-   /**
-    * Get violence
-    * @return violence  The violence of this {@link FilterConfig} instance.
-    */
+  /**
+   * Get violence
+   * @return violence  The violence of this {@link FilterConfig} instance.
+   */
   @Nonnull public AzureThreshold getViolence() {
     return violence;
   }
@@ -169,7 +169,7 @@ public class FilterConfig
    *
    * @param violence  The violence of this {@link FilterConfig}
    */
-  public void setViolence( @Nonnull final AzureThreshold violence) {
+  public void setViolence( @Nullable final AzureThreshold violence) {
     this.violence = violence;
   }
 
@@ -190,7 +190,7 @@ public class FilterConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("FilterConfig has no field with name '" + name + "'.");
     }

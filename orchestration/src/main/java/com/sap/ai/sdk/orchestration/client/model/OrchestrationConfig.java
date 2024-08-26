@@ -51,21 +51,21 @@ public class OrchestrationConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected OrchestrationConfig() {  }
 
-   /**
-    * Set the moduleConfigurations of this {@link OrchestrationConfig} instance and return the same instance.
-    *
-    * @param moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig}
-    * @return The same instance of this {@link OrchestrationConfig} class
-    */
-   @Nonnull public OrchestrationConfig moduleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations) {
+  /**
+   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance and return the same instance.
+   *
+   * @param moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig}
+   * @return The same instance of this {@link OrchestrationConfig} class
+   */
+  @Nonnull public OrchestrationConfig moduleConfigurations( @Nonnull final ModuleConfigs moduleConfigurations) {
     this.moduleConfigurations = moduleConfigurations;
     return this;
   }
 
-   /**
-    * Get moduleConfigurations
-    * @return moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig} instance.
-    */
+  /**
+   * Get moduleConfigurations
+   * @return moduleConfigurations  The moduleConfigurations of this {@link OrchestrationConfig} instance.
+   */
   @Nonnull public ModuleConfigs getModuleConfigurations() {
     return moduleConfigurations;
   }
@@ -96,7 +96,7 @@ public class OrchestrationConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("OrchestrationConfig has no field with name '" + name + "'.");
     }

@@ -54,13 +54,13 @@ public class FilteringConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected FilteringConfig() {  }
 
-   /**
-    * Set the filters of this {@link FilteringConfig} instance and return the same instance.
-    *
-    * @param filters  Filters to be used
-    * @return The same instance of this {@link FilteringConfig} class
-    */
-   @Nonnull public FilteringConfig filters(@Nonnull final List<Filter> filters) {
+  /**
+   * Set the filters of this {@link FilteringConfig} instance and return the same instance.
+   *
+   * @param filters  Filters to be used
+   * @return The same instance of this {@link FilteringConfig} class
+   */
+  @Nonnull public FilteringConfig filters( @Nonnull final List<Filter> filters) {
     this.filters = filters;
     return this;
   }
@@ -77,10 +77,10 @@ public class FilteringConfig
     return this;
   }
 
-   /**
-    * Filters to be used
-    * @return filters  The filters of this {@link FilteringConfig} instance.
-    */
+  /**
+   * Filters to be used
+   * @return filters  The filters of this {@link FilteringConfig} instance.
+   */
   @Nonnull public List<Filter> getFilters() {
     return filters;
   }
@@ -111,7 +111,7 @@ public class FilteringConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("FilteringConfig has no field with name '" + name + "'.");
     }

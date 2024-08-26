@@ -74,21 +74,21 @@ public class ModuleResults
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected ModuleResults() {  }
 
-   /**
-    * Set the grounding of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param grounding  The grounding of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults grounding(@Nonnull final GenericModuleResult grounding) {
+  /**
+   * Set the grounding of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param grounding  The grounding of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults grounding( @Nullable final GenericModuleResult grounding) {
     this.grounding = grounding;
     return this;
   }
 
-   /**
-    * Get grounding
-    * @return grounding  The grounding of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get grounding
+   * @return grounding  The grounding of this {@link ModuleResults} instance.
+   */
   @Nonnull public GenericModuleResult getGrounding() {
     return grounding;
   }
@@ -98,17 +98,17 @@ public class ModuleResults
    *
    * @param grounding  The grounding of this {@link ModuleResults}
    */
-  public void setGrounding( @Nonnull final GenericModuleResult grounding) {
+  public void setGrounding( @Nullable final GenericModuleResult grounding) {
     this.grounding = grounding;
   }
 
-   /**
-    * Set the templating of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param templating  The templating of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults templating(@Nonnull final List<ChatMessage> templating) {
+  /**
+   * Set the templating of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param templating  The templating of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults templating( @Nullable final List<ChatMessage> templating) {
     this.templating = templating;
     return this;
   }
@@ -125,10 +125,10 @@ public class ModuleResults
     return this;
   }
 
-   /**
-    * Get templating
-    * @return templating  The templating of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get templating
+   * @return templating  The templating of this {@link ModuleResults} instance.
+   */
   @Nonnull public List<ChatMessage> getTemplating() {
     return templating;
   }
@@ -138,25 +138,25 @@ public class ModuleResults
    *
    * @param templating  The templating of this {@link ModuleResults}
    */
-  public void setTemplating( @Nonnull final List<ChatMessage> templating) {
+  public void setTemplating( @Nullable final List<ChatMessage> templating) {
     this.templating = templating;
   }
 
-   /**
-    * Set the inputMasking of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param inputMasking  The inputMasking of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults inputMasking(@Nonnull final GenericModuleResult inputMasking) {
+  /**
+   * Set the inputMasking of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param inputMasking  The inputMasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults inputMasking( @Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
     return this;
   }
 
-   /**
-    * Get inputMasking
-    * @return inputMasking  The inputMasking of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get inputMasking
+   * @return inputMasking  The inputMasking of this {@link ModuleResults} instance.
+   */
   @Nonnull public GenericModuleResult getInputMasking() {
     return inputMasking;
   }
@@ -166,25 +166,25 @@ public class ModuleResults
    *
    * @param inputMasking  The inputMasking of this {@link ModuleResults}
    */
-  public void setInputMasking( @Nonnull final GenericModuleResult inputMasking) {
+  public void setInputMasking( @Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
   }
 
-   /**
-    * Set the inputFiltering of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param inputFiltering  The inputFiltering of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults inputFiltering(@Nonnull final GenericModuleResult inputFiltering) {
+  /**
+   * Set the inputFiltering of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param inputFiltering  The inputFiltering of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults inputFiltering( @Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
     return this;
   }
 
-   /**
-    * Get inputFiltering
-    * @return inputFiltering  The inputFiltering of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get inputFiltering
+   * @return inputFiltering  The inputFiltering of this {@link ModuleResults} instance.
+   */
   @Nonnull public GenericModuleResult getInputFiltering() {
     return inputFiltering;
   }
@@ -194,25 +194,25 @@ public class ModuleResults
    *
    * @param inputFiltering  The inputFiltering of this {@link ModuleResults}
    */
-  public void setInputFiltering( @Nonnull final GenericModuleResult inputFiltering) {
+  public void setInputFiltering( @Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
   }
 
-   /**
-    * Set the llm of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param llm  The llm of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults llm(@Nonnull final LLMModuleResult llm) {
+  /**
+   * Set the llm of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param llm  The llm of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults llm( @Nullable final LLMModuleResult llm) {
     this.llm = llm;
     return this;
   }
 
-   /**
-    * Get llm
-    * @return llm  The llm of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get llm
+   * @return llm  The llm of this {@link ModuleResults} instance.
+   */
   @Nonnull public LLMModuleResult getLlm() {
     return llm;
   }
@@ -222,25 +222,25 @@ public class ModuleResults
    *
    * @param llm  The llm of this {@link ModuleResults}
    */
-  public void setLlm( @Nonnull final LLMModuleResult llm) {
+  public void setLlm( @Nullable final LLMModuleResult llm) {
     this.llm = llm;
   }
 
-   /**
-    * Set the outputFiltering of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param outputFiltering  The outputFiltering of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults outputFiltering(@Nonnull final GenericModuleResult outputFiltering) {
+  /**
+   * Set the outputFiltering of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param outputFiltering  The outputFiltering of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults outputFiltering( @Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
     return this;
   }
 
-   /**
-    * Get outputFiltering
-    * @return outputFiltering  The outputFiltering of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get outputFiltering
+   * @return outputFiltering  The outputFiltering of this {@link ModuleResults} instance.
+   */
   @Nonnull public GenericModuleResult getOutputFiltering() {
     return outputFiltering;
   }
@@ -250,25 +250,25 @@ public class ModuleResults
    *
    * @param outputFiltering  The outputFiltering of this {@link ModuleResults}
    */
-  public void setOutputFiltering( @Nonnull final GenericModuleResult outputFiltering) {
+  public void setOutputFiltering( @Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
   }
 
-   /**
-    * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
-    *
-    * @param outputUnmasking  The outputUnmasking of this {@link ModuleResults}
-    * @return The same instance of this {@link ModuleResults} class
-    */
-   @Nonnull public ModuleResults outputUnmasking(@Nonnull final GenericModuleResult outputUnmasking) {
+  /**
+   * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param outputUnmasking  The outputUnmasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull public ModuleResults outputUnmasking( @Nullable final GenericModuleResult outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
     return this;
   }
 
-   /**
-    * Get outputUnmasking
-    * @return outputUnmasking  The outputUnmasking of this {@link ModuleResults} instance.
-    */
+  /**
+   * Get outputUnmasking
+   * @return outputUnmasking  The outputUnmasking of this {@link ModuleResults} instance.
+   */
   @Nonnull public GenericModuleResult getOutputUnmasking() {
     return outputUnmasking;
   }
@@ -278,7 +278,7 @@ public class ModuleResults
    *
    * @param outputUnmasking  The outputUnmasking of this {@link ModuleResults}
    */
-  public void setOutputUnmasking( @Nonnull final GenericModuleResult outputUnmasking) {
+  public void setOutputUnmasking( @Nullable final GenericModuleResult outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
   }
 
@@ -299,7 +299,7 @@ public class ModuleResults
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("ModuleResults has no field with name '" + name + "'.");
     }

@@ -58,13 +58,13 @@ public class MaskingModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MaskingModuleConfig() {  }
 
-   /**
-    * Set the masking of this {@link MaskingModuleConfig} instance and return the same instance.
-    *
-    * @param masking  Masking services to be used
-    * @return The same instance of this {@link MaskingModuleConfig} class
-    */
-   @Nonnull public MaskingModuleConfig masking(@Nonnull final List<Masking> masking) {
+  /**
+   * Set the masking of this {@link MaskingModuleConfig} instance and return the same instance.
+   *
+   * @param masking  Masking services to be used
+   * @return The same instance of this {@link MaskingModuleConfig} class
+   */
+  @Nonnull public MaskingModuleConfig masking( @Nonnull final List<Masking> masking) {
     this.masking = masking;
     return this;
   }
@@ -81,10 +81,10 @@ public class MaskingModuleConfig
     return this;
   }
 
-   /**
-    * Masking services to be used
-    * @return masking  The masking of this {@link MaskingModuleConfig} instance.
-    */
+  /**
+   * Masking services to be used
+   * @return masking  The masking of this {@link MaskingModuleConfig} instance.
+   */
   @Nonnull public List<Masking> getMasking() {
     return masking;
   }
@@ -98,21 +98,21 @@ public class MaskingModuleConfig
     this.masking = masking;
   }
 
-   /**
-    * Set the unmasking of this {@link MaskingModuleConfig} instance and return the same instance.
-    *
-    * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
-    * @return The same instance of this {@link MaskingModuleConfig} class
-    */
-   @Nonnull public MaskingModuleConfig unmasking(@Nonnull final UnmaskingConfig unmasking) {
+  /**
+   * Set the unmasking of this {@link MaskingModuleConfig} instance and return the same instance.
+   *
+   * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
+   * @return The same instance of this {@link MaskingModuleConfig} class
+   */
+  @Nonnull public MaskingModuleConfig unmasking( @Nullable final UnmaskingConfig unmasking) {
     this.unmasking = unmasking;
     return this;
   }
 
-   /**
-    * Get unmasking
-    * @return unmasking  The unmasking of this {@link MaskingModuleConfig} instance.
-    */
+  /**
+   * Get unmasking
+   * @return unmasking  The unmasking of this {@link MaskingModuleConfig} instance.
+   */
   @Nonnull public UnmaskingConfig getUnmasking() {
     return unmasking;
   }
@@ -122,7 +122,7 @@ public class MaskingModuleConfig
    *
    * @param unmasking  The unmasking of this {@link MaskingModuleConfig}
    */
-  public void setUnmasking( @Nonnull final UnmaskingConfig unmasking) {
+  public void setUnmasking( @Nullable final UnmaskingConfig unmasking) {
     this.unmasking = unmasking;
   }
 
@@ -143,7 +143,7 @@ public class MaskingModuleConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MaskingModuleConfig has no field with name '" + name + "'.");
     }

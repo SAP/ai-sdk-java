@@ -50,21 +50,21 @@ public class OrchestrationV1EndpointsHealthz503Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected OrchestrationV1EndpointsHealthz503Response() {  }
 
-   /**
-    * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance and return the same instance.
-    *
-    * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
-    * @return The same instance of this {@link OrchestrationV1EndpointsHealthz503Response} class
-    */
-   @Nonnull public OrchestrationV1EndpointsHealthz503Response status(@Nonnull final String status) {
+  /**
+   * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance and return the same instance.
+   *
+   * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
+   * @return The same instance of this {@link OrchestrationV1EndpointsHealthz503Response} class
+   */
+  @Nonnull public OrchestrationV1EndpointsHealthz503Response status( @Nullable final String status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Get status
-    * @return status  The status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
-    */
+  /**
+   * Get status
+   * @return status  The status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
+   */
   @Nonnull public String getStatus() {
     return status;
   }
@@ -74,7 +74,7 @@ public class OrchestrationV1EndpointsHealthz503Response
    *
    * @param status  The status of this {@link OrchestrationV1EndpointsHealthz503Response}
    */
-  public void setStatus( @Nonnull final String status) {
+  public void setStatus( @Nullable final String status) {
     this.status = status;
   }
 
@@ -95,7 +95,7 @@ public class OrchestrationV1EndpointsHealthz503Response
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("OrchestrationV1EndpointsHealthz503Response has no field with name '" + name + "'.");
     }

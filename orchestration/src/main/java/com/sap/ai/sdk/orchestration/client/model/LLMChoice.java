@@ -64,21 +64,21 @@ public class LLMChoice
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected LLMChoice() {  }
 
-   /**
-    * Set the index of this {@link LLMChoice} instance and return the same instance.
-    *
-    * @param index  Index of the choice
-    * @return The same instance of this {@link LLMChoice} class
-    */
-   @Nonnull public LLMChoice index(@Nonnull final Integer index) {
+  /**
+   * Set the index of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param index  Index of the choice
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull public LLMChoice index( @Nonnull final Integer index) {
     this.index = index;
     return this;
   }
 
-   /**
-    * Index of the choice
-    * @return index  The index of this {@link LLMChoice} instance.
-    */
+  /**
+   * Index of the choice
+   * @return index  The index of this {@link LLMChoice} instance.
+   */
   @Nonnull public Integer getIndex() {
     return index;
   }
@@ -92,21 +92,21 @@ public class LLMChoice
     this.index = index;
   }
 
-   /**
-    * Set the message of this {@link LLMChoice} instance and return the same instance.
-    *
-    * @param message  The message of this {@link LLMChoice}
-    * @return The same instance of this {@link LLMChoice} class
-    */
-   @Nonnull public LLMChoice message(@Nonnull final ChatMessage message) {
+  /**
+   * Set the message of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param message  The message of this {@link LLMChoice}
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull public LLMChoice message( @Nonnull final ChatMessage message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Get message
-    * @return message  The message of this {@link LLMChoice} instance.
-    */
+  /**
+   * Get message
+   * @return message  The message of this {@link LLMChoice} instance.
+   */
   @Nonnull public ChatMessage getMessage() {
     return message;
   }
@@ -120,33 +120,33 @@ public class LLMChoice
     this.message = message;
   }
 
-   /**
-    * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
-    *
-    * @param logprobs  Log probabilities
-    * @return The same instance of this {@link LLMChoice} class
-    */
-   @Nonnull public LLMChoice logprobs(@Nonnull final Map<String, List<BigDecimal>> logprobs) {
+  /**
+   * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param logprobs  Log probabilities
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull public LLMChoice logprobs( @Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
     return this;
   }
 
-   /**
-    * Put one logprobs instance to this {@link LLMChoice} instance.
-    * @param key The String key of this logprobs instance
-    * @param logprobsItem The logprobs that should be added under the given key
-    * @return The same instance of type {@link LLMChoice}
-    */
-   @Nonnull public LLMChoice putlogprobsItem(@Nonnull final String key, @Nonnull final List<BigDecimal> logprobsItem) {
-      this.logprobs = new HashMap<>();
+  /**
+   * Put one logprobs instance to this {@link LLMChoice} instance.
+   * @param key The String key of this logprobs instance
+   * @param logprobsItem The logprobs that should be added under the given key
+   * @return The same instance of type {@link LLMChoice}
+   */
+  @Nonnull public LLMChoice putlogprobsItem( @Nonnull final String key, @Nonnull final List<BigDecimal> logprobsItem) {
+    this.logprobs = new HashMap<>();
     this.logprobs.put(key, logprobsItem);
     return this;
   }
 
-   /**
-    * Log probabilities
-    * @return logprobs  The logprobs of this {@link LLMChoice} instance.
-    */
+  /**
+   * Log probabilities
+   * @return logprobs  The logprobs of this {@link LLMChoice} instance.
+   */
   @Nonnull public Map<String, List<BigDecimal>> getLogprobs() {
     return logprobs;
   }
@@ -156,25 +156,25 @@ public class LLMChoice
    *
    * @param logprobs  Log probabilities
    */
-  public void setLogprobs( @Nonnull final Map<String, List<BigDecimal>> logprobs) {
+  public void setLogprobs( @Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
   }
 
-   /**
-    * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
-    *
-    * @param finishReason  Reason for stopping the model
-    * @return The same instance of this {@link LLMChoice} class
-    */
-   @Nonnull public LLMChoice finishReason(@Nonnull final String finishReason) {
+  /**
+   * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param finishReason  Reason for stopping the model
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull public LLMChoice finishReason( @Nonnull final String finishReason) {
     this.finishReason = finishReason;
     return this;
   }
 
-   /**
-    * Reason for stopping the model
-    * @return finishReason  The finishReason of this {@link LLMChoice} instance.
-    */
+  /**
+   * Reason for stopping the model
+   * @return finishReason  The finishReason of this {@link LLMChoice} instance.
+   */
   @Nonnull public String getFinishReason() {
     return finishReason;
   }
@@ -205,7 +205,7 @@ public class LLMChoice
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("LLMChoice has no field with name '" + name + "'.");
     }

@@ -55,21 +55,21 @@ public class Filter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected Filter() {  }
 
-   /**
-    * Set the type of this {@link Filter} instance and return the same instance.
-    *
-    * @param type  The type of this {@link Filter}
-    * @return The same instance of this {@link Filter} class
-    */
-   @Nonnull public Filter type(@Nonnull final ProviderType type) {
+  /**
+   * Set the type of this {@link Filter} instance and return the same instance.
+   *
+   * @param type  The type of this {@link Filter}
+   * @return The same instance of this {@link Filter} class
+   */
+  @Nonnull public Filter type( @Nonnull final ProviderType type) {
     this.type = type;
     return this;
   }
 
-   /**
-    * Get type
-    * @return type  The type of this {@link Filter} instance.
-    */
+  /**
+   * Get type
+   * @return type  The type of this {@link Filter} instance.
+   */
   @Nonnull public ProviderType getType() {
     return type;
   }
@@ -83,21 +83,21 @@ public class Filter
     this.type = type;
   }
 
-   /**
-    * Set the config of this {@link Filter} instance and return the same instance.
-    *
-    * @param config  The config of this {@link Filter}
-    * @return The same instance of this {@link Filter} class
-    */
-   @Nonnull public Filter config(@Nonnull final FilterConfig config) {
+  /**
+   * Set the config of this {@link Filter} instance and return the same instance.
+   *
+   * @param config  The config of this {@link Filter}
+   * @return The same instance of this {@link Filter} class
+   */
+  @Nonnull public Filter config( @Nullable final FilterConfig config) {
     this.config = config;
     return this;
   }
 
-   /**
-    * Get config
-    * @return config  The config of this {@link Filter} instance.
-    */
+  /**
+   * Get config
+   * @return config  The config of this {@link Filter} instance.
+   */
   @Nonnull public FilterConfig getConfig() {
     return config;
   }
@@ -107,7 +107,7 @@ public class Filter
    *
    * @param config  The config of this {@link Filter}
    */
-  public void setConfig( @Nonnull final FilterConfig config) {
+  public void setConfig( @Nullable final FilterConfig config) {
     this.config = config;
   }
 
@@ -128,7 +128,7 @@ public class Filter
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("Filter has no field with name '" + name + "'.");
     }

@@ -54,21 +54,21 @@ public class FilteringModuleConfig
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected FilteringModuleConfig() {  }
 
-   /**
-    * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
-    *
-    * @param input  The input of this {@link FilteringModuleConfig}
-    * @return The same instance of this {@link FilteringModuleConfig} class
-    */
-   @Nonnull public FilteringModuleConfig input(@Nonnull final FilteringConfig input) {
+  /**
+   * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
+   *
+   * @param input  The input of this {@link FilteringModuleConfig}
+   * @return The same instance of this {@link FilteringModuleConfig} class
+   */
+  @Nonnull public FilteringModuleConfig input( @Nullable final FilteringConfig input) {
     this.input = input;
     return this;
   }
 
-   /**
-    * Get input
-    * @return input  The input of this {@link FilteringModuleConfig} instance.
-    */
+  /**
+   * Get input
+   * @return input  The input of this {@link FilteringModuleConfig} instance.
+   */
   @Nonnull public FilteringConfig getInput() {
     return input;
   }
@@ -78,25 +78,25 @@ public class FilteringModuleConfig
    *
    * @param input  The input of this {@link FilteringModuleConfig}
    */
-  public void setInput( @Nonnull final FilteringConfig input) {
+  public void setInput( @Nullable final FilteringConfig input) {
     this.input = input;
   }
 
-   /**
-    * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
-    *
-    * @param output  The output of this {@link FilteringModuleConfig}
-    * @return The same instance of this {@link FilteringModuleConfig} class
-    */
-   @Nonnull public FilteringModuleConfig output(@Nonnull final FilteringConfig output) {
+  /**
+   * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
+   *
+   * @param output  The output of this {@link FilteringModuleConfig}
+   * @return The same instance of this {@link FilteringModuleConfig} class
+   */
+  @Nonnull public FilteringModuleConfig output( @Nullable final FilteringConfig output) {
     this.output = output;
     return this;
   }
 
-   /**
-    * Get output
-    * @return output  The output of this {@link FilteringModuleConfig} instance.
-    */
+  /**
+   * Get output
+   * @return output  The output of this {@link FilteringModuleConfig} instance.
+   */
   @Nonnull public FilteringConfig getOutput() {
     return output;
   }
@@ -106,7 +106,7 @@ public class FilteringModuleConfig
    *
    * @param output  The output of this {@link FilteringModuleConfig}
    */
-  public void setOutput( @Nonnull final FilteringConfig output) {
+  public void setOutput( @Nullable final FilteringConfig output) {
     this.output = output;
   }
 
@@ -127,7 +127,7 @@ public class FilteringModuleConfig
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("FilteringModuleConfig has no field with name '" + name + "'.");
     }

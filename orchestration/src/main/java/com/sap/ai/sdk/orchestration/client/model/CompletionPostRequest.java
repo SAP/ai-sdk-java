@@ -63,21 +63,21 @@ public class CompletionPostRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected CompletionPostRequest() {  }
 
-   /**
-    * Set the orchestrationConfig of this {@link CompletionPostRequest} instance and return the same instance.
-    *
-    * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
-    * @return The same instance of this {@link CompletionPostRequest} class
-    */
-   @Nonnull public CompletionPostRequest orchestrationConfig(@Nonnull final OrchestrationConfig orchestrationConfig) {
+  /**
+   * Set the orchestrationConfig of this {@link CompletionPostRequest} instance and return the same instance.
+   *
+   * @param orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest}
+   * @return The same instance of this {@link CompletionPostRequest} class
+   */
+  @Nonnull public CompletionPostRequest orchestrationConfig( @Nonnull final OrchestrationConfig orchestrationConfig) {
     this.orchestrationConfig = orchestrationConfig;
     return this;
   }
 
-   /**
-    * Get orchestrationConfig
-    * @return orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest} instance.
-    */
+  /**
+   * Get orchestrationConfig
+   * @return orchestrationConfig  The orchestrationConfig of this {@link CompletionPostRequest} instance.
+   */
   @Nonnull public OrchestrationConfig getOrchestrationConfig() {
     return orchestrationConfig;
   }
@@ -91,33 +91,33 @@ public class CompletionPostRequest
     this.orchestrationConfig = orchestrationConfig;
   }
 
-   /**
-    * Set the inputParams of this {@link CompletionPostRequest} instance and return the same instance.
-    *
-    * @param inputParams  The inputParams of this {@link CompletionPostRequest}
-    * @return The same instance of this {@link CompletionPostRequest} class
-    */
-   @Nonnull public CompletionPostRequest inputParams(@Nonnull final Map<String, String> inputParams) {
+  /**
+   * Set the inputParams of this {@link CompletionPostRequest} instance and return the same instance.
+   *
+   * @param inputParams  The inputParams of this {@link CompletionPostRequest}
+   * @return The same instance of this {@link CompletionPostRequest} class
+   */
+  @Nonnull public CompletionPostRequest inputParams( @Nonnull final Map<String, String> inputParams) {
     this.inputParams = inputParams;
     return this;
   }
 
-   /**
-    * Put one inputParams instance to this {@link CompletionPostRequest} instance.
-    * @param key The String key of this inputParams instance
-    * @param inputParamsItem The inputParams that should be added under the given key
-    * @return The same instance of type {@link CompletionPostRequest}
-    */
-   @Nonnull public CompletionPostRequest putinputParamsItem(@Nonnull final String key, @Nonnull final String inputParamsItem) {
-      this.inputParams = new HashMap<>();
+  /**
+   * Put one inputParams instance to this {@link CompletionPostRequest} instance.
+   * @param key The String key of this inputParams instance
+   * @param inputParamsItem The inputParams that should be added under the given key
+   * @return The same instance of type {@link CompletionPostRequest}
+   */
+  @Nonnull public CompletionPostRequest putinputParamsItem( @Nonnull final String key, @Nonnull final String inputParamsItem) {
+    this.inputParams = new HashMap<>();
     this.inputParams.put(key, inputParamsItem);
     return this;
   }
 
-   /**
-    * Get inputParams
-    * @return inputParams  The inputParams of this {@link CompletionPostRequest} instance.
-    */
+  /**
+   * Get inputParams
+   * @return inputParams  The inputParams of this {@link CompletionPostRequest} instance.
+   */
   @Nonnull public Map<String, String> getInputParams() {
     return inputParams;
   }
@@ -131,13 +131,13 @@ public class CompletionPostRequest
     this.inputParams = inputParams;
   }
 
-   /**
-    * Set the messagesHistory of this {@link CompletionPostRequest} instance and return the same instance.
-    *
-    * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-    * @return The same instance of this {@link CompletionPostRequest} class
-    */
-   @Nonnull public CompletionPostRequest messagesHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+  /**
+   * Set the messagesHistory of this {@link CompletionPostRequest} instance and return the same instance.
+   *
+   * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+   * @return The same instance of this {@link CompletionPostRequest} class
+   */
+  @Nonnull public CompletionPostRequest messagesHistory( @Nullable final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
     return this;
   }
@@ -154,10 +154,10 @@ public class CompletionPostRequest
     return this;
   }
 
-   /**
-    * History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-    * @return messagesHistory  The messagesHistory of this {@link CompletionPostRequest} instance.
-    */
+  /**
+   * History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+   * @return messagesHistory  The messagesHistory of this {@link CompletionPostRequest} instance.
+   */
   @Nonnull public List<ChatMessage> getMessagesHistory() {
     return messagesHistory;
   }
@@ -167,7 +167,7 @@ public class CompletionPostRequest
    *
    * @param messagesHistory  History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
    */
-  public void setMessagesHistory( @Nonnull final List<ChatMessage> messagesHistory) {
+  public void setMessagesHistory( @Nullable final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
   }
 
@@ -188,7 +188,7 @@ public class CompletionPostRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("CompletionPostRequest has no field with name '" + name + "'.");
     }

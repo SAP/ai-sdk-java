@@ -58,21 +58,21 @@ public class Masking
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected Masking() {  }
 
-   /**
-    * Set the type of this {@link Masking} instance and return the same instance.
-    *
-    * @param type  The type of this {@link Masking}
-    * @return The same instance of this {@link Masking} class
-    */
-   @Nonnull public Masking type(@Nonnull final MaskingProviderType type) {
+  /**
+   * Set the type of this {@link Masking} instance and return the same instance.
+   *
+   * @param type  The type of this {@link Masking}
+   * @return The same instance of this {@link Masking} class
+   */
+  @Nonnull public Masking type( @Nonnull final MaskingProviderType type) {
     this.type = type;
     return this;
   }
 
-   /**
-    * Get type
-    * @return type  The type of this {@link Masking} instance.
-    */
+  /**
+   * Get type
+   * @return type  The type of this {@link Masking} instance.
+   */
   @Nonnull public MaskingProviderType getType() {
     return type;
   }
@@ -86,13 +86,13 @@ public class Masking
     this.type = type;
   }
 
-   /**
-    * Set the entities of this {@link Masking} instance and return the same instance.
-    *
-    * @param entities  List of entities to be masked
-    * @return The same instance of this {@link Masking} class
-    */
-   @Nonnull public Masking entities(@Nonnull final List<MaskingEntitiesInner> entities) {
+  /**
+   * Set the entities of this {@link Masking} instance and return the same instance.
+   *
+   * @param entities  List of entities to be masked
+   * @return The same instance of this {@link Masking} class
+   */
+  @Nonnull public Masking entities( @Nonnull final List<MaskingEntitiesInner> entities) {
     this.entities = entities;
     return this;
   }
@@ -109,10 +109,10 @@ public class Masking
     return this;
   }
 
-   /**
-    * List of entities to be masked
-    * @return entities  The entities of this {@link Masking} instance.
-    */
+  /**
+   * List of entities to be masked
+   * @return entities  The entities of this {@link Masking} instance.
+   */
   @Nonnull public List<MaskingEntitiesInner> getEntities() {
     return entities;
   }
@@ -143,7 +143,7 @@ public class Masking
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("Masking has no field with name '" + name + "'.");
     }
