@@ -54,7 +54,7 @@
     <spotless.version>2.43.0</spotless.version>
     <checkstyle.version>10.17.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
-    <surefire.version>3.3.1</surefire.version>
+    <surefire.version>3.4.0</surefire.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <springframework.version>6.1.11</springframework.version>
     <!--  Quality assurance  -->
@@ -270,7 +270,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.7.1</version>
+        <version>3.8.0</version>
         <configuration>
           <failOnWarning>true</failOnWarning>
           <failBuild>true</failBuild>
@@ -351,7 +351,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.5.0</version>
         <configuration>
           <configLocation>.pipeline/checkstyle.xml</configLocation>
           <!-- Exclude generated clients -->
