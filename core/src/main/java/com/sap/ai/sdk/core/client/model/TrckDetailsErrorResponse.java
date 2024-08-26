@@ -53,21 +53,21 @@ public class TrckDetailsErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckDetailsErrorResponse() {  }
 
-   /**
-    * Set the code of this {@link TrckDetailsErrorResponse} instance and return the same instance.
-    *
-    * @param code  Descriptive error code (not http status code)
-    * @return The same instance of this {@link TrckDetailsErrorResponse} class
-    */
-   @Nonnull public TrckDetailsErrorResponse code(@Nonnull final String code) {
+  /**
+   * Set the code of this {@link TrckDetailsErrorResponse} instance and return the same instance.
+   *
+   * @param code  Descriptive error code (not http status code)
+   * @return The same instance of this {@link TrckDetailsErrorResponse} class
+   */
+  @Nonnull public TrckDetailsErrorResponse code( @Nullable final String code) {
     this.code = code;
     return this;
   }
 
-   /**
-    * Descriptive error code (not http status code)
-    * @return code  The code of this {@link TrckDetailsErrorResponse} instance.
-    */
+  /**
+   * Descriptive error code (not http status code)
+   * @return code  The code of this {@link TrckDetailsErrorResponse} instance.
+   */
   @Nonnull public String getCode() {
     return code;
   }
@@ -77,25 +77,25 @@ public class TrckDetailsErrorResponse
    *
    * @param code  Descriptive error code (not http status code)
    */
-  public void setCode( @Nonnull final String code) {
+  public void setCode( @Nullable final String code) {
     this.code = code;
   }
 
-   /**
-    * Set the message of this {@link TrckDetailsErrorResponse} instance and return the same instance.
-    *
-    * @param message  Plaintext error description
-    * @return The same instance of this {@link TrckDetailsErrorResponse} class
-    */
-   @Nonnull public TrckDetailsErrorResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link TrckDetailsErrorResponse} instance and return the same instance.
+   *
+   * @param message  Plaintext error description
+   * @return The same instance of this {@link TrckDetailsErrorResponse} class
+   */
+  @Nonnull public TrckDetailsErrorResponse message( @Nullable final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Plaintext error description
-    * @return message  The message of this {@link TrckDetailsErrorResponse} instance.
-    */
+  /**
+   * Plaintext error description
+   * @return message  The message of this {@link TrckDetailsErrorResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -105,7 +105,7 @@ public class TrckDetailsErrorResponse
    *
    * @param message  Plaintext error description
    */
-  public void setMessage( @Nonnull final String message) {
+  public void setMessage( @Nullable final String message) {
     this.message = message;
   }
 
@@ -126,7 +126,7 @@ public class TrckDetailsErrorResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckDetailsErrorResponse has no field with name '" + name + "'.");
     }

@@ -54,13 +54,13 @@ public class AiLogCommonData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiLogCommonData() {  }
 
-   /**
-    * Set the result of this {@link AiLogCommonData} instance and return the same instance.
-    *
-    * @param result  The result of this {@link AiLogCommonData}
-    * @return The same instance of this {@link AiLogCommonData} class
-    */
-   @Nonnull public AiLogCommonData result(@Nonnull final List<AiLogCommonResultItem> result) {
+  /**
+   * Set the result of this {@link AiLogCommonData} instance and return the same instance.
+   *
+   * @param result  The result of this {@link AiLogCommonData}
+   * @return The same instance of this {@link AiLogCommonData} class
+   */
+  @Nonnull public AiLogCommonData result( @Nullable final List<AiLogCommonResultItem> result) {
     this.result = result;
     return this;
   }
@@ -77,10 +77,10 @@ public class AiLogCommonData
     return this;
   }
 
-   /**
-    * Get result
-    * @return result  The result of this {@link AiLogCommonData} instance.
-    */
+  /**
+   * Get result
+   * @return result  The result of this {@link AiLogCommonData} instance.
+   */
   @Nonnull public List<AiLogCommonResultItem> getResult() {
     return result;
   }
@@ -90,7 +90,7 @@ public class AiLogCommonData
    *
    * @param result  The result of this {@link AiLogCommonData}
    */
-  public void setResult( @Nonnull final List<AiLogCommonResultItem> result) {
+  public void setResult( @Nullable final List<AiLogCommonResultItem> result) {
     this.result = result;
   }
 
@@ -111,7 +111,7 @@ public class AiLogCommonData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiLogCommonData has no field with name '" + name + "'.");
     }

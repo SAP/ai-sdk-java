@@ -227,21 +227,21 @@ public class AiDeploymentResponseWithDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentResponseWithDetails() {  }
 
-   /**
-    * Set the id of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param id  ID of the deployment
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param id  ID of the deployment
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the deployment
-    * @return id  The id of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * ID of the deployment
+   * @return id  The id of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -255,21 +255,21 @@ public class AiDeploymentResponseWithDetails
     this.id = id;
   }
 
-   /**
-    * Set the deploymentUrl of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param deploymentUrl  Consumption URL of the deployment
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails deploymentUrl(@Nonnull final String deploymentUrl) {
+  /**
+   * Set the deploymentUrl of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param deploymentUrl  Consumption URL of the deployment
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails deploymentUrl( @Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
     return this;
   }
 
-   /**
-    * Consumption URL of the deployment
-    * @return deploymentUrl  The deploymentUrl of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Consumption URL of the deployment
+   * @return deploymentUrl  The deploymentUrl of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getDeploymentUrl() {
     return deploymentUrl;
   }
@@ -279,25 +279,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param deploymentUrl  Consumption URL of the deployment
    */
-  public void setDeploymentUrl( @Nonnull final String deploymentUrl) {
+  public void setDeploymentUrl( @Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
   }
 
-   /**
-    * Set the configurationId of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails configurationId(@Nonnull final String configurationId) {
+  /**
+   * Set the configurationId of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails configurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
@@ -311,21 +311,21 @@ public class AiDeploymentResponseWithDetails
     this.configurationId = configurationId;
   }
 
-   /**
-    * Set the configurationName of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param configurationName  Name of the configuration
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails configurationName(@Nonnull final String configurationName) {
+  /**
+   * Set the configurationName of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param configurationName  Name of the configuration
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails configurationName( @Nullable final String configurationName) {
     this.configurationName = configurationName;
     return this;
   }
 
-   /**
-    * Name of the configuration
-    * @return configurationName  The configurationName of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Name of the configuration
+   * @return configurationName  The configurationName of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getConfigurationName() {
     return configurationName;
   }
@@ -335,25 +335,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param configurationName  Name of the configuration
    */
-  public void setConfigurationName( @Nonnull final String configurationName) {
+  public void setConfigurationName( @Nullable final String configurationName) {
     this.configurationName = configurationName;
   }
 
-   /**
-    * Set the scenarioId of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails scenarioId( @Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -363,25 +363,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param scenarioId  ID of the scenario
    */
-  public void setScenarioId( @Nonnull final String scenarioId) {
+  public void setScenarioId( @Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the status of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param status  The status of this {@link AiDeploymentResponseWithDetails}
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails status(@Nonnull final AiDeploymentStatus status) {
+  /**
+   * Set the status of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param status  The status of this {@link AiDeploymentResponseWithDetails}
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails status( @Nonnull final AiDeploymentStatus status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Get status
-    * @return status  The status of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Get status
+   * @return status  The status of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public AiDeploymentStatus getStatus() {
     return status;
   }
@@ -395,21 +395,21 @@ public class AiDeploymentResponseWithDetails
     this.status = status;
   }
 
-   /**
-    * Set the statusMessage of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param statusMessage  Deployment status message
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails statusMessage(@Nonnull final String statusMessage) {
+  /**
+   * Set the statusMessage of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param statusMessage  Deployment status message
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails statusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
-   /**
-    * Deployment status message
-    * @return statusMessage  The statusMessage of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Deployment status message
+   * @return statusMessage  The statusMessage of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
@@ -419,25 +419,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param statusMessage  Deployment status message
    */
-  public void setStatusMessage( @Nonnull final String statusMessage) {
+  public void setStatusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
-   /**
-    * Set the targetStatus of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param targetStatus  Deployment target status
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  /**
+   * Set the targetStatus of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param targetStatus  Deployment target status
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails targetStatus( @Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
-   /**
-    * Deployment target status
-    * @return targetStatus  The targetStatus of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Deployment target status
+   * @return targetStatus  The targetStatus of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public TargetStatusEnum getTargetStatus() {
     return targetStatus;
   }
@@ -447,26 +447,26 @@ public class AiDeploymentResponseWithDetails
    *
    * @param targetStatus  Deployment target status
    */
-  public void setTargetStatus( @Nonnull final TargetStatusEnum targetStatus) {
+  public void setTargetStatus( @Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
 
-   /**
-    * Set the lastOperation of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param lastOperation  The lastOperation of this {@link AiDeploymentResponseWithDetails}
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails lastOperation(@Nonnull final LastOperationEnum lastOperation) {
+  /**
+   * Set the lastOperation of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param lastOperation  The lastOperation of this {@link AiDeploymentResponseWithDetails}
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails lastOperation( @Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
     return this;
   }
 
-   /**
-    * Get lastOperation
-    * @return lastOperation  The lastOperation of this {@link AiDeploymentResponseWithDetails} instance.
-    */
-  @Nonnull public LastOperationEnum getLastOperation() {
+  /**
+   * Get lastOperation
+   * @return lastOperation  The lastOperation of this {@link AiDeploymentResponseWithDetails} instance.
+   */
+  @Nullable public LastOperationEnum getLastOperation() {
     return lastOperation;
   }
 
@@ -475,25 +475,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param lastOperation  The lastOperation of this {@link AiDeploymentResponseWithDetails}
    */
-  public void setLastOperation( @Nonnull final LastOperationEnum lastOperation) {
+  public void setLastOperation( @Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
   }
 
-   /**
-    * Set the latestRunningConfigurationId of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param latestRunningConfigurationId  configurationId that was running before a PATCH operation has modified the configurationId of the deployment. This can be used for a manual rollback in case the new configurationId results in a DEAD deployment
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails latestRunningConfigurationId(@Nonnull final String latestRunningConfigurationId) {
+  /**
+   * Set the latestRunningConfigurationId of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param latestRunningConfigurationId  configurationId that was running before a PATCH operation has modified the configurationId of the deployment. This can be used for a manual rollback in case the new configurationId results in a DEAD deployment
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails latestRunningConfigurationId( @Nullable final String latestRunningConfigurationId) {
     this.latestRunningConfigurationId = latestRunningConfigurationId;
     return this;
   }
 
-   /**
-    * configurationId that was running before a PATCH operation has modified the configurationId of the deployment. This can be used for a manual rollback in case the new configurationId results in a DEAD deployment
-    * @return latestRunningConfigurationId  The latestRunningConfigurationId of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * configurationId that was running before a PATCH operation has modified the configurationId of the deployment. This can be used for a manual rollback in case the new configurationId results in a DEAD deployment
+   * @return latestRunningConfigurationId  The latestRunningConfigurationId of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public String getLatestRunningConfigurationId() {
     return latestRunningConfigurationId;
   }
@@ -503,26 +503,26 @@ public class AiDeploymentResponseWithDetails
    *
    * @param latestRunningConfigurationId  configurationId that was running before a PATCH operation has modified the configurationId of the deployment. This can be used for a manual rollback in case the new configurationId results in a DEAD deployment
    */
-  public void setLatestRunningConfigurationId( @Nonnull final String latestRunningConfigurationId) {
+  public void setLatestRunningConfigurationId( @Nullable final String latestRunningConfigurationId) {
     this.latestRunningConfigurationId = latestRunningConfigurationId;
   }
 
-   /**
-    * Set the ttl of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails ttl(@Nonnull final String ttl) {
+  /**
+   * Set the ttl of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails ttl( @Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
 
-   /**
-    * Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
-    * @return ttl  The ttl of this {@link AiDeploymentResponseWithDetails} instance.
-    */
-  @Nonnull public String getTtl() {
+  /**
+   * Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
+   * @return ttl  The ttl of this {@link AiDeploymentResponseWithDetails} instance.
+   */
+  @Nullable public String getTtl() {
     return ttl;
   }
 
@@ -531,25 +531,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
    */
-  public void setTtl( @Nonnull final String ttl) {
+  public void setTtl( @Nullable final String ttl) {
     this.ttl = ttl;
   }
 
-   /**
-    * Set the details of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param details  The details of this {@link AiDeploymentResponseWithDetails}
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails details(@Nonnull final AiDeploymentDetails details) {
+  /**
+   * Set the details of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param details  The details of this {@link AiDeploymentResponseWithDetails}
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails details( @Nullable final AiDeploymentDetails details) {
     this.details = details;
     return this;
   }
 
-   /**
-    * Get details
-    * @return details  The details of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Get details
+   * @return details  The details of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public AiDeploymentDetails getDetails() {
     return details;
   }
@@ -559,25 +559,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param details  The details of this {@link AiDeploymentResponseWithDetails}
    */
-  public void setDetails( @Nonnull final AiDeploymentDetails details) {
+  public void setDetails( @Nullable final AiDeploymentDetails details) {
     this.details = details;
   }
 
-   /**
-    * Set the createdAt of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -591,21 +591,21 @@ public class AiDeploymentResponseWithDetails
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -619,21 +619,21 @@ public class AiDeploymentResponseWithDetails
     this.modifiedAt = modifiedAt;
   }
 
-   /**
-    * Set the submissionTime of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param submissionTime  Timestamp of job submitted
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails submissionTime(@Nonnull final OffsetDateTime submissionTime) {
+  /**
+   * Set the submissionTime of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param submissionTime  Timestamp of job submitted
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails submissionTime( @Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
     return this;
   }
 
-   /**
-    * Timestamp of job submitted
-    * @return submissionTime  The submissionTime of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Timestamp of job submitted
+   * @return submissionTime  The submissionTime of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public OffsetDateTime getSubmissionTime() {
     return submissionTime;
   }
@@ -643,25 +643,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param submissionTime  Timestamp of job submitted
    */
-  public void setSubmissionTime( @Nonnull final OffsetDateTime submissionTime) {
+  public void setSubmissionTime( @Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
   }
 
-   /**
-    * Set the startTime of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param startTime  Timestamp of job status changed to RUNNING
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails startTime(@Nonnull final OffsetDateTime startTime) {
+  /**
+   * Set the startTime of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param startTime  Timestamp of job status changed to RUNNING
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails startTime( @Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
     return this;
   }
 
-   /**
-    * Timestamp of job status changed to RUNNING
-    * @return startTime  The startTime of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Timestamp of job status changed to RUNNING
+   * @return startTime  The startTime of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public OffsetDateTime getStartTime() {
     return startTime;
   }
@@ -671,25 +671,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param startTime  Timestamp of job status changed to RUNNING
    */
-  public void setStartTime( @Nonnull final OffsetDateTime startTime) {
+  public void setStartTime( @Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
   }
 
-   /**
-    * Set the completionTime of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails completionTime(@Nonnull final OffsetDateTime completionTime) {
+  /**
+   * Set the completionTime of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails completionTime( @Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
     return this;
   }
 
-   /**
-    * Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-    * @return completionTime  The completionTime of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+   * @return completionTime  The completionTime of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public OffsetDateTime getCompletionTime() {
     return completionTime;
   }
@@ -699,25 +699,25 @@ public class AiDeploymentResponseWithDetails
    *
    * @param completionTime  Timestamp of job status changed to COMPLETED/DEAD/STOPPED
    */
-  public void setCompletionTime( @Nonnull final OffsetDateTime completionTime) {
+  public void setCompletionTime( @Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
   }
 
-   /**
-    * Set the statusDetails of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
-    *
-    * @param statusDetails  Current status details of the deployment
-    * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
-    */
-   @Nonnull public AiDeploymentResponseWithDetails statusDetails(@Nonnull final Object statusDetails) {
+  /**
+   * Set the statusDetails of this {@link AiDeploymentResponseWithDetails} instance and return the same instance.
+   *
+   * @param statusDetails  Current status details of the deployment
+   * @return The same instance of this {@link AiDeploymentResponseWithDetails} class
+   */
+  @Nonnull public AiDeploymentResponseWithDetails statusDetails( @Nullable final Object statusDetails) {
     this.statusDetails = statusDetails;
     return this;
   }
 
-   /**
-    * Current status details of the deployment
-    * @return statusDetails  The statusDetails of this {@link AiDeploymentResponseWithDetails} instance.
-    */
+  /**
+   * Current status details of the deployment
+   * @return statusDetails  The statusDetails of this {@link AiDeploymentResponseWithDetails} instance.
+   */
   @Nonnull public Object getStatusDetails() {
     return statusDetails;
   }
@@ -727,7 +727,7 @@ public class AiDeploymentResponseWithDetails
    *
    * @param statusDetails  Current status details of the deployment
    */
-  public void setStatusDetails( @Nonnull final Object statusDetails) {
+  public void setStatusDetails( @Nullable final Object statusDetails) {
     this.statusDetails = statusDetails;
   }
 
@@ -748,7 +748,7 @@ public class AiDeploymentResponseWithDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentResponseWithDetails has no field with name '" + name + "'.");
     }

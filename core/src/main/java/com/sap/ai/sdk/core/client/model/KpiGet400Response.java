@@ -51,21 +51,21 @@ public class KpiGet400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected KpiGet400Response() {  }
 
-   /**
-    * Set the error of this {@link KpiGet400Response} instance and return the same instance.
-    *
-    * @param error  The error of this {@link KpiGet400Response}
-    * @return The same instance of this {@link KpiGet400Response} class
-    */
-   @Nonnull public KpiGet400Response error(@Nonnull final KpiApiError error) {
+  /**
+   * Set the error of this {@link KpiGet400Response} instance and return the same instance.
+   *
+   * @param error  The error of this {@link KpiGet400Response}
+   * @return The same instance of this {@link KpiGet400Response} class
+   */
+  @Nonnull public KpiGet400Response error( @Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link KpiGet400Response} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link KpiGet400Response} instance.
+   */
   @Nonnull public KpiApiError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class KpiGet400Response
    *
    * @param error  The error of this {@link KpiGet400Response}
    */
-  public void setError( @Nonnull final KpiApiError error) {
+  public void setError( @Nullable final KpiApiError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class KpiGet400Response
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("KpiGet400Response has no field with name '" + name + "'.");
     }

@@ -57,21 +57,21 @@ public class BcknddockerRegistrySecretStatusResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BcknddockerRegistrySecretStatusResponse() {  }
 
-   /**
-    * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
-    */
-   @Nonnull public BcknddockerRegistrySecretStatusResponse count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
+   */
+  @Nonnull public BcknddockerRegistrySecretStatusResponse count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BcknddockerRegistrySecretStatusResponse} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class BcknddockerRegistrySecretStatusResponse
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
-    * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
-    */
-   @Nonnull public BcknddockerRegistrySecretStatusResponse resources(@Nonnull final List<BcknddockerRegistrySecretStatus> resources) {
+  /**
+   * Set the resources of this {@link BcknddockerRegistrySecretStatusResponse} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse}
+   * @return The same instance of this {@link BcknddockerRegistrySecretStatusResponse} class
+   */
+  @Nonnull public BcknddockerRegistrySecretStatusResponse resources( @Nonnull final List<BcknddockerRegistrySecretStatus> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class BcknddockerRegistrySecretStatusResponse
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link BcknddockerRegistrySecretStatusResponse} instance.
+   */
   @Nonnull public List<BcknddockerRegistrySecretStatus> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class BcknddockerRegistrySecretStatusResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BcknddockerRegistrySecretStatusResponse has no field with name '" + name + "'.");
     }

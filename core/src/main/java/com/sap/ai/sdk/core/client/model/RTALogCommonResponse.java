@@ -51,21 +51,21 @@ public class RTALogCommonResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTALogCommonResponse() {  }
 
-   /**
-    * Set the data of this {@link RTALogCommonResponse} instance and return the same instance.
-    *
-    * @param data  The data of this {@link RTALogCommonResponse}
-    * @return The same instance of this {@link RTALogCommonResponse} class
-    */
-   @Nonnull public RTALogCommonResponse data(@Nonnull final RTALogCommonData data) {
+  /**
+   * Set the data of this {@link RTALogCommonResponse} instance and return the same instance.
+   *
+   * @param data  The data of this {@link RTALogCommonResponse}
+   * @return The same instance of this {@link RTALogCommonResponse} class
+   */
+  @Nonnull public RTALogCommonResponse data( @Nullable final RTALogCommonData data) {
     this.data = data;
     return this;
   }
 
-   /**
-    * Get data
-    * @return data  The data of this {@link RTALogCommonResponse} instance.
-    */
+  /**
+   * Get data
+   * @return data  The data of this {@link RTALogCommonResponse} instance.
+   */
   @Nonnull public RTALogCommonData getData() {
     return data;
   }
@@ -75,7 +75,7 @@ public class RTALogCommonResponse
    *
    * @param data  The data of this {@link RTALogCommonResponse}
    */
-  public void setData( @Nonnull final RTALogCommonData data) {
+  public void setData( @Nullable final RTALogCommonData data) {
     this.data = data;
   }
 
@@ -96,7 +96,7 @@ public class RTALogCommonResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTALogCommonResponse has no field with name '" + name + "'.");
     }

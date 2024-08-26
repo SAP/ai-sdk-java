@@ -59,21 +59,21 @@ public class BckndServiceCapabilitiesBasic
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceCapabilitiesBasic() {  }
 
-   /**
-    * Set the staticDeployments of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
-    *
-    * @param staticDeployments  There are static always running endpoints that can be used for inference without the need to do user deployments.
-    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
-    */
-   @Nonnull public BckndServiceCapabilitiesBasic staticDeployments(@Nonnull final Boolean staticDeployments) {
+  /**
+   * Set the staticDeployments of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
+   *
+   * @param staticDeployments  There are static always running endpoints that can be used for inference without the need to do user deployments.
+   * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
+   */
+  @Nonnull public BckndServiceCapabilitiesBasic staticDeployments( @Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
     return this;
   }
 
-   /**
-    * There are static always running endpoints that can be used for inference without the need to do user deployments.
-    * @return staticDeployments  The staticDeployments of this {@link BckndServiceCapabilitiesBasic} instance.
-    */
+  /**
+   * There are static always running endpoints that can be used for inference without the need to do user deployments.
+   * @return staticDeployments  The staticDeployments of this {@link BckndServiceCapabilitiesBasic} instance.
+   */
   @Nonnull public Boolean isStaticDeployments() {
     return staticDeployments;
   }
@@ -83,25 +83,25 @@ public class BckndServiceCapabilitiesBasic
    *
    * @param staticDeployments  There are static always running endpoints that can be used for inference without the need to do user deployments.
    */
-  public void setStaticDeployments( @Nonnull final Boolean staticDeployments) {
+  public void setStaticDeployments( @Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
   }
 
-   /**
-    * Set the userDeployments of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
-    *
-    * @param userDeployments  Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
-    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
-    */
-   @Nonnull public BckndServiceCapabilitiesBasic userDeployments(@Nonnull final Boolean userDeployments) {
+  /**
+   * Set the userDeployments of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
+   *
+   * @param userDeployments  Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
+   * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
+   */
+  @Nonnull public BckndServiceCapabilitiesBasic userDeployments( @Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
     return this;
   }
 
-   /**
-    * Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
-    * @return userDeployments  The userDeployments of this {@link BckndServiceCapabilitiesBasic} instance.
-    */
+  /**
+   * Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
+   * @return userDeployments  The userDeployments of this {@link BckndServiceCapabilitiesBasic} instance.
+   */
   @Nonnull public Boolean isUserDeployments() {
     return userDeployments;
   }
@@ -111,25 +111,25 @@ public class BckndServiceCapabilitiesBasic
    *
    * @param userDeployments  Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
    */
-  public void setUserDeployments( @Nonnull final Boolean userDeployments) {
+  public void setUserDeployments( @Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
   }
 
-   /**
-    * Set the createExecutions of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
-    *
-    * @param createExecutions  Services that only support deployment typically neither allow create executions. For these, createExecutions &#x3D;&#x3D; false
-    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
-    */
-   @Nonnull public BckndServiceCapabilitiesBasic createExecutions(@Nonnull final Boolean createExecutions) {
+  /**
+   * Set the createExecutions of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
+   *
+   * @param createExecutions  Services that only support deployment typically neither allow create executions. For these, createExecutions &#x3D;&#x3D; false
+   * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
+   */
+  @Nonnull public BckndServiceCapabilitiesBasic createExecutions( @Nullable final Boolean createExecutions) {
     this.createExecutions = createExecutions;
     return this;
   }
 
-   /**
-    * Services that only support deployment typically neither allow create executions. For these, createExecutions &#x3D;&#x3D; false
-    * @return createExecutions  The createExecutions of this {@link BckndServiceCapabilitiesBasic} instance.
-    */
+  /**
+   * Services that only support deployment typically neither allow create executions. For these, createExecutions &#x3D;&#x3D; false
+   * @return createExecutions  The createExecutions of this {@link BckndServiceCapabilitiesBasic} instance.
+   */
   @Nonnull public Boolean isCreateExecutions() {
     return createExecutions;
   }
@@ -139,25 +139,25 @@ public class BckndServiceCapabilitiesBasic
    *
    * @param createExecutions  Services that only support deployment typically neither allow create executions. For these, createExecutions &#x3D;&#x3D; false
    */
-  public void setCreateExecutions( @Nonnull final Boolean createExecutions) {
+  public void setCreateExecutions( @Nullable final Boolean createExecutions) {
     this.createExecutions = createExecutions;
   }
 
-   /**
-    * Set the multitenant of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
-    *
-    * @param multitenant  true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
-    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
-    */
-   @Nonnull public BckndServiceCapabilitiesBasic multitenant(@Nonnull final Boolean multitenant) {
+  /**
+   * Set the multitenant of this {@link BckndServiceCapabilitiesBasic} instance and return the same instance.
+   *
+   * @param multitenant  true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
+   * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
+   */
+  @Nonnull public BckndServiceCapabilitiesBasic multitenant( @Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
     return this;
   }
 
-   /**
-    * true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
-    * @return multitenant  The multitenant of this {@link BckndServiceCapabilitiesBasic} instance.
-    */
+  /**
+   * true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
+   * @return multitenant  The multitenant of this {@link BckndServiceCapabilitiesBasic} instance.
+   */
   @Nonnull public Boolean isMultitenant() {
     return multitenant;
   }
@@ -167,7 +167,7 @@ public class BckndServiceCapabilitiesBasic
    *
    * @param multitenant  true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
    */
-  public void setMultitenant( @Nonnull final Boolean multitenant) {
+  public void setMultitenant( @Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
   }
 
@@ -188,7 +188,7 @@ public class BckndServiceCapabilitiesBasic
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceCapabilitiesBasic has no field with name '" + name + "'.");
     }

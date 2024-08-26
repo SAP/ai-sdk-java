@@ -53,21 +53,21 @@ public class BckndServiceCapabilitiesLogs
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceCapabilitiesLogs() {  }
 
-   /**
-    * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
-    *
-    * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
-    * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
-    */
-   @Nonnull public BckndServiceCapabilitiesLogs deployments(@Nonnull final Boolean deployments) {
+  /**
+   * Set the deployments of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
+   *
+   * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
+   * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
+   */
+  @Nonnull public BckndServiceCapabilitiesLogs deployments( @Nullable final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
 
-   /**
-    * Get deployments
-    * @return deployments  The deployments of this {@link BckndServiceCapabilitiesLogs} instance.
-    */
+  /**
+   * Get deployments
+   * @return deployments  The deployments of this {@link BckndServiceCapabilitiesLogs} instance.
+   */
   @Nonnull public Boolean isDeployments() {
     return deployments;
   }
@@ -77,25 +77,25 @@ public class BckndServiceCapabilitiesLogs
    *
    * @param deployments  The deployments of this {@link BckndServiceCapabilitiesLogs}
    */
-  public void setDeployments( @Nonnull final Boolean deployments) {
+  public void setDeployments( @Nullable final Boolean deployments) {
     this.deployments = deployments;
   }
 
-   /**
-    * Set the executions of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
-    *
-    * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
-    * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
-    */
-   @Nonnull public BckndServiceCapabilitiesLogs executions(@Nonnull final Boolean executions) {
+  /**
+   * Set the executions of this {@link BckndServiceCapabilitiesLogs} instance and return the same instance.
+   *
+   * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
+   * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
+   */
+  @Nonnull public BckndServiceCapabilitiesLogs executions( @Nullable final Boolean executions) {
     this.executions = executions;
     return this;
   }
 
-   /**
-    * Get executions
-    * @return executions  The executions of this {@link BckndServiceCapabilitiesLogs} instance.
-    */
+  /**
+   * Get executions
+   * @return executions  The executions of this {@link BckndServiceCapabilitiesLogs} instance.
+   */
   @Nonnull public Boolean isExecutions() {
     return executions;
   }
@@ -105,7 +105,7 @@ public class BckndServiceCapabilitiesLogs
    *
    * @param executions  The executions of this {@link BckndServiceCapabilitiesLogs}
    */
-  public void setExecutions( @Nonnull final Boolean executions) {
+  public void setExecutions( @Nullable final Boolean executions) {
     this.executions = executions;
   }
 
@@ -126,7 +126,7 @@ public class BckndServiceCapabilitiesLogs
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceCapabilitiesLogs has no field with name '" + name + "'.");
     }

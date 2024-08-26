@@ -50,21 +50,21 @@ public class BckndCommonResourceQuotaResponseUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndCommonResourceQuotaResponseUsage() {  }
 
-   /**
-    * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance and return the same instance.
-    *
-    * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
-    * @return The same instance of this {@link BckndCommonResourceQuotaResponseUsage} class
-    */
-   @Nonnull public BckndCommonResourceQuotaResponseUsage count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link BckndCommonResourceQuotaResponseUsage} instance and return the same instance.
+   *
+   * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
+   * @return The same instance of this {@link BckndCommonResourceQuotaResponseUsage} class
+   */
+  @Nonnull public BckndCommonResourceQuotaResponseUsage count( @Nullable final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Get count
-    * @return count  The count of this {@link BckndCommonResourceQuotaResponseUsage} instance.
-    */
+  /**
+   * Get count
+   * @return count  The count of this {@link BckndCommonResourceQuotaResponseUsage} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -74,7 +74,7 @@ public class BckndCommonResourceQuotaResponseUsage
    *
    * @param count  The count of this {@link BckndCommonResourceQuotaResponseUsage}
    */
-  public void setCount( @Nonnull final Integer count) {
+  public void setCount( @Nullable final Integer count) {
     this.count = count;
   }
 
@@ -95,7 +95,7 @@ public class BckndCommonResourceQuotaResponseUsage
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndCommonResourceQuotaResponseUsage has no field with name '" + name + "'.");
     }

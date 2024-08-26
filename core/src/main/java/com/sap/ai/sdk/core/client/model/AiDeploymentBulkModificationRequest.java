@@ -54,13 +54,13 @@ public class AiDeploymentBulkModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentBulkModificationRequest() {  }
 
-   /**
-    * Set the deployments of this {@link AiDeploymentBulkModificationRequest} instance and return the same instance.
-    *
-    * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
-    * @return The same instance of this {@link AiDeploymentBulkModificationRequest} class
-    */
-   @Nonnull public AiDeploymentBulkModificationRequest deployments(@Nonnull final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
+  /**
+   * Set the deployments of this {@link AiDeploymentBulkModificationRequest} instance and return the same instance.
+   *
+   * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
+   * @return The same instance of this {@link AiDeploymentBulkModificationRequest} class
+   */
+  @Nonnull public AiDeploymentBulkModificationRequest deployments( @Nullable final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -77,10 +77,10 @@ public class AiDeploymentBulkModificationRequest
     return this;
   }
 
-   /**
-    * Get deployments
-    * @return deployments  The deployments of this {@link AiDeploymentBulkModificationRequest} instance.
-    */
+  /**
+   * Get deployments
+   * @return deployments  The deployments of this {@link AiDeploymentBulkModificationRequest} instance.
+   */
   @Nonnull public Set<AiDeploymentModificationRequestWithIdentifier> getDeployments() {
     return deployments;
   }
@@ -90,7 +90,7 @@ public class AiDeploymentBulkModificationRequest
    *
    * @param deployments  The deployments of this {@link AiDeploymentBulkModificationRequest}
    */
-  public void setDeployments( @Nonnull final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
+  public void setDeployments( @Nullable final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
     this.deployments = deployments;
   }
 
@@ -111,7 +111,7 @@ public class AiDeploymentBulkModificationRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentBulkModificationRequest has no field with name '" + name + "'.");
     }

@@ -50,21 +50,21 @@ public class BckndobjectStoreSecretCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndobjectStoreSecretCreationResponse() {  }
 
-   /**
-    * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BckndobjectStoreSecretCreationResponse} class
-    */
-   @Nonnull public BckndobjectStoreSecretCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BckndobjectStoreSecretCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BckndobjectStoreSecretCreationResponse} class
+   */
+  @Nonnull public BckndobjectStoreSecretCreationResponse message( @Nullable final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link BckndobjectStoreSecretCreationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link BckndobjectStoreSecretCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -74,7 +74,7 @@ public class BckndobjectStoreSecretCreationResponse
    *
    * @param message  Message
    */
-  public void setMessage( @Nonnull final String message) {
+  public void setMessage( @Nullable final String message) {
     this.message = message;
   }
 
@@ -95,7 +95,7 @@ public class BckndobjectStoreSecretCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndobjectStoreSecretCreationResponse has no field with name '" + name + "'.");
     }

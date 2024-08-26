@@ -53,21 +53,21 @@ public class DSetFileCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected DSetFileCreationResponse() {  }
 
-   /**
-    * Set the message of this {@link DSetFileCreationResponse} instance and return the same instance.
-    *
-    * @param message  File creation response message
-    * @return The same instance of this {@link DSetFileCreationResponse} class
-    */
-   @Nonnull public DSetFileCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link DSetFileCreationResponse} instance and return the same instance.
+   *
+   * @param message  File creation response message
+   * @return The same instance of this {@link DSetFileCreationResponse} class
+   */
+  @Nonnull public DSetFileCreationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * File creation response message
-    * @return message  The message of this {@link DSetFileCreationResponse} instance.
-    */
+  /**
+   * File creation response message
+   * @return message  The message of this {@link DSetFileCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -81,21 +81,21 @@ public class DSetFileCreationResponse
     this.message = message;
   }
 
-   /**
-    * Set the url of this {@link DSetFileCreationResponse} instance and return the same instance.
-    *
-    * @param url  The url of this {@link DSetFileCreationResponse}
-    * @return The same instance of this {@link DSetFileCreationResponse} class
-    */
-   @Nonnull public DSetFileCreationResponse url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link DSetFileCreationResponse} instance and return the same instance.
+   *
+   * @param url  The url of this {@link DSetFileCreationResponse}
+   * @return The same instance of this {@link DSetFileCreationResponse} class
+   */
+  @Nonnull public DSetFileCreationResponse url( @Nonnull final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * Get url
-    * @return url  The url of this {@link DSetFileCreationResponse} instance.
-    */
+  /**
+   * Get url
+   * @return url  The url of this {@link DSetFileCreationResponse} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -126,7 +126,7 @@ public class DSetFileCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("DSetFileCreationResponse has no field with name '" + name + "'.");
     }

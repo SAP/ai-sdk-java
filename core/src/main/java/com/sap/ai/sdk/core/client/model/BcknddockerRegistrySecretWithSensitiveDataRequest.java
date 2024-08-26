@@ -51,21 +51,21 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BcknddockerRegistrySecretWithSensitiveDataRequest() {  }
 
-   /**
-    * Set the data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance and return the same instance.
-    *
-    * @param data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest}
-    * @return The same instance of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} class
-    */
-   @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequest data(@Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
+  /**
+   * Set the data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance and return the same instance.
+   *
+   * @param data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest}
+   * @return The same instance of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} class
+   */
+  @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequest data( @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
     this.data = data;
     return this;
   }
 
-   /**
-    * Get data
-    * @return data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance.
-    */
+  /**
+   * Get data
+   * @return data  The data of this {@link BcknddockerRegistrySecretWithSensitiveDataRequest} instance.
+   */
   @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequestData getData() {
     return data;
   }
@@ -96,7 +96,7 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BcknddockerRegistrySecretWithSensitiveDataRequest has no field with name '" + name + "'.");
     }

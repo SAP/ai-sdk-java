@@ -54,21 +54,21 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected KubesubmitV4DockerRegistrySecretsCreateRequest() {  }
 
-   /**
-    * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
-    *
-    * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
-    * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4DockerRegistrySecretsCreateRequest data(@Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
+  /**
+   * Set the data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
+   *
+   * @param data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest}
+   * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4DockerRegistrySecretsCreateRequest data( @Nonnull final BcknddockerRegistrySecretWithSensitiveDataRequestData data) {
     this.data = data;
     return this;
   }
 
-   /**
-    * Get data
-    * @return data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-    */
+  /**
+   * Get data
+   * @return data  The data of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
+   */
   @Nonnull public BcknddockerRegistrySecretWithSensitiveDataRequestData getData() {
     return data;
   }
@@ -82,21 +82,21 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
     this.data = data;
   }
 
-   /**
-    * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
-    *
-    * @param name  Name of the docker Registry store for the secret.
-    * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4DockerRegistrySecretsCreateRequest name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance and return the same instance.
+   *
+   * @param name  Name of the docker Registry store for the secret.
+   * @return The same instance of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4DockerRegistrySecretsCreateRequest name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the docker Registry store for the secret.
-    * @return name  The name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
-    */
+  /**
+   * Name of the docker Registry store for the secret.
+   * @return name  The name of this {@link KubesubmitV4DockerRegistrySecretsCreateRequest} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -127,7 +127,7 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("KubesubmitV4DockerRegistrySecretsCreateRequest has no field with name '" + name + "'.");
     }

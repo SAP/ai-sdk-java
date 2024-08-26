@@ -54,21 +54,21 @@ public class AiDeploymentModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentModificationRequest() {  }
 
-   /**
-    * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance and return the same instance.
-    *
-    * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
-    * @return The same instance of this {@link AiDeploymentModificationRequest} class
-    */
-   @Nonnull public AiDeploymentModificationRequest targetStatus(@Nonnull final AiDeploymentTargetStatus targetStatus) {
+  /**
+   * Set the targetStatus of this {@link AiDeploymentModificationRequest} instance and return the same instance.
+   *
+   * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
+   * @return The same instance of this {@link AiDeploymentModificationRequest} class
+   */
+  @Nonnull public AiDeploymentModificationRequest targetStatus( @Nullable final AiDeploymentTargetStatus targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
-   /**
-    * Get targetStatus
-    * @return targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest} instance.
-    */
+  /**
+   * Get targetStatus
+   * @return targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest} instance.
+   */
   @Nonnull public AiDeploymentTargetStatus getTargetStatus() {
     return targetStatus;
   }
@@ -78,25 +78,25 @@ public class AiDeploymentModificationRequest
    *
    * @param targetStatus  The targetStatus of this {@link AiDeploymentModificationRequest}
    */
-  public void setTargetStatus( @Nonnull final AiDeploymentTargetStatus targetStatus) {
+  public void setTargetStatus( @Nullable final AiDeploymentTargetStatus targetStatus) {
     this.targetStatus = targetStatus;
   }
 
-   /**
-    * Set the configurationId of this {@link AiDeploymentModificationRequest} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiDeploymentModificationRequest} class
-    */
-   @Nonnull public AiDeploymentModificationRequest configurationId(@Nonnull final String configurationId) {
+  /**
+   * Set the configurationId of this {@link AiDeploymentModificationRequest} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiDeploymentModificationRequest} class
+   */
+  @Nonnull public AiDeploymentModificationRequest configurationId( @Nullable final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiDeploymentModificationRequest} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiDeploymentModificationRequest} instance.
+   */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
@@ -106,7 +106,7 @@ public class AiDeploymentModificationRequest
    *
    * @param configurationId  ID of the configuration
    */
-  public void setConfigurationId( @Nonnull final String configurationId) {
+  public void setConfigurationId( @Nullable final String configurationId) {
     this.configurationId = configurationId;
   }
 
@@ -127,7 +127,7 @@ public class AiDeploymentModificationRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentModificationRequest has no field with name '" + name + "'.");
     }

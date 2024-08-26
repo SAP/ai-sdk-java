@@ -57,21 +57,21 @@ public class BckndAllArgoCDApplicationData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndAllArgoCDApplicationData() {  }
 
-   /**
-    * Set the count of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
-    */
-   @Nonnull public BckndAllArgoCDApplicationData count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
+   */
+  @Nonnull public BckndAllArgoCDApplicationData count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BckndAllArgoCDApplicationData} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BckndAllArgoCDApplicationData} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class BckndAllArgoCDApplicationData
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
-    * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
-    */
-   @Nonnull public BckndAllArgoCDApplicationData resources(@Nonnull final List<BckndArgoCDApplicationData> resources) {
+  /**
+   * Set the resources of this {@link BckndAllArgoCDApplicationData} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BckndAllArgoCDApplicationData}
+   * @return The same instance of this {@link BckndAllArgoCDApplicationData} class
+   */
+  @Nonnull public BckndAllArgoCDApplicationData resources( @Nonnull final List<BckndArgoCDApplicationData> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class BckndAllArgoCDApplicationData
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link BckndAllArgoCDApplicationData} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link BckndAllArgoCDApplicationData} instance.
+   */
   @Nonnull public List<BckndArgoCDApplicationData> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class BckndAllArgoCDApplicationData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndAllArgoCDApplicationData has no field with name '" + name + "'.");
     }

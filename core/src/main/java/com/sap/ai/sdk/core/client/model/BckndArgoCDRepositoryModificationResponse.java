@@ -53,21 +53,21 @@ public class BckndArgoCDRepositoryModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDRepositoryModificationResponse() {  }
 
-   /**
-    * Set the id of this {@link BckndArgoCDRepositoryModificationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link BckndArgoCDRepositoryModificationResponse} class
-    */
-   @Nonnull public BckndArgoCDRepositoryModificationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link BckndArgoCDRepositoryModificationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link BckndArgoCDRepositoryModificationResponse} class
+   */
+  @Nonnull public BckndArgoCDRepositoryModificationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link BckndArgoCDRepositoryModificationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link BckndArgoCDRepositoryModificationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -81,21 +81,21 @@ public class BckndArgoCDRepositoryModificationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link BckndArgoCDRepositoryModificationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BckndArgoCDRepositoryModificationResponse} class
-    */
-   @Nonnull public BckndArgoCDRepositoryModificationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BckndArgoCDRepositoryModificationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BckndArgoCDRepositoryModificationResponse} class
+   */
+  @Nonnull public BckndArgoCDRepositoryModificationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link BckndArgoCDRepositoryModificationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link BckndArgoCDRepositoryModificationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -126,7 +126,7 @@ public class BckndArgoCDRepositoryModificationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDRepositoryModificationResponse has no field with name '" + name + "'.");
     }

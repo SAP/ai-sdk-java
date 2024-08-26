@@ -50,21 +50,21 @@ public class MetaExtensionsMetricsCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensionsMetricsCapabilities() {  }
 
-   /**
-    * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance and return the same instance.
-    *
-    * @param extendedResults  Support for returning extended results
-    * @return The same instance of this {@link MetaExtensionsMetricsCapabilities} class
-    */
-   @Nonnull public MetaExtensionsMetricsCapabilities extendedResults(@Nonnull final Boolean extendedResults) {
+  /**
+   * Set the extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance and return the same instance.
+   *
+   * @param extendedResults  Support for returning extended results
+   * @return The same instance of this {@link MetaExtensionsMetricsCapabilities} class
+   */
+  @Nonnull public MetaExtensionsMetricsCapabilities extendedResults( @Nullable final Boolean extendedResults) {
     this.extendedResults = extendedResults;
     return this;
   }
 
-   /**
-    * Support for returning extended results
-    * @return extendedResults  The extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance.
-    */
+  /**
+   * Support for returning extended results
+   * @return extendedResults  The extendedResults of this {@link MetaExtensionsMetricsCapabilities} instance.
+   */
   @Nonnull public Boolean isExtendedResults() {
     return extendedResults;
   }
@@ -74,7 +74,7 @@ public class MetaExtensionsMetricsCapabilities
    *
    * @param extendedResults  Support for returning extended results
    */
-  public void setExtendedResults( @Nonnull final Boolean extendedResults) {
+  public void setExtendedResults( @Nullable final Boolean extendedResults) {
     this.extendedResults = extendedResults;
   }
 
@@ -95,7 +95,7 @@ public class MetaExtensionsMetricsCapabilities
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensionsMetricsCapabilities has no field with name '" + name + "'.");
     }

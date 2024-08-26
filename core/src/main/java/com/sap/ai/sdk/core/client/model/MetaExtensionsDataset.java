@@ -58,21 +58,21 @@ public class MetaExtensionsDataset
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensionsDataset() {  }
 
-   /**
-    * Set the version of this {@link MetaExtensionsDataset} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaExtensionsDataset}
-    * @return The same instance of this {@link MetaExtensionsDataset} class
-    */
-   @Nonnull public MetaExtensionsDataset version(@Nonnull final String version) {
+  /**
+   * Set the version of this {@link MetaExtensionsDataset} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaExtensionsDataset}
+   * @return The same instance of this {@link MetaExtensionsDataset} class
+   */
+  @Nonnull public MetaExtensionsDataset version( @Nonnull final String version) {
     this.version = version;
     return this;
   }
 
-   /**
-    * Get version
-    * @return version  The version of this {@link MetaExtensionsDataset} instance.
-    */
+  /**
+   * Get version
+   * @return version  The version of this {@link MetaExtensionsDataset} instance.
+   */
   @Nonnull public String getVersion() {
     return version;
   }
@@ -86,21 +86,21 @@ public class MetaExtensionsDataset
     this.version = version;
   }
 
-   /**
-    * Set the capabilities of this {@link MetaExtensionsDataset} instance and return the same instance.
-    *
-    * @param capabilities  The capabilities of this {@link MetaExtensionsDataset}
-    * @return The same instance of this {@link MetaExtensionsDataset} class
-    */
-   @Nonnull public MetaExtensionsDataset capabilities(@Nonnull final MetaExtensionsDatasetCapabilities capabilities) {
+  /**
+   * Set the capabilities of this {@link MetaExtensionsDataset} instance and return the same instance.
+   *
+   * @param capabilities  The capabilities of this {@link MetaExtensionsDataset}
+   * @return The same instance of this {@link MetaExtensionsDataset} class
+   */
+  @Nonnull public MetaExtensionsDataset capabilities( @Nullable final MetaExtensionsDatasetCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
 
-   /**
-    * Get capabilities
-    * @return capabilities  The capabilities of this {@link MetaExtensionsDataset} instance.
-    */
+  /**
+   * Get capabilities
+   * @return capabilities  The capabilities of this {@link MetaExtensionsDataset} instance.
+   */
   @Nonnull public MetaExtensionsDatasetCapabilities getCapabilities() {
     return capabilities;
   }
@@ -110,25 +110,25 @@ public class MetaExtensionsDataset
    *
    * @param capabilities  The capabilities of this {@link MetaExtensionsDataset}
    */
-  public void setCapabilities( @Nonnull final MetaExtensionsDatasetCapabilities capabilities) {
+  public void setCapabilities( @Nullable final MetaExtensionsDatasetCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
-   /**
-    * Set the limits of this {@link MetaExtensionsDataset} instance and return the same instance.
-    *
-    * @param limits  The limits of this {@link MetaExtensionsDataset}
-    * @return The same instance of this {@link MetaExtensionsDataset} class
-    */
-   @Nonnull public MetaExtensionsDataset limits(@Nonnull final MetaExtensionsDatasetLimits limits) {
+  /**
+   * Set the limits of this {@link MetaExtensionsDataset} instance and return the same instance.
+   *
+   * @param limits  The limits of this {@link MetaExtensionsDataset}
+   * @return The same instance of this {@link MetaExtensionsDataset} class
+   */
+  @Nonnull public MetaExtensionsDataset limits( @Nullable final MetaExtensionsDatasetLimits limits) {
     this.limits = limits;
     return this;
   }
 
-   /**
-    * Get limits
-    * @return limits  The limits of this {@link MetaExtensionsDataset} instance.
-    */
+  /**
+   * Get limits
+   * @return limits  The limits of this {@link MetaExtensionsDataset} instance.
+   */
   @Nonnull public MetaExtensionsDatasetLimits getLimits() {
     return limits;
   }
@@ -138,7 +138,7 @@ public class MetaExtensionsDataset
    *
    * @param limits  The limits of this {@link MetaExtensionsDataset}
    */
-  public void setLimits( @Nonnull final MetaExtensionsDatasetLimits limits) {
+  public void setLimits( @Nullable final MetaExtensionsDatasetLimits limits) {
     this.limits = limits;
   }
 
@@ -159,7 +159,7 @@ public class MetaExtensionsDataset
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensionsDataset has no field with name '" + name + "'.");
     }

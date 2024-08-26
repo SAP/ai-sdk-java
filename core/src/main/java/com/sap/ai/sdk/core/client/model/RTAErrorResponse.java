@@ -51,21 +51,21 @@ public class RTAErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAErrorResponse() {  }
 
-   /**
-    * Set the error of this {@link RTAErrorResponse} instance and return the same instance.
-    *
-    * @param error  The error of this {@link RTAErrorResponse}
-    * @return The same instance of this {@link RTAErrorResponse} class
-    */
-   @Nonnull public RTAErrorResponse error(@Nonnull final RTAError error) {
+  /**
+   * Set the error of this {@link RTAErrorResponse} instance and return the same instance.
+   *
+   * @param error  The error of this {@link RTAErrorResponse}
+   * @return The same instance of this {@link RTAErrorResponse} class
+   */
+  @Nonnull public RTAErrorResponse error( @Nullable final RTAError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link RTAErrorResponse} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link RTAErrorResponse} instance.
+   */
   @Nonnull public RTAError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class RTAErrorResponse
    *
    * @param error  The error of this {@link RTAErrorResponse}
    */
-  public void setError( @Nonnull final RTAError error) {
+  public void setError( @Nullable final RTAError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class RTAErrorResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAErrorResponse has no field with name '" + name + "'.");
     }

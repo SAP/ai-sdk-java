@@ -53,21 +53,21 @@ public class BckndInternalResourceGroupAnnotation
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndInternalResourceGroupAnnotation() {  }
 
-   /**
-    * Set the key of this {@link BckndInternalResourceGroupAnnotation} instance and return the same instance.
-    *
-    * @param key  The key of this {@link BckndInternalResourceGroupAnnotation}
-    * @return The same instance of this {@link BckndInternalResourceGroupAnnotation} class
-    */
-   @Nonnull public BckndInternalResourceGroupAnnotation key(@Nonnull final String key) {
+  /**
+   * Set the key of this {@link BckndInternalResourceGroupAnnotation} instance and return the same instance.
+   *
+   * @param key  The key of this {@link BckndInternalResourceGroupAnnotation}
+   * @return The same instance of this {@link BckndInternalResourceGroupAnnotation} class
+   */
+  @Nonnull public BckndInternalResourceGroupAnnotation key( @Nonnull final String key) {
     this.key = key;
     return this;
   }
 
-   /**
-    * Get key
-    * @return key  The key of this {@link BckndInternalResourceGroupAnnotation} instance.
-    */
+  /**
+   * Get key
+   * @return key  The key of this {@link BckndInternalResourceGroupAnnotation} instance.
+   */
   @Nonnull public String getKey() {
     return key;
   }
@@ -81,21 +81,21 @@ public class BckndInternalResourceGroupAnnotation
     this.key = key;
   }
 
-   /**
-    * Set the value of this {@link BckndInternalResourceGroupAnnotation} instance and return the same instance.
-    *
-    * @param value  The value of this {@link BckndInternalResourceGroupAnnotation}
-    * @return The same instance of this {@link BckndInternalResourceGroupAnnotation} class
-    */
-   @Nonnull public BckndInternalResourceGroupAnnotation value(@Nonnull final String value) {
+  /**
+   * Set the value of this {@link BckndInternalResourceGroupAnnotation} instance and return the same instance.
+   *
+   * @param value  The value of this {@link BckndInternalResourceGroupAnnotation}
+   * @return The same instance of this {@link BckndInternalResourceGroupAnnotation} class
+   */
+  @Nonnull public BckndInternalResourceGroupAnnotation value( @Nonnull final String value) {
     this.value = value;
     return this;
   }
 
-   /**
-    * Get value
-    * @return value  The value of this {@link BckndInternalResourceGroupAnnotation} instance.
-    */
+  /**
+   * Get value
+   * @return value  The value of this {@link BckndInternalResourceGroupAnnotation} instance.
+   */
   @Nonnull public String getValue() {
     return value;
   }
@@ -126,7 +126,7 @@ public class BckndInternalResourceGroupAnnotation
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndInternalResourceGroupAnnotation has no field with name '" + name + "'.");
     }

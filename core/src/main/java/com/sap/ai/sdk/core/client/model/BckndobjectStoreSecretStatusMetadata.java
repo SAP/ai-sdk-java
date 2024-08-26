@@ -92,21 +92,21 @@ public class BckndobjectStoreSecretStatusMetadata
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndobjectStoreSecretStatusMetadata() {  }
 
-   /**
-    * Set the servingKubeflowOrgS3Usehttps of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param servingKubeflowOrgS3Usehttps  0 and 1 values for setting the flag
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Usehttps(@Nonnull final String servingKubeflowOrgS3Usehttps) {
+  /**
+   * Set the servingKubeflowOrgS3Usehttps of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param servingKubeflowOrgS3Usehttps  0 and 1 values for setting the flag
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Usehttps( @Nullable final String servingKubeflowOrgS3Usehttps) {
     this.servingKubeflowOrgS3Usehttps = servingKubeflowOrgS3Usehttps;
     return this;
   }
 
-   /**
-    * 0 and 1 values for setting the flag
-    * @return servingKubeflowOrgS3Usehttps  The servingKubeflowOrgS3Usehttps of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * 0 and 1 values for setting the flag
+   * @return servingKubeflowOrgS3Usehttps  The servingKubeflowOrgS3Usehttps of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getServingKubeflowOrgS3Usehttps() {
     return servingKubeflowOrgS3Usehttps;
   }
@@ -116,25 +116,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Usehttps  0 and 1 values for setting the flag
    */
-  public void setServingKubeflowOrgS3Usehttps( @Nonnull final String servingKubeflowOrgS3Usehttps) {
+  public void setServingKubeflowOrgS3Usehttps( @Nullable final String servingKubeflowOrgS3Usehttps) {
     this.servingKubeflowOrgS3Usehttps = servingKubeflowOrgS3Usehttps;
   }
 
-   /**
-    * Set the servingKubeflowOrgS3Verifyssl of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param servingKubeflowOrgS3Verifyssl  0 and 1 values for setting the flag
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Verifyssl(@Nonnull final String servingKubeflowOrgS3Verifyssl) {
+  /**
+   * Set the servingKubeflowOrgS3Verifyssl of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param servingKubeflowOrgS3Verifyssl  0 and 1 values for setting the flag
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Verifyssl( @Nullable final String servingKubeflowOrgS3Verifyssl) {
     this.servingKubeflowOrgS3Verifyssl = servingKubeflowOrgS3Verifyssl;
     return this;
   }
 
-   /**
-    * 0 and 1 values for setting the flag
-    * @return servingKubeflowOrgS3Verifyssl  The servingKubeflowOrgS3Verifyssl of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * 0 and 1 values for setting the flag
+   * @return servingKubeflowOrgS3Verifyssl  The servingKubeflowOrgS3Verifyssl of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getServingKubeflowOrgS3Verifyssl() {
     return servingKubeflowOrgS3Verifyssl;
   }
@@ -144,25 +144,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Verifyssl  0 and 1 values for setting the flag
    */
-  public void setServingKubeflowOrgS3Verifyssl( @Nonnull final String servingKubeflowOrgS3Verifyssl) {
+  public void setServingKubeflowOrgS3Verifyssl( @Nullable final String servingKubeflowOrgS3Verifyssl) {
     this.servingKubeflowOrgS3Verifyssl = servingKubeflowOrgS3Verifyssl;
   }
 
-   /**
-    * Set the servingKubeflowOrgS3Endpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param servingKubeflowOrgS3Endpoint  Annotation for endpoint required by KF_Serving
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Endpoint(@Nonnull final String servingKubeflowOrgS3Endpoint) {
+  /**
+   * Set the servingKubeflowOrgS3Endpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param servingKubeflowOrgS3Endpoint  Annotation for endpoint required by KF_Serving
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Endpoint( @Nullable final String servingKubeflowOrgS3Endpoint) {
     this.servingKubeflowOrgS3Endpoint = servingKubeflowOrgS3Endpoint;
     return this;
   }
 
-   /**
-    * Annotation for endpoint required by KF_Serving
-    * @return servingKubeflowOrgS3Endpoint  The servingKubeflowOrgS3Endpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * Annotation for endpoint required by KF_Serving
+   * @return servingKubeflowOrgS3Endpoint  The servingKubeflowOrgS3Endpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getServingKubeflowOrgS3Endpoint() {
     return servingKubeflowOrgS3Endpoint;
   }
@@ -172,25 +172,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Endpoint  Annotation for endpoint required by KF_Serving
    */
-  public void setServingKubeflowOrgS3Endpoint( @Nonnull final String servingKubeflowOrgS3Endpoint) {
+  public void setServingKubeflowOrgS3Endpoint( @Nullable final String servingKubeflowOrgS3Endpoint) {
     this.servingKubeflowOrgS3Endpoint = servingKubeflowOrgS3Endpoint;
   }
 
-   /**
-    * Set the servingKubeflowOrgS3Region of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param servingKubeflowOrgS3Region  Annotation for region required by KF_Serving
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Region(@Nonnull final String servingKubeflowOrgS3Region) {
+  /**
+   * Set the servingKubeflowOrgS3Region of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param servingKubeflowOrgS3Region  Annotation for region required by KF_Serving
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Region( @Nullable final String servingKubeflowOrgS3Region) {
     this.servingKubeflowOrgS3Region = servingKubeflowOrgS3Region;
     return this;
   }
 
-   /**
-    * Annotation for region required by KF_Serving
-    * @return servingKubeflowOrgS3Region  The servingKubeflowOrgS3Region of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * Annotation for region required by KF_Serving
+   * @return servingKubeflowOrgS3Region  The servingKubeflowOrgS3Region of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getServingKubeflowOrgS3Region() {
     return servingKubeflowOrgS3Region;
   }
@@ -200,25 +200,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Region  Annotation for region required by KF_Serving
    */
-  public void setServingKubeflowOrgS3Region( @Nonnull final String servingKubeflowOrgS3Region) {
+  public void setServingKubeflowOrgS3Region( @Nullable final String servingKubeflowOrgS3Region) {
     this.servingKubeflowOrgS3Region = servingKubeflowOrgS3Region;
   }
 
-   /**
-    * Set the storageAiSapComType of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComType  Storage type of the secret
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComType(@Nonnull final String storageAiSapComType) {
+  /**
+   * Set the storageAiSapComType of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComType  Storage type of the secret
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComType( @Nullable final String storageAiSapComType) {
     this.storageAiSapComType = storageAiSapComType;
     return this;
   }
 
-   /**
-    * Storage type of the secret
-    * @return storageAiSapComType  The storageAiSapComType of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * Storage type of the secret
+   * @return storageAiSapComType  The storageAiSapComType of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComType() {
     return storageAiSapComType;
   }
@@ -228,25 +228,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComType  Storage type of the secret
    */
-  public void setStorageAiSapComType( @Nonnull final String storageAiSapComType) {
+  public void setStorageAiSapComType( @Nullable final String storageAiSapComType) {
     this.storageAiSapComType = storageAiSapComType;
   }
 
-   /**
-    * Set the storageAiSapComBucket of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComBucket  bucket assigned to the secret on creation
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComBucket(@Nonnull final String storageAiSapComBucket) {
+  /**
+   * Set the storageAiSapComBucket of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComBucket  bucket assigned to the secret on creation
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComBucket( @Nullable final String storageAiSapComBucket) {
     this.storageAiSapComBucket = storageAiSapComBucket;
     return this;
   }
 
-   /**
-    * bucket assigned to the secret on creation
-    * @return storageAiSapComBucket  The storageAiSapComBucket of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * bucket assigned to the secret on creation
+   * @return storageAiSapComBucket  The storageAiSapComBucket of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComBucket() {
     return storageAiSapComBucket;
   }
@@ -256,25 +256,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComBucket  bucket assigned to the secret on creation
    */
-  public void setStorageAiSapComBucket( @Nonnull final String storageAiSapComBucket) {
+  public void setStorageAiSapComBucket( @Nullable final String storageAiSapComBucket) {
     this.storageAiSapComBucket = storageAiSapComBucket;
   }
 
-   /**
-    * Set the storageAiSapComEndpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComEndpoint  Endpoint assigned to the secret on creation
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComEndpoint(@Nonnull final String storageAiSapComEndpoint) {
+  /**
+   * Set the storageAiSapComEndpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComEndpoint  Endpoint assigned to the secret on creation
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComEndpoint( @Nullable final String storageAiSapComEndpoint) {
     this.storageAiSapComEndpoint = storageAiSapComEndpoint;
     return this;
   }
 
-   /**
-    * Endpoint assigned to the secret on creation
-    * @return storageAiSapComEndpoint  The storageAiSapComEndpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * Endpoint assigned to the secret on creation
+   * @return storageAiSapComEndpoint  The storageAiSapComEndpoint of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComEndpoint() {
     return storageAiSapComEndpoint;
   }
@@ -284,25 +284,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComEndpoint  Endpoint assigned to the secret on creation
    */
-  public void setStorageAiSapComEndpoint( @Nonnull final String storageAiSapComEndpoint) {
+  public void setStorageAiSapComEndpoint( @Nullable final String storageAiSapComEndpoint) {
     this.storageAiSapComEndpoint = storageAiSapComEndpoint;
   }
 
-   /**
-    * Set the storageAiSapComRegion of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComRegion  Region of the storage server
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComRegion(@Nonnull final String storageAiSapComRegion) {
+  /**
+   * Set the storageAiSapComRegion of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComRegion  Region of the storage server
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComRegion( @Nullable final String storageAiSapComRegion) {
     this.storageAiSapComRegion = storageAiSapComRegion;
     return this;
   }
 
-   /**
-    * Region of the storage server
-    * @return storageAiSapComRegion  The storageAiSapComRegion of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * Region of the storage server
+   * @return storageAiSapComRegion  The storageAiSapComRegion of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComRegion() {
     return storageAiSapComRegion;
   }
@@ -312,25 +312,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComRegion  Region of the storage server
    */
-  public void setStorageAiSapComRegion( @Nonnull final String storageAiSapComRegion) {
+  public void setStorageAiSapComRegion( @Nullable final String storageAiSapComRegion) {
     this.storageAiSapComRegion = storageAiSapComRegion;
   }
 
-   /**
-    * Set the storageAiSapComPathPrefix of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComPathPrefix  Pathprefix type assigned to the secret on creation.
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComPathPrefix(@Nonnull final String storageAiSapComPathPrefix) {
+  /**
+   * Set the storageAiSapComPathPrefix of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComPathPrefix  Pathprefix type assigned to the secret on creation.
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComPathPrefix( @Nullable final String storageAiSapComPathPrefix) {
     this.storageAiSapComPathPrefix = storageAiSapComPathPrefix;
     return this;
   }
 
-   /**
-    * Pathprefix type assigned to the secret on creation.
-    * @return storageAiSapComPathPrefix  The storageAiSapComPathPrefix of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * Pathprefix type assigned to the secret on creation.
+   * @return storageAiSapComPathPrefix  The storageAiSapComPathPrefix of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComPathPrefix() {
     return storageAiSapComPathPrefix;
   }
@@ -340,25 +340,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComPathPrefix  Pathprefix type assigned to the secret on creation.
    */
-  public void setStorageAiSapComPathPrefix( @Nonnull final String storageAiSapComPathPrefix) {
+  public void setStorageAiSapComPathPrefix( @Nullable final String storageAiSapComPathPrefix) {
     this.storageAiSapComPathPrefix = storageAiSapComPathPrefix;
   }
 
-   /**
-    * Set the storageAiSapComHdfsNameNode of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComHdfsNameNode  name node of the HDFS file system
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComHdfsNameNode(@Nonnull final String storageAiSapComHdfsNameNode) {
+  /**
+   * Set the storageAiSapComHdfsNameNode of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComHdfsNameNode  name node of the HDFS file system
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComHdfsNameNode( @Nullable final String storageAiSapComHdfsNameNode) {
     this.storageAiSapComHdfsNameNode = storageAiSapComHdfsNameNode;
     return this;
   }
 
-   /**
-    * name node of the HDFS file system
-    * @return storageAiSapComHdfsNameNode  The storageAiSapComHdfsNameNode of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * name node of the HDFS file system
+   * @return storageAiSapComHdfsNameNode  The storageAiSapComHdfsNameNode of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComHdfsNameNode() {
     return storageAiSapComHdfsNameNode;
   }
@@ -368,25 +368,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComHdfsNameNode  name node of the HDFS file system
    */
-  public void setStorageAiSapComHdfsNameNode( @Nonnull final String storageAiSapComHdfsNameNode) {
+  public void setStorageAiSapComHdfsNameNode( @Nullable final String storageAiSapComHdfsNameNode) {
     this.storageAiSapComHdfsNameNode = storageAiSapComHdfsNameNode;
   }
 
-   /**
-    * Set the storageAiSapComHeaders of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComHeaders  headers for webHDFS and other protocols
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComHeaders(@Nonnull final String storageAiSapComHeaders) {
+  /**
+   * Set the storageAiSapComHeaders of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComHeaders  headers for webHDFS and other protocols
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComHeaders( @Nullable final String storageAiSapComHeaders) {
     this.storageAiSapComHeaders = storageAiSapComHeaders;
     return this;
   }
 
-   /**
-    * headers for webHDFS and other protocols
-    * @return storageAiSapComHeaders  The storageAiSapComHeaders of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * headers for webHDFS and other protocols
+   * @return storageAiSapComHeaders  The storageAiSapComHeaders of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComHeaders() {
     return storageAiSapComHeaders;
   }
@@ -396,25 +396,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComHeaders  headers for webHDFS and other protocols
    */
-  public void setStorageAiSapComHeaders( @Nonnull final String storageAiSapComHeaders) {
+  public void setStorageAiSapComHeaders( @Nullable final String storageAiSapComHeaders) {
     this.storageAiSapComHeaders = storageAiSapComHeaders;
   }
 
-   /**
-    * Set the storageAiSapComContainerUri of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComContainerUri  container uri of azure storage
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComContainerUri(@Nonnull final String storageAiSapComContainerUri) {
+  /**
+   * Set the storageAiSapComContainerUri of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComContainerUri  container uri of azure storage
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComContainerUri( @Nullable final String storageAiSapComContainerUri) {
     this.storageAiSapComContainerUri = storageAiSapComContainerUri;
     return this;
   }
 
-   /**
-    * container uri of azure storage
-    * @return storageAiSapComContainerUri  The storageAiSapComContainerUri of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * container uri of azure storage
+   * @return storageAiSapComContainerUri  The storageAiSapComContainerUri of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComContainerUri() {
     return storageAiSapComContainerUri;
   }
@@ -424,25 +424,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComContainerUri  container uri of azure storage
    */
-  public void setStorageAiSapComContainerUri( @Nonnull final String storageAiSapComContainerUri) {
+  public void setStorageAiSapComContainerUri( @Nullable final String storageAiSapComContainerUri) {
     this.storageAiSapComContainerUri = storageAiSapComContainerUri;
   }
 
-   /**
-    * Set the storageAiSapComSubscriptionId of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComSubscriptionId  subscription id
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComSubscriptionId(@Nonnull final String storageAiSapComSubscriptionId) {
+  /**
+   * Set the storageAiSapComSubscriptionId of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComSubscriptionId  subscription id
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComSubscriptionId( @Nullable final String storageAiSapComSubscriptionId) {
     this.storageAiSapComSubscriptionId = storageAiSapComSubscriptionId;
     return this;
   }
 
-   /**
-    * subscription id
-    * @return storageAiSapComSubscriptionId  The storageAiSapComSubscriptionId of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * subscription id
+   * @return storageAiSapComSubscriptionId  The storageAiSapComSubscriptionId of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComSubscriptionId() {
     return storageAiSapComSubscriptionId;
   }
@@ -452,25 +452,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComSubscriptionId  subscription id
    */
-  public void setStorageAiSapComSubscriptionId( @Nonnull final String storageAiSapComSubscriptionId) {
+  public void setStorageAiSapComSubscriptionId( @Nullable final String storageAiSapComSubscriptionId) {
     this.storageAiSapComSubscriptionId = storageAiSapComSubscriptionId;
   }
 
-   /**
-    * Set the storageAiSapComTenantId of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComTenantId  tenant id
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComTenantId(@Nonnull final String storageAiSapComTenantId) {
+  /**
+   * Set the storageAiSapComTenantId of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComTenantId  tenant id
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComTenantId( @Nullable final String storageAiSapComTenantId) {
     this.storageAiSapComTenantId = storageAiSapComTenantId;
     return this;
   }
 
-   /**
-    * tenant id
-    * @return storageAiSapComTenantId  The storageAiSapComTenantId of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * tenant id
+   * @return storageAiSapComTenantId  The storageAiSapComTenantId of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComTenantId() {
     return storageAiSapComTenantId;
   }
@@ -480,25 +480,25 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComTenantId  tenant id
    */
-  public void setStorageAiSapComTenantId( @Nonnull final String storageAiSapComTenantId) {
+  public void setStorageAiSapComTenantId( @Nullable final String storageAiSapComTenantId) {
     this.storageAiSapComTenantId = storageAiSapComTenantId;
   }
 
-   /**
-    * Set the storageAiSapComProjectId of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
-    *
-    * @param storageAiSapComProjectId  project id of google cloud platform
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComProjectId(@Nonnull final String storageAiSapComProjectId) {
+  /**
+   * Set the storageAiSapComProjectId of this {@link BckndobjectStoreSecretStatusMetadata} instance and return the same instance.
+   *
+   * @param storageAiSapComProjectId  project id of google cloud platform
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusMetadata} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusMetadata storageAiSapComProjectId( @Nullable final String storageAiSapComProjectId) {
     this.storageAiSapComProjectId = storageAiSapComProjectId;
     return this;
   }
 
-   /**
-    * project id of google cloud platform
-    * @return storageAiSapComProjectId  The storageAiSapComProjectId of this {@link BckndobjectStoreSecretStatusMetadata} instance.
-    */
+  /**
+   * project id of google cloud platform
+   * @return storageAiSapComProjectId  The storageAiSapComProjectId of this {@link BckndobjectStoreSecretStatusMetadata} instance.
+   */
   @Nonnull public String getStorageAiSapComProjectId() {
     return storageAiSapComProjectId;
   }
@@ -508,7 +508,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComProjectId  project id of google cloud platform
    */
-  public void setStorageAiSapComProjectId( @Nonnull final String storageAiSapComProjectId) {
+  public void setStorageAiSapComProjectId( @Nullable final String storageAiSapComProjectId) {
     this.storageAiSapComProjectId = storageAiSapComProjectId;
   }
 
@@ -529,7 +529,7 @@ public class BckndobjectStoreSecretStatusMetadata
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndobjectStoreSecretStatusMetadata has no field with name '" + name + "'.");
     }

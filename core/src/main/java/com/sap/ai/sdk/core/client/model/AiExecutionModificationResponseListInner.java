@@ -59,21 +59,21 @@ public class AiExecutionModificationResponseListInner
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionModificationResponseListInner() {  }
 
-   /**
-    * Set the id of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiExecutionModificationResponseListInner} class
-    */
-   @Nonnull public AiExecutionModificationResponseListInner id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiExecutionModificationResponseListInner} class
+   */
+  @Nonnull public AiExecutionModificationResponseListInner id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiExecutionModificationResponseListInner} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiExecutionModificationResponseListInner} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -87,21 +87,21 @@ public class AiExecutionModificationResponseListInner
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link AiExecutionModificationResponseListInner} class
-    */
-   @Nonnull public AiExecutionModificationResponseListInner message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link AiExecutionModificationResponseListInner} class
+   */
+  @Nonnull public AiExecutionModificationResponseListInner message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link AiExecutionModificationResponseListInner} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link AiExecutionModificationResponseListInner} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -115,21 +115,21 @@ public class AiExecutionModificationResponseListInner
     this.message = message;
   }
 
-   /**
-    * Set the error of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
-    *
-    * @param error  The error of this {@link AiExecutionModificationResponseListInner}
-    * @return The same instance of this {@link AiExecutionModificationResponseListInner} class
-    */
-   @Nonnull public AiExecutionModificationResponseListInner error(@Nonnull final AiApiError error) {
+  /**
+   * Set the error of this {@link AiExecutionModificationResponseListInner} instance and return the same instance.
+   *
+   * @param error  The error of this {@link AiExecutionModificationResponseListInner}
+   * @return The same instance of this {@link AiExecutionModificationResponseListInner} class
+   */
+  @Nonnull public AiExecutionModificationResponseListInner error( @Nonnull final AiApiError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link AiExecutionModificationResponseListInner} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link AiExecutionModificationResponseListInner} instance.
+   */
   @Nonnull public AiApiError getError() {
     return error;
   }
@@ -160,7 +160,7 @@ public class AiExecutionModificationResponseListInner
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionModificationResponseListInner has no field with name '" + name + "'.");
     }

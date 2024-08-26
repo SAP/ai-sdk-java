@@ -53,21 +53,21 @@ public class BcknddockerRegistrySecretModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BcknddockerRegistrySecretModificationResponse() {  }
 
-   /**
-    * Set the id of this {@link BcknddockerRegistrySecretModificationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link BcknddockerRegistrySecretModificationResponse} class
-    */
-   @Nonnull public BcknddockerRegistrySecretModificationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link BcknddockerRegistrySecretModificationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link BcknddockerRegistrySecretModificationResponse} class
+   */
+  @Nonnull public BcknddockerRegistrySecretModificationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link BcknddockerRegistrySecretModificationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link BcknddockerRegistrySecretModificationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -81,21 +81,21 @@ public class BcknddockerRegistrySecretModificationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link BcknddockerRegistrySecretModificationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BcknddockerRegistrySecretModificationResponse} class
-    */
-   @Nonnull public BcknddockerRegistrySecretModificationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BcknddockerRegistrySecretModificationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BcknddockerRegistrySecretModificationResponse} class
+   */
+  @Nonnull public BcknddockerRegistrySecretModificationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link BcknddockerRegistrySecretModificationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link BcknddockerRegistrySecretModificationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -126,7 +126,7 @@ public class BcknddockerRegistrySecretModificationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BcknddockerRegistrySecretModificationResponse has no field with name '" + name + "'.");
     }

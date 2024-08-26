@@ -50,21 +50,21 @@ public class BckndResourcePatchResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourcePatchResponse() {  }
 
-   /**
-    * Set the message of this {@link BckndResourcePatchResponse} instance and return the same instance.
-    *
-    * @param message  The message of this {@link BckndResourcePatchResponse}
-    * @return The same instance of this {@link BckndResourcePatchResponse} class
-    */
-   @Nonnull public BckndResourcePatchResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BckndResourcePatchResponse} instance and return the same instance.
+   *
+   * @param message  The message of this {@link BckndResourcePatchResponse}
+   * @return The same instance of this {@link BckndResourcePatchResponse} class
+   */
+  @Nonnull public BckndResourcePatchResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Get message
-    * @return message  The message of this {@link BckndResourcePatchResponse} instance.
-    */
+  /**
+   * Get message
+   * @return message  The message of this {@link BckndResourcePatchResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -95,7 +95,7 @@ public class BckndResourcePatchResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourcePatchResponse has no field with name '" + name + "'.");
     }

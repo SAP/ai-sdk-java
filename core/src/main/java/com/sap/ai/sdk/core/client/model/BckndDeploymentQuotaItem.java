@@ -54,21 +54,21 @@ public class BckndDeploymentQuotaItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndDeploymentQuotaItem() {  }
 
-   /**
-    * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
-    *
-    * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
-    * @return The same instance of this {@link BckndDeploymentQuotaItem} class
-    */
-   @Nonnull public BckndDeploymentQuotaItem resourcePlanType(@Nonnull final String resourcePlanType) {
+  /**
+   * Set the resourcePlanType of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
+   *
+   * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
+   * @return The same instance of this {@link BckndDeploymentQuotaItem} class
+   */
+  @Nonnull public BckndDeploymentQuotaItem resourcePlanType( @Nullable final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
     return this;
   }
 
-   /**
-    * Get resourcePlanType
-    * @return resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem} instance.
-    */
+  /**
+   * Get resourcePlanType
+   * @return resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem} instance.
+   */
   @Nonnull public String getResourcePlanType() {
     return resourcePlanType;
   }
@@ -78,25 +78,25 @@ public class BckndDeploymentQuotaItem
    *
    * @param resourcePlanType  The resourcePlanType of this {@link BckndDeploymentQuotaItem}
    */
-  public void setResourcePlanType( @Nonnull final String resourcePlanType) {
+  public void setResourcePlanType( @Nullable final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
   }
 
-   /**
-    * Set the deploymentQuota of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
-    *
-    * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
-    * @return The same instance of this {@link BckndDeploymentQuotaItem} class
-    */
-   @Nonnull public BckndDeploymentQuotaItem deploymentQuota(@Nonnull final BckndDeploymentQuota deploymentQuota) {
+  /**
+   * Set the deploymentQuota of this {@link BckndDeploymentQuotaItem} instance and return the same instance.
+   *
+   * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
+   * @return The same instance of this {@link BckndDeploymentQuotaItem} class
+   */
+  @Nonnull public BckndDeploymentQuotaItem deploymentQuota( @Nullable final BckndDeploymentQuota deploymentQuota) {
     this.deploymentQuota = deploymentQuota;
     return this;
   }
 
-   /**
-    * Get deploymentQuota
-    * @return deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem} instance.
-    */
+  /**
+   * Get deploymentQuota
+   * @return deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem} instance.
+   */
   @Nonnull public BckndDeploymentQuota getDeploymentQuota() {
     return deploymentQuota;
   }
@@ -106,7 +106,7 @@ public class BckndDeploymentQuotaItem
    *
    * @param deploymentQuota  The deploymentQuota of this {@link BckndDeploymentQuotaItem}
    */
-  public void setDeploymentQuota( @Nonnull final BckndDeploymentQuota deploymentQuota) {
+  public void setDeploymentQuota( @Nullable final BckndDeploymentQuota deploymentQuota) {
     this.deploymentQuota = deploymentQuota;
   }
 
@@ -127,7 +127,7 @@ public class BckndDeploymentQuotaItem
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndDeploymentQuotaItem has no field with name '" + name + "'.");
     }

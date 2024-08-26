@@ -53,21 +53,21 @@ public class BckndArgoCDRepositoryCredentials
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDRepositoryCredentials() {  }
 
-   /**
-    * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
-    *
-    * @param username  Username for read-access to the repository
-    * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
-    */
-   @Nonnull public BckndArgoCDRepositoryCredentials username(@Nonnull final String username) {
+  /**
+   * Set the username of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
+   *
+   * @param username  Username for read-access to the repository
+   * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
+   */
+  @Nonnull public BckndArgoCDRepositoryCredentials username( @Nonnull final String username) {
     this.username = username;
     return this;
   }
 
-   /**
-    * Username for read-access to the repository
-    * @return username  The username of this {@link BckndArgoCDRepositoryCredentials} instance.
-    */
+  /**
+   * Username for read-access to the repository
+   * @return username  The username of this {@link BckndArgoCDRepositoryCredentials} instance.
+   */
   @Nonnull public String getUsername() {
     return username;
   }
@@ -81,21 +81,21 @@ public class BckndArgoCDRepositoryCredentials
     this.username = username;
   }
 
-   /**
-    * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
-    *
-    * @param password  Password for read-access to the repository
-    * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
-    */
-   @Nonnull public BckndArgoCDRepositoryCredentials password(@Nonnull final String password) {
+  /**
+   * Set the password of this {@link BckndArgoCDRepositoryCredentials} instance and return the same instance.
+   *
+   * @param password  Password for read-access to the repository
+   * @return The same instance of this {@link BckndArgoCDRepositoryCredentials} class
+   */
+  @Nonnull public BckndArgoCDRepositoryCredentials password( @Nonnull final String password) {
     this.password = password;
     return this;
   }
 
-   /**
-    * Password for read-access to the repository
-    * @return password  The password of this {@link BckndArgoCDRepositoryCredentials} instance.
-    */
+  /**
+   * Password for read-access to the repository
+   * @return password  The password of this {@link BckndArgoCDRepositoryCredentials} instance.
+   */
   @Nonnull public String getPassword() {
     return password;
   }
@@ -126,7 +126,7 @@ public class BckndArgoCDRepositoryCredentials
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDRepositoryCredentials has no field with name '" + name + "'.");
     }

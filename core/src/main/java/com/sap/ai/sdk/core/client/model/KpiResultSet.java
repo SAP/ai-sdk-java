@@ -60,21 +60,21 @@ public class KpiResultSet
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected KpiResultSet() {  }
-   /**
-    * Get header
-    * @return header  The header of this {@link KpiResultSet} instance.
-    */
+  /**
+   * Get header
+   * @return header  The header of this {@link KpiResultSet} instance.
+   */
   @Nonnull public Set<KpiColumnName> getHeader() {
     return header;
   }
 
-   /**
-    * Set the rows of this {@link KpiResultSet} instance and return the same instance.
-    *
-    * @param rows  The rows of this {@link KpiResultSet}
-    * @return The same instance of this {@link KpiResultSet} class
-    */
-   @Nonnull public KpiResultSet rows(@Nonnull final List<List<KpiResultRowItem>> rows) {
+  /**
+   * Set the rows of this {@link KpiResultSet} instance and return the same instance.
+   *
+   * @param rows  The rows of this {@link KpiResultSet}
+   * @return The same instance of this {@link KpiResultSet} class
+   */
+  @Nonnull public KpiResultSet rows( @Nullable final List<List<KpiResultRowItem>> rows) {
     this.rows = rows;
     return this;
   }
@@ -91,10 +91,10 @@ public class KpiResultSet
     return this;
   }
 
-   /**
-    * Get rows
-    * @return rows  The rows of this {@link KpiResultSet} instance.
-    */
+  /**
+   * Get rows
+   * @return rows  The rows of this {@link KpiResultSet} instance.
+   */
   @Nonnull public List<List<KpiResultRowItem>> getRows() {
     return rows;
   }
@@ -104,7 +104,7 @@ public class KpiResultSet
    *
    * @param rows  The rows of this {@link KpiResultSet}
    */
-  public void setRows( @Nonnull final List<List<KpiResultRowItem>> rows) {
+  public void setRows( @Nullable final List<List<KpiResultRowItem>> rows) {
     this.rows = rows;
   }
 
@@ -125,7 +125,7 @@ public class KpiResultSet
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("KpiResultSet has no field with name '" + name + "'.");
     }

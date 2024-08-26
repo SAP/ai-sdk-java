@@ -63,21 +63,21 @@ public class RTAExecutableArtifact
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAExecutableArtifact() {  }
 
-   /**
-    * Set the name of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param name  Name of the signature argument
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
-   @Nonnull public RTAExecutableArtifact name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param name  Name of the signature argument
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
+  @Nonnull public RTAExecutableArtifact name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the signature argument
-    * @return name  The name of this {@link RTAExecutableArtifact} instance.
-    */
+  /**
+   * Name of the signature argument
+   * @return name  The name of this {@link RTAExecutableArtifact} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -91,21 +91,21 @@ public class RTAExecutableArtifact
     this.name = name;
   }
 
-   /**
-    * Set the description of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param description  Description of the signature argument
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
-   @Nonnull public RTAExecutableArtifact description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param description  Description of the signature argument
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
+  @Nonnull public RTAExecutableArtifact description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the signature argument
-    * @return description  The description of this {@link RTAExecutableArtifact} instance.
-    */
+  /**
+   * Description of the signature argument
+   * @return description  The description of this {@link RTAExecutableArtifact} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -115,25 +115,25 @@ public class RTAExecutableArtifact
    *
    * @param description  Description of the signature argument
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the kind of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param kind  Kind of the artifact, i.e. model or dataset
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
-   @Nonnull public RTAExecutableArtifact kind(@Nonnull final String kind) {
+  /**
+   * Set the kind of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param kind  Kind of the artifact, i.e. model or dataset
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
+  @Nonnull public RTAExecutableArtifact kind( @Nullable final String kind) {
     this.kind = kind;
     return this;
   }
 
-   /**
-    * Kind of the artifact, i.e. model or dataset
-    * @return kind  The kind of this {@link RTAExecutableArtifact} instance.
-    */
+  /**
+   * Kind of the artifact, i.e. model or dataset
+   * @return kind  The kind of this {@link RTAExecutableArtifact} instance.
+   */
   @Nonnull public String getKind() {
     return kind;
   }
@@ -143,17 +143,17 @@ public class RTAExecutableArtifact
    *
    * @param kind  Kind of the artifact, i.e. model or dataset
    */
-  public void setKind( @Nonnull final String kind) {
+  public void setKind( @Nullable final String kind) {
     this.kind = kind;
   }
 
-   /**
-    * Set the labels of this {@link RTAExecutableArtifact} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link RTAExecutableArtifact} class
-    */
-   @Nonnull public RTAExecutableArtifact labels(@Nonnull final List<RTAArtifactLabel> labels) {
+  /**
+   * Set the labels of this {@link RTAExecutableArtifact} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link RTAExecutableArtifact} class
+   */
+  @Nonnull public RTAExecutableArtifact labels( @Nullable final List<RTAArtifactLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -170,10 +170,10 @@ public class RTAExecutableArtifact
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link RTAExecutableArtifact} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link RTAExecutableArtifact} instance.
+   */
   @Nonnull public List<RTAArtifactLabel> getLabels() {
     return labels;
   }
@@ -183,7 +183,7 @@ public class RTAExecutableArtifact
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<RTAArtifactLabel> labels) {
+  public void setLabels( @Nullable final List<RTAArtifactLabel> labels) {
     this.labels = labels;
   }
 
@@ -204,7 +204,7 @@ public class RTAExecutableArtifact
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAExecutableArtifact has no field with name '" + name + "'.");
     }

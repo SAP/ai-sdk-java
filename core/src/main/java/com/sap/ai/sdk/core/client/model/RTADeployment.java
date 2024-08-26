@@ -222,21 +222,21 @@ public class RTADeployment
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTADeployment() {  }
 
-   /**
-    * Set the scenarioId of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment scenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link RTADeployment} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -250,21 +250,21 @@ public class RTADeployment
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the executableId of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param executableId  ID of the executable
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment executableId(@Nonnull final String executableId) {
+  /**
+   * Set the executableId of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param executableId  ID of the executable
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment executableId( @Nonnull final String executableId) {
     this.executableId = executableId;
     return this;
   }
 
-   /**
-    * ID of the executable
-    * @return executableId  The executableId of this {@link RTADeployment} instance.
-    */
+  /**
+   * ID of the executable
+   * @return executableId  The executableId of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getExecutableId() {
     return executableId;
   }
@@ -278,21 +278,21 @@ public class RTADeployment
     this.executableId = executableId;
   }
 
-   /**
-    * Set the id of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param id  ID of the deployment
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param id  ID of the deployment
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment id( @Nullable final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the deployment
-    * @return id  The id of this {@link RTADeployment} instance.
-    */
+  /**
+   * ID of the deployment
+   * @return id  The id of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -302,25 +302,25 @@ public class RTADeployment
    *
    * @param id  ID of the deployment
    */
-  public void setId( @Nonnull final String id) {
+  public void setId( @Nullable final String id) {
     this.id = id;
   }
 
-   /**
-    * Set the deploymentUrl of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param deploymentUrl  Consumption URL of the pipeline deployment
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment deploymentUrl(@Nonnull final String deploymentUrl) {
+  /**
+   * Set the deploymentUrl of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param deploymentUrl  Consumption URL of the pipeline deployment
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment deploymentUrl( @Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
     return this;
   }
 
-   /**
-    * Consumption URL of the pipeline deployment
-    * @return deploymentUrl  The deploymentUrl of this {@link RTADeployment} instance.
-    */
+  /**
+   * Consumption URL of the pipeline deployment
+   * @return deploymentUrl  The deploymentUrl of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getDeploymentUrl() {
     return deploymentUrl;
   }
@@ -330,25 +330,25 @@ public class RTADeployment
    *
    * @param deploymentUrl  Consumption URL of the pipeline deployment
    */
-  public void setDeploymentUrl( @Nonnull final String deploymentUrl) {
+  public void setDeploymentUrl( @Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
   }
 
-   /**
-    * Set the latestRunningTargetId of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param latestRunningTargetId  Target ID of the latest running deployment
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment latestRunningTargetId(@Nonnull final String latestRunningTargetId) {
+  /**
+   * Set the latestRunningTargetId of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param latestRunningTargetId  Target ID of the latest running deployment
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment latestRunningTargetId( @Nullable final String latestRunningTargetId) {
     this.latestRunningTargetId = latestRunningTargetId;
     return this;
   }
 
-   /**
-    * Target ID of the latest running deployment
-    * @return latestRunningTargetId  The latestRunningTargetId of this {@link RTADeployment} instance.
-    */
+  /**
+   * Target ID of the latest running deployment
+   * @return latestRunningTargetId  The latestRunningTargetId of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getLatestRunningTargetId() {
     return latestRunningTargetId;
   }
@@ -358,25 +358,25 @@ public class RTADeployment
    *
    * @param latestRunningTargetId  Target ID of the latest running deployment
    */
-  public void setLatestRunningTargetId( @Nonnull final String latestRunningTargetId) {
+  public void setLatestRunningTargetId( @Nullable final String latestRunningTargetId) {
     this.latestRunningTargetId = latestRunningTargetId;
   }
 
-   /**
-    * Set the targetId of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param targetId  Client provided reference, with which the status of a PATCHed deployment can be tracked
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment targetId(@Nonnull final String targetId) {
+  /**
+   * Set the targetId of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param targetId  Client provided reference, with which the status of a PATCHed deployment can be tracked
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment targetId( @Nullable final String targetId) {
     this.targetId = targetId;
     return this;
   }
 
-   /**
-    * Client provided reference, with which the status of a PATCHed deployment can be tracked
-    * @return targetId  The targetId of this {@link RTADeployment} instance.
-    */
+  /**
+   * Client provided reference, with which the status of a PATCHed deployment can be tracked
+   * @return targetId  The targetId of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getTargetId() {
     return targetId;
   }
@@ -386,25 +386,25 @@ public class RTADeployment
    *
    * @param targetId  Client provided reference, with which the status of a PATCHed deployment can be tracked
    */
-  public void setTargetId( @Nonnull final String targetId) {
+  public void setTargetId( @Nullable final String targetId) {
     this.targetId = targetId;
   }
 
-   /**
-    * Set the ttl of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param ttl  TTL value of deployment
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment ttl(@Nonnull final String ttl) {
+  /**
+   * Set the ttl of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param ttl  TTL value of deployment
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment ttl( @Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
 
-   /**
-    * TTL value of deployment
-    * @return ttl  The ttl of this {@link RTADeployment} instance.
-    */
+  /**
+   * TTL value of deployment
+   * @return ttl  The ttl of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getTtl() {
     return ttl;
   }
@@ -414,25 +414,25 @@ public class RTADeployment
    *
    * @param ttl  TTL value of deployment
    */
-  public void setTtl( @Nonnull final String ttl) {
+  public void setTtl( @Nullable final String ttl) {
     this.ttl = ttl;
   }
 
-   /**
-    * Set the status of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param status  Deployment status
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment status(@Nonnull final StatusEnum status) {
+  /**
+   * Set the status of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param status  Deployment status
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment status( @Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Deployment status
-    * @return status  The status of this {@link RTADeployment} instance.
-    */
+  /**
+   * Deployment status
+   * @return status  The status of this {@link RTADeployment} instance.
+   */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
@@ -442,25 +442,25 @@ public class RTADeployment
    *
    * @param status  Deployment status
    */
-  public void setStatus( @Nonnull final StatusEnum status) {
+  public void setStatus( @Nullable final StatusEnum status) {
     this.status = status;
   }
 
-   /**
-    * Set the statusMessage of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param statusMessage  Deployment status message
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment statusMessage(@Nonnull final String statusMessage) {
+  /**
+   * Set the statusMessage of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param statusMessage  Deployment status message
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment statusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
-   /**
-    * Deployment status message
-    * @return statusMessage  The statusMessage of this {@link RTADeployment} instance.
-    */
+  /**
+   * Deployment status message
+   * @return statusMessage  The statusMessage of this {@link RTADeployment} instance.
+   */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
@@ -470,25 +470,25 @@ public class RTADeployment
    *
    * @param statusMessage  Deployment status message
    */
-  public void setStatusMessage( @Nonnull final String statusMessage) {
+  public void setStatusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
-   /**
-    * Set the lastOperation of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param lastOperation  Reflection of user&#39;s action on deployment. The value will be CREATE after user sends POST - create deployment, UPDATE after user sends PATCH - update deployment, and DELETE after user sends DELETE - delete deployment
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment lastOperation(@Nonnull final LastOperationEnum lastOperation) {
+  /**
+   * Set the lastOperation of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param lastOperation  Reflection of user&#39;s action on deployment. The value will be CREATE after user sends POST - create deployment, UPDATE after user sends PATCH - update deployment, and DELETE after user sends DELETE - delete deployment
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment lastOperation( @Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
     return this;
   }
 
-   /**
-    * Reflection of user&#39;s action on deployment. The value will be CREATE after user sends POST - create deployment, UPDATE after user sends PATCH - update deployment, and DELETE after user sends DELETE - delete deployment
-    * @return lastOperation  The lastOperation of this {@link RTADeployment} instance.
-    */
+  /**
+   * Reflection of user&#39;s action on deployment. The value will be CREATE after user sends POST - create deployment, UPDATE after user sends PATCH - update deployment, and DELETE after user sends DELETE - delete deployment
+   * @return lastOperation  The lastOperation of this {@link RTADeployment} instance.
+   */
   @Nonnull public LastOperationEnum getLastOperation() {
     return lastOperation;
   }
@@ -498,25 +498,25 @@ public class RTADeployment
    *
    * @param lastOperation  Reflection of user&#39;s action on deployment. The value will be CREATE after user sends POST - create deployment, UPDATE after user sends PATCH - update deployment, and DELETE after user sends DELETE - delete deployment
    */
-  public void setLastOperation( @Nonnull final LastOperationEnum lastOperation) {
+  public void setLastOperation( @Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
   }
 
-   /**
-    * Set the createdAt of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link RTADeployment} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link RTADeployment} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -530,21 +530,21 @@ public class RTADeployment
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link RTADeployment} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link RTADeployment} class
-    */
-   @Nonnull public RTADeployment modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link RTADeployment} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link RTADeployment} class
+   */
+  @Nonnull public RTADeployment modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link RTADeployment} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link RTADeployment} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -575,7 +575,7 @@ public class RTADeployment
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTADeployment has no field with name '" + name + "'.");
     }

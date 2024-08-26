@@ -78,21 +78,21 @@ public class AiConfiguration
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiConfiguration() {  }
 
-   /**
-    * Set the name of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param name  Name of the configuration
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param name  Name of the configuration
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the configuration
-    * @return name  The name of this {@link AiConfiguration} instance.
-    */
+  /**
+   * Name of the configuration
+   * @return name  The name of this {@link AiConfiguration} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -106,21 +106,21 @@ public class AiConfiguration
     this.name = name;
   }
 
-   /**
-    * Set the executableId of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param executableId  ID of the executable
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration executableId(@Nonnull final String executableId) {
+  /**
+   * Set the executableId of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param executableId  ID of the executable
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration executableId( @Nonnull final String executableId) {
     this.executableId = executableId;
     return this;
   }
 
-   /**
-    * ID of the executable
-    * @return executableId  The executableId of this {@link AiConfiguration} instance.
-    */
+  /**
+   * ID of the executable
+   * @return executableId  The executableId of this {@link AiConfiguration} instance.
+   */
   @Nonnull public String getExecutableId() {
     return executableId;
   }
@@ -134,21 +134,21 @@ public class AiConfiguration
     this.executableId = executableId;
   }
 
-   /**
-    * Set the scenarioId of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration scenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link AiConfiguration} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link AiConfiguration} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -162,13 +162,13 @@ public class AiConfiguration
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the parameterBindings of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param parameterBindings  The parameterBindings of this {@link AiConfiguration}
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration parameterBindings(@Nonnull final List<AiParameterArgumentBinding> parameterBindings) {
+  /**
+   * Set the parameterBindings of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param parameterBindings  The parameterBindings of this {@link AiConfiguration}
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration parameterBindings( @Nullable final List<AiParameterArgumentBinding> parameterBindings) {
     this.parameterBindings = parameterBindings;
     return this;
   }
@@ -185,10 +185,10 @@ public class AiConfiguration
     return this;
   }
 
-   /**
-    * Get parameterBindings
-    * @return parameterBindings  The parameterBindings of this {@link AiConfiguration} instance.
-    */
+  /**
+   * Get parameterBindings
+   * @return parameterBindings  The parameterBindings of this {@link AiConfiguration} instance.
+   */
   @Nonnull public List<AiParameterArgumentBinding> getParameterBindings() {
     return parameterBindings;
   }
@@ -198,17 +198,17 @@ public class AiConfiguration
    *
    * @param parameterBindings  The parameterBindings of this {@link AiConfiguration}
    */
-  public void setParameterBindings( @Nonnull final List<AiParameterArgumentBinding> parameterBindings) {
+  public void setParameterBindings( @Nullable final List<AiParameterArgumentBinding> parameterBindings) {
     this.parameterBindings = parameterBindings;
   }
 
-   /**
-    * Set the inputArtifactBindings of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param inputArtifactBindings  The inputArtifactBindings of this {@link AiConfiguration}
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration inputArtifactBindings(@Nonnull final List<AiArtifactArgumentBinding> inputArtifactBindings) {
+  /**
+   * Set the inputArtifactBindings of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param inputArtifactBindings  The inputArtifactBindings of this {@link AiConfiguration}
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration inputArtifactBindings( @Nullable final List<AiArtifactArgumentBinding> inputArtifactBindings) {
     this.inputArtifactBindings = inputArtifactBindings;
     return this;
   }
@@ -225,10 +225,10 @@ public class AiConfiguration
     return this;
   }
 
-   /**
-    * Get inputArtifactBindings
-    * @return inputArtifactBindings  The inputArtifactBindings of this {@link AiConfiguration} instance.
-    */
+  /**
+   * Get inputArtifactBindings
+   * @return inputArtifactBindings  The inputArtifactBindings of this {@link AiConfiguration} instance.
+   */
   @Nonnull public List<AiArtifactArgumentBinding> getInputArtifactBindings() {
     return inputArtifactBindings;
   }
@@ -238,25 +238,25 @@ public class AiConfiguration
    *
    * @param inputArtifactBindings  The inputArtifactBindings of this {@link AiConfiguration}
    */
-  public void setInputArtifactBindings( @Nonnull final List<AiArtifactArgumentBinding> inputArtifactBindings) {
+  public void setInputArtifactBindings( @Nullable final List<AiArtifactArgumentBinding> inputArtifactBindings) {
     this.inputArtifactBindings = inputArtifactBindings;
   }
 
-   /**
-    * Set the id of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param id  ID of the configuration
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param id  ID of the configuration
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return id  The id of this {@link AiConfiguration} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return id  The id of this {@link AiConfiguration} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -270,21 +270,21 @@ public class AiConfiguration
     this.id = id;
   }
 
-   /**
-    * Set the createdAt of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link AiConfiguration} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link AiConfiguration} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -298,22 +298,22 @@ public class AiConfiguration
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the scenario of this {@link AiConfiguration} instance and return the same instance.
-    *
-    * @param scenario  The scenario of this {@link AiConfiguration}
-    * @return The same instance of this {@link AiConfiguration} class
-    */
-   @Nonnull public AiConfiguration scenario(@Nonnull final AiScenario scenario) {
+  /**
+   * Set the scenario of this {@link AiConfiguration} instance and return the same instance.
+   *
+   * @param scenario  The scenario of this {@link AiConfiguration}
+   * @return The same instance of this {@link AiConfiguration} class
+   */
+  @Nonnull public AiConfiguration scenario( @Nullable final AiScenario scenario) {
     this.scenario = scenario;
     return this;
   }
 
-   /**
-    * Get scenario
-    * @return scenario  The scenario of this {@link AiConfiguration} instance.
-    */
-  @Nonnull public AiScenario getScenario() {
+  /**
+   * Get scenario
+   * @return scenario  The scenario of this {@link AiConfiguration} instance.
+   */
+  @Nullable public AiScenario getScenario() {
     return scenario;
   }
 
@@ -322,7 +322,7 @@ public class AiConfiguration
    *
    * @param scenario  The scenario of this {@link AiConfiguration}
    */
-  public void setScenario( @Nonnull final AiScenario scenario) {
+  public void setScenario( @Nullable final AiScenario scenario) {
     this.scenario = scenario;
   }
 
@@ -343,7 +343,7 @@ public class AiConfiguration
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiConfiguration has no field with name '" + name + "'.");
     }

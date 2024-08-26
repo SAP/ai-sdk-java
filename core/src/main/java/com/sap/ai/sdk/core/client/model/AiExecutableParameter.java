@@ -108,21 +108,21 @@ public class AiExecutableParameter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutableParameter() {  }
 
-   /**
-    * Set the name of this {@link AiExecutableParameter} instance and return the same instance.
-    *
-    * @param name  Name of the executable parameter
-    * @return The same instance of this {@link AiExecutableParameter} class
-    */
-   @Nonnull public AiExecutableParameter name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link AiExecutableParameter} instance and return the same instance.
+   *
+   * @param name  Name of the executable parameter
+   * @return The same instance of this {@link AiExecutableParameter} class
+   */
+  @Nonnull public AiExecutableParameter name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the executable parameter
-    * @return name  The name of this {@link AiExecutableParameter} instance.
-    */
+  /**
+   * Name of the executable parameter
+   * @return name  The name of this {@link AiExecutableParameter} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -136,21 +136,21 @@ public class AiExecutableParameter
     this.name = name;
   }
 
-   /**
-    * Set the description of this {@link AiExecutableParameter} instance and return the same instance.
-    *
-    * @param description  Description of the signature argument
-    * @return The same instance of this {@link AiExecutableParameter} class
-    */
-   @Nonnull public AiExecutableParameter description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link AiExecutableParameter} instance and return the same instance.
+   *
+   * @param description  Description of the signature argument
+   * @return The same instance of this {@link AiExecutableParameter} class
+   */
+  @Nonnull public AiExecutableParameter description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the signature argument
-    * @return description  The description of this {@link AiExecutableParameter} instance.
-    */
+  /**
+   * Description of the signature argument
+   * @return description  The description of this {@link AiExecutableParameter} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -160,25 +160,25 @@ public class AiExecutableParameter
    *
    * @param description  Description of the signature argument
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the _default of this {@link AiExecutableParameter} instance and return the same instance.
-    *
-    * @param _default  Default value of the signature argument
-    * @return The same instance of this {@link AiExecutableParameter} class
-    */
-   @Nonnull public AiExecutableParameter _default(@Nonnull final String _default) {
+  /**
+   * Set the _default of this {@link AiExecutableParameter} instance and return the same instance.
+   *
+   * @param _default  Default value of the signature argument
+   * @return The same instance of this {@link AiExecutableParameter} class
+   */
+  @Nonnull public AiExecutableParameter _default( @Nullable final String _default) {
     this._default = _default;
     return this;
   }
 
-   /**
-    * Default value of the signature argument
-    * @return _default  The _default of this {@link AiExecutableParameter} instance.
-    */
+  /**
+   * Default value of the signature argument
+   * @return _default  The _default of this {@link AiExecutableParameter} instance.
+   */
   @Nonnull public String getDefault() {
     return _default;
   }
@@ -188,25 +188,25 @@ public class AiExecutableParameter
    *
    * @param _default  Default value of the signature argument
    */
-  public void setDefault( @Nonnull final String _default) {
+  public void setDefault( @Nullable final String _default) {
     this._default = _default;
   }
 
-   /**
-    * Set the type of this {@link AiExecutableParameter} instance and return the same instance.
-    *
-    * @param type  Type of the executable parameter
-    * @return The same instance of this {@link AiExecutableParameter} class
-    */
-   @Nonnull public AiExecutableParameter type(@Nonnull final TypeEnum type) {
+  /**
+   * Set the type of this {@link AiExecutableParameter} instance and return the same instance.
+   *
+   * @param type  Type of the executable parameter
+   * @return The same instance of this {@link AiExecutableParameter} class
+   */
+  @Nonnull public AiExecutableParameter type( @Nullable final TypeEnum type) {
     this.type = type;
     return this;
   }
 
-   /**
-    * Type of the executable parameter
-    * @return type  The type of this {@link AiExecutableParameter} instance.
-    */
+  /**
+   * Type of the executable parameter
+   * @return type  The type of this {@link AiExecutableParameter} instance.
+   */
   @Nonnull public TypeEnum getType() {
     return type;
   }
@@ -216,7 +216,7 @@ public class AiExecutableParameter
    *
    * @param type  Type of the executable parameter
    */
-  public void setType( @Nonnull final TypeEnum type) {
+  public void setType( @Nullable final TypeEnum type) {
     this.type = type;
   }
 
@@ -237,7 +237,7 @@ public class AiExecutableParameter
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutableParameter has no field with name '" + name + "'.");
     }

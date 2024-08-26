@@ -56,21 +56,21 @@ public class AiArtifactCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiArtifactCreationResponse() {  }
 
-   /**
-    * Set the id of this {@link AiArtifactCreationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiArtifactCreationResponse} class
-    */
-   @Nonnull public AiArtifactCreationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiArtifactCreationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiArtifactCreationResponse} class
+   */
+  @Nonnull public AiArtifactCreationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiArtifactCreationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiArtifactCreationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -84,21 +84,21 @@ public class AiArtifactCreationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link AiArtifactCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link AiArtifactCreationResponse} class
-    */
-   @Nonnull public AiArtifactCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link AiArtifactCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link AiArtifactCreationResponse} class
+   */
+  @Nonnull public AiArtifactCreationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link AiArtifactCreationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link AiArtifactCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -112,21 +112,21 @@ public class AiArtifactCreationResponse
     this.message = message;
   }
 
-   /**
-    * Set the url of this {@link AiArtifactCreationResponse} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. 
-    * @return The same instance of this {@link AiArtifactCreationResponse} class
-    */
-   @Nonnull public AiArtifactCreationResponse url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link AiArtifactCreationResponse} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. 
+   * @return The same instance of this {@link AiArtifactCreationResponse} class
+   */
+  @Nonnull public AiArtifactCreationResponse url( @Nonnull final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * Reference to the location of the artifact. 
-    * @return url  The url of this {@link AiArtifactCreationResponse} instance.
-    */
+  /**
+   * Reference to the location of the artifact. 
+   * @return url  The url of this {@link AiArtifactCreationResponse} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -157,7 +157,7 @@ public class AiArtifactCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiArtifactCreationResponse has no field with name '" + name + "'.");
     }

@@ -54,13 +54,13 @@ public class AiExecutionBulkModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionBulkModificationResponse() {  }
 
-   /**
-    * Set the executions of this {@link AiExecutionBulkModificationResponse} instance and return the same instance.
-    *
-    * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
-    * @return The same instance of this {@link AiExecutionBulkModificationResponse} class
-    */
-   @Nonnull public AiExecutionBulkModificationResponse executions(@Nonnull final List<AiExecutionModificationResponseListInner> executions) {
+  /**
+   * Set the executions of this {@link AiExecutionBulkModificationResponse} instance and return the same instance.
+   *
+   * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
+   * @return The same instance of this {@link AiExecutionBulkModificationResponse} class
+   */
+  @Nonnull public AiExecutionBulkModificationResponse executions( @Nullable final List<AiExecutionModificationResponseListInner> executions) {
     this.executions = executions;
     return this;
   }
@@ -77,10 +77,10 @@ public class AiExecutionBulkModificationResponse
     return this;
   }
 
-   /**
-    * Get executions
-    * @return executions  The executions of this {@link AiExecutionBulkModificationResponse} instance.
-    */
+  /**
+   * Get executions
+   * @return executions  The executions of this {@link AiExecutionBulkModificationResponse} instance.
+   */
   @Nonnull public List<AiExecutionModificationResponseListInner> getExecutions() {
     return executions;
   }
@@ -90,7 +90,7 @@ public class AiExecutionBulkModificationResponse
    *
    * @param executions  The executions of this {@link AiExecutionBulkModificationResponse}
    */
-  public void setExecutions( @Nonnull final List<AiExecutionModificationResponseListInner> executions) {
+  public void setExecutions( @Nullable final List<AiExecutionModificationResponseListInner> executions) {
     this.executions = executions;
   }
 
@@ -111,7 +111,7 @@ public class AiExecutionBulkModificationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionBulkModificationResponse has no field with name '" + name + "'.");
     }

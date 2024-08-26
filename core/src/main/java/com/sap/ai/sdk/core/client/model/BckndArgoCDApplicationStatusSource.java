@@ -56,21 +56,21 @@ public class BckndArgoCDApplicationStatusSource
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDApplicationStatusSource() {  }
 
-   /**
-    * Set the repoURL of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
-    *
-    * @param repoURL  URL of the repository
-    * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
-    */
-   @Nonnull public BckndArgoCDApplicationStatusSource repoURL(@Nonnull final String repoURL) {
+  /**
+   * Set the repoURL of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
+   *
+   * @param repoURL  URL of the repository
+   * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
+   */
+  @Nonnull public BckndArgoCDApplicationStatusSource repoURL( @Nullable final String repoURL) {
     this.repoURL = repoURL;
     return this;
   }
 
-   /**
-    * URL of the repository
-    * @return repoURL  The repoURL of this {@link BckndArgoCDApplicationStatusSource} instance.
-    */
+  /**
+   * URL of the repository
+   * @return repoURL  The repoURL of this {@link BckndArgoCDApplicationStatusSource} instance.
+   */
   @Nonnull public String getRepoURL() {
     return repoURL;
   }
@@ -80,25 +80,25 @@ public class BckndArgoCDApplicationStatusSource
    *
    * @param repoURL  URL of the repository
    */
-  public void setRepoURL( @Nonnull final String repoURL) {
+  public void setRepoURL( @Nullable final String repoURL) {
     this.repoURL = repoURL;
   }
 
-   /**
-    * Set the path of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
-    *
-    * @param path  Path of the repository
-    * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
-    */
-   @Nonnull public BckndArgoCDApplicationStatusSource path(@Nonnull final String path) {
+  /**
+   * Set the path of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
+   *
+   * @param path  Path of the repository
+   * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
+   */
+  @Nonnull public BckndArgoCDApplicationStatusSource path( @Nullable final String path) {
     this.path = path;
     return this;
   }
 
-   /**
-    * Path of the repository
-    * @return path  The path of this {@link BckndArgoCDApplicationStatusSource} instance.
-    */
+  /**
+   * Path of the repository
+   * @return path  The path of this {@link BckndArgoCDApplicationStatusSource} instance.
+   */
   @Nonnull public String getPath() {
     return path;
   }
@@ -108,25 +108,25 @@ public class BckndArgoCDApplicationStatusSource
    *
    * @param path  Path of the repository
    */
-  public void setPath( @Nonnull final String path) {
+  public void setPath( @Nullable final String path) {
     this.path = path;
   }
 
-   /**
-    * Set the revision of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
-    *
-    * @param revision  Revision number of the ArgoCD application
-    * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
-    */
-   @Nonnull public BckndArgoCDApplicationStatusSource revision(@Nonnull final String revision) {
+  /**
+   * Set the revision of this {@link BckndArgoCDApplicationStatusSource} instance and return the same instance.
+   *
+   * @param revision  Revision number of the ArgoCD application
+   * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
+   */
+  @Nonnull public BckndArgoCDApplicationStatusSource revision( @Nullable final String revision) {
     this.revision = revision;
     return this;
   }
 
-   /**
-    * Revision number of the ArgoCD application
-    * @return revision  The revision of this {@link BckndArgoCDApplicationStatusSource} instance.
-    */
+  /**
+   * Revision number of the ArgoCD application
+   * @return revision  The revision of this {@link BckndArgoCDApplicationStatusSource} instance.
+   */
   @Nonnull public String getRevision() {
     return revision;
   }
@@ -136,7 +136,7 @@ public class BckndArgoCDApplicationStatusSource
    *
    * @param revision  Revision number of the ArgoCD application
    */
-  public void setRevision( @Nonnull final String revision) {
+  public void setRevision( @Nullable final String revision) {
     this.revision = revision;
   }
 
@@ -157,7 +157,7 @@ public class BckndArgoCDApplicationStatusSource
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDApplicationStatusSource has no field with name '" + name + "'.");
     }

@@ -99,21 +99,21 @@ public class AiExecutionModificationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionModificationRequest() {  }
 
-   /**
-    * Set the targetStatus of this {@link AiExecutionModificationRequest} instance and return the same instance.
-    *
-    * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
-    * @return The same instance of this {@link AiExecutionModificationRequest} class
-    */
-   @Nonnull public AiExecutionModificationRequest targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  /**
+   * Set the targetStatus of this {@link AiExecutionModificationRequest} instance and return the same instance.
+   *
+   * @param targetStatus  Desired target status of the execution (currently only STOPPED is supported)
+   * @return The same instance of this {@link AiExecutionModificationRequest} class
+   */
+  @Nonnull public AiExecutionModificationRequest targetStatus( @Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
-   /**
-    * Desired target status of the execution (currently only STOPPED is supported)
-    * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequest} instance.
-    */
+  /**
+   * Desired target status of the execution (currently only STOPPED is supported)
+   * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequest} instance.
+   */
   @Nonnull public TargetStatusEnum getTargetStatus() {
     return targetStatus;
   }
@@ -144,7 +144,7 @@ public class AiExecutionModificationRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionModificationRequest has no field with name '" + name + "'.");
     }

@@ -56,21 +56,21 @@ public class RTAInputArtifactArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAInputArtifactArgumentBinding() {  }
 
-   /**
-    * Set the name of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
-    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
-    */
-   @Nonnull public RTAInputArtifactArgumentBinding name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param name  The name of this {@link RTAInputArtifactArgumentBinding}
+   * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
+   */
+  @Nonnull public RTAInputArtifactArgumentBinding name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Get name
-    * @return name  The name of this {@link RTAInputArtifactArgumentBinding} instance.
-    */
+  /**
+   * Get name
+   * @return name  The name of this {@link RTAInputArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -84,21 +84,21 @@ public class RTAInputArtifactArgumentBinding
     this.name = name;
   }
 
-   /**
-    * Set the url of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
-    */
-   @Nonnull public RTAInputArtifactArgumentBinding url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
+   */
+  @Nonnull public RTAInputArtifactArgumentBinding url( @Nonnull final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return url  The url of this {@link RTAInputArtifactArgumentBinding} instance.
-    */
+  /**
+   * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return url  The url of this {@link RTAInputArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -112,21 +112,21 @@ public class RTAInputArtifactArgumentBinding
     this.url = url;
   }
 
-   /**
-    * Set the signature of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
-    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
-    */
-   @Nonnull public RTAInputArtifactArgumentBinding signature(@Nonnull final String signature) {
+  /**
+   * Set the signature of this {@link RTAInputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
+   * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
+   */
+  @Nonnull public RTAInputArtifactArgumentBinding signature( @Nullable final String signature) {
     this.signature = signature;
     return this;
   }
 
-   /**
-    * Get signature
-    * @return signature  The signature of this {@link RTAInputArtifactArgumentBinding} instance.
-    */
+  /**
+   * Get signature
+   * @return signature  The signature of this {@link RTAInputArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getSignature() {
     return signature;
   }
@@ -136,7 +136,7 @@ public class RTAInputArtifactArgumentBinding
    *
    * @param signature  The signature of this {@link RTAInputArtifactArgumentBinding}
    */
-  public void setSignature( @Nonnull final String signature) {
+  public void setSignature( @Nullable final String signature) {
     this.signature = signature;
   }
 
@@ -157,7 +157,7 @@ public class RTAInputArtifactArgumentBinding
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAInputArtifactArgumentBinding has no field with name '" + name + "'.");
     }

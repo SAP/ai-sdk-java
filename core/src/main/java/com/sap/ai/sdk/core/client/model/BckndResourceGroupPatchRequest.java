@@ -54,13 +54,13 @@ public class BckndResourceGroupPatchRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGroupPatchRequest() {  }
 
-   /**
-    * Set the labels of this {@link BckndResourceGroupPatchRequest} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link BckndResourceGroupPatchRequest} class
-    */
-   @Nonnull public BckndResourceGroupPatchRequest labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  /**
+   * Set the labels of this {@link BckndResourceGroupPatchRequest} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndResourceGroupPatchRequest} class
+   */
+  @Nonnull public BckndResourceGroupPatchRequest labels( @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -77,10 +77,10 @@ public class BckndResourceGroupPatchRequest
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link BckndResourceGroupPatchRequest} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link BckndResourceGroupPatchRequest} instance.
+   */
   @Nonnull public List<BckndResourceGroupLabel> getLabels() {
     return labels;
   }
@@ -90,7 +90,7 @@ public class BckndResourceGroupPatchRequest
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<BckndResourceGroupLabel> labels) {
+  public void setLabels( @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 
@@ -111,7 +111,7 @@ public class BckndResourceGroupPatchRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGroupPatchRequest has no field with name '" + name + "'.");
     }

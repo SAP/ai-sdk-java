@@ -107,21 +107,21 @@ public class AiExecutionModificationRequestWithIdentifier
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionModificationRequestWithIdentifier() {  }
 
-   /**
-    * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
-    *
-    * @param id  ID of the execution
-    * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
-    */
-   @Nonnull public AiExecutionModificationRequestWithIdentifier id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
+   *
+   * @param id  ID of the execution
+   * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
+   */
+  @Nonnull public AiExecutionModificationRequestWithIdentifier id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the execution
-    * @return id  The id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
-    */
+  /**
+   * ID of the execution
+   * @return id  The id of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -135,21 +135,21 @@ public class AiExecutionModificationRequestWithIdentifier
     this.id = id;
   }
 
-   /**
-    * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
-    *
-    * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
-    * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
-    */
-   @Nonnull public AiExecutionModificationRequestWithIdentifier targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  /**
+   * Set the targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance and return the same instance.
+   *
+   * @param targetStatus  Desired target status of the execution (currently STOPPED and DELETED are supported)
+   * @return The same instance of this {@link AiExecutionModificationRequestWithIdentifier} class
+   */
+  @Nonnull public AiExecutionModificationRequestWithIdentifier targetStatus( @Nonnull final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
 
-   /**
-    * Desired target status of the execution (currently STOPPED and DELETED are supported)
-    * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
-    */
+  /**
+   * Desired target status of the execution (currently STOPPED and DELETED are supported)
+   * @return targetStatus  The targetStatus of this {@link AiExecutionModificationRequestWithIdentifier} instance.
+   */
   @Nonnull public TargetStatusEnum getTargetStatus() {
     return targetStatus;
   }
@@ -180,7 +180,7 @@ public class AiExecutionModificationRequestWithIdentifier
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionModificationRequestWithIdentifier has no field with name '" + name + "'.");
     }

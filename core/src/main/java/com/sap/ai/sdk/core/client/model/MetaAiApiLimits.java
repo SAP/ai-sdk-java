@@ -59,21 +59,21 @@ public class MetaAiApiLimits
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAiApiLimits() {  }
 
-   /**
-    * Set the executions of this {@link MetaAiApiLimits} instance and return the same instance.
-    *
-    * @param executions  The executions of this {@link MetaAiApiLimits}
-    * @return The same instance of this {@link MetaAiApiLimits} class
-    */
-   @Nonnull public MetaAiApiLimits executions(@Nonnull final MetaAiApiLimitsExecutions executions) {
+  /**
+   * Set the executions of this {@link MetaAiApiLimits} instance and return the same instance.
+   *
+   * @param executions  The executions of this {@link MetaAiApiLimits}
+   * @return The same instance of this {@link MetaAiApiLimits} class
+   */
+  @Nonnull public MetaAiApiLimits executions( @Nullable final MetaAiApiLimitsExecutions executions) {
     this.executions = executions;
     return this;
   }
 
-   /**
-    * Get executions
-    * @return executions  The executions of this {@link MetaAiApiLimits} instance.
-    */
+  /**
+   * Get executions
+   * @return executions  The executions of this {@link MetaAiApiLimits} instance.
+   */
   @Nonnull public MetaAiApiLimitsExecutions getExecutions() {
     return executions;
   }
@@ -83,25 +83,25 @@ public class MetaAiApiLimits
    *
    * @param executions  The executions of this {@link MetaAiApiLimits}
    */
-  public void setExecutions( @Nonnull final MetaAiApiLimitsExecutions executions) {
+  public void setExecutions( @Nullable final MetaAiApiLimitsExecutions executions) {
     this.executions = executions;
   }
 
-   /**
-    * Set the deployments of this {@link MetaAiApiLimits} instance and return the same instance.
-    *
-    * @param deployments  The deployments of this {@link MetaAiApiLimits}
-    * @return The same instance of this {@link MetaAiApiLimits} class
-    */
-   @Nonnull public MetaAiApiLimits deployments(@Nonnull final MetaAiApiLimitsDeployments deployments) {
+  /**
+   * Set the deployments of this {@link MetaAiApiLimits} instance and return the same instance.
+   *
+   * @param deployments  The deployments of this {@link MetaAiApiLimits}
+   * @return The same instance of this {@link MetaAiApiLimits} class
+   */
+  @Nonnull public MetaAiApiLimits deployments( @Nullable final MetaAiApiLimitsDeployments deployments) {
     this.deployments = deployments;
     return this;
   }
 
-   /**
-    * Get deployments
-    * @return deployments  The deployments of this {@link MetaAiApiLimits} instance.
-    */
+  /**
+   * Get deployments
+   * @return deployments  The deployments of this {@link MetaAiApiLimits} instance.
+   */
   @Nonnull public MetaAiApiLimitsDeployments getDeployments() {
     return deployments;
   }
@@ -111,25 +111,25 @@ public class MetaAiApiLimits
    *
    * @param deployments  The deployments of this {@link MetaAiApiLimits}
    */
-  public void setDeployments( @Nonnull final MetaAiApiLimitsDeployments deployments) {
+  public void setDeployments( @Nullable final MetaAiApiLimitsDeployments deployments) {
     this.deployments = deployments;
   }
 
-   /**
-    * Set the timeToLiveDeployments of this {@link MetaAiApiLimits} instance and return the same instance.
-    *
-    * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
-    * @return The same instance of this {@link MetaAiApiLimits} class
-    */
-   @Nonnull public MetaAiApiLimits timeToLiveDeployments(@Nonnull final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
+  /**
+   * Set the timeToLiveDeployments of this {@link MetaAiApiLimits} instance and return the same instance.
+   *
+   * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
+   * @return The same instance of this {@link MetaAiApiLimits} class
+   */
+  @Nonnull public MetaAiApiLimits timeToLiveDeployments( @Nullable final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
     return this;
   }
 
-   /**
-    * Get timeToLiveDeployments
-    * @return timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits} instance.
-    */
+  /**
+   * Get timeToLiveDeployments
+   * @return timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits} instance.
+   */
   @Nonnull public MetaAiApiLimitsTimeToLiveDeployments getTimeToLiveDeployments() {
     return timeToLiveDeployments;
   }
@@ -139,7 +139,7 @@ public class MetaAiApiLimits
    *
    * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiLimits}
    */
-  public void setTimeToLiveDeployments( @Nonnull final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
+  public void setTimeToLiveDeployments( @Nullable final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
   }
 
@@ -160,7 +160,7 @@ public class MetaAiApiLimits
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAiApiLimits has no field with name '" + name + "'.");
     }

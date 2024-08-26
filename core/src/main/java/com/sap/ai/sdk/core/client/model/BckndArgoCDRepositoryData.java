@@ -59,21 +59,21 @@ public class BckndArgoCDRepositoryData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDRepositoryData() {  }
 
-   /**
-    * Set the name of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
-    *
-    * @param name  Name of the repository
-    * @return The same instance of this {@link BckndArgoCDRepositoryData} class
-    */
-   @Nonnull public BckndArgoCDRepositoryData name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
+   *
+   * @param name  Name of the repository
+   * @return The same instance of this {@link BckndArgoCDRepositoryData} class
+   */
+  @Nonnull public BckndArgoCDRepositoryData name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the repository
-    * @return name  The name of this {@link BckndArgoCDRepositoryData} instance.
-    */
+  /**
+   * Name of the repository
+   * @return name  The name of this {@link BckndArgoCDRepositoryData} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -83,25 +83,25 @@ public class BckndArgoCDRepositoryData
    *
    * @param name  Name of the repository
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
-   /**
-    * Set the url of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
-    *
-    * @param url  URL of the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDRepositoryData} class
-    */
-   @Nonnull public BckndArgoCDRepositoryData url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
+   *
+   * @param url  URL of the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDRepositoryData} class
+   */
+  @Nonnull public BckndArgoCDRepositoryData url( @Nonnull final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * URL of the repository to synchronise
-    * @return url  The url of this {@link BckndArgoCDRepositoryData} instance.
-    */
+  /**
+   * URL of the repository to synchronise
+   * @return url  The url of this {@link BckndArgoCDRepositoryData} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -115,21 +115,21 @@ public class BckndArgoCDRepositoryData
     this.url = url;
   }
 
-   /**
-    * Set the username of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
-    *
-    * @param username  Username for read-access to the repository
-    * @return The same instance of this {@link BckndArgoCDRepositoryData} class
-    */
-   @Nonnull public BckndArgoCDRepositoryData username(@Nonnull final String username) {
+  /**
+   * Set the username of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
+   *
+   * @param username  Username for read-access to the repository
+   * @return The same instance of this {@link BckndArgoCDRepositoryData} class
+   */
+  @Nonnull public BckndArgoCDRepositoryData username( @Nonnull final String username) {
     this.username = username;
     return this;
   }
 
-   /**
-    * Username for read-access to the repository
-    * @return username  The username of this {@link BckndArgoCDRepositoryData} instance.
-    */
+  /**
+   * Username for read-access to the repository
+   * @return username  The username of this {@link BckndArgoCDRepositoryData} instance.
+   */
   @Nonnull public String getUsername() {
     return username;
   }
@@ -143,21 +143,21 @@ public class BckndArgoCDRepositoryData
     this.username = username;
   }
 
-   /**
-    * Set the password of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
-    *
-    * @param password  Password for read-access to the repository
-    * @return The same instance of this {@link BckndArgoCDRepositoryData} class
-    */
-   @Nonnull public BckndArgoCDRepositoryData password(@Nonnull final String password) {
+  /**
+   * Set the password of this {@link BckndArgoCDRepositoryData} instance and return the same instance.
+   *
+   * @param password  Password for read-access to the repository
+   * @return The same instance of this {@link BckndArgoCDRepositoryData} class
+   */
+  @Nonnull public BckndArgoCDRepositoryData password( @Nonnull final String password) {
     this.password = password;
     return this;
   }
 
-   /**
-    * Password for read-access to the repository
-    * @return password  The password of this {@link BckndArgoCDRepositoryData} instance.
-    */
+  /**
+   * Password for read-access to the repository
+   * @return password  The password of this {@link BckndArgoCDRepositoryData} instance.
+   */
   @Nonnull public String getPassword() {
     return password;
   }
@@ -188,7 +188,7 @@ public class BckndArgoCDRepositoryData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDRepositoryData has no field with name '" + name + "'.");
     }

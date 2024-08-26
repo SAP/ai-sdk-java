@@ -51,21 +51,21 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceServiceCatalogItemExtendCredentialsShared() {  }
 
-   /**
-    * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance and return the same instance.
-    *
-    * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} class
-    */
-   @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsShared serviceUrls(@Nonnull final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
+  /**
+   * Set the serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance and return the same instance.
+   *
+   * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} class
+   */
+  @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsShared serviceUrls( @Nullable final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
     this.serviceUrls = serviceUrls;
     return this;
   }
 
-   /**
-    * Get serviceUrls
-    * @return serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance.
-    */
+  /**
+   * Get serviceUrls
+   * @return serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared} instance.
+   */
   @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls getServiceUrls() {
     return serviceUrls;
   }
@@ -75,7 +75,7 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
    *
    * @param serviceUrls  The serviceUrls of this {@link BckndServiceServiceCatalogItemExtendCredentialsShared}
    */
-  public void setServiceUrls( @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
+  public void setServiceUrls( @Nullable final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
     this.serviceUrls = serviceUrls;
   }
 
@@ -96,7 +96,7 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceServiceCatalogItemExtendCredentialsShared has no field with name '" + name + "'.");
     }

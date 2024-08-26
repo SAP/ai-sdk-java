@@ -50,21 +50,21 @@ public class MetaAiApiLimitsDeployments
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAiApiLimitsDeployments() {  }
 
-   /**
-    * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance and return the same instance.
-    *
-    * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
-    * @return The same instance of this {@link MetaAiApiLimitsDeployments} class
-    */
-   @Nonnull public MetaAiApiLimitsDeployments maxRunningCount(@Nonnull final Integer maxRunningCount) {
+  /**
+   * Set the maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance and return the same instance.
+   *
+   * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
+   * @return The same instance of this {@link MetaAiApiLimitsDeployments} class
+   */
+  @Nonnull public MetaAiApiLimitsDeployments maxRunningCount( @Nullable final Integer maxRunningCount) {
     this.maxRunningCount = maxRunningCount;
     return this;
   }
 
-   /**
-    * Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
-    * @return maxRunningCount  The maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance.
-    */
+  /**
+   * Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
+   * @return maxRunningCount  The maxRunningCount of this {@link MetaAiApiLimitsDeployments} instance.
+   */
   @Nonnull public Integer getMaxRunningCount() {
     return maxRunningCount;
   }
@@ -74,7 +74,7 @@ public class MetaAiApiLimitsDeployments
    *
    * @param maxRunningCount  Max nr of deployments allowed by this runtime per resource group. &lt;0 means unlimited.
    */
-  public void setMaxRunningCount( @Nonnull final Integer maxRunningCount) {
+  public void setMaxRunningCount( @Nullable final Integer maxRunningCount) {
     this.maxRunningCount = maxRunningCount;
   }
 
@@ -95,7 +95,7 @@ public class MetaAiApiLimitsDeployments
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAiApiLimitsDeployments has no field with name '" + name + "'.");
     }

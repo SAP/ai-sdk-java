@@ -56,21 +56,21 @@ public class MetaExtensionsDatasetCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensionsDatasetCapabilities() {  }
 
-   /**
-    * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
-    *
-    * @param upload  Support for uploading of files
-    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
-    */
-   @Nonnull public MetaExtensionsDatasetCapabilities upload(@Nonnull final Boolean upload) {
+  /**
+   * Set the upload of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
+   *
+   * @param upload  Support for uploading of files
+   * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
+   */
+  @Nonnull public MetaExtensionsDatasetCapabilities upload( @Nullable final Boolean upload) {
     this.upload = upload;
     return this;
   }
 
-   /**
-    * Support for uploading of files
-    * @return upload  The upload of this {@link MetaExtensionsDatasetCapabilities} instance.
-    */
+  /**
+   * Support for uploading of files
+   * @return upload  The upload of this {@link MetaExtensionsDatasetCapabilities} instance.
+   */
   @Nonnull public Boolean isUpload() {
     return upload;
   }
@@ -80,25 +80,25 @@ public class MetaExtensionsDatasetCapabilities
    *
    * @param upload  Support for uploading of files
    */
-  public void setUpload( @Nonnull final Boolean upload) {
+  public void setUpload( @Nullable final Boolean upload) {
     this.upload = upload;
   }
 
-   /**
-    * Set the download of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
-    *
-    * @param download  Support for downloading of files
-    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
-    */
-   @Nonnull public MetaExtensionsDatasetCapabilities download(@Nonnull final Boolean download) {
+  /**
+   * Set the download of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
+   *
+   * @param download  Support for downloading of files
+   * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
+   */
+  @Nonnull public MetaExtensionsDatasetCapabilities download( @Nullable final Boolean download) {
     this.download = download;
     return this;
   }
 
-   /**
-    * Support for downloading of files
-    * @return download  The download of this {@link MetaExtensionsDatasetCapabilities} instance.
-    */
+  /**
+   * Support for downloading of files
+   * @return download  The download of this {@link MetaExtensionsDatasetCapabilities} instance.
+   */
   @Nonnull public Boolean isDownload() {
     return download;
   }
@@ -108,25 +108,25 @@ public class MetaExtensionsDatasetCapabilities
    *
    * @param download  Support for downloading of files
    */
-  public void setDownload( @Nonnull final Boolean download) {
+  public void setDownload( @Nullable final Boolean download) {
     this.download = download;
   }
 
-   /**
-    * Set the delete of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
-    *
-    * @param delete  Support for deletion of files
-    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
-    */
-   @Nonnull public MetaExtensionsDatasetCapabilities delete(@Nonnull final Boolean delete) {
+  /**
+   * Set the delete of this {@link MetaExtensionsDatasetCapabilities} instance and return the same instance.
+   *
+   * @param delete  Support for deletion of files
+   * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
+   */
+  @Nonnull public MetaExtensionsDatasetCapabilities delete( @Nullable final Boolean delete) {
     this.delete = delete;
     return this;
   }
 
-   /**
-    * Support for deletion of files
-    * @return delete  The delete of this {@link MetaExtensionsDatasetCapabilities} instance.
-    */
+  /**
+   * Support for deletion of files
+   * @return delete  The delete of this {@link MetaExtensionsDatasetCapabilities} instance.
+   */
   @Nonnull public Boolean isDelete() {
     return delete;
   }
@@ -136,7 +136,7 @@ public class MetaExtensionsDatasetCapabilities
    *
    * @param delete  Support for deletion of files
    */
-  public void setDelete( @Nonnull final Boolean delete) {
+  public void setDelete( @Nullable final Boolean delete) {
     this.delete = delete;
   }
 
@@ -157,7 +157,7 @@ public class MetaExtensionsDatasetCapabilities
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensionsDatasetCapabilities has no field with name '" + name + "'.");
     }

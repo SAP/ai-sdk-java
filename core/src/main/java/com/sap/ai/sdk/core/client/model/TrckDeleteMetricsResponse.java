@@ -54,21 +54,21 @@ public class TrckDeleteMetricsResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckDeleteMetricsResponse() {  }
 
-   /**
-    * Set the id of this {@link TrckDeleteMetricsResponse} instance and return the same instance.
-    *
-    * @param id  The id of this {@link TrckDeleteMetricsResponse}
-    * @return The same instance of this {@link TrckDeleteMetricsResponse} class
-    */
-   @Nonnull public TrckDeleteMetricsResponse id(@Nonnull final TrckExecutionId id) {
+  /**
+   * Set the id of this {@link TrckDeleteMetricsResponse} instance and return the same instance.
+   *
+   * @param id  The id of this {@link TrckDeleteMetricsResponse}
+   * @return The same instance of this {@link TrckDeleteMetricsResponse} class
+   */
+  @Nonnull public TrckDeleteMetricsResponse id( @Nullable final TrckExecutionId id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Get id
-    * @return id  The id of this {@link TrckDeleteMetricsResponse} instance.
-    */
+  /**
+   * Get id
+   * @return id  The id of this {@link TrckDeleteMetricsResponse} instance.
+   */
   @Nonnull public TrckExecutionId getId() {
     return id;
   }
@@ -78,25 +78,25 @@ public class TrckDeleteMetricsResponse
    *
    * @param id  The id of this {@link TrckDeleteMetricsResponse}
    */
-  public void setId( @Nonnull final TrckExecutionId id) {
+  public void setId( @Nullable final TrckExecutionId id) {
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link TrckDeleteMetricsResponse} instance and return the same instance.
-    *
-    * @param message  The message of this {@link TrckDeleteMetricsResponse}
-    * @return The same instance of this {@link TrckDeleteMetricsResponse} class
-    */
-   @Nonnull public TrckDeleteMetricsResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link TrckDeleteMetricsResponse} instance and return the same instance.
+   *
+   * @param message  The message of this {@link TrckDeleteMetricsResponse}
+   * @return The same instance of this {@link TrckDeleteMetricsResponse} class
+   */
+  @Nonnull public TrckDeleteMetricsResponse message( @Nullable final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Get message
-    * @return message  The message of this {@link TrckDeleteMetricsResponse} instance.
-    */
+  /**
+   * Get message
+   * @return message  The message of this {@link TrckDeleteMetricsResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -106,7 +106,7 @@ public class TrckDeleteMetricsResponse
    *
    * @param message  The message of this {@link TrckDeleteMetricsResponse}
    */
-  public void setMessage( @Nonnull final String message) {
+  public void setMessage( @Nullable final String message) {
     this.message = message;
   }
 
@@ -127,7 +127,7 @@ public class TrckDeleteMetricsResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckDeleteMetricsResponse has no field with name '" + name + "'.");
     }

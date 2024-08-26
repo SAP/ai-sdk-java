@@ -59,21 +59,21 @@ public class BckndArgoCDApplicationDataRepoName
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDApplicationDataRepoName() {  }
 
-   /**
-    * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-    *
-    * @param repositoryName  Name of the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-    */
-   @Nonnull public BckndArgoCDApplicationDataRepoName repositoryName(@Nonnull final String repositoryName) {
+  /**
+   * Set the repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+   *
+   * @param repositoryName  Name of the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+   */
+  @Nonnull public BckndArgoCDApplicationDataRepoName repositoryName( @Nonnull final String repositoryName) {
     this.repositoryName = repositoryName;
     return this;
   }
 
-   /**
-    * Name of the repository to synchronise
-    * @return repositoryName  The repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-    */
+  /**
+   * Name of the repository to synchronise
+   * @return repositoryName  The repositoryName of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   */
   @Nonnull public String getRepositoryName() {
     return repositoryName;
   }
@@ -87,21 +87,21 @@ public class BckndArgoCDApplicationDataRepoName
     this.repositoryName = repositoryName;
   }
 
-   /**
-    * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-    *
-    * @param revision  revision to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-    */
-   @Nonnull public BckndArgoCDApplicationDataRepoName revision(@Nonnull final String revision) {
+  /**
+   * Set the revision of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+   *
+   * @param revision  revision to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+   */
+  @Nonnull public BckndArgoCDApplicationDataRepoName revision( @Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
 
-   /**
-    * revision to synchronise
-    * @return revision  The revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
-    */
+  /**
+   * revision to synchronise
+   * @return revision  The revision of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   */
   @Nonnull public String getRevision() {
     return revision;
   }
@@ -115,21 +115,21 @@ public class BckndArgoCDApplicationDataRepoName
     this.revision = revision;
   }
 
-   /**
-    * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-    *
-    * @param path  path within the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-    */
-   @Nonnull public BckndArgoCDApplicationDataRepoName path(@Nonnull final String path) {
+  /**
+   * Set the path of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+   *
+   * @param path  path within the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+   */
+  @Nonnull public BckndArgoCDApplicationDataRepoName path( @Nonnull final String path) {
     this.path = path;
     return this;
   }
 
-   /**
-    * path within the repository to synchronise
-    * @return path  The path of this {@link BckndArgoCDApplicationDataRepoName} instance.
-    */
+  /**
+   * path within the repository to synchronise
+   * @return path  The path of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   */
   @Nonnull public String getPath() {
     return path;
   }
@@ -143,21 +143,21 @@ public class BckndArgoCDApplicationDataRepoName
     this.path = path;
   }
 
-   /**
-    * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
-    *
-    * @param applicationName  ArgoCD application name
-    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
-    */
-   @Nonnull public BckndArgoCDApplicationDataRepoName applicationName(@Nonnull final String applicationName) {
+  /**
+   * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance and return the same instance.
+   *
+   * @param applicationName  ArgoCD application name
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
+   */
+  @Nonnull public BckndArgoCDApplicationDataRepoName applicationName( @Nullable final String applicationName) {
     this.applicationName = applicationName;
     return this;
   }
 
-   /**
-    * ArgoCD application name
-    * @return applicationName  The applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
-    */
+  /**
+   * ArgoCD application name
+   * @return applicationName  The applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
+   */
   @Nonnull public String getApplicationName() {
     return applicationName;
   }
@@ -167,7 +167,7 @@ public class BckndArgoCDApplicationDataRepoName
    *
    * @param applicationName  ArgoCD application name
    */
-  public void setApplicationName( @Nonnull final String applicationName) {
+  public void setApplicationName( @Nullable final String applicationName) {
     this.applicationName = applicationName;
   }
 
@@ -188,7 +188,7 @@ public class BckndArgoCDApplicationDataRepoName
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDApplicationDataRepoName has no field with name '" + name + "'.");
     }

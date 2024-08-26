@@ -57,21 +57,21 @@ public class AiExecutionCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionCreationResponse() {  }
 
-   /**
-    * Set the id of this {@link AiExecutionCreationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiExecutionCreationResponse} class
-    */
-   @Nonnull public AiExecutionCreationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiExecutionCreationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiExecutionCreationResponse} class
+   */
+  @Nonnull public AiExecutionCreationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiExecutionCreationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiExecutionCreationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -85,21 +85,21 @@ public class AiExecutionCreationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link AiExecutionCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link AiExecutionCreationResponse} class
-    */
-   @Nonnull public AiExecutionCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link AiExecutionCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link AiExecutionCreationResponse} class
+   */
+  @Nonnull public AiExecutionCreationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link AiExecutionCreationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link AiExecutionCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -113,21 +113,21 @@ public class AiExecutionCreationResponse
     this.message = message;
   }
 
-   /**
-    * Set the status of this {@link AiExecutionCreationResponse} instance and return the same instance.
-    *
-    * @param status  The status of this {@link AiExecutionCreationResponse}
-    * @return The same instance of this {@link AiExecutionCreationResponse} class
-    */
-   @Nonnull public AiExecutionCreationResponse status(@Nonnull final AiExecutionStatus status) {
+  /**
+   * Set the status of this {@link AiExecutionCreationResponse} instance and return the same instance.
+   *
+   * @param status  The status of this {@link AiExecutionCreationResponse}
+   * @return The same instance of this {@link AiExecutionCreationResponse} class
+   */
+  @Nonnull public AiExecutionCreationResponse status( @Nullable final AiExecutionStatus status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Get status
-    * @return status  The status of this {@link AiExecutionCreationResponse} instance.
-    */
+  /**
+   * Get status
+   * @return status  The status of this {@link AiExecutionCreationResponse} instance.
+   */
   @Nonnull public AiExecutionStatus getStatus() {
     return status;
   }
@@ -137,7 +137,7 @@ public class AiExecutionCreationResponse
    *
    * @param status  The status of this {@link AiExecutionCreationResponse}
    */
-  public void setStatus( @Nonnull final AiExecutionStatus status) {
+  public void setStatus( @Nullable final AiExecutionStatus status) {
     this.status = status;
   }
 
@@ -158,7 +158,7 @@ public class AiExecutionCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionCreationResponse has no field with name '" + name + "'.");
     }

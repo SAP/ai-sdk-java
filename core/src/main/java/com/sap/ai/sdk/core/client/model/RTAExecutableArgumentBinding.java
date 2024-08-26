@@ -53,21 +53,21 @@ public class RTAExecutableArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAExecutableArgumentBinding() {  }
 
-   /**
-    * Set the key of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
-    *
-    * @param key  The key of this {@link RTAExecutableArgumentBinding}
-    * @return The same instance of this {@link RTAExecutableArgumentBinding} class
-    */
-   @Nonnull public RTAExecutableArgumentBinding key(@Nonnull final String key) {
+  /**
+   * Set the key of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
+   *
+   * @param key  The key of this {@link RTAExecutableArgumentBinding}
+   * @return The same instance of this {@link RTAExecutableArgumentBinding} class
+   */
+  @Nonnull public RTAExecutableArgumentBinding key( @Nonnull final String key) {
     this.key = key;
     return this;
   }
 
-   /**
-    * Get key
-    * @return key  The key of this {@link RTAExecutableArgumentBinding} instance.
-    */
+  /**
+   * Get key
+   * @return key  The key of this {@link RTAExecutableArgumentBinding} instance.
+   */
   @Nonnull public String getKey() {
     return key;
   }
@@ -81,21 +81,21 @@ public class RTAExecutableArgumentBinding
     this.key = key;
   }
 
-   /**
-    * Set the value of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
-    *
-    * @param value  The value of this {@link RTAExecutableArgumentBinding}
-    * @return The same instance of this {@link RTAExecutableArgumentBinding} class
-    */
-   @Nonnull public RTAExecutableArgumentBinding value(@Nonnull final String value) {
+  /**
+   * Set the value of this {@link RTAExecutableArgumentBinding} instance and return the same instance.
+   *
+   * @param value  The value of this {@link RTAExecutableArgumentBinding}
+   * @return The same instance of this {@link RTAExecutableArgumentBinding} class
+   */
+  @Nonnull public RTAExecutableArgumentBinding value( @Nonnull final String value) {
     this.value = value;
     return this;
   }
 
-   /**
-    * Get value
-    * @return value  The value of this {@link RTAExecutableArgumentBinding} instance.
-    */
+  /**
+   * Get value
+   * @return value  The value of this {@link RTAExecutableArgumentBinding} instance.
+   */
   @Nonnull public String getValue() {
     return value;
   }
@@ -126,7 +126,7 @@ public class RTAExecutableArgumentBinding
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAExecutableArgumentBinding has no field with name '" + name + "'.");
     }

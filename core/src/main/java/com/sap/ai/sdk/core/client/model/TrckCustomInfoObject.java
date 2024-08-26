@@ -54,21 +54,21 @@ public class TrckCustomInfoObject
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckCustomInfoObject() {  }
 
-   /**
-    * Set the name of this {@link TrckCustomInfoObject} instance and return the same instance.
-    *
-    * @param name  The name of this {@link TrckCustomInfoObject}
-    * @return The same instance of this {@link TrckCustomInfoObject} class
-    */
-   @Nonnull public TrckCustomInfoObject name(@Nonnull final TrckTagName name) {
+  /**
+   * Set the name of this {@link TrckCustomInfoObject} instance and return the same instance.
+   *
+   * @param name  The name of this {@link TrckCustomInfoObject}
+   * @return The same instance of this {@link TrckCustomInfoObject} class
+   */
+  @Nonnull public TrckCustomInfoObject name( @Nonnull final TrckTagName name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Get name
-    * @return name  The name of this {@link TrckCustomInfoObject} instance.
-    */
+  /**
+   * Get name
+   * @return name  The name of this {@link TrckCustomInfoObject} instance.
+   */
   @Nonnull public TrckTagName getName() {
     return name;
   }
@@ -82,21 +82,21 @@ public class TrckCustomInfoObject
     this.name = name;
   }
 
-   /**
-    * Set the value of this {@link TrckCustomInfoObject} instance and return the same instance.
-    *
-    * @param value  Message
-    * @return The same instance of this {@link TrckCustomInfoObject} class
-    */
-   @Nonnull public TrckCustomInfoObject value(@Nonnull final String value) {
+  /**
+   * Set the value of this {@link TrckCustomInfoObject} instance and return the same instance.
+   *
+   * @param value  Message
+   * @return The same instance of this {@link TrckCustomInfoObject} class
+   */
+  @Nonnull public TrckCustomInfoObject value( @Nonnull final String value) {
     this.value = value;
     return this;
   }
 
-   /**
-    * Message
-    * @return value  The value of this {@link TrckCustomInfoObject} instance.
-    */
+  /**
+   * Message
+   * @return value  The value of this {@link TrckCustomInfoObject} instance.
+   */
   @Nonnull public String getValue() {
     return value;
   }
@@ -127,7 +127,7 @@ public class TrckCustomInfoObject
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckCustomInfoObject has no field with name '" + name + "'.");
     }

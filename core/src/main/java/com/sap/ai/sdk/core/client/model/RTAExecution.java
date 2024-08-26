@@ -157,21 +157,21 @@ public class RTAExecution
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAExecution() {  }
 
-   /**
-    * Set the scenarioId of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution scenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link RTAExecution} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link RTAExecution} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -185,21 +185,21 @@ public class RTAExecution
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the executableId of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param executableId  ID of the executable
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution executableId(@Nonnull final String executableId) {
+  /**
+   * Set the executableId of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param executableId  ID of the executable
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution executableId( @Nonnull final String executableId) {
     this.executableId = executableId;
     return this;
   }
 
-   /**
-    * ID of the executable
-    * @return executableId  The executableId of this {@link RTAExecution} instance.
-    */
+  /**
+   * ID of the executable
+   * @return executableId  The executableId of this {@link RTAExecution} instance.
+   */
   @Nonnull public String getExecutableId() {
     return executableId;
   }
@@ -213,21 +213,21 @@ public class RTAExecution
     this.executableId = executableId;
   }
 
-   /**
-    * Set the id of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param id  ID of the execution
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param id  ID of the execution
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution id( @Nullable final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the execution
-    * @return id  The id of this {@link RTAExecution} instance.
-    */
+  /**
+   * ID of the execution
+   * @return id  The id of this {@link RTAExecution} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -237,25 +237,25 @@ public class RTAExecution
    *
    * @param id  ID of the execution
    */
-  public void setId( @Nonnull final String id) {
+  public void setId( @Nullable final String id) {
     this.id = id;
   }
 
-   /**
-    * Set the status of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param status  Status of the execution
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution status(@Nonnull final StatusEnum status) {
+  /**
+   * Set the status of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param status  Status of the execution
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution status( @Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Status of the execution
-    * @return status  The status of this {@link RTAExecution} instance.
-    */
+  /**
+   * Status of the execution
+   * @return status  The status of this {@link RTAExecution} instance.
+   */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
@@ -265,25 +265,25 @@ public class RTAExecution
    *
    * @param status  Status of the execution
    */
-  public void setStatus( @Nonnull final StatusEnum status) {
+  public void setStatus( @Nullable final StatusEnum status) {
     this.status = status;
   }
 
-   /**
-    * Set the statusMessage of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param statusMessage  Execution status message
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution statusMessage(@Nonnull final String statusMessage) {
+  /**
+   * Set the statusMessage of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param statusMessage  Execution status message
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution statusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
-   /**
-    * Execution status message
-    * @return statusMessage  The statusMessage of this {@link RTAExecution} instance.
-    */
+  /**
+   * Execution status message
+   * @return statusMessage  The statusMessage of this {@link RTAExecution} instance.
+   */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
@@ -293,26 +293,26 @@ public class RTAExecution
    *
    * @param statusMessage  Execution status message
    */
-  public void setStatusMessage( @Nonnull final String statusMessage) {
+  public void setStatusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
-   /**
-    * Set the submissionTimestamp of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param submissionTimestamp  Timestamp of execution submission
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution submissionTimestamp(@Nonnull final OffsetDateTime submissionTimestamp) {
+  /**
+   * Set the submissionTimestamp of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param submissionTimestamp  Timestamp of execution submission
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution submissionTimestamp( @Nullable final OffsetDateTime submissionTimestamp) {
     this.submissionTimestamp = submissionTimestamp;
     return this;
   }
 
-   /**
-    * Timestamp of execution submission
-    * @return submissionTimestamp  The submissionTimestamp of this {@link RTAExecution} instance.
-    */
-  @Nonnull public OffsetDateTime getSubmissionTimestamp() {
+  /**
+   * Timestamp of execution submission
+   * @return submissionTimestamp  The submissionTimestamp of this {@link RTAExecution} instance.
+   */
+  @Nullable public OffsetDateTime getSubmissionTimestamp() {
     return submissionTimestamp;
   }
 
@@ -321,26 +321,26 @@ public class RTAExecution
    *
    * @param submissionTimestamp  Timestamp of execution submission
    */
-  public void setSubmissionTimestamp( @Nonnull final OffsetDateTime submissionTimestamp) {
+  public void setSubmissionTimestamp( @Nullable final OffsetDateTime submissionTimestamp) {
     this.submissionTimestamp = submissionTimestamp;
   }
 
-   /**
-    * Set the startTimestamp of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param startTimestamp  Timestamp of execution start
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution startTimestamp(@Nonnull final OffsetDateTime startTimestamp) {
+  /**
+   * Set the startTimestamp of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param startTimestamp  Timestamp of execution start
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution startTimestamp( @Nullable final OffsetDateTime startTimestamp) {
     this.startTimestamp = startTimestamp;
     return this;
   }
 
-   /**
-    * Timestamp of execution start
-    * @return startTimestamp  The startTimestamp of this {@link RTAExecution} instance.
-    */
-  @Nonnull public OffsetDateTime getStartTimestamp() {
+  /**
+   * Timestamp of execution start
+   * @return startTimestamp  The startTimestamp of this {@link RTAExecution} instance.
+   */
+  @Nullable public OffsetDateTime getStartTimestamp() {
     return startTimestamp;
   }
 
@@ -349,26 +349,26 @@ public class RTAExecution
    *
    * @param startTimestamp  Timestamp of execution start
    */
-  public void setStartTimestamp( @Nonnull final OffsetDateTime startTimestamp) {
+  public void setStartTimestamp( @Nullable final OffsetDateTime startTimestamp) {
     this.startTimestamp = startTimestamp;
   }
 
-   /**
-    * Set the finishTimestamp of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param finishTimestamp  Timestamp of execution finish
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution finishTimestamp(@Nonnull final OffsetDateTime finishTimestamp) {
+  /**
+   * Set the finishTimestamp of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param finishTimestamp  Timestamp of execution finish
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution finishTimestamp( @Nullable final OffsetDateTime finishTimestamp) {
     this.finishTimestamp = finishTimestamp;
     return this;
   }
 
-   /**
-    * Timestamp of execution finish
-    * @return finishTimestamp  The finishTimestamp of this {@link RTAExecution} instance.
-    */
-  @Nonnull public OffsetDateTime getFinishTimestamp() {
+  /**
+   * Timestamp of execution finish
+   * @return finishTimestamp  The finishTimestamp of this {@link RTAExecution} instance.
+   */
+  @Nullable public OffsetDateTime getFinishTimestamp() {
     return finishTimestamp;
   }
 
@@ -377,25 +377,25 @@ public class RTAExecution
    *
    * @param finishTimestamp  Timestamp of execution finish
    */
-  public void setFinishTimestamp( @Nonnull final OffsetDateTime finishTimestamp) {
+  public void setFinishTimestamp( @Nullable final OffsetDateTime finishTimestamp) {
     this.finishTimestamp = finishTimestamp;
   }
 
-   /**
-    * Set the createdAt of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link RTAExecution} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link RTAExecution} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -409,21 +409,21 @@ public class RTAExecution
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link RTAExecution} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link RTAExecution} class
-    */
-   @Nonnull public RTAExecution modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link RTAExecution} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link RTAExecution} class
+   */
+  @Nonnull public RTAExecution modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link RTAExecution} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link RTAExecution} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -454,7 +454,7 @@ public class RTAExecution
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAExecution has no field with name '" + name + "'.");
     }

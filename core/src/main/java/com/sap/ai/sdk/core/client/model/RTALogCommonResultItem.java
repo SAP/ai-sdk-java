@@ -54,21 +54,21 @@ public class RTALogCommonResultItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTALogCommonResultItem() {  }
 
-   /**
-    * Set the timestamp of this {@link RTALogCommonResultItem} instance and return the same instance.
-    *
-    * @param timestamp  Datetime in RFC 3339.
-    * @return The same instance of this {@link RTALogCommonResultItem} class
-    */
-   @Nonnull public RTALogCommonResultItem timestamp(@Nonnull final OffsetDateTime timestamp) {
+  /**
+   * Set the timestamp of this {@link RTALogCommonResultItem} instance and return the same instance.
+   *
+   * @param timestamp  Datetime in RFC 3339.
+   * @return The same instance of this {@link RTALogCommonResultItem} class
+   */
+  @Nonnull public RTALogCommonResultItem timestamp( @Nullable final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
 
-   /**
-    * Datetime in RFC 3339.
-    * @return timestamp  The timestamp of this {@link RTALogCommonResultItem} instance.
-    */
+  /**
+   * Datetime in RFC 3339.
+   * @return timestamp  The timestamp of this {@link RTALogCommonResultItem} instance.
+   */
   @Nonnull public OffsetDateTime getTimestamp() {
     return timestamp;
   }
@@ -78,25 +78,25 @@ public class RTALogCommonResultItem
    *
    * @param timestamp  Datetime in RFC 3339.
    */
-  public void setTimestamp( @Nonnull final OffsetDateTime timestamp) {
+  public void setTimestamp( @Nullable final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
-   /**
-    * Set the msg of this {@link RTALogCommonResultItem} instance and return the same instance.
-    *
-    * @param msg  message content.
-    * @return The same instance of this {@link RTALogCommonResultItem} class
-    */
-   @Nonnull public RTALogCommonResultItem msg(@Nonnull final String msg) {
+  /**
+   * Set the msg of this {@link RTALogCommonResultItem} instance and return the same instance.
+   *
+   * @param msg  message content.
+   * @return The same instance of this {@link RTALogCommonResultItem} class
+   */
+  @Nonnull public RTALogCommonResultItem msg( @Nullable final String msg) {
     this.msg = msg;
     return this;
   }
 
-   /**
-    * message content.
-    * @return msg  The msg of this {@link RTALogCommonResultItem} instance.
-    */
+  /**
+   * message content.
+   * @return msg  The msg of this {@link RTALogCommonResultItem} instance.
+   */
   @Nonnull public String getMsg() {
     return msg;
   }
@@ -106,7 +106,7 @@ public class RTALogCommonResultItem
    *
    * @param msg  message content.
    */
-  public void setMsg( @Nonnull final String msg) {
+  public void setMsg( @Nullable final String msg) {
     this.msg = msg;
   }
 
@@ -127,7 +127,7 @@ public class RTALogCommonResultItem
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTALogCommonResultItem has no field with name '" + name + "'.");
     }

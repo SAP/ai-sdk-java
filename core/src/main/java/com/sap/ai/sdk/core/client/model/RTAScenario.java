@@ -70,21 +70,21 @@ public class RTAScenario
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAScenario() {  }
 
-   /**
-    * Set the id of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param id  ID of the scenario
-    * @return The same instance of this {@link RTAScenario} class
-    */
-   @Nonnull public RTAScenario id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param id  ID of the scenario
+   * @return The same instance of this {@link RTAScenario} class
+   */
+  @Nonnull public RTAScenario id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return id  The id of this {@link RTAScenario} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return id  The id of this {@link RTAScenario} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -98,21 +98,21 @@ public class RTAScenario
     this.id = id;
   }
 
-   /**
-    * Set the name of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param name  Name of the scenario
-    * @return The same instance of this {@link RTAScenario} class
-    */
-   @Nonnull public RTAScenario name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param name  Name of the scenario
+   * @return The same instance of this {@link RTAScenario} class
+   */
+  @Nonnull public RTAScenario name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the scenario
-    * @return name  The name of this {@link RTAScenario} instance.
-    */
+  /**
+   * Name of the scenario
+   * @return name  The name of this {@link RTAScenario} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -126,21 +126,21 @@ public class RTAScenario
     this.name = name;
   }
 
-   /**
-    * Set the description of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param description  Description of the scenario
-    * @return The same instance of this {@link RTAScenario} class
-    */
-   @Nonnull public RTAScenario description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param description  Description of the scenario
+   * @return The same instance of this {@link RTAScenario} class
+   */
+  @Nonnull public RTAScenario description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the scenario
-    * @return description  The description of this {@link RTAScenario} instance.
-    */
+  /**
+   * Description of the scenario
+   * @return description  The description of this {@link RTAScenario} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -150,17 +150,17 @@ public class RTAScenario
    *
    * @param description  Description of the scenario
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the labels of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link RTAScenario} class
-    */
-   @Nonnull public RTAScenario labels(@Nonnull final List<RTALabel> labels) {
+  /**
+   * Set the labels of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link RTAScenario} class
+   */
+  @Nonnull public RTAScenario labels( @Nullable final List<RTALabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -177,10 +177,10 @@ public class RTAScenario
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link RTAScenario} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link RTAScenario} instance.
+   */
   @Nonnull public List<RTALabel> getLabels() {
     return labels;
   }
@@ -190,25 +190,25 @@ public class RTAScenario
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<RTALabel> labels) {
+  public void setLabels( @Nullable final List<RTALabel> labels) {
     this.labels = labels;
   }
 
-   /**
-    * Set the createdAt of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link RTAScenario} class
-    */
-   @Nonnull public RTAScenario createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link RTAScenario} class
+   */
+  @Nonnull public RTAScenario createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link RTAScenario} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link RTAScenario} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -222,21 +222,21 @@ public class RTAScenario
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link RTAScenario} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link RTAScenario} class
-    */
-   @Nonnull public RTAScenario modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link RTAScenario} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link RTAScenario} class
+   */
+  @Nonnull public RTAScenario modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link RTAScenario} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link RTAScenario} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -267,7 +267,7 @@ public class RTAScenario
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAScenario has no field with name '" + name + "'.");
     }

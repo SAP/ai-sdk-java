@@ -55,21 +55,21 @@ public class BckndServiceServiceCatalogItem
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceServiceCatalogItem() {  }
 
-   /**
-    * Set the extendCatalog of this {@link BckndServiceServiceCatalogItem} instance and return the same instance.
-    *
-    * @param extendCatalog  The extendCatalog of this {@link BckndServiceServiceCatalogItem}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItem} class
-    */
-   @Nonnull public BckndServiceServiceCatalogItem extendCatalog(@Nonnull final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
+  /**
+   * Set the extendCatalog of this {@link BckndServiceServiceCatalogItem} instance and return the same instance.
+   *
+   * @param extendCatalog  The extendCatalog of this {@link BckndServiceServiceCatalogItem}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItem} class
+   */
+  @Nonnull public BckndServiceServiceCatalogItem extendCatalog( @Nullable final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
     this.extendCatalog = extendCatalog;
     return this;
   }
 
-   /**
-    * Get extendCatalog
-    * @return extendCatalog  The extendCatalog of this {@link BckndServiceServiceCatalogItem} instance.
-    */
+  /**
+   * Get extendCatalog
+   * @return extendCatalog  The extendCatalog of this {@link BckndServiceServiceCatalogItem} instance.
+   */
   @Nonnull public BckndServiceServiceCatalogItemExtendCatalog getExtendCatalog() {
     return extendCatalog;
   }
@@ -79,25 +79,25 @@ public class BckndServiceServiceCatalogItem
    *
    * @param extendCatalog  The extendCatalog of this {@link BckndServiceServiceCatalogItem}
    */
-  public void setExtendCatalog( @Nonnull final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
+  public void setExtendCatalog( @Nullable final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
     this.extendCatalog = extendCatalog;
   }
 
-   /**
-    * Set the extendCredentials of this {@link BckndServiceServiceCatalogItem} instance and return the same instance.
-    *
-    * @param extendCredentials  The extendCredentials of this {@link BckndServiceServiceCatalogItem}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItem} class
-    */
-   @Nonnull public BckndServiceServiceCatalogItem extendCredentials(@Nonnull final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
+  /**
+   * Set the extendCredentials of this {@link BckndServiceServiceCatalogItem} instance and return the same instance.
+   *
+   * @param extendCredentials  The extendCredentials of this {@link BckndServiceServiceCatalogItem}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItem} class
+   */
+  @Nonnull public BckndServiceServiceCatalogItem extendCredentials( @Nullable final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
     this.extendCredentials = extendCredentials;
     return this;
   }
 
-   /**
-    * Get extendCredentials
-    * @return extendCredentials  The extendCredentials of this {@link BckndServiceServiceCatalogItem} instance.
-    */
+  /**
+   * Get extendCredentials
+   * @return extendCredentials  The extendCredentials of this {@link BckndServiceServiceCatalogItem} instance.
+   */
   @Nonnull public BckndServiceServiceCatalogItemExtendCredentials getExtendCredentials() {
     return extendCredentials;
   }
@@ -107,7 +107,7 @@ public class BckndServiceServiceCatalogItem
    *
    * @param extendCredentials  The extendCredentials of this {@link BckndServiceServiceCatalogItem}
    */
-  public void setExtendCredentials( @Nonnull final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
+  public void setExtendCredentials( @Nullable final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
     this.extendCredentials = extendCredentials;
   }
 
@@ -128,7 +128,7 @@ public class BckndServiceServiceCatalogItem
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceServiceCatalogItem has no field with name '" + name + "'.");
     }

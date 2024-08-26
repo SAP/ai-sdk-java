@@ -57,21 +57,21 @@ public class BckndResourceGroupsPostRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGroupsPostRequest() {  }
 
-   /**
-    * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
-    *
-    * @param resourceGroupId  resource group id
-    * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
-    */
-   @Nonnull public BckndResourceGroupsPostRequest resourceGroupId(@Nonnull final String resourceGroupId) {
+  /**
+   * Set the resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
+   *
+   * @param resourceGroupId  resource group id
+   * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
+   */
+  @Nonnull public BckndResourceGroupsPostRequest resourceGroupId( @Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
 
-   /**
-    * resource group id
-    * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance.
-    */
+  /**
+   * resource group id
+   * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupsPostRequest} instance.
+   */
   @Nonnull public String getResourceGroupId() {
     return resourceGroupId;
   }
@@ -81,17 +81,17 @@ public class BckndResourceGroupsPostRequest
    *
    * @param resourceGroupId  resource group id
    */
-  public void setResourceGroupId( @Nonnull final String resourceGroupId) {
+  public void setResourceGroupId( @Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
-   /**
-    * Set the labels of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
-    */
-   @Nonnull public BckndResourceGroupsPostRequest labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  /**
+   * Set the labels of this {@link BckndResourceGroupsPostRequest} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
+   */
+  @Nonnull public BckndResourceGroupsPostRequest labels( @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -108,10 +108,10 @@ public class BckndResourceGroupsPostRequest
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link BckndResourceGroupsPostRequest} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link BckndResourceGroupsPostRequest} instance.
+   */
   @Nonnull public List<BckndResourceGroupLabel> getLabels() {
     return labels;
   }
@@ -121,7 +121,7 @@ public class BckndResourceGroupsPostRequest
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<BckndResourceGroupLabel> labels) {
+  public void setLabels( @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 
@@ -142,7 +142,7 @@ public class BckndResourceGroupsPostRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGroupsPostRequest has no field with name '" + name + "'.");
     }

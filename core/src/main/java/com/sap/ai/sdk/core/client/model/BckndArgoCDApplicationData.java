@@ -59,21 +59,21 @@ public class BckndArgoCDApplicationData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDApplicationData() {  }
 
-   /**
-    * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance and return the same instance.
-    *
-    * @param repositoryUrl  URL of the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationData} class
-    */
-   @Nonnull public BckndArgoCDApplicationData repositoryUrl(@Nonnull final String repositoryUrl) {
+  /**
+   * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance and return the same instance.
+   *
+   * @param repositoryUrl  URL of the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   */
+  @Nonnull public BckndArgoCDApplicationData repositoryUrl( @Nonnull final String repositoryUrl) {
     this.repositoryUrl = repositoryUrl;
     return this;
   }
 
-   /**
-    * URL of the repository to synchronise
-    * @return repositoryUrl  The repositoryUrl of this {@link BckndArgoCDApplicationData} instance.
-    */
+  /**
+   * URL of the repository to synchronise
+   * @return repositoryUrl  The repositoryUrl of this {@link BckndArgoCDApplicationData} instance.
+   */
   @Nonnull public String getRepositoryUrl() {
     return repositoryUrl;
   }
@@ -87,21 +87,21 @@ public class BckndArgoCDApplicationData
     this.repositoryUrl = repositoryUrl;
   }
 
-   /**
-    * Set the revision of this {@link BckndArgoCDApplicationData} instance and return the same instance.
-    *
-    * @param revision  revision to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationData} class
-    */
-   @Nonnull public BckndArgoCDApplicationData revision(@Nonnull final String revision) {
+  /**
+   * Set the revision of this {@link BckndArgoCDApplicationData} instance and return the same instance.
+   *
+   * @param revision  revision to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   */
+  @Nonnull public BckndArgoCDApplicationData revision( @Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
 
-   /**
-    * revision to synchronise
-    * @return revision  The revision of this {@link BckndArgoCDApplicationData} instance.
-    */
+  /**
+   * revision to synchronise
+   * @return revision  The revision of this {@link BckndArgoCDApplicationData} instance.
+   */
   @Nonnull public String getRevision() {
     return revision;
   }
@@ -115,21 +115,21 @@ public class BckndArgoCDApplicationData
     this.revision = revision;
   }
 
-   /**
-    * Set the path of this {@link BckndArgoCDApplicationData} instance and return the same instance.
-    *
-    * @param path  path within the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationData} class
-    */
-   @Nonnull public BckndArgoCDApplicationData path(@Nonnull final String path) {
+  /**
+   * Set the path of this {@link BckndArgoCDApplicationData} instance and return the same instance.
+   *
+   * @param path  path within the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   */
+  @Nonnull public BckndArgoCDApplicationData path( @Nonnull final String path) {
     this.path = path;
     return this;
   }
 
-   /**
-    * path within the repository to synchronise
-    * @return path  The path of this {@link BckndArgoCDApplicationData} instance.
-    */
+  /**
+   * path within the repository to synchronise
+   * @return path  The path of this {@link BckndArgoCDApplicationData} instance.
+   */
   @Nonnull public String getPath() {
     return path;
   }
@@ -143,21 +143,21 @@ public class BckndArgoCDApplicationData
     this.path = path;
   }
 
-   /**
-    * Set the applicationName of this {@link BckndArgoCDApplicationData} instance and return the same instance.
-    *
-    * @param applicationName  ArgoCD application name
-    * @return The same instance of this {@link BckndArgoCDApplicationData} class
-    */
-   @Nonnull public BckndArgoCDApplicationData applicationName(@Nonnull final String applicationName) {
+  /**
+   * Set the applicationName of this {@link BckndArgoCDApplicationData} instance and return the same instance.
+   *
+   * @param applicationName  ArgoCD application name
+   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   */
+  @Nonnull public BckndArgoCDApplicationData applicationName( @Nullable final String applicationName) {
     this.applicationName = applicationName;
     return this;
   }
 
-   /**
-    * ArgoCD application name
-    * @return applicationName  The applicationName of this {@link BckndArgoCDApplicationData} instance.
-    */
+  /**
+   * ArgoCD application name
+   * @return applicationName  The applicationName of this {@link BckndArgoCDApplicationData} instance.
+   */
   @Nonnull public String getApplicationName() {
     return applicationName;
   }
@@ -167,7 +167,7 @@ public class BckndArgoCDApplicationData
    *
    * @param applicationName  ArgoCD application name
    */
-  public void setApplicationName( @Nonnull final String applicationName) {
+  public void setApplicationName( @Nullable final String applicationName) {
     this.applicationName = applicationName;
   }
 
@@ -188,7 +188,7 @@ public class BckndArgoCDApplicationData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDApplicationData has no field with name '" + name + "'.");
     }

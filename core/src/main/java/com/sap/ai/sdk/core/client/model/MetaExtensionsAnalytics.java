@@ -50,21 +50,21 @@ public class MetaExtensionsAnalytics
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensionsAnalytics() {  }
 
-   /**
-    * Set the version of this {@link MetaExtensionsAnalytics} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaExtensionsAnalytics}
-    * @return The same instance of this {@link MetaExtensionsAnalytics} class
-    */
-   @Nonnull public MetaExtensionsAnalytics version(@Nonnull final String version) {
+  /**
+   * Set the version of this {@link MetaExtensionsAnalytics} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaExtensionsAnalytics}
+   * @return The same instance of this {@link MetaExtensionsAnalytics} class
+   */
+  @Nonnull public MetaExtensionsAnalytics version( @Nonnull final String version) {
     this.version = version;
     return this;
   }
 
-   /**
-    * Get version
-    * @return version  The version of this {@link MetaExtensionsAnalytics} instance.
-    */
+  /**
+   * Get version
+   * @return version  The version of this {@link MetaExtensionsAnalytics} instance.
+   */
   @Nonnull public String getVersion() {
     return version;
   }
@@ -95,7 +95,7 @@ public class MetaExtensionsAnalytics
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensionsAnalytics has no field with name '" + name + "'.");
     }

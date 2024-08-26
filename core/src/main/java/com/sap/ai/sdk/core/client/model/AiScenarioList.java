@@ -57,21 +57,21 @@ public class AiScenarioList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiScenarioList() {  }
 
-   /**
-    * Set the count of this {@link AiScenarioList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiScenarioList} class
-    */
-   @Nonnull public AiScenarioList count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link AiScenarioList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiScenarioList} class
+   */
+  @Nonnull public AiScenarioList count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiScenarioList} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiScenarioList} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class AiScenarioList
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link AiScenarioList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiScenarioList}
-    * @return The same instance of this {@link AiScenarioList} class
-    */
-   @Nonnull public AiScenarioList resources(@Nonnull final List<AiScenario> resources) {
+  /**
+   * Set the resources of this {@link AiScenarioList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiScenarioList}
+   * @return The same instance of this {@link AiScenarioList} class
+   */
+  @Nonnull public AiScenarioList resources( @Nonnull final List<AiScenario> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class AiScenarioList
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link AiScenarioList} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link AiScenarioList} instance.
+   */
   @Nonnull public List<AiScenario> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class AiScenarioList
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiScenarioList has no field with name '" + name + "'.");
     }

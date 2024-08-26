@@ -63,21 +63,21 @@ public class AiExecutableArtifact
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutableArtifact() {  }
 
-   /**
-    * Set the name of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param name  Name of the executable input artifacts
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
-   @Nonnull public AiExecutableArtifact name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param name  Name of the executable input artifacts
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
+  @Nonnull public AiExecutableArtifact name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the executable input artifacts
-    * @return name  The name of this {@link AiExecutableArtifact} instance.
-    */
+  /**
+   * Name of the executable input artifacts
+   * @return name  The name of this {@link AiExecutableArtifact} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -91,21 +91,21 @@ public class AiExecutableArtifact
     this.name = name;
   }
 
-   /**
-    * Set the kind of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param kind  Artifact kind (model, dataset, other)
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
-   @Nonnull public AiExecutableArtifact kind(@Nonnull final String kind) {
+  /**
+   * Set the kind of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param kind  Artifact kind (model, dataset, other)
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
+  @Nonnull public AiExecutableArtifact kind( @Nullable final String kind) {
     this.kind = kind;
     return this;
   }
 
-   /**
-    * Artifact kind (model, dataset, other)
-    * @return kind  The kind of this {@link AiExecutableArtifact} instance.
-    */
+  /**
+   * Artifact kind (model, dataset, other)
+   * @return kind  The kind of this {@link AiExecutableArtifact} instance.
+   */
   @Nonnull public String getKind() {
     return kind;
   }
@@ -115,25 +115,25 @@ public class AiExecutableArtifact
    *
    * @param kind  Artifact kind (model, dataset, other)
    */
-  public void setKind( @Nonnull final String kind) {
+  public void setKind( @Nullable final String kind) {
     this.kind = kind;
   }
 
-   /**
-    * Set the description of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param description  Description of the signature argument
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
-   @Nonnull public AiExecutableArtifact description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param description  Description of the signature argument
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
+  @Nonnull public AiExecutableArtifact description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the signature argument
-    * @return description  The description of this {@link AiExecutableArtifact} instance.
-    */
+  /**
+   * Description of the signature argument
+   * @return description  The description of this {@link AiExecutableArtifact} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -143,17 +143,17 @@ public class AiExecutableArtifact
    *
    * @param description  Description of the signature argument
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the labels of this {@link AiExecutableArtifact} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link AiExecutableArtifact} class
-    */
-   @Nonnull public AiExecutableArtifact labels(@Nonnull final List<AiLabel> labels) {
+  /**
+   * Set the labels of this {@link AiExecutableArtifact} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link AiExecutableArtifact} class
+   */
+  @Nonnull public AiExecutableArtifact labels( @Nullable final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -170,10 +170,10 @@ public class AiExecutableArtifact
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link AiExecutableArtifact} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link AiExecutableArtifact} instance.
+   */
   @Nonnull public List<AiLabel> getLabels() {
     return labels;
   }
@@ -183,7 +183,7 @@ public class AiExecutableArtifact
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<AiLabel> labels) {
+  public void setLabels( @Nullable final List<AiLabel> labels) {
     this.labels = labels;
   }
 
@@ -204,7 +204,7 @@ public class AiExecutableArtifact
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutableArtifact has no field with name '" + name + "'.");
     }

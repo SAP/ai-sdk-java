@@ -53,21 +53,21 @@ public class BckndDeploymentQuota
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndDeploymentQuota() {  }
 
-   /**
-    * Set the maxCount of this {@link BckndDeploymentQuota} instance and return the same instance.
-    *
-    * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return The same instance of this {@link BckndDeploymentQuota} class
-    */
-   @Nonnull public BckndDeploymentQuota maxCount(@Nonnull final Integer maxCount) {
+  /**
+   * Set the maxCount of this {@link BckndDeploymentQuota} instance and return the same instance.
+   *
+   * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return The same instance of this {@link BckndDeploymentQuota} class
+   */
+  @Nonnull public BckndDeploymentQuota maxCount( @Nullable final Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
 
-   /**
-    * The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return maxCount  The maxCount of this {@link BckndDeploymentQuota} instance.
-    */
+  /**
+   * The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return maxCount  The maxCount of this {@link BckndDeploymentQuota} instance.
+   */
   @Nonnull public Integer getMaxCount() {
     return maxCount;
   }
@@ -77,25 +77,25 @@ public class BckndDeploymentQuota
    *
    * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
    */
-  public void setMaxCount( @Nonnull final Integer maxCount) {
+  public void setMaxCount( @Nullable final Integer maxCount) {
     this.maxCount = maxCount;
   }
 
-   /**
-    * Set the maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance and return the same instance.
-    *
-    * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
-    * @return The same instance of this {@link BckndDeploymentQuota} class
-    */
-   @Nonnull public BckndDeploymentQuota maxReplicaPerDeployment(@Nonnull final Integer maxReplicaPerDeployment) {
+  /**
+   * Set the maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance and return the same instance.
+   *
+   * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
+   * @return The same instance of this {@link BckndDeploymentQuota} class
+   */
+  @Nonnull public BckndDeploymentQuota maxReplicaPerDeployment( @Nullable final Integer maxReplicaPerDeployment) {
     this.maxReplicaPerDeployment = maxReplicaPerDeployment;
     return this;
   }
 
-   /**
-    * Get maxReplicaPerDeployment
-    * @return maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance.
-    */
+  /**
+   * Get maxReplicaPerDeployment
+   * @return maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota} instance.
+   */
   @Nonnull public Integer getMaxReplicaPerDeployment() {
     return maxReplicaPerDeployment;
   }
@@ -105,7 +105,7 @@ public class BckndDeploymentQuota
    *
    * @param maxReplicaPerDeployment  The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
    */
-  public void setMaxReplicaPerDeployment( @Nonnull final Integer maxReplicaPerDeployment) {
+  public void setMaxReplicaPerDeployment( @Nullable final Integer maxReplicaPerDeployment) {
     this.maxReplicaPerDeployment = maxReplicaPerDeployment;
   }
 
@@ -126,7 +126,7 @@ public class BckndDeploymentQuota
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndDeploymentQuota has no field with name '" + name + "'.");
     }

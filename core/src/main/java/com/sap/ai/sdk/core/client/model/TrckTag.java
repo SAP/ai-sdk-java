@@ -54,21 +54,21 @@ public class TrckTag
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckTag() {  }
 
-   /**
-    * Set the name of this {@link TrckTag} instance and return the same instance.
-    *
-    * @param name  The name of this {@link TrckTag}
-    * @return The same instance of this {@link TrckTag} class
-    */
-   @Nonnull public TrckTag name(@Nonnull final TrckTagName name) {
+  /**
+   * Set the name of this {@link TrckTag} instance and return the same instance.
+   *
+   * @param name  The name of this {@link TrckTag}
+   * @return The same instance of this {@link TrckTag} class
+   */
+  @Nonnull public TrckTag name( @Nonnull final TrckTagName name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Get name
-    * @return name  The name of this {@link TrckTag} instance.
-    */
+  /**
+   * Get name
+   * @return name  The name of this {@link TrckTag} instance.
+   */
   @Nonnull public TrckTagName getName() {
     return name;
   }
@@ -82,21 +82,21 @@ public class TrckTag
     this.name = name;
   }
 
-   /**
-    * Set the value of this {@link TrckTag} instance and return the same instance.
-    *
-    * @param value  tag value
-    * @return The same instance of this {@link TrckTag} class
-    */
-   @Nonnull public TrckTag value(@Nonnull final String value) {
+  /**
+   * Set the value of this {@link TrckTag} instance and return the same instance.
+   *
+   * @param value  tag value
+   * @return The same instance of this {@link TrckTag} class
+   */
+  @Nonnull public TrckTag value( @Nonnull final String value) {
     this.value = value;
     return this;
   }
 
-   /**
-    * tag value
-    * @return value  The value of this {@link TrckTag} instance.
-    */
+  /**
+   * tag value
+   * @return value  The value of this {@link TrckTag} instance.
+   */
   @Nonnull public String getValue() {
     return value;
   }
@@ -127,7 +127,7 @@ public class TrckTag
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckTag has no field with name '" + name + "'.");
     }

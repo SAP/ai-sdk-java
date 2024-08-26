@@ -66,21 +66,21 @@ public class DSetError
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected DSetError() {  }
 
-   /**
-    * Set the code of this {@link DSetError} instance and return the same instance.
-    *
-    * @param code  The code of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
-   @Nonnull public DSetError code(@Nonnull final String code) {
+  /**
+   * Set the code of this {@link DSetError} instance and return the same instance.
+   *
+   * @param code  The code of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
+  @Nonnull public DSetError code( @Nonnull final String code) {
     this.code = code;
     return this;
   }
 
-   /**
-    * Get code
-    * @return code  The code of this {@link DSetError} instance.
-    */
+  /**
+   * Get code
+   * @return code  The code of this {@link DSetError} instance.
+   */
   @Nonnull public String getCode() {
     return code;
   }
@@ -94,21 +94,21 @@ public class DSetError
     this.code = code;
   }
 
-   /**
-    * Set the message of this {@link DSetError} instance and return the same instance.
-    *
-    * @param message  The message of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
-   @Nonnull public DSetError message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link DSetError} instance and return the same instance.
+   *
+   * @param message  The message of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
+  @Nonnull public DSetError message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Get message
-    * @return message  The message of this {@link DSetError} instance.
-    */
+  /**
+   * Get message
+   * @return message  The message of this {@link DSetError} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -122,21 +122,21 @@ public class DSetError
     this.message = message;
   }
 
-   /**
-    * Set the target of this {@link DSetError} instance and return the same instance.
-    *
-    * @param target  The target of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
-   @Nonnull public DSetError target(@Nonnull final String target) {
+  /**
+   * Set the target of this {@link DSetError} instance and return the same instance.
+   *
+   * @param target  The target of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
+  @Nonnull public DSetError target( @Nullable final String target) {
     this.target = target;
     return this;
   }
 
-   /**
-    * Get target
-    * @return target  The target of this {@link DSetError} instance.
-    */
+  /**
+   * Get target
+   * @return target  The target of this {@link DSetError} instance.
+   */
   @Nonnull public String getTarget() {
     return target;
   }
@@ -146,25 +146,25 @@ public class DSetError
    *
    * @param target  The target of this {@link DSetError}
    */
-  public void setTarget( @Nonnull final String target) {
+  public void setTarget( @Nullable final String target) {
     this.target = target;
   }
 
-   /**
-    * Set the requestId of this {@link DSetError} instance and return the same instance.
-    *
-    * @param requestId  The requestId of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
-   @Nonnull public DSetError requestId(@Nonnull final String requestId) {
+  /**
+   * Set the requestId of this {@link DSetError} instance and return the same instance.
+   *
+   * @param requestId  The requestId of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
+  @Nonnull public DSetError requestId( @Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
-   /**
-    * Get requestId
-    * @return requestId  The requestId of this {@link DSetError} instance.
-    */
+  /**
+   * Get requestId
+   * @return requestId  The requestId of this {@link DSetError} instance.
+   */
   @Nonnull public String getRequestId() {
     return requestId;
   }
@@ -174,17 +174,17 @@ public class DSetError
    *
    * @param requestId  The requestId of this {@link DSetError}
    */
-  public void setRequestId( @Nonnull final String requestId) {
+  public void setRequestId( @Nullable final String requestId) {
     this.requestId = requestId;
   }
 
-   /**
-    * Set the details of this {@link DSetError} instance and return the same instance.
-    *
-    * @param details  The details of this {@link DSetError}
-    * @return The same instance of this {@link DSetError} class
-    */
-   @Nonnull public DSetError details(@Nonnull final Set<DSetErrorDetailsInner> details) {
+  /**
+   * Set the details of this {@link DSetError} instance and return the same instance.
+   *
+   * @param details  The details of this {@link DSetError}
+   * @return The same instance of this {@link DSetError} class
+   */
+  @Nonnull public DSetError details( @Nullable final Set<DSetErrorDetailsInner> details) {
     this.details = details;
     return this;
   }
@@ -201,10 +201,10 @@ public class DSetError
     return this;
   }
 
-   /**
-    * Get details
-    * @return details  The details of this {@link DSetError} instance.
-    */
+  /**
+   * Get details
+   * @return details  The details of this {@link DSetError} instance.
+   */
   @Nonnull public Set<DSetErrorDetailsInner> getDetails() {
     return details;
   }
@@ -214,7 +214,7 @@ public class DSetError
    *
    * @param details  The details of this {@link DSetError}
    */
-  public void setDetails( @Nonnull final Set<DSetErrorDetailsInner> details) {
+  public void setDetails( @Nullable final Set<DSetErrorDetailsInner> details) {
     this.details = details;
   }
 
@@ -235,7 +235,7 @@ public class DSetError
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("DSetError has no field with name '" + name + "'.");
     }

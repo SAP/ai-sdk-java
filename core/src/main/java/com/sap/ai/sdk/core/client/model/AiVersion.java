@@ -63,21 +63,21 @@ public class AiVersion
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiVersion() {  }
 
-   /**
-    * Set the description of this {@link AiVersion} instance and return the same instance.
-    *
-    * @param description  Version description
-    * @return The same instance of this {@link AiVersion} class
-    */
-   @Nonnull public AiVersion description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link AiVersion} instance and return the same instance.
+   *
+   * @param description  Version description
+   * @return The same instance of this {@link AiVersion} class
+   */
+  @Nonnull public AiVersion description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Version description
-    * @return description  The description of this {@link AiVersion} instance.
-    */
+  /**
+   * Version description
+   * @return description  The description of this {@link AiVersion} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -87,25 +87,25 @@ public class AiVersion
    *
    * @param description  Version description
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the id of this {@link AiVersion} instance and return the same instance.
-    *
-    * @param id  Version ID
-    * @return The same instance of this {@link AiVersion} class
-    */
-   @Nonnull public AiVersion id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiVersion} instance and return the same instance.
+   *
+   * @param id  Version ID
+   * @return The same instance of this {@link AiVersion} class
+   */
+  @Nonnull public AiVersion id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Version ID
-    * @return id  The id of this {@link AiVersion} instance.
-    */
+  /**
+   * Version ID
+   * @return id  The id of this {@link AiVersion} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -119,21 +119,21 @@ public class AiVersion
     this.id = id;
   }
 
-   /**
-    * Set the scenarioId of this {@link AiVersion} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link AiVersion} class
-    */
-   @Nonnull public AiVersion scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link AiVersion} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link AiVersion} class
+   */
+  @Nonnull public AiVersion scenarioId( @Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link AiVersion} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link AiVersion} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -143,25 +143,25 @@ public class AiVersion
    *
    * @param scenarioId  ID of the scenario
    */
-  public void setScenarioId( @Nonnull final String scenarioId) {
+  public void setScenarioId( @Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the createdAt of this {@link AiVersion} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link AiVersion} class
-    */
-   @Nonnull public AiVersion createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link AiVersion} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link AiVersion} class
+   */
+  @Nonnull public AiVersion createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link AiVersion} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link AiVersion} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -175,21 +175,21 @@ public class AiVersion
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link AiVersion} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link AiVersion} class
-    */
-   @Nonnull public AiVersion modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link AiVersion} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link AiVersion} class
+   */
+  @Nonnull public AiVersion modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link AiVersion} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link AiVersion} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -220,7 +220,7 @@ public class AiVersion
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiVersion has no field with name '" + name + "'.");
     }

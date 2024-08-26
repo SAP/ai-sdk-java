@@ -54,21 +54,21 @@ public class RTADeploymentDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTADeploymentDetails() {  }
 
-   /**
-    * Set the scaling of this {@link RTADeploymentDetails} instance and return the same instance.
-    *
-    * @param scaling  The scaling of this {@link RTADeploymentDetails}
-    * @return The same instance of this {@link RTADeploymentDetails} class
-    */
-   @Nonnull public RTADeploymentDetails scaling(@Nonnull final RTABackendDetails scaling) {
+  /**
+   * Set the scaling of this {@link RTADeploymentDetails} instance and return the same instance.
+   *
+   * @param scaling  The scaling of this {@link RTADeploymentDetails}
+   * @return The same instance of this {@link RTADeploymentDetails} class
+   */
+  @Nonnull public RTADeploymentDetails scaling( @Nullable final RTABackendDetails scaling) {
     this.scaling = scaling;
     return this;
   }
 
-   /**
-    * Get scaling
-    * @return scaling  The scaling of this {@link RTADeploymentDetails} instance.
-    */
+  /**
+   * Get scaling
+   * @return scaling  The scaling of this {@link RTADeploymentDetails} instance.
+   */
   @Nonnull public RTABackendDetails getScaling() {
     return scaling;
   }
@@ -78,25 +78,25 @@ public class RTADeploymentDetails
    *
    * @param scaling  The scaling of this {@link RTADeploymentDetails}
    */
-  public void setScaling( @Nonnull final RTABackendDetails scaling) {
+  public void setScaling( @Nullable final RTABackendDetails scaling) {
     this.scaling = scaling;
   }
 
-   /**
-    * Set the resources of this {@link RTADeploymentDetails} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link RTADeploymentDetails}
-    * @return The same instance of this {@link RTADeploymentDetails} class
-    */
-   @Nonnull public RTADeploymentDetails resources(@Nonnull final RTABackendDetails resources) {
+  /**
+   * Set the resources of this {@link RTADeploymentDetails} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link RTADeploymentDetails}
+   * @return The same instance of this {@link RTADeploymentDetails} class
+   */
+  @Nonnull public RTADeploymentDetails resources( @Nullable final RTABackendDetails resources) {
     this.resources = resources;
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link RTADeploymentDetails} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link RTADeploymentDetails} instance.
+   */
   @Nonnull public RTABackendDetails getResources() {
     return resources;
   }
@@ -106,7 +106,7 @@ public class RTADeploymentDetails
    *
    * @param resources  The resources of this {@link RTADeploymentDetails}
    */
-  public void setResources( @Nonnull final RTABackendDetails resources) {
+  public void setResources( @Nullable final RTABackendDetails resources) {
     this.resources = resources;
   }
 
@@ -127,7 +127,7 @@ public class RTADeploymentDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTADeploymentDetails has no field with name '" + name + "'.");
     }

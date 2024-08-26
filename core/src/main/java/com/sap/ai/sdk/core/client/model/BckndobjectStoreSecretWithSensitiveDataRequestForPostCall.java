@@ -74,21 +74,21 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndobjectStoreSecretWithSensitiveDataRequestForPostCall() {  }
 
-   /**
-    * Set the name of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param name  Name of the object store for the secret object to be created. Can be used later on check for existence of the secret.
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param name  Name of the object store for the secret object to be created. Can be used later on check for existence of the secret.
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the object store for the secret object to be created. Can be used later on check for existence of the secret.
-    * @return name  The name of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * Name of the object store for the secret object to be created. Can be used later on check for existence of the secret.
+   * @return name  The name of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -102,21 +102,21 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
     this.name = name;
   }
 
-   /**
-    * Set the type of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param type  Storage type e.g. S3, GCS,...
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall type(@Nonnull final String type) {
+  /**
+   * Set the type of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param type  Storage type e.g. S3, GCS,...
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall type( @Nonnull final String type) {
     this.type = type;
     return this;
   }
 
-   /**
-    * Storage type e.g. S3, GCS,...
-    * @return type  The type of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * Storage type e.g. S3, GCS,...
+   * @return type  The type of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getType() {
     return type;
   }
@@ -130,21 +130,21 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
     this.type = type;
   }
 
-   /**
-    * Set the bucket of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param bucket  Bucket to be used
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall bucket(@Nonnull final String bucket) {
+  /**
+   * Set the bucket of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param bucket  Bucket to be used
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall bucket( @Nullable final String bucket) {
     this.bucket = bucket;
     return this;
   }
 
-   /**
-    * Bucket to be used
-    * @return bucket  The bucket of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * Bucket to be used
+   * @return bucket  The bucket of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getBucket() {
     return bucket;
   }
@@ -154,25 +154,25 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param bucket  Bucket to be used
    */
-  public void setBucket( @Nonnull final String bucket) {
+  public void setBucket( @Nullable final String bucket) {
     this.bucket = bucket;
   }
 
-   /**
-    * Set the endpoint of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param endpoint  Optional parameter - URL of the storage server (S3 only)
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall endpoint(@Nonnull final String endpoint) {
+  /**
+   * Set the endpoint of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param endpoint  Optional parameter - URL of the storage server (S3 only)
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall endpoint( @Nullable final String endpoint) {
     this.endpoint = endpoint;
     return this;
   }
 
-   /**
-    * Optional parameter - URL of the storage server (S3 only)
-    * @return endpoint  The endpoint of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * Optional parameter - URL of the storage server (S3 only)
+   * @return endpoint  The endpoint of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getEndpoint() {
     return endpoint;
   }
@@ -182,25 +182,25 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param endpoint  Optional parameter - URL of the storage server (S3 only)
    */
-  public void setEndpoint( @Nonnull final String endpoint) {
+  public void setEndpoint( @Nullable final String endpoint) {
     this.endpoint = endpoint;
   }
 
-   /**
-    * Set the region of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param region  Optional parameter - Region of the storage server (S3 only)
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall region(@Nonnull final String region) {
+  /**
+   * Set the region of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param region  Optional parameter - Region of the storage server (S3 only)
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall region( @Nullable final String region) {
     this.region = region;
     return this;
   }
 
-   /**
-    * Optional parameter - Region of the storage server (S3 only)
-    * @return region  The region of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * Optional parameter - Region of the storage server (S3 only)
+   * @return region  The region of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getRegion() {
     return region;
   }
@@ -210,25 +210,25 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param region  Optional parameter - Region of the storage server (S3 only)
    */
-  public void setRegion( @Nonnull final String region) {
+  public void setRegion( @Nullable final String region) {
     this.region = region;
   }
 
-   /**
-    * Set the pathPrefix of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param pathPrefix  prefix folder to be added to storage path
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall pathPrefix(@Nonnull final String pathPrefix) {
+  /**
+   * Set the pathPrefix of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param pathPrefix  prefix folder to be added to storage path
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall pathPrefix( @Nullable final String pathPrefix) {
     this.pathPrefix = pathPrefix;
     return this;
   }
 
-   /**
-    * prefix folder to be added to storage path
-    * @return pathPrefix  The pathPrefix of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * prefix folder to be added to storage path
+   * @return pathPrefix  The pathPrefix of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getPathPrefix() {
     return pathPrefix;
   }
@@ -238,25 +238,25 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param pathPrefix  prefix folder to be added to storage path
    */
-  public void setPathPrefix( @Nonnull final String pathPrefix) {
+  public void setPathPrefix( @Nullable final String pathPrefix) {
     this.pathPrefix = pathPrefix;
   }
 
-   /**
-    * Set the verifyssl of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param verifyssl  0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall verifyssl(@Nonnull final String verifyssl) {
+  /**
+   * Set the verifyssl of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param verifyssl  0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall verifyssl( @Nullable final String verifyssl) {
     this.verifyssl = verifyssl;
     return this;
   }
 
-   /**
-    * 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
-    * @return verifyssl  The verifyssl of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
+   * @return verifyssl  The verifyssl of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getVerifyssl() {
     return verifyssl;
   }
@@ -266,25 +266,25 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param verifyssl  0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
    */
-  public void setVerifyssl( @Nonnull final String verifyssl) {
+  public void setVerifyssl( @Nullable final String verifyssl) {
     this.verifyssl = verifyssl;
   }
 
-   /**
-    * Set the usehttps of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param usehttps  0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall usehttps(@Nonnull final String usehttps) {
+  /**
+   * Set the usehttps of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param usehttps  0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall usehttps( @Nullable final String usehttps) {
     this.usehttps = usehttps;
     return this;
   }
 
-   /**
-    * 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
-    * @return usehttps  The usehttps of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
+   * @return usehttps  The usehttps of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public String getUsehttps() {
     return usehttps;
   }
@@ -294,25 +294,25 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param usehttps  0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
    */
-  public void setUsehttps( @Nonnull final String usehttps) {
+  public void setUsehttps( @Nullable final String usehttps) {
     this.usehttps = usehttps;
   }
 
-   /**
-    * Set the data of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
-    *
-    * @param data  key:value pairs of data
-    * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
-    */
-   @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall data(@Nonnull final Object data) {
+  /**
+   * Set the data of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance and return the same instance.
+   *
+   * @param data  key:value pairs of data
+   * @return The same instance of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} class
+   */
+  @Nonnull public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall data( @Nonnull final Object data) {
     this.data = data;
     return this;
   }
 
-   /**
-    * key:value pairs of data
-    * @return data  The data of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
-    */
+  /**
+   * key:value pairs of data
+   * @return data  The data of this {@link BckndobjectStoreSecretWithSensitiveDataRequestForPostCall} instance.
+   */
   @Nonnull public Object getData() {
     return data;
   }
@@ -343,7 +343,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndobjectStoreSecretWithSensitiveDataRequestForPostCall has no field with name '" + name + "'.");
     }

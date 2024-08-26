@@ -112,13 +112,13 @@ public class BckndServiceServicePlanItemMetadata
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceServicePlanItemMetadata() {  }
 
-   /**
-    * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance and return the same instance.
-    *
-    * @param supportedPlatforms  supported platforms of the service plan
-    * @return The same instance of this {@link BckndServiceServicePlanItemMetadata} class
-    */
-   @Nonnull public BckndServiceServicePlanItemMetadata supportedPlatforms(@Nonnull final List<SupportedPlatformsEnum> supportedPlatforms) {
+  /**
+   * Set the supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance and return the same instance.
+   *
+   * @param supportedPlatforms  supported platforms of the service plan
+   * @return The same instance of this {@link BckndServiceServicePlanItemMetadata} class
+   */
+  @Nonnull public BckndServiceServicePlanItemMetadata supportedPlatforms( @Nullable final List<SupportedPlatformsEnum> supportedPlatforms) {
     this.supportedPlatforms = supportedPlatforms;
     return this;
   }
@@ -135,10 +135,10 @@ public class BckndServiceServicePlanItemMetadata
     return this;
   }
 
-   /**
-    * supported platforms of the service plan
-    * @return supportedPlatforms  The supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance.
-    */
+  /**
+   * supported platforms of the service plan
+   * @return supportedPlatforms  The supportedPlatforms of this {@link BckndServiceServicePlanItemMetadata} instance.
+   */
   @Nonnull public List<SupportedPlatformsEnum> getSupportedPlatforms() {
     return supportedPlatforms;
   }
@@ -148,7 +148,7 @@ public class BckndServiceServicePlanItemMetadata
    *
    * @param supportedPlatforms  supported platforms of the service plan
    */
-  public void setSupportedPlatforms( @Nonnull final List<SupportedPlatformsEnum> supportedPlatforms) {
+  public void setSupportedPlatforms( @Nullable final List<SupportedPlatformsEnum> supportedPlatforms) {
     this.supportedPlatforms = supportedPlatforms;
   }
 
@@ -169,7 +169,7 @@ public class BckndServiceServicePlanItemMetadata
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceServicePlanItemMetadata has no field with name '" + name + "'.");
     }

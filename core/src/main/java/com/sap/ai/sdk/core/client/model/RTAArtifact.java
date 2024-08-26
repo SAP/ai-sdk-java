@@ -137,21 +137,21 @@ public class RTAArtifact
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAArtifact() {  }
 
-   /**
-    * Set the name of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param name  Name of the artifact; this is used for dependent pipelines to resolve an artifact
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param name  Name of the artifact; this is used for dependent pipelines to resolve an artifact
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the artifact; this is used for dependent pipelines to resolve an artifact
-    * @return name  The name of this {@link RTAArtifact} instance.
-    */
+  /**
+   * Name of the artifact; this is used for dependent pipelines to resolve an artifact
+   * @return name  The name of this {@link RTAArtifact} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -165,21 +165,21 @@ public class RTAArtifact
     this.name = name;
   }
 
-   /**
-    * Set the executionId of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param executionId  ID of the execution
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact executionId(@Nonnull final String executionId) {
+  /**
+   * Set the executionId of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param executionId  ID of the execution
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact executionId( @Nonnull final String executionId) {
     this.executionId = executionId;
     return this;
   }
 
-   /**
-    * ID of the execution
-    * @return executionId  The executionId of this {@link RTAArtifact} instance.
-    */
+  /**
+   * ID of the execution
+   * @return executionId  The executionId of this {@link RTAArtifact} instance.
+   */
   @Nonnull public String getExecutionId() {
     return executionId;
   }
@@ -193,21 +193,21 @@ public class RTAArtifact
     this.executionId = executionId;
   }
 
-   /**
-    * Set the url of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact url( @Nonnull final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return url  The url of this {@link RTAArtifact} instance.
-    */
+  /**
+   * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return url  The url of this {@link RTAArtifact} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -221,21 +221,21 @@ public class RTAArtifact
     this.url = url;
   }
 
-   /**
-    * Set the signature of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param signature  The signature of this {@link RTAArtifact}
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact signature(@Nonnull final String signature) {
+  /**
+   * Set the signature of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param signature  The signature of this {@link RTAArtifact}
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact signature( @Nullable final String signature) {
     this.signature = signature;
     return this;
   }
 
-   /**
-    * Get signature
-    * @return signature  The signature of this {@link RTAArtifact} instance.
-    */
+  /**
+   * Get signature
+   * @return signature  The signature of this {@link RTAArtifact} instance.
+   */
   @Nonnull public String getSignature() {
     return signature;
   }
@@ -245,25 +245,25 @@ public class RTAArtifact
    *
    * @param signature  The signature of this {@link RTAArtifact}
    */
-  public void setSignature( @Nonnull final String signature) {
+  public void setSignature( @Nullable final String signature) {
     this.signature = signature;
   }
 
-   /**
-    * Set the kind of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param kind  Kind of the artifact, i.e. model or dataset
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact kind(@Nonnull final KindEnum kind) {
+  /**
+   * Set the kind of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param kind  Kind of the artifact, i.e. model or dataset
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact kind( @Nonnull final KindEnum kind) {
     this.kind = kind;
     return this;
   }
 
-   /**
-    * Kind of the artifact, i.e. model or dataset
-    * @return kind  The kind of this {@link RTAArtifact} instance.
-    */
+  /**
+   * Kind of the artifact, i.e. model or dataset
+   * @return kind  The kind of this {@link RTAArtifact} instance.
+   */
   @Nonnull public KindEnum getKind() {
     return kind;
   }
@@ -277,13 +277,13 @@ public class RTAArtifact
     this.kind = kind;
   }
 
-   /**
-    * Set the labels of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact labels(@Nonnull final List<RTALabel> labels) {
+  /**
+   * Set the labels of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact labels( @Nullable final List<RTALabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -300,10 +300,10 @@ public class RTAArtifact
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link RTAArtifact} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link RTAArtifact} instance.
+   */
   @Nonnull public List<RTALabel> getLabels() {
     return labels;
   }
@@ -313,25 +313,25 @@ public class RTAArtifact
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<RTALabel> labels) {
+  public void setLabels( @Nullable final List<RTALabel> labels) {
     this.labels = labels;
   }
 
-   /**
-    * Set the createdAt of this {@link RTAArtifact} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link RTAArtifact} class
-    */
-   @Nonnull public RTAArtifact createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link RTAArtifact} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link RTAArtifact} class
+   */
+  @Nonnull public RTAArtifact createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link RTAArtifact} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link RTAArtifact} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -362,7 +362,7 @@ public class RTAArtifact
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAArtifact has no field with name '" + name + "'.");
     }

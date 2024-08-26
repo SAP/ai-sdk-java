@@ -56,21 +56,21 @@ public class BckndArgoCDApplicationBaseData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDApplicationBaseData() {  }
 
-   /**
-    * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
-    *
-    * @param repositoryUrl  URL of the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
-    */
-   @Nonnull public BckndArgoCDApplicationBaseData repositoryUrl(@Nonnull final String repositoryUrl) {
+  /**
+   * Set the repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
+   *
+   * @param repositoryUrl  URL of the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
+   */
+  @Nonnull public BckndArgoCDApplicationBaseData repositoryUrl( @Nonnull final String repositoryUrl) {
     this.repositoryUrl = repositoryUrl;
     return this;
   }
 
-   /**
-    * URL of the repository to synchronise
-    * @return repositoryUrl  The repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
-    */
+  /**
+   * URL of the repository to synchronise
+   * @return repositoryUrl  The repositoryUrl of this {@link BckndArgoCDApplicationBaseData} instance.
+   */
   @Nonnull public String getRepositoryUrl() {
     return repositoryUrl;
   }
@@ -84,21 +84,21 @@ public class BckndArgoCDApplicationBaseData
     this.repositoryUrl = repositoryUrl;
   }
 
-   /**
-    * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
-    *
-    * @param revision  revision to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
-    */
-   @Nonnull public BckndArgoCDApplicationBaseData revision(@Nonnull final String revision) {
+  /**
+   * Set the revision of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
+   *
+   * @param revision  revision to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
+   */
+  @Nonnull public BckndArgoCDApplicationBaseData revision( @Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
 
-   /**
-    * revision to synchronise
-    * @return revision  The revision of this {@link BckndArgoCDApplicationBaseData} instance.
-    */
+  /**
+   * revision to synchronise
+   * @return revision  The revision of this {@link BckndArgoCDApplicationBaseData} instance.
+   */
   @Nonnull public String getRevision() {
     return revision;
   }
@@ -112,21 +112,21 @@ public class BckndArgoCDApplicationBaseData
     this.revision = revision;
   }
 
-   /**
-    * Set the path of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
-    *
-    * @param path  path within the repository to synchronise
-    * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
-    */
-   @Nonnull public BckndArgoCDApplicationBaseData path(@Nonnull final String path) {
+  /**
+   * Set the path of this {@link BckndArgoCDApplicationBaseData} instance and return the same instance.
+   *
+   * @param path  path within the repository to synchronise
+   * @return The same instance of this {@link BckndArgoCDApplicationBaseData} class
+   */
+  @Nonnull public BckndArgoCDApplicationBaseData path( @Nonnull final String path) {
     this.path = path;
     return this;
   }
 
-   /**
-    * path within the repository to synchronise
-    * @return path  The path of this {@link BckndArgoCDApplicationBaseData} instance.
-    */
+  /**
+   * path within the repository to synchronise
+   * @return path  The path of this {@link BckndArgoCDApplicationBaseData} instance.
+   */
   @Nonnull public String getPath() {
     return path;
   }
@@ -157,7 +157,7 @@ public class BckndArgoCDApplicationBaseData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDApplicationBaseData has no field with name '" + name + "'.");
     }

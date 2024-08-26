@@ -51,21 +51,21 @@ public class ArtifactQuery400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected ArtifactQuery400Response() {  }
 
-   /**
-    * Set the error of this {@link ArtifactQuery400Response} instance and return the same instance.
-    *
-    * @param error  The error of this {@link ArtifactQuery400Response}
-    * @return The same instance of this {@link ArtifactQuery400Response} class
-    */
-   @Nonnull public ArtifactQuery400Response error(@Nonnull final AiApiError error) {
+  /**
+   * Set the error of this {@link ArtifactQuery400Response} instance and return the same instance.
+   *
+   * @param error  The error of this {@link ArtifactQuery400Response}
+   * @return The same instance of this {@link ArtifactQuery400Response} class
+   */
+  @Nonnull public ArtifactQuery400Response error( @Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link ArtifactQuery400Response} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link ArtifactQuery400Response} instance.
+   */
   @Nonnull public AiApiError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class ArtifactQuery400Response
    *
    * @param error  The error of this {@link ArtifactQuery400Response}
    */
-  public void setError( @Nonnull final AiApiError error) {
+  public void setError( @Nullable final AiApiError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class ArtifactQuery400Response
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("ArtifactQuery400Response has no field with name '" + name + "'.");
     }

@@ -62,21 +62,21 @@ public class MetaExtensions
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensions() {  }
 
-   /**
-    * Set the analytics of this {@link MetaExtensions} instance and return the same instance.
-    *
-    * @param analytics  The analytics of this {@link MetaExtensions}
-    * @return The same instance of this {@link MetaExtensions} class
-    */
-   @Nonnull public MetaExtensions analytics(@Nonnull final MetaExtensionsAnalytics analytics) {
+  /**
+   * Set the analytics of this {@link MetaExtensions} instance and return the same instance.
+   *
+   * @param analytics  The analytics of this {@link MetaExtensions}
+   * @return The same instance of this {@link MetaExtensions} class
+   */
+  @Nonnull public MetaExtensions analytics( @Nullable final MetaExtensionsAnalytics analytics) {
     this.analytics = analytics;
     return this;
   }
 
-   /**
-    * Get analytics
-    * @return analytics  The analytics of this {@link MetaExtensions} instance.
-    */
+  /**
+   * Get analytics
+   * @return analytics  The analytics of this {@link MetaExtensions} instance.
+   */
   @Nonnull public MetaExtensionsAnalytics getAnalytics() {
     return analytics;
   }
@@ -86,25 +86,25 @@ public class MetaExtensions
    *
    * @param analytics  The analytics of this {@link MetaExtensions}
    */
-  public void setAnalytics( @Nonnull final MetaExtensionsAnalytics analytics) {
+  public void setAnalytics( @Nullable final MetaExtensionsAnalytics analytics) {
     this.analytics = analytics;
   }
 
-   /**
-    * Set the resourceGroups of this {@link MetaExtensions} instance and return the same instance.
-    *
-    * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
-    * @return The same instance of this {@link MetaExtensions} class
-    */
-   @Nonnull public MetaExtensions resourceGroups(@Nonnull final MetaExtensionsAnalytics resourceGroups) {
+  /**
+   * Set the resourceGroups of this {@link MetaExtensions} instance and return the same instance.
+   *
+   * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
+   * @return The same instance of this {@link MetaExtensions} class
+   */
+  @Nonnull public MetaExtensions resourceGroups( @Nullable final MetaExtensionsAnalytics resourceGroups) {
     this.resourceGroups = resourceGroups;
     return this;
   }
 
-   /**
-    * Get resourceGroups
-    * @return resourceGroups  The resourceGroups of this {@link MetaExtensions} instance.
-    */
+  /**
+   * Get resourceGroups
+   * @return resourceGroups  The resourceGroups of this {@link MetaExtensions} instance.
+   */
   @Nonnull public MetaExtensionsAnalytics getResourceGroups() {
     return resourceGroups;
   }
@@ -114,25 +114,25 @@ public class MetaExtensions
    *
    * @param resourceGroups  The resourceGroups of this {@link MetaExtensions}
    */
-  public void setResourceGroups( @Nonnull final MetaExtensionsAnalytics resourceGroups) {
+  public void setResourceGroups( @Nullable final MetaExtensionsAnalytics resourceGroups) {
     this.resourceGroups = resourceGroups;
   }
 
-   /**
-    * Set the dataset of this {@link MetaExtensions} instance and return the same instance.
-    *
-    * @param dataset  The dataset of this {@link MetaExtensions}
-    * @return The same instance of this {@link MetaExtensions} class
-    */
-   @Nonnull public MetaExtensions dataset(@Nonnull final MetaExtensionsDataset dataset) {
+  /**
+   * Set the dataset of this {@link MetaExtensions} instance and return the same instance.
+   *
+   * @param dataset  The dataset of this {@link MetaExtensions}
+   * @return The same instance of this {@link MetaExtensions} class
+   */
+  @Nonnull public MetaExtensions dataset( @Nullable final MetaExtensionsDataset dataset) {
     this.dataset = dataset;
     return this;
   }
 
-   /**
-    * Get dataset
-    * @return dataset  The dataset of this {@link MetaExtensions} instance.
-    */
+  /**
+   * Get dataset
+   * @return dataset  The dataset of this {@link MetaExtensions} instance.
+   */
   @Nonnull public MetaExtensionsDataset getDataset() {
     return dataset;
   }
@@ -142,25 +142,25 @@ public class MetaExtensions
    *
    * @param dataset  The dataset of this {@link MetaExtensions}
    */
-  public void setDataset( @Nonnull final MetaExtensionsDataset dataset) {
+  public void setDataset( @Nullable final MetaExtensionsDataset dataset) {
     this.dataset = dataset;
   }
 
-   /**
-    * Set the metrics of this {@link MetaExtensions} instance and return the same instance.
-    *
-    * @param metrics  The metrics of this {@link MetaExtensions}
-    * @return The same instance of this {@link MetaExtensions} class
-    */
-   @Nonnull public MetaExtensions metrics(@Nonnull final MetaExtensionsMetrics metrics) {
+  /**
+   * Set the metrics of this {@link MetaExtensions} instance and return the same instance.
+   *
+   * @param metrics  The metrics of this {@link MetaExtensions}
+   * @return The same instance of this {@link MetaExtensions} class
+   */
+  @Nonnull public MetaExtensions metrics( @Nullable final MetaExtensionsMetrics metrics) {
     this.metrics = metrics;
     return this;
   }
 
-   /**
-    * Get metrics
-    * @return metrics  The metrics of this {@link MetaExtensions} instance.
-    */
+  /**
+   * Get metrics
+   * @return metrics  The metrics of this {@link MetaExtensions} instance.
+   */
   @Nonnull public MetaExtensionsMetrics getMetrics() {
     return metrics;
   }
@@ -170,7 +170,7 @@ public class MetaExtensions
    *
    * @param metrics  The metrics of this {@link MetaExtensions}
    */
-  public void setMetrics( @Nonnull final MetaExtensionsMetrics metrics) {
+  public void setMetrics( @Nullable final MetaExtensionsMetrics metrics) {
     this.metrics = metrics;
   }
 
@@ -191,7 +191,7 @@ public class MetaExtensions
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensions has no field with name '" + name + "'.");
     }

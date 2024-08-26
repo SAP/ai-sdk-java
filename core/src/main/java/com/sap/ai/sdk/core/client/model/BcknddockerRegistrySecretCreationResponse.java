@@ -50,21 +50,21 @@ public class BcknddockerRegistrySecretCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BcknddockerRegistrySecretCreationResponse() {  }
 
-   /**
-    * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BcknddockerRegistrySecretCreationResponse} class
-    */
-   @Nonnull public BcknddockerRegistrySecretCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BcknddockerRegistrySecretCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BcknddockerRegistrySecretCreationResponse} class
+   */
+  @Nonnull public BcknddockerRegistrySecretCreationResponse message( @Nullable final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link BcknddockerRegistrySecretCreationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link BcknddockerRegistrySecretCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -74,7 +74,7 @@ public class BcknddockerRegistrySecretCreationResponse
    *
    * @param message  Message
    */
-  public void setMessage( @Nonnull final String message) {
+  public void setMessage( @Nullable final String message) {
     this.message = message;
   }
 
@@ -95,7 +95,7 @@ public class BcknddockerRegistrySecretCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BcknddockerRegistrySecretCreationResponse has no field with name '" + name + "'.");
     }

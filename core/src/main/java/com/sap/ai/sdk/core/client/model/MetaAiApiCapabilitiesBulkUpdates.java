@@ -53,21 +53,21 @@ public class MetaAiApiCapabilitiesBulkUpdates
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAiApiCapabilitiesBulkUpdates() {  }
 
-   /**
-    * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
-    *
-    * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
-    * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
-    */
-   @Nonnull public MetaAiApiCapabilitiesBulkUpdates executions(@Nonnull final Boolean executions) {
+  /**
+   * Set the executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
+   *
+   * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
+   * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
+   */
+  @Nonnull public MetaAiApiCapabilitiesBulkUpdates executions( @Nullable final Boolean executions) {
     this.executions = executions;
     return this;
   }
 
-   /**
-    * Get executions
-    * @return executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
-    */
+  /**
+   * Get executions
+   * @return executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
+   */
   @Nonnull public Boolean isExecutions() {
     return executions;
   }
@@ -77,25 +77,25 @@ public class MetaAiApiCapabilitiesBulkUpdates
    *
    * @param executions  The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
    */
-  public void setExecutions( @Nonnull final Boolean executions) {
+  public void setExecutions( @Nullable final Boolean executions) {
     this.executions = executions;
   }
 
-   /**
-    * Set the deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
-    *
-    * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
-    * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
-    */
-   @Nonnull public MetaAiApiCapabilitiesBulkUpdates deployments(@Nonnull final Boolean deployments) {
+  /**
+   * Set the deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance and return the same instance.
+   *
+   * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
+   * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
+   */
+  @Nonnull public MetaAiApiCapabilitiesBulkUpdates deployments( @Nullable final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
 
-   /**
-    * Get deployments
-    * @return deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
-    */
+  /**
+   * Get deployments
+   * @return deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates} instance.
+   */
   @Nonnull public Boolean isDeployments() {
     return deployments;
   }
@@ -105,7 +105,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
    *
    * @param deployments  The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
    */
-  public void setDeployments( @Nonnull final Boolean deployments) {
+  public void setDeployments( @Nullable final Boolean deployments) {
     this.deployments = deployments;
   }
 
@@ -126,7 +126,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAiApiCapabilitiesBulkUpdates has no field with name '" + name + "'.");
     }

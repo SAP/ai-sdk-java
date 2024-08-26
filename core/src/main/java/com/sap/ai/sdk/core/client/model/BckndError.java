@@ -62,21 +62,21 @@ public class BckndError
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndError() {  }
 
-   /**
-    * Set the code of this {@link BckndError} instance and return the same instance.
-    *
-    * @param code  Descriptive error code (not http status code)
-    * @return The same instance of this {@link BckndError} class
-    */
-   @Nonnull public BckndError code(@Nonnull final String code) {
+  /**
+   * Set the code of this {@link BckndError} instance and return the same instance.
+   *
+   * @param code  Descriptive error code (not http status code)
+   * @return The same instance of this {@link BckndError} class
+   */
+  @Nonnull public BckndError code( @Nonnull final String code) {
     this.code = code;
     return this;
   }
 
-   /**
-    * Descriptive error code (not http status code)
-    * @return code  The code of this {@link BckndError} instance.
-    */
+  /**
+   * Descriptive error code (not http status code)
+   * @return code  The code of this {@link BckndError} instance.
+   */
   @Nonnull public String getCode() {
     return code;
   }
@@ -90,21 +90,21 @@ public class BckndError
     this.code = code;
   }
 
-   /**
-    * Set the message of this {@link BckndError} instance and return the same instance.
-    *
-    * @param message  Plaintext error description
-    * @return The same instance of this {@link BckndError} class
-    */
-   @Nonnull public BckndError message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BckndError} instance and return the same instance.
+   *
+   * @param message  Plaintext error description
+   * @return The same instance of this {@link BckndError} class
+   */
+  @Nonnull public BckndError message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Plaintext error description
-    * @return message  The message of this {@link BckndError} instance.
-    */
+  /**
+   * Plaintext error description
+   * @return message  The message of this {@link BckndError} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -118,21 +118,21 @@ public class BckndError
     this.message = message;
   }
 
-   /**
-    * Set the requestId of this {@link BckndError} instance and return the same instance.
-    *
-    * @param requestId  ID of the individual request
-    * @return The same instance of this {@link BckndError} class
-    */
-   @Nonnull public BckndError requestId(@Nonnull final String requestId) {
+  /**
+   * Set the requestId of this {@link BckndError} instance and return the same instance.
+   *
+   * @param requestId  ID of the individual request
+   * @return The same instance of this {@link BckndError} class
+   */
+  @Nonnull public BckndError requestId( @Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
-   /**
-    * ID of the individual request
-    * @return requestId  The requestId of this {@link BckndError} instance.
-    */
+  /**
+   * ID of the individual request
+   * @return requestId  The requestId of this {@link BckndError} instance.
+   */
   @Nonnull public String getRequestId() {
     return requestId;
   }
@@ -142,25 +142,25 @@ public class BckndError
    *
    * @param requestId  ID of the individual request
    */
-  public void setRequestId( @Nonnull final String requestId) {
+  public void setRequestId( @Nullable final String requestId) {
     this.requestId = requestId;
   }
 
-   /**
-    * Set the target of this {@link BckndError} instance and return the same instance.
-    *
-    * @param target  Invoked URL
-    * @return The same instance of this {@link BckndError} class
-    */
-   @Nonnull public BckndError target(@Nonnull final String target) {
+  /**
+   * Set the target of this {@link BckndError} instance and return the same instance.
+   *
+   * @param target  Invoked URL
+   * @return The same instance of this {@link BckndError} class
+   */
+  @Nonnull public BckndError target( @Nullable final String target) {
     this.target = target;
     return this;
   }
 
-   /**
-    * Invoked URL
-    * @return target  The target of this {@link BckndError} instance.
-    */
+  /**
+   * Invoked URL
+   * @return target  The target of this {@link BckndError} instance.
+   */
   @Nonnull public String getTarget() {
     return target;
   }
@@ -170,25 +170,25 @@ public class BckndError
    *
    * @param target  Invoked URL
    */
-  public void setTarget( @Nonnull final String target) {
+  public void setTarget( @Nullable final String target) {
     this.target = target;
   }
 
-   /**
-    * Set the details of this {@link BckndError} instance and return the same instance.
-    *
-    * @param details  Optional details of the error message
-    * @return The same instance of this {@link BckndError} class
-    */
-   @Nonnull public BckndError details(@Nonnull final Object details) {
+  /**
+   * Set the details of this {@link BckndError} instance and return the same instance.
+   *
+   * @param details  Optional details of the error message
+   * @return The same instance of this {@link BckndError} class
+   */
+  @Nonnull public BckndError details( @Nullable final Object details) {
     this.details = details;
     return this;
   }
 
-   /**
-    * Optional details of the error message
-    * @return details  The details of this {@link BckndError} instance.
-    */
+  /**
+   * Optional details of the error message
+   * @return details  The details of this {@link BckndError} instance.
+   */
   @Nonnull public Object getDetails() {
     return details;
   }
@@ -198,7 +198,7 @@ public class BckndError
    *
    * @param details  Optional details of the error message
    */
-  public void setDetails( @Nonnull final Object details) {
+  public void setDetails( @Nullable final Object details) {
     this.details = details;
   }
 
@@ -219,7 +219,7 @@ public class BckndError
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndError has no field with name '" + name + "'.");
     }

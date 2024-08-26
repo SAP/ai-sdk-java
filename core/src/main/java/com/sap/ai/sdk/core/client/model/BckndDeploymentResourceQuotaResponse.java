@@ -58,21 +58,21 @@ public class BckndDeploymentResourceQuotaResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndDeploymentResourceQuotaResponse() {  }
 
-   /**
-    * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
-    * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
-    */
-   @Nonnull public BckndDeploymentResourceQuotaResponse usage(@Nonnull final BckndDeploymentUsage usage) {
+  /**
+   * Set the usage of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
+   * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
+   */
+  @Nonnull public BckndDeploymentResourceQuotaResponse usage( @Nullable final BckndDeploymentUsage usage) {
     this.usage = usage;
     return this;
   }
 
-   /**
-    * Get usage
-    * @return usage  The usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
-    */
+  /**
+   * Get usage
+   * @return usage  The usage of this {@link BckndDeploymentResourceQuotaResponse} instance.
+   */
   @Nonnull public BckndDeploymentUsage getUsage() {
     return usage;
   }
@@ -82,17 +82,17 @@ public class BckndDeploymentResourceQuotaResponse
    *
    * @param usage  The usage of this {@link BckndDeploymentResourceQuotaResponse}
    */
-  public void setUsage( @Nonnull final BckndDeploymentUsage usage) {
+  public void setUsage( @Nullable final BckndDeploymentUsage usage) {
     this.usage = usage;
   }
 
-   /**
-    * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
-    * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
-    */
-   @Nonnull public BckndDeploymentResourceQuotaResponse quotas(@Nonnull final List<BckndDeploymentQuotaItem> quotas) {
+  /**
+   * Set the quotas of this {@link BckndDeploymentResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse}
+   * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
+   */
+  @Nonnull public BckndDeploymentResourceQuotaResponse quotas( @Nonnull final List<BckndDeploymentQuotaItem> quotas) {
     this.quotas = quotas;
     return this;
   }
@@ -109,10 +109,10 @@ public class BckndDeploymentResourceQuotaResponse
     return this;
   }
 
-   /**
-    * Get quotas
-    * @return quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
-    */
+  /**
+   * Get quotas
+   * @return quotas  The quotas of this {@link BckndDeploymentResourceQuotaResponse} instance.
+   */
   @Nonnull public List<BckndDeploymentQuotaItem> getQuotas() {
     return quotas;
   }
@@ -143,7 +143,7 @@ public class BckndDeploymentResourceQuotaResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndDeploymentResourceQuotaResponse has no field with name '" + name + "'.");
     }

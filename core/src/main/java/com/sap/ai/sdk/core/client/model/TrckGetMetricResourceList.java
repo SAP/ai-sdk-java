@@ -57,21 +57,21 @@ public class TrckGetMetricResourceList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckGetMetricResourceList() {  }
 
-   /**
-    * Set the count of this {@link TrckGetMetricResourceList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link TrckGetMetricResourceList} class
-    */
-   @Nonnull public TrckGetMetricResourceList count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link TrckGetMetricResourceList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link TrckGetMetricResourceList} class
+   */
+  @Nonnull public TrckGetMetricResourceList count( @Nullable final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link TrckGetMetricResourceList} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link TrckGetMetricResourceList} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -81,17 +81,17 @@ public class TrckGetMetricResourceList
    *
    * @param count  Number of the resource instances in the list
    */
-  public void setCount( @Nonnull final Integer count) {
+  public void setCount( @Nullable final Integer count) {
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link TrckGetMetricResourceList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link TrckGetMetricResourceList}
-    * @return The same instance of this {@link TrckGetMetricResourceList} class
-    */
-   @Nonnull public TrckGetMetricResourceList resources(@Nonnull final List<TrckGetMetricResource> resources) {
+  /**
+   * Set the resources of this {@link TrckGetMetricResourceList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link TrckGetMetricResourceList}
+   * @return The same instance of this {@link TrckGetMetricResourceList} class
+   */
+  @Nonnull public TrckGetMetricResourceList resources( @Nonnull final List<TrckGetMetricResource> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class TrckGetMetricResourceList
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link TrckGetMetricResourceList} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link TrckGetMetricResourceList} instance.
+   */
   @Nonnull public List<TrckGetMetricResource> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class TrckGetMetricResourceList
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckGetMetricResourceList has no field with name '" + name + "'.");
     }

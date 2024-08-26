@@ -53,21 +53,21 @@ public class RTAOutputArtifactArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAOutputArtifactArgumentBinding() {  }
 
-   /**
-    * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
-    * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
-    */
-   @Nonnull public RTAOutputArtifactArgumentBinding name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param name  The name of this {@link RTAOutputArtifactArgumentBinding}
+   * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
+   */
+  @Nonnull public RTAOutputArtifactArgumentBinding name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Get name
-    * @return name  The name of this {@link RTAOutputArtifactArgumentBinding} instance.
-    */
+  /**
+   * Get name
+   * @return name  The name of this {@link RTAOutputArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -81,21 +81,21 @@ public class RTAOutputArtifactArgumentBinding
     this.name = name;
   }
 
-   /**
-    * Set the url of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
-    */
-   @Nonnull public RTAOutputArtifactArgumentBinding url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link RTAOutputArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
+   */
+  @Nonnull public RTAOutputArtifactArgumentBinding url( @Nullable final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
-    * @return url  The url of this {@link RTAOutputArtifactArgumentBinding} instance.
-    */
+  /**
+   * Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
+   * @return url  The url of this {@link RTAOutputArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -105,7 +105,7 @@ public class RTAOutputArtifactArgumentBinding
    *
    * @param url  Reference to the location of the artifact. Note, the credentials will be found in a secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be assumed. 
    */
-  public void setUrl( @Nonnull final String url) {
+  public void setUrl( @Nullable final String url) {
     this.url = url;
   }
 
@@ -126,7 +126,7 @@ public class RTAOutputArtifactArgumentBinding
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAOutputArtifactArgumentBinding has no field with name '" + name + "'.");
     }

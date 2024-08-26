@@ -54,21 +54,21 @@ public class MetaExtensionsMetrics
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensionsMetrics() {  }
 
-   /**
-    * Set the version of this {@link MetaExtensionsMetrics} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaExtensionsMetrics}
-    * @return The same instance of this {@link MetaExtensionsMetrics} class
-    */
-   @Nonnull public MetaExtensionsMetrics version(@Nonnull final String version) {
+  /**
+   * Set the version of this {@link MetaExtensionsMetrics} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaExtensionsMetrics}
+   * @return The same instance of this {@link MetaExtensionsMetrics} class
+   */
+  @Nonnull public MetaExtensionsMetrics version( @Nonnull final String version) {
     this.version = version;
     return this;
   }
 
-   /**
-    * Get version
-    * @return version  The version of this {@link MetaExtensionsMetrics} instance.
-    */
+  /**
+   * Get version
+   * @return version  The version of this {@link MetaExtensionsMetrics} instance.
+   */
   @Nonnull public String getVersion() {
     return version;
   }
@@ -82,21 +82,21 @@ public class MetaExtensionsMetrics
     this.version = version;
   }
 
-   /**
-    * Set the capabilities of this {@link MetaExtensionsMetrics} instance and return the same instance.
-    *
-    * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
-    * @return The same instance of this {@link MetaExtensionsMetrics} class
-    */
-   @Nonnull public MetaExtensionsMetrics capabilities(@Nonnull final MetaExtensionsMetricsCapabilities capabilities) {
+  /**
+   * Set the capabilities of this {@link MetaExtensionsMetrics} instance and return the same instance.
+   *
+   * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
+   * @return The same instance of this {@link MetaExtensionsMetrics} class
+   */
+  @Nonnull public MetaExtensionsMetrics capabilities( @Nullable final MetaExtensionsMetricsCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
 
-   /**
-    * Get capabilities
-    * @return capabilities  The capabilities of this {@link MetaExtensionsMetrics} instance.
-    */
+  /**
+   * Get capabilities
+   * @return capabilities  The capabilities of this {@link MetaExtensionsMetrics} instance.
+   */
   @Nonnull public MetaExtensionsMetricsCapabilities getCapabilities() {
     return capabilities;
   }
@@ -106,7 +106,7 @@ public class MetaExtensionsMetrics
    *
    * @param capabilities  The capabilities of this {@link MetaExtensionsMetrics}
    */
-  public void setCapabilities( @Nonnull final MetaExtensionsMetricsCapabilities capabilities) {
+  public void setCapabilities( @Nullable final MetaExtensionsMetricsCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
@@ -127,7 +127,7 @@ public class MetaExtensionsMetrics
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensionsMetrics has no field with name '" + name + "'.");
     }

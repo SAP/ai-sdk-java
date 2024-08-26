@@ -76,21 +76,21 @@ public class AiExecutionSchedule
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionSchedule() {  }
 
-   /**
-    * Set the cron of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param cron  Cron defining the schedule to run the executions.
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule cron(@Nonnull final String cron) {
+  /**
+   * Set the cron of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param cron  Cron defining the schedule to run the executions.
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule cron( @Nonnull final String cron) {
     this.cron = cron;
     return this;
   }
 
-   /**
-    * Cron defining the schedule to run the executions.
-    * @return cron  The cron of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Cron defining the schedule to run the executions.
+   * @return cron  The cron of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public String getCron() {
     return cron;
   }
@@ -104,21 +104,21 @@ public class AiExecutionSchedule
     this.cron = cron;
   }
 
-   /**
-    * Set the name of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param name  Name of the execution schedule
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param name  Name of the execution schedule
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the execution schedule
-    * @return name  The name of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Name of the execution schedule
+   * @return name  The name of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -132,21 +132,21 @@ public class AiExecutionSchedule
     this.name = name;
   }
 
-   /**
-    * Set the configurationId of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule configurationId(@Nonnull final String configurationId) {
+  /**
+   * Set the configurationId of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule configurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
@@ -160,21 +160,21 @@ public class AiExecutionSchedule
     this.configurationId = configurationId;
   }
 
-   /**
-    * Set the start of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param start  Timestamp, defining when the executions should start running periodically, defaults to now
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule start(@Nonnull final OffsetDateTime start) {
+  /**
+   * Set the start of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param start  Timestamp, defining when the executions should start running periodically, defaults to now
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule start( @Nullable final OffsetDateTime start) {
     this.start = start;
     return this;
   }
 
-   /**
-    * Timestamp, defining when the executions should start running periodically, defaults to now
-    * @return start  The start of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Timestamp, defining when the executions should start running periodically, defaults to now
+   * @return start  The start of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public OffsetDateTime getStart() {
     return start;
   }
@@ -184,25 +184,25 @@ public class AiExecutionSchedule
    *
    * @param start  Timestamp, defining when the executions should start running periodically, defaults to now
    */
-  public void setStart( @Nonnull final OffsetDateTime start) {
+  public void setStart( @Nullable final OffsetDateTime start) {
     this.start = start;
   }
 
-   /**
-    * Set the end of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param end  Timestamp, defining when the executions should stop running
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule end(@Nonnull final OffsetDateTime end) {
+  /**
+   * Set the end of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param end  Timestamp, defining when the executions should stop running
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule end( @Nullable final OffsetDateTime end) {
     this.end = end;
     return this;
   }
 
-   /**
-    * Timestamp, defining when the executions should stop running
-    * @return end  The end of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Timestamp, defining when the executions should stop running
+   * @return end  The end of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public OffsetDateTime getEnd() {
     return end;
   }
@@ -212,25 +212,25 @@ public class AiExecutionSchedule
    *
    * @param end  Timestamp, defining when the executions should stop running
    */
-  public void setEnd( @Nonnull final OffsetDateTime end) {
+  public void setEnd( @Nullable final OffsetDateTime end) {
     this.end = end;
   }
 
-   /**
-    * Set the id of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param id  ID of the execution schedule
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param id  ID of the execution schedule
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule id( @Nullable final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the execution schedule
-    * @return id  The id of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * ID of the execution schedule
+   * @return id  The id of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -240,25 +240,25 @@ public class AiExecutionSchedule
    *
    * @param id  ID of the execution schedule
    */
-  public void setId( @Nonnull final String id) {
+  public void setId( @Nullable final String id) {
     this.id = id;
   }
 
-   /**
-    * Set the status of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param status  The status of this {@link AiExecutionSchedule}
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule status(@Nonnull final AiExecutionScheduleStatus status) {
+  /**
+   * Set the status of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param status  The status of this {@link AiExecutionSchedule}
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule status( @Nullable final AiExecutionScheduleStatus status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Get status
-    * @return status  The status of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Get status
+   * @return status  The status of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public AiExecutionScheduleStatus getStatus() {
     return status;
   }
@@ -268,25 +268,25 @@ public class AiExecutionSchedule
    *
    * @param status  The status of this {@link AiExecutionSchedule}
    */
-  public void setStatus( @Nonnull final AiExecutionScheduleStatus status) {
+  public void setStatus( @Nullable final AiExecutionScheduleStatus status) {
     this.status = status;
   }
 
-   /**
-    * Set the createdAt of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -300,21 +300,21 @@ public class AiExecutionSchedule
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link AiExecutionSchedule} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link AiExecutionSchedule} class
-    */
-   @Nonnull public AiExecutionSchedule modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link AiExecutionSchedule} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link AiExecutionSchedule} class
+   */
+  @Nonnull public AiExecutionSchedule modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link AiExecutionSchedule} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link AiExecutionSchedule} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -345,7 +345,7 @@ public class AiExecutionSchedule
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionSchedule has no field with name '" + name + "'.");
     }

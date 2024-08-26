@@ -63,21 +63,21 @@ public class AiDeploymentCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentCreationResponse() {  }
 
-   /**
-    * Set the id of this {@link AiDeploymentCreationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiDeploymentCreationResponse} class
-    */
-   @Nonnull public AiDeploymentCreationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiDeploymentCreationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiDeploymentCreationResponse} class
+   */
+  @Nonnull public AiDeploymentCreationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiDeploymentCreationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiDeploymentCreationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -91,21 +91,21 @@ public class AiDeploymentCreationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link AiDeploymentCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link AiDeploymentCreationResponse} class
-    */
-   @Nonnull public AiDeploymentCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link AiDeploymentCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link AiDeploymentCreationResponse} class
+   */
+  @Nonnull public AiDeploymentCreationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link AiDeploymentCreationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link AiDeploymentCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -119,21 +119,21 @@ public class AiDeploymentCreationResponse
     this.message = message;
   }
 
-   /**
-    * Set the deploymentUrl of this {@link AiDeploymentCreationResponse} instance and return the same instance.
-    *
-    * @param deploymentUrl  Consumption URL of the deployment
-    * @return The same instance of this {@link AiDeploymentCreationResponse} class
-    */
-   @Nonnull public AiDeploymentCreationResponse deploymentUrl(@Nonnull final String deploymentUrl) {
+  /**
+   * Set the deploymentUrl of this {@link AiDeploymentCreationResponse} instance and return the same instance.
+   *
+   * @param deploymentUrl  Consumption URL of the deployment
+   * @return The same instance of this {@link AiDeploymentCreationResponse} class
+   */
+  @Nonnull public AiDeploymentCreationResponse deploymentUrl( @Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
     return this;
   }
 
-   /**
-    * Consumption URL of the deployment
-    * @return deploymentUrl  The deploymentUrl of this {@link AiDeploymentCreationResponse} instance.
-    */
+  /**
+   * Consumption URL of the deployment
+   * @return deploymentUrl  The deploymentUrl of this {@link AiDeploymentCreationResponse} instance.
+   */
   @Nonnull public String getDeploymentUrl() {
     return deploymentUrl;
   }
@@ -143,25 +143,25 @@ public class AiDeploymentCreationResponse
    *
    * @param deploymentUrl  Consumption URL of the deployment
    */
-  public void setDeploymentUrl( @Nonnull final String deploymentUrl) {
+  public void setDeploymentUrl( @Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
   }
 
-   /**
-    * Set the status of this {@link AiDeploymentCreationResponse} instance and return the same instance.
-    *
-    * @param status  The status of this {@link AiDeploymentCreationResponse}
-    * @return The same instance of this {@link AiDeploymentCreationResponse} class
-    */
-   @Nonnull public AiDeploymentCreationResponse status(@Nonnull final AiExecutionStatus status) {
+  /**
+   * Set the status of this {@link AiDeploymentCreationResponse} instance and return the same instance.
+   *
+   * @param status  The status of this {@link AiDeploymentCreationResponse}
+   * @return The same instance of this {@link AiDeploymentCreationResponse} class
+   */
+  @Nonnull public AiDeploymentCreationResponse status( @Nullable final AiExecutionStatus status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * Get status
-    * @return status  The status of this {@link AiDeploymentCreationResponse} instance.
-    */
+  /**
+   * Get status
+   * @return status  The status of this {@link AiDeploymentCreationResponse} instance.
+   */
   @Nonnull public AiExecutionStatus getStatus() {
     return status;
   }
@@ -171,26 +171,26 @@ public class AiDeploymentCreationResponse
    *
    * @param status  The status of this {@link AiDeploymentCreationResponse}
    */
-  public void setStatus( @Nonnull final AiExecutionStatus status) {
+  public void setStatus( @Nullable final AiExecutionStatus status) {
     this.status = status;
   }
 
-   /**
-    * Set the ttl of this {@link AiDeploymentCreationResponse} instance and return the same instance.
-    *
-    * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
-    * @return The same instance of this {@link AiDeploymentCreationResponse} class
-    */
-   @Nonnull public AiDeploymentCreationResponse ttl(@Nonnull final String ttl) {
+  /**
+   * Set the ttl of this {@link AiDeploymentCreationResponse} instance and return the same instance.
+   *
+   * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
+   * @return The same instance of this {@link AiDeploymentCreationResponse} class
+   */
+  @Nonnull public AiDeploymentCreationResponse ttl( @Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
 
-   /**
-    * Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
-    * @return ttl  The ttl of this {@link AiDeploymentCreationResponse} instance.
-    */
-  @Nonnull public String getTtl() {
+  /**
+   * Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
+   * @return ttl  The ttl of this {@link AiDeploymentCreationResponse} instance.
+   */
+  @Nullable public String getTtl() {
     return ttl;
   }
 
@@ -199,7 +199,7 @@ public class AiDeploymentCreationResponse
    *
    * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
    */
-  public void setTtl( @Nonnull final String ttl) {
+  public void setTtl( @Nullable final String ttl) {
     this.ttl = ttl;
   }
 
@@ -220,7 +220,7 @@ public class AiDeploymentCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentCreationResponse has no field with name '" + name + "'.");
     }

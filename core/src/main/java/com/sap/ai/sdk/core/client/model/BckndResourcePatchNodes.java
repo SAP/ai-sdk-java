@@ -53,21 +53,21 @@ public class BckndResourcePatchNodes
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourcePatchNodes() {  }
 
-   /**
-    * Set the name of this {@link BckndResourcePatchNodes} instance and return the same instance.
-    *
-    * @param name  The name of this {@link BckndResourcePatchNodes}
-    * @return The same instance of this {@link BckndResourcePatchNodes} class
-    */
-   @Nonnull public BckndResourcePatchNodes name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndResourcePatchNodes} instance and return the same instance.
+   *
+   * @param name  The name of this {@link BckndResourcePatchNodes}
+   * @return The same instance of this {@link BckndResourcePatchNodes} class
+   */
+  @Nonnull public BckndResourcePatchNodes name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Get name
-    * @return name  The name of this {@link BckndResourcePatchNodes} instance.
-    */
+  /**
+   * Get name
+   * @return name  The name of this {@link BckndResourcePatchNodes} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -81,21 +81,21 @@ public class BckndResourcePatchNodes
     this.name = name;
   }
 
-   /**
-    * Set the request of this {@link BckndResourcePatchNodes} instance and return the same instance.
-    *
-    * @param request  The request of this {@link BckndResourcePatchNodes}
-    * @return The same instance of this {@link BckndResourcePatchNodes} class
-    */
-   @Nonnull public BckndResourcePatchNodes request(@Nonnull final Integer request) {
+  /**
+   * Set the request of this {@link BckndResourcePatchNodes} instance and return the same instance.
+   *
+   * @param request  The request of this {@link BckndResourcePatchNodes}
+   * @return The same instance of this {@link BckndResourcePatchNodes} class
+   */
+  @Nonnull public BckndResourcePatchNodes request( @Nonnull final Integer request) {
     this.request = request;
     return this;
   }
 
-   /**
-    * Get request
-    * @return request  The request of this {@link BckndResourcePatchNodes} instance.
-    */
+  /**
+   * Get request
+   * @return request  The request of this {@link BckndResourcePatchNodes} instance.
+   */
   @Nonnull public Integer getRequest() {
     return request;
   }
@@ -126,7 +126,7 @@ public class BckndResourcePatchNodes
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourcePatchNodes has no field with name '" + name + "'.");
     }

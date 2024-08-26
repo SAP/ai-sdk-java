@@ -50,21 +50,21 @@ public class BckndCommonResourceQuotaResponseQuota
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndCommonResourceQuotaResponseQuota() {  }
 
-   /**
-    * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance and return the same instance.
-    *
-    * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return The same instance of this {@link BckndCommonResourceQuotaResponseQuota} class
-    */
-   @Nonnull public BckndCommonResourceQuotaResponseQuota maxCount(@Nonnull final Integer maxCount) {
+  /**
+   * Set the maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance and return the same instance.
+   *
+   * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return The same instance of this {@link BckndCommonResourceQuotaResponseQuota} class
+   */
+  @Nonnull public BckndCommonResourceQuotaResponseQuota maxCount( @Nullable final Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
 
-   /**
-    * The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return maxCount  The maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance.
-    */
+  /**
+   * The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return maxCount  The maxCount of this {@link BckndCommonResourceQuotaResponseQuota} instance.
+   */
   @Nonnull public Integer getMaxCount() {
     return maxCount;
   }
@@ -74,7 +74,7 @@ public class BckndCommonResourceQuotaResponseQuota
    *
    * @param maxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
    */
-  public void setMaxCount( @Nonnull final Integer maxCount) {
+  public void setMaxCount( @Nullable final Integer maxCount) {
     this.maxCount = maxCount;
   }
 
@@ -95,7 +95,7 @@ public class BckndCommonResourceQuotaResponseQuota
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndCommonResourceQuotaResponseQuota has no field with name '" + name + "'.");
     }

@@ -66,21 +66,21 @@ public class TrckMetricResource
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckMetricResource() {  }
 
-   /**
-    * Set the executionId of this {@link TrckMetricResource} instance and return the same instance.
-    *
-    * @param executionId  The executionId of this {@link TrckMetricResource}
-    * @return The same instance of this {@link TrckMetricResource} class
-    */
-   @Nonnull public TrckMetricResource executionId(@Nonnull final TrckExecutionId executionId) {
+  /**
+   * Set the executionId of this {@link TrckMetricResource} instance and return the same instance.
+   *
+   * @param executionId  The executionId of this {@link TrckMetricResource}
+   * @return The same instance of this {@link TrckMetricResource} class
+   */
+  @Nonnull public TrckMetricResource executionId( @Nonnull final TrckExecutionId executionId) {
     this.executionId = executionId;
     return this;
   }
 
-   /**
-    * Get executionId
-    * @return executionId  The executionId of this {@link TrckMetricResource} instance.
-    */
+  /**
+   * Get executionId
+   * @return executionId  The executionId of this {@link TrckMetricResource} instance.
+   */
   @Nonnull public TrckExecutionId getExecutionId() {
     return executionId;
   }
@@ -94,13 +94,13 @@ public class TrckMetricResource
     this.executionId = executionId;
   }
 
-   /**
-    * Set the metrics of this {@link TrckMetricResource} instance and return the same instance.
-    *
-    * @param metrics  Array of Metric items
-    * @return The same instance of this {@link TrckMetricResource} class
-    */
-   @Nonnull public TrckMetricResource metrics(@Nonnull final List<TrckMetric> metrics) {
+  /**
+   * Set the metrics of this {@link TrckMetricResource} instance and return the same instance.
+   *
+   * @param metrics  Array of Metric items
+   * @return The same instance of this {@link TrckMetricResource} class
+   */
+  @Nonnull public TrckMetricResource metrics( @Nullable final List<TrckMetric> metrics) {
     this.metrics = metrics;
     return this;
   }
@@ -117,10 +117,10 @@ public class TrckMetricResource
     return this;
   }
 
-   /**
-    * Array of Metric items
-    * @return metrics  The metrics of this {@link TrckMetricResource} instance.
-    */
+  /**
+   * Array of Metric items
+   * @return metrics  The metrics of this {@link TrckMetricResource} instance.
+   */
   @Nonnull public List<TrckMetric> getMetrics() {
     return metrics;
   }
@@ -130,17 +130,17 @@ public class TrckMetricResource
    *
    * @param metrics  Array of Metric items
    */
-  public void setMetrics( @Nonnull final List<TrckMetric> metrics) {
+  public void setMetrics( @Nullable final List<TrckMetric> metrics) {
     this.metrics = metrics;
   }
 
-   /**
-    * Set the tags of this {@link TrckMetricResource} instance and return the same instance.
-    *
-    * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
-    * @return The same instance of this {@link TrckMetricResource} class
-    */
-   @Nonnull public TrckMetricResource tags(@Nonnull final List<TrckTag> tags) {
+  /**
+   * Set the tags of this {@link TrckMetricResource} instance and return the same instance.
+   *
+   * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
+   * @return The same instance of this {@link TrckMetricResource} class
+   */
+  @Nonnull public TrckMetricResource tags( @Nullable final List<TrckTag> tags) {
     this.tags = tags;
     return this;
   }
@@ -157,10 +157,10 @@ public class TrckMetricResource
     return this;
   }
 
-   /**
-    * a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
-    * @return tags  The tags of this {@link TrckMetricResource} instance.
-    */
+  /**
+   * a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
+   * @return tags  The tags of this {@link TrckMetricResource} instance.
+   */
   @Nonnull public List<TrckTag> getTags() {
     return tags;
   }
@@ -170,17 +170,17 @@ public class TrckMetricResource
    *
    * @param tags  a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
    */
-  public void setTags( @Nonnull final List<TrckTag> tags) {
+  public void setTags( @Nullable final List<TrckTag> tags) {
     this.tags = tags;
   }
 
-   /**
-    * Set the customInfo of this {@link TrckMetricResource} instance and return the same instance.
-    *
-    * @param customInfo  
-    * @return The same instance of this {@link TrckMetricResource} class
-    */
-   @Nonnull public TrckMetricResource customInfo(@Nonnull final List<TrckCustomInfoObject> customInfo) {
+  /**
+   * Set the customInfo of this {@link TrckMetricResource} instance and return the same instance.
+   *
+   * @param customInfo  
+   * @return The same instance of this {@link TrckMetricResource} class
+   */
+  @Nonnull public TrckMetricResource customInfo( @Nullable final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
     return this;
   }
@@ -197,10 +197,10 @@ public class TrckMetricResource
     return this;
   }
 
-   /**
-    * 
-    * @return customInfo  The customInfo of this {@link TrckMetricResource} instance.
-    */
+  /**
+   * 
+   * @return customInfo  The customInfo of this {@link TrckMetricResource} instance.
+   */
   @Nonnull public List<TrckCustomInfoObject> getCustomInfo() {
     return customInfo;
   }
@@ -210,7 +210,7 @@ public class TrckMetricResource
    *
    * @param customInfo  
    */
-  public void setCustomInfo( @Nonnull final List<TrckCustomInfoObject> customInfo) {
+  public void setCustomInfo( @Nullable final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
   }
 
@@ -231,7 +231,7 @@ public class TrckMetricResource
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckMetricResource has no field with name '" + name + "'.");
     }

@@ -56,21 +56,21 @@ public class BckndResourceGroupBase
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGroupBase() {  }
 
-   /**
-    * Set the resourceGroupId of this {@link BckndResourceGroupBase} instance and return the same instance.
-    *
-    * @param resourceGroupId  resource group id
-    * @return The same instance of this {@link BckndResourceGroupBase} class
-    */
-   @Nonnull public BckndResourceGroupBase resourceGroupId(@Nonnull final String resourceGroupId) {
+  /**
+   * Set the resourceGroupId of this {@link BckndResourceGroupBase} instance and return the same instance.
+   *
+   * @param resourceGroupId  resource group id
+   * @return The same instance of this {@link BckndResourceGroupBase} class
+   */
+  @Nonnull public BckndResourceGroupBase resourceGroupId( @Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
 
-   /**
-    * resource group id
-    * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupBase} instance.
-    */
+  /**
+   * resource group id
+   * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroupBase} instance.
+   */
   @Nonnull public String getResourceGroupId() {
     return resourceGroupId;
   }
@@ -80,25 +80,25 @@ public class BckndResourceGroupBase
    *
    * @param resourceGroupId  resource group id
    */
-  public void setResourceGroupId( @Nonnull final String resourceGroupId) {
+  public void setResourceGroupId( @Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
-   /**
-    * Set the tenantId of this {@link BckndResourceGroupBase} instance and return the same instance.
-    *
-    * @param tenantId  tenant id
-    * @return The same instance of this {@link BckndResourceGroupBase} class
-    */
-   @Nonnull public BckndResourceGroupBase tenantId(@Nonnull final String tenantId) {
+  /**
+   * Set the tenantId of this {@link BckndResourceGroupBase} instance and return the same instance.
+   *
+   * @param tenantId  tenant id
+   * @return The same instance of this {@link BckndResourceGroupBase} class
+   */
+  @Nonnull public BckndResourceGroupBase tenantId( @Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
-   /**
-    * tenant id
-    * @return tenantId  The tenantId of this {@link BckndResourceGroupBase} instance.
-    */
+  /**
+   * tenant id
+   * @return tenantId  The tenantId of this {@link BckndResourceGroupBase} instance.
+   */
   @Nonnull public String getTenantId() {
     return tenantId;
   }
@@ -108,25 +108,25 @@ public class BckndResourceGroupBase
    *
    * @param tenantId  tenant id
    */
-  public void setTenantId( @Nonnull final String tenantId) {
+  public void setTenantId( @Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
-   /**
-    * Set the zoneId of this {@link BckndResourceGroupBase} instance and return the same instance.
-    *
-    * @param zoneId  zone id
-    * @return The same instance of this {@link BckndResourceGroupBase} class
-    */
-   @Nonnull public BckndResourceGroupBase zoneId(@Nonnull final String zoneId) {
+  /**
+   * Set the zoneId of this {@link BckndResourceGroupBase} instance and return the same instance.
+   *
+   * @param zoneId  zone id
+   * @return The same instance of this {@link BckndResourceGroupBase} class
+   */
+  @Nonnull public BckndResourceGroupBase zoneId( @Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
 
-   /**
-    * zone id
-    * @return zoneId  The zoneId of this {@link BckndResourceGroupBase} instance.
-    */
+  /**
+   * zone id
+   * @return zoneId  The zoneId of this {@link BckndResourceGroupBase} instance.
+   */
   @Nonnull public String getZoneId() {
     return zoneId;
   }
@@ -136,7 +136,7 @@ public class BckndResourceGroupBase
    *
    * @param zoneId  zone id
    */
-  public void setZoneId( @Nonnull final String zoneId) {
+  public void setZoneId( @Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 
@@ -157,7 +157,7 @@ public class BckndResourceGroupBase
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGroupBase has no field with name '" + name + "'.");
     }

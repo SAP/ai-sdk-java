@@ -153,13 +153,13 @@ public class AiArtifact
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiArtifact() {  }
 
-   /**
-    * Set the labels of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact labels(@Nonnull final List<AiLabel> labels) {
+  /**
+   * Set the labels of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact labels( @Nullable final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -176,10 +176,10 @@ public class AiArtifact
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link AiArtifact} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link AiArtifact} instance.
+   */
   @Nonnull public List<AiLabel> getLabels() {
     return labels;
   }
@@ -189,25 +189,25 @@ public class AiArtifact
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<AiLabel> labels) {
+  public void setLabels( @Nullable final List<AiLabel> labels) {
     this.labels = labels;
   }
 
-   /**
-    * Set the name of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param name  Name of the artifact
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param name  Name of the artifact
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the artifact
-    * @return name  The name of this {@link AiArtifact} instance.
-    */
+  /**
+   * Name of the artifact
+   * @return name  The name of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -221,21 +221,21 @@ public class AiArtifact
     this.name = name;
   }
 
-   /**
-    * Set the kind of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param kind  Kind of the artifact, i.e. model or dataset
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact kind(@Nonnull final KindEnum kind) {
+  /**
+   * Set the kind of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param kind  Kind of the artifact, i.e. model or dataset
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact kind( @Nonnull final KindEnum kind) {
     this.kind = kind;
     return this;
   }
 
-   /**
-    * Kind of the artifact, i.e. model or dataset
-    * @return kind  The kind of this {@link AiArtifact} instance.
-    */
+  /**
+   * Kind of the artifact, i.e. model or dataset
+   * @return kind  The kind of this {@link AiArtifact} instance.
+   */
   @Nonnull public KindEnum getKind() {
     return kind;
   }
@@ -249,21 +249,21 @@ public class AiArtifact
     this.kind = kind;
   }
 
-   /**
-    * Set the url of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param url  Reference to the location of the artifact. 
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param url  Reference to the location of the artifact. 
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact url( @Nonnull final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * Reference to the location of the artifact. 
-    * @return url  The url of this {@link AiArtifact} instance.
-    */
+  /**
+   * Reference to the location of the artifact. 
+   * @return url  The url of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -277,21 +277,21 @@ public class AiArtifact
     this.url = url;
   }
 
-   /**
-    * Set the description of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param description  Description of the artifact
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param description  Description of the artifact
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the artifact
-    * @return description  The description of this {@link AiArtifact} instance.
-    */
+  /**
+   * Description of the artifact
+   * @return description  The description of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -301,25 +301,25 @@ public class AiArtifact
    *
    * @param description  Description of the artifact
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the id of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param id  ID of the artifact
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param id  ID of the artifact
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the artifact
-    * @return id  The id of this {@link AiArtifact} instance.
-    */
+  /**
+   * ID of the artifact
+   * @return id  The id of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -333,21 +333,21 @@ public class AiArtifact
     this.id = id;
   }
 
-   /**
-    * Set the scenarioId of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact scenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link AiArtifact} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -361,21 +361,21 @@ public class AiArtifact
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the configurationId of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact configurationId(@Nonnull final String configurationId) {
+  /**
+   * Set the configurationId of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact configurationId( @Nullable final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiArtifact} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
@@ -385,25 +385,25 @@ public class AiArtifact
    *
    * @param configurationId  ID of the configuration
    */
-  public void setConfigurationId( @Nonnull final String configurationId) {
+  public void setConfigurationId( @Nullable final String configurationId) {
     this.configurationId = configurationId;
   }
 
-   /**
-    * Set the executionId of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param executionId  ID of the execution
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact executionId(@Nonnull final String executionId) {
+  /**
+   * Set the executionId of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param executionId  ID of the execution
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact executionId( @Nullable final String executionId) {
     this.executionId = executionId;
     return this;
   }
 
-   /**
-    * ID of the execution
-    * @return executionId  The executionId of this {@link AiArtifact} instance.
-    */
+  /**
+   * ID of the execution
+   * @return executionId  The executionId of this {@link AiArtifact} instance.
+   */
   @Nonnull public String getExecutionId() {
     return executionId;
   }
@@ -413,25 +413,25 @@ public class AiArtifact
    *
    * @param executionId  ID of the execution
    */
-  public void setExecutionId( @Nonnull final String executionId) {
+  public void setExecutionId( @Nullable final String executionId) {
     this.executionId = executionId;
   }
 
-   /**
-    * Set the createdAt of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link AiArtifact} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link AiArtifact} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -445,21 +445,21 @@ public class AiArtifact
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link AiArtifact} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link AiArtifact} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -473,22 +473,22 @@ public class AiArtifact
     this.modifiedAt = modifiedAt;
   }
 
-   /**
-    * Set the scenario of this {@link AiArtifact} instance and return the same instance.
-    *
-    * @param scenario  The scenario of this {@link AiArtifact}
-    * @return The same instance of this {@link AiArtifact} class
-    */
-   @Nonnull public AiArtifact scenario(@Nonnull final AiScenario scenario) {
+  /**
+   * Set the scenario of this {@link AiArtifact} instance and return the same instance.
+   *
+   * @param scenario  The scenario of this {@link AiArtifact}
+   * @return The same instance of this {@link AiArtifact} class
+   */
+  @Nonnull public AiArtifact scenario( @Nullable final AiScenario scenario) {
     this.scenario = scenario;
     return this;
   }
 
-   /**
-    * Get scenario
-    * @return scenario  The scenario of this {@link AiArtifact} instance.
-    */
-  @Nonnull public AiScenario getScenario() {
+  /**
+   * Get scenario
+   * @return scenario  The scenario of this {@link AiArtifact} instance.
+   */
+  @Nullable public AiScenario getScenario() {
     return scenario;
   }
 
@@ -497,7 +497,7 @@ public class AiArtifact
    *
    * @param scenario  The scenario of this {@link AiArtifact}
    */
-  public void setScenario( @Nonnull final AiScenario scenario) {
+  public void setScenario( @Nullable final AiScenario scenario) {
     this.scenario = scenario;
   }
 
@@ -518,7 +518,7 @@ public class AiArtifact
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiArtifact has no field with name '" + name + "'.");
     }

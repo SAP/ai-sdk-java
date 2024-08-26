@@ -53,21 +53,21 @@ public class BckndExecutableResourceQuotaResponseQuota
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndExecutableResourceQuotaResponseQuota() {  }
 
-   /**
-    * Set the servingTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance and return the same instance.
-    *
-    * @param servingTemplateMaxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return The same instance of this {@link BckndExecutableResourceQuotaResponseQuota} class
-    */
-   @Nonnull public BckndExecutableResourceQuotaResponseQuota servingTemplateMaxCount(@Nonnull final Integer servingTemplateMaxCount) {
+  /**
+   * Set the servingTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance and return the same instance.
+   *
+   * @param servingTemplateMaxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return The same instance of this {@link BckndExecutableResourceQuotaResponseQuota} class
+   */
+  @Nonnull public BckndExecutableResourceQuotaResponseQuota servingTemplateMaxCount( @Nullable final Integer servingTemplateMaxCount) {
     this.servingTemplateMaxCount = servingTemplateMaxCount;
     return this;
   }
 
-   /**
-    * The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return servingTemplateMaxCount  The servingTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance.
-    */
+  /**
+   * The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return servingTemplateMaxCount  The servingTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance.
+   */
   @Nonnull public Integer getServingTemplateMaxCount() {
     return servingTemplateMaxCount;
   }
@@ -77,25 +77,25 @@ public class BckndExecutableResourceQuotaResponseQuota
    *
    * @param servingTemplateMaxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
    */
-  public void setServingTemplateMaxCount( @Nonnull final Integer servingTemplateMaxCount) {
+  public void setServingTemplateMaxCount( @Nullable final Integer servingTemplateMaxCount) {
     this.servingTemplateMaxCount = servingTemplateMaxCount;
   }
 
-   /**
-    * Set the workflowTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance and return the same instance.
-    *
-    * @param workflowTemplateMaxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return The same instance of this {@link BckndExecutableResourceQuotaResponseQuota} class
-    */
-   @Nonnull public BckndExecutableResourceQuotaResponseQuota workflowTemplateMaxCount(@Nonnull final Integer workflowTemplateMaxCount) {
+  /**
+   * Set the workflowTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance and return the same instance.
+   *
+   * @param workflowTemplateMaxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return The same instance of this {@link BckndExecutableResourceQuotaResponseQuota} class
+   */
+  @Nonnull public BckndExecutableResourceQuotaResponseQuota workflowTemplateMaxCount( @Nullable final Integer workflowTemplateMaxCount) {
     this.workflowTemplateMaxCount = workflowTemplateMaxCount;
     return this;
   }
 
-   /**
-    * The value can be 0(disabled) or a positive integer defining the maximum allowed number
-    * @return workflowTemplateMaxCount  The workflowTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance.
-    */
+  /**
+   * The value can be 0(disabled) or a positive integer defining the maximum allowed number
+   * @return workflowTemplateMaxCount  The workflowTemplateMaxCount of this {@link BckndExecutableResourceQuotaResponseQuota} instance.
+   */
   @Nonnull public Integer getWorkflowTemplateMaxCount() {
     return workflowTemplateMaxCount;
   }
@@ -105,7 +105,7 @@ public class BckndExecutableResourceQuotaResponseQuota
    *
    * @param workflowTemplateMaxCount  The value can be 0(disabled) or a positive integer defining the maximum allowed number
    */
-  public void setWorkflowTemplateMaxCount( @Nonnull final Integer workflowTemplateMaxCount) {
+  public void setWorkflowTemplateMaxCount( @Nullable final Integer workflowTemplateMaxCount) {
     this.workflowTemplateMaxCount = workflowTemplateMaxCount;
   }
 
@@ -126,7 +126,7 @@ public class BckndExecutableResourceQuotaResponseQuota
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndExecutableResourceQuotaResponseQuota has no field with name '" + name + "'.");
     }

@@ -58,21 +58,21 @@ public class MetaAiApi
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAiApi() {  }
 
-   /**
-    * Set the version of this {@link MetaAiApi} instance and return the same instance.
-    *
-    * @param version  The version of this {@link MetaAiApi}
-    * @return The same instance of this {@link MetaAiApi} class
-    */
-   @Nonnull public MetaAiApi version(@Nonnull final String version) {
+  /**
+   * Set the version of this {@link MetaAiApi} instance and return the same instance.
+   *
+   * @param version  The version of this {@link MetaAiApi}
+   * @return The same instance of this {@link MetaAiApi} class
+   */
+  @Nonnull public MetaAiApi version( @Nonnull final String version) {
     this.version = version;
     return this;
   }
 
-   /**
-    * Get version
-    * @return version  The version of this {@link MetaAiApi} instance.
-    */
+  /**
+   * Get version
+   * @return version  The version of this {@link MetaAiApi} instance.
+   */
   @Nonnull public String getVersion() {
     return version;
   }
@@ -86,21 +86,21 @@ public class MetaAiApi
     this.version = version;
   }
 
-   /**
-    * Set the capabilities of this {@link MetaAiApi} instance and return the same instance.
-    *
-    * @param capabilities  The capabilities of this {@link MetaAiApi}
-    * @return The same instance of this {@link MetaAiApi} class
-    */
-   @Nonnull public MetaAiApi capabilities(@Nonnull final MetaAiApiCapabilities capabilities) {
+  /**
+   * Set the capabilities of this {@link MetaAiApi} instance and return the same instance.
+   *
+   * @param capabilities  The capabilities of this {@link MetaAiApi}
+   * @return The same instance of this {@link MetaAiApi} class
+   */
+  @Nonnull public MetaAiApi capabilities( @Nullable final MetaAiApiCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
 
-   /**
-    * Get capabilities
-    * @return capabilities  The capabilities of this {@link MetaAiApi} instance.
-    */
+  /**
+   * Get capabilities
+   * @return capabilities  The capabilities of this {@link MetaAiApi} instance.
+   */
   @Nonnull public MetaAiApiCapabilities getCapabilities() {
     return capabilities;
   }
@@ -110,25 +110,25 @@ public class MetaAiApi
    *
    * @param capabilities  The capabilities of this {@link MetaAiApi}
    */
-  public void setCapabilities( @Nonnull final MetaAiApiCapabilities capabilities) {
+  public void setCapabilities( @Nullable final MetaAiApiCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
-   /**
-    * Set the limits of this {@link MetaAiApi} instance and return the same instance.
-    *
-    * @param limits  The limits of this {@link MetaAiApi}
-    * @return The same instance of this {@link MetaAiApi} class
-    */
-   @Nonnull public MetaAiApi limits(@Nonnull final MetaAiApiLimits limits) {
+  /**
+   * Set the limits of this {@link MetaAiApi} instance and return the same instance.
+   *
+   * @param limits  The limits of this {@link MetaAiApi}
+   * @return The same instance of this {@link MetaAiApi} class
+   */
+  @Nonnull public MetaAiApi limits( @Nullable final MetaAiApiLimits limits) {
     this.limits = limits;
     return this;
   }
 
-   /**
-    * Get limits
-    * @return limits  The limits of this {@link MetaAiApi} instance.
-    */
+  /**
+   * Get limits
+   * @return limits  The limits of this {@link MetaAiApi} instance.
+   */
   @Nonnull public MetaAiApiLimits getLimits() {
     return limits;
   }
@@ -138,7 +138,7 @@ public class MetaAiApi
    *
    * @param limits  The limits of this {@link MetaAiApi}
    */
-  public void setLimits( @Nonnull final MetaAiApiLimits limits) {
+  public void setLimits( @Nullable final MetaAiApiLimits limits) {
     this.limits = limits;
   }
 
@@ -159,7 +159,7 @@ public class MetaAiApi
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAiApi has no field with name '" + name + "'.");
     }

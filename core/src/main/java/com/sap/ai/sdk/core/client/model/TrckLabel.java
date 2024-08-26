@@ -53,21 +53,21 @@ public class TrckLabel
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckLabel() {  }
 
-   /**
-    * Set the name of this {@link TrckLabel} instance and return the same instance.
-    *
-    * @param name  Label name to label one or more metrics. \&quot;metrics.ai.sap.com/Artifact.name\&quot; is a reserved label to associate an artifact with the metrics
-    * @return The same instance of this {@link TrckLabel} class
-    */
-   @Nonnull public TrckLabel name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link TrckLabel} instance and return the same instance.
+   *
+   * @param name  Label name to label one or more metrics. \&quot;metrics.ai.sap.com/Artifact.name\&quot; is a reserved label to associate an artifact with the metrics
+   * @return The same instance of this {@link TrckLabel} class
+   */
+  @Nonnull public TrckLabel name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Label name to label one or more metrics. \&quot;metrics.ai.sap.com/Artifact.name\&quot; is a reserved label to associate an artifact with the metrics
-    * @return name  The name of this {@link TrckLabel} instance.
-    */
+  /**
+   * Label name to label one or more metrics. \&quot;metrics.ai.sap.com/Artifact.name\&quot; is a reserved label to associate an artifact with the metrics
+   * @return name  The name of this {@link TrckLabel} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -81,21 +81,21 @@ public class TrckLabel
     this.name = name;
   }
 
-   /**
-    * Set the value of this {@link TrckLabel} instance and return the same instance.
-    *
-    * @param value  Metric Label Value
-    * @return The same instance of this {@link TrckLabel} class
-    */
-   @Nonnull public TrckLabel value(@Nonnull final String value) {
+  /**
+   * Set the value of this {@link TrckLabel} instance and return the same instance.
+   *
+   * @param value  Metric Label Value
+   * @return The same instance of this {@link TrckLabel} class
+   */
+  @Nonnull public TrckLabel value( @Nonnull final String value) {
     this.value = value;
     return this;
   }
 
-   /**
-    * Metric Label Value
-    * @return value  The value of this {@link TrckLabel} instance.
-    */
+  /**
+   * Metric Label Value
+   * @return value  The value of this {@link TrckLabel} instance.
+   */
   @Nonnull public String getValue() {
     return value;
   }
@@ -126,7 +126,7 @@ public class TrckLabel
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckLabel has no field with name '" + name + "'.");
     }

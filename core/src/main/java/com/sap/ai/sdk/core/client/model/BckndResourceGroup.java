@@ -132,21 +132,21 @@ public class BckndResourceGroup
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGroup() {  }
 
-   /**
-    * Set the resourceGroupId of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param resourceGroupId  resource group id
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup resourceGroupId(@Nonnull final String resourceGroupId) {
+  /**
+   * Set the resourceGroupId of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param resourceGroupId  resource group id
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup resourceGroupId( @Nonnull final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
 
-   /**
-    * resource group id
-    * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * resource group id
+   * @return resourceGroupId  The resourceGroupId of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public String getResourceGroupId() {
     return resourceGroupId;
   }
@@ -160,21 +160,21 @@ public class BckndResourceGroup
     this.resourceGroupId = resourceGroupId;
   }
 
-   /**
-    * Set the tenantId of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param tenantId  tenant id
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup tenantId(@Nonnull final String tenantId) {
+  /**
+   * Set the tenantId of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param tenantId  tenant id
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup tenantId( @Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
-   /**
-    * tenant id
-    * @return tenantId  The tenantId of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * tenant id
+   * @return tenantId  The tenantId of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public String getTenantId() {
     return tenantId;
   }
@@ -184,25 +184,25 @@ public class BckndResourceGroup
    *
    * @param tenantId  tenant id
    */
-  public void setTenantId( @Nonnull final String tenantId) {
+  public void setTenantId( @Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
-   /**
-    * Set the zoneId of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param zoneId  zone id
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup zoneId(@Nonnull final String zoneId) {
+  /**
+   * Set the zoneId of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param zoneId  zone id
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup zoneId( @Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
 
-   /**
-    * zone id
-    * @return zoneId  The zoneId of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * zone id
+   * @return zoneId  The zoneId of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public String getZoneId() {
     return zoneId;
   }
@@ -212,25 +212,25 @@ public class BckndResourceGroup
    *
    * @param zoneId  zone id
    */
-  public void setZoneId( @Nonnull final String zoneId) {
+  public void setZoneId( @Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 
-   /**
-    * Set the createdAt of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource group creation
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource group creation
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource group creation
-    * @return createdAt  The createdAt of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * Timestamp of resource group creation
+   * @return createdAt  The createdAt of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -244,13 +244,13 @@ public class BckndResourceGroup
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the labels of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  /**
+   * Set the labels of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup labels( @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -267,10 +267,10 @@ public class BckndResourceGroup
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public List<BckndResourceGroupLabel> getLabels() {
     return labels;
   }
@@ -280,25 +280,25 @@ public class BckndResourceGroup
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<BckndResourceGroupLabel> labels) {
+  public void setLabels( @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 
-   /**
-    * Set the status of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param status  aggregated status of the onboarding process
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup status(@Nonnull final StatusEnum status) {
+  /**
+   * Set the status of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param status  aggregated status of the onboarding process
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup status( @Nonnull final StatusEnum status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * aggregated status of the onboarding process
-    * @return status  The status of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * aggregated status of the onboarding process
+   * @return status  The status of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
@@ -312,21 +312,21 @@ public class BckndResourceGroup
     this.status = status;
   }
 
-   /**
-    * Set the statusMessage of this {@link BckndResourceGroup} instance and return the same instance.
-    *
-    * @param statusMessage  status message
-    * @return The same instance of this {@link BckndResourceGroup} class
-    */
-   @Nonnull public BckndResourceGroup statusMessage(@Nonnull final String statusMessage) {
+  /**
+   * Set the statusMessage of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param statusMessage  status message
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull public BckndResourceGroup statusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
-   /**
-    * status message
-    * @return statusMessage  The statusMessage of this {@link BckndResourceGroup} instance.
-    */
+  /**
+   * status message
+   * @return statusMessage  The statusMessage of this {@link BckndResourceGroup} instance.
+   */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
@@ -336,7 +336,7 @@ public class BckndResourceGroup
    *
    * @param statusMessage  status message
    */
-  public void setStatusMessage( @Nonnull final String statusMessage) {
+  public void setStatusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -357,7 +357,7 @@ public class BckndResourceGroup
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGroup has no field with name '" + name + "'.");
     }

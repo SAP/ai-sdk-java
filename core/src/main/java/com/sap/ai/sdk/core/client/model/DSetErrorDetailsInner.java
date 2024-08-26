@@ -53,21 +53,21 @@ public class DSetErrorDetailsInner
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected DSetErrorDetailsInner() {  }
 
-   /**
-    * Set the code of this {@link DSetErrorDetailsInner} instance and return the same instance.
-    *
-    * @param code  The code of this {@link DSetErrorDetailsInner}
-    * @return The same instance of this {@link DSetErrorDetailsInner} class
-    */
-   @Nonnull public DSetErrorDetailsInner code(@Nonnull final String code) {
+  /**
+   * Set the code of this {@link DSetErrorDetailsInner} instance and return the same instance.
+   *
+   * @param code  The code of this {@link DSetErrorDetailsInner}
+   * @return The same instance of this {@link DSetErrorDetailsInner} class
+   */
+  @Nonnull public DSetErrorDetailsInner code( @Nonnull final String code) {
     this.code = code;
     return this;
   }
 
-   /**
-    * Get code
-    * @return code  The code of this {@link DSetErrorDetailsInner} instance.
-    */
+  /**
+   * Get code
+   * @return code  The code of this {@link DSetErrorDetailsInner} instance.
+   */
   @Nonnull public String getCode() {
     return code;
   }
@@ -81,21 +81,21 @@ public class DSetErrorDetailsInner
     this.code = code;
   }
 
-   /**
-    * Set the message of this {@link DSetErrorDetailsInner} instance and return the same instance.
-    *
-    * @param message  The message of this {@link DSetErrorDetailsInner}
-    * @return The same instance of this {@link DSetErrorDetailsInner} class
-    */
-   @Nonnull public DSetErrorDetailsInner message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link DSetErrorDetailsInner} instance and return the same instance.
+   *
+   * @param message  The message of this {@link DSetErrorDetailsInner}
+   * @return The same instance of this {@link DSetErrorDetailsInner} class
+   */
+  @Nonnull public DSetErrorDetailsInner message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Get message
-    * @return message  The message of this {@link DSetErrorDetailsInner} instance.
-    */
+  /**
+   * Get message
+   * @return message  The message of this {@link DSetErrorDetailsInner} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -126,7 +126,7 @@ public class DSetErrorDetailsInner
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("DSetErrorDetailsInner has no field with name '" + name + "'.");
     }

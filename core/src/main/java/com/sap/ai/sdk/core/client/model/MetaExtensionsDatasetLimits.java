@@ -59,21 +59,21 @@ public class MetaExtensionsDatasetLimits
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaExtensionsDatasetLimits() {  }
 
-   /**
-    * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
-    *
-    * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
-    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
-    */
-   @Nonnull public MetaExtensionsDatasetLimits maxUploadFileSize(@Nonnull final Integer maxUploadFileSize) {
+  /**
+   * Set the maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
+   *
+   * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
+   * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
+   */
+  @Nonnull public MetaExtensionsDatasetLimits maxUploadFileSize( @Nullable final Integer maxUploadFileSize) {
     this.maxUploadFileSize = maxUploadFileSize;
     return this;
   }
 
-   /**
-    * Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
-    * @return maxUploadFileSize  The maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance.
-    */
+  /**
+   * Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
+   * @return maxUploadFileSize  The maxUploadFileSize of this {@link MetaExtensionsDatasetLimits} instance.
+   */
   @Nonnull public Integer getMaxUploadFileSize() {
     return maxUploadFileSize;
   }
@@ -83,25 +83,25 @@ public class MetaExtensionsDatasetLimits
    *
    * @param maxUploadFileSize  Max size (in bytes) of a single uploaded file allowed by this runtime per resource group.
    */
-  public void setMaxUploadFileSize( @Nonnull final Integer maxUploadFileSize) {
+  public void setMaxUploadFileSize( @Nullable final Integer maxUploadFileSize) {
     this.maxUploadFileSize = maxUploadFileSize;
   }
 
-   /**
-    * Set the maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
-    *
-    * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
-    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
-    */
-   @Nonnull public MetaExtensionsDatasetLimits maxFilesPerDataset(@Nonnull final Integer maxFilesPerDataset) {
+  /**
+   * Set the maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
+   *
+   * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
+   * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
+   */
+  @Nonnull public MetaExtensionsDatasetLimits maxFilesPerDataset( @Nullable final Integer maxFilesPerDataset) {
     this.maxFilesPerDataset = maxFilesPerDataset;
     return this;
   }
 
-   /**
-    * Max number of files per dataset. &lt;0 means unlimited.
-    * @return maxFilesPerDataset  The maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance.
-    */
+  /**
+   * Max number of files per dataset. &lt;0 means unlimited.
+   * @return maxFilesPerDataset  The maxFilesPerDataset of this {@link MetaExtensionsDatasetLimits} instance.
+   */
   @Nonnull public Integer getMaxFilesPerDataset() {
     return maxFilesPerDataset;
   }
@@ -111,17 +111,17 @@ public class MetaExtensionsDatasetLimits
    *
    * @param maxFilesPerDataset  Max number of files per dataset. &lt;0 means unlimited.
    */
-  public void setMaxFilesPerDataset( @Nonnull final Integer maxFilesPerDataset) {
+  public void setMaxFilesPerDataset( @Nullable final Integer maxFilesPerDataset) {
     this.maxFilesPerDataset = maxFilesPerDataset;
   }
 
-   /**
-    * Set the acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
-    *
-    * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
-    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
-    */
-   @Nonnull public MetaExtensionsDatasetLimits acceptedContentTypes(@Nonnull final List<String> acceptedContentTypes) {
+  /**
+   * Set the acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance and return the same instance.
+   *
+   * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
+   * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
+   */
+  @Nonnull public MetaExtensionsDatasetLimits acceptedContentTypes( @Nullable final List<String> acceptedContentTypes) {
     this.acceptedContentTypes = acceptedContentTypes;
     return this;
   }
@@ -138,10 +138,10 @@ public class MetaExtensionsDatasetLimits
     return this;
   }
 
-   /**
-    * Get acceptedContentTypes
-    * @return acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance.
-    */
+  /**
+   * Get acceptedContentTypes
+   * @return acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits} instance.
+   */
   @Nonnull public List<String> getAcceptedContentTypes() {
     return acceptedContentTypes;
   }
@@ -151,7 +151,7 @@ public class MetaExtensionsDatasetLimits
    *
    * @param acceptedContentTypes  The acceptedContentTypes of this {@link MetaExtensionsDatasetLimits}
    */
-  public void setAcceptedContentTypes( @Nonnull final List<String> acceptedContentTypes) {
+  public void setAcceptedContentTypes( @Nullable final List<String> acceptedContentTypes) {
     this.acceptedContentTypes = acceptedContentTypes;
   }
 
@@ -172,7 +172,7 @@ public class MetaExtensionsDatasetLimits
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaExtensionsDatasetLimits has no field with name '" + name + "'.");
     }

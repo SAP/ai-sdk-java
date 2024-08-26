@@ -53,22 +53,22 @@ public class AiDeploymentCreationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentCreationRequest() {  }
 
-   /**
-    * Set the ttl of this {@link AiDeploymentCreationRequest} instance and return the same instance.
-    *
-    * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
-    * @return The same instance of this {@link AiDeploymentCreationRequest} class
-    */
-   @Nonnull public AiDeploymentCreationRequest ttl(@Nonnull final String ttl) {
+  /**
+   * Set the ttl of this {@link AiDeploymentCreationRequest} instance and return the same instance.
+   *
+   * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
+   * @return The same instance of this {@link AiDeploymentCreationRequest} class
+   */
+  @Nonnull public AiDeploymentCreationRequest ttl( @Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
 
-   /**
-    * Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
-    * @return ttl  The ttl of this {@link AiDeploymentCreationRequest} instance.
-    */
-  @Nonnull public String getTtl() {
+  /**
+   * Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
+   * @return ttl  The ttl of this {@link AiDeploymentCreationRequest} instance.
+   */
+  @Nullable public String getTtl() {
     return ttl;
   }
 
@@ -77,25 +77,25 @@ public class AiDeploymentCreationRequest
    *
    * @param ttl  Time to live for a deployment. Its value can be either null or a number followed by the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
    */
-  public void setTtl( @Nonnull final String ttl) {
+  public void setTtl( @Nullable final String ttl) {
     this.ttl = ttl;
   }
 
-   /**
-    * Set the configurationId of this {@link AiDeploymentCreationRequest} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiDeploymentCreationRequest} class
-    */
-   @Nonnull public AiDeploymentCreationRequest configurationId(@Nonnull final String configurationId) {
+  /**
+   * Set the configurationId of this {@link AiDeploymentCreationRequest} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiDeploymentCreationRequest} class
+   */
+  @Nonnull public AiDeploymentCreationRequest configurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiDeploymentCreationRequest} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiDeploymentCreationRequest} instance.
+   */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
@@ -126,7 +126,7 @@ public class AiDeploymentCreationRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentCreationRequest has no field with name '" + name + "'.");
     }

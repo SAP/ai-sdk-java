@@ -50,21 +50,21 @@ public class BcknddockerRegistrySecretStatus
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BcknddockerRegistrySecretStatus() {  }
 
-   /**
-    * Set the name of this {@link BcknddockerRegistrySecretStatus} instance and return the same instance.
-    *
-    * @param name  Name of dockerRegistryStore
-    * @return The same instance of this {@link BcknddockerRegistrySecretStatus} class
-    */
-   @Nonnull public BcknddockerRegistrySecretStatus name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BcknddockerRegistrySecretStatus} instance and return the same instance.
+   *
+   * @param name  Name of dockerRegistryStore
+   * @return The same instance of this {@link BcknddockerRegistrySecretStatus} class
+   */
+  @Nonnull public BcknddockerRegistrySecretStatus name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of dockerRegistryStore
-    * @return name  The name of this {@link BcknddockerRegistrySecretStatus} instance.
-    */
+  /**
+   * Name of dockerRegistryStore
+   * @return name  The name of this {@link BcknddockerRegistrySecretStatus} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -74,7 +74,7 @@ public class BcknddockerRegistrySecretStatus
    *
    * @param name  Name of dockerRegistryStore
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
@@ -95,7 +95,7 @@ public class BcknddockerRegistrySecretStatus
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BcknddockerRegistrySecretStatus has no field with name '" + name + "'.");
     }

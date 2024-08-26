@@ -64,21 +64,21 @@ public class KubesubmitV4ApplicationsCreateRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected KubesubmitV4ApplicationsCreateRequest() {  }
 
-   /**
-    * Set the repositoryUrl of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
-    *
-    * @param repositoryUrl  URL of the repository to synchronise
-    * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4ApplicationsCreateRequest repositoryUrl(@Nonnull final String repositoryUrl) {
+  /**
+   * Set the repositoryUrl of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
+   *
+   * @param repositoryUrl  URL of the repository to synchronise
+   * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4ApplicationsCreateRequest repositoryUrl( @Nonnull final String repositoryUrl) {
     this.repositoryUrl = repositoryUrl;
     return this;
   }
 
-   /**
-    * URL of the repository to synchronise
-    * @return repositoryUrl  The repositoryUrl of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
-    */
+  /**
+   * URL of the repository to synchronise
+   * @return repositoryUrl  The repositoryUrl of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+   */
   @Nonnull public String getRepositoryUrl() {
     return repositoryUrl;
   }
@@ -92,21 +92,21 @@ public class KubesubmitV4ApplicationsCreateRequest
     this.repositoryUrl = repositoryUrl;
   }
 
-   /**
-    * Set the revision of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
-    *
-    * @param revision  revision to synchronise
-    * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4ApplicationsCreateRequest revision(@Nonnull final String revision) {
+  /**
+   * Set the revision of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
+   *
+   * @param revision  revision to synchronise
+   * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4ApplicationsCreateRequest revision( @Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
 
-   /**
-    * revision to synchronise
-    * @return revision  The revision of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
-    */
+  /**
+   * revision to synchronise
+   * @return revision  The revision of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+   */
   @Nonnull public String getRevision() {
     return revision;
   }
@@ -120,21 +120,21 @@ public class KubesubmitV4ApplicationsCreateRequest
     this.revision = revision;
   }
 
-   /**
-    * Set the path of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
-    *
-    * @param path  path within the repository to synchronise
-    * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4ApplicationsCreateRequest path(@Nonnull final String path) {
+  /**
+   * Set the path of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
+   *
+   * @param path  path within the repository to synchronise
+   * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4ApplicationsCreateRequest path( @Nonnull final String path) {
     this.path = path;
     return this;
   }
 
-   /**
-    * path within the repository to synchronise
-    * @return path  The path of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
-    */
+  /**
+   * path within the repository to synchronise
+   * @return path  The path of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+   */
   @Nonnull public String getPath() {
     return path;
   }
@@ -148,21 +148,21 @@ public class KubesubmitV4ApplicationsCreateRequest
     this.path = path;
   }
 
-   /**
-    * Set the applicationName of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
-    *
-    * @param applicationName  ArgoCD application name
-    * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4ApplicationsCreateRequest applicationName(@Nonnull final String applicationName) {
+  /**
+   * Set the applicationName of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
+   *
+   * @param applicationName  ArgoCD application name
+   * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4ApplicationsCreateRequest applicationName( @Nullable final String applicationName) {
     this.applicationName = applicationName;
     return this;
   }
 
-   /**
-    * ArgoCD application name
-    * @return applicationName  The applicationName of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
-    */
+  /**
+   * ArgoCD application name
+   * @return applicationName  The applicationName of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+   */
   @Nonnull public String getApplicationName() {
     return applicationName;
   }
@@ -172,25 +172,25 @@ public class KubesubmitV4ApplicationsCreateRequest
    *
    * @param applicationName  ArgoCD application name
    */
-  public void setApplicationName( @Nonnull final String applicationName) {
+  public void setApplicationName( @Nullable final String applicationName) {
     this.applicationName = applicationName;
   }
 
-   /**
-    * Set the repositoryName of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
-    *
-    * @param repositoryName  Name of the repository to synchronise
-    * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
-    */
-   @Nonnull public KubesubmitV4ApplicationsCreateRequest repositoryName(@Nonnull final String repositoryName) {
+  /**
+   * Set the repositoryName of this {@link KubesubmitV4ApplicationsCreateRequest} instance and return the same instance.
+   *
+   * @param repositoryName  Name of the repository to synchronise
+   * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
+   */
+  @Nonnull public KubesubmitV4ApplicationsCreateRequest repositoryName( @Nonnull final String repositoryName) {
     this.repositoryName = repositoryName;
     return this;
   }
 
-   /**
-    * Name of the repository to synchronise
-    * @return repositoryName  The repositoryName of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
-    */
+  /**
+   * Name of the repository to synchronise
+   * @return repositoryName  The repositoryName of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
+   */
   @Nonnull public String getRepositoryName() {
     return repositoryName;
   }
@@ -221,7 +221,7 @@ public class KubesubmitV4ApplicationsCreateRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("KubesubmitV4ApplicationsCreateRequest has no field with name '" + name + "'.");
     }

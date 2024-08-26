@@ -51,21 +51,21 @@ public class MetaGet404Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaGet404Response() {  }
 
-   /**
-    * Set the error of this {@link MetaGet404Response} instance and return the same instance.
-    *
-    * @param error  The error of this {@link MetaGet404Response}
-    * @return The same instance of this {@link MetaGet404Response} class
-    */
-   @Nonnull public MetaGet404Response error(@Nonnull final MetaApiError error) {
+  /**
+   * Set the error of this {@link MetaGet404Response} instance and return the same instance.
+   *
+   * @param error  The error of this {@link MetaGet404Response}
+   * @return The same instance of this {@link MetaGet404Response} class
+   */
+  @Nonnull public MetaGet404Response error( @Nullable final MetaApiError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link MetaGet404Response} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link MetaGet404Response} instance.
+   */
   @Nonnull public MetaApiError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class MetaGet404Response
    *
    * @param error  The error of this {@link MetaGet404Response}
    */
-  public void setError( @Nonnull final MetaApiError error) {
+  public void setError( @Nullable final MetaApiError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class MetaGet404Response
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaGet404Response has no field with name '" + name + "'.");
     }

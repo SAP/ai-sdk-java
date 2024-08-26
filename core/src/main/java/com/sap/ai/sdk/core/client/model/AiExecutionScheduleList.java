@@ -57,21 +57,21 @@ public class AiExecutionScheduleList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiExecutionScheduleList() {  }
 
-   /**
-    * Set the count of this {@link AiExecutionScheduleList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiExecutionScheduleList} class
-    */
-   @Nonnull public AiExecutionScheduleList count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link AiExecutionScheduleList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiExecutionScheduleList} class
+   */
+  @Nonnull public AiExecutionScheduleList count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiExecutionScheduleList} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiExecutionScheduleList} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class AiExecutionScheduleList
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link AiExecutionScheduleList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiExecutionScheduleList}
-    * @return The same instance of this {@link AiExecutionScheduleList} class
-    */
-   @Nonnull public AiExecutionScheduleList resources(@Nonnull final List<AiExecutionSchedule> resources) {
+  /**
+   * Set the resources of this {@link AiExecutionScheduleList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiExecutionScheduleList}
+   * @return The same instance of this {@link AiExecutionScheduleList} class
+   */
+  @Nonnull public AiExecutionScheduleList resources( @Nonnull final List<AiExecutionSchedule> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class AiExecutionScheduleList
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link AiExecutionScheduleList} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link AiExecutionScheduleList} instance.
+   */
   @Nonnull public List<AiExecutionSchedule> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class AiExecutionScheduleList
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiExecutionScheduleList has no field with name '" + name + "'.");
     }

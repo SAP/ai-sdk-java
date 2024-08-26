@@ -57,21 +57,21 @@ public class AiDeploymentList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentList() {  }
 
-   /**
-    * Set the count of this {@link AiDeploymentList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiDeploymentList} class
-    */
-   @Nonnull public AiDeploymentList count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link AiDeploymentList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiDeploymentList} class
+   */
+  @Nonnull public AiDeploymentList count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiDeploymentList} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiDeploymentList} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class AiDeploymentList
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link AiDeploymentList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiDeploymentList}
-    * @return The same instance of this {@link AiDeploymentList} class
-    */
-   @Nonnull public AiDeploymentList resources(@Nonnull final List<AiDeployment> resources) {
+  /**
+   * Set the resources of this {@link AiDeploymentList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiDeploymentList}
+   * @return The same instance of this {@link AiDeploymentList} class
+   */
+  @Nonnull public AiDeploymentList resources( @Nonnull final List<AiDeployment> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class AiDeploymentList
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link AiDeploymentList} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link AiDeploymentList} instance.
+   */
   @Nonnull public List<AiDeployment> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class AiDeploymentList
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentList has no field with name '" + name + "'.");
     }

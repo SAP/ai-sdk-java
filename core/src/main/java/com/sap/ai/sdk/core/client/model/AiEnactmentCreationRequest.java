@@ -50,21 +50,21 @@ public class AiEnactmentCreationRequest
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiEnactmentCreationRequest() {  }
 
-   /**
-    * Set the configurationId of this {@link AiEnactmentCreationRequest} instance and return the same instance.
-    *
-    * @param configurationId  ID of the configuration
-    * @return The same instance of this {@link AiEnactmentCreationRequest} class
-    */
-   @Nonnull public AiEnactmentCreationRequest configurationId(@Nonnull final String configurationId) {
+  /**
+   * Set the configurationId of this {@link AiEnactmentCreationRequest} instance and return the same instance.
+   *
+   * @param configurationId  ID of the configuration
+   * @return The same instance of this {@link AiEnactmentCreationRequest} class
+   */
+  @Nonnull public AiEnactmentCreationRequest configurationId( @Nonnull final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
 
-   /**
-    * ID of the configuration
-    * @return configurationId  The configurationId of this {@link AiEnactmentCreationRequest} instance.
-    */
+  /**
+   * ID of the configuration
+   * @return configurationId  The configurationId of this {@link AiEnactmentCreationRequest} instance.
+   */
   @Nonnull public String getConfigurationId() {
     return configurationId;
   }
@@ -95,7 +95,7 @@ public class AiEnactmentCreationRequest
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiEnactmentCreationRequest has no field with name '" + name + "'.");
     }

@@ -53,21 +53,21 @@ public class BckndResourceGetResourcePlansValue
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGetResourcePlansValue() {  }
 
-   /**
-    * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
-    *
-    * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
-    * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
-    */
-   @Nonnull public BckndResourceGetResourcePlansValue provisioned(@Nonnull final Integer provisioned) {
+  /**
+   * Set the provisioned of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
+   *
+   * @param provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue}
+   * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
+   */
+  @Nonnull public BckndResourceGetResourcePlansValue provisioned( @Nonnull final Integer provisioned) {
     this.provisioned = provisioned;
     return this;
   }
 
-   /**
-    * Get provisioned
-    * @return provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
-    */
+  /**
+   * Get provisioned
+   * @return provisioned  The provisioned of this {@link BckndResourceGetResourcePlansValue} instance.
+   */
   @Nonnull public Integer getProvisioned() {
     return provisioned;
   }
@@ -81,21 +81,21 @@ public class BckndResourceGetResourcePlansValue
     this.provisioned = provisioned;
   }
 
-   /**
-    * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
-    *
-    * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
-    * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
-    */
-   @Nonnull public BckndResourceGetResourcePlansValue requested(@Nonnull final Integer requested) {
+  /**
+   * Set the requested of this {@link BckndResourceGetResourcePlansValue} instance and return the same instance.
+   *
+   * @param requested  The requested of this {@link BckndResourceGetResourcePlansValue}
+   * @return The same instance of this {@link BckndResourceGetResourcePlansValue} class
+   */
+  @Nonnull public BckndResourceGetResourcePlansValue requested( @Nonnull final Integer requested) {
     this.requested = requested;
     return this;
   }
 
-   /**
-    * Get requested
-    * @return requested  The requested of this {@link BckndResourceGetResourcePlansValue} instance.
-    */
+  /**
+   * Get requested
+   * @return requested  The requested of this {@link BckndResourceGetResourcePlansValue} instance.
+   */
   @Nonnull public Integer getRequested() {
     return requested;
   }
@@ -126,7 +126,7 @@ public class BckndResourceGetResourcePlansValue
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGetResourcePlansValue has no field with name '" + name + "'.");
     }

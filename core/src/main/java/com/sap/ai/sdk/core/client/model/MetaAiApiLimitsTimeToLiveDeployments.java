@@ -53,21 +53,21 @@ public class MetaAiApiLimitsTimeToLiveDeployments
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAiApiLimitsTimeToLiveDeployments() {  }
 
-   /**
-    * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
-    *
-    * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
-    * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
-    */
-   @Nonnull public MetaAiApiLimitsTimeToLiveDeployments minimum(@Nonnull final String minimum) {
+  /**
+   * Set the minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
+   *
+   * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
+   * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
+   */
+  @Nonnull public MetaAiApiLimitsTimeToLiveDeployments minimum( @Nullable final String minimum) {
     this.minimum = minimum;
     return this;
   }
 
-   /**
-    * Get minimum
-    * @return minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
-    */
+  /**
+   * Get minimum
+   * @return minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
+   */
   @Nonnull public String getMinimum() {
     return minimum;
   }
@@ -77,25 +77,25 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    *
    * @param minimum  The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
    */
-  public void setMinimum( @Nonnull final String minimum) {
+  public void setMinimum( @Nullable final String minimum) {
     this.minimum = minimum;
   }
 
-   /**
-    * Set the maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
-    *
-    * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
-    * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
-    */
-   @Nonnull public MetaAiApiLimitsTimeToLiveDeployments maximum(@Nonnull final String maximum) {
+  /**
+   * Set the maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance and return the same instance.
+   *
+   * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
+   * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
+   */
+  @Nonnull public MetaAiApiLimitsTimeToLiveDeployments maximum( @Nullable final String maximum) {
     this.maximum = maximum;
     return this;
   }
 
-   /**
-    * Get maximum
-    * @return maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
-    */
+  /**
+   * Get maximum
+   * @return maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments} instance.
+   */
   @Nonnull public String getMaximum() {
     return maximum;
   }
@@ -105,7 +105,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    *
    * @param maximum  The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
    */
-  public void setMaximum( @Nonnull final String maximum) {
+  public void setMaximum( @Nullable final String maximum) {
     this.maximum = maximum;
   }
 
@@ -126,7 +126,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAiApiLimitsTimeToLiveDeployments has no field with name '" + name + "'.");
     }

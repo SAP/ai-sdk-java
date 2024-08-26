@@ -57,21 +57,21 @@ public class BckndResourceGroupList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGroupList() {  }
 
-   /**
-    * Set the count of this {@link BckndResourceGroupList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BckndResourceGroupList} class
-    */
-   @Nonnull public BckndResourceGroupList count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link BckndResourceGroupList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BckndResourceGroupList} class
+   */
+  @Nonnull public BckndResourceGroupList count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BckndResourceGroupList} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BckndResourceGroupList} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class BckndResourceGroupList
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link BckndResourceGroupList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BckndResourceGroupList}
-    * @return The same instance of this {@link BckndResourceGroupList} class
-    */
-   @Nonnull public BckndResourceGroupList resources(@Nonnull final List<BckndResourceGroup> resources) {
+  /**
+   * Set the resources of this {@link BckndResourceGroupList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BckndResourceGroupList}
+   * @return The same instance of this {@link BckndResourceGroupList} class
+   */
+  @Nonnull public BckndResourceGroupList resources( @Nonnull final List<BckndResourceGroup> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class BckndResourceGroupList
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link BckndResourceGroupList} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link BckndResourceGroupList} instance.
+   */
   @Nonnull public List<BckndResourceGroup> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class BckndResourceGroupList
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGroupList has no field with name '" + name + "'.");
     }

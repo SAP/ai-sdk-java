@@ -115,21 +115,21 @@ public class BckndArgoCDRepositoryDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndArgoCDRepositoryDetails() {  }
 
-   /**
-    * Set the name of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
-    *
-    * @param name  The name of the repository
-    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
-    */
-   @Nonnull public BckndArgoCDRepositoryDetails name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
+   *
+   * @param name  The name of the repository
+   * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
+   */
+  @Nonnull public BckndArgoCDRepositoryDetails name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * The name of the repository
-    * @return name  The name of this {@link BckndArgoCDRepositoryDetails} instance.
-    */
+  /**
+   * The name of the repository
+   * @return name  The name of this {@link BckndArgoCDRepositoryDetails} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -139,25 +139,25 @@ public class BckndArgoCDRepositoryDetails
    *
    * @param name  The name of the repository
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
-   /**
-    * Set the url of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
-    *
-    * @param url  The repository URL
-    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
-    */
-   @Nonnull public BckndArgoCDRepositoryDetails url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
+   *
+   * @param url  The repository URL
+   * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
+   */
+  @Nonnull public BckndArgoCDRepositoryDetails url( @Nullable final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * The repository URL
-    * @return url  The url of this {@link BckndArgoCDRepositoryDetails} instance.
-    */
+  /**
+   * The repository URL
+   * @return url  The url of this {@link BckndArgoCDRepositoryDetails} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -167,25 +167,25 @@ public class BckndArgoCDRepositoryDetails
    *
    * @param url  The repository URL
    */
-  public void setUrl( @Nonnull final String url) {
+  public void setUrl( @Nullable final String url) {
     this.url = url;
   }
 
-   /**
-    * Set the status of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
-    *
-    * @param status  The status of the repository&#39;s on-boarding
-    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
-    */
-   @Nonnull public BckndArgoCDRepositoryDetails status(@Nonnull final StatusEnum status) {
+  /**
+   * Set the status of this {@link BckndArgoCDRepositoryDetails} instance and return the same instance.
+   *
+   * @param status  The status of the repository&#39;s on-boarding
+   * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
+   */
+  @Nonnull public BckndArgoCDRepositoryDetails status( @Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * The status of the repository&#39;s on-boarding
-    * @return status  The status of this {@link BckndArgoCDRepositoryDetails} instance.
-    */
+  /**
+   * The status of the repository&#39;s on-boarding
+   * @return status  The status of this {@link BckndArgoCDRepositoryDetails} instance.
+   */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
@@ -195,7 +195,7 @@ public class BckndArgoCDRepositoryDetails
    *
    * @param status  The status of the repository&#39;s on-boarding
    */
-  public void setStatus( @Nonnull final StatusEnum status) {
+  public void setStatus( @Nullable final StatusEnum status) {
     this.status = status;
   }
 
@@ -216,7 +216,7 @@ public class BckndArgoCDRepositoryDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndArgoCDRepositoryDetails has no field with name '" + name + "'.");
     }

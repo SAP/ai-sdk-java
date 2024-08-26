@@ -59,21 +59,21 @@ public class BckndTenant
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndTenant() {  }
 
-   /**
-    * Set the tenantId of this {@link BckndTenant} instance and return the same instance.
-    *
-    * @param tenantId  tenant id
-    * @return The same instance of this {@link BckndTenant} class
-    */
-   @Nonnull public BckndTenant tenantId(@Nonnull final String tenantId) {
+  /**
+   * Set the tenantId of this {@link BckndTenant} instance and return the same instance.
+   *
+   * @param tenantId  tenant id
+   * @return The same instance of this {@link BckndTenant} class
+   */
+  @Nonnull public BckndTenant tenantId( @Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
-   /**
-    * tenant id
-    * @return tenantId  The tenantId of this {@link BckndTenant} instance.
-    */
+  /**
+   * tenant id
+   * @return tenantId  The tenantId of this {@link BckndTenant} instance.
+   */
   @Nonnull public String getTenantId() {
     return tenantId;
   }
@@ -83,25 +83,25 @@ public class BckndTenant
    *
    * @param tenantId  tenant id
    */
-  public void setTenantId( @Nonnull final String tenantId) {
+  public void setTenantId( @Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
-   /**
-    * Set the zoneId of this {@link BckndTenant} instance and return the same instance.
-    *
-    * @param zoneId  zone id
-    * @return The same instance of this {@link BckndTenant} class
-    */
-   @Nonnull public BckndTenant zoneId(@Nonnull final String zoneId) {
+  /**
+   * Set the zoneId of this {@link BckndTenant} instance and return the same instance.
+   *
+   * @param zoneId  zone id
+   * @return The same instance of this {@link BckndTenant} class
+   */
+  @Nonnull public BckndTenant zoneId( @Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
 
-   /**
-    * zone id
-    * @return zoneId  The zoneId of this {@link BckndTenant} instance.
-    */
+  /**
+   * zone id
+   * @return zoneId  The zoneId of this {@link BckndTenant} instance.
+   */
   @Nonnull public String getZoneId() {
     return zoneId;
   }
@@ -111,25 +111,25 @@ public class BckndTenant
    *
    * @param zoneId  zone id
    */
-  public void setZoneId( @Nonnull final String zoneId) {
+  public void setZoneId( @Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 
-   /**
-    * Set the realSubaccountId of this {@link BckndTenant} instance and return the same instance.
-    *
-    * @param realSubaccountId  real sub account id
-    * @return The same instance of this {@link BckndTenant} class
-    */
-   @Nonnull public BckndTenant realSubaccountId(@Nonnull final String realSubaccountId) {
+  /**
+   * Set the realSubaccountId of this {@link BckndTenant} instance and return the same instance.
+   *
+   * @param realSubaccountId  real sub account id
+   * @return The same instance of this {@link BckndTenant} class
+   */
+  @Nonnull public BckndTenant realSubaccountId( @Nullable final String realSubaccountId) {
     this.realSubaccountId = realSubaccountId;
     return this;
   }
 
-   /**
-    * real sub account id
-    * @return realSubaccountId  The realSubaccountId of this {@link BckndTenant} instance.
-    */
+  /**
+   * real sub account id
+   * @return realSubaccountId  The realSubaccountId of this {@link BckndTenant} instance.
+   */
   @Nonnull public String getRealSubaccountId() {
     return realSubaccountId;
   }
@@ -139,25 +139,25 @@ public class BckndTenant
    *
    * @param realSubaccountId  real sub account id
    */
-  public void setRealSubaccountId( @Nonnull final String realSubaccountId) {
+  public void setRealSubaccountId( @Nullable final String realSubaccountId) {
     this.realSubaccountId = realSubaccountId;
   }
 
-   /**
-    * Set the servicePlan of this {@link BckndTenant} instance and return the same instance.
-    *
-    * @param servicePlan  service plan
-    * @return The same instance of this {@link BckndTenant} class
-    */
-   @Nonnull public BckndTenant servicePlan(@Nonnull final String servicePlan) {
+  /**
+   * Set the servicePlan of this {@link BckndTenant} instance and return the same instance.
+   *
+   * @param servicePlan  service plan
+   * @return The same instance of this {@link BckndTenant} class
+   */
+  @Nonnull public BckndTenant servicePlan( @Nullable final String servicePlan) {
     this.servicePlan = servicePlan;
     return this;
   }
 
-   /**
-    * service plan
-    * @return servicePlan  The servicePlan of this {@link BckndTenant} instance.
-    */
+  /**
+   * service plan
+   * @return servicePlan  The servicePlan of this {@link BckndTenant} instance.
+   */
   @Nonnull public String getServicePlan() {
     return servicePlan;
   }
@@ -167,7 +167,7 @@ public class BckndTenant
    *
    * @param servicePlan  service plan
    */
-  public void setServicePlan( @Nonnull final String servicePlan) {
+  public void setServicePlan( @Nullable final String servicePlan) {
     this.servicePlan = servicePlan;
   }
 
@@ -188,7 +188,7 @@ public class BckndTenant
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndTenant has no field with name '" + name + "'.");
     }

@@ -57,21 +57,21 @@ public class AiArtifactList
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiArtifactList() {  }
 
-   /**
-    * Set the count of this {@link AiArtifactList} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link AiArtifactList} class
-    */
-   @Nonnull public AiArtifactList count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link AiArtifactList} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link AiArtifactList} class
+   */
+  @Nonnull public AiArtifactList count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link AiArtifactList} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link AiArtifactList} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class AiArtifactList
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link AiArtifactList} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiArtifactList}
-    * @return The same instance of this {@link AiArtifactList} class
-    */
-   @Nonnull public AiArtifactList resources(@Nonnull final List<AiArtifact> resources) {
+  /**
+   * Set the resources of this {@link AiArtifactList} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiArtifactList}
+   * @return The same instance of this {@link AiArtifactList} class
+   */
+  @Nonnull public AiArtifactList resources( @Nonnull final List<AiArtifact> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class AiArtifactList
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link AiArtifactList} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link AiArtifactList} instance.
+   */
   @Nonnull public List<AiArtifact> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class AiArtifactList
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiArtifactList has no field with name '" + name + "'.");
     }

@@ -53,21 +53,21 @@ public class BckndGenericSecretDataResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndGenericSecretDataResponse() {  }
 
-   /**
-    * Set the message of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link BckndGenericSecretDataResponse} class
-    */
-   @Nonnull public BckndGenericSecretDataResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link BckndGenericSecretDataResponse} class
+   */
+  @Nonnull public BckndGenericSecretDataResponse message( @Nullable final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link BckndGenericSecretDataResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link BckndGenericSecretDataResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -77,25 +77,25 @@ public class BckndGenericSecretDataResponse
    *
    * @param message  Message
    */
-  public void setMessage( @Nonnull final String message) {
+  public void setMessage( @Nullable final String message) {
     this.message = message;
   }
 
-   /**
-    * Set the name of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
-    *
-    * @param name  Name
-    * @return The same instance of this {@link BckndGenericSecretDataResponse} class
-    */
-   @Nonnull public BckndGenericSecretDataResponse name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndGenericSecretDataResponse} instance and return the same instance.
+   *
+   * @param name  Name
+   * @return The same instance of this {@link BckndGenericSecretDataResponse} class
+   */
+  @Nonnull public BckndGenericSecretDataResponse name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name
-    * @return name  The name of this {@link BckndGenericSecretDataResponse} instance.
-    */
+  /**
+   * Name
+   * @return name  The name of this {@link BckndGenericSecretDataResponse} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -105,7 +105,7 @@ public class BckndGenericSecretDataResponse
    *
    * @param name  Name
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
@@ -126,7 +126,7 @@ public class BckndGenericSecretDataResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndGenericSecretDataResponse has no field with name '" + name + "'.");
     }

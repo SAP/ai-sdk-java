@@ -76,21 +76,21 @@ public class MetaAiApiCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAiApiCapabilities() {  }
 
-   /**
-    * Set the multitenant of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param multitenant  true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities multitenant(@Nonnull final Boolean multitenant) {
+  /**
+   * Set the multitenant of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param multitenant  true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities multitenant( @Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
     return this;
   }
 
-   /**
-    * true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
-    * @return multitenant  The multitenant of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
+   * @return multitenant  The multitenant of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isMultitenant() {
     return multitenant;
   }
@@ -100,25 +100,25 @@ public class MetaAiApiCapabilities
    *
    * @param multitenant  true-&gt; AI API implementation supports resource groups (Main Tenant scenario), false-&gt; implementation does not support resource groups (Service Tenant scenario)
    */
-  public void setMultitenant( @Nonnull final Boolean multitenant) {
+  public void setMultitenant( @Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
   }
 
-   /**
-    * Set the shareable of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param shareable  true-&gt; clients can use just one instance (global static models), false-&gt; clients should avoid sharing an instance
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities shareable(@Nonnull final Boolean shareable) {
+  /**
+   * Set the shareable of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param shareable  true-&gt; clients can use just one instance (global static models), false-&gt; clients should avoid sharing an instance
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities shareable( @Nullable final Boolean shareable) {
     this.shareable = shareable;
     return this;
   }
 
-   /**
-    * true-&gt; clients can use just one instance (global static models), false-&gt; clients should avoid sharing an instance
-    * @return shareable  The shareable of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * true-&gt; clients can use just one instance (global static models), false-&gt; clients should avoid sharing an instance
+   * @return shareable  The shareable of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isShareable() {
     return shareable;
   }
@@ -128,25 +128,25 @@ public class MetaAiApiCapabilities
    *
    * @param shareable  true-&gt; clients can use just one instance (global static models), false-&gt; clients should avoid sharing an instance
    */
-  public void setShareable( @Nonnull final Boolean shareable) {
+  public void setShareable( @Nullable final Boolean shareable) {
     this.shareable = shareable;
   }
 
-   /**
-    * Set the staticDeployments of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param staticDeployments  There are static always running endpoints that can be used for inference without the need to do user deployments.
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities staticDeployments(@Nonnull final Boolean staticDeployments) {
+  /**
+   * Set the staticDeployments of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param staticDeployments  There are static always running endpoints that can be used for inference without the need to do user deployments.
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities staticDeployments( @Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
     return this;
   }
 
-   /**
-    * There are static always running endpoints that can be used for inference without the need to do user deployments.
-    * @return staticDeployments  The staticDeployments of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * There are static always running endpoints that can be used for inference without the need to do user deployments.
+   * @return staticDeployments  The staticDeployments of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isStaticDeployments() {
     return staticDeployments;
   }
@@ -156,25 +156,25 @@ public class MetaAiApiCapabilities
    *
    * @param staticDeployments  There are static always running endpoints that can be used for inference without the need to do user deployments.
    */
-  public void setStaticDeployments( @Nonnull final Boolean staticDeployments) {
+  public void setStaticDeployments( @Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
   }
 
-   /**
-    * Set the userDeployments of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param userDeployments  Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities userDeployments(@Nonnull final Boolean userDeployments) {
+  /**
+   * Set the userDeployments of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param userDeployments  Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities userDeployments( @Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
     return this;
   }
 
-   /**
-    * Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
-    * @return userDeployments  The userDeployments of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
+   * @return userDeployments  The userDeployments of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isUserDeployments() {
     return userDeployments;
   }
@@ -184,25 +184,25 @@ public class MetaAiApiCapabilities
    *
    * @param userDeployments  Services that only support batch inference typically neither allow listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
    */
-  public void setUserDeployments( @Nonnull final Boolean userDeployments) {
+  public void setUserDeployments( @Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
   }
 
-   /**
-    * Set the userExecutions of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param userExecutions  The userExecutions of this {@link MetaAiApiCapabilities}
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities userExecutions(@Nonnull final Boolean userExecutions) {
+  /**
+   * Set the userExecutions of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param userExecutions  The userExecutions of this {@link MetaAiApiCapabilities}
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities userExecutions( @Nullable final Boolean userExecutions) {
     this.userExecutions = userExecutions;
     return this;
   }
 
-   /**
-    * Get userExecutions
-    * @return userExecutions  The userExecutions of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * Get userExecutions
+   * @return userExecutions  The userExecutions of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isUserExecutions() {
     return userExecutions;
   }
@@ -212,25 +212,25 @@ public class MetaAiApiCapabilities
    *
    * @param userExecutions  The userExecutions of this {@link MetaAiApiCapabilities}
    */
-  public void setUserExecutions( @Nonnull final Boolean userExecutions) {
+  public void setUserExecutions( @Nullable final Boolean userExecutions) {
     this.userExecutions = userExecutions;
   }
 
-   /**
-    * Set the timeToLiveDeployments of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiCapabilities}
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities timeToLiveDeployments(@Nonnull final Boolean timeToLiveDeployments) {
+  /**
+   * Set the timeToLiveDeployments of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiCapabilities}
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities timeToLiveDeployments( @Nullable final Boolean timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
     return this;
   }
 
-   /**
-    * Get timeToLiveDeployments
-    * @return timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * Get timeToLiveDeployments
+   * @return timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isTimeToLiveDeployments() {
     return timeToLiveDeployments;
   }
@@ -240,25 +240,25 @@ public class MetaAiApiCapabilities
    *
    * @param timeToLiveDeployments  The timeToLiveDeployments of this {@link MetaAiApiCapabilities}
    */
-  public void setTimeToLiveDeployments( @Nonnull final Boolean timeToLiveDeployments) {
+  public void setTimeToLiveDeployments( @Nullable final Boolean timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
   }
 
-   /**
-    * Set the executionSchedules of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param executionSchedules  The executionSchedules of this {@link MetaAiApiCapabilities}
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities executionSchedules(@Nonnull final Boolean executionSchedules) {
+  /**
+   * Set the executionSchedules of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param executionSchedules  The executionSchedules of this {@link MetaAiApiCapabilities}
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities executionSchedules( @Nullable final Boolean executionSchedules) {
     this.executionSchedules = executionSchedules;
     return this;
   }
 
-   /**
-    * Get executionSchedules
-    * @return executionSchedules  The executionSchedules of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * Get executionSchedules
+   * @return executionSchedules  The executionSchedules of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public Boolean isExecutionSchedules() {
     return executionSchedules;
   }
@@ -268,25 +268,25 @@ public class MetaAiApiCapabilities
    *
    * @param executionSchedules  The executionSchedules of this {@link MetaAiApiCapabilities}
    */
-  public void setExecutionSchedules( @Nonnull final Boolean executionSchedules) {
+  public void setExecutionSchedules( @Nullable final Boolean executionSchedules) {
     this.executionSchedules = executionSchedules;
   }
 
-   /**
-    * Set the logs of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param logs  The logs of this {@link MetaAiApiCapabilities}
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities logs(@Nonnull final MetaAiApiCapabilitiesLogs logs) {
+  /**
+   * Set the logs of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param logs  The logs of this {@link MetaAiApiCapabilities}
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities logs( @Nullable final MetaAiApiCapabilitiesLogs logs) {
     this.logs = logs;
     return this;
   }
 
-   /**
-    * Get logs
-    * @return logs  The logs of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * Get logs
+   * @return logs  The logs of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public MetaAiApiCapabilitiesLogs getLogs() {
     return logs;
   }
@@ -296,25 +296,25 @@ public class MetaAiApiCapabilities
    *
    * @param logs  The logs of this {@link MetaAiApiCapabilities}
    */
-  public void setLogs( @Nonnull final MetaAiApiCapabilitiesLogs logs) {
+  public void setLogs( @Nullable final MetaAiApiCapabilitiesLogs logs) {
     this.logs = logs;
   }
 
-   /**
-    * Set the bulkUpdates of this {@link MetaAiApiCapabilities} instance and return the same instance.
-    *
-    * @param bulkUpdates  The bulkUpdates of this {@link MetaAiApiCapabilities}
-    * @return The same instance of this {@link MetaAiApiCapabilities} class
-    */
-   @Nonnull public MetaAiApiCapabilities bulkUpdates(@Nonnull final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
+  /**
+   * Set the bulkUpdates of this {@link MetaAiApiCapabilities} instance and return the same instance.
+   *
+   * @param bulkUpdates  The bulkUpdates of this {@link MetaAiApiCapabilities}
+   * @return The same instance of this {@link MetaAiApiCapabilities} class
+   */
+  @Nonnull public MetaAiApiCapabilities bulkUpdates( @Nullable final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
     this.bulkUpdates = bulkUpdates;
     return this;
   }
 
-   /**
-    * Get bulkUpdates
-    * @return bulkUpdates  The bulkUpdates of this {@link MetaAiApiCapabilities} instance.
-    */
+  /**
+   * Get bulkUpdates
+   * @return bulkUpdates  The bulkUpdates of this {@link MetaAiApiCapabilities} instance.
+   */
   @Nonnull public MetaAiApiCapabilitiesBulkUpdates getBulkUpdates() {
     return bulkUpdates;
   }
@@ -324,7 +324,7 @@ public class MetaAiApiCapabilities
    *
    * @param bulkUpdates  The bulkUpdates of this {@link MetaAiApiCapabilities}
    */
-  public void setBulkUpdates( @Nonnull final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
+  public void setBulkUpdates( @Nullable final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
     this.bulkUpdates = bulkUpdates;
   }
 
@@ -345,7 +345,7 @@ public class MetaAiApiCapabilities
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAiApiCapabilities has no field with name '" + name + "'.");
     }

@@ -66,21 +66,21 @@ public class TrckApiError
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected TrckApiError() {  }
 
-   /**
-    * Set the code of this {@link TrckApiError} instance and return the same instance.
-    *
-    * @param code  Descriptive error code (not http status code).
-    * @return The same instance of this {@link TrckApiError} class
-    */
-   @Nonnull public TrckApiError code(@Nonnull final String code) {
+  /**
+   * Set the code of this {@link TrckApiError} instance and return the same instance.
+   *
+   * @param code  Descriptive error code (not http status code).
+   * @return The same instance of this {@link TrckApiError} class
+   */
+  @Nonnull public TrckApiError code( @Nonnull final String code) {
     this.code = code;
     return this;
   }
 
-   /**
-    * Descriptive error code (not http status code).
-    * @return code  The code of this {@link TrckApiError} instance.
-    */
+  /**
+   * Descriptive error code (not http status code).
+   * @return code  The code of this {@link TrckApiError} instance.
+   */
   @Nonnull public String getCode() {
     return code;
   }
@@ -94,21 +94,21 @@ public class TrckApiError
     this.code = code;
   }
 
-   /**
-    * Set the message of this {@link TrckApiError} instance and return the same instance.
-    *
-    * @param message  plaintext error description
-    * @return The same instance of this {@link TrckApiError} class
-    */
-   @Nonnull public TrckApiError message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link TrckApiError} instance and return the same instance.
+   *
+   * @param message  plaintext error description
+   * @return The same instance of this {@link TrckApiError} class
+   */
+  @Nonnull public TrckApiError message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * plaintext error description
-    * @return message  The message of this {@link TrckApiError} instance.
-    */
+  /**
+   * plaintext error description
+   * @return message  The message of this {@link TrckApiError} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -122,21 +122,21 @@ public class TrckApiError
     this.message = message;
   }
 
-   /**
-    * Set the requestId of this {@link TrckApiError} instance and return the same instance.
-    *
-    * @param requestId  id of individual request
-    * @return The same instance of this {@link TrckApiError} class
-    */
-   @Nonnull public TrckApiError requestId(@Nonnull final String requestId) {
+  /**
+   * Set the requestId of this {@link TrckApiError} instance and return the same instance.
+   *
+   * @param requestId  id of individual request
+   * @return The same instance of this {@link TrckApiError} class
+   */
+  @Nonnull public TrckApiError requestId( @Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
-   /**
-    * id of individual request
-    * @return requestId  The requestId of this {@link TrckApiError} instance.
-    */
+  /**
+   * id of individual request
+   * @return requestId  The requestId of this {@link TrckApiError} instance.
+   */
   @Nonnull public String getRequestId() {
     return requestId;
   }
@@ -146,25 +146,25 @@ public class TrckApiError
    *
    * @param requestId  id of individual request
    */
-  public void setRequestId( @Nonnull final String requestId) {
+  public void setRequestId( @Nullable final String requestId) {
     this.requestId = requestId;
   }
 
-   /**
-    * Set the target of this {@link TrckApiError} instance and return the same instance.
-    *
-    * @param target  url that has been called
-    * @return The same instance of this {@link TrckApiError} class
-    */
-   @Nonnull public TrckApiError target(@Nonnull final String target) {
+  /**
+   * Set the target of this {@link TrckApiError} instance and return the same instance.
+   *
+   * @param target  url that has been called
+   * @return The same instance of this {@link TrckApiError} class
+   */
+  @Nonnull public TrckApiError target( @Nullable final String target) {
     this.target = target;
     return this;
   }
 
-   /**
-    * url that has been called
-    * @return target  The target of this {@link TrckApiError} instance.
-    */
+  /**
+   * url that has been called
+   * @return target  The target of this {@link TrckApiError} instance.
+   */
   @Nonnull public String getTarget() {
     return target;
   }
@@ -174,17 +174,17 @@ public class TrckApiError
    *
    * @param target  url that has been called
    */
-  public void setTarget( @Nonnull final String target) {
+  public void setTarget( @Nullable final String target) {
     this.target = target;
   }
 
-   /**
-    * Set the details of this {@link TrckApiError} instance and return the same instance.
-    *
-    * @param details  The details of this {@link TrckApiError}
-    * @return The same instance of this {@link TrckApiError} class
-    */
-   @Nonnull public TrckApiError details(@Nonnull final List<TrckDetailsErrorResponse> details) {
+  /**
+   * Set the details of this {@link TrckApiError} instance and return the same instance.
+   *
+   * @param details  The details of this {@link TrckApiError}
+   * @return The same instance of this {@link TrckApiError} class
+   */
+  @Nonnull public TrckApiError details( @Nullable final List<TrckDetailsErrorResponse> details) {
     this.details = details;
     return this;
   }
@@ -201,10 +201,10 @@ public class TrckApiError
     return this;
   }
 
-   /**
-    * Get details
-    * @return details  The details of this {@link TrckApiError} instance.
-    */
+  /**
+   * Get details
+   * @return details  The details of this {@link TrckApiError} instance.
+   */
   @Nonnull public List<TrckDetailsErrorResponse> getDetails() {
     return details;
   }
@@ -214,7 +214,7 @@ public class TrckApiError
    *
    * @param details  The details of this {@link TrckApiError}
    */
-  public void setDetails( @Nonnull final List<TrckDetailsErrorResponse> details) {
+  public void setDetails( @Nullable final List<TrckDetailsErrorResponse> details) {
     this.details = details;
   }
 
@@ -235,7 +235,7 @@ public class TrckApiError
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("TrckApiError has no field with name '" + name + "'.");
     }

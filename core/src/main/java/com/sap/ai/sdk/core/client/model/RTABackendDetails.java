@@ -50,21 +50,21 @@ public class RTABackendDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTABackendDetails() {  }
 
-   /**
-    * Set the backendDetails of this {@link RTABackendDetails} instance and return the same instance.
-    *
-    * @param backendDetails  Current details of the deployment
-    * @return The same instance of this {@link RTABackendDetails} class
-    */
-   @Nonnull public RTABackendDetails backendDetails(@Nonnull final Object backendDetails) {
+  /**
+   * Set the backendDetails of this {@link RTABackendDetails} instance and return the same instance.
+   *
+   * @param backendDetails  Current details of the deployment
+   * @return The same instance of this {@link RTABackendDetails} class
+   */
+  @Nonnull public RTABackendDetails backendDetails( @Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
     return this;
   }
 
-   /**
-    * Current details of the deployment
-    * @return backendDetails  The backendDetails of this {@link RTABackendDetails} instance.
-    */
+  /**
+   * Current details of the deployment
+   * @return backendDetails  The backendDetails of this {@link RTABackendDetails} instance.
+   */
   @Nonnull public Object getBackendDetails() {
     return backendDetails;
   }
@@ -74,7 +74,7 @@ public class RTABackendDetails
    *
    * @param backendDetails  Current details of the deployment
    */
-  public void setBackendDetails( @Nonnull final Object backendDetails) {
+  public void setBackendDetails( @Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
   }
 
@@ -95,7 +95,7 @@ public class RTABackendDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTABackendDetails has no field with name '" + name + "'.");
     }

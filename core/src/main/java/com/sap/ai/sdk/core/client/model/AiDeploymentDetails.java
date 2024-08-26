@@ -55,21 +55,21 @@ public class AiDeploymentDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentDetails() {  }
 
-   /**
-    * Set the scaling of this {@link AiDeploymentDetails} instance and return the same instance.
-    *
-    * @param scaling  The scaling of this {@link AiDeploymentDetails}
-    * @return The same instance of this {@link AiDeploymentDetails} class
-    */
-   @Nonnull public AiDeploymentDetails scaling(@Nonnull final AiScalingDetails scaling) {
+  /**
+   * Set the scaling of this {@link AiDeploymentDetails} instance and return the same instance.
+   *
+   * @param scaling  The scaling of this {@link AiDeploymentDetails}
+   * @return The same instance of this {@link AiDeploymentDetails} class
+   */
+  @Nonnull public AiDeploymentDetails scaling( @Nullable final AiScalingDetails scaling) {
     this.scaling = scaling;
     return this;
   }
 
-   /**
-    * Get scaling
-    * @return scaling  The scaling of this {@link AiDeploymentDetails} instance.
-    */
+  /**
+   * Get scaling
+   * @return scaling  The scaling of this {@link AiDeploymentDetails} instance.
+   */
   @Nonnull public AiScalingDetails getScaling() {
     return scaling;
   }
@@ -79,25 +79,25 @@ public class AiDeploymentDetails
    *
    * @param scaling  The scaling of this {@link AiDeploymentDetails}
    */
-  public void setScaling( @Nonnull final AiScalingDetails scaling) {
+  public void setScaling( @Nullable final AiScalingDetails scaling) {
     this.scaling = scaling;
   }
 
-   /**
-    * Set the resources of this {@link AiDeploymentDetails} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link AiDeploymentDetails}
-    * @return The same instance of this {@link AiDeploymentDetails} class
-    */
-   @Nonnull public AiDeploymentDetails resources(@Nonnull final AiResourcesDetails resources) {
+  /**
+   * Set the resources of this {@link AiDeploymentDetails} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link AiDeploymentDetails}
+   * @return The same instance of this {@link AiDeploymentDetails} class
+   */
+  @Nonnull public AiDeploymentDetails resources( @Nullable final AiResourcesDetails resources) {
     this.resources = resources;
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link AiDeploymentDetails} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link AiDeploymentDetails} instance.
+   */
   @Nonnull public AiResourcesDetails getResources() {
     return resources;
   }
@@ -107,7 +107,7 @@ public class AiDeploymentDetails
    *
    * @param resources  The resources of this {@link AiDeploymentDetails}
    */
-  public void setResources( @Nonnull final AiResourcesDetails resources) {
+  public void setResources( @Nullable final AiResourcesDetails resources) {
     this.resources = resources;
   }
 
@@ -128,7 +128,7 @@ public class AiDeploymentDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentDetails has no field with name '" + name + "'.");
     }

@@ -55,21 +55,21 @@ public class BckndGenericSecretPostBody
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndGenericSecretPostBody() {  }
 
-   /**
-    * Set the name of this {@link BckndGenericSecretPostBody} instance and return the same instance.
-    *
-    * @param name  The name of the secret
-    * @return The same instance of this {@link BckndGenericSecretPostBody} class
-    */
-   @Nonnull public BckndGenericSecretPostBody name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndGenericSecretPostBody} instance and return the same instance.
+   *
+   * @param name  The name of the secret
+   * @return The same instance of this {@link BckndGenericSecretPostBody} class
+   */
+  @Nonnull public BckndGenericSecretPostBody name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * The name of the secret
-    * @return name  The name of this {@link BckndGenericSecretPostBody} instance.
-    */
+  /**
+   * The name of the secret
+   * @return name  The name of this {@link BckndGenericSecretPostBody} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -83,33 +83,33 @@ public class BckndGenericSecretPostBody
     this.name = name;
   }
 
-   /**
-    * Set the data of this {@link BckndGenericSecretPostBody} instance and return the same instance.
-    *
-    * @param data  Base64 encoded secret data
-    * @return The same instance of this {@link BckndGenericSecretPostBody} class
-    */
-   @Nonnull public BckndGenericSecretPostBody data(@Nonnull final Map<String, String> data) {
+  /**
+   * Set the data of this {@link BckndGenericSecretPostBody} instance and return the same instance.
+   *
+   * @param data  Base64 encoded secret data
+   * @return The same instance of this {@link BckndGenericSecretPostBody} class
+   */
+  @Nonnull public BckndGenericSecretPostBody data( @Nonnull final Map<String, String> data) {
     this.data = data;
     return this;
   }
 
-   /**
-    * Put one data instance to this {@link BckndGenericSecretPostBody} instance.
-    * @param key The String key of this data instance
-    * @param dataItem The data that should be added under the given key
-    * @return The same instance of type {@link BckndGenericSecretPostBody}
-    */
-   @Nonnull public BckndGenericSecretPostBody putdataItem(@Nonnull final String key, @Nonnull final String dataItem) {
-      this.data = new HashMap<>();
+  /**
+   * Put one data instance to this {@link BckndGenericSecretPostBody} instance.
+   * @param key The String key of this data instance
+   * @param dataItem The data that should be added under the given key
+   * @return The same instance of type {@link BckndGenericSecretPostBody}
+   */
+  @Nonnull public BckndGenericSecretPostBody putdataItem( @Nonnull final String key, @Nonnull final String dataItem) {
+    this.data = new HashMap<>();
     this.data.put(key, dataItem);
     return this;
   }
 
-   /**
-    * Base64 encoded secret data
-    * @return data  The data of this {@link BckndGenericSecretPostBody} instance.
-    */
+  /**
+   * Base64 encoded secret data
+   * @return data  The data of this {@link BckndGenericSecretPostBody} instance.
+   */
   @Nonnull public Map<String, String> getData() {
     return data;
   }
@@ -140,7 +140,7 @@ public class BckndGenericSecretPostBody
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndGenericSecretPostBody has no field with name '" + name + "'.");
     }

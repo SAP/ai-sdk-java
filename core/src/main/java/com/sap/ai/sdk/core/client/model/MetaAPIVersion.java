@@ -56,21 +56,21 @@ public class MetaAPIVersion
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetaAPIVersion() {  }
 
-   /**
-    * Set the versionId of this {@link MetaAPIVersion} instance and return the same instance.
-    *
-    * @param versionId  API version identifier
-    * @return The same instance of this {@link MetaAPIVersion} class
-    */
-   @Nonnull public MetaAPIVersion versionId(@Nonnull final String versionId) {
+  /**
+   * Set the versionId of this {@link MetaAPIVersion} instance and return the same instance.
+   *
+   * @param versionId  API version identifier
+   * @return The same instance of this {@link MetaAPIVersion} class
+   */
+  @Nonnull public MetaAPIVersion versionId( @Nullable final String versionId) {
     this.versionId = versionId;
     return this;
   }
 
-   /**
-    * API version identifier
-    * @return versionId  The versionId of this {@link MetaAPIVersion} instance.
-    */
+  /**
+   * API version identifier
+   * @return versionId  The versionId of this {@link MetaAPIVersion} instance.
+   */
   @Nonnull public String getVersionId() {
     return versionId;
   }
@@ -80,25 +80,25 @@ public class MetaAPIVersion
    *
    * @param versionId  API version identifier
    */
-  public void setVersionId( @Nonnull final String versionId) {
+  public void setVersionId( @Nullable final String versionId) {
     this.versionId = versionId;
   }
 
-   /**
-    * Set the url of this {@link MetaAPIVersion} instance and return the same instance.
-    *
-    * @param url  URL of the API version
-    * @return The same instance of this {@link MetaAPIVersion} class
-    */
-   @Nonnull public MetaAPIVersion url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link MetaAPIVersion} instance and return the same instance.
+   *
+   * @param url  URL of the API version
+   * @return The same instance of this {@link MetaAPIVersion} class
+   */
+  @Nonnull public MetaAPIVersion url( @Nullable final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * URL of the API version
-    * @return url  The url of this {@link MetaAPIVersion} instance.
-    */
+  /**
+   * URL of the API version
+   * @return url  The url of this {@link MetaAPIVersion} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -108,25 +108,25 @@ public class MetaAPIVersion
    *
    * @param url  URL of the API version
    */
-  public void setUrl( @Nonnull final String url) {
+  public void setUrl( @Nullable final String url) {
     this.url = url;
   }
 
-   /**
-    * Set the description of this {@link MetaAPIVersion} instance and return the same instance.
-    *
-    * @param description  version description
-    * @return The same instance of this {@link MetaAPIVersion} class
-    */
-   @Nonnull public MetaAPIVersion description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link MetaAPIVersion} instance and return the same instance.
+   *
+   * @param description  version description
+   * @return The same instance of this {@link MetaAPIVersion} class
+   */
+  @Nonnull public MetaAPIVersion description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * version description
-    * @return description  The description of this {@link MetaAPIVersion} instance.
-    */
+  /**
+   * version description
+   * @return description  The description of this {@link MetaAPIVersion} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -136,7 +136,7 @@ public class MetaAPIVersion
    *
    * @param description  version description
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
@@ -157,7 +157,7 @@ public class MetaAPIVersion
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetaAPIVersion has no field with name '" + name + "'.");
     }

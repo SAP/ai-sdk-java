@@ -87,21 +87,21 @@ public class RTAExecutable
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAExecutable() {  }
 
-   /**
-    * Set the id of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param id  ID of the executable
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param id  ID of the executable
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * ID of the executable
-    * @return id  The id of this {@link RTAExecutable} instance.
-    */
+  /**
+   * ID of the executable
+   * @return id  The id of this {@link RTAExecutable} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -115,21 +115,21 @@ public class RTAExecutable
     this.id = id;
   }
 
-   /**
-    * Set the name of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param name  Name of the executable
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param name  Name of the executable
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable name( @Nonnull final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the executable
-    * @return name  The name of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Name of the executable
+   * @return name  The name of this {@link RTAExecutable} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -143,21 +143,21 @@ public class RTAExecutable
     this.name = name;
   }
 
-   /**
-    * Set the description of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param description  Description of the executable
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param description  Description of the executable
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the executable
-    * @return description  The description of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Description of the executable
+   * @return description  The description of this {@link RTAExecutable} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -167,25 +167,25 @@ public class RTAExecutable
    *
    * @param description  Description of the executable
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the scenarioId of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param scenarioId  ID of the scenario
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable scenarioId(@Nonnull final String scenarioId) {
+  /**
+   * Set the scenarioId of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param scenarioId  ID of the scenario
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable scenarioId( @Nonnull final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
 
-   /**
-    * ID of the scenario
-    * @return scenarioId  The scenarioId of this {@link RTAExecutable} instance.
-    */
+  /**
+   * ID of the scenario
+   * @return scenarioId  The scenarioId of this {@link RTAExecutable} instance.
+   */
   @Nonnull public String getScenarioId() {
     return scenarioId;
   }
@@ -199,13 +199,13 @@ public class RTAExecutable
     this.scenarioId = scenarioId;
   }
 
-   /**
-    * Set the inputArtifacts of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param inputArtifacts  List of Artifacts that the executable expects as input artifacts
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable inputArtifacts(@Nonnull final List<RTAExecutableArtifact> inputArtifacts) {
+  /**
+   * Set the inputArtifacts of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param inputArtifacts  List of Artifacts that the executable expects as input artifacts
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable inputArtifacts( @Nullable final List<RTAExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
     return this;
   }
@@ -222,10 +222,10 @@ public class RTAExecutable
     return this;
   }
 
-   /**
-    * List of Artifacts that the executable expects as input artifacts
-    * @return inputArtifacts  The inputArtifacts of this {@link RTAExecutable} instance.
-    */
+  /**
+   * List of Artifacts that the executable expects as input artifacts
+   * @return inputArtifacts  The inputArtifacts of this {@link RTAExecutable} instance.
+   */
   @Nonnull public List<RTAExecutableArtifact> getInputArtifacts() {
     return inputArtifacts;
   }
@@ -235,17 +235,17 @@ public class RTAExecutable
    *
    * @param inputArtifacts  List of Artifacts that the executable expects as input artifacts
    */
-  public void setInputArtifacts( @Nonnull final List<RTAExecutableArtifact> inputArtifacts) {
+  public void setInputArtifacts( @Nullable final List<RTAExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
   }
 
-   /**
-    * Set the outputArtifacts of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param outputArtifacts  List of Artifacts that the executable will produce. If storage is not managed internally, a storage location will have to be specified when triggering an execution
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable outputArtifacts(@Nonnull final List<RTAExecutableArtifact> outputArtifacts) {
+  /**
+   * Set the outputArtifacts of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param outputArtifacts  List of Artifacts that the executable will produce. If storage is not managed internally, a storage location will have to be specified when triggering an execution
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable outputArtifacts( @Nullable final List<RTAExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
@@ -262,10 +262,10 @@ public class RTAExecutable
     return this;
   }
 
-   /**
-    * List of Artifacts that the executable will produce. If storage is not managed internally, a storage location will have to be specified when triggering an execution
-    * @return outputArtifacts  The outputArtifacts of this {@link RTAExecutable} instance.
-    */
+  /**
+   * List of Artifacts that the executable will produce. If storage is not managed internally, a storage location will have to be specified when triggering an execution
+   * @return outputArtifacts  The outputArtifacts of this {@link RTAExecutable} instance.
+   */
   @Nonnull public List<RTAExecutableArtifact> getOutputArtifacts() {
     return outputArtifacts;
   }
@@ -275,17 +275,17 @@ public class RTAExecutable
    *
    * @param outputArtifacts  List of Artifacts that the executable will produce. If storage is not managed internally, a storage location will have to be specified when triggering an execution
    */
-  public void setOutputArtifacts( @Nonnull final List<RTAExecutableArtifact> outputArtifacts) {
+  public void setOutputArtifacts( @Nullable final List<RTAExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 
-   /**
-    * Set the parameters of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param parameters  Executable parameters
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable parameters(@Nonnull final List<RTAExecutableParameter> parameters) {
+  /**
+   * Set the parameters of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param parameters  Executable parameters
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable parameters( @Nullable final List<RTAExecutableParameter> parameters) {
     this.parameters = parameters;
     return this;
   }
@@ -302,10 +302,10 @@ public class RTAExecutable
     return this;
   }
 
-   /**
-    * Executable parameters
-    * @return parameters  The parameters of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Executable parameters
+   * @return parameters  The parameters of this {@link RTAExecutable} instance.
+   */
   @Nonnull public List<RTAExecutableParameter> getParameters() {
     return parameters;
   }
@@ -315,25 +315,25 @@ public class RTAExecutable
    *
    * @param parameters  Executable parameters
    */
-  public void setParameters( @Nonnull final List<RTAExecutableParameter> parameters) {
+  public void setParameters( @Nullable final List<RTAExecutableParameter> parameters) {
     this.parameters = parameters;
   }
 
-   /**
-    * Set the deployable of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param deployable  Whether this pipeline is deployable
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable deployable(@Nonnull final Boolean deployable) {
+  /**
+   * Set the deployable of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param deployable  Whether this pipeline is deployable
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable deployable( @Nonnull final Boolean deployable) {
     this.deployable = deployable;
     return this;
   }
 
-   /**
-    * Whether this pipeline is deployable
-    * @return deployable  The deployable of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Whether this pipeline is deployable
+   * @return deployable  The deployable of this {@link RTAExecutable} instance.
+   */
   @Nonnull public Boolean isDeployable() {
     return deployable;
   }
@@ -347,13 +347,13 @@ public class RTAExecutable
     this.deployable = deployable;
   }
 
-   /**
-    * Set the labels of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param labels  Arbitrary labels as meta information
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable labels(@Nonnull final List<RTALabel> labels) {
+  /**
+   * Set the labels of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param labels  Arbitrary labels as meta information
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable labels( @Nullable final List<RTALabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -370,10 +370,10 @@ public class RTAExecutable
     return this;
   }
 
-   /**
-    * Arbitrary labels as meta information
-    * @return labels  The labels of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Arbitrary labels as meta information
+   * @return labels  The labels of this {@link RTAExecutable} instance.
+   */
   @Nonnull public List<RTALabel> getLabels() {
     return labels;
   }
@@ -383,25 +383,25 @@ public class RTAExecutable
    *
    * @param labels  Arbitrary labels as meta information
    */
-  public void setLabels( @Nonnull final List<RTALabel> labels) {
+  public void setLabels( @Nullable final List<RTALabel> labels) {
     this.labels = labels;
   }
 
-   /**
-    * Set the createdAt of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp of resource creation
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable createdAt(@Nonnull final OffsetDateTime createdAt) {
+  /**
+   * Set the createdAt of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp of resource creation
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable createdAt( @Nonnull final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp of resource creation
-    * @return createdAt  The createdAt of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Timestamp of resource creation
+   * @return createdAt  The createdAt of this {@link RTAExecutable} instance.
+   */
   @Nonnull public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
@@ -415,21 +415,21 @@ public class RTAExecutable
     this.createdAt = createdAt;
   }
 
-   /**
-    * Set the modifiedAt of this {@link RTAExecutable} instance and return the same instance.
-    *
-    * @param modifiedAt  Timestamp of latest resource modification
-    * @return The same instance of this {@link RTAExecutable} class
-    */
-   @Nonnull public RTAExecutable modifiedAt(@Nonnull final OffsetDateTime modifiedAt) {
+  /**
+   * Set the modifiedAt of this {@link RTAExecutable} instance and return the same instance.
+   *
+   * @param modifiedAt  Timestamp of latest resource modification
+   * @return The same instance of this {@link RTAExecutable} class
+   */
+  @Nonnull public RTAExecutable modifiedAt( @Nonnull final OffsetDateTime modifiedAt) {
     this.modifiedAt = modifiedAt;
     return this;
   }
 
-   /**
-    * Timestamp of latest resource modification
-    * @return modifiedAt  The modifiedAt of this {@link RTAExecutable} instance.
-    */
+  /**
+   * Timestamp of latest resource modification
+   * @return modifiedAt  The modifiedAt of this {@link RTAExecutable} instance.
+   */
   @Nonnull public OffsetDateTime getModifiedAt() {
     return modifiedAt;
   }
@@ -460,7 +460,7 @@ public class RTAExecutable
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAExecutable has no field with name '" + name + "'.");
     }

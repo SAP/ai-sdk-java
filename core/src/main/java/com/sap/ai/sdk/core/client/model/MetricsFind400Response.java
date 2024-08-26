@@ -51,21 +51,21 @@ public class MetricsFind400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected MetricsFind400Response() {  }
 
-   /**
-    * Set the error of this {@link MetricsFind400Response} instance and return the same instance.
-    *
-    * @param error  The error of this {@link MetricsFind400Response}
-    * @return The same instance of this {@link MetricsFind400Response} class
-    */
-   @Nonnull public MetricsFind400Response error(@Nonnull final TrckApiError error) {
+  /**
+   * Set the error of this {@link MetricsFind400Response} instance and return the same instance.
+   *
+   * @param error  The error of this {@link MetricsFind400Response}
+   * @return The same instance of this {@link MetricsFind400Response} class
+   */
+  @Nonnull public MetricsFind400Response error( @Nullable final TrckApiError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link MetricsFind400Response} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link MetricsFind400Response} instance.
+   */
   @Nonnull public TrckApiError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class MetricsFind400Response
    *
    * @param error  The error of this {@link MetricsFind400Response}
    */
-  public void setError( @Nonnull final TrckApiError error) {
+  public void setError( @Nullable final TrckApiError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class MetricsFind400Response
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("MetricsFind400Response has no field with name '" + name + "'.");
     }

@@ -50,21 +50,21 @@ public class AiScalingDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiScalingDetails() {  }
 
-   /**
-    * Set the backendDetails of this {@link AiScalingDetails} instance and return the same instance.
-    *
-    * @param backendDetails  backend-specific details of the deployment
-    * @return The same instance of this {@link AiScalingDetails} class
-    */
-   @Nonnull public AiScalingDetails backendDetails(@Nonnull final Object backendDetails) {
+  /**
+   * Set the backendDetails of this {@link AiScalingDetails} instance and return the same instance.
+   *
+   * @param backendDetails  backend-specific details of the deployment
+   * @return The same instance of this {@link AiScalingDetails} class
+   */
+  @Nonnull public AiScalingDetails backendDetails( @Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
     return this;
   }
 
-   /**
-    * backend-specific details of the deployment
-    * @return backendDetails  The backendDetails of this {@link AiScalingDetails} instance.
-    */
+  /**
+   * backend-specific details of the deployment
+   * @return backendDetails  The backendDetails of this {@link AiScalingDetails} instance.
+   */
   @Nonnull public Object getBackendDetails() {
     return backendDetails;
   }
@@ -74,7 +74,7 @@ public class AiScalingDetails
    *
    * @param backendDetails  backend-specific details of the deployment
    */
-  public void setBackendDetails( @Nonnull final Object backendDetails) {
+  public void setBackendDetails( @Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
   }
 
@@ -95,7 +95,7 @@ public class AiScalingDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiScalingDetails has no field with name '" + name + "'.");
     }

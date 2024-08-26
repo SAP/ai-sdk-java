@@ -54,13 +54,13 @@ public class RTALogCommonData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTALogCommonData() {  }
 
-   /**
-    * Set the result of this {@link RTALogCommonData} instance and return the same instance.
-    *
-    * @param result  The result of this {@link RTALogCommonData}
-    * @return The same instance of this {@link RTALogCommonData} class
-    */
-   @Nonnull public RTALogCommonData result(@Nonnull final List<RTALogCommonResultItem> result) {
+  /**
+   * Set the result of this {@link RTALogCommonData} instance and return the same instance.
+   *
+   * @param result  The result of this {@link RTALogCommonData}
+   * @return The same instance of this {@link RTALogCommonData} class
+   */
+  @Nonnull public RTALogCommonData result( @Nullable final List<RTALogCommonResultItem> result) {
     this.result = result;
     return this;
   }
@@ -77,10 +77,10 @@ public class RTALogCommonData
     return this;
   }
 
-   /**
-    * Get result
-    * @return result  The result of this {@link RTALogCommonData} instance.
-    */
+  /**
+   * Get result
+   * @return result  The result of this {@link RTALogCommonData} instance.
+   */
   @Nonnull public List<RTALogCommonResultItem> getResult() {
     return result;
   }
@@ -90,7 +90,7 @@ public class RTALogCommonData
    *
    * @param result  The result of this {@link RTALogCommonData}
    */
-  public void setResult( @Nonnull final List<RTALogCommonResultItem> result) {
+  public void setResult( @Nullable final List<RTALogCommonResultItem> result) {
     this.result = result;
   }
 
@@ -111,7 +111,7 @@ public class RTALogCommonData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTALogCommonData has no field with name '" + name + "'.");
     }

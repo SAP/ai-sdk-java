@@ -55,21 +55,21 @@ public class BckndServiceCapabilities
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceCapabilities() {  }
 
-   /**
-    * Set the logs of this {@link BckndServiceCapabilities} instance and return the same instance.
-    *
-    * @param logs  The logs of this {@link BckndServiceCapabilities}
-    * @return The same instance of this {@link BckndServiceCapabilities} class
-    */
-   @Nonnull public BckndServiceCapabilities logs(@Nonnull final BckndServiceCapabilitiesLogs logs) {
+  /**
+   * Set the logs of this {@link BckndServiceCapabilities} instance and return the same instance.
+   *
+   * @param logs  The logs of this {@link BckndServiceCapabilities}
+   * @return The same instance of this {@link BckndServiceCapabilities} class
+   */
+  @Nonnull public BckndServiceCapabilities logs( @Nullable final BckndServiceCapabilitiesLogs logs) {
     this.logs = logs;
     return this;
   }
 
-   /**
-    * Get logs
-    * @return logs  The logs of this {@link BckndServiceCapabilities} instance.
-    */
+  /**
+   * Get logs
+   * @return logs  The logs of this {@link BckndServiceCapabilities} instance.
+   */
   @Nonnull public BckndServiceCapabilitiesLogs getLogs() {
     return logs;
   }
@@ -79,25 +79,25 @@ public class BckndServiceCapabilities
    *
    * @param logs  The logs of this {@link BckndServiceCapabilities}
    */
-  public void setLogs( @Nonnull final BckndServiceCapabilitiesLogs logs) {
+  public void setLogs( @Nullable final BckndServiceCapabilitiesLogs logs) {
     this.logs = logs;
   }
 
-   /**
-    * Set the basic of this {@link BckndServiceCapabilities} instance and return the same instance.
-    *
-    * @param basic  The basic of this {@link BckndServiceCapabilities}
-    * @return The same instance of this {@link BckndServiceCapabilities} class
-    */
-   @Nonnull public BckndServiceCapabilities basic(@Nonnull final BckndServiceCapabilitiesBasic basic) {
+  /**
+   * Set the basic of this {@link BckndServiceCapabilities} instance and return the same instance.
+   *
+   * @param basic  The basic of this {@link BckndServiceCapabilities}
+   * @return The same instance of this {@link BckndServiceCapabilities} class
+   */
+  @Nonnull public BckndServiceCapabilities basic( @Nullable final BckndServiceCapabilitiesBasic basic) {
     this.basic = basic;
     return this;
   }
 
-   /**
-    * Get basic
-    * @return basic  The basic of this {@link BckndServiceCapabilities} instance.
-    */
+  /**
+   * Get basic
+   * @return basic  The basic of this {@link BckndServiceCapabilities} instance.
+   */
   @Nonnull public BckndServiceCapabilitiesBasic getBasic() {
     return basic;
   }
@@ -107,7 +107,7 @@ public class BckndServiceCapabilities
    *
    * @param basic  The basic of this {@link BckndServiceCapabilities}
    */
-  public void setBasic( @Nonnull final BckndServiceCapabilitiesBasic basic) {
+  public void setBasic( @Nullable final BckndServiceCapabilitiesBasic basic) {
     this.basic = basic;
   }
 
@@ -128,7 +128,7 @@ public class BckndServiceCapabilities
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceCapabilities has no field with name '" + name + "'.");
     }

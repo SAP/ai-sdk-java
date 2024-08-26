@@ -63,21 +63,21 @@ public class RTAModelBaseData
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected RTAModelBaseData() {  }
 
-   /**
-    * Set the model of this {@link RTAModelBaseData} instance and return the same instance.
-    *
-    * @param model  Name of the model
-    * @return The same instance of this {@link RTAModelBaseData} class
-    */
-   @Nonnull public RTAModelBaseData model(@Nonnull final String model) {
+  /**
+   * Set the model of this {@link RTAModelBaseData} instance and return the same instance.
+   *
+   * @param model  Name of the model
+   * @return The same instance of this {@link RTAModelBaseData} class
+   */
+  @Nonnull public RTAModelBaseData model( @Nonnull final String model) {
     this.model = model;
     return this;
   }
 
-   /**
-    * Name of the model
-    * @return model  The model of this {@link RTAModelBaseData} instance.
-    */
+  /**
+   * Name of the model
+   * @return model  The model of this {@link RTAModelBaseData} instance.
+   */
   @Nonnull public String getModel() {
     return model;
   }
@@ -91,21 +91,21 @@ public class RTAModelBaseData
     this.model = model;
   }
 
-   /**
-    * Set the executableId of this {@link RTAModelBaseData} instance and return the same instance.
-    *
-    * @param executableId  ID of the executable
-    * @return The same instance of this {@link RTAModelBaseData} class
-    */
-   @Nonnull public RTAModelBaseData executableId(@Nonnull final String executableId) {
+  /**
+   * Set the executableId of this {@link RTAModelBaseData} instance and return the same instance.
+   *
+   * @param executableId  ID of the executable
+   * @return The same instance of this {@link RTAModelBaseData} class
+   */
+  @Nonnull public RTAModelBaseData executableId( @Nonnull final String executableId) {
     this.executableId = executableId;
     return this;
   }
 
-   /**
-    * ID of the executable
-    * @return executableId  The executableId of this {@link RTAModelBaseData} instance.
-    */
+  /**
+   * ID of the executable
+   * @return executableId  The executableId of this {@link RTAModelBaseData} instance.
+   */
   @Nonnull public String getExecutableId() {
     return executableId;
   }
@@ -119,21 +119,21 @@ public class RTAModelBaseData
     this.executableId = executableId;
   }
 
-   /**
-    * Set the description of this {@link RTAModelBaseData} instance and return the same instance.
-    *
-    * @param description  Description of the model and its capabilities
-    * @return The same instance of this {@link RTAModelBaseData} class
-    */
-   @Nonnull public RTAModelBaseData description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link RTAModelBaseData} instance and return the same instance.
+   *
+   * @param description  Description of the model and its capabilities
+   * @return The same instance of this {@link RTAModelBaseData} class
+   */
+  @Nonnull public RTAModelBaseData description( @Nonnull final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * Description of the model and its capabilities
-    * @return description  The description of this {@link RTAModelBaseData} instance.
-    */
+  /**
+   * Description of the model and its capabilities
+   * @return description  The description of this {@link RTAModelBaseData} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -147,13 +147,13 @@ public class RTAModelBaseData
     this.description = description;
   }
 
-   /**
-    * Set the versions of this {@link RTAModelBaseData} instance and return the same instance.
-    *
-    * @param versions  List of model versions that the model object has
-    * @return The same instance of this {@link RTAModelBaseData} class
-    */
-   @Nonnull public RTAModelBaseData versions(@Nonnull final List<RTAModelVersion> versions) {
+  /**
+   * Set the versions of this {@link RTAModelBaseData} instance and return the same instance.
+   *
+   * @param versions  List of model versions that the model object has
+   * @return The same instance of this {@link RTAModelBaseData} class
+   */
+  @Nonnull public RTAModelBaseData versions( @Nonnull final List<RTAModelVersion> versions) {
     this.versions = versions;
     return this;
   }
@@ -170,10 +170,10 @@ public class RTAModelBaseData
     return this;
   }
 
-   /**
-    * List of model versions that the model object has
-    * @return versions  The versions of this {@link RTAModelBaseData} instance.
-    */
+  /**
+   * List of model versions that the model object has
+   * @return versions  The versions of this {@link RTAModelBaseData} instance.
+   */
   @Nonnull public List<RTAModelVersion> getVersions() {
     return versions;
   }
@@ -204,7 +204,7 @@ public class RTAModelBaseData
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("RTAModelBaseData has no field with name '" + name + "'.");
     }

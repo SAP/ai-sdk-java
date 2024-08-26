@@ -51,21 +51,21 @@ public class BckndErrorResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndErrorResponse() {  }
 
-   /**
-    * Set the error of this {@link BckndErrorResponse} instance and return the same instance.
-    *
-    * @param error  The error of this {@link BckndErrorResponse}
-    * @return The same instance of this {@link BckndErrorResponse} class
-    */
-   @Nonnull public BckndErrorResponse error(@Nonnull final BckndError error) {
+  /**
+   * Set the error of this {@link BckndErrorResponse} instance and return the same instance.
+   *
+   * @param error  The error of this {@link BckndErrorResponse}
+   * @return The same instance of this {@link BckndErrorResponse} class
+   */
+  @Nonnull public BckndErrorResponse error( @Nullable final BckndError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link BckndErrorResponse} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link BckndErrorResponse} instance.
+   */
   @Nonnull public BckndError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class BckndErrorResponse
    *
    * @param error  The error of this {@link BckndErrorResponse}
    */
-  public void setError( @Nonnull final BckndError error) {
+  public void setError( @Nullable final BckndError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class BckndErrorResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndErrorResponse has no field with name '" + name + "'.");
     }

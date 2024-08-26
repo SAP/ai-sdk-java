@@ -55,21 +55,21 @@ public class BckndExecutableResourceQuotaResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndExecutableResourceQuotaResponse() {  }
 
-   /**
-    * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
-    * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
-    */
-   @Nonnull public BckndExecutableResourceQuotaResponse usage(@Nonnull final BckndExecutableResourceQuotaResponseUsage usage) {
+  /**
+   * Set the usage of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
+   * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
+   */
+  @Nonnull public BckndExecutableResourceQuotaResponse usage( @Nullable final BckndExecutableResourceQuotaResponseUsage usage) {
     this.usage = usage;
     return this;
   }
 
-   /**
-    * Get usage
-    * @return usage  The usage of this {@link BckndExecutableResourceQuotaResponse} instance.
-    */
+  /**
+   * Get usage
+   * @return usage  The usage of this {@link BckndExecutableResourceQuotaResponse} instance.
+   */
   @Nonnull public BckndExecutableResourceQuotaResponseUsage getUsage() {
     return usage;
   }
@@ -79,25 +79,25 @@ public class BckndExecutableResourceQuotaResponse
    *
    * @param usage  The usage of this {@link BckndExecutableResourceQuotaResponse}
    */
-  public void setUsage( @Nonnull final BckndExecutableResourceQuotaResponseUsage usage) {
+  public void setUsage( @Nullable final BckndExecutableResourceQuotaResponseUsage usage) {
     this.usage = usage;
   }
 
-   /**
-    * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
-    *
-    * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
-    * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
-    */
-   @Nonnull public BckndExecutableResourceQuotaResponse quota(@Nonnull final BckndExecutableResourceQuotaResponseQuota quota) {
+  /**
+   * Set the quota of this {@link BckndExecutableResourceQuotaResponse} instance and return the same instance.
+   *
+   * @param quota  The quota of this {@link BckndExecutableResourceQuotaResponse}
+   * @return The same instance of this {@link BckndExecutableResourceQuotaResponse} class
+   */
+  @Nonnull public BckndExecutableResourceQuotaResponse quota( @Nonnull final BckndExecutableResourceQuotaResponseQuota quota) {
     this.quota = quota;
     return this;
   }
 
-   /**
-    * Get quota
-    * @return quota  The quota of this {@link BckndExecutableResourceQuotaResponse} instance.
-    */
+  /**
+   * Get quota
+   * @return quota  The quota of this {@link BckndExecutableResourceQuotaResponse} instance.
+   */
   @Nonnull public BckndExecutableResourceQuotaResponseQuota getQuota() {
     return quota;
   }
@@ -128,7 +128,7 @@ public class BckndExecutableResourceQuotaResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndExecutableResourceQuotaResponse has no field with name '" + name + "'.");
     }

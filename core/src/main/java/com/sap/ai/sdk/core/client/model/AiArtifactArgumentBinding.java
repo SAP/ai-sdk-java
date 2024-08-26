@@ -53,21 +53,21 @@ public class AiArtifactArgumentBinding
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiArtifactArgumentBinding() {  }
 
-   /**
-    * Set the key of this {@link AiArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param key  The key of this {@link AiArtifactArgumentBinding}
-    * @return The same instance of this {@link AiArtifactArgumentBinding} class
-    */
-   @Nonnull public AiArtifactArgumentBinding key(@Nonnull final String key) {
+  /**
+   * Set the key of this {@link AiArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param key  The key of this {@link AiArtifactArgumentBinding}
+   * @return The same instance of this {@link AiArtifactArgumentBinding} class
+   */
+  @Nonnull public AiArtifactArgumentBinding key( @Nonnull final String key) {
     this.key = key;
     return this;
   }
 
-   /**
-    * Get key
-    * @return key  The key of this {@link AiArtifactArgumentBinding} instance.
-    */
+  /**
+   * Get key
+   * @return key  The key of this {@link AiArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getKey() {
     return key;
   }
@@ -81,21 +81,21 @@ public class AiArtifactArgumentBinding
     this.key = key;
   }
 
-   /**
-    * Set the artifactId of this {@link AiArtifactArgumentBinding} instance and return the same instance.
-    *
-    * @param artifactId  ID of the artifact
-    * @return The same instance of this {@link AiArtifactArgumentBinding} class
-    */
-   @Nonnull public AiArtifactArgumentBinding artifactId(@Nonnull final String artifactId) {
+  /**
+   * Set the artifactId of this {@link AiArtifactArgumentBinding} instance and return the same instance.
+   *
+   * @param artifactId  ID of the artifact
+   * @return The same instance of this {@link AiArtifactArgumentBinding} class
+   */
+  @Nonnull public AiArtifactArgumentBinding artifactId( @Nonnull final String artifactId) {
     this.artifactId = artifactId;
     return this;
   }
 
-   /**
-    * ID of the artifact
-    * @return artifactId  The artifactId of this {@link AiArtifactArgumentBinding} instance.
-    */
+  /**
+   * ID of the artifact
+   * @return artifactId  The artifactId of this {@link AiArtifactArgumentBinding} instance.
+   */
   @Nonnull public String getArtifactId() {
     return artifactId;
   }
@@ -126,7 +126,7 @@ public class AiArtifactArgumentBinding
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiArtifactArgumentBinding has no field with name '" + name + "'.");
     }

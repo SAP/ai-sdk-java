@@ -54,21 +54,21 @@ public class AiApiErrorWithId
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiApiErrorWithId() {  }
 
-   /**
-    * Set the id of this {@link AiApiErrorWithId} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiApiErrorWithId} class
-    */
-   @Nonnull public AiApiErrorWithId id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiApiErrorWithId} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiApiErrorWithId} class
+   */
+  @Nonnull public AiApiErrorWithId id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiApiErrorWithId} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiApiErrorWithId} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -82,21 +82,21 @@ public class AiApiErrorWithId
     this.id = id;
   }
 
-   /**
-    * Set the error of this {@link AiApiErrorWithId} instance and return the same instance.
-    *
-    * @param error  The error of this {@link AiApiErrorWithId}
-    * @return The same instance of this {@link AiApiErrorWithId} class
-    */
-   @Nonnull public AiApiErrorWithId error(@Nonnull final AiApiError error) {
+  /**
+   * Set the error of this {@link AiApiErrorWithId} instance and return the same instance.
+   *
+   * @param error  The error of this {@link AiApiErrorWithId}
+   * @return The same instance of this {@link AiApiErrorWithId} class
+   */
+  @Nonnull public AiApiErrorWithId error( @Nonnull final AiApiError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link AiApiErrorWithId} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link AiApiErrorWithId} instance.
+   */
   @Nonnull public AiApiError getError() {
     return error;
   }
@@ -127,7 +127,7 @@ public class AiApiErrorWithId
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiApiErrorWithId has no field with name '" + name + "'.");
     }

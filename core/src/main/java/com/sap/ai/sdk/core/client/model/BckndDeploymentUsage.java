@@ -57,21 +57,21 @@ public class BckndDeploymentUsage
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndDeploymentUsage() {  }
 
-   /**
-    * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
-    *
-    * @param count  The count of this {@link BckndDeploymentUsage}
-    * @return The same instance of this {@link BckndDeploymentUsage} class
-    */
-   @Nonnull public BckndDeploymentUsage count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link BckndDeploymentUsage} instance and return the same instance.
+   *
+   * @param count  The count of this {@link BckndDeploymentUsage}
+   * @return The same instance of this {@link BckndDeploymentUsage} class
+   */
+  @Nonnull public BckndDeploymentUsage count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Get count
-    * @return count  The count of this {@link BckndDeploymentUsage} instance.
-    */
+  /**
+   * Get count
+   * @return count  The count of this {@link BckndDeploymentUsage} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class BckndDeploymentUsage
     this.count = count;
   }
 
-   /**
-    * Set the items of this {@link BckndDeploymentUsage} instance and return the same instance.
-    *
-    * @param items  The items of this {@link BckndDeploymentUsage}
-    * @return The same instance of this {@link BckndDeploymentUsage} class
-    */
-   @Nonnull public BckndDeploymentUsage items(@Nonnull final List<BckndUsageResourcePlanItem> items) {
+  /**
+   * Set the items of this {@link BckndDeploymentUsage} instance and return the same instance.
+   *
+   * @param items  The items of this {@link BckndDeploymentUsage}
+   * @return The same instance of this {@link BckndDeploymentUsage} class
+   */
+  @Nonnull public BckndDeploymentUsage items( @Nonnull final List<BckndUsageResourcePlanItem> items) {
     this.items = items;
     return this;
   }
@@ -108,10 +108,10 @@ public class BckndDeploymentUsage
     return this;
   }
 
-   /**
-    * Get items
-    * @return items  The items of this {@link BckndDeploymentUsage} instance.
-    */
+  /**
+   * Get items
+   * @return items  The items of this {@link BckndDeploymentUsage} instance.
+   */
   @Nonnull public List<BckndUsageResourcePlanItem> getItems() {
     return items;
   }
@@ -142,7 +142,7 @@ public class BckndDeploymentUsage
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndDeploymentUsage has no field with name '" + name + "'.");
     }

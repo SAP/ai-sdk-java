@@ -53,21 +53,21 @@ public class AiConfigurationCreationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiConfigurationCreationResponse() {  }
 
-   /**
-    * Set the id of this {@link AiConfigurationCreationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiConfigurationCreationResponse} class
-    */
-   @Nonnull public AiConfigurationCreationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiConfigurationCreationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiConfigurationCreationResponse} class
+   */
+  @Nonnull public AiConfigurationCreationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiConfigurationCreationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiConfigurationCreationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -81,21 +81,21 @@ public class AiConfigurationCreationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link AiConfigurationCreationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link AiConfigurationCreationResponse} class
-    */
-   @Nonnull public AiConfigurationCreationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link AiConfigurationCreationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link AiConfigurationCreationResponse} class
+   */
+  @Nonnull public AiConfigurationCreationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link AiConfigurationCreationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link AiConfigurationCreationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -126,7 +126,7 @@ public class AiConfigurationCreationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiConfigurationCreationResponse has no field with name '" + name + "'.");
     }

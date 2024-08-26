@@ -50,21 +50,21 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls() {  }
 
-   /**
-    * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance and return the same instance.
-    *
-    * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
-    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} class
-    */
-   @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls AI_API_URL(@Nonnull final String AI_API_URL) {
+  /**
+   * Set the AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance and return the same instance.
+   *
+   * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
+   * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} class
+   */
+  @Nonnull public BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls AI_API_URL( @Nullable final String AI_API_URL) {
     this.AI_API_URL = AI_API_URL;
     return this;
   }
 
-   /**
-    * Get AI_API_URL
-    * @return AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance.
-    */
+  /**
+   * Get AI_API_URL
+   * @return AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls} instance.
+   */
   @Nonnull public String getAIAPIURL() {
     return AI_API_URL;
   }
@@ -74,7 +74,7 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
    *
    * @param AI_API_URL  The AI_API_URL of this {@link BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
    */
-  public void setAIAPIURL( @Nonnull final String AI_API_URL) {
+  public void setAIAPIURL( @Nullable final String AI_API_URL) {
     this.AI_API_URL = AI_API_URL;
   }
 
@@ -95,7 +95,7 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls has no field with name '" + name + "'.");
     }

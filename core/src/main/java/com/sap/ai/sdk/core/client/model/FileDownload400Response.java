@@ -51,21 +51,21 @@ public class FileDownload400Response
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected FileDownload400Response() {  }
 
-   /**
-    * Set the error of this {@link FileDownload400Response} instance and return the same instance.
-    *
-    * @param error  The error of this {@link FileDownload400Response}
-    * @return The same instance of this {@link FileDownload400Response} class
-    */
-   @Nonnull public FileDownload400Response error(@Nonnull final DSetError error) {
+  /**
+   * Set the error of this {@link FileDownload400Response} instance and return the same instance.
+   *
+   * @param error  The error of this {@link FileDownload400Response}
+   * @return The same instance of this {@link FileDownload400Response} class
+   */
+  @Nonnull public FileDownload400Response error( @Nullable final DSetError error) {
     this.error = error;
     return this;
   }
 
-   /**
-    * Get error
-    * @return error  The error of this {@link FileDownload400Response} instance.
-    */
+  /**
+   * Get error
+   * @return error  The error of this {@link FileDownload400Response} instance.
+   */
   @Nonnull public DSetError getError() {
     return error;
   }
@@ -75,7 +75,7 @@ public class FileDownload400Response
    *
    * @param error  The error of this {@link FileDownload400Response}
    */
-  public void setError( @Nonnull final DSetError error) {
+  public void setError( @Nullable final DSetError error) {
     this.error = error;
   }
 
@@ -96,7 +96,7 @@ public class FileDownload400Response
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("FileDownload400Response has no field with name '" + name + "'.");
     }

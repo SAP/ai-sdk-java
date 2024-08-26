@@ -53,21 +53,21 @@ public class BckndGenericSecretDetails
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndGenericSecretDetails() {  }
 
-   /**
-    * Set the name of this {@link BckndGenericSecretDetails} instance and return the same instance.
-    *
-    * @param name  Name of the secret
-    * @return The same instance of this {@link BckndGenericSecretDetails} class
-    */
-   @Nonnull public BckndGenericSecretDetails name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndGenericSecretDetails} instance and return the same instance.
+   *
+   * @param name  Name of the secret
+   * @return The same instance of this {@link BckndGenericSecretDetails} class
+   */
+  @Nonnull public BckndGenericSecretDetails name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of the secret
-    * @return name  The name of this {@link BckndGenericSecretDetails} instance.
-    */
+  /**
+   * Name of the secret
+   * @return name  The name of this {@link BckndGenericSecretDetails} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -77,25 +77,25 @@ public class BckndGenericSecretDetails
    *
    * @param name  Name of the secret
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
-   /**
-    * Set the createdAt of this {@link BckndGenericSecretDetails} instance and return the same instance.
-    *
-    * @param createdAt  Timestamp at which secret was created
-    * @return The same instance of this {@link BckndGenericSecretDetails} class
-    */
-   @Nonnull public BckndGenericSecretDetails createdAt(@Nonnull final String createdAt) {
+  /**
+   * Set the createdAt of this {@link BckndGenericSecretDetails} instance and return the same instance.
+   *
+   * @param createdAt  Timestamp at which secret was created
+   * @return The same instance of this {@link BckndGenericSecretDetails} class
+   */
+  @Nonnull public BckndGenericSecretDetails createdAt( @Nullable final String createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
-   /**
-    * Timestamp at which secret was created
-    * @return createdAt  The createdAt of this {@link BckndGenericSecretDetails} instance.
-    */
+  /**
+   * Timestamp at which secret was created
+   * @return createdAt  The createdAt of this {@link BckndGenericSecretDetails} instance.
+   */
   @Nonnull public String getCreatedAt() {
     return createdAt;
   }
@@ -105,7 +105,7 @@ public class BckndGenericSecretDetails
    *
    * @param createdAt  Timestamp at which secret was created
    */
-  public void setCreatedAt( @Nonnull final String createdAt) {
+  public void setCreatedAt( @Nullable final String createdAt) {
     this.createdAt = createdAt;
   }
 
@@ -126,7 +126,7 @@ public class BckndGenericSecretDetails
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndGenericSecretDetails has no field with name '" + name + "'.");
     }

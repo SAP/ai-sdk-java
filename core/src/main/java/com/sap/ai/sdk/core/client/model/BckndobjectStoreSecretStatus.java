@@ -54,21 +54,21 @@ public class BckndobjectStoreSecretStatus
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndobjectStoreSecretStatus() {  }
 
-   /**
-    * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
-    *
-    * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
-    * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatus metadata(@Nonnull final BckndobjectStoreSecretStatusMetadata metadata) {
+  /**
+   * Set the metadata of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
+   *
+   * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
+   * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatus metadata( @Nullable final BckndobjectStoreSecretStatusMetadata metadata) {
     this.metadata = metadata;
     return this;
   }
 
-   /**
-    * Get metadata
-    * @return metadata  The metadata of this {@link BckndobjectStoreSecretStatus} instance.
-    */
+  /**
+   * Get metadata
+   * @return metadata  The metadata of this {@link BckndobjectStoreSecretStatus} instance.
+   */
   @Nonnull public BckndobjectStoreSecretStatusMetadata getMetadata() {
     return metadata;
   }
@@ -78,25 +78,25 @@ public class BckndobjectStoreSecretStatus
    *
    * @param metadata  The metadata of this {@link BckndobjectStoreSecretStatus}
    */
-  public void setMetadata( @Nonnull final BckndobjectStoreSecretStatusMetadata metadata) {
+  public void setMetadata( @Nullable final BckndobjectStoreSecretStatusMetadata metadata) {
     this.metadata = metadata;
   }
 
-   /**
-    * Set the name of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
-    *
-    * @param name  Name of objectstore
-    * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatus name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndobjectStoreSecretStatus} instance and return the same instance.
+   *
+   * @param name  Name of objectstore
+   * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatus name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * Name of objectstore
-    * @return name  The name of this {@link BckndobjectStoreSecretStatus} instance.
-    */
+  /**
+   * Name of objectstore
+   * @return name  The name of this {@link BckndobjectStoreSecretStatus} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -106,7 +106,7 @@ public class BckndobjectStoreSecretStatus
    *
    * @param name  Name of objectstore
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
@@ -127,7 +127,7 @@ public class BckndobjectStoreSecretStatus
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndobjectStoreSecretStatus has no field with name '" + name + "'.");
     }

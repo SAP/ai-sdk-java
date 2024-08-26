@@ -53,33 +53,33 @@ public class BckndResourceGetResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourceGetResponse() {  }
 
-   /**
-    * Set the resourcePlans of this {@link BckndResourceGetResponse} instance and return the same instance.
-    *
-    * @param resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse}
-    * @return The same instance of this {@link BckndResourceGetResponse} class
-    */
-   @Nonnull public BckndResourceGetResponse resourcePlans(@Nonnull final Map<String, BckndResourceGetResourcePlansValue> resourcePlans) {
+  /**
+   * Set the resourcePlans of this {@link BckndResourceGetResponse} instance and return the same instance.
+   *
+   * @param resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse}
+   * @return The same instance of this {@link BckndResourceGetResponse} class
+   */
+  @Nonnull public BckndResourceGetResponse resourcePlans( @Nonnull final Map<String, BckndResourceGetResourcePlansValue> resourcePlans) {
     this.resourcePlans = resourcePlans;
     return this;
   }
 
-   /**
-    * Put one resourcePlans instance to this {@link BckndResourceGetResponse} instance.
-    * @param key The String key of this resourcePlans instance
-    * @param resourcePlansItem The resourcePlans that should be added under the given key
-    * @return The same instance of type {@link BckndResourceGetResponse}
-    */
-   @Nonnull public BckndResourceGetResponse putresourcePlansItem(@Nonnull final String key, @Nonnull final BckndResourceGetResourcePlansValue resourcePlansItem) {
-      this.resourcePlans = new HashMap<>();
+  /**
+   * Put one resourcePlans instance to this {@link BckndResourceGetResponse} instance.
+   * @param key The String key of this resourcePlans instance
+   * @param resourcePlansItem The resourcePlans that should be added under the given key
+   * @return The same instance of type {@link BckndResourceGetResponse}
+   */
+  @Nonnull public BckndResourceGetResponse putresourcePlansItem( @Nonnull final String key, @Nonnull final BckndResourceGetResourcePlansValue resourcePlansItem) {
+    this.resourcePlans = new HashMap<>();
     this.resourcePlans.put(key, resourcePlansItem);
     return this;
   }
 
-   /**
-    * Get resourcePlans
-    * @return resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse} instance.
-    */
+  /**
+   * Get resourcePlans
+   * @return resourcePlans  The resourcePlans of this {@link BckndResourceGetResponse} instance.
+   */
   @Nonnull public Map<String, BckndResourceGetResourcePlansValue> getResourcePlans() {
     return resourcePlans;
   }
@@ -110,7 +110,7 @@ public class BckndResourceGetResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourceGetResponse has no field with name '" + name + "'.");
     }

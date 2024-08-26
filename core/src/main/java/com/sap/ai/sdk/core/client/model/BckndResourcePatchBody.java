@@ -54,13 +54,13 @@ public class BckndResourcePatchBody
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndResourcePatchBody() {  }
 
-   /**
-    * Set the resourcePlans of this {@link BckndResourcePatchBody} instance and return the same instance.
-    *
-    * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
-    * @return The same instance of this {@link BckndResourcePatchBody} class
-    */
-   @Nonnull public BckndResourcePatchBody resourcePlans(@Nonnull final List<BckndResourcePatchNodes> resourcePlans) {
+  /**
+   * Set the resourcePlans of this {@link BckndResourcePatchBody} instance and return the same instance.
+   *
+   * @param resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody}
+   * @return The same instance of this {@link BckndResourcePatchBody} class
+   */
+  @Nonnull public BckndResourcePatchBody resourcePlans( @Nonnull final List<BckndResourcePatchNodes> resourcePlans) {
     this.resourcePlans = resourcePlans;
     return this;
   }
@@ -77,10 +77,10 @@ public class BckndResourcePatchBody
     return this;
   }
 
-   /**
-    * Get resourcePlans
-    * @return resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody} instance.
-    */
+  /**
+   * Get resourcePlans
+   * @return resourcePlans  The resourcePlans of this {@link BckndResourcePatchBody} instance.
+   */
   @Nonnull public List<BckndResourcePatchNodes> getResourcePlans() {
     return resourcePlans;
   }
@@ -111,7 +111,7 @@ public class BckndResourcePatchBody
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndResourcePatchBody has no field with name '" + name + "'.");
     }

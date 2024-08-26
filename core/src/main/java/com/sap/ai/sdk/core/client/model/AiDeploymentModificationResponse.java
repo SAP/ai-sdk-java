@@ -53,21 +53,21 @@ public class AiDeploymentModificationResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected AiDeploymentModificationResponse() {  }
 
-   /**
-    * Set the id of this {@link AiDeploymentModificationResponse} instance and return the same instance.
-    *
-    * @param id  Generic ID
-    * @return The same instance of this {@link AiDeploymentModificationResponse} class
-    */
-   @Nonnull public AiDeploymentModificationResponse id(@Nonnull final String id) {
+  /**
+   * Set the id of this {@link AiDeploymentModificationResponse} instance and return the same instance.
+   *
+   * @param id  Generic ID
+   * @return The same instance of this {@link AiDeploymentModificationResponse} class
+   */
+  @Nonnull public AiDeploymentModificationResponse id( @Nonnull final String id) {
     this.id = id;
     return this;
   }
 
-   /**
-    * Generic ID
-    * @return id  The id of this {@link AiDeploymentModificationResponse} instance.
-    */
+  /**
+   * Generic ID
+   * @return id  The id of this {@link AiDeploymentModificationResponse} instance.
+   */
   @Nonnull public String getId() {
     return id;
   }
@@ -81,21 +81,21 @@ public class AiDeploymentModificationResponse
     this.id = id;
   }
 
-   /**
-    * Set the message of this {@link AiDeploymentModificationResponse} instance and return the same instance.
-    *
-    * @param message  Message
-    * @return The same instance of this {@link AiDeploymentModificationResponse} class
-    */
-   @Nonnull public AiDeploymentModificationResponse message(@Nonnull final String message) {
+  /**
+   * Set the message of this {@link AiDeploymentModificationResponse} instance and return the same instance.
+   *
+   * @param message  Message
+   * @return The same instance of this {@link AiDeploymentModificationResponse} class
+   */
+  @Nonnull public AiDeploymentModificationResponse message( @Nonnull final String message) {
     this.message = message;
     return this;
   }
 
-   /**
-    * Message
-    * @return message  The message of this {@link AiDeploymentModificationResponse} instance.
-    */
+  /**
+   * Message
+   * @return message  The message of this {@link AiDeploymentModificationResponse} instance.
+   */
   @Nonnull public String getMessage() {
     return message;
   }
@@ -126,7 +126,7 @@ public class AiDeploymentModificationResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("AiDeploymentModificationResponse has no field with name '" + name + "'.");
     }

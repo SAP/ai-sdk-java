@@ -57,21 +57,21 @@ public class BckndobjectStoreSecretStatusResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndobjectStoreSecretStatusResponse() {  }
 
-   /**
-    * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
-    *
-    * @param count  Number of the resource instances in the list
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusResponse count(@Nonnull final Integer count) {
+  /**
+   * Set the count of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
+   *
+   * @param count  Number of the resource instances in the list
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusResponse count( @Nonnull final Integer count) {
     this.count = count;
     return this;
   }
 
-   /**
-    * Number of the resource instances in the list
-    * @return count  The count of this {@link BckndobjectStoreSecretStatusResponse} instance.
-    */
+  /**
+   * Number of the resource instances in the list
+   * @return count  The count of this {@link BckndobjectStoreSecretStatusResponse} instance.
+   */
   @Nonnull public Integer getCount() {
     return count;
   }
@@ -85,13 +85,13 @@ public class BckndobjectStoreSecretStatusResponse
     this.count = count;
   }
 
-   /**
-    * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
-    *
-    * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
-    * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
-    */
-   @Nonnull public BckndobjectStoreSecretStatusResponse resources(@Nonnull final List<BckndobjectStoreSecretStatus> resources) {
+  /**
+   * Set the resources of this {@link BckndobjectStoreSecretStatusResponse} instance and return the same instance.
+   *
+   * @param resources  The resources of this {@link BckndobjectStoreSecretStatusResponse}
+   * @return The same instance of this {@link BckndobjectStoreSecretStatusResponse} class
+   */
+  @Nonnull public BckndobjectStoreSecretStatusResponse resources( @Nonnull final List<BckndobjectStoreSecretStatus> resources) {
     this.resources = resources;
     return this;
   }
@@ -108,10 +108,10 @@ public class BckndobjectStoreSecretStatusResponse
     return this;
   }
 
-   /**
-    * Get resources
-    * @return resources  The resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
-    */
+  /**
+   * Get resources
+   * @return resources  The resources of this {@link BckndobjectStoreSecretStatusResponse} instance.
+   */
   @Nonnull public List<BckndobjectStoreSecretStatus> getResources() {
     return resources;
   }
@@ -142,7 +142,7 @@ public class BckndobjectStoreSecretStatusResponse
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndobjectStoreSecretStatusResponse has no field with name '" + name + "'.");
     }

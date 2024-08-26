@@ -126,21 +126,21 @@ public class BckndService
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   protected BckndService() {  }
 
-   /**
-    * Set the name of this {@link BckndService} instance and return the same instance.
-    *
-    * @param name  service name
-    * @return The same instance of this {@link BckndService} class
-    */
-   @Nonnull public BckndService name(@Nonnull final String name) {
+  /**
+   * Set the name of this {@link BckndService} instance and return the same instance.
+   *
+   * @param name  service name
+   * @return The same instance of this {@link BckndService} class
+   */
+  @Nonnull public BckndService name( @Nullable final String name) {
     this.name = name;
     return this;
   }
 
-   /**
-    * service name
-    * @return name  The name of this {@link BckndService} instance.
-    */
+  /**
+   * service name
+   * @return name  The name of this {@link BckndService} instance.
+   */
   @Nonnull public String getName() {
     return name;
   }
@@ -150,25 +150,25 @@ public class BckndService
    *
    * @param name  service name
    */
-  public void setName( @Nonnull final String name) {
+  public void setName( @Nullable final String name) {
     this.name = name;
   }
 
-   /**
-    * Set the description of this {@link BckndService} instance and return the same instance.
-    *
-    * @param description  service description
-    * @return The same instance of this {@link BckndService} class
-    */
-   @Nonnull public BckndService description(@Nonnull final String description) {
+  /**
+   * Set the description of this {@link BckndService} instance and return the same instance.
+   *
+   * @param description  service description
+   * @return The same instance of this {@link BckndService} class
+   */
+  @Nonnull public BckndService description( @Nullable final String description) {
     this.description = description;
     return this;
   }
 
-   /**
-    * service description
-    * @return description  The description of this {@link BckndService} instance.
-    */
+  /**
+   * service description
+   * @return description  The description of this {@link BckndService} instance.
+   */
   @Nonnull public String getDescription() {
     return description;
   }
@@ -178,25 +178,25 @@ public class BckndService
    *
    * @param description  service description
    */
-  public void setDescription( @Nonnull final String description) {
+  public void setDescription( @Nullable final String description) {
     this.description = description;
   }
 
-   /**
-    * Set the url of this {@link BckndService} instance and return the same instance.
-    *
-    * @param url  service broker url
-    * @return The same instance of this {@link BckndService} class
-    */
-   @Nonnull public BckndService url(@Nonnull final String url) {
+  /**
+   * Set the url of this {@link BckndService} instance and return the same instance.
+   *
+   * @param url  service broker url
+   * @return The same instance of this {@link BckndService} class
+   */
+  @Nonnull public BckndService url( @Nullable final String url) {
     this.url = url;
     return this;
   }
 
-   /**
-    * service broker url
-    * @return url  The url of this {@link BckndService} instance.
-    */
+  /**
+   * service broker url
+   * @return url  The url of this {@link BckndService} instance.
+   */
   @Nonnull public String getUrl() {
     return url;
   }
@@ -206,25 +206,25 @@ public class BckndService
    *
    * @param url  service broker url
    */
-  public void setUrl( @Nonnull final String url) {
+  public void setUrl( @Nullable final String url) {
     this.url = url;
   }
 
-   /**
-    * Set the status of this {@link BckndService} instance and return the same instance.
-    *
-    * @param status  aggregated status of the service
-    * @return The same instance of this {@link BckndService} class
-    */
-   @Nonnull public BckndService status(@Nonnull final StatusEnum status) {
+  /**
+   * Set the status of this {@link BckndService} instance and return the same instance.
+   *
+   * @param status  aggregated status of the service
+   * @return The same instance of this {@link BckndService} class
+   */
+  @Nonnull public BckndService status( @Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
 
-   /**
-    * aggregated status of the service
-    * @return status  The status of this {@link BckndService} instance.
-    */
+  /**
+   * aggregated status of the service
+   * @return status  The status of this {@link BckndService} instance.
+   */
   @Nonnull public StatusEnum getStatus() {
     return status;
   }
@@ -234,25 +234,25 @@ public class BckndService
    *
    * @param status  aggregated status of the service
    */
-  public void setStatus( @Nonnull final StatusEnum status) {
+  public void setStatus( @Nullable final StatusEnum status) {
     this.status = status;
   }
 
-   /**
-    * Set the statusMessage of this {@link BckndService} instance and return the same instance.
-    *
-    * @param statusMessage  status message
-    * @return The same instance of this {@link BckndService} class
-    */
-   @Nonnull public BckndService statusMessage(@Nonnull final String statusMessage) {
+  /**
+   * Set the statusMessage of this {@link BckndService} instance and return the same instance.
+   *
+   * @param statusMessage  status message
+   * @return The same instance of this {@link BckndService} class
+   */
+  @Nonnull public BckndService statusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
 
-   /**
-    * status message
-    * @return statusMessage  The statusMessage of this {@link BckndService} instance.
-    */
+  /**
+   * status message
+   * @return statusMessage  The statusMessage of this {@link BckndService} instance.
+   */
   @Nonnull public String getStatusMessage() {
     return statusMessage;
   }
@@ -262,7 +262,7 @@ public class BckndService
    *
    * @param statusMessage  status message
    */
-  public void setStatusMessage( @Nonnull final String statusMessage) {
+  public void setStatusMessage( @Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -283,7 +283,7 @@ public class BckndService
    * @throws NoSuchElementException  If no property with the given name could be found.
    */
   @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+  public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
         throw new NoSuchElementException("BckndService has no field with name '" + name + "'.");
     }
