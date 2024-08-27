@@ -44,7 +44,7 @@ public class OpenAiCompletionOutput {
   @Getter(onMethod_ = @Nullable)
   private List<OpenAiPromptFilterResult> promptFilterResults;
 
-  void addDelta(OpenAiDeltaChatCompletion delta) {
+  void addDelta(@Nonnull final OpenAiDeltaChatCompletion delta) {
     created = delta.getCreated();
     id = delta.getId();
     model = delta.getModel();
@@ -57,11 +57,10 @@ public class OpenAiCompletionOutput {
       usage.addDelta(delta.getUsage());
     }
 
-    if (delta.getPromptFilterResults() != null) {
-      if (promptFilterResults == null) {
-        promptFilterResults = delta.getPromptFilterResults();
-      }
-      // prompt_filter_results is only present once in the first delta
+    if (delta.getPromptFilterResults() != null && promptFilterResults == null) {
+      promptFilterResults = delta.getPromptFilterResults();
+      // prompt_filter_results is overriden instead of updated because it is only present once in
+      // the first delta
     }
   }
 }

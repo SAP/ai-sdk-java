@@ -25,14 +25,21 @@ import lombok.experimental.Accessors;
 public class OpenAiStream<D extends StreamedDelta, T extends DeltaAggregatable<D>>
     implements AutoCloseable {
 
-  @Getter @Nonnull private Stream<D> deltaStream;
+  @Getter(onMethod_ = @Nonnull)
+  private Stream<D> deltaStream;
+
   @Nonnull private T totalOutput;
 
   void addDelta(D delta) {
     totalOutput.addDelta(delta);
   }
 
-  /** Get the total aggregated output. */
+  /**
+   * Get the total aggregated output from all deltas. Closes the delta stream.
+   *
+   * @return the total output until now.
+   */
+  @Nonnull
   public T getTotalOutput() {
     deltaStream.close();
     return totalOutput;

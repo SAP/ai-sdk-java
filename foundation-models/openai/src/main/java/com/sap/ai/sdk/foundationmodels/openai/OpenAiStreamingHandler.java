@@ -47,13 +47,15 @@ class OpenAiStreamingHandler<D extends StreamedDelta, T extends DeltaAggregatabl
    * @return A {@link OpenAiStream} of a model class instantiated from the response
    * @author stippi
    */
+  // The stream is closed by the user of the OpenAiStream
+  @SuppressWarnings("PMD.CloseResource")
   private OpenAiStream<D, T> parseResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
       throw new OpenAiClientException("Response from OpenAI model was empty.");
     }
-    InputStream inputStream;
+    final InputStream inputStream;
     try {
       inputStream = responseEntity.getContent();
     } catch (IOException e) {
@@ -61,7 +63,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta, T extends DeltaAggregatabl
     }
     final var br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
-    OpenAiStream<D, T> output = new OpenAiStream<D, T>();
+    final OpenAiStream<D, T> output = new OpenAiStream<>();
     try {
       output.setTotalOutput(totalType.getDeclaredConstructor().newInstance());
     } catch (InstantiationException
@@ -72,7 +74,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta, T extends DeltaAggregatabl
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
-    Stream<D> deltaStream =
+    final Stream<D> deltaStream =
         br.lines()
             .filter(
                 responseLine ->
@@ -88,11 +90,11 @@ class OpenAiStreamingHandler<D extends StreamedDelta, T extends DeltaAggregatabl
                 responseLine -> {
                   String data = responseLine.substring(5).replace("delta", "message");
                   try {
-                    D delta = JACKSON.readValue(data, deltaType);
+                    final D delta = JACKSON.readValue(data, deltaType);
                     output.addDelta(delta);
                     return delta;
-                  } catch (IOException e) {
-                    throw new RuntimeException(e);
+                  } catch (final IOException e) {
+                    throw new OpenAiClientException("Failed to parse delta message: " + data, e);
                   }
                 });
     return output.setDeltaStream(deltaStream);

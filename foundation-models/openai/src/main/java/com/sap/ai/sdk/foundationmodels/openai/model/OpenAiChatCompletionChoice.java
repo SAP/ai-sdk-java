@@ -21,7 +21,7 @@ public class OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
   @Setter(onMethod_ = @Nonnull, value = AccessLevel.PACKAGE)
   private OpenAiChatAssistantMessage message;
 
-  void addDelta(OpenAiDeltaChatCompletionChoice delta) {
+  void addDelta(@Nonnull final OpenAiDeltaChatCompletionChoice delta) {
     super.addDelta(delta);
 
     if (delta.getMessage() != null) {

@@ -66,42 +66,44 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-    var emitter = new ResponseBodyEmitter();
-    var stream = OpenAiClient.forModel(GPT_35_TURBO).stream(request);
+    final var emitter = new ResponseBodyEmitter();
 
     // Cloud SDK's ThreadContext is vital for the request to successfully execute.
     ThreadContextExecutors.getExecutor()
         .submit(
             () -> {
-              stream
-                  .getDeltaStream()
-                  .map(OpenAiDeltaChatCompletion::getDeltaContent)
-                  // The first two and the last delta do not contain any message content
-                  .filter(Objects::nonNull)
-                  .forEach(content -> send(emitter, content));
+              // try-with-resources ensures that the stream is closed after the response is sent.
+              try (final var result = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
+                result
+                    .getDeltaStream()
+                    .map(OpenAiDeltaChatCompletion::getDeltaContent)
+                    // The first two and the last deltaStream do not contain any message content
+                    .filter(Objects::nonNull)
+                    .forEach(content -> send(emitter, content));
 
-              String indentedJson = objectToJson(stream.getTotalOutput());
-              send(emitter, "\n\n-----Total Output-----\n\n" + indentedJson);
-              emitter.complete();
-              stream.close();
+                final String indentedJson = objectToJson(result.getTotalOutput());
+                send(emitter, "\n\n-----Total Output-----\n\n" + indentedJson);
+                emitter.complete();
+              }
             });
     // MediaType.TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  private static void send(ResponseBodyEmitter emitter, String chunk) {
+  private static void send(
+      @Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
     try {
       emitter.send(chunk);
-    } catch (IOException e) {
+    } catch (final IOException e) {
       log.error(Arrays.toString(e.getStackTrace()));
       emitter.completeWithError(e);
     }
   }
 
-  private static String objectToJson(Object obj) {
+  private static String objectToJson(@Nonnull final Object obj) {
     try {
       return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (JsonProcessingException ignored) {
+    } catch (final JsonProcessingException ignored) {
       return "Could not parse object to JSON";
     }
   }

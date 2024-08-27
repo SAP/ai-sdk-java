@@ -103,7 +103,8 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
    * @param errorResponse the error response, most likely a JSON of {@link OpenAiError}.
    * @param baseException a base exception to add the error message to.
    */
-  static void parseErrorAndThrow(String errorResponse, OpenAiClientException baseException)
+  static void parseErrorAndThrow(
+      @Nonnull final String errorResponse, @Nonnull final OpenAiClientException baseException)
       throws OpenAiClientException {
     final var maybeError = Try.of(() -> JACKSON.readValue(errorResponse, OpenAiError.class));
     if (maybeError.isFailure()) {

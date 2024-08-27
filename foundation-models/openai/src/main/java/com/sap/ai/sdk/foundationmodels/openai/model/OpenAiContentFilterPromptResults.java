@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class OpenAiContentFilterPromptResults extends OpenAiContentFilterResults
   @Getter(onMethod_ = @Nullable)
   private OpenAiContentFilterDetectedResult jailbreak;
 
-  void addDelta(OpenAiContentFilterPromptResults delta) {
+  void addDelta(@Nonnull final OpenAiContentFilterPromptResults delta) {
     super.addDelta(delta);
 
     if (delta.getJailbreak() != null) {

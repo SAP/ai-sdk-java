@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class OpenAiCompletionChoice {
   @Getter(onMethod_ = @Nullable)
   private OpenAiContentFilterPromptResults contentFilterResults;
 
-  void addDelta(OpenAiCompletionChoice delta) {
+  void addDelta(@Nonnull final OpenAiCompletionChoice delta) {
 
     if (delta.getFinishReason() != null) {
       finishReason = delta.getFinishReason();

@@ -28,7 +28,7 @@ public class OpenAiUsage {
   @Getter(onMethod_ = @Nonnull)
   private Integer totalTokens;
 
-  void addDelta(OpenAiUsage delta) {
+  void addDelta(@Nonnull final OpenAiUsage delta) {
     if (delta.getCompletionTokens() != null) {
       completionTokens = delta.getCompletionTokens();
     }

@@ -33,7 +33,7 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    *
    * @param delta the delta to add.
    */
-  public void addDelta(OpenAiDeltaChatCompletion delta) {
+  public void addDelta(@Nonnull final OpenAiDeltaChatCompletion delta) {
     super.addDelta(delta);
 
     if (delta.getSystemFingerprint() != null) {
@@ -46,7 +46,7 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
       }
       // Multiple choices are spread out on multiple deltas
       // A delta only contains one choice with a variable index
-      int index = delta.getChoices().get(0).getIndex();
+      final int index = delta.getChoices().get(0).getIndex();
       for (int i = choices.size(); i < index + 1; i++) {
         choices.add(new OpenAiChatCompletionChoice());
       }

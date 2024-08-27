@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,13 +42,9 @@ public class OpenAiContentFilterResultsBase {
   @Getter(onMethod_ = @Nullable)
   private OpenAiErrorBase error;
 
-  void addDelta(OpenAiContentFilterPromptResults delta) {
+  void addDelta(@Nonnull final OpenAiContentFilterPromptResults delta) {
     if (delta.getSexual() != null) {
       sexual = delta.getSexual();
-      System.out.println(sexual.getSeverity());
-      System.out.println(sexual.isFiltered());
-    } else {
-      System.out.println("Sexual is null");
     }
     if (delta.getViolence() != null) {
       violence = delta.getViolence();

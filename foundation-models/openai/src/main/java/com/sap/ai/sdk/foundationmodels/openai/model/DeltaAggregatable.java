@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
+import javax.annotation.Nonnull;
+
 /**
  * Interface for model classes that can be created from aggregated streamed deltas.
  *
@@ -14,5 +16,5 @@ public interface DeltaAggregatable<D> {
    *
    * @param delta the delta to add.
    */
-  void addDelta(D delta);
+  void addDelta(@Nonnull final D delta);
 }
