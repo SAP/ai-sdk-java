@@ -414,9 +414,9 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 
 ## Requirements and Setup for AI Core
 
-For any AI Core service interaction, the SAP Cloud SDK for AI requires credentials to be available.
+For any AI Core service interaction, the SAP Cloud SDK for AI requires credentials to be available at application runtime.
 By default, the credentials are extracted automatically from a service instance of type "aicore" bound to the application. 
-Running the application locally without such a service binding will throw an exception:
+Running the application locally without such service binding will throw an exception:
 
 ```
 Could not find any matching service bindings for service identifier 'aicore'
@@ -435,7 +435,7 @@ There are multiple options to register the service binding:
   Go to _Service Bindings_ and click _Bind Service_.
   In the wizard create or bind an existing service instance of type `aicore`.
 * (Or) use `manifest.yaml` to add the service binding declaratively.
-* (Or) use CF CLI to add service binding on command line.
+* (Or) use the CF CLI to add the service binding via command line.
 
 <details><summary>After application restart, there should be an "aicore" entry in environment variable <code>VCAP_SERVICES</code>.</summary>
 
@@ -474,23 +474,23 @@ export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 
 * Lookup service-key credentials as explained in the previous step for `AICORE_SERVICE_KEY`.
 
-<details><summary>Define a new destination in the _SAP BTP Destination Service_ using the service-key credentials.</summary>
-
+* <details><summary>Define a new destination in the SAP BTP Destination Service using the service-key credentials</summary>
+  
   * (Destinations can be added on subaccount level and on service instance level.)
   * (The URL field requires an additional path segment: `/v2`)
-  * Name: _my-aicore_
-  * Type: HTTP
-  * URL: _[serviceurls.AI_API_URL]/v2_
-  * Proxy-Type: Internet
-  * Authentication: _Oauth2ClientCredentials_
-  * Client ID: _[clientid]_
-  * Client Secret: _[clientsecret]_
-  * Token Service URL Type: Dedicated
-  * Token Service URL: _[url]_
+  * **Name**: _my-aicore_
+  * **Type**: HTTP
+  * **URL**: _[serviceurls.AI_API_URL]/v2_
+  * **Proxy-Type**: Internet
+  * **Authentication**: _Oauth2ClientCredentials_
+  * **Client ID**: _[clientid]_
+  * **Client Secret**: _[clientsecret]_
+  * **Token Service URL Type**: Dedicated
+  * **Token Service URL**: _[url]_
+  
+  </details>
 
-</details>
-
-* In the application at runtime the following can be executed:
+* At application runtime the following can be executed:
   ```java
   Destination destination = DestinationAccessor.getDestination("my-aicore");
   ApiClient client = Core.getClient(destination);
