@@ -13,7 +13,6 @@ import com.sap.ai.sdk.core.client.model.AiConfiguration;
 import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
 import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiConfigurationList;
-import java.util.List;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -98,11 +97,12 @@ public class ConfigurationUnitTest extends WireMockTestServer {
             .executableId("aicore-nvidia")
             .scenarioId("foundation-models")
             .addInputArtifactBindingsItem(
-                    AiArtifactArgumentBinding.create()
-                            .key("spam-data")
-                        .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7"));
+                AiArtifactArgumentBinding.create()
+                    .key("spam-data")
+                    .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7"));
     final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi(getClient(destination)).configurationCreate("default", configurationBaseData);
+        new ConfigurationApi(getClient(destination))
+            .configurationCreate("default", configurationBaseData);
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");
