@@ -88,7 +88,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta, T extends DeltaAggregatabl
                 })
             .map(
                 responseLine -> {
-                  String data = responseLine.substring(5).replace("delta", "message");
+                  final String data = responseLine.substring(5).replace("delta", "message");
                   try {
                     final D delta = JACKSON.readValue(data, deltaType);
                     output.addDelta(delta);

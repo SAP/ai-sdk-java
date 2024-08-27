@@ -73,7 +73,7 @@ class OpenAiController {
         .submit(
             () -> {
               // try-with-resources ensures that the stream is closed after the response is sent.
-              try (final var result = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
+              try (var result = OpenAiClient.forModel(GPT_35_TURBO).stream(request)) {
                 result
                     .getDeltaStream()
                     .map(OpenAiDeltaChatCompletion::getDeltaContent)

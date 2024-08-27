@@ -30,7 +30,7 @@ public class OpenAiStream<D extends StreamedDelta, T extends DeltaAggregatable<D
 
   @Nonnull private T totalOutput;
 
-  void addDelta(D delta) {
+  void addDelta(@Nonnull final D delta) {
     totalOutput.addDelta(delta);
   }
 

@@ -255,7 +255,7 @@ public interface OpenAiChatMessage {
     // TODO: add context
     // https://github.com/Azure/azure-rest-api-specs/blob/07d286359f828bbc7901e86288a5d62b48ae2052/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-02-01/inference.json#L1599
 
-    void addDelta(OpenAiChatAssistantMessage delta) {
+    void addDelta(@Nonnull final OpenAiChatAssistantMessage delta) {
 
       if (delta.getContent() != null) {
         if (content == null) {
