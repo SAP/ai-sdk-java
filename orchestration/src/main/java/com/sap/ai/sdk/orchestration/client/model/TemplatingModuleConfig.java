@@ -102,7 +102,7 @@ public class TemplatingModuleConfig
    * @return The same instance of this {@link TemplatingModuleConfig} class
    */
   @Nonnull
-  public TemplatingModuleConfig defaults(@Nonnull final Object defaults) {
+  public TemplatingModuleConfig defaults(@Nullable final Object defaults) {
     this.defaults = defaults;
     return this;
   }
@@ -123,7 +123,7 @@ public class TemplatingModuleConfig
    * @param defaults Optional default values for the template. If a parameter has no default it is
    *     required.
    */
-  public void setDefaults(@Nonnull final Object defaults) {
+  public void setDefaults(@Nullable final Object defaults) {
     this.defaults = defaults;
   }
 

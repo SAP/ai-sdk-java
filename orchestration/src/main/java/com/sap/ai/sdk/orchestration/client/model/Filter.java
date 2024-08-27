@@ -78,7 +78,7 @@ public class Filter
    * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Filter config(@Nonnull final FilterConfig config) {
+  public Filter config(@Nullable final FilterConfig config) {
     this.config = config;
     return this;
   }
@@ -98,7 +98,7 @@ public class Filter
    *
    * @param config The config of this {@link Filter}
    */
-  public void setConfig(@Nonnull final FilterConfig config) {
+  public void setConfig(@Nullable final FilterConfig config) {
     this.config = config;
   }
 

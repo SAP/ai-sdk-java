@@ -118,7 +118,7 @@ public class LLMChoice
    * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
-  public LLMChoice logprobs(@Nonnull final Map<String, List<BigDecimal>> logprobs) {
+  public LLMChoice logprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
     return this;
   }
@@ -153,7 +153,7 @@ public class LLMChoice
    *
    * @param logprobs Log probabilities
    */
-  public void setLogprobs(@Nonnull final Map<String, List<BigDecimal>> logprobs) {
+  public void setLogprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
   }
 

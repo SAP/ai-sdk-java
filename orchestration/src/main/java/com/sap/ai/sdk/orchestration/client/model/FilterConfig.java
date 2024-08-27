@@ -53,7 +53,7 @@ public class FilterConfig
    * @return The same instance of this {@link FilterConfig} class
    */
   @Nonnull
-  public FilterConfig hate(@Nonnull final AzureThreshold hate) {
+  public FilterConfig hate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
@@ -73,7 +73,7 @@ public class FilterConfig
    *
    * @param hate The hate of this {@link FilterConfig}
    */
-  public void setHate(@Nonnull final AzureThreshold hate) {
+  public void setHate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
   }
 
@@ -84,7 +84,7 @@ public class FilterConfig
    * @return The same instance of this {@link FilterConfig} class
    */
   @Nonnull
-  public FilterConfig selfHarm(@Nonnull final AzureThreshold selfHarm) {
+  public FilterConfig selfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
@@ -104,7 +104,7 @@ public class FilterConfig
    *
    * @param selfHarm The selfHarm of this {@link FilterConfig}
    */
-  public void setSelfHarm(@Nonnull final AzureThreshold selfHarm) {
+  public void setSelfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
@@ -115,7 +115,7 @@ public class FilterConfig
    * @return The same instance of this {@link FilterConfig} class
    */
   @Nonnull
-  public FilterConfig sexual(@Nonnull final AzureThreshold sexual) {
+  public FilterConfig sexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
@@ -135,7 +135,7 @@ public class FilterConfig
    *
    * @param sexual The sexual of this {@link FilterConfig}
    */
-  public void setSexual(@Nonnull final AzureThreshold sexual) {
+  public void setSexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
@@ -146,7 +146,7 @@ public class FilterConfig
    * @return The same instance of this {@link FilterConfig} class
    */
   @Nonnull
-  public FilterConfig violence(@Nonnull final AzureThreshold violence) {
+  public FilterConfig violence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
@@ -166,7 +166,7 @@ public class FilterConfig
    *
    * @param violence The violence of this {@link FilterConfig}
    */
-  public void setViolence(@Nonnull final AzureThreshold violence) {
+  public void setViolence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
   }
 

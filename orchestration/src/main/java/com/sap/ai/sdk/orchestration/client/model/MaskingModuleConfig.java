@@ -96,7 +96,7 @@ public class MaskingModuleConfig
    * @return The same instance of this {@link MaskingModuleConfig} class
    */
   @Nonnull
-  public MaskingModuleConfig unmasking(@Nonnull final UnmaskingConfig unmasking) {
+  public MaskingModuleConfig unmasking(@Nullable final UnmaskingConfig unmasking) {
     this.unmasking = unmasking;
     return this;
   }
@@ -116,7 +116,7 @@ public class MaskingModuleConfig
    *
    * @param unmasking The unmasking of this {@link MaskingModuleConfig}
    */
-  public void setUnmasking(@Nonnull final UnmaskingConfig unmasking) {
+  public void setUnmasking(@Nullable final UnmaskingConfig unmasking) {
     this.unmasking = unmasking;
   }
 

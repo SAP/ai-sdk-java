@@ -97,7 +97,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
    */
   @Nonnull
   public GroundingModuleConfigGroundingServiceConfiguration filters(
-      @Nonnull final List<GroundingFilter> filters) {
+      @Nullable final List<GroundingFilter> filters) {
     this.filters = filters;
     return this;
   }
@@ -134,7 +134,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
    *
    * @param filters Document grounding service filters to be used
    */
-  public void setFilters(@Nonnull final List<GroundingFilter> filters) {
+  public void setFilters(@Nullable final List<GroundingFilter> filters) {
     this.filters = filters;
   }
 

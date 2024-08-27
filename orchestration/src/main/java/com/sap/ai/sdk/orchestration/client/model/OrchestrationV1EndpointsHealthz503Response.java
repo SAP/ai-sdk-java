@@ -45,7 +45,7 @@ public class OrchestrationV1EndpointsHealthz503Response
    * @return The same instance of this {@link OrchestrationV1EndpointsHealthz503Response} class
    */
   @Nonnull
-  public OrchestrationV1EndpointsHealthz503Response status(@Nonnull final String status) {
+  public OrchestrationV1EndpointsHealthz503Response status(@Nullable final String status) {
     this.status = status;
     return this;
   }
@@ -65,7 +65,7 @@ public class OrchestrationV1EndpointsHealthz503Response
    *
    * @param status The status of this {@link OrchestrationV1EndpointsHealthz503Response}
    */
-  public void setStatus(@Nonnull final String status) {
+  public void setStatus(@Nullable final String status) {
     this.status = status;
   }
 

@@ -136,7 +136,7 @@ public class CompletionPostRequest
    * @return The same instance of this {@link CompletionPostRequest} class
    */
   @Nonnull
-  public CompletionPostRequest messagesHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+  public CompletionPostRequest messagesHistory(@Nullable final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
     return this;
   }
@@ -174,7 +174,7 @@ public class CompletionPostRequest
    * @param messagesHistory History of chat messages. Can be used to provide system and assistant
    *     messages to set the context of the conversation. Will be merged with the template message
    */
-  public void setMessagesHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+  public void setMessagesHistory(@Nullable final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
   }
 
