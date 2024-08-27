@@ -1,116 +1,135 @@
-
-
 package com.sap.ai.sdk.core.client;
 
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.client.model.KpiColumnName;
-import com.sap.ai.sdk.core.client.model.KpiGet400Response;
 import com.sap.ai.sdk.core.client.model.KpiResultSet;
-import java.util.Set;
-
-import java.util.HashMap;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
+import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import com.google.common.annotations.Beta;
-
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * AI Core in version 2.33.0.
  *
- * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models. 
+ * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
+ * batch job, for example to pre-process or train your models, or perform batch inference. Serve
+ * inference requests of trained models. Deploy а trained machine learning model as a web service to
+ * serve inference requests with high performance. Register your own Docker registry, synchronize
+ * your AI content from your own git repository, and register your own object store for training
+ * data and trained models.
  */
 public class KpiApi extends AbstractOpenApiService {
-    /**
-     * Instantiates this API class to invoke operations on the AI Core.
-     *
-     * @param httpDestination The destination that API should be used with
-     */
-    public KpiApi( @Nonnull final Destination httpDestination )
-    {
-        super(httpDestination);
-    }
+  /**
+   * Instantiates this API class to invoke operations on the AI Core.
+   *
+   * @param httpDestination The destination that API should be used with
+   */
+  public KpiApi(@Nonnull final Destination httpDestination) {
+    super(httpDestination);
+  }
 
-    /**
-     * Instantiates this API class to invoke operations on the AI Core based on a given {@link ApiClient}.
-     *
-     * @param apiClient
-     *            ApiClient to invoke the API on
-     */
-    @Beta
-    public KpiApi( @Nonnull final ApiClient apiClient )
-    {
-         super(apiClient);
-    }
+  /**
+   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
+   * ApiClient}.
+   *
+   * @param apiClient ApiClient to invoke the API on
+   */
+  @Beta
+  public KpiApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
 
-    
-    /**
-     * <p>Get KPIs</p>
-     *<p>Retrieve the number of executions, artifacts, and deployments  for each resource group, scenario, and executable. The columns to be returned can be specified in a query parameter. </p>
-     * <p><b>200</b> - KPIs
-     * <p><b>400</b> - Invalid request
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>429</b> - Too many requests
-     * @param $select  (optional
-        Columns to select
-     * @return KpiResultSet
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public KpiResultSet kpiGet( @Nullable final Set<KpiColumnName> $select) throws OpenApiRequestException {
-        final Object localVarPostBody = null;
-        
-        final String localVarPath = UriComponentsBuilder.fromPath("/analytics/kpis").build().toUriString();
+  /**
+   * Get KPIs
+   *
+   * <p>Retrieve the number of executions, artifacts, and deployments for each resource group,
+   * scenario, and executable. The columns to be returned can be specified in a query parameter.
+   *
+   * <p><b>200</b> - KPIs
+   *
+   * <p><b>400</b> - Invalid request
+   *
+   * <p><b>404</b> - The specified resource was not found
+   *
+   * <p><b>429</b> - Too many requests
+   *
+   * @param $select (optional Columns to select
+   * @return KpiResultSet
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public KpiResultSet kpiGet(@Nullable final Set<KpiColumnName> $select)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
 
-        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
-        final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/analytics/kpis").build().toUriString();
 
-                localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)), "$select", $select));
-        
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
 
-        final String[] localVarAccepts = { 
-            "application/json"
-        };
-        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
-        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(
+            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
+            "$select",
+            $select));
 
-        final String[] localVarAuthNames = new String[] { "Oauth2" };
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        final ParameterizedTypeReference<KpiResultSet> localVarReturnType = new ParameterizedTypeReference<KpiResultSet>() {};
-        return apiClient.invokeAPI(localVarPath, HttpMethod.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-    }
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
-    /**
-     * <p>Get KPIs</p>
-     * <p>Retrieve the number of executions, artifacts, and deployments  for each resource group, scenario, and executable. The columns to be returned can be specified in a query parameter. </p>
-     * <p><b>200</b> - KPIs
-     * <p><b>400</b> - Invalid request
-     * <p><b>404</b> - The specified resource was not found
-     * <p><b>429</b> - Too many requests
-     * @return KpiResultSet
-     * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-     */
-    @Nonnull
-    public KpiResultSet kpiGet() throws OpenApiRequestException {
-        return kpiGet(null);
-    }
+    final ParameterizedTypeReference<KpiResultSet> localVarReturnType =
+        new ParameterizedTypeReference<KpiResultSet>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get KPIs
+   *
+   * <p>Retrieve the number of executions, artifacts, and deployments for each resource group,
+   * scenario, and executable. The columns to be returned can be specified in a query parameter.
+   *
+   * <p><b>200</b> - KPIs
+   *
+   * <p><b>400</b> - Invalid request
+   *
+   * <p><b>404</b> - The specified resource was not found
+   *
+   * <p><b>429</b> - Too many requests
+   *
+   * @return KpiResultSet
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public KpiResultSet kpiGet() throws OpenApiRequestException {
+    return kpiGet(null);
+  }
 }
