@@ -53,7 +53,7 @@ public class BckndArgoCDRepositoryData
    * @return The same instance of this {@link BckndArgoCDRepositoryData} class
    */
   @Nonnull
-  public BckndArgoCDRepositoryData name(@Nonnull final String name) {
+  public BckndArgoCDRepositoryData name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -73,7 +73,7 @@ public class BckndArgoCDRepositoryData
    *
    * @param name Name of the repository
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 

@@ -48,7 +48,7 @@ public class BckndDeploymentQuotaItem
    * @return The same instance of this {@link BckndDeploymentQuotaItem} class
    */
   @Nonnull
-  public BckndDeploymentQuotaItem resourcePlanType(@Nonnull final String resourcePlanType) {
+  public BckndDeploymentQuotaItem resourcePlanType(@Nullable final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
     return this;
   }
@@ -69,7 +69,7 @@ public class BckndDeploymentQuotaItem
    *
    * @param resourcePlanType The resourcePlanType of this {@link BckndDeploymentQuotaItem}
    */
-  public void setResourcePlanType(@Nonnull final String resourcePlanType) {
+  public void setResourcePlanType(@Nullable final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
   }
 
@@ -82,7 +82,7 @@ public class BckndDeploymentQuotaItem
    */
   @Nonnull
   public BckndDeploymentQuotaItem deploymentQuota(
-      @Nonnull final BckndDeploymentQuota deploymentQuota) {
+      @Nullable final BckndDeploymentQuota deploymentQuota) {
     this.deploymentQuota = deploymentQuota;
     return this;
   }
@@ -102,7 +102,7 @@ public class BckndDeploymentQuotaItem
    *
    * @param deploymentQuota The deploymentQuota of this {@link BckndDeploymentQuotaItem}
    */
-  public void setDeploymentQuota(@Nonnull final BckndDeploymentQuota deploymentQuota) {
+  public void setDeploymentQuota(@Nullable final BckndDeploymentQuota deploymentQuota) {
     this.deploymentQuota = deploymentQuota;
   }
 

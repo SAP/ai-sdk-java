@@ -170,7 +170,7 @@ public class BckndEvent
    * @return The same instance of this {@link BckndEvent} class
    */
   @Nonnull
-  public BckndEvent tenantId(@Nonnull final String tenantId) {
+  public BckndEvent tenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
@@ -190,7 +190,7 @@ public class BckndEvent
    *
    * @param tenantId tenant id
    */
-  public void setTenantId(@Nonnull final String tenantId) {
+  public void setTenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
@@ -201,7 +201,7 @@ public class BckndEvent
    * @return The same instance of this {@link BckndEvent} class
    */
   @Nonnull
-  public BckndEvent action(@Nonnull final ActionEnum action) {
+  public BckndEvent action(@Nullable final ActionEnum action) {
     this.action = action;
     return this;
   }
@@ -221,7 +221,7 @@ public class BckndEvent
    *
    * @param action The action of this {@link BckndEvent}
    */
-  public void setAction(@Nonnull final ActionEnum action) {
+  public void setAction(@Nullable final ActionEnum action) {
     this.action = action;
   }
 
@@ -232,7 +232,7 @@ public class BckndEvent
    * @return The same instance of this {@link BckndEvent} class
    */
   @Nonnull
-  public BckndEvent state(@Nonnull final StateEnum state) {
+  public BckndEvent state(@Nullable final StateEnum state) {
     this.state = state;
     return this;
   }
@@ -252,7 +252,7 @@ public class BckndEvent
    *
    * @param state The state of this {@link BckndEvent}
    */
-  public void setState(@Nonnull final StateEnum state) {
+  public void setState(@Nullable final StateEnum state) {
     this.state = state;
   }
 
@@ -263,7 +263,7 @@ public class BckndEvent
    * @return The same instance of this {@link BckndEvent} class
    */
   @Nonnull
-  public BckndEvent description(@Nonnull final String description) {
+  public BckndEvent description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -283,7 +283,7 @@ public class BckndEvent
    *
    * @param description describes the event state
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -294,7 +294,7 @@ public class BckndEvent
    * @return The same instance of this {@link BckndEvent} class
    */
   @Nonnull
-  public BckndEvent createdAt(@Nonnull final OffsetDateTime createdAt) {
+  public BckndEvent createdAt(@Nullable final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
   }
@@ -314,7 +314,7 @@ public class BckndEvent
    *
    * @param createdAt The createdAt of this {@link BckndEvent}
    */
-  public void setCreatedAt(@Nonnull final OffsetDateTime createdAt) {
+  public void setCreatedAt(@Nullable final OffsetDateTime createdAt) {
     this.createdAt = createdAt;
   }
 

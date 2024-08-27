@@ -55,7 +55,8 @@ public class BckndServiceCapabilitiesBasic
    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
    */
   @Nonnull
-  public BckndServiceCapabilitiesBasic staticDeployments(@Nonnull final Boolean staticDeployments) {
+  public BckndServiceCapabilitiesBasic staticDeployments(
+      @Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
     return this;
   }
@@ -78,7 +79,7 @@ public class BckndServiceCapabilitiesBasic
    * @param staticDeployments There are static always running endpoints that can be used for
    *     inference without the need to do user deployments.
    */
-  public void setStaticDeployments(@Nonnull final Boolean staticDeployments) {
+  public void setStaticDeployments(@Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
   }
 
@@ -91,7 +92,7 @@ public class BckndServiceCapabilitiesBasic
    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
    */
   @Nonnull
-  public BckndServiceCapabilitiesBasic userDeployments(@Nonnull final Boolean userDeployments) {
+  public BckndServiceCapabilitiesBasic userDeployments(@Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
     return this;
   }
@@ -114,7 +115,7 @@ public class BckndServiceCapabilitiesBasic
    * @param userDeployments Services that only support batch inference typically neither allow
    *     listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
    */
-  public void setUserDeployments(@Nonnull final Boolean userDeployments) {
+  public void setUserDeployments(@Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
   }
 
@@ -127,7 +128,7 @@ public class BckndServiceCapabilitiesBasic
    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
    */
   @Nonnull
-  public BckndServiceCapabilitiesBasic createExecutions(@Nonnull final Boolean createExecutions) {
+  public BckndServiceCapabilitiesBasic createExecutions(@Nullable final Boolean createExecutions) {
     this.createExecutions = createExecutions;
     return this;
   }
@@ -150,7 +151,7 @@ public class BckndServiceCapabilitiesBasic
    * @param createExecutions Services that only support deployment typically neither allow create
    *     executions. For these, createExecutions &#x3D;&#x3D; false
    */
-  public void setCreateExecutions(@Nonnull final Boolean createExecutions) {
+  public void setCreateExecutions(@Nullable final Boolean createExecutions) {
     this.createExecutions = createExecutions;
   }
 
@@ -164,7 +165,7 @@ public class BckndServiceCapabilitiesBasic
    * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
    */
   @Nonnull
-  public BckndServiceCapabilitiesBasic multitenant(@Nonnull final Boolean multitenant) {
+  public BckndServiceCapabilitiesBasic multitenant(@Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
     return this;
   }
@@ -187,7 +188,7 @@ public class BckndServiceCapabilitiesBasic
    *     scenario), false-&gt; implementation does not support resource groups (Service Tenant
    *     scenario)
    */
-  public void setMultitenant(@Nonnull final Boolean multitenant) {
+  public void setMultitenant(@Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
   }
 

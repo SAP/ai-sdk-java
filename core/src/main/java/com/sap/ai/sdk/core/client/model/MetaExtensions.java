@@ -53,7 +53,7 @@ public class MetaExtensions
    * @return The same instance of this {@link MetaExtensions} class
    */
   @Nonnull
-  public MetaExtensions analytics(@Nonnull final MetaExtensionsAnalytics analytics) {
+  public MetaExtensions analytics(@Nullable final MetaExtensionsAnalytics analytics) {
     this.analytics = analytics;
     return this;
   }
@@ -73,7 +73,7 @@ public class MetaExtensions
    *
    * @param analytics The analytics of this {@link MetaExtensions}
    */
-  public void setAnalytics(@Nonnull final MetaExtensionsAnalytics analytics) {
+  public void setAnalytics(@Nullable final MetaExtensionsAnalytics analytics) {
     this.analytics = analytics;
   }
 
@@ -84,7 +84,7 @@ public class MetaExtensions
    * @return The same instance of this {@link MetaExtensions} class
    */
   @Nonnull
-  public MetaExtensions resourceGroups(@Nonnull final MetaExtensionsAnalytics resourceGroups) {
+  public MetaExtensions resourceGroups(@Nullable final MetaExtensionsAnalytics resourceGroups) {
     this.resourceGroups = resourceGroups;
     return this;
   }
@@ -104,7 +104,7 @@ public class MetaExtensions
    *
    * @param resourceGroups The resourceGroups of this {@link MetaExtensions}
    */
-  public void setResourceGroups(@Nonnull final MetaExtensionsAnalytics resourceGroups) {
+  public void setResourceGroups(@Nullable final MetaExtensionsAnalytics resourceGroups) {
     this.resourceGroups = resourceGroups;
   }
 
@@ -115,7 +115,7 @@ public class MetaExtensions
    * @return The same instance of this {@link MetaExtensions} class
    */
   @Nonnull
-  public MetaExtensions dataset(@Nonnull final MetaExtensionsDataset dataset) {
+  public MetaExtensions dataset(@Nullable final MetaExtensionsDataset dataset) {
     this.dataset = dataset;
     return this;
   }
@@ -135,7 +135,7 @@ public class MetaExtensions
    *
    * @param dataset The dataset of this {@link MetaExtensions}
    */
-  public void setDataset(@Nonnull final MetaExtensionsDataset dataset) {
+  public void setDataset(@Nullable final MetaExtensionsDataset dataset) {
     this.dataset = dataset;
   }
 
@@ -146,7 +146,7 @@ public class MetaExtensions
    * @return The same instance of this {@link MetaExtensions} class
    */
   @Nonnull
-  public MetaExtensions metrics(@Nonnull final MetaExtensionsMetrics metrics) {
+  public MetaExtensions metrics(@Nullable final MetaExtensionsMetrics metrics) {
     this.metrics = metrics;
     return this;
   }
@@ -166,7 +166,7 @@ public class MetaExtensions
    *
    * @param metrics The metrics of this {@link MetaExtensions}
    */
-  public void setMetrics(@Nonnull final MetaExtensionsMetrics metrics) {
+  public void setMetrics(@Nullable final MetaExtensionsMetrics metrics) {
     this.metrics = metrics;
   }
 

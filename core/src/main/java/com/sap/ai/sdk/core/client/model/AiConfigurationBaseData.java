@@ -155,7 +155,7 @@ public class AiConfigurationBaseData
    */
   @Nonnull
   public AiConfigurationBaseData parameterBindings(
-      @Nonnull final List<AiParameterArgumentBinding> parameterBindings) {
+      @Nullable final List<AiParameterArgumentBinding> parameterBindings) {
     this.parameterBindings = parameterBindings;
     return this;
   }
@@ -193,7 +193,7 @@ public class AiConfigurationBaseData
    * @param parameterBindings The parameterBindings of this {@link AiConfigurationBaseData}
    */
   public void setParameterBindings(
-      @Nonnull final List<AiParameterArgumentBinding> parameterBindings) {
+      @Nullable final List<AiParameterArgumentBinding> parameterBindings) {
     this.parameterBindings = parameterBindings;
   }
 
@@ -206,7 +206,7 @@ public class AiConfigurationBaseData
    */
   @Nonnull
   public AiConfigurationBaseData inputArtifactBindings(
-      @Nonnull final List<AiArtifactArgumentBinding> inputArtifactBindings) {
+      @Nullable final List<AiArtifactArgumentBinding> inputArtifactBindings) {
     this.inputArtifactBindings = inputArtifactBindings;
     return this;
   }
@@ -244,7 +244,7 @@ public class AiConfigurationBaseData
    * @param inputArtifactBindings The inputArtifactBindings of this {@link AiConfigurationBaseData}
    */
   public void setInputArtifactBindings(
-      @Nonnull final List<AiArtifactArgumentBinding> inputArtifactBindings) {
+      @Nullable final List<AiArtifactArgumentBinding> inputArtifactBindings) {
     this.inputArtifactBindings = inputArtifactBindings;
   }
 

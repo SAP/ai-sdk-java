@@ -161,7 +161,7 @@ public class BckndInternalResourceGroup
    * @return The same instance of this {@link BckndInternalResourceGroup} class
    */
   @Nonnull
-  public BckndInternalResourceGroup tenantId(@Nonnull final String tenantId) {
+  public BckndInternalResourceGroup tenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
@@ -181,7 +181,7 @@ public class BckndInternalResourceGroup
    *
    * @param tenantId tenant id
    */
-  public void setTenantId(@Nonnull final String tenantId) {
+  public void setTenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
@@ -193,7 +193,7 @@ public class BckndInternalResourceGroup
    * @return The same instance of this {@link BckndInternalResourceGroup} class
    */
   @Nonnull
-  public BckndInternalResourceGroup zoneId(@Nonnull final String zoneId) {
+  public BckndInternalResourceGroup zoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
@@ -213,7 +213,7 @@ public class BckndInternalResourceGroup
    *
    * @param zoneId zone id
    */
-  public void setZoneId(@Nonnull final String zoneId) {
+  public void setZoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 
@@ -258,7 +258,7 @@ public class BckndInternalResourceGroup
    */
   @Nonnull
   public BckndInternalResourceGroup labels(
-      @Nonnull final List<BckndInternalResourceGroupLabel> labels) {
+      @Nullable final List<BckndInternalResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -294,7 +294,7 @@ public class BckndInternalResourceGroup
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<BckndInternalResourceGroupLabel> labels) {
+  public void setLabels(@Nullable final List<BckndInternalResourceGroupLabel> labels) {
     this.labels = labels;
   }
 
@@ -338,7 +338,7 @@ public class BckndInternalResourceGroup
    * @return The same instance of this {@link BckndInternalResourceGroup} class
    */
   @Nonnull
-  public BckndInternalResourceGroup statusMessage(@Nonnull final String statusMessage) {
+  public BckndInternalResourceGroup statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -358,7 +358,7 @@ public class BckndInternalResourceGroup
    *
    * @param statusMessage status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -371,7 +371,7 @@ public class BckndInternalResourceGroup
    */
   @Nonnull
   public BckndInternalResourceGroup annotations(
-      @Nonnull final List<BckndInternalResourceGroupAnnotation> annotations) {
+      @Nullable final List<BckndInternalResourceGroupAnnotation> annotations) {
     this.annotations = annotations;
     return this;
   }
@@ -408,7 +408,7 @@ public class BckndInternalResourceGroup
    * @param annotations Arbitrary annotations as meta information
    */
   public void setAnnotations(
-      @Nonnull final List<BckndInternalResourceGroupAnnotation> annotations) {
+      @Nullable final List<BckndInternalResourceGroupAnnotation> annotations) {
     this.annotations = annotations;
   }
 

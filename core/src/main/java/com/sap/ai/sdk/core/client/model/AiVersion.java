@@ -57,7 +57,7 @@ public class AiVersion
    * @return The same instance of this {@link AiVersion} class
    */
   @Nonnull
-  public AiVersion description(@Nonnull final String description) {
+  public AiVersion description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -77,7 +77,7 @@ public class AiVersion
    *
    * @param description Version description
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -119,7 +119,7 @@ public class AiVersion
    * @return The same instance of this {@link AiVersion} class
    */
   @Nonnull
-  public AiVersion scenarioId(@Nonnull final String scenarioId) {
+  public AiVersion scenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
@@ -139,7 +139,7 @@ public class AiVersion
    *
    * @param scenarioId ID of the scenario
    */
-  public void setScenarioId(@Nonnull final String scenarioId) {
+  public void setScenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 

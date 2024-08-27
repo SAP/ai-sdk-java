@@ -47,7 +47,7 @@ public class AiExecutionBulkModificationRequest
    */
   @Nonnull
   public AiExecutionBulkModificationRequest executions(
-      @Nonnull final Set<AiExecutionModificationRequestWithIdentifier> executions) {
+      @Nullable final Set<AiExecutionModificationRequestWithIdentifier> executions) {
     this.executions = executions;
     return this;
   }
@@ -84,7 +84,7 @@ public class AiExecutionBulkModificationRequest
    * @param executions The executions of this {@link AiExecutionBulkModificationRequest}
    */
   public void setExecutions(
-      @Nonnull final Set<AiExecutionModificationRequestWithIdentifier> executions) {
+      @Nullable final Set<AiExecutionModificationRequestWithIdentifier> executions) {
     this.executions = executions;
   }
 

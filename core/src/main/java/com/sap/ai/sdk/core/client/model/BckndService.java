@@ -118,7 +118,7 @@ public class BckndService
    * @return The same instance of this {@link BckndService} class
    */
   @Nonnull
-  public BckndService name(@Nonnull final String name) {
+  public BckndService name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -138,7 +138,7 @@ public class BckndService
    *
    * @param name service name
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
@@ -149,7 +149,7 @@ public class BckndService
    * @return The same instance of this {@link BckndService} class
    */
   @Nonnull
-  public BckndService description(@Nonnull final String description) {
+  public BckndService description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -169,7 +169,7 @@ public class BckndService
    *
    * @param description service description
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -180,7 +180,7 @@ public class BckndService
    * @return The same instance of this {@link BckndService} class
    */
   @Nonnull
-  public BckndService url(@Nonnull final String url) {
+  public BckndService url(@Nullable final String url) {
     this.url = url;
     return this;
   }
@@ -200,7 +200,7 @@ public class BckndService
    *
    * @param url service broker url
    */
-  public void setUrl(@Nonnull final String url) {
+  public void setUrl(@Nullable final String url) {
     this.url = url;
   }
 
@@ -211,7 +211,7 @@ public class BckndService
    * @return The same instance of this {@link BckndService} class
    */
   @Nonnull
-  public BckndService status(@Nonnull final StatusEnum status) {
+  public BckndService status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -231,7 +231,7 @@ public class BckndService
    *
    * @param status aggregated status of the service
    */
-  public void setStatus(@Nonnull final StatusEnum status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 
@@ -242,7 +242,7 @@ public class BckndService
    * @return The same instance of this {@link BckndService} class
    */
   @Nonnull
-  public BckndService statusMessage(@Nonnull final String statusMessage) {
+  public BckndService statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -262,7 +262,7 @@ public class BckndService
    *
    * @param statusMessage status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 

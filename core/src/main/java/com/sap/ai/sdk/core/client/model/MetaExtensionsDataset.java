@@ -83,7 +83,7 @@ public class MetaExtensionsDataset
    */
   @Nonnull
   public MetaExtensionsDataset capabilities(
-      @Nonnull final MetaExtensionsDatasetCapabilities capabilities) {
+      @Nullable final MetaExtensionsDatasetCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
@@ -103,7 +103,7 @@ public class MetaExtensionsDataset
    *
    * @param capabilities The capabilities of this {@link MetaExtensionsDataset}
    */
-  public void setCapabilities(@Nonnull final MetaExtensionsDatasetCapabilities capabilities) {
+  public void setCapabilities(@Nullable final MetaExtensionsDatasetCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
@@ -114,7 +114,7 @@ public class MetaExtensionsDataset
    * @return The same instance of this {@link MetaExtensionsDataset} class
    */
   @Nonnull
-  public MetaExtensionsDataset limits(@Nonnull final MetaExtensionsDatasetLimits limits) {
+  public MetaExtensionsDataset limits(@Nullable final MetaExtensionsDatasetLimits limits) {
     this.limits = limits;
     return this;
   }
@@ -134,7 +134,7 @@ public class MetaExtensionsDataset
    *
    * @param limits The limits of this {@link MetaExtensionsDataset}
    */
-  public void setLimits(@Nonnull final MetaExtensionsDatasetLimits limits) {
+  public void setLimits(@Nullable final MetaExtensionsDatasetLimits limits) {
     this.limits = limits;
   }
 

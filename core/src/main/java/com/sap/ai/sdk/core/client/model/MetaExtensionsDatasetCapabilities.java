@@ -51,7 +51,7 @@ public class MetaExtensionsDatasetCapabilities
    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
    */
   @Nonnull
-  public MetaExtensionsDatasetCapabilities upload(@Nonnull final Boolean upload) {
+  public MetaExtensionsDatasetCapabilities upload(@Nullable final Boolean upload) {
     this.upload = upload;
     return this;
   }
@@ -71,7 +71,7 @@ public class MetaExtensionsDatasetCapabilities
    *
    * @param upload Support for uploading of files
    */
-  public void setUpload(@Nonnull final Boolean upload) {
+  public void setUpload(@Nullable final Boolean upload) {
     this.upload = upload;
   }
 
@@ -83,7 +83,7 @@ public class MetaExtensionsDatasetCapabilities
    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
    */
   @Nonnull
-  public MetaExtensionsDatasetCapabilities download(@Nonnull final Boolean download) {
+  public MetaExtensionsDatasetCapabilities download(@Nullable final Boolean download) {
     this.download = download;
     return this;
   }
@@ -103,7 +103,7 @@ public class MetaExtensionsDatasetCapabilities
    *
    * @param download Support for downloading of files
    */
-  public void setDownload(@Nonnull final Boolean download) {
+  public void setDownload(@Nullable final Boolean download) {
     this.download = download;
   }
 
@@ -115,7 +115,7 @@ public class MetaExtensionsDatasetCapabilities
    * @return The same instance of this {@link MetaExtensionsDatasetCapabilities} class
    */
   @Nonnull
-  public MetaExtensionsDatasetCapabilities delete(@Nonnull final Boolean delete) {
+  public MetaExtensionsDatasetCapabilities delete(@Nullable final Boolean delete) {
     this.delete = delete;
     return this;
   }
@@ -135,7 +135,7 @@ public class MetaExtensionsDatasetCapabilities
    *
    * @param delete Support for deletion of files
    */
-  public void setDelete(@Nonnull final Boolean delete) {
+  public void setDelete(@Nullable final Boolean delete) {
     this.delete = delete;
   }
 

@@ -50,7 +50,7 @@ public class BckndResourceGroupsPostRequest
    * @return The same instance of this {@link BckndResourceGroupsPostRequest} class
    */
   @Nonnull
-  public BckndResourceGroupsPostRequest resourceGroupId(@Nonnull final String resourceGroupId) {
+  public BckndResourceGroupsPostRequest resourceGroupId(@Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
@@ -71,7 +71,7 @@ public class BckndResourceGroupsPostRequest
    *
    * @param resourceGroupId resource group id
    */
-  public void setResourceGroupId(@Nonnull final String resourceGroupId) {
+  public void setResourceGroupId(@Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
@@ -84,7 +84,7 @@ public class BckndResourceGroupsPostRequest
    */
   @Nonnull
   public BckndResourceGroupsPostRequest labels(
-      @Nonnull final List<BckndResourceGroupLabel> labels) {
+      @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -120,7 +120,7 @@ public class BckndResourceGroupsPostRequest
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  public void setLabels(@Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 

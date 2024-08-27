@@ -86,7 +86,7 @@ public class AiExecutableArtifact
    * @return The same instance of this {@link AiExecutableArtifact} class
    */
   @Nonnull
-  public AiExecutableArtifact kind(@Nonnull final String kind) {
+  public AiExecutableArtifact kind(@Nullable final String kind) {
     this.kind = kind;
     return this;
   }
@@ -106,7 +106,7 @@ public class AiExecutableArtifact
    *
    * @param kind Artifact kind (model, dataset, other)
    */
-  public void setKind(@Nonnull final String kind) {
+  public void setKind(@Nullable final String kind) {
     this.kind = kind;
   }
 
@@ -117,7 +117,7 @@ public class AiExecutableArtifact
    * @return The same instance of this {@link AiExecutableArtifact} class
    */
   @Nonnull
-  public AiExecutableArtifact description(@Nonnull final String description) {
+  public AiExecutableArtifact description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -137,7 +137,7 @@ public class AiExecutableArtifact
    *
    * @param description Description of the signature argument
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -148,7 +148,7 @@ public class AiExecutableArtifact
    * @return The same instance of this {@link AiExecutableArtifact} class
    */
   @Nonnull
-  public AiExecutableArtifact labels(@Nonnull final List<AiLabel> labels) {
+  public AiExecutableArtifact labels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -183,7 +183,7 @@ public class AiExecutableArtifact
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<AiLabel> labels) {
+  public void setLabels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
   }
 

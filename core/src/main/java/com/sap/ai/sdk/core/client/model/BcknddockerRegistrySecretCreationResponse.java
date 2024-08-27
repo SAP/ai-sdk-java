@@ -45,7 +45,7 @@ public class BcknddockerRegistrySecretCreationResponse
    * @return The same instance of this {@link BcknddockerRegistrySecretCreationResponse} class
    */
   @Nonnull
-  public BcknddockerRegistrySecretCreationResponse message(@Nonnull final String message) {
+  public BcknddockerRegistrySecretCreationResponse message(@Nullable final String message) {
     this.message = message;
     return this;
   }
@@ -65,7 +65,7 @@ public class BcknddockerRegistrySecretCreationResponse
    *
    * @param message Message
    */
-  public void setMessage(@Nonnull final String message) {
+  public void setMessage(@Nullable final String message) {
     this.message = message;
   }
 

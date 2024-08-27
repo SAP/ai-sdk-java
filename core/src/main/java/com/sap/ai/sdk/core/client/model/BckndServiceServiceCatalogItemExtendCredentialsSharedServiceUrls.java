@@ -49,7 +49,7 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
    */
   @Nonnull
   public BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls AI_API_URL(
-      @Nonnull final String AI_API_URL) {
+      @Nullable final String AI_API_URL) {
     this.AI_API_URL = AI_API_URL;
     return this;
   }
@@ -72,7 +72,7 @@ public class BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls
    * @param AI_API_URL The AI_API_URL of this {@link
    *     BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls}
    */
-  public void setAIAPIURL(@Nonnull final String AI_API_URL) {
+  public void setAIAPIURL(@Nullable final String AI_API_URL) {
     this.AI_API_URL = AI_API_URL;
   }
 

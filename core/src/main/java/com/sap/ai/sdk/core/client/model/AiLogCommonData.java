@@ -46,7 +46,7 @@ public class AiLogCommonData
    * @return The same instance of this {@link AiLogCommonData} class
    */
   @Nonnull
-  public AiLogCommonData result(@Nonnull final List<AiLogCommonResultItem> result) {
+  public AiLogCommonData result(@Nullable final List<AiLogCommonResultItem> result) {
     this.result = result;
     return this;
   }
@@ -81,7 +81,7 @@ public class AiLogCommonData
    *
    * @param result The result of this {@link AiLogCommonData}
    */
-  public void setResult(@Nonnull final List<AiLogCommonResultItem> result) {
+  public void setResult(@Nullable final List<AiLogCommonResultItem> result) {
     this.result = result;
   }
 

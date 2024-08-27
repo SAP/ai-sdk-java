@@ -47,7 +47,7 @@ public class TrckDetailsErrorResponse
    * @return The same instance of this {@link TrckDetailsErrorResponse} class
    */
   @Nonnull
-  public TrckDetailsErrorResponse code(@Nonnull final String code) {
+  public TrckDetailsErrorResponse code(@Nullable final String code) {
     this.code = code;
     return this;
   }
@@ -67,7 +67,7 @@ public class TrckDetailsErrorResponse
    *
    * @param code Descriptive error code (not http status code)
    */
-  public void setCode(@Nonnull final String code) {
+  public void setCode(@Nullable final String code) {
     this.code = code;
   }
 
@@ -78,7 +78,7 @@ public class TrckDetailsErrorResponse
    * @return The same instance of this {@link TrckDetailsErrorResponse} class
    */
   @Nonnull
-  public TrckDetailsErrorResponse message(@Nonnull final String message) {
+  public TrckDetailsErrorResponse message(@Nullable final String message) {
     this.message = message;
     return this;
   }
@@ -98,7 +98,7 @@ public class TrckDetailsErrorResponse
    *
    * @param message Plaintext error description
    */
-  public void setMessage(@Nonnull final String message) {
+  public void setMessage(@Nullable final String message) {
     this.message = message;
   }
 

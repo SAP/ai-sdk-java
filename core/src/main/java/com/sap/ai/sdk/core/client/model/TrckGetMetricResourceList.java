@@ -50,7 +50,7 @@ public class TrckGetMetricResourceList
    * @return The same instance of this {@link TrckGetMetricResourceList} class
    */
   @Nonnull
-  public TrckGetMetricResourceList count(@Nonnull final Integer count) {
+  public TrckGetMetricResourceList count(@Nullable final Integer count) {
     this.count = count;
     return this;
   }
@@ -70,7 +70,7 @@ public class TrckGetMetricResourceList
    *
    * @param count Number of the resource instances in the list
    */
-  public void setCount(@Nonnull final Integer count) {
+  public void setCount(@Nullable final Integer count) {
     this.count = count;
   }
 

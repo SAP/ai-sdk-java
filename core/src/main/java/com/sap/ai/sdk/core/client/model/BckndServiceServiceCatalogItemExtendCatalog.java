@@ -59,7 +59,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCatalog} class
    */
   @Nonnull
-  public BckndServiceServiceCatalogItemExtendCatalog bindable(@Nonnull final Boolean bindable) {
+  public BckndServiceServiceCatalogItemExtendCatalog bindable(@Nullable final Boolean bindable) {
     this.bindable = bindable;
     return this;
   }
@@ -80,7 +80,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    *
    * @param bindable if the service is bindable
    */
-  public void setBindable(@Nonnull final Boolean bindable) {
+  public void setBindable(@Nullable final Boolean bindable) {
     this.bindable = bindable;
   }
 
@@ -93,7 +93,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    */
   @Nonnull
   public BckndServiceServiceCatalogItemExtendCatalog description(
-      @Nonnull final String description) {
+      @Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -114,7 +114,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    *
    * @param description description of the service
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -126,7 +126,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCatalog} class
    */
   @Nonnull
-  public BckndServiceServiceCatalogItemExtendCatalog id(@Nonnull final String id) {
+  public BckndServiceServiceCatalogItemExtendCatalog id(@Nullable final String id) {
     this.id = id;
     return this;
   }
@@ -146,7 +146,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    *
    * @param id id of the service
    */
-  public void setId(@Nonnull final String id) {
+  public void setId(@Nullable final String id) {
     this.id = id;
   }
 
@@ -158,7 +158,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    * @return The same instance of this {@link BckndServiceServiceCatalogItemExtendCatalog} class
    */
   @Nonnull
-  public BckndServiceServiceCatalogItemExtendCatalog name(@Nonnull final String name) {
+  public BckndServiceServiceCatalogItemExtendCatalog name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -178,7 +178,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    *
    * @param name name of the service
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
@@ -191,7 +191,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    */
   @Nonnull
   public BckndServiceServiceCatalogItemExtendCatalog plans(
-      @Nonnull final List<BckndServiceServicePlanItem> plans) {
+      @Nullable final List<BckndServiceServicePlanItem> plans) {
     this.plans = plans;
     return this;
   }
@@ -227,7 +227,7 @@ public class BckndServiceServiceCatalogItemExtendCatalog
    *
    * @param plans The plans of this {@link BckndServiceServiceCatalogItemExtendCatalog}
    */
-  public void setPlans(@Nonnull final List<BckndServiceServicePlanItem> plans) {
+  public void setPlans(@Nullable final List<BckndServiceServicePlanItem> plans) {
     this.plans = plans;
   }
 
