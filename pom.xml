@@ -54,6 +54,7 @@
     <spotless.version>2.43.0</spotless.version>
     <checkstyle.version>10.18.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
+    <surefire.version>3.4.0</surefire.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <springframework.version>6.1.12</springframework.version>
     <!--  Quality assurance  -->
@@ -411,6 +412,11 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
       </plugin>
     </plugins>
   </build>
