@@ -9,12 +9,13 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiPromptFilterResult;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
@@ -35,7 +36,7 @@ class OpenAiClientTest {
   }
 
   @Test
-  void testApiVersion() {
+  void apiVersion() {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
 
@@ -54,7 +55,7 @@ class OpenAiClientTest {
   }
 
   @Test
-  void testErrorHandling() {
+  void errorHandling() {
     final var errorJson =
         """
             { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
@@ -128,122 +129,260 @@ class OpenAiClientTest {
   }
 
   @Test
-  void testChatCompletion() throws IOException {
-    final String response =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("chatCompletionResponse.json")
-                .readAllBytes());
-    stubFor(post(anyUrl()).willReturn(okJson(response)));
+  void chatCompletion() throws IOException {
+    try (var inputStream =
+        getClass().getClassLoader().getResourceAsStream("chatCompletionResponse.json")) {
 
-    final var systemMessage =
-        new OpenAiChatMessage.OpenAiChatSystemMessage()
-            .setContent("You are a helpful, friendly and sometimes slightly snarky AI assistant!");
-    final var userMessage =
-        new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-    final var request =
-        new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
+      assert inputStream != null;
+      final String response = new String(inputStream.readAllBytes());
+      stubFor(post(anyUrl()).willReturn(okJson(response)));
 
-    final var result = client.chatCompletion(request);
+      final var systemMessage =
+          new OpenAiChatMessage.OpenAiChatSystemMessage()
+              .setContent(
+                  "You are a helpful, friendly and sometimes slightly snarky AI assistant!");
+      final var userMessage =
+          new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
+      final var request =
+          new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
 
-    assertThat(result).isNotNull();
-    assertThat(result.getCreated()).isEqualTo(1719300073);
-    assertThat(result.getId()).isEqualTo("chatcmpl-9dumHtDEyysGFnknk17n4Lt37tg7T");
-    assertThat(result.getModel()).isEqualTo("gpt-4-32k");
-    assertThat(result.getObject()).isEqualTo("chat.completion");
-    assertThat(result.getSystemFingerprint()).isNull();
+      final var result = client.chatCompletion(request);
 
-    assertThat(result.getUsage().getCompletionTokens()).isEqualTo(54);
-    assertThat(result.getUsage().getPromptTokens()).isEqualTo(13);
-    assertThat(result.getUsage().getTotalTokens()).isEqualTo(67);
+      assertThat(result).isNotNull();
+      assertThat(result.getCreated()).isEqualTo(1719300073);
+      assertThat(result.getId()).isEqualTo("chatcmpl-9dumHtDEyysGFnknk17n4Lt37tg7T");
+      assertThat(result.getModel()).isEqualTo("gpt-4-32k");
+      assertThat(result.getObject()).isEqualTo("chat.completion");
+      assertThat(result.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
-    assertThat(result.getPromptFilterResults()).hasSize(1);
-    OpenAiPromptFilterResult promptFilterResults = result.getPromptFilterResults().get(0);
-    assertThat(promptFilterResults.getPromptIndex()).isEqualTo(0);
-    assertThat(promptFilterResults.getContentFilterResults().getSexual().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getContentFilterResults().getSexual().getSeverity())
-        .isEqualTo(SAFE);
-    assertThat(promptFilterResults.getContentFilterResults().getViolence().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getContentFilterResults().getViolence().getSeverity())
-        .isEqualTo(SAFE);
-    assertThat(promptFilterResults.getContentFilterResults().getHate().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getContentFilterResults().getHate().getSeverity())
-        .isEqualTo(SAFE);
-    assertThat(promptFilterResults.getContentFilterResults().getSelfHarm()).isNull();
-    assertThat(promptFilterResults.getContentFilterResults().getProfanity()).isNull();
-    assertThat(promptFilterResults.getContentFilterResults().getError()).isNull();
-    assertThat(promptFilterResults.getContentFilterResults().getJailbreak().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getContentFilterResults().getJailbreak().isDetected()).isFalse();
+      assertThat(result.getUsage()).isNotNull();
+      assertThat(result.getUsage().getCompletionTokens()).isEqualTo(54);
+      assertThat(result.getUsage().getPromptTokens()).isEqualTo(13);
+      assertThat(result.getUsage().getTotalTokens()).isEqualTo(67);
 
-    assertThat(result.getChoices()).hasSize(1);
-    OpenAiChatCompletionChoice choice = result.getChoices().get(0);
-    assertThat(choice.getFinishReason()).isEqualTo("stop");
-    assertThat(choice.getIndex()).isEqualTo(0);
-    assertThat(choice.getMessage().getContent())
-        .isEqualTo(
-            """
+      assertThat(result.getPromptFilterResults()).hasSize(1);
+      assertThat(result.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
+      OpenAiContentFilterPromptResults promptFilterResults =
+          result.getPromptFilterResults().get(0).getContentFilterResults();
+      assertThat(promptFilterResults).isNotNull();
+      assertThat(promptFilterResults.getSexual()).isNotNull();
+      assertThat(promptFilterResults.getSexual().isFiltered()).isFalse();
+      assertThat(promptFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
+      assertThat(promptFilterResults.getViolence()).isNotNull();
+      assertThat(promptFilterResults.getViolence().isFiltered()).isFalse();
+      assertThat(promptFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
+      assertThat(promptFilterResults.getHate()).isNotNull();
+      assertThat(promptFilterResults.getHate().isFiltered()).isFalse();
+      assertThat(promptFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
+      // TODO: update the JSON response and those assertions
+      assertThat(promptFilterResults.getSelfHarm()).isNull();
+      assertThat(promptFilterResults.getProfanity()).isNull();
+      assertThat(promptFilterResults.getError()).isNull();
+      assertThat(promptFilterResults.getJailbreak()).isNotNull();
+      assertThat(promptFilterResults.getJailbreak().isFiltered()).isFalse();
+      assertThat(promptFilterResults.getJailbreak().isDetected()).isFalse();
+
+      assertThat(result.getChoices()).hasSize(1);
+      OpenAiChatCompletionChoice choice = result.getChoices().get(0);
+      assertThat(choice.getFinishReason()).isEqualTo("stop");
+      assertThat(choice.getIndex()).isEqualTo(0);
+      assertThat(choice.getMessage().getContent())
+          .isEqualTo(
+              """
                 This is a highly subjective question as the concept of beauty differs from one person to another. It's based on personal preferences and cultural standards. There are attractive people in all walks of life and industries, making it impossible to universally determine who is the "prettiest".""");
-    assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
+      assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
 
-    OpenAiContentFilterPromptResults contentFilterResults = choice.getContentFilterResults();
-    assertThat(contentFilterResults.getSexual().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
-    assertThat(contentFilterResults.getViolence().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
-    assertThat(contentFilterResults.getHate().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
-    assertThat(contentFilterResults.getSelfHarm()).isNull();
-    assertThat(contentFilterResults.getProfanity()).isNull();
-    assertThat(contentFilterResults.getError()).isNull();
-    assertThat(contentFilterResults.getJailbreak()).isNull();
+      OpenAiContentFilterPromptResults contentFilterResults = choice.getContentFilterResults();
+      assertThat(contentFilterResults).isNotNull();
+      assertThat(contentFilterResults.getSexual()).isNotNull();
+      assertThat(contentFilterResults.getSexual().isFiltered()).isFalse();
+      assertThat(contentFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
+      assertThat(contentFilterResults.getViolence()).isNotNull();
+      assertThat(contentFilterResults.getViolence().isFiltered()).isFalse();
+      assertThat(contentFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
+      assertThat(contentFilterResults.getHate()).isNotNull();
+      assertThat(contentFilterResults.getHate().isFiltered()).isFalse();
+      assertThat(contentFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
+      assertThat(contentFilterResults.getSelfHarm()).isNull();
+      assertThat(contentFilterResults.getProfanity()).isNull();
+      assertThat(contentFilterResults.getError()).isNull();
+      assertThat(contentFilterResults.getJailbreak()).isNull();
 
-    verify(
-        postRequestedFor(urlPathEqualTo("/chat/completions"))
-            .withRequestBody(
-                equalToJson(
-                    """
-                                {"messages":[{"role":"system","content":"You are a helpful, friendly and sometimes slightly snarky AI assistant!"},{"role":"user","content":[{"type":"text","text":"Hello World! Why is this phrase so famous?"}]}]}""")));
+      verify(
+          postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withRequestBody(
+                  equalToJson(
+                      """
+                          {"messages":[{"role":"system","content":"You are a helpful, friendly and sometimes slightly snarky AI assistant!"},{"role":"user","content":[{"type":"text","text":"Hello World! Why is this phrase so famous?"}]}]}""")));
+    }
   }
 
   @Test
-  void testEmbedding() throws IOException {
-    final String response =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("embeddingResponse.json")
-                .readAllBytes());
-    stubFor(post(anyUrl()).willReturn(okJson(response)));
+  void embedding() throws IOException {
+    try (var inputStream =
+        getClass().getClassLoader().getResourceAsStream("embeddingResponse.json")) {
 
-    final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
-    final var result = client.embedding(request);
+      assert inputStream != null;
+      final String response = new String(inputStream.readAllBytes());
+      stubFor(post(anyUrl()).willReturn(okJson(response)));
 
-    assertThat(result).isNotNull();
-    assertThat(result.getModel()).isEqualTo("ada");
-    assertThat(result.getObject()).isEqualTo("list");
+      final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
+      final var result = client.embedding(request);
 
-    assertThat(result.getUsage()).isNotNull();
-    assertThat(result.getUsage().getCompletionTokens()).isNull();
-    assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
-    assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
+      assertThat(result).isNotNull();
+      assertThat(result.getModel()).isEqualTo("ada");
+      assertThat(result.getObject()).isEqualTo("list");
 
-    assertThat(result.getData()).isNotNull().hasSize(1);
-    var embeddingData = result.getData().get(0);
-    assertThat(embeddingData).isNotNull();
-    assertThat(embeddingData.getObject()).isEqualTo("embedding");
-    assertThat(embeddingData.getIndex()).isEqualTo(0);
-    assertThat(embeddingData.getEmbedding())
-        .isNotNull()
-        .isNotEmpty()
-        .containsExactly(-0.0000000070958645d, 2.123e-300d, -0.0069813123d, -3.385849e-05d)
-        .hasToString(
-            "[-7.0958645E-9, 2.123E-300, -0.0069813123, -3.385849E-5]"); // ensure double precision
+      assertThat(result.getUsage()).isNotNull();
+      assertThat(result.getUsage().getCompletionTokens()).isNull();
+      assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
+      assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
 
-    verify(
-        postRequestedFor(urlPathEqualTo("/embeddings"))
-            .withRequestBody(
-                equalToJson("""
-                                {"input":["Hello World"]}""")));
+      assertThat(result.getData()).isNotNull().hasSize(1);
+      var embeddingData = result.getData().get(0);
+      assertThat(embeddingData).isNotNull();
+      assertThat(embeddingData.getObject()).isEqualTo("embedding");
+      assertThat(embeddingData.getIndex()).isEqualTo(0);
+      assertThat(embeddingData.getEmbedding())
+          .isNotNull()
+          .isNotEmpty()
+          .containsExactly(-0.0000000070958645d, 2.123e-300d, -0.0069813123d, -3.385849e-05d)
+          // ensure double precision
+          .hasToString("[-7.0958645E-9, 2.123E-300, -0.0069813123, -3.385849E-5]");
+
+      verify(
+          postRequestedFor(urlPathEqualTo("/embeddings"))
+              .withRequestBody(
+                  equalToJson("""
+                          {"input":["Hello World"]}""")));
+    }
+  }
+
+  @Test
+  void streamChatCompletion() throws IOException {
+    try (var inputStream =
+        getClass().getClassLoader().getResourceAsStream("streamChatCompletion.txt")) {
+
+      assert inputStream != null;
+      final String response = new String(inputStream.readAllBytes());
+      stubFor(
+          post(anyUrl())
+              .willReturn(ok().withBody(response).withHeader("Content-Type", "text/event-stream")));
+
+      final var request =
+          new OpenAiChatCompletionParameters()
+              .setMessages(
+                  List.of(
+                      new OpenAiChatUserMessage()
+                          .addText(
+                              "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+
+      try (OpenAiStream<OpenAiDeltaChatCompletion, OpenAiChatCompletionOutput> result =
+          client.stream(request)) {
+
+        final List<OpenAiDeltaChatCompletion> deltaList = result.getDeltaStream().toList();
+
+        assertThat(deltaList).hasSize(5);
+        // the first two and the last delta don't have any content
+        assertThat(deltaList.get(0).getDeltaContent()).isNull();
+        assertThat(deltaList.get(1).getDeltaContent()).isEqualTo("");
+        assertThat(deltaList.get(2).getDeltaContent()).isEqualTo("Sure");
+        assertThat(deltaList.get(3).getDeltaContent()).isEqualTo("!");
+        assertThat(deltaList.get(4).getDeltaContent()).isNull();
+
+        assertThat(deltaList.get(0).getSystemFingerprint()).isNull();
+        assertThat(deltaList.get(1).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+        assertThat(deltaList.get(2).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+        assertThat(deltaList.get(3).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+        assertThat(deltaList.get(4).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+
+        assertThat(deltaList.get(0).getChoices()).isEmpty();
+        assertThat(deltaList.get(1).getChoices()).hasSize(1);
+        assertThat(deltaList.get(2).getChoices()).hasSize(1);
+        assertThat(deltaList.get(3).getChoices()).hasSize(1);
+        assertThat(deltaList.get(4).getChoices()).hasSize(1);
+
+        final var delta0 = deltaList.get(0);
+        assertThat(delta0.getId()).isEqualTo("");
+        assertThat(delta0.getCreated()).isEqualTo(0);
+        assertThat(delta0.getModel()).isEqualTo("");
+        assertThat(delta0.getObject()).isEqualTo("");
+        assertThat(delta0.getUsage()).isNull();
+        assertThat(delta0.getChoices()).isEmpty();
+        // prompt filter results are only present in delta 0
+        assertThat(delta0.getPromptFilterResults()).isNotNull();
+        assertThat(delta0.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
+        final var promptFilter0 = delta0.getPromptFilterResults().get(0).getContentFilterResults();
+        assertThat(promptFilter0).isNotNull();
+        assertFilter(promptFilter0);
+
+        final var delta2 = deltaList.get(2);
+        assertThat(delta2.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
+        assertThat(delta2.getCreated()).isEqualTo(1724825677);
+        assertThat(delta2.getModel()).isEqualTo("gpt-35-turbo");
+        assertThat(delta2.getObject()).isEqualTo("chat.completion.chunk");
+        assertThat(delta2.getUsage()).isNull();
+        assertThat(delta2.getPromptFilterResults()).isNull();
+        final var choices2 = delta2.getChoices().get(0);
+        assertThat(choices2.getIndex()).isEqualTo(0);
+        assertThat(choices2.getFinishReason()).isNull();
+        assertThat(choices2.getMessage()).isNotNull();
+        // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
+        assertThat(choices2.getMessage().getRole()).isEqualTo("assistant");
+        assertThat(choices2.getMessage().getContent()).isEqualTo("Sure");
+        assertThat(choices2.getMessage().getTool_calls()).isNull();
+        final var filter2 = choices2.getContentFilterResults();
+        assertFilter(filter2);
+
+        final var delta3 = deltaList.get(3);
+        assertThat(delta3.getDeltaContent()).isEqualTo("!");
+
+        final var delta4Choice = deltaList.get(4).getChoices().get(0);
+        assertThat(delta4Choice.getFinishReason()).isEqualTo("stop");
+        assertThat(delta4Choice.getMessage()).isNotNull();
+        // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
+        assertThat(delta4Choice.getMessage().getRole()).isEqualTo("assistant");
+        assertThat(delta4Choice.getMessage().getContent()).isNull();
+        assertThat(delta4Choice.getMessage().getTool_calls()).isNull();
+
+        final var totalOutput = result.getTotalOutput();
+        assertThat(totalOutput.getChoices()).hasSize(1);
+        final var choice = totalOutput.getChoices().get(0);
+        assertThat(choice.getFinishReason()).isEqualTo("stop");
+        assertFilter(choice.getContentFilterResults());
+        assertThat(choice.getFinishReason()).isEqualTo("stop");
+        assertThat(choice.getMessage()).isNotNull();
+        assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
+        assertThat(choice.getMessage().getContent()).isEqualTo("Sure!");
+        assertThat(choice.getMessage().getTool_calls()).isNull();
+        assertThat(totalOutput.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
+        assertThat(totalOutput.getCreated()).isEqualTo(1724825677);
+        assertThat(totalOutput.getModel()).isEqualTo("gpt-35-turbo");
+        assertThat(totalOutput.getObject()).isEqualTo("chat.completion.chunk");
+        assertThat(totalOutput.getUsage()).isNull();
+        assertThat(totalOutput.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+        assertThat(totalOutput.getPromptFilterResults()).isNotNull();
+        assertFilter(totalOutput.getPromptFilterResults().get(0).getContentFilterResults());
+      }
+    }
+  }
+
+  void assertFilter(OpenAiContentFilterPromptResults filter) {
+    assertThat(filter).isNotNull();
+    assertThat(filter.getHate()).isNotNull();
+    assertThat(filter.getHate().isFiltered()).isFalse();
+    assertThat(filter.getHate().getSeverity()).isEqualTo(SAFE);
+    assertThat(filter.getSelfHarm()).isNotNull();
+    assertThat(filter.getSelfHarm().isFiltered()).isFalse();
+    assertThat(filter.getSelfHarm().getSeverity()).isEqualTo(SAFE);
+    assertThat(filter.getSexual()).isNotNull();
+    assertThat(filter.getSexual().isFiltered()).isFalse();
+    assertThat(filter.getSexual().getSeverity()).isEqualTo(SAFE);
+    assertThat(filter.getViolence()).isNotNull();
+    assertThat(filter.getViolence().isFiltered()).isFalse();
+    assertThat(filter.getViolence().getSeverity()).isEqualTo(SAFE);
+    assertThat(filter.getJailbreak()).isNull();
+    assertThat(filter.getProfanity()).isNull();
+    assertThat(filter.getError()).isNull();
   }
 }
