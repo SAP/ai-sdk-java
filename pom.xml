@@ -414,6 +414,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         </configuration>
       </plugin>
       <plugin>
+        <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.version}</version>
