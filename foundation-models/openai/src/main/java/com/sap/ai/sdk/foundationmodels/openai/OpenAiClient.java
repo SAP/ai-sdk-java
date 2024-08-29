@@ -112,8 +112,9 @@ public final class OpenAiClient {
    * Generate a completion for the given prompt.
    *
    * @param parameters the prompt, including messages and other parameters.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
+   * @return A stream of chat completions deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter or
+   *     length (token limit).
    */
   @Nonnull
   public Stream<OpenAiDeltaChatCompletion> streamChatCompletion(

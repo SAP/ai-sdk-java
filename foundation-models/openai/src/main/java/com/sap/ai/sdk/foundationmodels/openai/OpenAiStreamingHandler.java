@@ -80,6 +80,18 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
               } catch (final IOException e) {
                 throw new OpenAiClientException("Failed to parse delta message: " + data, e);
               }
+            })
+        .peek(
+            delta -> {
+              final String finishReason = delta.getFinishReason();
+              if (finishReason != null) {
+                if (finishReason.equals("content_filter")) {
+                  throw new OpenAiClientException("Content filter filtered the output.");
+                } else if (finishReason.equals("length")) {
+                  throw new OpenAiClientException(
+                      "Incomplete output due to max_tokens parameter or token limit.");
+                }
+              }
             });
   }
 }

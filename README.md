@@ -206,6 +206,37 @@ final OpenAiChatCompletionOutput result =
 
 ### Stream chat completion
 
+#### Framework-agnostic example
+```java
+public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  final var request =
+      new OpenAiChatCompletionParameters()
+          .setMessages(
+              List.of(
+                  new OpenAiChatUserMessage()
+                      .addText(
+                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+
+  // Cloud SDK's ThreadContext is vital for the request to successfully execute.
+  ThreadContextExecutors.getExecutor()
+      .submit(
+          () -> {
+            final var totalOutput = new OpenAiChatCompletionOutput();
+
+            // try-with-resources ensures that the stream is closed after the response is sent.
+            try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
+              stream
+                  // optional: collect all deltas
+                  .peek(totalOutput::addDelta)
+                  // send is defined by your framework
+                  .forEach(delta -> send(delta.getDeltaContent()));
+            }
+            // optional: totalOutput can be looked at here
+          });
+  // Note: set the header content-type to text/event-stream on the sent response
+}
+```
+
 #### Spring Boot example
 ```java
 public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {

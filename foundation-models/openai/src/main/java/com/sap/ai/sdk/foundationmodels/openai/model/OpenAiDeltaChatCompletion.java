@@ -27,16 +27,8 @@ public class OpenAiDeltaChatCompletion extends OpenAiCompletionOutput implements
   @Getter(onMethod_ = @Nullable)
   private String systemFingerprint;
 
-  /**
-   * Get the message content from the delta.
-   *
-   * <p>Note: If there are multiple choices only the first one is returned
-   *
-   * <p>Note: The first two and the last delta do not contain any content
-   *
-   * @return the message content or empty string.
-   */
   @Nonnull
+  @Override
   public String getDeltaContent() {
     // Avoid the first delta: "choices":[]
     if (!getChoices().isEmpty()
@@ -51,5 +43,18 @@ public class OpenAiDeltaChatCompletion extends OpenAiCompletionOutput implements
       }
     }
     return "";
+  }
+
+  @Nullable
+  @Override
+  public String getFinishReason() {
+    // Avoid the first delta: "choices":[]
+    if (!getChoices().isEmpty()
+        // Multiple choices are spread out on multiple deltas
+        // A delta only contains one choice with a variable index
+        && getChoices().get(0).getIndex() == 0) {
+      return getChoices().get(0).getFinishReason();
+    }
+    return null;
   }
 }

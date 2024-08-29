@@ -13,7 +13,20 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 @ToString(callSuper = true)
 public class OpenAiCompletionChoice {
-  /** Reason for finish. */
+  /**
+   * Reason for finish. The possible values are:
+   *
+   * <p>{@code stop}: API returned complete message, or a message terminated by one of the stop
+   * sequences provided via the stop parameter
+   *
+   * <p>{@code length}: Incomplete model output due to max_tokens parameter or token limit
+   *
+   * <p>{@code function_call}: The model decided to call a function
+   *
+   * <p>{@code content_filter}: Omitted content due to a flag from our content filters
+   *
+   * <p>{@code null}: API response still in progress or incomplete
+   */
   @JsonProperty("finish_reason")
   @Getter(onMethod_ = @Nullable)
   private String finishReason;
