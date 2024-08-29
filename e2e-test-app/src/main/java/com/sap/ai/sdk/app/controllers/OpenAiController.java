@@ -55,56 +55,6 @@ class OpenAiController {
    *
    * @return the emitter that streams the assistant message response
    */
-  // This is a code sample, works like #streamChatCompletion but with a readable code
-  @SuppressWarnings("unused")
-  @Nonnull
-  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletionExample() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .setMessages(
-                List.of(
-                    new OpenAiChatUserMessage()
-                        .addText(
-                            "Can you give me the first 100 numbers of the Fibonacci sequence?")));
-
-    final var emitter = new ResponseBodyEmitter();
-
-    // Cloud SDK's ThreadContext is vital for the request to successfully execute.
-    ThreadContextExecutors.getExecutor()
-        .submit(
-            () -> {
-              // try-with-resources ensures that the stream is closed after the response is sent.
-              try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
-
-                final var totalOutput = new OpenAiChatCompletionOutput();
-                stream
-                    .peek(totalOutput::addDelta)
-                    .forEach(delta -> send(emitter, delta.getDeltaContent()));
-
-                final String indentedJson = objectToJson(totalOutput);
-                send(emitter, "\n\n-----Total Output-----\n\n" + indentedJson);
-                emitter.complete();
-              }
-            });
-    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
-  }
-
-  private static void send(
-      @Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
-    try {
-      emitter.send(chunk);
-    } catch (final IOException e) {
-      log.error(Arrays.toString(e.getStackTrace()));
-      emitter.completeWithError(e);
-    }
-  }
-
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
   @SuppressWarnings("unused") // #streamToConsumer is the method that is tested
   @GetMapping("/streamChatCompletion")
   @Nonnull
@@ -138,6 +88,16 @@ class OpenAiController {
             });
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  private static void send(
+      @Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
+    try {
+      emitter.send(chunk);
+    } catch (final IOException e) {
+      log.error(Arrays.toString(e.getStackTrace()));
+      emitter.completeWithError(e);
+    }
   }
 
   /**

@@ -197,12 +197,56 @@ final String resultMessage = result.getChoices().get(0).getMessage().getContent(
 
 See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat completion with a model not in defined `OpenAiModel`
+### Chat completion with a model not defined in `OpenAiModel`
 
 ```java
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
+
+### Stream chat completion
+
+#### Spring Boot example
+```java
+public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  final var request =
+      new OpenAiChatCompletionParameters()
+          .setMessages(
+              List.of(
+                  new OpenAiChatUserMessage()
+                      .addText(
+                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+
+  final var emitter = new ResponseBodyEmitter();
+
+  // Cloud SDK's ThreadContext is vital for the request to successfully execute.
+  ThreadContextExecutors.getExecutor()
+      .submit(
+          () -> {
+            final var totalOutput = new OpenAiChatCompletionOutput();
+
+            // try-with-resources ensures that the stream is closed after the response is sent.
+            try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
+              stream
+                  .peek(totalOutput::addDelta) // optional: collect all deltas
+                  .forEach(delta -> {
+                    try {
+                      emitter.send(delta.getDeltaContent());
+                    } catch (final IOException e) {
+                      log.error(Arrays.toString(e.getStackTrace()));
+                      emitter.completeWithError(e);
+                    }
+                  });
+            }
+            // optional: totalOutput can be looked at here
+            emitter.complete();
+          });
+  // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+  return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+}
+```
+
+See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
 ## Orchestration chat completion
 
