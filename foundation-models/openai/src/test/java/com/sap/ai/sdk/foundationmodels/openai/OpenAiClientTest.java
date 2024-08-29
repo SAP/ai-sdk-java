@@ -20,6 +20,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -259,7 +260,7 @@ class OpenAiClientTest {
   }
 
   @Test
-  void streamChatCompletion() throws IOException {
+  void streamChatCompletionChatCompletion() throws IOException {
     try (var inputStream =
         getClass().getClassLoader().getResourceAsStream("streamChatCompletion.txt")) {
 
@@ -277,18 +278,19 @@ class OpenAiClientTest {
                           .addText(
                               "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-      try (OpenAiStream<OpenAiDeltaChatCompletion, OpenAiChatCompletionOutput> result =
-          client.stream(request)) {
+      try (Stream<OpenAiDeltaChatCompletion> stream = client.streamChatCompletion(request)) {
 
-        final List<OpenAiDeltaChatCompletion> deltaList = result.getDeltaStream().toList();
+        OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
+        final List<OpenAiDeltaChatCompletion> deltaList =
+            stream.peek(totalOutput::addDelta).toList();
 
         assertThat(deltaList).hasSize(5);
         // the first two and the last delta don't have any content
-        assertThat(deltaList.get(0).getDeltaContent()).isNull();
+        assertThat(deltaList.get(0).getDeltaContent()).isEqualTo("");
         assertThat(deltaList.get(1).getDeltaContent()).isEqualTo("");
         assertThat(deltaList.get(2).getDeltaContent()).isEqualTo("Sure");
         assertThat(deltaList.get(3).getDeltaContent()).isEqualTo("!");
-        assertThat(deltaList.get(4).getDeltaContent()).isNull();
+        assertThat(deltaList.get(4).getDeltaContent()).isEqualTo("");
 
         assertThat(deltaList.get(0).getSystemFingerprint()).isNull();
         assertThat(deltaList.get(1).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
@@ -344,8 +346,6 @@ class OpenAiClientTest {
         assertThat(delta4Choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(delta4Choice.getMessage().getContent()).isNull();
         assertThat(delta4Choice.getMessage().getTool_calls()).isNull();
-
-        final var totalOutput = result.getTotalOutput();
         assertThat(totalOutput.getChoices()).hasSize(1);
         final var choice = totalOutput.getChoices().get(0);
         assertThat(choice.getFinishReason()).isEqualTo("stop");

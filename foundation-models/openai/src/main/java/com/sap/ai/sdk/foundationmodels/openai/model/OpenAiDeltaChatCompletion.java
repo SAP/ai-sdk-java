@@ -30,20 +30,26 @@ public class OpenAiDeltaChatCompletion extends OpenAiCompletionOutput implements
   /**
    * Get the message content from the delta.
    *
-   * @return the message content or null.
+   * <p>Note: If there are multiple choices only the first one is returned
+   *
+   * <p>Note: The first two and the last delta do not contain any content
+   *
+   * @return the message content or empty string.
    */
-  @Nullable
+  @Nonnull
   public String getDeltaContent() {
     // Avoid the first delta: "choices":[]
     if (!getChoices().isEmpty()
         // Multiple choices are spread out on multiple deltas
         // A delta only contains one choice with a variable index
-        && getChoices().get(0).getIndex() == 0
-        // Avoid the second delta: "choices":[{"delta":{"content":"","role":"assistant"}}]
-        && getChoices().get(0).getMessage() != null) {
+        && getChoices().get(0).getIndex() == 0) {
 
-      return getChoices().get(0).getMessage().getContent();
+      final var message = getChoices().get(0).getMessage();
+      // Avoid the second delta: "choices":[{"delta":{"content":"","role":"assistant"}}]
+      if (message != null && message.getContent() != null) {
+        return message.getContent();
+      }
     }
-    return null;
+    return "";
   }
 }

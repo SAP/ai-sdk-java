@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.Core;
-import com.sap.ai.sdk.foundationmodels.openai.model.DeltaAggregatable;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
@@ -18,6 +17,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import java.io.IOException;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -116,14 +116,10 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiStream<OpenAiDeltaChatCompletion, OpenAiChatCompletionOutput> stream(
+  public Stream<OpenAiDeltaChatCompletion> streamChatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     parameters.setStream(true);
-    return stream(
-        "/chat/completions",
-        parameters,
-        OpenAiDeltaChatCompletion.class,
-        OpenAiChatCompletionOutput.class);
+    return streamChatCompletion("/chat/completions", parameters, OpenAiDeltaChatCompletion.class);
   }
 
   /**
@@ -151,14 +147,13 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D extends StreamedDelta, T extends DeltaAggregatable<D>> OpenAiStream<D, T> stream(
+  private <D extends StreamedDelta> Stream<D> streamChatCompletion(
       @Nonnull final String path,
       @Nonnull final Object payload,
-      @Nonnull final Class<D> deltaType,
-      @Nonnull final Class<T> totalType) {
+      @Nonnull final Class<D> deltaType) {
     final var request = new HttpPost(path);
     serializeAndSetHttpEntity(request, payload);
-    return streamRequest(request, deltaType, totalType);
+    return streamRequest(request, deltaType);
   }
 
   private static void serializeAndSetHttpEntity(
@@ -184,15 +179,12 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D extends StreamedDelta, T extends DeltaAggregatable<D>>
-      OpenAiStream<D, T> streamRequest(
-          final BasicClassicHttpRequest request,
-          @Nonnull final Class<D> deltaType,
-          @Nonnull final Class<T> totalType) {
+  private <D extends StreamedDelta> Stream<D> streamRequest(
+      final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return new OpenAiStreamingHandler<>(deltaType, totalType)
+      return new OpenAiStreamingHandler<>(deltaType)
           .handleResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException(e);
