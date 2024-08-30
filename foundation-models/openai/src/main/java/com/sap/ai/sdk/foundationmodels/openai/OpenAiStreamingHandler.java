@@ -69,7 +69,9 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
         .peek(
             responseLine -> {
               if (!responseLine.startsWith("data: ")) {
-                parseErrorAndThrow(responseLine, new OpenAiClientException());
+                parseErrorAndThrow(
+                    responseLine,
+                    new OpenAiClientException("Failed to parse response from OpenAI model"));
               }
             })
         .map(
@@ -78,7 +80,10 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
               try {
                 return JACKSON.readValue(data, deltaType);
               } catch (final IOException e) {
-                throw new OpenAiClientException("Failed to parse delta message: " + data, e);
+                log.error(
+                    "Failed to parse the following response from OpenAI model: {}", responseLine);
+                throw new OpenAiClientException(
+                    "Failed to parse delta message: " + responseLine, e);
               }
             })
         .peek(

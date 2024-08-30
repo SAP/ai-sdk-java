@@ -90,6 +90,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
+      <version>${springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>

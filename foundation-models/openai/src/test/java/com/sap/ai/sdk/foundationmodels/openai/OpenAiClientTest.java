@@ -21,10 +21,16 @@ import io.vavr.control.Try;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+@TestInstance(Lifecycle.PER_CLASS)
 @WireMockTest
 class OpenAiClientTest {
   private OpenAiClient client;
@@ -55,8 +61,19 @@ class OpenAiClientTest {
     verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
   }
 
-  @Test
-  void errorHandling() {
+  private Stream<Runnable> chatCompletionCalls() {
+    return Stream.of(
+        () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
+        () ->
+            client
+                .streamChatCompletion(new OpenAiChatCompletionParameters())
+                // the stream needs to be consumed to parse the response
+                .forEach(System.out::println));
+  }
+
+  @ParameterizedTest
+  @MethodSource("chatCompletionCalls")
+  void chatCompletionErrorHandling(@Nonnull final Runnable request) {
     final var errorJson =
         """
             { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
@@ -91,7 +108,6 @@ class OpenAiClientTest {
             .willSetStateTo("4"));
     stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
 
-    final Runnable request = () -> client.chatCompletion(new OpenAiChatCompletionParameters());
     final var softly = new SoftAssertions();
 
     softly
@@ -255,7 +271,7 @@ class OpenAiClientTest {
           postRequestedFor(urlPathEqualTo("/embeddings"))
               .withRequestBody(
                   equalToJson("""
-                          {"input":["Hello World"]}""")));
+                      {"input":["Hello World"]}""")));
     }
   }
 
