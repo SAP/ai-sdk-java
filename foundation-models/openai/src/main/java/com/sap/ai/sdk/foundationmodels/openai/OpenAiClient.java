@@ -123,6 +123,14 @@ public final class OpenAiClient {
     return streamChatCompletion("/chat/completions", parameters, OpenAiDeltaChatCompletion.class);
   }
 
+  @Nonnull
+  public Stream<String> streamChatCompletionSimpleEasyMode(
+      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    return streamChatCompletion(parameters)
+        .filter(it -> !"content_filter".equalsIgnoreCase(it.getFinishReason()))
+        .map(OpenAiDeltaChatCompletion::getDeltaContent);
+  }
+
   /**
    * Get a vector representation of a given input that can be easily consumed by machine learning
    * models and algorithms.

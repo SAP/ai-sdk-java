@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -67,27 +67,42 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
+    var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+
     final var emitter = new ResponseBodyEmitter();
-    final var totalOutput = new OpenAiChatCompletionOutput();
-    final var consumer =
-        new Consumer<OpenAiDeltaChatCompletion>() {
-          @Override
-          public void accept(@Nonnull final OpenAiDeltaChatCompletion delta) {
-            totalOutput.addDelta(delta);
-            send(emitter, delta.getDeltaContent());
+
+    Runnable r =
+        () -> {
+          final var totalOutput = new OpenAiChatCompletionOutput();
+
+          try {
+            stream
+                .peek(totalOutput::addDelta)
+                // foreach consumes all elements, closing the stream at the end
+                .forEach(delta -> send(emitter, delta.getDeltaContent()));
+            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+            emitter.complete();
+          } catch (RuntimeException e) {
+            emitter.completeWithError(e);
+          } finally {
+            stream.close();
           }
         };
 
-    // Cloud SDK's ThreadContext is vital for the request to successfully execute.
-    ThreadContextExecutors.getExecutor()
-        .submit(
-            () -> {
-              streamToConsumer(request, consumer);
-              send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
-              emitter.complete();
-            });
+    ThreadContextExecutors.getExecutor().submit(r);
+
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  private static void consume(
+      Stream<OpenAiDeltaChatCompletion> stream, ResponseBodyEmitter emitter) {
+    final var totalOutput = new OpenAiChatCompletionOutput();
+
+    stream.peek(totalOutput::addDelta).forEach(delta -> send(emitter, delta.getDeltaContent()));
+
+    send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+    emitter.complete();
   }
 
   private static void send(
@@ -96,22 +111,7 @@ class OpenAiController {
       emitter.send(chunk);
     } catch (final IOException e) {
       log.error(Arrays.toString(e.getStackTrace()));
-      emitter.completeWithError(e);
-    }
-  }
-
-  /**
-   * Streams the OpenAI chat completion into the accept method of the consumer.
-   *
-   * @param request the chat completion request
-   * @param consumer the consumer that asynchronously accepts the chat completion
-   */
-  static void streamToConsumer(
-      @Nonnull final OpenAiChatCompletionParameters request,
-      @Nonnull final Consumer<OpenAiDeltaChatCompletion> consumer) {
-    // try-with-resources ensures that the stream is closed after the response is sent.
-    try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
-      stream.forEach(consumer);
+      throw new RuntimeException(e);
     }
   }
 
