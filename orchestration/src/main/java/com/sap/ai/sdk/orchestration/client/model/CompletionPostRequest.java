@@ -270,10 +270,7 @@ public class CompletionPostRequest
    */
   public static Builder create() {
     return (orchestrationConfig) ->
-        (inputParams) ->
-            new CompletionPostRequest()
-                .orchestrationConfig(orchestrationConfig)
-                .inputParams(inputParams);
+        new CompletionPostRequest().orchestrationConfig(orchestrationConfig);
   }
 
   /** Builder helper class. */
@@ -282,19 +279,9 @@ public class CompletionPostRequest
      * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
      *
      * @param orchestrationConfig The orchestrationConfig of this {@link CompletionPostRequest}
-     * @return The CompletionPostRequest builder.
-     */
-    Builder1 orchestrationConfig(@Nonnull final OrchestrationConfig orchestrationConfig);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the inputParams of this {@link CompletionPostRequest} instance.
-     *
-     * @param inputParams The inputParams of this {@link CompletionPostRequest}
      * @return The CompletionPostRequest instance.
      */
-    CompletionPostRequest inputParams(@Nonnull final Map<String, String> inputParams);
+    CompletionPostRequest orchestrationConfig(
+        @Nonnull final OrchestrationConfig orchestrationConfig);
   }
 }

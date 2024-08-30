@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** AzureContentSafety */
+/** Filter configuration for Azure Content Safety */
 // CHECKSTYLE:OFF
 public class AzureContentSafety
 // CHECKSTYLE:ON

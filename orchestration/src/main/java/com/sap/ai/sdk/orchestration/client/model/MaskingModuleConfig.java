@@ -32,11 +32,8 @@ import javax.annotation.Nullable;
 public class MaskingModuleConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("masking")
-  private List<Masking> masking = new ArrayList<>();
-
-  @JsonProperty("unmasking")
-  private UnmaskingConfig unmasking;
+  @JsonProperty("masking_providers")
+  private List<MaskingProviderConfig> maskingProviders = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,80 +41,52 @@ public class MaskingModuleConfig
   protected MaskingModuleConfig() {}
 
   /**
-   * Set the masking of this {@link MaskingModuleConfig} instance and return the same instance.
+   * Set the maskingProviders of this {@link MaskingModuleConfig} instance and return the same
+   * instance.
    *
-   * @param masking Masking services to be used
+   * @param maskingProviders List of masking service providers
    * @return The same instance of this {@link MaskingModuleConfig} class
    */
   @Nonnull
-  public MaskingModuleConfig masking(@Nonnull final List<Masking> masking) {
-    this.masking = masking;
+  public MaskingModuleConfig maskingProviders(
+      @Nonnull final List<MaskingProviderConfig> maskingProviders) {
+    this.maskingProviders = maskingProviders;
     return this;
   }
 
   /**
-   * Add one masking instance to this {@link MaskingModuleConfig}.
+   * Add one maskingProviders instance to this {@link MaskingModuleConfig}.
    *
-   * @param maskingItem The masking that should be added
+   * @param maskingProvidersItem The maskingProviders that should be added
    * @return The same instance of type {@link MaskingModuleConfig}
    */
   @Nonnull
-  public MaskingModuleConfig addMaskingItem(@Nonnull final Masking maskingItem) {
-    if (this.masking == null) {
-      this.masking = new ArrayList<>();
+  public MaskingModuleConfig addMaskingProvidersItem(
+      @Nonnull final MaskingProviderConfig maskingProvidersItem) {
+    if (this.maskingProviders == null) {
+      this.maskingProviders = new ArrayList<>();
     }
-    this.masking.add(maskingItem);
+    this.maskingProviders.add(maskingProvidersItem);
     return this;
   }
 
   /**
-   * Masking services to be used
+   * List of masking service providers
    *
-   * @return masking The masking of this {@link MaskingModuleConfig} instance.
+   * @return maskingProviders The maskingProviders of this {@link MaskingModuleConfig} instance.
    */
   @Nonnull
-  public List<Masking> getMasking() {
-    return masking;
+  public List<MaskingProviderConfig> getMaskingProviders() {
+    return maskingProviders;
   }
 
   /**
-   * Set the masking of this {@link MaskingModuleConfig} instance.
+   * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
    *
-   * @param masking Masking services to be used
+   * @param maskingProviders List of masking service providers
    */
-  public void setMasking(@Nonnull final List<Masking> masking) {
-    this.masking = masking;
-  }
-
-  /**
-   * Set the unmasking of this {@link MaskingModuleConfig} instance and return the same instance.
-   *
-   * @param unmasking The unmasking of this {@link MaskingModuleConfig}
-   * @return The same instance of this {@link MaskingModuleConfig} class
-   */
-  @Nonnull
-  public MaskingModuleConfig unmasking(@Nonnull final UnmaskingConfig unmasking) {
-    this.unmasking = unmasking;
-    return this;
-  }
-
-  /**
-   * Get unmasking
-   *
-   * @return unmasking The unmasking of this {@link MaskingModuleConfig} instance.
-   */
-  @Nonnull
-  public UnmaskingConfig getUnmasking() {
-    return unmasking;
-  }
-
-  /**
-   * Set the unmasking of this {@link MaskingModuleConfig} instance.
-   *
-   * @param unmasking The unmasking of this {@link MaskingModuleConfig}
-   */
-  public void setUnmasking(@Nonnull final UnmaskingConfig unmasking) {
-    this.unmasking = unmasking;
+  public void setMaskingProviders(@Nonnull final List<MaskingProviderConfig> maskingProviders) {
+    this.maskingProviders = maskingProviders;
   }
 
   /**
@@ -169,13 +138,12 @@ public class MaskingModuleConfig
     }
     final MaskingModuleConfig maskingModuleConfig = (MaskingModuleConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, maskingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.masking, maskingModuleConfig.masking)
-        && Objects.equals(this.unmasking, maskingModuleConfig.unmasking);
+        && Objects.equals(this.maskingProviders, maskingModuleConfig.maskingProviders);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(masking, unmasking, cloudSdkCustomFields);
+    return Objects.hash(maskingProviders, cloudSdkCustomFields);
   }
 
   @Override
@@ -183,8 +151,7 @@ public class MaskingModuleConfig
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class MaskingModuleConfig {\n");
-    sb.append("    masking: ").append(toIndentedString(masking)).append("\n");
-    sb.append("    unmasking: ").append(toIndentedString(unmasking)).append("\n");
+    sb.append("    maskingProviders: ").append(toIndentedString(maskingProviders)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -207,27 +174,29 @@ public class MaskingModuleConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (masking) -> new MaskingModuleConfig().masking(masking);
+    return (maskingProviders) -> new MaskingModuleConfig().maskingProviders(maskingProviders);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the masking of this {@link MaskingModuleConfig} instance.
+     * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
      *
-     * @param masking Masking services to be used
+     * @param maskingProviders List of masking service providers
      * @return The MaskingModuleConfig instance.
      */
-    MaskingModuleConfig masking(@Nonnull final List<Masking> masking);
+    MaskingModuleConfig maskingProviders(
+        @Nonnull final List<MaskingProviderConfig> maskingProviders);
 
     /**
-     * Set the masking of this {@link MaskingModuleConfig} instance.
+     * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
      *
-     * @param masking Masking services to be used
+     * @param maskingProviders List of masking service providers
      * @return The MaskingModuleConfig instance.
      */
-    default MaskingModuleConfig masking(@Nonnull final Masking... masking) {
-      return masking(Arrays.asList(masking));
+    default MaskingModuleConfig maskingProviders(
+        @Nonnull final MaskingProviderConfig... maskingProviders) {
+      return maskingProviders(Arrays.asList(maskingProviders));
     }
   }
 }

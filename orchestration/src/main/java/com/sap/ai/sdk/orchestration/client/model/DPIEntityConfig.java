@@ -24,86 +24,52 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Filter */
+/** DPIEntityConfig */
 // CHECKSTYLE:OFF
-public class Filter
+public class DPIEntityConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("type")
-  private ProviderType type;
-
-  @JsonProperty("config")
-  private FilterConfig config;
+  private DPIEntities type;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  protected Filter() {}
+  protected DPIEntityConfig() {}
 
   /**
-   * Set the type of this {@link Filter} instance and return the same instance.
+   * Set the type of this {@link DPIEntityConfig} instance and return the same instance.
    *
-   * @param type The type of this {@link Filter}
-   * @return The same instance of this {@link Filter} class
+   * @param type Type of entity to be masked
+   * @return The same instance of this {@link DPIEntityConfig} class
    */
   @Nonnull
-  public Filter type(@Nonnull final ProviderType type) {
+  public DPIEntityConfig type(@Nonnull final DPIEntities type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * Type of entity to be masked
    *
-   * @return type The type of this {@link Filter} instance.
+   * @return type The type of this {@link DPIEntityConfig} instance.
    */
   @Nonnull
-  public ProviderType getType() {
+  public DPIEntities getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link Filter} instance.
+   * Set the type of this {@link DPIEntityConfig} instance.
    *
-   * @param type The type of this {@link Filter}
+   * @param type Type of entity to be masked
    */
-  public void setType(@Nonnull final ProviderType type) {
+  public void setType(@Nonnull final DPIEntities type) {
     this.type = type;
   }
 
   /**
-   * Set the config of this {@link Filter} instance and return the same instance.
-   *
-   * @param config The config of this {@link Filter}
-   * @return The same instance of this {@link Filter} class
-   */
-  @Nonnull
-  public Filter config(@Nonnull final FilterConfig config) {
-    this.config = config;
-    return this;
-  }
-
-  /**
-   * Get config
-   *
-   * @return config The config of this {@link Filter} instance.
-   */
-  @Nonnull
-  public FilterConfig getConfig() {
-    return config;
-  }
-
-  /**
-   * Set the config of this {@link Filter} instance.
-   *
-   * @param config The config of this {@link Filter}
-   */
-  public void setConfig(@Nonnull final FilterConfig config) {
-    this.config = config;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link Filter}.
+   * Get the names of the unrecognizable properties of the {@link DPIEntityConfig}.
    *
    * @return The set of properties names
    */
@@ -114,7 +80,7 @@ public class Filter
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Filter} instance.
+   * Get the value of an unrecognizable property of this {@link DPIEntityConfig} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -123,14 +89,14 @@ public class Filter
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Filter has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DPIEntityConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link Filter} instance. If the map previously contained
-   * a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DPIEntityConfig} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -148,24 +114,22 @@ public class Filter
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Filter filter = (Filter) o;
-    return Objects.equals(this.cloudSdkCustomFields, filter.cloudSdkCustomFields)
-        && Objects.equals(this.type, filter.type)
-        && Objects.equals(this.config, filter.config);
+    final DPIEntityConfig dpIEntityConfig = (DPIEntityConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpIEntityConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, dpIEntityConfig.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Filter {\n");
+    sb.append("class DPIEntityConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -184,21 +148,21 @@ public class Filter
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Filter} instance with
-   * all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link DPIEntityConfig}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new Filter().type(type);
+    return (type) -> new DPIEntityConfig().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link Filter} instance.
+     * Set the type of this {@link DPIEntityConfig} instance.
      *
-     * @param type The type of this {@link Filter}
-     * @return The Filter instance.
+     * @param type Type of entity to be masked
+     * @return The DPIEntityConfig instance.
      */
-    Filter type(@Nonnull final ProviderType type);
+    DPIEntityConfig type(@Nonnull final DPIEntities type);
   }
 }

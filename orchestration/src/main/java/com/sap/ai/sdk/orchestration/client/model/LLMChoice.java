@@ -160,7 +160,10 @@ public class LLMChoice
   /**
    * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
    *
-   * @param finishReason Reason for stopping the model
+   * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
+   *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
+   *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+   *     enforced by the LLM model provider or the content filtering module
    * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
@@ -170,7 +173,10 @@ public class LLMChoice
   }
 
   /**
-   * Reason for stopping the model
+   * Reason the model stopped generating tokens. &#39;stop&#39; if the model hit a natural stop
+   * point or a provided stop sequence, &#39;length&#39; if the maximum token number was reached,
+   * &#39;content_filter&#39; if content was omitted due to a filter enforced by the LLM model
+   * provider or the content filtering module
    *
    * @return finishReason The finishReason of this {@link LLMChoice} instance.
    */
@@ -182,7 +188,10 @@ public class LLMChoice
   /**
    * Set the finishReason of this {@link LLMChoice} instance.
    *
-   * @param finishReason Reason for stopping the model
+   * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
+   *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
+   *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+   *     enforced by the LLM model provider or the content filtering module
    */
   public void setFinishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
@@ -311,7 +320,10 @@ public class LLMChoice
     /**
      * Set the finishReason of this {@link LLMChoice} instance.
      *
-     * @param finishReason Reason for stopping the model
+     * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model
+     *     hit a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum
+     *     token number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+     *     enforced by the LLM model provider or the content filtering module
      * @return The LLMChoice instance.
      */
     LLMChoice finishReason(@Nonnull final String finishReason);
