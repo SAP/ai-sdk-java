@@ -3,6 +3,12 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -16,12 +22,18 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +41,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @WireMockTest
@@ -276,15 +289,63 @@ class OpenAiClientTest {
   }
 
   @Test
-  void streamChatCompletionChatCompletion() throws IOException {
+  void streamChatCompletionErrorHandling() throws IOException {
     try (var inputStream =
-        getClass().getClassLoader().getResourceAsStream("streamChatCompletion.txt")) {
+        spy(
+            Objects.requireNonNull(
+                getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("streamChatCompletionError.txt")))) {
 
-      assert inputStream != null;
-      final String response = new String(inputStream.readAllBytes());
-      stubFor(
-          post(anyUrl())
-              .willReturn(ok().withBody(response).withHeader("Content-Type", "text/event-stream")));
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      // Create a mock response
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      mockResponse.setEntity(inputStreamEntity);
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+
+      // Configure the HttpClient mock to return the mock response
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      final var request =
+          new OpenAiChatCompletionParameters()
+              .setMessages(
+                  List.of(
+                      new OpenAiChatUserMessage()
+                          .addText(
+                              "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletion(request)) {
+        assertThatThrownBy(() -> stream.forEach(System.out::println))
+            .isInstanceOf(OpenAiClientException.class)
+            .hasMessage(
+                "Failed to parse response from OpenAI model and error message: 'exceeded token rate limit'");
+      }
+
+      Mockito.verify(inputStream, atLeastOnce()).close();
+    }
+  }
+
+  @Test
+  void streamChatCompletion() throws IOException {
+    try (var inputStream =
+        spy(
+            Objects.requireNonNull(
+                getClass().getClassLoader().getResourceAsStream("streamChatCompletion.txt")))) {
+
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      // Create a mock response
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      mockResponse.setEntity(inputStreamEntity);
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+
+      // Configure the HttpClient mock to return the mock response
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var request =
           new OpenAiChatCompletionParameters()
@@ -380,6 +441,8 @@ class OpenAiClientTest {
         assertThat(totalOutput.getPromptFilterResults()).isNotNull();
         assertFilter(totalOutput.getPromptFilterResults().get(0).getContentFilterResults());
       }
+
+      Mockito.verify(inputStream, atLeastOnce()).close();
     }
   }
 

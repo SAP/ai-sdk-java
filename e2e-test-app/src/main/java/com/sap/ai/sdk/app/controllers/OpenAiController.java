@@ -8,7 +8,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionT
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -54,7 +53,7 @@ class OpenAiController {
    *
    * @return the emitter that streams the assistant message response
    */
-  @SuppressWarnings("unused") // The e2e test doesn't use this method
+  @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
   public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
@@ -73,15 +72,14 @@ class OpenAiController {
     final Runnable consumeStream =
         () -> {
           final var totalOutput = new OpenAiChatCompletionOutput();
+          // try-with-resources ensures the stream is closed
           try (stream) {
             stream
                 .peek(totalOutput::addDelta)
                 .forEach(delta -> send(emitter, delta.getDeltaContent()));
-            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
-            emitter.complete();
-          } catch (OpenAiClientException e) {
-            emitter.completeWithError(e.getCause());
           }
+          send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+          emitter.complete();
         };
 
     ThreadContextExecutors.getExecutor().submit(consumeStream);
@@ -90,12 +88,20 @@ class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
+  private static String objectToJson(@Nonnull final Object obj) {
+    try {
+      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+    } catch (final JsonProcessingException ignored) {
+      return "Could not parse object to JSON";
+    }
+  }
+
   /**
    * Asynchronous stream of an OpenAI chat request
    *
    * @return the emitter that streams the assistant message response
    */
-  @SuppressWarnings("unused")
+  @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/simpleStreamChatCompletion")
   @Nonnull
   public static ResponseEntity<ResponseBodyEmitter> simpleStreamChatCompletion() {
@@ -116,8 +122,6 @@ class OpenAiController {
           try (stream) {
             stream.forEach(deltaMessage -> send(emitter, deltaMessage));
             emitter.complete();
-          } catch (OpenAiClientException e) {
-            emitter.completeWithError(e.getCause());
           }
         };
 
@@ -133,16 +137,7 @@ class OpenAiController {
       emitter.send(chunk);
     } catch (final IOException e) {
       log.error(Arrays.toString(e.getStackTrace()));
-      // only RuntimeExceptions can stop a stream.forEach()
-      throw new OpenAiClientException(e);
-    }
-  }
-
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
+      emitter.completeWithError(e);
     }
   }
 

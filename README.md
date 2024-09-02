@@ -208,7 +208,7 @@ final OpenAiChatCompletionOutput result =
 
 #### Framework-agnostic example
 ```java
-public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+public static ReturnType streamChatCompletion() {
   final var request =
       new OpenAiChatCompletionParameters()
           .setMessages(
@@ -217,29 +217,31 @@ public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
                       .addText(
                           "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-  // Cloud SDK's ThreadContext is vital for the request to successfully execute.
-  ThreadContextExecutors.getExecutor()
-      .submit(
-          () -> {
-            final var totalOutput = new OpenAiChatCompletionOutput();
+  final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
 
-            // try-with-resources ensures that the stream is closed after the response is sent.
-            try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
-              stream
-                  // optional: collect all deltas
-                  .peek(totalOutput::addDelta)
-                  // send is defined by your framework
-                  .forEach(delta -> send(delta.getDeltaContent()));
-            }
-            // optional: totalOutput can be looked at here
-          });
-  // Note: set the header content-type to text/event-stream on the sent response
+  final Runnable consumeStream =
+      () -> {
+        final var totalOutput = new OpenAiChatCompletionOutput();
+        // try-with-resources ensures the stream is closed
+        try (stream) {
+          stream
+              // optional: collect all deltas
+              .peek(totalOutput::addDelta)
+              // send is defined by your framework
+              .forEach(delta -> send(delta.getDeltaContent()));
+        }
+        // optional: totalOutput can be looked at here
+      };
+
+  ThreadContextExecutors.getExecutor().submit(consumeStream);
+
+  // Note: set the header content-type:text/event-stream on the sent response
 }
 ```
 
 #### Spring Boot example
 ```java
-public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
   final var request =
       new OpenAiChatCompletionParameters()
           .setMessages(
@@ -248,19 +250,19 @@ public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
                       .addText(
                           "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
+  final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+
   final var emitter = new ResponseBodyEmitter();
 
-  // Cloud SDK's ThreadContext is vital for the request to successfully execute.
-  ThreadContextExecutors.getExecutor()
-      .submit(
-          () -> {
-            final var totalOutput = new OpenAiChatCompletionOutput();
-
-            // try-with-resources ensures that the stream is closed after the response is sent.
-            try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
-              stream
-                  .peek(totalOutput::addDelta) // optional: collect all deltas
-                  .forEach(delta -> {
+  final Runnable consumeStream =
+      () -> {
+        final var totalOutput = new OpenAiChatCompletionOutput();
+        // try-with-resources ensures the stream is closed
+        try (stream) {
+          stream
+              .peek(totalOutput::addDelta) // optional: collect all deltas
+              .forEach(
+                  delta -> {
                     try {
                       emitter.send(delta.getDeltaContent());
                     } catch (final IOException e) {
@@ -268,10 +270,13 @@ public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
                       emitter.completeWithError(e);
                     }
                   });
-            }
-            // optional: totalOutput can be looked at here
-            emitter.complete();
-          });
+        }
+        // optional: totalOutput can be looked at here
+        emitter.complete();
+      };
+
+  ThreadContextExecutors.getExecutor().submit(consumeStream);
+
   // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
   return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
 }

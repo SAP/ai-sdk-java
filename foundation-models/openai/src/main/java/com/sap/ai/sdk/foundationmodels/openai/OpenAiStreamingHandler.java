@@ -85,6 +85,14 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
                 throw new OpenAiClientException(
                     "Failed to parse delta message: " + responseLine, e);
               }
+            })
+        .onClose(
+            () -> {
+              try {
+                inputStream.close();
+              } catch (IOException e) {
+                log.error("Could not close HTTP input stream", e);
+              }
             });
   }
 }

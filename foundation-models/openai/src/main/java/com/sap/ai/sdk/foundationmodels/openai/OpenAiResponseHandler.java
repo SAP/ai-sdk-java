@@ -72,7 +72,7 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
       throws OpenAiClientException {
     final var exception =
         new OpenAiClientException(
-            "Request to OpenAI model failed with status %s %s "
+            "Request to OpenAI model failed with status %s %s"
                 .formatted(response.getCode(), response.getReasonPhrase()));
     final var entity = response.getEntity();
     if (entity == null) {
@@ -117,6 +117,6 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
       throw baseException;
     }
     throw new OpenAiClientException(
-        baseException.getMessage() + "and error message: '%s'".formatted(error.getMessage()));
+        baseException.getMessage() + " and error message: '%s'".formatted(error.getMessage()));
   }
 }
