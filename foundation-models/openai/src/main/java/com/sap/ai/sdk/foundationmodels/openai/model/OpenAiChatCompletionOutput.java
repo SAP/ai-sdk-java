@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
-    implements DeltaAggregatable<OpenAiDeltaChatCompletion> {
+    implements DeltaAggregatable<OpenAiChatCompletionDelta> {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)
@@ -33,7 +33,7 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    *
    * @param delta the delta to add.
    */
-  public void addDelta(@Nonnull final OpenAiDeltaChatCompletion delta) {
+  public void addDelta(@Nonnull final OpenAiChatCompletionDelta delta) {
     super.addDelta(delta);
 
     if (delta.getSystemFingerprint() != null) {

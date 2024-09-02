@@ -7,9 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.Core;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
@@ -113,22 +113,34 @@ public final class OpenAiClient {
    *
    * @param parameters the prompt, including messages and other parameters.
    * @return A stream of chat completions deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter or
-   *     length (token limit).
+   * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public Stream<OpenAiDeltaChatCompletion> streamChatCompletion(
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     parameters.setStream(true);
-    return streamChatCompletion("/chat/completions", parameters, OpenAiDeltaChatCompletion.class);
+    return streamChatCompletion("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
   }
 
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param parameters the prompt, including messages and other parameters.
+   * @return A stream of message deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   */
   @Nonnull
-  public Stream<String> streamChatCompletionSimpleEasyMode(
+  public Stream<String> simpleStreamChatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     return streamChatCompletion(parameters)
-        .filter(it -> !"content_filter".equalsIgnoreCase(it.getFinishReason()))
-        .map(OpenAiDeltaChatCompletion::getDeltaContent);
+        .peek(
+            delta -> {
+              final String finishReason = delta.getFinishReason();
+              if (finishReason != null && finishReason.equals("content_filter")) {
+                throw new OpenAiClientException("Content filter filtered the output.");
+              }
+            })
+        .map(OpenAiChatCompletionDelta::getDeltaContent);
   }
 
   /**

@@ -9,12 +9,12 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
@@ -294,10 +294,10 @@ class OpenAiClientTest {
                           .addText(
                               "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-      try (Stream<OpenAiDeltaChatCompletion> stream = client.streamChatCompletion(request)) {
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletion(request)) {
 
         OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
-        final List<OpenAiDeltaChatCompletion> deltaList =
+        final List<OpenAiChatCompletionDelta> deltaList =
             stream.peek(totalOutput::addDelta).toList();
 
         assertThat(deltaList).hasSize(5);

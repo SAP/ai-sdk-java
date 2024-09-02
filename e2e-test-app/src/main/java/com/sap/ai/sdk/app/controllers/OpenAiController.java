@@ -14,7 +14,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiDeltaChatCompletion;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -55,7 +53,7 @@ class OpenAiController {
    *
    * @return the emitter that streams the assistant message response
    */
-  @SuppressWarnings("unused") // #streamToConsumer is the method that is tested
+  @SuppressWarnings("unused") // The e2e test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
   public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
@@ -67,42 +65,70 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-    var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
 
     final var emitter = new ResponseBodyEmitter();
 
-    Runnable r =
+    final Runnable consumeStream =
         () -> {
           final var totalOutput = new OpenAiChatCompletionOutput();
 
           try {
             stream
                 .peek(totalOutput::addDelta)
-                // foreach consumes all elements, closing the stream at the end
                 .forEach(delta -> send(emitter, delta.getDeltaContent()));
             send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
             emitter.complete();
           } catch (RuntimeException e) {
-            emitter.completeWithError(e);
+            emitter.completeWithError(e.getCause());
           } finally {
             stream.close();
           }
         };
 
-    ThreadContextExecutors.getExecutor().submit(r);
+    ThreadContextExecutors.getExecutor().submit(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  private static void consume(
-      Stream<OpenAiDeltaChatCompletion> stream, ResponseBodyEmitter emitter) {
-    final var totalOutput = new OpenAiChatCompletionOutput();
+  /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return the emitter that streams the assistant message response
+   */
+  @SuppressWarnings("unused")
+  @GetMapping("/simpleStreamChatCompletion")
+  @Nonnull
+  public static ResponseEntity<ResponseBodyEmitter> simpleStreamChatCompletion() {
+    final var request =
+        new OpenAiChatCompletionParameters()
+            .setMessages(
+                List.of(
+                    new OpenAiChatUserMessage()
+                        .addText(
+                            "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-    stream.peek(totalOutput::addDelta).forEach(delta -> send(emitter, delta.getDeltaContent()));
+    final var stream = OpenAiClient.forModel(GPT_35_TURBO).simpleStreamChatCompletion(request);
 
-    send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
-    emitter.complete();
+    final var emitter = new ResponseBodyEmitter();
+
+    final Runnable consumeStream =
+        () -> {
+          try {
+            stream.forEach(deltaMessage -> send(emitter, deltaMessage));
+            emitter.complete();
+          } catch (RuntimeException e) {
+            emitter.completeWithError(e.getCause());
+          } finally {
+            stream.close();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().submit(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
   private static void send(
@@ -111,6 +137,7 @@ class OpenAiController {
       emitter.send(chunk);
     } catch (final IOException e) {
       log.error(Arrays.toString(e.getStackTrace()));
+      // only RuntimeExceptions can stop a stream.forEach()
       throw new RuntimeException(e);
     }
   }

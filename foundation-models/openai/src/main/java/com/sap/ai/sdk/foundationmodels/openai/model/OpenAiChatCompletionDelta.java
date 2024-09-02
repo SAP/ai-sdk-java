@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class OpenAiDeltaChatCompletion extends OpenAiCompletionOutput implements StreamedDelta {
+public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements StreamedDelta {
   /** List of result candidates. */
   @JsonProperty("choices")
   @Getter(onMethod_ = @Nonnull)

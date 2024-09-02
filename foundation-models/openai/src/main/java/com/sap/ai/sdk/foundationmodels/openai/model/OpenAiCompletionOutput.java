@@ -44,7 +44,7 @@ public class OpenAiCompletionOutput {
   @Getter(onMethod_ = @Nullable)
   private List<OpenAiPromptFilterResult> promptFilterResults;
 
-  void addDelta(@Nonnull final OpenAiDeltaChatCompletion delta) {
+  void addDelta(@Nonnull final OpenAiChatCompletionDelta delta) {
     created = delta.getCreated();
     id = delta.getId();
     model = delta.getModel();
