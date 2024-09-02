@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.patch;
 import static com.github.tomakehurst.wiremock.client.WireMock.patchRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,7 +132,16 @@ public class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
     assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN);
 
-    // TODO: Verify that the request body is correct
+    wireMockServer.verify(
+        postRequestedFor(urlPathEqualTo("/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                          {
+                            "configurationId" : "7652a231-ba9b-4fcc-b473-2c355cb21b61"
+                          }
+                          """)));
   }
 
   @Test
@@ -254,13 +264,5 @@ public class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getSubmissionTime()).isEqualTo("2024-08-05T16:17:40Z");
     assertThat(deployment.getTargetStatus())
         .isEqualTo(AiDeploymentResponseWithDetails.TargetStatusEnum.RUNNING);
-  }
-
-  @Test
-  void getLogsForDeploymentByStart() {
-    /*
-     * TODO: Deployment logs missing for /lm/deployments/{{deploymentid}}/logs.
-     * https://github.wdf.sap.corp/AI/ml-api-facade/issues/1235#top
-     * */
   }
 }

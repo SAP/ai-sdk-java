@@ -118,7 +118,6 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
   }
 
-  void getExecutionById() {
-    // TODO: No executions available in AI Core Test Instance -> Create them.
-  }
+  @Test
+  void getExecutionById() {}
 }
