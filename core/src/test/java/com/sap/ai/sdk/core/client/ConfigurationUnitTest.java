@@ -66,6 +66,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-04-17T15:19:45Z");
     assertThat(configuration.getExecutableId()).isEqualTo("azure-openai");
     assertThat(configuration.getId()).isEqualTo("7652a231-ba9b-4fcc-b473-2c355cb21b61");
+    assertThat(configuration.getInputArtifactBindings().size()).isEqualTo(0);
     assertThat(configuration.getName()).isEqualTo("gpt-4-32k");
     assertThat(configuration.getParameterBindings().get(0).getKey()).isEqualTo("modelName");
     assertThat(configuration.getParameterBindings().get(0).getValue()).isEqualTo("gpt-4-32k");

@@ -51,6 +51,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
     final AiArtifactList artifactList =
         new ArtifactApi(getClient(destination)).artifactQuery("default");
 
+    assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
     assertThat(artifactList.getResources().size()).isEqualTo(1);
     AiArtifact artifact = artifactList.getResources().get(0);
@@ -92,6 +93,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
     final AiArtifactCreationResponse artifact =
         new ArtifactApi(getClient(destination)).artifactCreate("default", artifactPostData);
 
+    assertThat(artifact).isNotNull();
     assertThat(artifact.getId()).isEqualTo("1a84bb38-4a84-4d12-a5aa-300ae7d33fb4");
     assertThat(artifact.getMessage()).isEqualTo("AiArtifact acknowledged");
     assertThat(artifact.getUrl()).isEqualTo("ai://default/spam/data");
@@ -123,6 +125,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
         new ArtifactApi(getClient(destination))
             .artifactGet("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
 
+    assertThat(artifact).isNotNull();
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-08-23T09:13:21Z");
     assertThat(artifact.getDescription()).isEqualTo("");
     assertThat(artifact.getId()).isEqualTo("777dea85-e9b1-4a7b-9bea-14769b977633");

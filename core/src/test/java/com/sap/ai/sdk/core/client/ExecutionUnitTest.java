@@ -117,7 +117,4 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getMessage()).isEqualTo("AiExecution acknowledged");
     assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
   }
-
-  @Test
-  void getExecutionById() {}
 }

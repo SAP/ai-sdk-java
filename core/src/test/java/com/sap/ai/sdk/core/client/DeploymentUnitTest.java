@@ -247,12 +247,26 @@ public class DeploymentUnitTest extends WireMockTestServer {
     final AiDeploymentResponseWithDetails deployment =
         new DeploymentApi(getClient(destination)).deploymentGet("default", "db1d64d9f06be467");
 
+    assertThat(deployment).isNotNull();
     assertThat(deployment.getConfigurationId()).isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
     assertThat(deployment.getConfigurationName()).isEqualTo("orchestration");
     assertThat(deployment.getCreatedAt()).isEqualTo("2024-08-05T16:17:29Z");
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
+
+    // backend_details key not identified by deserializer and dumped into customFields
+    assertThat(
+            deployment
+                .getDetails()
+                .getResources()
+                .getCustomFieldNames()
+                .contains("backend_details"))
+        .isTrue();
+    assertThat(
+            deployment.getDetails().getScaling().getCustomFieldNames().contains("backend_details"))
+        .isTrue();
+
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
         .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);

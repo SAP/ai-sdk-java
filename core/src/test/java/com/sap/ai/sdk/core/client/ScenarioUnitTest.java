@@ -90,6 +90,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
     AiVersionList versionList =
         new ScenarioApi(getClient(destination))
             .scenarioQueryVersions("default", "foundation-models");
+    assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
     assertThat(versionList.getResources().size()).isEqualTo(1);
 
