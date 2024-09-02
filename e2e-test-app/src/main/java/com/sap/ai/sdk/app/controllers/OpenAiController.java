@@ -8,6 +8,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionT
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -72,17 +73,14 @@ class OpenAiController {
     final Runnable consumeStream =
         () -> {
           final var totalOutput = new OpenAiChatCompletionOutput();
-
-          try {
+          try (stream) {
             stream
                 .peek(totalOutput::addDelta)
                 .forEach(delta -> send(emitter, delta.getDeltaContent()));
             send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
             emitter.complete();
-          } catch (RuntimeException e) {
+          } catch (OpenAiClientException e) {
             emitter.completeWithError(e.getCause());
-          } finally {
-            stream.close();
           }
         };
 
@@ -115,13 +113,11 @@ class OpenAiController {
 
     final Runnable consumeStream =
         () -> {
-          try {
+          try (stream) {
             stream.forEach(deltaMessage -> send(emitter, deltaMessage));
             emitter.complete();
-          } catch (RuntimeException e) {
+          } catch (OpenAiClientException e) {
             emitter.completeWithError(e.getCause());
-          } finally {
-            stream.close();
           }
         };
 
@@ -138,7 +134,7 @@ class OpenAiController {
     } catch (final IOException e) {
       log.error(Arrays.toString(e.getStackTrace()));
       // only RuntimeExceptions can stop a stream.forEach()
-      throw new RuntimeException(e);
+      throw new OpenAiClientException(e);
     }
   }
 
