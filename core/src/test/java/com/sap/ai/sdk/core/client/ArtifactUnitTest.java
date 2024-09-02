@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ArtifactUnitTest extends WireMockTestServer {
   @Test
-  void testGetArtifact() {
+  void getArtifacts() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/lm/artifacts"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -48,8 +48,9 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactList artifactList = new ArtifactApi(getClient(destination)).artifactQuery("default");
-    assertThat(artifactList).isNotNull();
+    final AiArtifactList artifactList =
+        new ArtifactApi(getClient(destination)).artifactQuery("default");
+
     assertThat(artifactList.getCount()).isEqualTo(1);
     assertThat(artifactList.getResources().size()).isEqualTo(1);
     AiArtifact artifact = artifactList.getResources().get(0);
@@ -64,7 +65,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
   }
 
   @Test
-  void testPostArtifact() {
+  void postArtifact() {
     wireMockServer.stubFor(
         post(urlPathEqualTo("/lm/artifacts"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -82,17 +83,54 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         """)));
 
     AiArtifactPostData artifactPostData =
-            AiArtifactPostData.create()
-                .name("default")
-                .kind(AiArtifactPostData.KindEnum.DATASET)
-                .url("ai://default/spam/data")
-                .scenarioId("foundation-models")
-                .description("dataset for aicore training");
+        AiArtifactPostData.create()
+            .name("default")
+            .kind(AiArtifactPostData.KindEnum.DATASET)
+            .url("ai://default/spam/data")
+            .scenarioId("foundation-models")
+            .description("dataset for aicore training");
     final AiArtifactCreationResponse artifact =
         new ArtifactApi(getClient(destination)).artifactCreate("default", artifactPostData);
-    assertThat(artifact).isNotNull();
+
     assertThat(artifact.getId()).isEqualTo("1a84bb38-4a84-4d12-a5aa-300ae7d33fb4");
     assertThat(artifact.getMessage()).isEqualTo("AiArtifact acknowledged");
     assertThat(artifact.getUrl()).isEqualTo("ai://default/spam/data");
+  }
+
+  @Test
+  void getArtifactById() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/artifacts/777dea85-e9b1-4a7b-9bea-14769b977633"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                            {
+                              "createdAt": "2024-08-23T09:13:21Z",
+                              "description": "",
+                              "id": "777dea85-e9b1-4a7b-9bea-14769b977633",
+                              "kind": "other",
+                              "modifiedAt": "2024-08-23T09:13:21Z",
+                              "name": "test",
+                              "scenarioId": "orchestration",
+                              "url": "https://file-examples.com/wp-content/storage/2017/10/file-sample_150kB.pdf"
+                            }
+                            """)));
+
+    AiArtifact artifact =
+        new ArtifactApi(getClient(destination))
+            .artifactGet("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
+
+    assertThat(artifact.getCreatedAt()).isEqualTo("2024-08-23T09:13:21Z");
+    assertThat(artifact.getDescription()).isEqualTo("");
+    assertThat(artifact.getId()).isEqualTo("777dea85-e9b1-4a7b-9bea-14769b977633");
+    assertThat(artifact.getKind()).isEqualTo(AiArtifact.KindEnum.OTHER);
+    assertThat(artifact.getModifiedAt()).isEqualTo("2024-08-23T09:13:21Z");
+    assertThat(artifact.getName()).isEqualTo("test");
+    assertThat(artifact.getScenarioId()).isEqualTo("orchestration");
+    assertThat(artifact.getUrl())
+        .isEqualTo("https://file-examples.com/wp-content/storage/2017/10/file-sample_150kB.pdf");
   }
 }

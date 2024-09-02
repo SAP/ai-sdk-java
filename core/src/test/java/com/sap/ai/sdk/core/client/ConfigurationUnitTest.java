@@ -13,7 +13,6 @@ import com.sap.ai.sdk.core.client.model.AiConfiguration;
 import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
 import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiConfigurationList;
-import java.util.List;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
-  void testGetConfigurations() {
+  void getConfigurations() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -60,7 +59,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
 
     final AiConfigurationList configurationList =
         new ConfigurationApi(getClient(destination)).configurationQuery("default");
-    assertThat(configurationList).isNotNull();
+    
     assertThat(configurationList.getCount()).isEqualTo(1);
     assertThat(configurationList.getResources().size()).isEqualTo(1);
     AiConfiguration configuration = configurationList.getResources().get(0);
@@ -76,7 +75,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   }
 
   @Test
-  void testPostConfiguration() {
+  void postConfiguration() {
     wireMockServer.stubFor(
         post(urlPathEqualTo("/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -103,7 +102,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7"));
     final AiConfigurationCreationResponse configuration =
         new ConfigurationApi(getClient(destination)).configurationCreate("default", configurationBaseData);
-    assertThat(configuration).isNotNull();
+    
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");
   }

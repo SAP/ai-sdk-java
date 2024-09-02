@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiScenario;
 import com.sap.ai.sdk.core.client.model.AiScenarioList;
+import com.sap.ai.sdk.core.client.model.AiVersion;
+import com.sap.ai.sdk.core.client.model.AiVersionList;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ScenarioUnitTest extends WireMockTestServer {
   @Test
-  void testGetScenarios() {
+  void getScenarios() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/lm/scenarios"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -49,8 +51,8 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         """)));
 
     final AiScenarioList scenarioList =
-            new ScenarioApi(getClient(destination)).scenarioQuery("default");
-    assertThat(scenarioList).isNotNull();
+        new ScenarioApi(getClient(destination)).scenarioQuery("default");
+
     assertThat(scenarioList.getCount()).isEqualTo(1);
     assertThat(scenarioList.getResources().size()).isEqualTo(1);
     AiScenario scenario = scenarioList.getResources().get(0);
@@ -60,4 +62,42 @@ public class ScenarioUnitTest extends WireMockTestServer {
     assertThat(scenario.getLabels().get(0).getValue()).isEqualTo("true");
     assertThat(scenario.getModifiedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
   }
+  
+  @Test
+  void getScenarioVersions() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/scenarios/foundation-models/versions"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withHeader("content-type", "application/json")
+                    .withStatus(HttpStatus.SC_OK)
+                    .withBody(
+                        """
+                        {
+                          "count": 1,
+                          "resources": [
+                            {
+                              "createdAt": "2024-05-08T08:41:23+00:00",
+                              "id": "0.0.1",
+                              "modifiedAt": "2024-05-08T08:41:23+00:00",
+                              "scenarioId": "foundation-models"
+                            }
+                          ]
+                        }
+                        """)));
+
+    AiVersionList versionList =
+        new ScenarioApi(getClient(destination))
+            .scenarioQueryVersions("default", "foundation-models");
+    assertThat(versionList.getCount()).isEqualTo(1);
+    assertThat(versionList.getResources().size()).isEqualTo(1);
+    
+    AiVersion version = versionList.getResources().get(0);
+    assertThat(version.getCreatedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
+    assertThat(version.getId()).isEqualTo("0.0.1");
+    assertThat(version.getModifiedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
+    assertThat(version.getScenarioId()).isEqualTo("foundation-models");
+  }
 }
+

@@ -19,6 +19,7 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
+import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
@@ -31,7 +32,7 @@ import org.junit.jupiter.api.Test;
  */
 public class DeploymentUnitTest extends WireMockTestServer {
   @Test
-  void testGetDeployments() {
+  void getDeployments() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -78,7 +79,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     final AiDeploymentList deploymentList =
         new DeploymentApi(getClient(destination)).deploymentQuery("default");
-    assertThat(deploymentList).isNotNull();
+    
     assertThat(deploymentList.getCount()).isEqualTo(1);
     assertThat(deploymentList.getResources().size()).isEqualTo(1);
     AiDeployment deployment = deploymentList.getResources().get(0);
@@ -100,7 +101,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   }
 
   @Test
-  void testPostAiDeployment() {
+  void postAiDeployment() {
     wireMockServer.stubFor(
         post(urlPathEqualTo("/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -119,18 +120,21 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     AiDeploymentCreationRequest deploymentCreationRequest =
-        AiDeploymentCreationRequest.create().configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
+        AiDeploymentCreationRequest.create()
+            .configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(getClient(destination)).deploymentCreate("default", deploymentCreationRequest);
-    assertThat(deployment).isNotNull();
+        new DeploymentApi(getClient(destination))
+            .deploymentCreate("default", deploymentCreationRequest);
     assertThat(deployment.getDeploymentUrl()).isEqualTo("");
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
     assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN);
+    
+    // TODO: Verify that the request body is correct
   }
 
   @Test
-  void testPatchAiDeployment() {
+  void patchAiDeployment() {
     wireMockServer.stubFor(
         patch(urlPathEqualTo("/lm/deployments/d19b998f347341aa"))
             .willReturn(
@@ -144,13 +148,12 @@ public class DeploymentUnitTest extends WireMockTestServer {
                           "message": "AiDeployment modification scheduled"
                         }
                         """)));
-
+    
     AiDeploymentModificationRequest configModification =
         AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED);
     AiDeploymentModificationResponse deployment =
         new DeploymentApi(getClient(destination))
             .deploymentModify("default", "d19b998f347341aa", configModification);
-    assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment modification scheduled");
 
@@ -168,7 +171,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   }
 
   @Test
-  void testDeleteAiDeployment() {
+  void deleteAiDeployment() {
     wireMockServer.stubFor(
         delete(urlPathEqualTo("/lm/deployments/d5b764fe55b3e87c"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -187,10 +190,74 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     final AiDeploymentDeletionResponse deployment =
         new DeploymentApi(getClient(destination)).deploymentDelete("default", "d5b764fe55b3e87c");
-    assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     // targetStatus is not in the generated client, but we can still get it from the
     // cloudSdkCustomFields
     assertThat(deployment.getCustomField("targetStatus")).isEqualTo("DELETED");
   }
+
+  @Test
+  void getDeploymentById() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/deployments/db1d64d9f06be467"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                           "configurationId": "dd80625e-ad86-426a-b1a7-1494c083428f",
+                           "configurationName": "orchestration",
+                           "createdAt": "2024-08-05T16:17:29Z",
+                           "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467",
+                           "details": {
+                             "resources": {
+                               "backend_details": {}
+                             },
+                             "scaling": {
+                               "backend_details": {}
+                             }
+                           },
+                           "id": "db1d64d9f06be467",
+                           "lastOperation": "CREATE",
+                           "latestRunningConfigurationId": "dd80625e-ad86-426a-b1a7-1494c083428f",
+                           "modifiedAt": "2024-08-26T12:43:18Z",
+                           "scenarioId": "orchestration",
+                           "startTime": "2024-08-05T16:18:41Z",
+                           "status": "RUNNING",
+                           "submissionTime": "2024-08-05T16:17:40Z",
+                           "targetStatus": "RUNNING"
+                        }
+                        """)));
+    final AiDeploymentResponseWithDetails deployment =
+        new DeploymentApi(getClient(destination)).deploymentGet("default", "db1d64d9f06be467");
+
+    assertThat(deployment.getConfigurationId()).isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
+    assertThat(deployment.getConfigurationName()).isEqualTo("orchestration");
+    assertThat(deployment.getCreatedAt()).isEqualTo("2024-08-05T16:17:29Z");
+    assertThat(deployment.getDeploymentUrl())
+        .isEqualTo(
+            "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
+    assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
+    assertThat(deployment.getLastOperation()).isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
+    assertThat(deployment.getLatestRunningConfigurationId())
+        .isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
+    assertThat(deployment.getModifiedAt()).isEqualTo("2024-08-26T12:43:18Z");
+    assertThat(deployment.getStartTime()).isEqualTo("2024-08-05T16:18:41Z");
+    assertThat(deployment.getStatus()).isEqualTo(AiDeploymentStatus.RUNNING);
+    assertThat(deployment.getSubmissionTime()).isEqualTo("2024-08-05T16:17:40Z");
+    assertThat(deployment.getTargetStatus()).isEqualTo(AiDeploymentResponseWithDetails.TargetStatusEnum.RUNNING);
+  }
+
+
+  @Test
+  void getLogsForDeploymentByStart() {
+    /*
+     * TODO: Deployment logs missing for /lm/deployments/{{deploymentid}}/logs.
+     * https://github.wdf.sap.corp/AI/ml-api-facade/issues/1235#top
+     * */
+  }
 }
+

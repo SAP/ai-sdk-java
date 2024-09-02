@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ExecutionUnitTest extends WireMockTestServer {
   @Test
-  void testGetExecutions() {
+  void getExecutions() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -67,8 +67,8 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionList executionList = new ExecutionApi(getClient(destination)).executionQuery("default");
-    assertThat(executionList).isNotNull();
+    final AiExecutionList executionList =
+        new ExecutionApi(getClient(destination)).executionQuery("default");
     assertThat(executionList.getCount()).isEqualTo(1);
     assertThat(executionList.getResources().size()).isEqualTo(1);
     AiExecution execution = executionList.getResources().get(0);
@@ -89,7 +89,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   }
 
   @Test
-  void testPostExecution() {
+  void postExecution() {
     wireMockServer.stubFor(
         post(urlPathEqualTo("/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
@@ -109,10 +109,15 @@ public class ExecutionUnitTest extends WireMockTestServer {
     AiEnactmentCreationRequest enactmentCreationRequest =
         AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
     final AiExecutionCreationResponse execution =
-        new ExecutionApi(getClient(destination)).executionCreate("default", enactmentCreationRequest);
-    assertThat(execution).isNotNull();
+        new ExecutionApi(getClient(destination))
+            .executionCreate("default", enactmentCreationRequest);
+
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
     assertThat(execution.getMessage()).isEqualTo("AiExecution acknowledged");
     assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
+  }
+
+  void getExecutionById() {
+    // TODO: No executions available in AI Core Test Instance -> Create them.
   }
 }
