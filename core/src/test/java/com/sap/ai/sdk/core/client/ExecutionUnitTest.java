@@ -67,8 +67,8 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionList executionList =
-        new ExecutionApi(getClient(destination)).executionQuery("default");
+    final AiExecutionList executionList = new ExecutionApi(getClient(destination)).executionQuery("default");
+    assertThat(executionList).isNotNull();
     assertThat(executionList.getCount()).isEqualTo(1);
     assertThat(executionList.getResources().size()).isEqualTo(1);
     AiExecution execution = executionList.getResources().get(0);
@@ -109,9 +109,8 @@ public class ExecutionUnitTest extends WireMockTestServer {
     AiEnactmentCreationRequest enactmentCreationRequest =
         AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
     final AiExecutionCreationResponse execution =
-        new ExecutionApi(getClient(destination))
-            .executionCreate("default", enactmentCreationRequest);
-
+        new ExecutionApi(getClient(destination)).executionCreate("default", enactmentCreationRequest);
+    assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
     assertThat(execution.getMessage()).isEqualTo("AiExecution acknowledged");
     assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
