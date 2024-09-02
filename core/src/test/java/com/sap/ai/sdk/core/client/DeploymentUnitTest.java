@@ -123,13 +123,14 @@ public class DeploymentUnitTest extends WireMockTestServer {
         AiDeploymentCreationRequest.create()
             .configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(getClient(destination)).deploymentCreate("default", deploymentCreationRequest);
+        new DeploymentApi(getClient(destination))
+            .deploymentCreate("default", deploymentCreationRequest);
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEqualTo("");
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
     assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN);
-    
+
     // TODO: Verify that the request body is correct
   }
 
@@ -243,16 +244,17 @@ public class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
-    assertThat(deployment.getLastOperation()).isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
+    assertThat(deployment.getLastOperation())
+        .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
     assertThat(deployment.getLatestRunningConfigurationId())
         .isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
     assertThat(deployment.getModifiedAt()).isEqualTo("2024-08-26T12:43:18Z");
     assertThat(deployment.getStartTime()).isEqualTo("2024-08-05T16:18:41Z");
     assertThat(deployment.getStatus()).isEqualTo(AiDeploymentStatus.RUNNING);
     assertThat(deployment.getSubmissionTime()).isEqualTo("2024-08-05T16:17:40Z");
-    assertThat(deployment.getTargetStatus()).isEqualTo(AiDeploymentResponseWithDetails.TargetStatusEnum.RUNNING);
+    assertThat(deployment.getTargetStatus())
+        .isEqualTo(AiDeploymentResponseWithDetails.TargetStatusEnum.RUNNING);
   }
-
 
   @Test
   void getLogsForDeploymentByStart() {

@@ -51,7 +51,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         """)));
 
     final AiScenarioList scenarioList =
-            new ScenarioApi(getClient(destination)).scenarioQuery("default");
+        new ScenarioApi(getClient(destination)).scenarioQuery("default");
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
     assertThat(scenarioList.getResources().size()).isEqualTo(1);
@@ -62,7 +62,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
     assertThat(scenario.getLabels().get(0).getValue()).isEqualTo("true");
     assertThat(scenario.getModifiedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
   }
-  
+
   @Test
   void getScenarioVersions() {
     wireMockServer.stubFor(
@@ -92,7 +92,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
             .scenarioQueryVersions("default", "foundation-models");
     assertThat(versionList.getCount()).isEqualTo(1);
     assertThat(versionList.getResources().size()).isEqualTo(1);
-    
+
     AiVersion version = versionList.getResources().get(0);
     assertThat(version.getCreatedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
     assertThat(version.getId()).isEqualTo("0.0.1");
@@ -100,4 +100,3 @@ public class ScenarioUnitTest extends WireMockTestServer {
     assertThat(version.getScenarioId()).isEqualTo("foundation-models");
   }
 }
-
