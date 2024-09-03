@@ -82,7 +82,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
         .onClose(
             () -> {
               try {
-                inputStream.close();
+                br.close();
               } catch (IOException e) {
                 log.error("Could not close HTTP input stream", e);
               }

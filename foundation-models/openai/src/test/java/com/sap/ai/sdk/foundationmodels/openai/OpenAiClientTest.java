@@ -23,6 +23,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChat
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
@@ -50,6 +51,8 @@ class OpenAiClientTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = OpenAiClient.withCustomDestination(destination);
+    ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
+    ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
   @Test
@@ -162,7 +165,7 @@ class OpenAiClientTest {
 
       assert inputStream != null;
       final String response = new String(inputStream.readAllBytes());
-      stubFor(post(anyUrl()).willReturn(okJson(response)));
+      stubFor(post("/chat/completions").willReturn(okJson(response)));
 
       final var systemMessage =
           new OpenAiChatMessage.OpenAiChatSystemMessage()
@@ -251,7 +254,7 @@ class OpenAiClientTest {
 
       assert inputStream != null;
       final String response = new String(inputStream.readAllBytes());
-      stubFor(post(anyUrl()).willReturn(okJson(response)));
+      stubFor(post("/embeddings").willReturn(okJson(response)));
 
       final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
       final var result = client.embedding(request);
