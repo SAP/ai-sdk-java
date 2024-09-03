@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.build
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.parseErrorAndThrow;
 
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
+import io.vavr.control.Try;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
