@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import io.vavr.CheckedFunction0;
 import io.vavr.control.Try;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
@@ -24,7 +24,7 @@ class StreamConverter {
 
   @RequiredArgsConstructor
   private static class HandledIterator<T> implements Iterator<T> {
-    private final CheckedFunction0<T> producer;
+    private final Callable<T> producer;
     private final Runnable stopper;
     private boolean done = false;
     private T next = null;
@@ -35,12 +35,12 @@ class StreamConverter {
         return false;
       }
       try {
-        next = producer.apply();
+        next = producer.call();
         if (next == null) {
           done = true;
           stopper.run();
         }
-      } catch (Throwable e) {
+      } catch (Exception e) {
         done = true;
         stopper.run();
         throw new RuntimeException(e);
