@@ -206,24 +206,22 @@ final OpenAiChatCompletionOutput result =
 
 ### Stream chat completion
 
-How to pass a stream of chat completion delta elements from the backend to the frontend in real-time.
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
 #### Print the stream to the console
 This is a simple example to get started:
 ```java
-void printStream() {
-  final var request =
-      new OpenAiChatCompletionParameters()
-          .setMessages(
-              List.of(
-                  new OpenAiChatUserMessage()
-                      .addText(
-                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-  // try-with-resources ensures the stream is closed
-  try(var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
-    stream.forEach(deltaMessage -> System.out.println(deltaMessage));
-  }
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<String> stream = client.streamChatCompletion(request)) {
+  stream.forEach(deltaString -> System.out.println(deltaString));
 }
 ```
 
@@ -232,97 +230,53 @@ void printStream() {
 <pre>
 
 ```java
-void printStream() {
-  final var request =
-      new OpenAiChatCompletionParameters()
-          .setMessages(
-              List.of(
-                  new OpenAiChatUserMessage()
-                      .addText(
-                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-  final var totalOutput = new OpenAiChatCompletionOutput();
-  // try-with-resources ensures the stream is closed
-  try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request)) {
-    stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
-  }
-  // totalOutput can be looked at here
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
+    stream.peek(totalOutput::addDelta).forEach(deltaObject -> System.out.println(deltaObject));
 }
+
+// access aggregated information from total output, e.g.
+System.out.println("Tokens: " + totalOutput.getUsage().getCompletionTokens());
 ```
 </pre>
 </details>
 
 #### Framework-agnostic example
-This example passes the stream of chat completion delta messages to a frontend in real-time.
+This example passes the stream of chat completion delta messages to a generic `Consumer<String>`.
 ```java
-public static ReturnType streamChatCompletion() {
-  final var request =
-      new OpenAiChatCompletionParameters()
-          .setMessages(
-              List.of(
-                  new OpenAiChatUserMessage()
-                      .addText(
-                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+Consumer<String> emit;
 
-  final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-  final Runnable consumeStream =
-      () -> {
-        // try-with-resources ensures the stream is closed
-        try (stream) {
-          // send is defined by your framework
-          stream.forEach(delta -> send(delta));
-        }
-      };
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
 
-  ThreadContextExecutors.getExecutor().submit(consumeStream);
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+Stream<String> stream = client.streamChatCompletion(request);
 
-  // Note: set the header content-type:text/event-stream on the sent response
-}
+ThreadContextExecutors.getExecutor().submit(() -> {
+    // try-with-resources ensures the stream is closed
+    try (stream) {
+        // send is defined by your framework
+        stream.forEach(delta -> emit.accept(delta));
+    }
+});
 ```
 
 #### Spring Boot example
-This example uses Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
-```java
-public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-  final var request =
-      new OpenAiChatCompletionParameters()
-          .setMessages(
-              List.of(
-                  new OpenAiChatUserMessage()
-                      .addText(
-                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-  final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
-
-  final var emitter = new ResponseBodyEmitter();
-
-  final Runnable consumeStream =
-      () -> {
-        // try-with-resources ensures the stream is closed
-        try (stream) {
-          stream.forEach(
-              delta -> {
-                try {
-                  emitter.send(delta);
-                } catch (final IOException e) {
-                  log.error(Arrays.toString(e.getStackTrace()));
-                  emitter.completeWithError(e);
-                }
-              });
-        } finally {
-          emitter.complete();
-        }
-      };
-
-  ThreadContextExecutors.getExecutor().submit(consumeStream);
-
-  // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-  return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
-}
-```
-
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+Please find [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
 
