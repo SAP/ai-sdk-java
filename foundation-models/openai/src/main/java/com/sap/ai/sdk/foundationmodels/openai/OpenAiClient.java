@@ -123,7 +123,7 @@ public final class OpenAiClient {
         .map(OpenAiChatCompletionDelta::getDeltaContent);
   }
 
-  private static void throwOnContentFilter(OpenAiChatCompletionDelta delta) {
+  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
       throw new OpenAiClientException("Content filter filtered the output.");
