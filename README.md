@@ -253,6 +253,7 @@ void printStream() {
 </details>
 
 #### Framework-agnostic example
+This example passes the stream of chat completion delta messages to a frontend in real-time.
 ```java
 public static ReturnType streamChatCompletion() {
   final var request =
@@ -281,6 +282,7 @@ public static ReturnType streamChatCompletion() {
 ```
 
 #### Spring Boot example
+This example uses Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 ```java
 public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
   final var request =
