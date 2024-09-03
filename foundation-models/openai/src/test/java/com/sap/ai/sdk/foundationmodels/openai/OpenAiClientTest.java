@@ -36,6 +36,7 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,6 +53,11 @@ class OpenAiClientTest {
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = OpenAiClient.withCustomDestination(destination);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
+  }
+
+  @AfterEach
+  void reset() {
+    ApacheHttpClient5Accessor.setHttpClientCache(null);
     ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
