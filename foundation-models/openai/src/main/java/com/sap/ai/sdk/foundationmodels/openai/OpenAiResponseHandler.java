@@ -117,6 +117,6 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
       throw baseException;
     }
     throw new OpenAiClientException(
-        baseException.getMessage() + " and error message: '%s'".formatted(error.getMessage()));
+        "%s and error message: '%s'".formatted(baseException.getMessage(), error.getMessage()));
   }
 }
