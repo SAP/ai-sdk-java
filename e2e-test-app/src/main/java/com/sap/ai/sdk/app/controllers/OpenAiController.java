@@ -54,9 +54,9 @@ class OpenAiController {
    * @return the emitter that streams the assistant message response
    */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
-  @GetMapping("/streamChatCompletion")
+  @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
-  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas() {
     final var request =
         new OpenAiChatCompletionParameters()
             .setMessages(
@@ -65,7 +65,7 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
 
     final var emitter = new ResponseBodyEmitter();
 
@@ -77,9 +77,10 @@ class OpenAiController {
             stream
                 .peek(totalOutput::addDelta)
                 .forEach(delta -> send(emitter, delta.getDeltaContent()));
+          } finally {
+            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+            emitter.complete();
           }
-          send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
-          emitter.complete();
         };
 
     ThreadContextExecutors.getExecutor().submit(consumeStream);
@@ -102,9 +103,9 @@ class OpenAiController {
    * @return the emitter that streams the assistant message response
    */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
-  @GetMapping("/simpleStreamChatCompletion")
+  @GetMapping("/streamChatCompletion")
   @Nonnull
-  public static ResponseEntity<ResponseBodyEmitter> simpleStreamChatCompletion() {
+  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var request =
         new OpenAiChatCompletionParameters()
             .setMessages(
@@ -113,7 +114,7 @@ class OpenAiController {
                         .addText(
                             "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-    final var stream = OpenAiClient.forModel(GPT_35_TURBO).simpleStreamChatCompletion(request);
+    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
 
     final var emitter = new ResponseBodyEmitter();
 
@@ -121,6 +122,7 @@ class OpenAiController {
         () -> {
           try (stream) {
             stream.forEach(deltaMessage -> send(emitter, deltaMessage));
+          } finally {
             emitter.complete();
           }
         };

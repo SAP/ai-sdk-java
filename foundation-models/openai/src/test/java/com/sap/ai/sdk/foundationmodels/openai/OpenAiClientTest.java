@@ -79,7 +79,7 @@ class OpenAiClientTest {
         () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
         () ->
             client
-                .streamChatCompletion(new OpenAiChatCompletionParameters())
+                .streamChatCompletionDeltas(new OpenAiChatCompletionParameters())
                 // the stream needs to be consumed to parse the response
                 .forEach(System.out::println));
   }
@@ -289,7 +289,7 @@ class OpenAiClientTest {
   }
 
   @Test
-  void streamChatCompletionErrorHandling() throws IOException {
+  void streamChatCompletionDeltasErrorHandling() throws IOException {
     try (var inputStream =
         spy(
             Objects.requireNonNull(
@@ -317,7 +317,7 @@ class OpenAiClientTest {
                           .addText(
                               "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletion(request)) {
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .isInstanceOf(OpenAiClientException.class)
             .hasMessage(
@@ -329,7 +329,7 @@ class OpenAiClientTest {
   }
 
   @Test
-  void streamChatCompletion() throws IOException {
+  void streamChatCompletionDeltas() throws IOException {
     try (var inputStream =
         spy(
             Objects.requireNonNull(
@@ -355,7 +355,7 @@ class OpenAiClientTest {
                           .addText(
                               "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletion(request)) {
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 
         OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
         final List<OpenAiChatCompletionDelta> deltaList =

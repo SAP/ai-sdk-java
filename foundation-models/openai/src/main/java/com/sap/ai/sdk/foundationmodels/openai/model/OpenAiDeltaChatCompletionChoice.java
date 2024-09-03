@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 public class OpenAiDeltaChatCompletionChoice extends OpenAiCompletionChoice {
   /** Completion chat message. */
-  @JsonProperty("message")
+  @JsonProperty("delta")
   @Getter(onMethod_ = @Nullable)
   @Setter(onMethod_ = @Nullable, value = AccessLevel.PACKAGE)
   private OpenAiChatAssistantMessage message;

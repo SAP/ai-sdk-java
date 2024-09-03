@@ -206,6 +206,52 @@ final OpenAiChatCompletionOutput result =
 
 ### Stream chat completion
 
+How to pass a stream of chat completion delta elements from the backend to the frontend in real-time.
+
+#### Print the stream to the console
+This is a simple example to get started:
+```java
+void printStream() {
+  final var request =
+      new OpenAiChatCompletionParameters()
+          .setMessages(
+              List.of(
+                  new OpenAiChatUserMessage()
+                      .addText(
+                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+
+  // try-with-resources ensures the stream is closed
+  try(var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request)) {
+    stream.forEach(deltaMessage -> System.out.println(deltaMessage));
+  }
+}
+```
+
+<details>
+<summary>It's also possible to collect the total output</summary>
+<pre>
+
+```java
+void printStream() {
+  final var request =
+      new OpenAiChatCompletionParameters()
+          .setMessages(
+              List.of(
+                  new OpenAiChatUserMessage()
+                      .addText(
+                          "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+
+  final var totalOutput = new OpenAiChatCompletionOutput();
+  // try-with-resources ensures the stream is closed
+  try (var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request)) {
+    stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+  }
+  // totalOutput can be looked at here
+}
+```
+</pre>
+</details>
+
 #### Framework-agnostic example
 ```java
 public static ReturnType streamChatCompletion() {
@@ -221,16 +267,11 @@ public static ReturnType streamChatCompletion() {
 
   final Runnable consumeStream =
       () -> {
-        final var totalOutput = new OpenAiChatCompletionOutput();
         // try-with-resources ensures the stream is closed
         try (stream) {
-          stream
-              // optional: collect all deltas
-              .peek(totalOutput::addDelta)
-              // send is defined by your framework
-              .forEach(delta -> send(delta.getDeltaContent()));
+          // send is defined by your framework
+          stream.forEach(delta -> send(delta));
         }
-        // optional: totalOutput can be looked at here
       };
 
   ThreadContextExecutors.getExecutor().submit(consumeStream);
@@ -256,23 +297,20 @@ public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
 
   final Runnable consumeStream =
       () -> {
-        final var totalOutput = new OpenAiChatCompletionOutput();
         // try-with-resources ensures the stream is closed
         try (stream) {
-          stream
-              .peek(totalOutput::addDelta) // optional: collect all deltas
-              .forEach(
-                  delta -> {
-                    try {
-                      emitter.send(delta.getDeltaContent());
-                    } catch (final IOException e) {
-                      log.error(Arrays.toString(e.getStackTrace()));
-                      emitter.completeWithError(e);
-                    }
-                  });
+          stream.forEach(
+              delta -> {
+                try {
+                  emitter.send(delta);
+                } catch (final IOException e) {
+                  log.error(Arrays.toString(e.getStackTrace()));
+                  emitter.completeWithError(e);
+                }
+              });
+        } finally {
+          emitter.complete();
         }
-        // optional: totalOutput can be looked at here
-        emitter.complete();
       };
 
   ThreadContextExecutors.getExecutor().submit(consumeStream);

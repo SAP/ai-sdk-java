@@ -69,7 +69,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
             })
         .map(
             responseLine -> {
-              final String data = responseLine.substring(5).replace("delta", "message");
+              final String data = responseLine.substring(5); // remove "data: "
               try {
                 return JACKSON.readValue(data, deltaType);
               } catch (final IOException e) {

@@ -41,7 +41,7 @@ class OpenAiTest {
     final var totalOutput = new OpenAiChatCompletionOutput();
     final var emptyDeltaCount = new AtomicInteger(0);
     OpenAiClient.forModel(GPT_35_TURBO)
-        .streamChatCompletion(request)
+        .streamChatCompletionDeltas(request)
         .peek(totalOutput::addDelta)
         // foreach consumes all elements, closing the stream at the end
         .forEach(

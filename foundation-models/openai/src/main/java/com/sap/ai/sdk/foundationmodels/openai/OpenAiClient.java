@@ -112,35 +112,36 @@ public final class OpenAiClient {
    * Generate a completion for the given prompt.
    *
    * @param parameters the prompt, including messages and other parameters.
-   * @return A stream of chat completion delta elements.
-   * @throws OpenAiClientException if the request fails
+   * @return A stream of message deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    */
   @Nonnull
-  public Stream<OpenAiChatCompletionDelta> streamChatCompletion(
+  public Stream<String> streamChatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    parameters.setStream(true);
-    return streamChatCompletion("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
+    return streamChatCompletionDeltas(parameters)
+        .peek(OpenAiClient::throwOnContentFilter)
+        .map(OpenAiChatCompletionDelta::getDeltaContent);
+  }
+
+  private static void throwOnContentFilter(OpenAiChatCompletionDelta delta) {
+    final String finishReason = delta.getFinishReason();
+    if (finishReason != null && finishReason.equals("content_filter")) {
+      throw new OpenAiClientException("Content filter filtered the output.");
+    }
   }
 
   /**
    * Generate a completion for the given prompt.
    *
    * @param parameters the prompt, including messages and other parameters.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @return A stream of chat completion delta elements.
+   * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public Stream<String> simpleStreamChatCompletion(
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    return streamChatCompletion(parameters)
-        .peek(
-            delta -> {
-              final String finishReason = delta.getFinishReason();
-              if (finishReason != null && finishReason.equals("content_filter")) {
-                throw new OpenAiClientException("Content filter filtered the output.");
-              }
-            })
-        .map(OpenAiChatCompletionDelta::getDeltaContent);
+    parameters.setStream(true);
+    return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
   }
 
   /**
@@ -168,7 +169,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D extends StreamedDelta> Stream<D> streamChatCompletion(
+  private <D extends StreamedDelta> Stream<D> executeStream(
       @Nonnull final String path,
       @Nonnull final Object payload,
       @Nonnull final Class<D> deltaType) {
