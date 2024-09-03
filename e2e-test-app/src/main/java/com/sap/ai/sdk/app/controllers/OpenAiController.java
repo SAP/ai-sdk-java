@@ -57,13 +57,10 @@ class OpenAiController {
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
   public static ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas() {
+    final var msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var request =
         new OpenAiChatCompletionParameters()
-            .setMessages(
-                List.of(
-                    new OpenAiChatUserMessage()
-                        .addText(
-                            "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+            .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
 
     final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
 
