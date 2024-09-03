@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSe
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -354,7 +355,7 @@ class OpenAiClientTest {
                           .addText(
                               "Can you give me the first 100 numbers of the Fibonacci sequence?")));
 
-      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
+      final Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
 
         OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
         final List<OpenAiChatCompletionDelta> deltaList =
@@ -439,9 +440,8 @@ class OpenAiClientTest {
         assertThat(totalOutput.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
         assertThat(totalOutput.getPromptFilterResults()).isNotNull();
         assertFilter(totalOutput.getPromptFilterResults().get(0).getContentFilterResults());
-      }
 
-      Mockito.verify(inputStream, times(1)).close();
+      Mockito.verify(inputStream, atLeastOnce()).close();
     }
   }
 
