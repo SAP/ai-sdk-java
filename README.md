@@ -414,9 +414,9 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 
 ## Requirements and Setup for AI Core
 
-For any AI Core service interaction, the SAP Cloud SDK for AI requires credentials to be available at application runtime.
+For any AI Core service interaction, the SAP AI SDK requires credentials to be available at application runtime.
 By default, the credentials are extracted automatically from a service instance of type "aicore" bound to the application. 
-Running the application locally without such service binding will throw an exception:
+Running the application locally without this service binding will throw an exception:
 
 ```
 Could not find any matching service bindings for service identifier 'aicore'
@@ -426,16 +426,15 @@ There are multiple options to register the service binding:
 * Regular service binding in SAP BTP Cloud Foundry (resulting in `VCAP_SERVICES` env var entry).
 * Set an environment variable explicitly: `AICORE_SERVICE_KEY`
 * Define and use a _Destination_ in _BTP Destination Service_.
-* Leveraging `"user-provided"` service binding (currently not recommended).
-* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` declaration in application (not recommended).
+* (For CAP applications) use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach _(not recommended for production)_.
+  * For example: `cds bind --to aicore --exec mvn spring-boot:run`
+* Leveraging `"user-provided"` service binding _(not recommended for production)_.
+* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` declaration in application _(not recommended for production)_.
 
 ### Regular service binding in SAP BTP Cloud Foundry
 
-* In the _SAP BTP Cockpit_ navigate to the target application.
-  Go to _Service Bindings_ and click _Bind Service_.
-  In the wizard create or bind an existing service instance of type `aicore`.
-* (Or) use `manifest.yaml` to add the service binding declaratively.
-* (Or) use the CF CLI to add the service binding via command line.
+* Bind an existing service instance of type `aicore` to your application.
+  [With SAP BTP multiple options are available](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications): using the web interface, the CLI, MTA or manifest.
 
 <details><summary>After application restart, there should be an "aicore" entry in environment variable <code>VCAP_SERVICES</code>.</summary>
 
