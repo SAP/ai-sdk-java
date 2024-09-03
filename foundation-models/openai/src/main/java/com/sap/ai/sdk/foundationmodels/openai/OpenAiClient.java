@@ -112,7 +112,7 @@ public final class OpenAiClient {
    * Generate a completion for the given prompt.
    *
    * @param parameters the prompt, including messages and other parameters.
-   * @return A stream of chat completions deltas
+   * @return A stream of chat completion delta elements.
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull

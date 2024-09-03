@@ -23,15 +23,8 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
 
   @Nonnull private final Class<D> deltaType;
 
-  /**
-   * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
-   *
-   * @param response The response to process
-   * @return A {@link Stream} of a model class instantiated from the response
-   * @throws OpenAiClientException in case of a problem or the connection was aborted
-   */
   @Nonnull
-  public Stream<D> handleResponse(@Nonnull final ClassicHttpResponse response)
+  Stream<D> handleResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
