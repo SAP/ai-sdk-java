@@ -43,10 +43,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
-@TestInstance(Lifecycle.PER_CLASS)
 @WireMockTest
 class OpenAiClientTest {
-  private OpenAiClient client;
+  private static OpenAiClient client;
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -74,7 +73,7 @@ class OpenAiClientTest {
     verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
   }
 
-  private Stream<Runnable> chatCompletionCalls() {
+  private static Stream<Runnable> chatCompletionCalls() {
     return Stream.of(
         () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
         () ->
