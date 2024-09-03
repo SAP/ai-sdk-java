@@ -1,13 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import io.vavr.CheckedFunction0;
 import io.vavr.control.Try;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.core5.http.HttpEntity;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +13,11 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.core5.http.HttpEntity;
 
 @Slf4j
 class StreamConverter {
