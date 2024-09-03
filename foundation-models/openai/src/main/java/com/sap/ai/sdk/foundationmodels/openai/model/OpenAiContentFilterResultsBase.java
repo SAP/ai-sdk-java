@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /** Information about the content filtering results. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiContentFilterResultsBase {
   /** Sexual content filter result. */
   @JsonProperty("sexual")

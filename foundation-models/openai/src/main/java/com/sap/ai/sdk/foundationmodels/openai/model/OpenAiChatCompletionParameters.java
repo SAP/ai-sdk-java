@@ -177,7 +177,7 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   }
 
   @EqualsAndHashCode
-  @ToString(callSuper = true)
+  @ToString
   private static class FunctionToolChoice implements ToolChoice {
     @JsonProperty("function")
     @Setter(onParam_ = @Nonnull)

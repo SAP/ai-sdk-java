@@ -59,7 +59,7 @@ public interface OpenAiChatMessage {
   /** OpenAI system message. */
   @Accessors(chain = true)
   @EqualsAndHashCode
-  @ToString(callSuper = true)
+  @ToString
   class OpenAiChatSystemMessage implements OpenAiChatMessage {
     /** The role of the messages author. */
     @Getter(onMethod_ = @Nonnull)
@@ -75,7 +75,7 @@ public interface OpenAiChatMessage {
   /** OpenAI user message. */
   @Accessors(chain = true)
   @EqualsAndHashCode
-  @ToString(callSuper = true)
+  @ToString
   class OpenAiChatUserMessage implements OpenAiChatMessage {
     /** The role of the messages author. */
     @Getter(onMethod_ = @Nonnull)
@@ -235,7 +235,7 @@ public interface OpenAiChatMessage {
   /** OpenAI assistant message. */
   @Accessors(chain = true)
   @EqualsAndHashCode
-  @ToString(callSuper = true)
+  @ToString
   class OpenAiChatAssistantMessage implements OpenAiChatMessage {
     /** The role of the messages author. */
     @Getter(onMethod_ = @Nonnull)
@@ -277,7 +277,7 @@ public interface OpenAiChatMessage {
   /** OpenAI tool message. */
   @Accessors(chain = true)
   @EqualsAndHashCode
-  @ToString(callSuper = true)
+  @ToString
   class OpenAiChatToolMessage implements OpenAiChatMessage {
     /** The role of the messages author. */
     @Getter(onMethod_ = @Nonnull)
@@ -298,7 +298,7 @@ public interface OpenAiChatMessage {
   /** OpenAI function message. */
   @Accessors(chain = true)
   @EqualsAndHashCode
-  @ToString(callSuper = true)
+  @ToString
   class OpenAiChatFunctionMessage implements OpenAiChatMessage {
     /** The role of the messages author. */
     @Getter(onMethod_ = @Nonnull)

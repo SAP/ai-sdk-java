@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 /** OpenAI embedding input parameters. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiEmbeddingParameters {
   /**
    * Input text to get embeddings for, encoded as a string. The number of input tokens varies

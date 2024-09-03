@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /** Usage statistics for the completion request. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiUsage {
   /** Tokens consumed for output text completion. */
   @JsonProperty("completion_tokens")

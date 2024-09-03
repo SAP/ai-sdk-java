@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /** Result candidates for OpenAI embedding output. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiEmbeddingData {
   /** Embedding object. */
   @JsonProperty("object")

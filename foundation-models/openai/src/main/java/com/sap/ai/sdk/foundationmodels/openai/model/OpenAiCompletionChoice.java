@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 /** Result for OpenAI chat completion output. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiCompletionChoice {
   /**
    * Reason for finish. The possible values are:
@@ -33,7 +33,7 @@ public class OpenAiCompletionChoice {
 
   /** Index of choice. */
   @JsonProperty("index")
-  @Getter // Nullable
+  @Getter(onMethod_ = @Nullable)
   private Integer index;
 
   /**

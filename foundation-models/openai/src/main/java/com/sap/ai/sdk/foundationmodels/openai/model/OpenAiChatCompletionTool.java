@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 /** OpenAI tool signature. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiChatCompletionTool {
   /** Specifies a tool the model should use. Use to force the model to call a specific function. */
   @JsonProperty("type")

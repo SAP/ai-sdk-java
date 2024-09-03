@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /** OpenAI tool call by AI. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiChatToolCall {
   /** The ID of the tool call. */
   @JsonProperty("id")

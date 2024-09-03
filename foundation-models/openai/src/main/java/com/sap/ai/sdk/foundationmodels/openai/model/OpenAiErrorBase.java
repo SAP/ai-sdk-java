@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /** OpenAI error. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiErrorBase {
   /** The error code. */
   @JsonProperty("code")

@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 /** OpenAI completion input parameters. */
 @Accessors(chain = true)
 @EqualsAndHashCode
-@ToString(callSuper = true)
+@ToString
 public class OpenAiCompletionParameters {
   /**
    * The maximum number of [tokens](/tokenizer) that can be generated in the completion. The token
