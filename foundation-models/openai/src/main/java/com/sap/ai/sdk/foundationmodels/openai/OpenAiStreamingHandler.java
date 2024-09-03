@@ -55,37 +55,28 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
 
     // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
     return br.lines()
-        .filter(
-            responseLine ->
-                // half of the lines are empty newlines, the last line is "data: [DONE]"
-                !responseLine.isEmpty() && !"data: [DONE]".equals(responseLine.trim()))
+        // half of the lines are empty newlines, the last line is "data: [DONE]"
+        .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
         .peek(
-            responseLine -> {
-              if (!responseLine.startsWith("data: ")) {
-                parseErrorAndThrow(
-                    responseLine,
-                    new OpenAiClientException("Failed to parse response from OpenAI model"));
+            line -> {
+              if (!line.startsWith("data: ")) {
+                final String msg = "Failed to parse response from OpenAI model";
+                parseErrorAndThrow(line, new OpenAiClientException(msg));
               }
             })
         .map(
-            responseLine -> {
-              final String data = responseLine.substring(5); // remove "data: "
+            line -> {
+              final String data = line.substring(5); // remove "data: "
               try {
                 return JACKSON.readValue(data, deltaType);
               } catch (final IOException e) {
-                log.error(
-                    "Failed to parse the following response from OpenAI model: {}", responseLine);
-                throw new OpenAiClientException(
-                    "Failed to parse delta message: " + responseLine, e);
+                log.error("Failed to parse the following response from OpenAI model: {}", line);
+                throw new OpenAiClientException("Failed to parse delta message: " + line, e);
               }
             })
         .onClose(
-            () -> {
-              try {
-                br.close();
-              } catch (IOException e) {
-                log.error("Could not close HTTP input stream", e);
-              }
-            });
+            () ->
+                Try.run(inputStream::close)
+                    .onFailure(e -> log.error("Could not close HTTP input stream", e)));
   }
 }
