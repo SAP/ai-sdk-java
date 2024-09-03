@@ -5,10 +5,10 @@ import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSe
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -27,8 +27,10 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.apache.hc.client5.http.classic.HttpClient;
@@ -46,6 +48,8 @@ import org.mockito.Mockito;
 @WireMockTest
 class OpenAiClientTest {
   private static OpenAiClient client;
+  private final Function<String, InputStream> TEST_FILE_LOADER =
+      filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -80,14 +84,15 @@ class OpenAiClientTest {
     verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
   }
 
-  private static Stream<Runnable> chatCompletionCalls() {
-    return Stream.of(
-        () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
-        () ->
-            client
-                .streamChatCompletionDeltas(new OpenAiChatCompletionParameters())
-                // the stream needs to be consumed to parse the response
-                .forEach(System.out::println));
+  private static Runnable[] chatCompletionCalls() {
+    return new Runnable[] {
+      () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
+      () ->
+          client
+              .streamChatCompletionDeltas(new OpenAiChatCompletionParameters())
+              // the stream needs to be consumed to parse the response
+              .forEach(System.out::println)
+    };
   }
 
   @ParameterizedTest
@@ -166,10 +171,8 @@ class OpenAiClientTest {
 
   @Test
   void chatCompletion() throws IOException {
-    try (var inputStream =
-        getClass().getClassLoader().getResourceAsStream("chatCompletionResponse.json")) {
+    try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
 
-      assert inputStream != null;
       final String response = new String(inputStream.readAllBytes());
       stubFor(post("/chat/completions").willReturn(okJson(response)));
 
@@ -255,10 +258,8 @@ class OpenAiClientTest {
 
   @Test
   void embedding() throws IOException {
-    try (var inputStream =
-        getClass().getClassLoader().getResourceAsStream("embeddingResponse.json")) {
+    try (var inputStream = TEST_FILE_LOADER.apply("embeddingResponse.json")) {
 
-      assert inputStream != null;
       final String response = new String(inputStream.readAllBytes());
       stubFor(post("/embeddings").willReturn(okJson(response)));
 
@@ -296,12 +297,7 @@ class OpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltasErrorHandling() throws IOException {
-    try (var inputStream =
-        spy(
-            Objects.requireNonNull(
-                getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("streamChatCompletionError.txt")))) {
+    try (var inputStream = spy(TEST_FILE_LOADER.apply("streamChatCompletionError.txt"))) {
 
       final var httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -330,16 +326,13 @@ class OpenAiClientTest {
                 "Failed to parse response from OpenAI model and error message: 'exceeded token rate limit'");
       }
 
-      Mockito.verify(inputStream, atLeastOnce()).close();
+      Mockito.verify(inputStream, times(1)).close();
     }
   }
 
   @Test
   void streamChatCompletionDeltas() throws IOException {
-    try (var inputStream =
-        spy(
-            Objects.requireNonNull(
-                getClass().getClassLoader().getResourceAsStream("streamChatCompletion.txt")))) {
+    try (var inputStream = spy(TEST_FILE_LOADER.apply("streamChatCompletion.txt"))) {
 
       final var httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -448,7 +441,7 @@ class OpenAiClientTest {
         assertFilter(totalOutput.getPromptFilterResults().get(0).getContentFilterResults());
       }
 
-      Mockito.verify(inputStream, atLeastOnce()).close();
+      Mockito.verify(inputStream, times(1)).close();
     }
   }
 
