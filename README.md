@@ -234,7 +234,7 @@ try( Stream<String> stream = client.streamChatCompletion(request)) {
 The following example is non-blocking.
 Any asynchronous library can be used, e.g. classic Thread API.
 
-<pre>
+```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
 OpenAiChatCompletionParameters request =
@@ -250,7 +250,7 @@ Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(req
 Thread thread = new Thread(() -> {
     // try-with-resources ensures the stream is closed
     try (stream) {
-      stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
     }
 });
 thread.start(); // non-blocking
@@ -260,7 +260,8 @@ thread.join(); // blocking
 // access aggregated information from total output, e.g.
 Integer tokens = totalOutput.getUsage().getCompletionTokens();
 System.out.println("Tokens: " + tokens);
-</pre>
+```
+
 </details>
 
 #### Spring Boot example
