@@ -46,7 +46,10 @@ public class BckndArgoCDRepositoryDetails
     IN_PROGRESS("IN-PROGRESS"),
 
     /** The COMPLETED option of this BckndArgoCDRepositoryDetails */
-    COMPLETED("COMPLETED");
+    COMPLETED("COMPLETED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this BckndArgoCDRepositoryDetails */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -90,7 +93,7 @@ public class BckndArgoCDRepositoryDetails
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

@@ -20,7 +20,9 @@ import javax.annotation.Nonnull;
 public enum AiExecutionScheduleStatus {
   ACTIVE("ACTIVE"),
 
-  INACTIVE("INACTIVE");
+  INACTIVE("INACTIVE"),
+
+  UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
@@ -58,6 +60,6 @@ public enum AiExecutionScheduleStatus {
         return b;
       }
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }
