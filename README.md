@@ -264,7 +264,7 @@ OpenAiChatCompletionParameters request =
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 Stream<String> stream = client.streamChatCompletion(request);
 
-ThreadContextExecutors.getExecutor().submit(() -> {
+ThreadContextExecutors.getExecutor().execute(() -> {
     // try-with-resources ensures the stream is closed
     try (stream) {
         // send is defined by your framework
