@@ -136,16 +136,16 @@ public class OpenAiCompletionParameters {
     private Boolean include_usage;
   }
 
-  @Nonnull
-  public OpenAiCompletionParameters setStream(final boolean stream) {
-    if (stream) {
-      this.stream = true;
-      this.streamOptions = new OpenAiStreamOptions().setInclude_usage(true);
-    } else {
-      this.stream = null;
-      this.streamOptions = null;
-    }
-    return this;
+  /**
+   * Please use {@link
+   * com.sap.ai.sdk.foundationmodels.openai.OpenAiClient#streamChatCompletion(OpenAiChatCompletionParameters)}
+   * instead.
+   *
+   * <p>Enable streaming of the completion. If enabled, partial message deltas will be sent.
+   */
+  public void enableStreaming() {
+    this.stream = true;
+    this.streamOptions = new OpenAiStreamOptions().setInclude_usage(true);
   }
 
   /**
