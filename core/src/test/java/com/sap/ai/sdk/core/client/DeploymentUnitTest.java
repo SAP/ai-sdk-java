@@ -12,7 +12,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
@@ -23,9 +22,6 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
