@@ -71,7 +71,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities multitenant(@Nonnull final Boolean multitenant) {
+  public MetaAiApiCapabilities multitenant(@Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
     return this;
   }
@@ -94,7 +94,7 @@ public class MetaAiApiCapabilities
    *     scenario), false-&gt; implementation does not support resource groups (Service Tenant
    *     scenario)
    */
-  public void setMultitenant(@Nonnull final Boolean multitenant) {
+  public void setMultitenant(@Nullable final Boolean multitenant) {
     this.multitenant = multitenant;
   }
 
@@ -106,7 +106,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities shareable(@Nonnull final Boolean shareable) {
+  public MetaAiApiCapabilities shareable(@Nullable final Boolean shareable) {
     this.shareable = shareable;
     return this;
   }
@@ -128,7 +128,7 @@ public class MetaAiApiCapabilities
    * @param shareable true-&gt; clients can use just one instance (global static models), false-&gt;
    *     clients should avoid sharing an instance
    */
-  public void setShareable(@Nonnull final Boolean shareable) {
+  public void setShareable(@Nullable final Boolean shareable) {
     this.shareable = shareable;
   }
 
@@ -141,7 +141,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities staticDeployments(@Nonnull final Boolean staticDeployments) {
+  public MetaAiApiCapabilities staticDeployments(@Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
     return this;
   }
@@ -163,7 +163,7 @@ public class MetaAiApiCapabilities
    * @param staticDeployments There are static always running endpoints that can be used for
    *     inference without the need to do user deployments.
    */
-  public void setStaticDeployments(@Nonnull final Boolean staticDeployments) {
+  public void setStaticDeployments(@Nullable final Boolean staticDeployments) {
     this.staticDeployments = staticDeployments;
   }
 
@@ -176,7 +176,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities userDeployments(@Nonnull final Boolean userDeployments) {
+  public MetaAiApiCapabilities userDeployments(@Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
     return this;
   }
@@ -198,7 +198,7 @@ public class MetaAiApiCapabilities
    * @param userDeployments Services that only support batch inference typically neither allow
    *     listing nor creation of deployments. For these, userDeployments &#x3D;&#x3D; false
    */
-  public void setUserDeployments(@Nonnull final Boolean userDeployments) {
+  public void setUserDeployments(@Nullable final Boolean userDeployments) {
     this.userDeployments = userDeployments;
   }
 
@@ -210,7 +210,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities userExecutions(@Nonnull final Boolean userExecutions) {
+  public MetaAiApiCapabilities userExecutions(@Nullable final Boolean userExecutions) {
     this.userExecutions = userExecutions;
     return this;
   }
@@ -230,7 +230,7 @@ public class MetaAiApiCapabilities
    *
    * @param userExecutions The userExecutions of this {@link MetaAiApiCapabilities}
    */
-  public void setUserExecutions(@Nonnull final Boolean userExecutions) {
+  public void setUserExecutions(@Nullable final Boolean userExecutions) {
     this.userExecutions = userExecutions;
   }
 
@@ -242,7 +242,8 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities timeToLiveDeployments(@Nonnull final Boolean timeToLiveDeployments) {
+  public MetaAiApiCapabilities timeToLiveDeployments(
+      @Nullable final Boolean timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
     return this;
   }
@@ -263,7 +264,7 @@ public class MetaAiApiCapabilities
    *
    * @param timeToLiveDeployments The timeToLiveDeployments of this {@link MetaAiApiCapabilities}
    */
-  public void setTimeToLiveDeployments(@Nonnull final Boolean timeToLiveDeployments) {
+  public void setTimeToLiveDeployments(@Nullable final Boolean timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
   }
 
@@ -275,7 +276,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities executionSchedules(@Nonnull final Boolean executionSchedules) {
+  public MetaAiApiCapabilities executionSchedules(@Nullable final Boolean executionSchedules) {
     this.executionSchedules = executionSchedules;
     return this;
   }
@@ -296,7 +297,7 @@ public class MetaAiApiCapabilities
    *
    * @param executionSchedules The executionSchedules of this {@link MetaAiApiCapabilities}
    */
-  public void setExecutionSchedules(@Nonnull final Boolean executionSchedules) {
+  public void setExecutionSchedules(@Nullable final Boolean executionSchedules) {
     this.executionSchedules = executionSchedules;
   }
 
@@ -307,7 +308,7 @@ public class MetaAiApiCapabilities
    * @return The same instance of this {@link MetaAiApiCapabilities} class
    */
   @Nonnull
-  public MetaAiApiCapabilities logs(@Nonnull final MetaAiApiCapabilitiesLogs logs) {
+  public MetaAiApiCapabilities logs(@Nullable final MetaAiApiCapabilitiesLogs logs) {
     this.logs = logs;
     return this;
   }
@@ -327,7 +328,7 @@ public class MetaAiApiCapabilities
    *
    * @param logs The logs of this {@link MetaAiApiCapabilities}
    */
-  public void setLogs(@Nonnull final MetaAiApiCapabilitiesLogs logs) {
+  public void setLogs(@Nullable final MetaAiApiCapabilitiesLogs logs) {
     this.logs = logs;
   }
 
@@ -340,7 +341,7 @@ public class MetaAiApiCapabilities
    */
   @Nonnull
   public MetaAiApiCapabilities bulkUpdates(
-      @Nonnull final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
+      @Nullable final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
     this.bulkUpdates = bulkUpdates;
     return this;
   }
@@ -360,7 +361,7 @@ public class MetaAiApiCapabilities
    *
    * @param bulkUpdates The bulkUpdates of this {@link MetaAiApiCapabilities}
    */
-  public void setBulkUpdates(@Nonnull final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
+  public void setBulkUpdates(@Nullable final MetaAiApiCapabilitiesBulkUpdates bulkUpdates) {
     this.bulkUpdates = bulkUpdates;
   }
 

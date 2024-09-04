@@ -44,7 +44,7 @@ public class FileDownload400Response
    * @return The same instance of this {@link FileDownload400Response} class
    */
   @Nonnull
-  public FileDownload400Response error(@Nonnull final DSetError error) {
+  public FileDownload400Response error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class FileDownload400Response
    *
    * @param error The error of this {@link FileDownload400Response}
    */
-  public void setError(@Nonnull final DSetError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 

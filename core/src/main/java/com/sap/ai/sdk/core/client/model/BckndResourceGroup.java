@@ -156,7 +156,7 @@ public class BckndResourceGroup
    * @return The same instance of this {@link BckndResourceGroup} class
    */
   @Nonnull
-  public BckndResourceGroup tenantId(@Nonnull final String tenantId) {
+  public BckndResourceGroup tenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
@@ -176,7 +176,7 @@ public class BckndResourceGroup
    *
    * @param tenantId tenant id
    */
-  public void setTenantId(@Nonnull final String tenantId) {
+  public void setTenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
@@ -187,7 +187,7 @@ public class BckndResourceGroup
    * @return The same instance of this {@link BckndResourceGroup} class
    */
   @Nonnull
-  public BckndResourceGroup zoneId(@Nonnull final String zoneId) {
+  public BckndResourceGroup zoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
@@ -207,7 +207,7 @@ public class BckndResourceGroup
    *
    * @param zoneId zone id
    */
-  public void setZoneId(@Nonnull final String zoneId) {
+  public void setZoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 
@@ -249,7 +249,7 @@ public class BckndResourceGroup
    * @return The same instance of this {@link BckndResourceGroup} class
    */
   @Nonnull
-  public BckndResourceGroup labels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  public BckndResourceGroup labels(@Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -284,7 +284,7 @@ public class BckndResourceGroup
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  public void setLabels(@Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 
@@ -326,7 +326,7 @@ public class BckndResourceGroup
    * @return The same instance of this {@link BckndResourceGroup} class
    */
   @Nonnull
-  public BckndResourceGroup statusMessage(@Nonnull final String statusMessage) {
+  public BckndResourceGroup statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -346,7 +346,7 @@ public class BckndResourceGroup
    *
    * @param statusMessage status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 

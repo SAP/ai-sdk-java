@@ -51,7 +51,7 @@ public class BckndResourceGroupBase
    * @return The same instance of this {@link BckndResourceGroupBase} class
    */
   @Nonnull
-  public BckndResourceGroupBase resourceGroupId(@Nonnull final String resourceGroupId) {
+  public BckndResourceGroupBase resourceGroupId(@Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
     return this;
   }
@@ -71,7 +71,7 @@ public class BckndResourceGroupBase
    *
    * @param resourceGroupId resource group id
    */
-  public void setResourceGroupId(@Nonnull final String resourceGroupId) {
+  public void setResourceGroupId(@Nullable final String resourceGroupId) {
     this.resourceGroupId = resourceGroupId;
   }
 
@@ -82,7 +82,7 @@ public class BckndResourceGroupBase
    * @return The same instance of this {@link BckndResourceGroupBase} class
    */
   @Nonnull
-  public BckndResourceGroupBase tenantId(@Nonnull final String tenantId) {
+  public BckndResourceGroupBase tenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
@@ -102,7 +102,7 @@ public class BckndResourceGroupBase
    *
    * @param tenantId tenant id
    */
-  public void setTenantId(@Nonnull final String tenantId) {
+  public void setTenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
@@ -113,7 +113,7 @@ public class BckndResourceGroupBase
    * @return The same instance of this {@link BckndResourceGroupBase} class
    */
   @Nonnull
-  public BckndResourceGroupBase zoneId(@Nonnull final String zoneId) {
+  public BckndResourceGroupBase zoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
@@ -133,7 +133,7 @@ public class BckndResourceGroupBase
    *
    * @param zoneId zone id
    */
-  public void setZoneId(@Nonnull final String zoneId) {
+  public void setZoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 

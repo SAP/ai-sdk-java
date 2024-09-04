@@ -46,7 +46,7 @@ public class BckndServiceServiceCatalogItemExtendCredentials
    */
   @Nonnull
   public BckndServiceServiceCatalogItemExtendCredentials shared(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsShared shared) {
+      @Nullable final BckndServiceServiceCatalogItemExtendCredentialsShared shared) {
     this.shared = shared;
     return this;
   }
@@ -68,7 +68,7 @@ public class BckndServiceServiceCatalogItemExtendCredentials
    * @param shared The shared of this {@link BckndServiceServiceCatalogItemExtendCredentials}
    */
   public void setShared(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsShared shared) {
+      @Nullable final BckndServiceServiceCatalogItemExtendCredentialsShared shared) {
     this.shared = shared;
   }
 

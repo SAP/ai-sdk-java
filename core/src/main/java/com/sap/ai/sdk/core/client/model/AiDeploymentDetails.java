@@ -50,7 +50,7 @@ public class AiDeploymentDetails
    * @return The same instance of this {@link AiDeploymentDetails} class
    */
   @Nonnull
-  public AiDeploymentDetails scaling(@Nonnull final AiScalingDetails scaling) {
+  public AiDeploymentDetails scaling(@Nullable final AiScalingDetails scaling) {
     this.scaling = scaling;
     return this;
   }
@@ -70,7 +70,7 @@ public class AiDeploymentDetails
    *
    * @param scaling The scaling of this {@link AiDeploymentDetails}
    */
-  public void setScaling(@Nonnull final AiScalingDetails scaling) {
+  public void setScaling(@Nullable final AiScalingDetails scaling) {
     this.scaling = scaling;
   }
 
@@ -81,7 +81,7 @@ public class AiDeploymentDetails
    * @return The same instance of this {@link AiDeploymentDetails} class
    */
   @Nonnull
-  public AiDeploymentDetails resources(@Nonnull final AiResourcesDetails resources) {
+  public AiDeploymentDetails resources(@Nullable final AiResourcesDetails resources) {
     this.resources = resources;
     return this;
   }
@@ -101,7 +101,7 @@ public class AiDeploymentDetails
    *
    * @param resources The resources of this {@link AiDeploymentDetails}
    */
-  public void setResources(@Nonnull final AiResourcesDetails resources) {
+  public void setResources(@Nullable final AiResourcesDetails resources) {
     this.resources = resources;
   }
 

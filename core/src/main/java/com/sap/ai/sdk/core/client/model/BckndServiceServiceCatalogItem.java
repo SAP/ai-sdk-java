@@ -49,7 +49,7 @@ public class BckndServiceServiceCatalogItem
    */
   @Nonnull
   public BckndServiceServiceCatalogItem extendCatalog(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
+      @Nullable final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
     this.extendCatalog = extendCatalog;
     return this;
   }
@@ -71,7 +71,7 @@ public class BckndServiceServiceCatalogItem
    * @param extendCatalog The extendCatalog of this {@link BckndServiceServiceCatalogItem}
    */
   public void setExtendCatalog(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
+      @Nullable final BckndServiceServiceCatalogItemExtendCatalog extendCatalog) {
     this.extendCatalog = extendCatalog;
   }
 
@@ -84,7 +84,7 @@ public class BckndServiceServiceCatalogItem
    */
   @Nonnull
   public BckndServiceServiceCatalogItem extendCredentials(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
+      @Nullable final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
     this.extendCredentials = extendCredentials;
     return this;
   }
@@ -106,7 +106,7 @@ public class BckndServiceServiceCatalogItem
    * @param extendCredentials The extendCredentials of this {@link BckndServiceServiceCatalogItem}
    */
   public void setExtendCredentials(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
+      @Nullable final BckndServiceServiceCatalogItemExtendCredentials extendCredentials) {
     this.extendCredentials = extendCredentials;
   }
 

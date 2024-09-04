@@ -217,7 +217,8 @@ public class AiExecutionResponseWithDetails
    * @return The same instance of this {@link AiExecutionResponseWithDetails} class
    */
   @Nonnull
-  public AiExecutionResponseWithDetails configurationName(@Nonnull final String configurationName) {
+  public AiExecutionResponseWithDetails configurationName(
+      @Nullable final String configurationName) {
     this.configurationName = configurationName;
     return this;
   }
@@ -238,7 +239,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param configurationName Name of the configuration
    */
-  public void setConfigurationName(@Nonnull final String configurationName) {
+  public void setConfigurationName(@Nullable final String configurationName) {
     this.configurationName = configurationName;
   }
 
@@ -250,7 +251,7 @@ public class AiExecutionResponseWithDetails
    * @return The same instance of this {@link AiExecutionResponseWithDetails} class
    */
   @Nonnull
-  public AiExecutionResponseWithDetails scenarioId(@Nonnull final String scenarioId) {
+  public AiExecutionResponseWithDetails scenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
@@ -270,7 +271,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param scenarioId ID of the scenario
    */
-  public void setScenarioId(@Nonnull final String scenarioId) {
+  public void setScenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
@@ -282,7 +283,8 @@ public class AiExecutionResponseWithDetails
    * @return The same instance of this {@link AiExecutionResponseWithDetails} class
    */
   @Nonnull
-  public AiExecutionResponseWithDetails targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  public AiExecutionResponseWithDetails targetStatus(
+      @Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
@@ -302,7 +304,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param targetStatus Target status of the execution
    */
-  public void setTargetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  public void setTargetStatus(@Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
 
@@ -346,7 +348,7 @@ public class AiExecutionResponseWithDetails
    * @return The same instance of this {@link AiExecutionResponseWithDetails} class
    */
   @Nonnull
-  public AiExecutionResponseWithDetails statusMessage(@Nonnull final String statusMessage) {
+  public AiExecutionResponseWithDetails statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -367,7 +369,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param statusMessage Execution status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -380,7 +382,7 @@ public class AiExecutionResponseWithDetails
    */
   @Nonnull
   public AiExecutionResponseWithDetails outputArtifacts(
-      @Nonnull final List<AiArtifact> outputArtifacts) {
+      @Nullable final List<AiArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
@@ -417,7 +419,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param outputArtifacts The outputArtifacts of this {@link AiExecutionResponseWithDetails}
    */
-  public void setOutputArtifacts(@Nonnull final List<AiArtifact> outputArtifacts) {
+  public void setOutputArtifacts(@Nullable final List<AiArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 
@@ -430,7 +432,7 @@ public class AiExecutionResponseWithDetails
    */
   @Nonnull
   public AiExecutionResponseWithDetails executionScheduleId(
-      @Nonnull final String executionScheduleId) {
+      @Nullable final String executionScheduleId) {
     this.executionScheduleId = executionScheduleId;
     return this;
   }
@@ -451,7 +453,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param executionScheduleId ID of the execution schedule
    */
-  public void setExecutionScheduleId(@Nonnull final String executionScheduleId) {
+  public void setExecutionScheduleId(@Nullable final String executionScheduleId) {
     this.executionScheduleId = executionScheduleId;
   }
 
@@ -528,7 +530,7 @@ public class AiExecutionResponseWithDetails
    */
   @Nonnull
   public AiExecutionResponseWithDetails submissionTime(
-      @Nonnull final OffsetDateTime submissionTime) {
+      @Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
     return this;
   }
@@ -549,7 +551,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param submissionTime Timestamp of job submitted
    */
-  public void setSubmissionTime(@Nonnull final OffsetDateTime submissionTime) {
+  public void setSubmissionTime(@Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
   }
 
@@ -561,7 +563,7 @@ public class AiExecutionResponseWithDetails
    * @return The same instance of this {@link AiExecutionResponseWithDetails} class
    */
   @Nonnull
-  public AiExecutionResponseWithDetails startTime(@Nonnull final OffsetDateTime startTime) {
+  public AiExecutionResponseWithDetails startTime(@Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
     return this;
   }
@@ -581,7 +583,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param startTime Timestamp of job status changed to RUNNING
    */
-  public void setStartTime(@Nonnull final OffsetDateTime startTime) {
+  public void setStartTime(@Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
   }
 
@@ -594,7 +596,7 @@ public class AiExecutionResponseWithDetails
    */
   @Nonnull
   public AiExecutionResponseWithDetails completionTime(
-      @Nonnull final OffsetDateTime completionTime) {
+      @Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
     return this;
   }
@@ -615,7 +617,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param completionTime Timestamp of job status changed to COMPLETED/DEAD/STOPPED
    */
-  public void setCompletionTime(@Nonnull final OffsetDateTime completionTime) {
+  public void setCompletionTime(@Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
   }
 
@@ -627,7 +629,7 @@ public class AiExecutionResponseWithDetails
    * @return The same instance of this {@link AiExecutionResponseWithDetails} class
    */
   @Nonnull
-  public AiExecutionResponseWithDetails statusDetails(@Nonnull final Object statusDetails) {
+  public AiExecutionResponseWithDetails statusDetails(@Nullable final Object statusDetails) {
     this.statusDetails = statusDetails;
     return this;
   }
@@ -648,7 +650,7 @@ public class AiExecutionResponseWithDetails
    *
    * @param statusDetails Current status details of the execution
    */
-  public void setStatusDetails(@Nonnull final Object statusDetails) {
+  public void setStatusDetails(@Nullable final Object statusDetails) {
     this.statusDetails = statusDetails;
   }
 

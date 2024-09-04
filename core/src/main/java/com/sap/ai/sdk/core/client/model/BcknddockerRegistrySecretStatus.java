@@ -48,7 +48,7 @@ public class BcknddockerRegistrySecretStatus
    * @return The same instance of this {@link BcknddockerRegistrySecretStatus} class
    */
   @Nonnull
-  public BcknddockerRegistrySecretStatus name(@Nonnull final String name) {
+  public BcknddockerRegistrySecretStatus name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -68,7 +68,7 @@ public class BcknddockerRegistrySecretStatus
    *
    * @param name Name of dockerRegistryStore
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 

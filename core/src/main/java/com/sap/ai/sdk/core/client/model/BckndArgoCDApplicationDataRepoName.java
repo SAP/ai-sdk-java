@@ -151,7 +151,8 @@ public class BckndArgoCDApplicationDataRepoName
    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
    */
   @Nonnull
-  public BckndArgoCDApplicationDataRepoName applicationName(@Nonnull final String applicationName) {
+  public BckndArgoCDApplicationDataRepoName applicationName(
+      @Nullable final String applicationName) {
     this.applicationName = applicationName;
     return this;
   }
@@ -172,7 +173,7 @@ public class BckndArgoCDApplicationDataRepoName
    *
    * @param applicationName ArgoCD application name
    */
-  public void setApplicationName(@Nonnull final String applicationName) {
+  public void setApplicationName(@Nullable final String applicationName) {
     this.applicationName = applicationName;
   }
 

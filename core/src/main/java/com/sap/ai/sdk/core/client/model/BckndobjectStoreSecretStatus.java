@@ -52,7 +52,7 @@ public class BckndobjectStoreSecretStatus
    */
   @Nonnull
   public BckndobjectStoreSecretStatus metadata(
-      @Nonnull final BckndobjectStoreSecretStatusMetadata metadata) {
+      @Nullable final BckndobjectStoreSecretStatusMetadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -72,7 +72,7 @@ public class BckndobjectStoreSecretStatus
    *
    * @param metadata The metadata of this {@link BckndobjectStoreSecretStatus}
    */
-  public void setMetadata(@Nonnull final BckndobjectStoreSecretStatusMetadata metadata) {
+  public void setMetadata(@Nullable final BckndobjectStoreSecretStatusMetadata metadata) {
     this.metadata = metadata;
   }
 
@@ -84,7 +84,7 @@ public class BckndobjectStoreSecretStatus
    * @return The same instance of this {@link BckndobjectStoreSecretStatus} class
    */
   @Nonnull
-  public BckndobjectStoreSecretStatus name(@Nonnull final String name) {
+  public BckndobjectStoreSecretStatus name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -104,7 +104,7 @@ public class BckndobjectStoreSecretStatus
    *
    * @param name Name of objectstore
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 

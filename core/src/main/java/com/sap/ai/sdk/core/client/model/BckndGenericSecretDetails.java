@@ -47,7 +47,7 @@ public class BckndGenericSecretDetails
    * @return The same instance of this {@link BckndGenericSecretDetails} class
    */
   @Nonnull
-  public BckndGenericSecretDetails name(@Nonnull final String name) {
+  public BckndGenericSecretDetails name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -67,7 +67,7 @@ public class BckndGenericSecretDetails
    *
    * @param name Name of the secret
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
@@ -79,7 +79,7 @@ public class BckndGenericSecretDetails
    * @return The same instance of this {@link BckndGenericSecretDetails} class
    */
   @Nonnull
-  public BckndGenericSecretDetails createdAt(@Nonnull final String createdAt) {
+  public BckndGenericSecretDetails createdAt(@Nullable final String createdAt) {
     this.createdAt = createdAt;
     return this;
   }
@@ -99,7 +99,7 @@ public class BckndGenericSecretDetails
    *
    * @param createdAt Timestamp at which secret was created
    */
-  public void setCreatedAt(@Nonnull final String createdAt) {
+  public void setCreatedAt(@Nullable final String createdAt) {
     this.createdAt = createdAt;
   }
 

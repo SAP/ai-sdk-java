@@ -96,7 +96,7 @@ public class AiScenario
    * @return The same instance of this {@link AiScenario} class
    */
   @Nonnull
-  public AiScenario description(@Nonnull final String description) {
+  public AiScenario description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -116,7 +116,7 @@ public class AiScenario
    *
    * @param description Description of the scenario
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -127,7 +127,7 @@ public class AiScenario
    * @return The same instance of this {@link AiScenario} class
    */
   @Nonnull
-  public AiScenario labels(@Nonnull final List<AiScenarioLabel> labels) {
+  public AiScenario labels(@Nullable final List<AiScenarioLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -162,7 +162,7 @@ public class AiScenario
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<AiScenarioLabel> labels) {
+  public void setLabels(@Nullable final List<AiScenarioLabel> labels) {
     this.labels = labels;
   }
 

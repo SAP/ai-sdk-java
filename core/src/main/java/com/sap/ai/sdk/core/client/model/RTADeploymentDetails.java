@@ -47,7 +47,7 @@ public class RTADeploymentDetails
    * @return The same instance of this {@link RTADeploymentDetails} class
    */
   @Nonnull
-  public RTADeploymentDetails scaling(@Nonnull final RTABackendDetails scaling) {
+  public RTADeploymentDetails scaling(@Nullable final RTABackendDetails scaling) {
     this.scaling = scaling;
     return this;
   }
@@ -67,7 +67,7 @@ public class RTADeploymentDetails
    *
    * @param scaling The scaling of this {@link RTADeploymentDetails}
    */
-  public void setScaling(@Nonnull final RTABackendDetails scaling) {
+  public void setScaling(@Nullable final RTABackendDetails scaling) {
     this.scaling = scaling;
   }
 
@@ -78,7 +78,7 @@ public class RTADeploymentDetails
    * @return The same instance of this {@link RTADeploymentDetails} class
    */
   @Nonnull
-  public RTADeploymentDetails resources(@Nonnull final RTABackendDetails resources) {
+  public RTADeploymentDetails resources(@Nullable final RTABackendDetails resources) {
     this.resources = resources;
     return this;
   }
@@ -98,7 +98,7 @@ public class RTADeploymentDetails
    *
    * @param resources The resources of this {@link RTADeploymentDetails}
    */
-  public void setResources(@Nonnull final RTABackendDetails resources) {
+  public void setResources(@Nullable final RTABackendDetails resources) {
     this.resources = resources;
   }
 

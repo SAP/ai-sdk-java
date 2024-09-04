@@ -157,7 +157,7 @@ public class TrckGetMetric
    * @return The same instance of this {@link TrckGetMetric} class
    */
   @Nonnull
-  public TrckGetMetric step(@Nonnull final Integer step) {
+  public TrckGetMetric step(@Nullable final Integer step) {
     this.step = step;
     return this;
   }
@@ -179,7 +179,7 @@ public class TrckGetMetric
    * @param step step is an optional integer that represents any measurement of training progress
    *     (number of training iterations, number of epochs, and so on) for the metric Minimum: 0
    */
-  public void setStep(@Nonnull final Integer step) {
+  public void setStep(@Nullable final Integer step) {
     this.step = step;
   }
 
@@ -190,7 +190,7 @@ public class TrckGetMetric
    * @return The same instance of this {@link TrckGetMetric} class
    */
   @Nonnull
-  public TrckGetMetric labels(@Nonnull final List<TrckLabel> labels) {
+  public TrckGetMetric labels(@Nullable final List<TrckLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -225,7 +225,7 @@ public class TrckGetMetric
    *
    * @param labels a list of name-value object pairs associated with some metric.
    */
-  public void setLabels(@Nonnull final List<TrckLabel> labels) {
+  public void setLabels(@Nullable final List<TrckLabel> labels) {
     this.labels = labels;
   }
 

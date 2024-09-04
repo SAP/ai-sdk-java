@@ -120,7 +120,7 @@ public class TrckApiError
    * @return The same instance of this {@link TrckApiError} class
    */
   @Nonnull
-  public TrckApiError requestId(@Nonnull final String requestId) {
+  public TrckApiError requestId(@Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -140,7 +140,7 @@ public class TrckApiError
    *
    * @param requestId id of individual request
    */
-  public void setRequestId(@Nonnull final String requestId) {
+  public void setRequestId(@Nullable final String requestId) {
     this.requestId = requestId;
   }
 
@@ -151,7 +151,7 @@ public class TrckApiError
    * @return The same instance of this {@link TrckApiError} class
    */
   @Nonnull
-  public TrckApiError target(@Nonnull final String target) {
+  public TrckApiError target(@Nullable final String target) {
     this.target = target;
     return this;
   }
@@ -171,7 +171,7 @@ public class TrckApiError
    *
    * @param target url that has been called
    */
-  public void setTarget(@Nonnull final String target) {
+  public void setTarget(@Nullable final String target) {
     this.target = target;
   }
 
@@ -182,7 +182,7 @@ public class TrckApiError
    * @return The same instance of this {@link TrckApiError} class
    */
   @Nonnull
-  public TrckApiError details(@Nonnull final List<TrckDetailsErrorResponse> details) {
+  public TrckApiError details(@Nullable final List<TrckDetailsErrorResponse> details) {
     this.details = details;
     return this;
   }
@@ -217,7 +217,7 @@ public class TrckApiError
    *
    * @param details The details of this {@link TrckApiError}
    */
-  public void setDetails(@Nonnull final List<TrckDetailsErrorResponse> details) {
+  public void setDetails(@Nullable final List<TrckDetailsErrorResponse> details) {
     this.details = details;
   }
 

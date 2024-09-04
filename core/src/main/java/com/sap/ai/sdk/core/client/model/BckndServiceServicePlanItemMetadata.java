@@ -107,7 +107,7 @@ public class BckndServiceServicePlanItemMetadata
    */
   @Nonnull
   public BckndServiceServicePlanItemMetadata supportedPlatforms(
-      @Nonnull final List<SupportedPlatformsEnum> supportedPlatforms) {
+      @Nullable final List<SupportedPlatformsEnum> supportedPlatforms) {
     this.supportedPlatforms = supportedPlatforms;
     return this;
   }
@@ -145,7 +145,7 @@ public class BckndServiceServicePlanItemMetadata
    * @param supportedPlatforms supported platforms of the service plan
    */
   public void setSupportedPlatforms(
-      @Nonnull final List<SupportedPlatformsEnum> supportedPlatforms) {
+      @Nullable final List<SupportedPlatformsEnum> supportedPlatforms) {
     this.supportedPlatforms = supportedPlatforms;
   }
 

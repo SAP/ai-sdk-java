@@ -110,7 +110,7 @@ public class BckndArgoCDRepositoryDetails
    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
    */
   @Nonnull
-  public BckndArgoCDRepositoryDetails name(@Nonnull final String name) {
+  public BckndArgoCDRepositoryDetails name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -130,7 +130,7 @@ public class BckndArgoCDRepositoryDetails
    *
    * @param name The name of the repository
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
@@ -141,7 +141,7 @@ public class BckndArgoCDRepositoryDetails
    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
    */
   @Nonnull
-  public BckndArgoCDRepositoryDetails url(@Nonnull final String url) {
+  public BckndArgoCDRepositoryDetails url(@Nullable final String url) {
     this.url = url;
     return this;
   }
@@ -161,7 +161,7 @@ public class BckndArgoCDRepositoryDetails
    *
    * @param url The repository URL
    */
-  public void setUrl(@Nonnull final String url) {
+  public void setUrl(@Nullable final String url) {
     this.url = url;
   }
 
@@ -173,7 +173,7 @@ public class BckndArgoCDRepositoryDetails
    * @return The same instance of this {@link BckndArgoCDRepositoryDetails} class
    */
   @Nonnull
-  public BckndArgoCDRepositoryDetails status(@Nonnull final StatusEnum status) {
+  public BckndArgoCDRepositoryDetails status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -193,7 +193,7 @@ public class BckndArgoCDRepositoryDetails
    *
    * @param status The status of the repository&#39;s on-boarding
    */
-  public void setStatus(@Nonnull final StatusEnum status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 

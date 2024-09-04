@@ -52,7 +52,7 @@ public class AiDeploymentModificationRequest
    */
   @Nonnull
   public AiDeploymentModificationRequest targetStatus(
-      @Nonnull final AiDeploymentTargetStatus targetStatus) {
+      @Nullable final AiDeploymentTargetStatus targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
@@ -72,7 +72,7 @@ public class AiDeploymentModificationRequest
    *
    * @param targetStatus The targetStatus of this {@link AiDeploymentModificationRequest}
    */
-  public void setTargetStatus(@Nonnull final AiDeploymentTargetStatus targetStatus) {
+  public void setTargetStatus(@Nullable final AiDeploymentTargetStatus targetStatus) {
     this.targetStatus = targetStatus;
   }
 
@@ -84,7 +84,7 @@ public class AiDeploymentModificationRequest
    * @return The same instance of this {@link AiDeploymentModificationRequest} class
    */
   @Nonnull
-  public AiDeploymentModificationRequest configurationId(@Nonnull final String configurationId) {
+  public AiDeploymentModificationRequest configurationId(@Nullable final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
@@ -105,7 +105,7 @@ public class AiDeploymentModificationRequest
    *
    * @param configurationId ID of the configuration
    */
-  public void setConfigurationId(@Nonnull final String configurationId) {
+  public void setConfigurationId(@Nullable final String configurationId) {
     this.configurationId = configurationId;
   }
 

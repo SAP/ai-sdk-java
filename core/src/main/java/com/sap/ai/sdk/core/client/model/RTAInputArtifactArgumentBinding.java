@@ -120,7 +120,7 @@ public class RTAInputArtifactArgumentBinding
    * @return The same instance of this {@link RTAInputArtifactArgumentBinding} class
    */
   @Nonnull
-  public RTAInputArtifactArgumentBinding signature(@Nonnull final String signature) {
+  public RTAInputArtifactArgumentBinding signature(@Nullable final String signature) {
     this.signature = signature;
     return this;
   }
@@ -140,7 +140,7 @@ public class RTAInputArtifactArgumentBinding
    *
    * @param signature The signature of this {@link RTAInputArtifactArgumentBinding}
    */
-  public void setSignature(@Nonnull final String signature) {
+  public void setSignature(@Nullable final String signature) {
     this.signature = signature;
   }
 

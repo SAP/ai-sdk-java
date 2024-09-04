@@ -411,20 +411,21 @@ final var template =
             "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
 final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-final var filterStrict =
-    Filter.create()
-        .type(ProviderType.AZURE_CONTENT_SAFETY)
+final var filterStrict = 
+    FilterConfig.create()
+        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            FilterConfig.create()
+            AzureContentSafety.create()
                 .hate(NUMBER_0)
                 .selfHarm(NUMBER_0)
                 .sexual(NUMBER_0)
                 .violence(NUMBER_0));
+
 final var filterLoose =
-    Filter.create()
-        .type(ProviderType.AZURE_CONTENT_SAFETY)
+    FilterConfig.create()
+        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            FilterConfig.create()
+            AzureContentSafety.create()
                 .hate(NUMBER_4)
                 .selfHarm(NUMBER_4)
                 .sexual(NUMBER_4)

@@ -48,7 +48,8 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
    */
   @Nonnull
   public BckndServiceServiceCatalogItemExtendCredentialsShared serviceUrls(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
+      @Nullable
+          final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
     this.serviceUrls = serviceUrls;
     return this;
   }
@@ -72,7 +73,8 @@ public class BckndServiceServiceCatalogItemExtendCredentialsShared
    *     BckndServiceServiceCatalogItemExtendCredentialsShared}
    */
   public void setServiceUrls(
-      @Nonnull final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
+      @Nullable
+          final BckndServiceServiceCatalogItemExtendCredentialsSharedServiceUrls serviceUrls) {
     this.serviceUrls = serviceUrls;
   }
 

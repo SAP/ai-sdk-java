@@ -48,7 +48,7 @@ public class BckndGenericSecretDataResponse
    * @return The same instance of this {@link BckndGenericSecretDataResponse} class
    */
   @Nonnull
-  public BckndGenericSecretDataResponse message(@Nonnull final String message) {
+  public BckndGenericSecretDataResponse message(@Nullable final String message) {
     this.message = message;
     return this;
   }
@@ -68,7 +68,7 @@ public class BckndGenericSecretDataResponse
    *
    * @param message Message
    */
-  public void setMessage(@Nonnull final String message) {
+  public void setMessage(@Nullable final String message) {
     this.message = message;
   }
 
@@ -80,7 +80,7 @@ public class BckndGenericSecretDataResponse
    * @return The same instance of this {@link BckndGenericSecretDataResponse} class
    */
   @Nonnull
-  public BckndGenericSecretDataResponse name(@Nonnull final String name) {
+  public BckndGenericSecretDataResponse name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -100,7 +100,7 @@ public class BckndGenericSecretDataResponse
    *
    * @param name Name
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
