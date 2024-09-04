@@ -208,8 +208,8 @@ final OpenAiChatCompletionOutput result =
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
-#### Print the stream to the console
-This is a simple example to get started:
+#### Stream the chat completion asynchronously
+This is a blocking example for streaming and printing directly to the console:
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
@@ -221,13 +221,18 @@ OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
 try( Stream<String> stream = client.streamChatCompletion(request)) {
-  stream.forEach(deltaString -> System.out.println(deltaString));
+    stream.forEach(deltaString -> {
+        System.out.print(deltaString);
+        System.out.flush();
+    });
 }
 ```
 
 <details>
-<summary>It's also possible to collect the total output</summary>
-<pre>
+<summary>It's also possible to aggregate the total output.</summary>
+
+The following example is non-blocking.
+Any asynchronous library can be used, e.g. classic Thread API.
 
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
@@ -239,40 +244,25 @@ OpenAiChatCompletionParameters request =
 OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
-// try-with-resources on stream ensures the connection will be closed
-try( Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
-    stream.peek(totalOutput::addDelta).forEach(deltaObject -> System.out.println(deltaObject));
-}
+// Do the request before the thread starts to handle exceptions during request initialization 
+Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
 
-// access aggregated information from total output, e.g.
-System.out.println("Tokens: " + totalOutput.getUsage().getCompletionTokens());
-```
-</pre>
-</details>
-
-#### Framework-agnostic example
-This example passes the stream of chat completion delta messages to a generic `Consumer<String>`.
-```java
-Consumer<String> emit;
-
-String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
-
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
-
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
-// Do the request before the thread to easily throw errors
-Stream<String> stream = client.streamChatCompletion(request);
-
-ThreadContextExecutors.getExecutor().execute(() -> {
+Thread thread = new Thread(() -> {
     // try-with-resources ensures the stream is closed
     try (stream) {
-        // send is defined by your framework
-        stream.forEach(delta -> emit.accept(delta));
+        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
     }
 });
+thread.start(); // non-blocking
+
+thread.join(); // blocking
+
+// access aggregated information from total output, e.g.
+Integer tokens = totalOutput.getUsage().getCompletionTokens();
+System.out.println("Tokens: " + tokens);
 ```
+
+</details>
 
 #### Spring Boot example
 
