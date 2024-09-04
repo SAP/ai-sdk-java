@@ -120,7 +120,7 @@ public class AiDeploymentCreationResponse
    * @return The same instance of this {@link AiDeploymentCreationResponse} class
    */
   @Nonnull
-  public AiDeploymentCreationResponse deploymentUrl(@Nonnull final String deploymentUrl) {
+  public AiDeploymentCreationResponse deploymentUrl(@Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
     return this;
   }
@@ -140,7 +140,7 @@ public class AiDeploymentCreationResponse
    *
    * @param deploymentUrl Consumption URL of the deployment
    */
-  public void setDeploymentUrl(@Nonnull final String deploymentUrl) {
+  public void setDeploymentUrl(@Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
   }
 
@@ -152,7 +152,7 @@ public class AiDeploymentCreationResponse
    * @return The same instance of this {@link AiDeploymentCreationResponse} class
    */
   @Nonnull
-  public AiDeploymentCreationResponse status(@Nonnull final AiExecutionStatus status) {
+  public AiDeploymentCreationResponse status(@Nullable final AiExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -172,7 +172,7 @@ public class AiDeploymentCreationResponse
    *
    * @param status The status of this {@link AiDeploymentCreationResponse}
    */
-  public void setStatus(@Nonnull final AiExecutionStatus status) {
+  public void setStatus(@Nullable final AiExecutionStatus status) {
     this.status = status;
   }
 
@@ -184,7 +184,7 @@ public class AiDeploymentCreationResponse
    * @return The same instance of this {@link AiDeploymentCreationResponse} class
    */
   @Nonnull
-  public AiDeploymentCreationResponse ttl(@Nonnull final String ttl) {
+  public AiDeploymentCreationResponse ttl(@Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
@@ -195,7 +195,7 @@ public class AiDeploymentCreationResponse
    *
    * @return ttl The ttl of this {@link AiDeploymentCreationResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public String getTtl() {
     return ttl;
   }
@@ -206,7 +206,7 @@ public class AiDeploymentCreationResponse
    * @param ttl Time to live for a deployment. Its value can be either null or a number followed by
    *     the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
    */
-  public void setTtl(@Nonnull final String ttl) {
+  public void setTtl(@Nullable final String ttl) {
     this.ttl = ttl;
   }
 

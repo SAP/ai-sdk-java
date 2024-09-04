@@ -60,7 +60,7 @@ public class KpiResultSet
    * @return The same instance of this {@link KpiResultSet} class
    */
   @Nonnull
-  public KpiResultSet rows(@Nonnull final List<List<KpiResultRowItem>> rows) {
+  public KpiResultSet rows(@Nullable final List<List<KpiResultRowItem>> rows) {
     this.rows = rows;
     return this;
   }
@@ -95,7 +95,7 @@ public class KpiResultSet
    *
    * @param rows The rows of this {@link KpiResultSet}
    */
-  public void setRows(@Nonnull final List<List<KpiResultRowItem>> rows) {
+  public void setRows(@Nullable final List<List<KpiResultRowItem>> rows) {
     this.rows = rows;
   }
 

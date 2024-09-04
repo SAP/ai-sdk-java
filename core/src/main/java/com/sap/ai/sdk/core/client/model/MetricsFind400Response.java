@@ -44,7 +44,7 @@ public class MetricsFind400Response
    * @return The same instance of this {@link MetricsFind400Response} class
    */
   @Nonnull
-  public MetricsFind400Response error(@Nonnull final TrckApiError error) {
+  public MetricsFind400Response error(@Nullable final TrckApiError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class MetricsFind400Response
    *
    * @param error The error of this {@link MetricsFind400Response}
    */
-  public void setError(@Nonnull final TrckApiError error) {
+  public void setError(@Nullable final TrckApiError error) {
     this.error = error;
   }
 

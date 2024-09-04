@@ -163,7 +163,7 @@ public class AiConfiguration
    */
   @Nonnull
   public AiConfiguration parameterBindings(
-      @Nonnull final List<AiParameterArgumentBinding> parameterBindings) {
+      @Nullable final List<AiParameterArgumentBinding> parameterBindings) {
     this.parameterBindings = parameterBindings;
     return this;
   }
@@ -200,7 +200,7 @@ public class AiConfiguration
    * @param parameterBindings The parameterBindings of this {@link AiConfiguration}
    */
   public void setParameterBindings(
-      @Nonnull final List<AiParameterArgumentBinding> parameterBindings) {
+      @Nullable final List<AiParameterArgumentBinding> parameterBindings) {
     this.parameterBindings = parameterBindings;
   }
 
@@ -213,7 +213,7 @@ public class AiConfiguration
    */
   @Nonnull
   public AiConfiguration inputArtifactBindings(
-      @Nonnull final List<AiArtifactArgumentBinding> inputArtifactBindings) {
+      @Nullable final List<AiArtifactArgumentBinding> inputArtifactBindings) {
     this.inputArtifactBindings = inputArtifactBindings;
     return this;
   }
@@ -251,7 +251,7 @@ public class AiConfiguration
    * @param inputArtifactBindings The inputArtifactBindings of this {@link AiConfiguration}
    */
   public void setInputArtifactBindings(
-      @Nonnull final List<AiArtifactArgumentBinding> inputArtifactBindings) {
+      @Nullable final List<AiArtifactArgumentBinding> inputArtifactBindings) {
     this.inputArtifactBindings = inputArtifactBindings;
   }
 
@@ -324,7 +324,7 @@ public class AiConfiguration
    * @return The same instance of this {@link AiConfiguration} class
    */
   @Nonnull
-  public AiConfiguration scenario(@Nonnull final AiScenario scenario) {
+  public AiConfiguration scenario(@Nullable final AiScenario scenario) {
     this.scenario = scenario;
     return this;
   }
@@ -334,7 +334,7 @@ public class AiConfiguration
    *
    * @return scenario The scenario of this {@link AiConfiguration} instance.
    */
-  @Nonnull
+  @Nullable
   public AiScenario getScenario() {
     return scenario;
   }
@@ -344,7 +344,7 @@ public class AiConfiguration
    *
    * @param scenario The scenario of this {@link AiConfiguration}
    */
-  public void setScenario(@Nonnull final AiScenario scenario) {
+  public void setScenario(@Nullable final AiScenario scenario) {
     this.scenario = scenario;
   }
 

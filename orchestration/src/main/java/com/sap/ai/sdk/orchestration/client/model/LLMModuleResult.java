@@ -190,7 +190,7 @@ public class LLMModuleResult
    * @return The same instance of this {@link LLMModuleResult} class
    */
   @Nonnull
-  public LLMModuleResult systemFingerprint(@Nonnull final String systemFingerprint) {
+  public LLMModuleResult systemFingerprint(@Nullable final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
     return this;
   }
@@ -210,7 +210,7 @@ public class LLMModuleResult
    *
    * @param systemFingerprint System fingerprint
    */
-  public void setSystemFingerprint(@Nonnull final String systemFingerprint) {
+  public void setSystemFingerprint(@Nullable final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
   }
 

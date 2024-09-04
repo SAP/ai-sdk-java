@@ -47,7 +47,7 @@ public class TrckDeleteMetricsResponse
    * @return The same instance of this {@link TrckDeleteMetricsResponse} class
    */
   @Nonnull
-  public TrckDeleteMetricsResponse id(@Nonnull final TrckExecutionId id) {
+  public TrckDeleteMetricsResponse id(@Nullable final TrckExecutionId id) {
     this.id = id;
     return this;
   }
@@ -67,7 +67,7 @@ public class TrckDeleteMetricsResponse
    *
    * @param id The id of this {@link TrckDeleteMetricsResponse}
    */
-  public void setId(@Nonnull final TrckExecutionId id) {
+  public void setId(@Nullable final TrckExecutionId id) {
     this.id = id;
   }
 
@@ -79,7 +79,7 @@ public class TrckDeleteMetricsResponse
    * @return The same instance of this {@link TrckDeleteMetricsResponse} class
    */
   @Nonnull
-  public TrckDeleteMetricsResponse message(@Nonnull final String message) {
+  public TrckDeleteMetricsResponse message(@Nullable final String message) {
     this.message = message;
     return this;
   }
@@ -99,7 +99,7 @@ public class TrckDeleteMetricsResponse
    *
    * @param message The message of this {@link TrckDeleteMetricsResponse}
    */
-  public void setMessage(@Nonnull final String message) {
+  public void setMessage(@Nullable final String message) {
     this.message = message;
   }
 

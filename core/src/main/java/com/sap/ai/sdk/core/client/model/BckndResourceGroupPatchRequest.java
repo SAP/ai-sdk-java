@@ -48,7 +48,7 @@ public class BckndResourceGroupPatchRequest
    */
   @Nonnull
   public BckndResourceGroupPatchRequest labels(
-      @Nonnull final List<BckndResourceGroupLabel> labels) {
+      @Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -84,7 +84,7 @@ public class BckndResourceGroupPatchRequest
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<BckndResourceGroupLabel> labels) {
+  public void setLabels(@Nullable final List<BckndResourceGroupLabel> labels) {
     this.labels = labels;
   }
 

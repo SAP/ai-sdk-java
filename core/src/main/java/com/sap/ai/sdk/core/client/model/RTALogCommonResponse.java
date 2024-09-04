@@ -44,7 +44,7 @@ public class RTALogCommonResponse
    * @return The same instance of this {@link RTALogCommonResponse} class
    */
   @Nonnull
-  public RTALogCommonResponse data(@Nonnull final RTALogCommonData data) {
+  public RTALogCommonResponse data(@Nullable final RTALogCommonData data) {
     this.data = data;
     return this;
   }
@@ -64,7 +64,7 @@ public class RTALogCommonResponse
    *
    * @param data The data of this {@link RTALogCommonResponse}
    */
-  public void setData(@Nonnull final RTALogCommonData data) {
+  public void setData(@Nullable final RTALogCommonData data) {
     this.data = data;
   }
 

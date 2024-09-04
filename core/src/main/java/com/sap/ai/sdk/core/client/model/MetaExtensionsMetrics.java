@@ -80,7 +80,7 @@ public class MetaExtensionsMetrics
    */
   @Nonnull
   public MetaExtensionsMetrics capabilities(
-      @Nonnull final MetaExtensionsMetricsCapabilities capabilities) {
+      @Nullable final MetaExtensionsMetricsCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
@@ -100,7 +100,7 @@ public class MetaExtensionsMetrics
    *
    * @param capabilities The capabilities of this {@link MetaExtensionsMetrics}
    */
-  public void setCapabilities(@Nonnull final MetaExtensionsMetricsCapabilities capabilities) {
+  public void setCapabilities(@Nullable final MetaExtensionsMetricsCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 

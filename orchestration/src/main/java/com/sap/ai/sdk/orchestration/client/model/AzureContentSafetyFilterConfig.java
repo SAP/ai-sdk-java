@@ -133,7 +133,7 @@ public class AzureContentSafetyFilterConfig
    * @return The same instance of this {@link AzureContentSafetyFilterConfig} class
    */
   @Nonnull
-  public AzureContentSafetyFilterConfig config(@Nonnull final AzureContentSafety config) {
+  public AzureContentSafetyFilterConfig config(@Nullable final AzureContentSafety config) {
     this.config = config;
     return this;
   }
@@ -153,7 +153,7 @@ public class AzureContentSafetyFilterConfig
    *
    * @param config The config of this {@link AzureContentSafetyFilterConfig}
    */
-  public void setConfig(@Nonnull final AzureContentSafety config) {
+  public void setConfig(@Nullable final AzureContentSafety config) {
     this.config = config;
   }
 

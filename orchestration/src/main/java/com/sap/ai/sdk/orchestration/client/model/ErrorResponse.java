@@ -180,7 +180,7 @@ public class ErrorResponse
    * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
+  public ErrorResponse moduleResults(@Nullable final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -200,7 +200,7 @@ public class ErrorResponse
    *
    * @param moduleResults The moduleResults of this {@link ErrorResponse}
    */
-  public void setModuleResults(@Nonnull final ModuleResults moduleResults) {
+  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 

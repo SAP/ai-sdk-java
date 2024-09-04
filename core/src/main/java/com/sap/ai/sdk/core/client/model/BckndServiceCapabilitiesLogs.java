@@ -48,7 +48,7 @@ public class BckndServiceCapabilitiesLogs
    * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
    */
   @Nonnull
-  public BckndServiceCapabilitiesLogs deployments(@Nonnull final Boolean deployments) {
+  public BckndServiceCapabilitiesLogs deployments(@Nullable final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -68,7 +68,7 @@ public class BckndServiceCapabilitiesLogs
    *
    * @param deployments The deployments of this {@link BckndServiceCapabilitiesLogs}
    */
-  public void setDeployments(@Nonnull final Boolean deployments) {
+  public void setDeployments(@Nullable final Boolean deployments) {
     this.deployments = deployments;
   }
 
@@ -80,7 +80,7 @@ public class BckndServiceCapabilitiesLogs
    * @return The same instance of this {@link BckndServiceCapabilitiesLogs} class
    */
   @Nonnull
-  public BckndServiceCapabilitiesLogs executions(@Nonnull final Boolean executions) {
+  public BckndServiceCapabilitiesLogs executions(@Nullable final Boolean executions) {
     this.executions = executions;
     return this;
   }
@@ -100,7 +100,7 @@ public class BckndServiceCapabilitiesLogs
    *
    * @param executions The executions of this {@link BckndServiceCapabilitiesLogs}
    */
-  public void setExecutions(@Nonnull final Boolean executions) {
+  public void setExecutions(@Nullable final Boolean executions) {
     this.executions = executions;
   }
 

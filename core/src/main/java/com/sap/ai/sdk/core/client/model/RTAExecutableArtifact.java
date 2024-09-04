@@ -87,7 +87,7 @@ public class RTAExecutableArtifact
    * @return The same instance of this {@link RTAExecutableArtifact} class
    */
   @Nonnull
-  public RTAExecutableArtifact description(@Nonnull final String description) {
+  public RTAExecutableArtifact description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -107,7 +107,7 @@ public class RTAExecutableArtifact
    *
    * @param description Description of the signature argument
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -118,7 +118,7 @@ public class RTAExecutableArtifact
    * @return The same instance of this {@link RTAExecutableArtifact} class
    */
   @Nonnull
-  public RTAExecutableArtifact kind(@Nonnull final String kind) {
+  public RTAExecutableArtifact kind(@Nullable final String kind) {
     this.kind = kind;
     return this;
   }
@@ -138,7 +138,7 @@ public class RTAExecutableArtifact
    *
    * @param kind Kind of the artifact, i.e. model or dataset
    */
-  public void setKind(@Nonnull final String kind) {
+  public void setKind(@Nullable final String kind) {
     this.kind = kind;
   }
 
@@ -149,7 +149,7 @@ public class RTAExecutableArtifact
    * @return The same instance of this {@link RTAExecutableArtifact} class
    */
   @Nonnull
-  public RTAExecutableArtifact labels(@Nonnull final List<RTAArtifactLabel> labels) {
+  public RTAExecutableArtifact labels(@Nullable final List<RTAArtifactLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -184,7 +184,7 @@ public class RTAExecutableArtifact
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<RTAArtifactLabel> labels) {
+  public void setLabels(@Nullable final List<RTAArtifactLabel> labels) {
     this.labels = labels;
   }
 

@@ -112,7 +112,7 @@ public class LLMModuleConfig
    * @return The same instance of this {@link LLMModuleConfig} class
    */
   @Nonnull
-  public LLMModuleConfig modelVersion(@Nonnull final String modelVersion) {
+  public LLMModuleConfig modelVersion(@Nullable final String modelVersion) {
     this.modelVersion = modelVersion;
     return this;
   }
@@ -132,7 +132,7 @@ public class LLMModuleConfig
    *
    * @param modelVersion Version of the model to use
    */
-  public void setModelVersion(@Nonnull final String modelVersion) {
+  public void setModelVersion(@Nullable final String modelVersion) {
     this.modelVersion = modelVersion;
   }
 

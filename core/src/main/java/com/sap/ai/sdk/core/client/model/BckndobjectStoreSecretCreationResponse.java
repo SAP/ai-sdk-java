@@ -45,7 +45,7 @@ public class BckndobjectStoreSecretCreationResponse
    * @return The same instance of this {@link BckndobjectStoreSecretCreationResponse} class
    */
   @Nonnull
-  public BckndobjectStoreSecretCreationResponse message(@Nonnull final String message) {
+  public BckndobjectStoreSecretCreationResponse message(@Nullable final String message) {
     this.message = message;
     return this;
   }
@@ -65,7 +65,7 @@ public class BckndobjectStoreSecretCreationResponse
    *
    * @param message Message
    */
-  public void setMessage(@Nonnull final String message) {
+  public void setMessage(@Nullable final String message) {
     this.message = message;
   }
 

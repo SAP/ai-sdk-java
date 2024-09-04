@@ -50,7 +50,7 @@ public class BckndExecutableResourceQuotaResponseUsage
    */
   @Nonnull
   public BckndExecutableResourceQuotaResponseUsage servingTemplateCount(
-      @Nonnull final Integer servingTemplateCount) {
+      @Nullable final Integer servingTemplateCount) {
     this.servingTemplateCount = servingTemplateCount;
     return this;
   }
@@ -73,7 +73,7 @@ public class BckndExecutableResourceQuotaResponseUsage
    * @param servingTemplateCount The servingTemplateCount of this {@link
    *     BckndExecutableResourceQuotaResponseUsage}
    */
-  public void setServingTemplateCount(@Nonnull final Integer servingTemplateCount) {
+  public void setServingTemplateCount(@Nullable final Integer servingTemplateCount) {
     this.servingTemplateCount = servingTemplateCount;
   }
 
@@ -87,7 +87,7 @@ public class BckndExecutableResourceQuotaResponseUsage
    */
   @Nonnull
   public BckndExecutableResourceQuotaResponseUsage workflowTemplateCount(
-      @Nonnull final Integer workflowTemplateCount) {
+      @Nullable final Integer workflowTemplateCount) {
     this.workflowTemplateCount = workflowTemplateCount;
     return this;
   }
@@ -110,7 +110,7 @@ public class BckndExecutableResourceQuotaResponseUsage
    * @param workflowTemplateCount The workflowTemplateCount of this {@link
    *     BckndExecutableResourceQuotaResponseUsage}
    */
-  public void setWorkflowTemplateCount(@Nonnull final Integer workflowTemplateCount) {
+  public void setWorkflowTemplateCount(@Nullable final Integer workflowTemplateCount) {
     this.workflowTemplateCount = workflowTemplateCount;
   }
 

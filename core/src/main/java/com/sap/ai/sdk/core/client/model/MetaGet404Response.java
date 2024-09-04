@@ -44,7 +44,7 @@ public class MetaGet404Response
    * @return The same instance of this {@link MetaGet404Response} class
    */
   @Nonnull
-  public MetaGet404Response error(@Nonnull final MetaApiError error) {
+  public MetaGet404Response error(@Nullable final MetaApiError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class MetaGet404Response
    *
    * @param error The error of this {@link MetaGet404Response}
    */
-  public void setError(@Nonnull final MetaApiError error) {
+  public void setError(@Nullable final MetaApiError error) {
     this.error = error;
   }
 

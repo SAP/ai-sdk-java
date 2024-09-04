@@ -48,7 +48,7 @@ public class AiDeploymentBulkModificationResponse
    */
   @Nonnull
   public AiDeploymentBulkModificationResponse deployments(
-      @Nonnull final List<AiDeploymentModificationResponseListInner> deployments) {
+      @Nullable final List<AiDeploymentModificationResponseListInner> deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -86,7 +86,7 @@ public class AiDeploymentBulkModificationResponse
    * @param deployments The deployments of this {@link AiDeploymentBulkModificationResponse}
    */
   public void setDeployments(
-      @Nonnull final List<AiDeploymentModificationResponseListInner> deployments) {
+      @Nullable final List<AiDeploymentModificationResponseListInner> deployments) {
     this.deployments = deployments;
   }
 

@@ -243,7 +243,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment deploymentUrl(@Nonnull final String deploymentUrl) {
+  public AiDeployment deploymentUrl(@Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
     return this;
   }
@@ -263,7 +263,7 @@ public class AiDeployment
    *
    * @param deploymentUrl Consumption URL of the deployment
    */
-  public void setDeploymentUrl(@Nonnull final String deploymentUrl) {
+  public void setDeploymentUrl(@Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
   }
 
@@ -305,7 +305,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment configurationName(@Nonnull final String configurationName) {
+  public AiDeployment configurationName(@Nullable final String configurationName) {
     this.configurationName = configurationName;
     return this;
   }
@@ -325,7 +325,7 @@ public class AiDeployment
    *
    * @param configurationName Name of the configuration
    */
-  public void setConfigurationName(@Nonnull final String configurationName) {
+  public void setConfigurationName(@Nullable final String configurationName) {
     this.configurationName = configurationName;
   }
 
@@ -336,7 +336,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment scenarioId(@Nonnull final String scenarioId) {
+  public AiDeployment scenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
@@ -356,7 +356,7 @@ public class AiDeployment
    *
    * @param scenarioId ID of the scenario
    */
-  public void setScenarioId(@Nonnull final String scenarioId) {
+  public void setScenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
@@ -398,7 +398,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment statusMessage(@Nonnull final String statusMessage) {
+  public AiDeployment statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -418,7 +418,7 @@ public class AiDeployment
    *
    * @param statusMessage Deployment status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -429,7 +429,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  public AiDeployment targetStatus(@Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
@@ -449,7 +449,7 @@ public class AiDeployment
    *
    * @param targetStatus Deployment target status
    */
-  public void setTargetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  public void setTargetStatus(@Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
 
@@ -460,7 +460,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment lastOperation(@Nonnull final LastOperationEnum lastOperation) {
+  public AiDeployment lastOperation(@Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
     return this;
   }
@@ -470,7 +470,7 @@ public class AiDeployment
    *
    * @return lastOperation The lastOperation of this {@link AiDeployment} instance.
    */
-  @Nonnull
+  @Nullable
   public LastOperationEnum getLastOperation() {
     return lastOperation;
   }
@@ -480,7 +480,7 @@ public class AiDeployment
    *
    * @param lastOperation The lastOperation of this {@link AiDeployment}
    */
-  public void setLastOperation(@Nonnull final LastOperationEnum lastOperation) {
+  public void setLastOperation(@Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
   }
 
@@ -495,7 +495,7 @@ public class AiDeployment
    */
   @Nonnull
   public AiDeployment latestRunningConfigurationId(
-      @Nonnull final String latestRunningConfigurationId) {
+      @Nullable final String latestRunningConfigurationId) {
     this.latestRunningConfigurationId = latestRunningConfigurationId;
     return this;
   }
@@ -520,7 +520,7 @@ public class AiDeployment
    *     has modified the configurationId of the deployment. This can be used for a manual rollback
    *     in case the new configurationId results in a DEAD deployment
    */
-  public void setLatestRunningConfigurationId(@Nonnull final String latestRunningConfigurationId) {
+  public void setLatestRunningConfigurationId(@Nullable final String latestRunningConfigurationId) {
     this.latestRunningConfigurationId = latestRunningConfigurationId;
   }
 
@@ -532,7 +532,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment ttl(@Nonnull final String ttl) {
+  public AiDeployment ttl(@Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
@@ -543,7 +543,7 @@ public class AiDeployment
    *
    * @return ttl The ttl of this {@link AiDeployment} instance.
    */
-  @Nonnull
+  @Nullable
   public String getTtl() {
     return ttl;
   }
@@ -554,7 +554,7 @@ public class AiDeployment
    * @param ttl Time to live for a deployment. Its value can be either null or a number followed by
    *     the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
    */
-  public void setTtl(@Nonnull final String ttl) {
+  public void setTtl(@Nullable final String ttl) {
     this.ttl = ttl;
   }
 
@@ -565,7 +565,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment details(@Nonnull final AiDeploymentDetails details) {
+  public AiDeployment details(@Nullable final AiDeploymentDetails details) {
     this.details = details;
     return this;
   }
@@ -585,7 +585,7 @@ public class AiDeployment
    *
    * @param details The details of this {@link AiDeployment}
    */
-  public void setDetails(@Nonnull final AiDeploymentDetails details) {
+  public void setDetails(@Nullable final AiDeploymentDetails details) {
     this.details = details;
   }
 
@@ -658,7 +658,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment submissionTime(@Nonnull final OffsetDateTime submissionTime) {
+  public AiDeployment submissionTime(@Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
     return this;
   }
@@ -678,7 +678,7 @@ public class AiDeployment
    *
    * @param submissionTime Timestamp of job submitted
    */
-  public void setSubmissionTime(@Nonnull final OffsetDateTime submissionTime) {
+  public void setSubmissionTime(@Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
   }
 
@@ -689,7 +689,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment startTime(@Nonnull final OffsetDateTime startTime) {
+  public AiDeployment startTime(@Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
     return this;
   }
@@ -709,7 +709,7 @@ public class AiDeployment
    *
    * @param startTime Timestamp of job status changed to RUNNING
    */
-  public void setStartTime(@Nonnull final OffsetDateTime startTime) {
+  public void setStartTime(@Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
   }
 
@@ -720,7 +720,7 @@ public class AiDeployment
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
-  public AiDeployment completionTime(@Nonnull final OffsetDateTime completionTime) {
+  public AiDeployment completionTime(@Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
     return this;
   }
@@ -740,7 +740,7 @@ public class AiDeployment
    *
    * @param completionTime Timestamp of job status changed to COMPLETED/DEAD/STOPPED
    */
-  public void setCompletionTime(@Nonnull final OffsetDateTime completionTime) {
+  public void setCompletionTime(@Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
   }
 

@@ -51,7 +51,7 @@ public class BckndArgoCDApplicationStatusSource
    * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
    */
   @Nonnull
-  public BckndArgoCDApplicationStatusSource repoURL(@Nonnull final String repoURL) {
+  public BckndArgoCDApplicationStatusSource repoURL(@Nullable final String repoURL) {
     this.repoURL = repoURL;
     return this;
   }
@@ -71,7 +71,7 @@ public class BckndArgoCDApplicationStatusSource
    *
    * @param repoURL URL of the repository
    */
-  public void setRepoURL(@Nonnull final String repoURL) {
+  public void setRepoURL(@Nullable final String repoURL) {
     this.repoURL = repoURL;
   }
 
@@ -83,7 +83,7 @@ public class BckndArgoCDApplicationStatusSource
    * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
    */
   @Nonnull
-  public BckndArgoCDApplicationStatusSource path(@Nonnull final String path) {
+  public BckndArgoCDApplicationStatusSource path(@Nullable final String path) {
     this.path = path;
     return this;
   }
@@ -103,7 +103,7 @@ public class BckndArgoCDApplicationStatusSource
    *
    * @param path Path of the repository
    */
-  public void setPath(@Nonnull final String path) {
+  public void setPath(@Nullable final String path) {
     this.path = path;
   }
 
@@ -115,7 +115,7 @@ public class BckndArgoCDApplicationStatusSource
    * @return The same instance of this {@link BckndArgoCDApplicationStatusSource} class
    */
   @Nonnull
-  public BckndArgoCDApplicationStatusSource revision(@Nonnull final String revision) {
+  public BckndArgoCDApplicationStatusSource revision(@Nullable final String revision) {
     this.revision = revision;
     return this;
   }
@@ -135,7 +135,7 @@ public class BckndArgoCDApplicationStatusSource
    *
    * @param revision Revision number of the ArgoCD application
    */
-  public void setRevision(@Nonnull final String revision) {
+  public void setRevision(@Nullable final String revision) {
     this.revision = revision;
   }
 

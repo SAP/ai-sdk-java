@@ -225,7 +225,7 @@ public class RTAArtifact
    * @return The same instance of this {@link RTAArtifact} class
    */
   @Nonnull
-  public RTAArtifact signature(@Nonnull final String signature) {
+  public RTAArtifact signature(@Nullable final String signature) {
     this.signature = signature;
     return this;
   }
@@ -245,7 +245,7 @@ public class RTAArtifact
    *
    * @param signature The signature of this {@link RTAArtifact}
    */
-  public void setSignature(@Nonnull final String signature) {
+  public void setSignature(@Nullable final String signature) {
     this.signature = signature;
   }
 
@@ -287,7 +287,7 @@ public class RTAArtifact
    * @return The same instance of this {@link RTAArtifact} class
    */
   @Nonnull
-  public RTAArtifact labels(@Nonnull final List<RTALabel> labels) {
+  public RTAArtifact labels(@Nullable final List<RTALabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -322,7 +322,7 @@ public class RTAArtifact
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<RTALabel> labels) {
+  public void setLabels(@Nullable final List<RTALabel> labels) {
     this.labels = labels;
   }
 

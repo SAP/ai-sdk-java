@@ -120,7 +120,7 @@ public class GroundingFilter
    * @return The same instance of this {@link GroundingFilter} class
    */
   @Nonnull
-  public GroundingFilter id(@Nonnull final String id) {
+  public GroundingFilter id(@Nullable final String id) {
     this.id = id;
     return this;
   }
@@ -140,7 +140,7 @@ public class GroundingFilter
    *
    * @param id The id of this {@link GroundingFilter}
    */
-  public void setId(@Nonnull final String id) {
+  public void setId(@Nullable final String id) {
     this.id = id;
   }
 
@@ -152,7 +152,7 @@ public class GroundingFilter
    * @return The same instance of this {@link GroundingFilter} class
    */
   @Nonnull
-  public GroundingFilter searchConfiguration(@Nonnull final Object searchConfiguration) {
+  public GroundingFilter searchConfiguration(@Nullable final Object searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
     return this;
   }
@@ -172,7 +172,7 @@ public class GroundingFilter
    *
    * @param searchConfiguration The searchConfiguration of this {@link GroundingFilter}
    */
-  public void setSearchConfiguration(@Nonnull final Object searchConfiguration) {
+  public void setSearchConfiguration(@Nullable final Object searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
   }
 
@@ -183,7 +183,7 @@ public class GroundingFilter
    * @return The same instance of this {@link GroundingFilter} class
    */
   @Nonnull
-  public GroundingFilter dataRepositories(@Nonnull final List<String> dataRepositories) {
+  public GroundingFilter dataRepositories(@Nullable final List<String> dataRepositories) {
     this.dataRepositories = dataRepositories;
     return this;
   }
@@ -218,7 +218,7 @@ public class GroundingFilter
    *
    * @param dataRepositories The dataRepositories of this {@link GroundingFilter}
    */
-  public void setDataRepositories(@Nonnull final List<String> dataRepositories) {
+  public void setDataRepositories(@Nullable final List<String> dataRepositories) {
     this.dataRepositories = dataRepositories;
   }
 
@@ -231,7 +231,7 @@ public class GroundingFilter
    */
   @Nonnull
   public GroundingFilter dataRepositoryType(
-      @Nonnull final DataRepositoryTypeEnum dataRepositoryType) {
+      @Nullable final DataRepositoryTypeEnum dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
@@ -251,7 +251,7 @@ public class GroundingFilter
    *
    * @param dataRepositoryType The dataRepositoryType of this {@link GroundingFilter}
    */
-  public void setDataRepositoryType(@Nonnull final DataRepositoryTypeEnum dataRepositoryType) {
+  public void setDataRepositoryType(@Nullable final DataRepositoryTypeEnum dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
   }
 
@@ -264,7 +264,7 @@ public class GroundingFilter
    */
   @Nonnull
   public GroundingFilter dataRepositoryMetadata(
-      @Nonnull final List<Object> dataRepositoryMetadata) {
+      @Nullable final List<Object> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
@@ -301,7 +301,7 @@ public class GroundingFilter
    *
    * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link GroundingFilter}
    */
-  public void setDataRepositoryMetadata(@Nonnull final List<Object> dataRepositoryMetadata) {
+  public void setDataRepositoryMetadata(@Nullable final List<Object> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
@@ -312,7 +312,7 @@ public class GroundingFilter
    * @return The same instance of this {@link GroundingFilter} class
    */
   @Nonnull
-  public GroundingFilter documentMetadata(@Nonnull final List<Object> documentMetadata) {
+  public GroundingFilter documentMetadata(@Nullable final List<Object> documentMetadata) {
     this.documentMetadata = documentMetadata;
     return this;
   }
@@ -347,7 +347,7 @@ public class GroundingFilter
    *
    * @param documentMetadata The documentMetadata of this {@link GroundingFilter}
    */
-  public void setDocumentMetadata(@Nonnull final List<Object> documentMetadata) {
+  public void setDocumentMetadata(@Nullable final List<Object> documentMetadata) {
     this.documentMetadata = documentMetadata;
   }
 
@@ -358,7 +358,7 @@ public class GroundingFilter
    * @return The same instance of this {@link GroundingFilter} class
    */
   @Nonnull
-  public GroundingFilter chunkMetadata(@Nonnull final List<Object> chunkMetadata) {
+  public GroundingFilter chunkMetadata(@Nullable final List<Object> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
     return this;
   }
@@ -393,7 +393,7 @@ public class GroundingFilter
    *
    * @param chunkMetadata The chunkMetadata of this {@link GroundingFilter}
    */
-  public void setChunkMetadata(@Nonnull final List<Object> chunkMetadata) {
+  public void setChunkMetadata(@Nullable final List<Object> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
   }
 

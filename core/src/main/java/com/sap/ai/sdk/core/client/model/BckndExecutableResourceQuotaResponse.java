@@ -49,7 +49,7 @@ public class BckndExecutableResourceQuotaResponse
    */
   @Nonnull
   public BckndExecutableResourceQuotaResponse usage(
-      @Nonnull final BckndExecutableResourceQuotaResponseUsage usage) {
+      @Nullable final BckndExecutableResourceQuotaResponseUsage usage) {
     this.usage = usage;
     return this;
   }
@@ -69,7 +69,7 @@ public class BckndExecutableResourceQuotaResponse
    *
    * @param usage The usage of this {@link BckndExecutableResourceQuotaResponse}
    */
-  public void setUsage(@Nonnull final BckndExecutableResourceQuotaResponseUsage usage) {
+  public void setUsage(@Nullable final BckndExecutableResourceQuotaResponseUsage usage) {
     this.usage = usage;
   }
 
