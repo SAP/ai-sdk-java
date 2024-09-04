@@ -118,7 +118,7 @@ public class AiApiError
    * @return The same instance of this {@link AiApiError} class
    */
   @Nonnull
-  public AiApiError requestId(@Nonnull final String requestId) {
+  public AiApiError requestId(@Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -138,7 +138,7 @@ public class AiApiError
    *
    * @param requestId ID of the individual request
    */
-  public void setRequestId(@Nonnull final String requestId) {
+  public void setRequestId(@Nullable final String requestId) {
     this.requestId = requestId;
   }
 
@@ -149,7 +149,7 @@ public class AiApiError
    * @return The same instance of this {@link AiApiError} class
    */
   @Nonnull
-  public AiApiError target(@Nonnull final String target) {
+  public AiApiError target(@Nullable final String target) {
     this.target = target;
     return this;
   }
@@ -169,7 +169,7 @@ public class AiApiError
    *
    * @param target Invoked URL
    */
-  public void setTarget(@Nonnull final String target) {
+  public void setTarget(@Nullable final String target) {
     this.target = target;
   }
 
@@ -180,7 +180,7 @@ public class AiApiError
    * @return The same instance of this {@link AiApiError} class
    */
   @Nonnull
-  public AiApiError details(@Nonnull final Object details) {
+  public AiApiError details(@Nullable final Object details) {
     this.details = details;
     return this;
   }
@@ -200,7 +200,7 @@ public class AiApiError
    *
    * @param details Optional details of the error message
    */
-  public void setDetails(@Nonnull final Object details) {
+  public void setDetails(@Nullable final Object details) {
     this.details = details;
   }
 

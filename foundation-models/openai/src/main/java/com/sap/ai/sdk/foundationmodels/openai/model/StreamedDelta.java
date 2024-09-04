@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -20,7 +21,7 @@ public interface StreamedDelta {
    *
    * @return the message content or empty string.
    */
-  @Nullable
+  @Nonnull
   String getDeltaContent();
 
   /**

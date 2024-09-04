@@ -45,7 +45,8 @@ public class MetaExtensionsMetricsCapabilities
    * @return The same instance of this {@link MetaExtensionsMetricsCapabilities} class
    */
   @Nonnull
-  public MetaExtensionsMetricsCapabilities extendedResults(@Nonnull final Boolean extendedResults) {
+  public MetaExtensionsMetricsCapabilities extendedResults(
+      @Nullable final Boolean extendedResults) {
     this.extendedResults = extendedResults;
     return this;
   }
@@ -66,7 +67,7 @@ public class MetaExtensionsMetricsCapabilities
    *
    * @param extendedResults Support for returning extended results
    */
-  public void setExtendedResults(@Nonnull final Boolean extendedResults) {
+  public void setExtendedResults(@Nullable final Boolean extendedResults) {
     this.extendedResults = extendedResults;
   }
 

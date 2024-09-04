@@ -44,7 +44,7 @@ public class RTABackendDetails
    * @return The same instance of this {@link RTABackendDetails} class
    */
   @Nonnull
-  public RTABackendDetails backendDetails(@Nonnull final Object backendDetails) {
+  public RTABackendDetails backendDetails(@Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
     return this;
   }
@@ -64,7 +64,7 @@ public class RTABackendDetails
    *
    * @param backendDetails Current details of the deployment
    */
-  public void setBackendDetails(@Nonnull final Object backendDetails) {
+  public void setBackendDetails(@Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
   }
 

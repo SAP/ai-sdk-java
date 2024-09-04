@@ -87,7 +87,7 @@ public class MetaAiApi
    * @return The same instance of this {@link MetaAiApi} class
    */
   @Nonnull
-  public MetaAiApi capabilities(@Nonnull final MetaAiApiCapabilities capabilities) {
+  public MetaAiApi capabilities(@Nullable final MetaAiApiCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
@@ -107,7 +107,7 @@ public class MetaAiApi
    *
    * @param capabilities The capabilities of this {@link MetaAiApi}
    */
-  public void setCapabilities(@Nonnull final MetaAiApiCapabilities capabilities) {
+  public void setCapabilities(@Nullable final MetaAiApiCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
@@ -118,7 +118,7 @@ public class MetaAiApi
    * @return The same instance of this {@link MetaAiApi} class
    */
   @Nonnull
-  public MetaAiApi limits(@Nonnull final MetaAiApiLimits limits) {
+  public MetaAiApi limits(@Nullable final MetaAiApiLimits limits) {
     this.limits = limits;
     return this;
   }
@@ -138,7 +138,7 @@ public class MetaAiApi
    *
    * @param limits The limits of this {@link MetaAiApi}
    */
-  public void setLimits(@Nonnull final MetaAiApiLimits limits) {
+  public void setLimits(@Nullable final MetaAiApiLimits limits) {
     this.limits = limits;
   }
 

@@ -44,7 +44,7 @@ public class RTAErrorResponse
    * @return The same instance of this {@link RTAErrorResponse} class
    */
   @Nonnull
-  public RTAErrorResponse error(@Nonnull final RTAError error) {
+  public RTAErrorResponse error(@Nullable final RTAError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class RTAErrorResponse
    *
    * @param error The error of this {@link RTAErrorResponse}
    */
-  public void setError(@Nonnull final RTAError error) {
+  public void setError(@Nullable final RTAError error) {
     this.error = error;
   }
 

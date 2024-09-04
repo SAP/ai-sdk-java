@@ -45,7 +45,7 @@ public class BckndCommonResourceQuotaResponseUsage
    * @return The same instance of this {@link BckndCommonResourceQuotaResponseUsage} class
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponseUsage count(@Nonnull final Integer count) {
+  public BckndCommonResourceQuotaResponseUsage count(@Nullable final Integer count) {
     this.count = count;
     return this;
   }
@@ -65,7 +65,7 @@ public class BckndCommonResourceQuotaResponseUsage
    *
    * @param count The count of this {@link BckndCommonResourceQuotaResponseUsage}
    */
-  public void setCount(@Nonnull final Integer count) {
+  public void setCount(@Nullable final Integer count) {
     this.count = count;
   }
 

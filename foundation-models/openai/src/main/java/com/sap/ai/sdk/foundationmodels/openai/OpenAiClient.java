@@ -140,7 +140,7 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    parameters.setStream(true);
+    parameters.enableStreaming();
     return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
   }
 

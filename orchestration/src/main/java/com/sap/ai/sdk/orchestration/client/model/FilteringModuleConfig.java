@@ -43,17 +43,17 @@ public class FilteringModuleConfig
   /**
    * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
    *
-   * @param input The input of this {@link FilteringModuleConfig}
+   * @param input List of provider type and filters
    * @return The same instance of this {@link FilteringModuleConfig} class
    */
   @Nonnull
-  public FilteringModuleConfig input(@Nonnull final FilteringConfig input) {
+  public FilteringModuleConfig input(@Nullable final FilteringConfig input) {
     this.input = input;
     return this;
   }
 
   /**
-   * Get input
+   * List of provider type and filters
    *
    * @return input The input of this {@link FilteringModuleConfig} instance.
    */
@@ -65,26 +65,26 @@ public class FilteringModuleConfig
   /**
    * Set the input of this {@link FilteringModuleConfig} instance.
    *
-   * @param input The input of this {@link FilteringModuleConfig}
+   * @param input List of provider type and filters
    */
-  public void setInput(@Nonnull final FilteringConfig input) {
+  public void setInput(@Nullable final FilteringConfig input) {
     this.input = input;
   }
 
   /**
    * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
    *
-   * @param output The output of this {@link FilteringModuleConfig}
+   * @param output List of provider type and filters
    * @return The same instance of this {@link FilteringModuleConfig} class
    */
   @Nonnull
-  public FilteringModuleConfig output(@Nonnull final FilteringConfig output) {
+  public FilteringModuleConfig output(@Nullable final FilteringConfig output) {
     this.output = output;
     return this;
   }
 
   /**
-   * Get output
+   * List of provider type and filters
    *
    * @return output The output of this {@link FilteringModuleConfig} instance.
    */
@@ -96,9 +96,9 @@ public class FilteringModuleConfig
   /**
    * Set the output of this {@link FilteringModuleConfig} instance.
    *
-   * @param output The output of this {@link FilteringModuleConfig}
+   * @param output List of provider type and filters
    */
-  public void setOutput(@Nonnull final FilteringConfig output) {
+  public void setOutput(@Nullable final FilteringConfig output) {
     this.output = output;
   }
 

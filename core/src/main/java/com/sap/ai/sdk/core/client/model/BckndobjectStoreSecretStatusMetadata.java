@@ -88,7 +88,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Usehttps(
-      @Nonnull final String servingKubeflowOrgS3Usehttps) {
+      @Nullable final String servingKubeflowOrgS3Usehttps) {
     this.servingKubeflowOrgS3Usehttps = servingKubeflowOrgS3Usehttps;
     return this;
   }
@@ -110,7 +110,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Usehttps 0 and 1 values for setting the flag
    */
-  public void setServingKubeflowOrgS3Usehttps(@Nonnull final String servingKubeflowOrgS3Usehttps) {
+  public void setServingKubeflowOrgS3Usehttps(@Nullable final String servingKubeflowOrgS3Usehttps) {
     this.servingKubeflowOrgS3Usehttps = servingKubeflowOrgS3Usehttps;
   }
 
@@ -123,7 +123,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Verifyssl(
-      @Nonnull final String servingKubeflowOrgS3Verifyssl) {
+      @Nullable final String servingKubeflowOrgS3Verifyssl) {
     this.servingKubeflowOrgS3Verifyssl = servingKubeflowOrgS3Verifyssl;
     return this;
   }
@@ -146,7 +146,7 @@ public class BckndobjectStoreSecretStatusMetadata
    * @param servingKubeflowOrgS3Verifyssl 0 and 1 values for setting the flag
    */
   public void setServingKubeflowOrgS3Verifyssl(
-      @Nonnull final String servingKubeflowOrgS3Verifyssl) {
+      @Nullable final String servingKubeflowOrgS3Verifyssl) {
     this.servingKubeflowOrgS3Verifyssl = servingKubeflowOrgS3Verifyssl;
   }
 
@@ -159,7 +159,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Endpoint(
-      @Nonnull final String servingKubeflowOrgS3Endpoint) {
+      @Nullable final String servingKubeflowOrgS3Endpoint) {
     this.servingKubeflowOrgS3Endpoint = servingKubeflowOrgS3Endpoint;
     return this;
   }
@@ -181,7 +181,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Endpoint Annotation for endpoint required by KF_Serving
    */
-  public void setServingKubeflowOrgS3Endpoint(@Nonnull final String servingKubeflowOrgS3Endpoint) {
+  public void setServingKubeflowOrgS3Endpoint(@Nullable final String servingKubeflowOrgS3Endpoint) {
     this.servingKubeflowOrgS3Endpoint = servingKubeflowOrgS3Endpoint;
   }
 
@@ -194,7 +194,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata servingKubeflowOrgS3Region(
-      @Nonnull final String servingKubeflowOrgS3Region) {
+      @Nullable final String servingKubeflowOrgS3Region) {
     this.servingKubeflowOrgS3Region = servingKubeflowOrgS3Region;
     return this;
   }
@@ -216,7 +216,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param servingKubeflowOrgS3Region Annotation for region required by KF_Serving
    */
-  public void setServingKubeflowOrgS3Region(@Nonnull final String servingKubeflowOrgS3Region) {
+  public void setServingKubeflowOrgS3Region(@Nullable final String servingKubeflowOrgS3Region) {
     this.servingKubeflowOrgS3Region = servingKubeflowOrgS3Region;
   }
 
@@ -229,7 +229,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComType(
-      @Nonnull final String storageAiSapComType) {
+      @Nullable final String storageAiSapComType) {
     this.storageAiSapComType = storageAiSapComType;
     return this;
   }
@@ -250,7 +250,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComType Storage type of the secret
    */
-  public void setStorageAiSapComType(@Nonnull final String storageAiSapComType) {
+  public void setStorageAiSapComType(@Nullable final String storageAiSapComType) {
     this.storageAiSapComType = storageAiSapComType;
   }
 
@@ -263,7 +263,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComBucket(
-      @Nonnull final String storageAiSapComBucket) {
+      @Nullable final String storageAiSapComBucket) {
     this.storageAiSapComBucket = storageAiSapComBucket;
     return this;
   }
@@ -284,7 +284,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComBucket bucket assigned to the secret on creation
    */
-  public void setStorageAiSapComBucket(@Nonnull final String storageAiSapComBucket) {
+  public void setStorageAiSapComBucket(@Nullable final String storageAiSapComBucket) {
     this.storageAiSapComBucket = storageAiSapComBucket;
   }
 
@@ -297,7 +297,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComEndpoint(
-      @Nonnull final String storageAiSapComEndpoint) {
+      @Nullable final String storageAiSapComEndpoint) {
     this.storageAiSapComEndpoint = storageAiSapComEndpoint;
     return this;
   }
@@ -318,7 +318,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComEndpoint Endpoint assigned to the secret on creation
    */
-  public void setStorageAiSapComEndpoint(@Nonnull final String storageAiSapComEndpoint) {
+  public void setStorageAiSapComEndpoint(@Nullable final String storageAiSapComEndpoint) {
     this.storageAiSapComEndpoint = storageAiSapComEndpoint;
   }
 
@@ -331,7 +331,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComRegion(
-      @Nonnull final String storageAiSapComRegion) {
+      @Nullable final String storageAiSapComRegion) {
     this.storageAiSapComRegion = storageAiSapComRegion;
     return this;
   }
@@ -352,7 +352,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComRegion Region of the storage server
    */
-  public void setStorageAiSapComRegion(@Nonnull final String storageAiSapComRegion) {
+  public void setStorageAiSapComRegion(@Nullable final String storageAiSapComRegion) {
     this.storageAiSapComRegion = storageAiSapComRegion;
   }
 
@@ -365,7 +365,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComPathPrefix(
-      @Nonnull final String storageAiSapComPathPrefix) {
+      @Nullable final String storageAiSapComPathPrefix) {
     this.storageAiSapComPathPrefix = storageAiSapComPathPrefix;
     return this;
   }
@@ -387,7 +387,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComPathPrefix Pathprefix type assigned to the secret on creation.
    */
-  public void setStorageAiSapComPathPrefix(@Nonnull final String storageAiSapComPathPrefix) {
+  public void setStorageAiSapComPathPrefix(@Nullable final String storageAiSapComPathPrefix) {
     this.storageAiSapComPathPrefix = storageAiSapComPathPrefix;
   }
 
@@ -400,7 +400,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComHdfsNameNode(
-      @Nonnull final String storageAiSapComHdfsNameNode) {
+      @Nullable final String storageAiSapComHdfsNameNode) {
     this.storageAiSapComHdfsNameNode = storageAiSapComHdfsNameNode;
     return this;
   }
@@ -422,7 +422,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComHdfsNameNode name node of the HDFS file system
    */
-  public void setStorageAiSapComHdfsNameNode(@Nonnull final String storageAiSapComHdfsNameNode) {
+  public void setStorageAiSapComHdfsNameNode(@Nullable final String storageAiSapComHdfsNameNode) {
     this.storageAiSapComHdfsNameNode = storageAiSapComHdfsNameNode;
   }
 
@@ -435,7 +435,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComHeaders(
-      @Nonnull final String storageAiSapComHeaders) {
+      @Nullable final String storageAiSapComHeaders) {
     this.storageAiSapComHeaders = storageAiSapComHeaders;
     return this;
   }
@@ -456,7 +456,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComHeaders headers for webHDFS and other protocols
    */
-  public void setStorageAiSapComHeaders(@Nonnull final String storageAiSapComHeaders) {
+  public void setStorageAiSapComHeaders(@Nullable final String storageAiSapComHeaders) {
     this.storageAiSapComHeaders = storageAiSapComHeaders;
   }
 
@@ -469,7 +469,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComContainerUri(
-      @Nonnull final String storageAiSapComContainerUri) {
+      @Nullable final String storageAiSapComContainerUri) {
     this.storageAiSapComContainerUri = storageAiSapComContainerUri;
     return this;
   }
@@ -491,7 +491,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComContainerUri container uri of azure storage
    */
-  public void setStorageAiSapComContainerUri(@Nonnull final String storageAiSapComContainerUri) {
+  public void setStorageAiSapComContainerUri(@Nullable final String storageAiSapComContainerUri) {
     this.storageAiSapComContainerUri = storageAiSapComContainerUri;
   }
 
@@ -504,7 +504,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComSubscriptionId(
-      @Nonnull final String storageAiSapComSubscriptionId) {
+      @Nullable final String storageAiSapComSubscriptionId) {
     this.storageAiSapComSubscriptionId = storageAiSapComSubscriptionId;
     return this;
   }
@@ -527,7 +527,7 @@ public class BckndobjectStoreSecretStatusMetadata
    * @param storageAiSapComSubscriptionId subscription id
    */
   public void setStorageAiSapComSubscriptionId(
-      @Nonnull final String storageAiSapComSubscriptionId) {
+      @Nullable final String storageAiSapComSubscriptionId) {
     this.storageAiSapComSubscriptionId = storageAiSapComSubscriptionId;
   }
 
@@ -540,7 +540,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComTenantId(
-      @Nonnull final String storageAiSapComTenantId) {
+      @Nullable final String storageAiSapComTenantId) {
     this.storageAiSapComTenantId = storageAiSapComTenantId;
     return this;
   }
@@ -561,7 +561,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComTenantId tenant id
    */
-  public void setStorageAiSapComTenantId(@Nonnull final String storageAiSapComTenantId) {
+  public void setStorageAiSapComTenantId(@Nullable final String storageAiSapComTenantId) {
     this.storageAiSapComTenantId = storageAiSapComTenantId;
   }
 
@@ -574,7 +574,7 @@ public class BckndobjectStoreSecretStatusMetadata
    */
   @Nonnull
   public BckndobjectStoreSecretStatusMetadata storageAiSapComProjectId(
-      @Nonnull final String storageAiSapComProjectId) {
+      @Nullable final String storageAiSapComProjectId) {
     this.storageAiSapComProjectId = storageAiSapComProjectId;
     return this;
   }
@@ -595,7 +595,7 @@ public class BckndobjectStoreSecretStatusMetadata
    *
    * @param storageAiSapComProjectId project id of google cloud platform
    */
-  public void setStorageAiSapComProjectId(@Nonnull final String storageAiSapComProjectId) {
+  public void setStorageAiSapComProjectId(@Nullable final String storageAiSapComProjectId) {
     this.storageAiSapComProjectId = storageAiSapComProjectId;
   }
 

@@ -119,7 +119,7 @@ public class DSetError
    * @return The same instance of this {@link DSetError} class
    */
   @Nonnull
-  public DSetError target(@Nonnull final String target) {
+  public DSetError target(@Nullable final String target) {
     this.target = target;
     return this;
   }
@@ -139,7 +139,7 @@ public class DSetError
    *
    * @param target The target of this {@link DSetError}
    */
-  public void setTarget(@Nonnull final String target) {
+  public void setTarget(@Nullable final String target) {
     this.target = target;
   }
 
@@ -150,7 +150,7 @@ public class DSetError
    * @return The same instance of this {@link DSetError} class
    */
   @Nonnull
-  public DSetError requestId(@Nonnull final String requestId) {
+  public DSetError requestId(@Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -170,7 +170,7 @@ public class DSetError
    *
    * @param requestId The requestId of this {@link DSetError}
    */
-  public void setRequestId(@Nonnull final String requestId) {
+  public void setRequestId(@Nullable final String requestId) {
     this.requestId = requestId;
   }
 
@@ -181,7 +181,7 @@ public class DSetError
    * @return The same instance of this {@link DSetError} class
    */
   @Nonnull
-  public DSetError details(@Nonnull final Set<DSetErrorDetailsInner> details) {
+  public DSetError details(@Nullable final Set<DSetErrorDetailsInner> details) {
     this.details = details;
     return this;
   }
@@ -216,7 +216,7 @@ public class DSetError
    *
    * @param details The details of this {@link DSetError}
    */
-  public void setDetails(@Nonnull final Set<DSetErrorDetailsInner> details) {
+  public void setDetails(@Nullable final Set<DSetErrorDetailsInner> details) {
     this.details = details;
   }
 

@@ -46,7 +46,7 @@ public class RTALogCommonData
    * @return The same instance of this {@link RTALogCommonData} class
    */
   @Nonnull
-  public RTALogCommonData result(@Nonnull final List<RTALogCommonResultItem> result) {
+  public RTALogCommonData result(@Nullable final List<RTALogCommonResultItem> result) {
     this.result = result;
     return this;
   }
@@ -81,7 +81,7 @@ public class RTALogCommonData
    *
    * @param result The result of this {@link RTALogCommonData}
    */
-  public void setResult(@Nonnull final List<RTALogCommonResultItem> result) {
+  public void setResult(@Nullable final List<RTALogCommonResultItem> result) {
     this.result = result;
   }
 

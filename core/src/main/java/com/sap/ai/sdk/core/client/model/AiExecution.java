@@ -210,7 +210,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution configurationName(@Nonnull final String configurationName) {
+  public AiExecution configurationName(@Nullable final String configurationName) {
     this.configurationName = configurationName;
     return this;
   }
@@ -230,7 +230,7 @@ public class AiExecution
    *
    * @param configurationName Name of the configuration
    */
-  public void setConfigurationName(@Nonnull final String configurationName) {
+  public void setConfigurationName(@Nullable final String configurationName) {
     this.configurationName = configurationName;
   }
 
@@ -241,7 +241,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution scenarioId(@Nonnull final String scenarioId) {
+  public AiExecution scenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
@@ -261,7 +261,7 @@ public class AiExecution
    *
    * @param scenarioId ID of the scenario
    */
-  public void setScenarioId(@Nonnull final String scenarioId) {
+  public void setScenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
@@ -272,7 +272,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution targetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  public AiExecution targetStatus(@Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
     return this;
   }
@@ -292,7 +292,7 @@ public class AiExecution
    *
    * @param targetStatus Target status of the execution
    */
-  public void setTargetStatus(@Nonnull final TargetStatusEnum targetStatus) {
+  public void setTargetStatus(@Nullable final TargetStatusEnum targetStatus) {
     this.targetStatus = targetStatus;
   }
 
@@ -334,7 +334,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution statusMessage(@Nonnull final String statusMessage) {
+  public AiExecution statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -354,7 +354,7 @@ public class AiExecution
    *
    * @param statusMessage Execution status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -365,7 +365,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution outputArtifacts(@Nonnull final List<AiArtifact> outputArtifacts) {
+  public AiExecution outputArtifacts(@Nullable final List<AiArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
@@ -400,7 +400,7 @@ public class AiExecution
    *
    * @param outputArtifacts The outputArtifacts of this {@link AiExecution}
    */
-  public void setOutputArtifacts(@Nonnull final List<AiArtifact> outputArtifacts) {
+  public void setOutputArtifacts(@Nullable final List<AiArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 
@@ -411,7 +411,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution executionScheduleId(@Nonnull final String executionScheduleId) {
+  public AiExecution executionScheduleId(@Nullable final String executionScheduleId) {
     this.executionScheduleId = executionScheduleId;
     return this;
   }
@@ -431,7 +431,7 @@ public class AiExecution
    *
    * @param executionScheduleId ID of the execution schedule
    */
-  public void setExecutionScheduleId(@Nonnull final String executionScheduleId) {
+  public void setExecutionScheduleId(@Nullable final String executionScheduleId) {
     this.executionScheduleId = executionScheduleId;
   }
 
@@ -504,7 +504,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution submissionTime(@Nonnull final OffsetDateTime submissionTime) {
+  public AiExecution submissionTime(@Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
     return this;
   }
@@ -524,7 +524,7 @@ public class AiExecution
    *
    * @param submissionTime Timestamp of job submitted
    */
-  public void setSubmissionTime(@Nonnull final OffsetDateTime submissionTime) {
+  public void setSubmissionTime(@Nullable final OffsetDateTime submissionTime) {
     this.submissionTime = submissionTime;
   }
 
@@ -535,7 +535,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution startTime(@Nonnull final OffsetDateTime startTime) {
+  public AiExecution startTime(@Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
     return this;
   }
@@ -555,7 +555,7 @@ public class AiExecution
    *
    * @param startTime Timestamp of job status changed to RUNNING
    */
-  public void setStartTime(@Nonnull final OffsetDateTime startTime) {
+  public void setStartTime(@Nullable final OffsetDateTime startTime) {
     this.startTime = startTime;
   }
 
@@ -566,7 +566,7 @@ public class AiExecution
    * @return The same instance of this {@link AiExecution} class
    */
   @Nonnull
-  public AiExecution completionTime(@Nonnull final OffsetDateTime completionTime) {
+  public AiExecution completionTime(@Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
     return this;
   }
@@ -586,7 +586,7 @@ public class AiExecution
    *
    * @param completionTime Timestamp of job status changed to COMPLETED/DEAD/STOPPED
    */
-  public void setCompletionTime(@Nonnull final OffsetDateTime completionTime) {
+  public void setCompletionTime(@Nullable final OffsetDateTime completionTime) {
     this.completionTime = completionTime;
   }
 

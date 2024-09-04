@@ -118,7 +118,7 @@ public class MetaApiError
    * @return The same instance of this {@link MetaApiError} class
    */
   @Nonnull
-  public MetaApiError requestId(@Nonnull final String requestId) {
+  public MetaApiError requestId(@Nullable final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -138,7 +138,7 @@ public class MetaApiError
    *
    * @param requestId ID of the individual request
    */
-  public void setRequestId(@Nonnull final String requestId) {
+  public void setRequestId(@Nullable final String requestId) {
     this.requestId = requestId;
   }
 
@@ -149,7 +149,7 @@ public class MetaApiError
    * @return The same instance of this {@link MetaApiError} class
    */
   @Nonnull
-  public MetaApiError target(@Nonnull final String target) {
+  public MetaApiError target(@Nullable final String target) {
     this.target = target;
     return this;
   }
@@ -169,7 +169,7 @@ public class MetaApiError
    *
    * @param target Invoked URL
    */
-  public void setTarget(@Nonnull final String target) {
+  public void setTarget(@Nullable final String target) {
     this.target = target;
   }
 
@@ -180,7 +180,7 @@ public class MetaApiError
    * @return The same instance of this {@link MetaApiError} class
    */
   @Nonnull
-  public MetaApiError details(@Nonnull final Object details) {
+  public MetaApiError details(@Nullable final Object details) {
     this.details = details;
     return this;
   }
@@ -200,7 +200,7 @@ public class MetaApiError
    *
    * @param details Optional details of the error message
    */
-  public void setDetails(@Nonnull final Object details) {
+  public void setDetails(@Nullable final Object details) {
     this.details = details;
   }
 

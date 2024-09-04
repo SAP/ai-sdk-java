@@ -48,7 +48,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
    */
   @Nonnull
-  public MetaAiApiLimitsTimeToLiveDeployments minimum(@Nonnull final String minimum) {
+  public MetaAiApiLimitsTimeToLiveDeployments minimum(@Nullable final String minimum) {
     this.minimum = minimum;
     return this;
   }
@@ -68,7 +68,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    *
    * @param minimum The minimum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
    */
-  public void setMinimum(@Nonnull final String minimum) {
+  public void setMinimum(@Nullable final String minimum) {
     this.minimum = minimum;
   }
 
@@ -80,7 +80,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    * @return The same instance of this {@link MetaAiApiLimitsTimeToLiveDeployments} class
    */
   @Nonnull
-  public MetaAiApiLimitsTimeToLiveDeployments maximum(@Nonnull final String maximum) {
+  public MetaAiApiLimitsTimeToLiveDeployments maximum(@Nullable final String maximum) {
     this.maximum = maximum;
     return this;
   }
@@ -100,7 +100,7 @@ public class MetaAiApiLimitsTimeToLiveDeployments
    *
    * @param maximum The maximum of this {@link MetaAiApiLimitsTimeToLiveDeployments}
    */
-  public void setMaximum(@Nonnull final String maximum) {
+  public void setMaximum(@Nullable final String maximum) {
     this.maximum = maximum;
   }
 

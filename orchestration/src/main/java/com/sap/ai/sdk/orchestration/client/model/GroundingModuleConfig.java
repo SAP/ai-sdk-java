@@ -136,7 +136,7 @@ public class GroundingModuleConfig
    */
   @Nonnull
   public GroundingModuleConfig groundingServiceConfiguration(
-      @Nonnull
+      @Nullable
           final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
     return this;
@@ -160,7 +160,7 @@ public class GroundingModuleConfig
    *     GroundingModuleConfig}
    */
   public void setGroundingServiceConfiguration(
-      @Nonnull
+      @Nullable
           final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
   }

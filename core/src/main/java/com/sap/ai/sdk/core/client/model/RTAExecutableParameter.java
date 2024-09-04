@@ -138,7 +138,7 @@ public class RTAExecutableParameter
    * @return The same instance of this {@link RTAExecutableParameter} class
    */
   @Nonnull
-  public RTAExecutableParameter description(@Nonnull final String description) {
+  public RTAExecutableParameter description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -158,7 +158,7 @@ public class RTAExecutableParameter
    *
    * @param description Description of the signature argument
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -169,7 +169,7 @@ public class RTAExecutableParameter
    * @return The same instance of this {@link RTAExecutableParameter} class
    */
   @Nonnull
-  public RTAExecutableParameter _default(@Nonnull final String _default) {
+  public RTAExecutableParameter _default(@Nullable final String _default) {
     this._default = _default;
     return this;
   }
@@ -189,7 +189,7 @@ public class RTAExecutableParameter
    *
    * @param _default Default value of the signature argument
    */
-  public void setDefault(@Nonnull final String _default) {
+  public void setDefault(@Nullable final String _default) {
     this._default = _default;
   }
 
@@ -200,7 +200,7 @@ public class RTAExecutableParameter
    * @return The same instance of this {@link RTAExecutableParameter} class
    */
   @Nonnull
-  public RTAExecutableParameter type(@Nonnull final TypeEnum type) {
+  public RTAExecutableParameter type(@Nullable final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -220,7 +220,7 @@ public class RTAExecutableParameter
    *
    * @param type Type of the signature argument
    */
-  public void setType(@Nonnull final TypeEnum type) {
+  public void setType(@Nullable final TypeEnum type) {
     this.type = type;
   }
 

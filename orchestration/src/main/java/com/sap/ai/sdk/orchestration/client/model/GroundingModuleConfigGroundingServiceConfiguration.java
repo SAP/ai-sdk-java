@@ -32,9 +32,6 @@ import javax.annotation.Nullable;
 public class GroundingModuleConfigGroundingServiceConfiguration
 // CHECKSTYLE:ON
 {
-  @JsonProperty("secret_name")
-  private String secretName;
-
   @JsonProperty("filters")
   private List<GroundingFilter> filters = new ArrayList<>();
 
@@ -50,44 +47,6 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   protected GroundingModuleConfigGroundingServiceConfiguration() {}
 
   /**
-   * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance
-   * and return the same instance.
-   *
-   * @param secretName Secret name of the generic secret within Gen AI Hub containing document
-   *     grounding service credentials
-   * @return The same instance of this {@link GroundingModuleConfigGroundingServiceConfiguration}
-   *     class
-   */
-  @Nonnull
-  public GroundingModuleConfigGroundingServiceConfiguration secretName(
-      @Nonnull final String secretName) {
-    this.secretName = secretName;
-    return this;
-  }
-
-  /**
-   * Secret name of the generic secret within Gen AI Hub containing document grounding service
-   * credentials
-   *
-   * @return secretName The secretName of this {@link
-   *     GroundingModuleConfigGroundingServiceConfiguration} instance.
-   */
-  @Nonnull
-  public String getSecretName() {
-    return secretName;
-  }
-
-  /**
-   * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance.
-   *
-   * @param secretName Secret name of the generic secret within Gen AI Hub containing document
-   *     grounding service credentials
-   */
-  public void setSecretName(@Nonnull final String secretName) {
-    this.secretName = secretName;
-  }
-
-  /**
    * Set the filters of this {@link GroundingModuleConfigGroundingServiceConfiguration} instance and
    * return the same instance.
    *
@@ -97,7 +56,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
    */
   @Nonnull
   public GroundingModuleConfigGroundingServiceConfiguration filters(
-      @Nonnull final List<GroundingFilter> filters) {
+      @Nullable final List<GroundingFilter> filters) {
     this.filters = filters;
     return this;
   }
@@ -134,7 +93,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
    *
    * @param filters Document grounding service filters to be used
    */
-  public void setFilters(@Nonnull final List<GroundingFilter> filters) {
+  public void setFilters(@Nullable final List<GroundingFilter> filters) {
     this.filters = filters;
   }
 
@@ -287,8 +246,6 @@ public class GroundingModuleConfigGroundingServiceConfiguration
     return Objects.equals(
             this.cloudSdkCustomFields,
             groundingModuleConfigGroundingServiceConfiguration.cloudSdkCustomFields)
-        && Objects.equals(
-            this.secretName, groundingModuleConfigGroundingServiceConfiguration.secretName)
         && Objects.equals(this.filters, groundingModuleConfigGroundingServiceConfiguration.filters)
         && Objects.equals(
             this.groundingInputParameters,
@@ -301,11 +258,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   @Override
   public int hashCode() {
     return Objects.hash(
-        secretName,
-        filters,
-        groundingInputParameters,
-        groundingOutputParameter,
-        cloudSdkCustomFields);
+        filters, groundingInputParameters, groundingOutputParameter, cloudSdkCustomFields);
   }
 
   @Override
@@ -313,7 +266,6 @@ public class GroundingModuleConfigGroundingServiceConfiguration
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class GroundingModuleConfigGroundingServiceConfiguration {\n");
-    sb.append("    secretName: ").append(toIndentedString(secretName)).append("\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    groundingInputParameters: ")
         .append(toIndentedString(groundingInputParameters))
@@ -343,31 +295,16 @@ public class GroundingModuleConfigGroundingServiceConfiguration
    * GroundingModuleConfigGroundingServiceConfiguration} instance with all required arguments.
    */
   public static Builder create() {
-    return (secretName) ->
-        (groundingInputParameters) ->
-            (groundingOutputParameter) ->
-                new GroundingModuleConfigGroundingServiceConfiguration()
-                    .secretName(secretName)
-                    .groundingInputParameters(groundingInputParameters)
-                    .groundingOutputParameter(groundingOutputParameter);
+    return (groundingInputParameters) ->
+        (groundingOutputParameter) ->
+            new GroundingModuleConfigGroundingServiceConfiguration()
+                .groundingInputParameters(groundingInputParameters)
+                .groundingOutputParameter(groundingOutputParameter);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the secretName of this {@link GroundingModuleConfigGroundingServiceConfiguration}
-     * instance.
-     *
-     * @param secretName Secret name of the generic secret within Gen AI Hub containing document
-     *     grounding service credentials
-     * @return The GroundingModuleConfigGroundingServiceConfiguration builder.
-     */
-    Builder1 secretName(@Nonnull final String secretName);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
      * Set the groundingInputParameters of this {@link
      * GroundingModuleConfigGroundingServiceConfiguration} instance.
      *
@@ -375,7 +312,7 @@ public class GroundingModuleConfigGroundingServiceConfiguration
      *     questions
      * @return The GroundingModuleConfigGroundingServiceConfiguration builder.
      */
-    Builder2 groundingInputParameters(@Nonnull final List<String> groundingInputParameters);
+    Builder1 groundingInputParameters(@Nonnull final List<String> groundingInputParameters);
 
     /**
      * Set the groundingInputParameters of this {@link
@@ -385,13 +322,13 @@ public class GroundingModuleConfigGroundingServiceConfiguration
      *     questions
      * @return The GroundingModuleConfigGroundingServiceConfiguration builder.
      */
-    default Builder2 groundingInputParameters(@Nonnull final String... groundingInputParameters) {
+    default Builder1 groundingInputParameters(@Nonnull final String... groundingInputParameters) {
       return groundingInputParameters(Arrays.asList(groundingInputParameters));
     }
   }
 
   /** Builder helper class. */
-  public interface Builder2 {
+  public interface Builder1 {
     /**
      * Set the groundingOutputParameter of this {@link
      * GroundingModuleConfigGroundingServiceConfiguration} instance.

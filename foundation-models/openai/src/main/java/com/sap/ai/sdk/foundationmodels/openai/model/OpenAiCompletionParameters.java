@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -106,8 +107,46 @@ public class OpenAiCompletionParameters {
    * message. Default: false.
    */
   @JsonProperty("stream")
-  @Setter(onParam_ = @Nullable)
   private Boolean stream;
+
+  /**
+   * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only
+   * <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format">server-sent
+   * events</a> as they become available, with the stream terminated by a {@code data: [DONE]}
+   * message. Only set this when you set {@code stream: true}.
+   */
+  @JsonProperty("stream_options")
+  private OpenAiStreamOptions streamOptions;
+
+  /** "stream_options": { "include_usage": "true" } */
+  @RequiredArgsConstructor
+  @Setter
+  @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+  @EqualsAndHashCode
+  @ToString
+  public static class OpenAiStreamOptions {
+    /**
+     * If set, an additional chunk will be streamed before the {@code data: [DONE]} message. The
+     * usage field on this chunk shows the token usage statistics for the entire request, and the
+     * choices field will always be an empty array. All other chunks will also include a {@code
+     * usage} field, but with a null value.
+     */
+    @JsonProperty("include_usage")
+    private Boolean include_usage;
+  }
+
+  /**
+   * Please use {@link
+   * com.sap.ai.sdk.foundationmodels.openai.OpenAiClient#streamChatCompletion(OpenAiChatCompletionParameters)}
+   * instead.
+   *
+   * <p>Enable streaming of the completion. If enabled, partial message deltas will be sent.
+   */
+  public void enableStreaming() {
+    this.stream = true;
+    this.streamOptions = new OpenAiStreamOptions().setInclude_usage(true);
+  }
 
   /**
    * Up to four sequences where the API will stop generating further tokens. The returned text won't

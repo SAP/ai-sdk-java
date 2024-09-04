@@ -47,7 +47,7 @@ public class AiDeploymentBulkModificationRequest
    */
   @Nonnull
   public AiDeploymentBulkModificationRequest deployments(
-      @Nonnull final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
+      @Nullable final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -85,7 +85,7 @@ public class AiDeploymentBulkModificationRequest
    * @param deployments The deployments of this {@link AiDeploymentBulkModificationRequest}
    */
   public void setDeployments(
-      @Nonnull final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
+      @Nullable final Set<AiDeploymentModificationRequestWithIdentifier> deployments) {
     this.deployments = deployments;
   }
 

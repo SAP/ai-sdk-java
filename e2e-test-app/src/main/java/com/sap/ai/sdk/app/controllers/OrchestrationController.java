@@ -3,18 +3,17 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.core.Core.getOrchestrationClient;
 
 import com.sap.ai.sdk.orchestration.client.OrchestrationCompletionApi;
+import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.client.model.Filter;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.ProviderType;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
@@ -68,10 +67,10 @@ class OrchestrationController {
         final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
         final var filter =
-            Filter.create()
-                .type(ProviderType.AZURE_CONTENT_SAFETY)
+            FilterConfig.create()
+                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
                 .config(
-                    FilterConfig.create()
+                    AzureContentSafety.create()
                         .hate(filterThreshold)
                         .selfHarm(filterThreshold)
                         .sexual(filterThreshold)

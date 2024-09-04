@@ -374,6 +374,16 @@ class OpenAiClientTest {
         assertThat(deltaList.get(3).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
         assertThat(deltaList.get(4).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
+        assertThat(deltaList.get(0).getUsage()).isNull();
+        assertThat(deltaList.get(1).getUsage()).isNull();
+        assertThat(deltaList.get(2).getUsage()).isNull();
+        assertThat(deltaList.get(3).getUsage()).isNull();
+        final var usage = deltaList.get(4).getUsage();
+        assertThat(usage).isNotNull();
+        assertThat(usage.getCompletionTokens()).isEqualTo(607);
+        assertThat(usage.getPromptTokens()).isEqualTo(21);
+        assertThat(usage.getTotalTokens()).isEqualTo(628);
+
         assertThat(deltaList.get(0).getChoices()).isEmpty();
         assertThat(deltaList.get(1).getChoices()).hasSize(1);
         assertThat(deltaList.get(2).getChoices()).hasSize(1);
@@ -435,7 +445,11 @@ class OpenAiClientTest {
         assertThat(totalOutput.getCreated()).isEqualTo(1724825677);
         assertThat(totalOutput.getModel()).isEqualTo("gpt-35-turbo");
         assertThat(totalOutput.getObject()).isEqualTo("chat.completion.chunk");
-        assertThat(totalOutput.getUsage()).isNull();
+        final var totalUsage = totalOutput.getUsage();
+        assertThat(totalUsage).isNotNull();
+        assertThat(totalUsage.getCompletionTokens()).isEqualTo(607);
+        assertThat(totalUsage.getPromptTokens()).isEqualTo(21);
+        assertThat(totalUsage.getTotalTokens()).isEqualTo(628);
         assertThat(totalOutput.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
         assertThat(totalOutput.getPromptFilterResults()).isNotNull();
         assertFilter(totalOutput.getPromptFilterResults().get(0).getContentFilterResults());

@@ -125,7 +125,7 @@ public class TrckMetric
    * @return The same instance of this {@link TrckMetric} class
    */
   @Nonnull
-  public TrckMetric timestamp(@Nonnull final OffsetDateTime timestamp) {
+  public TrckMetric timestamp(@Nullable final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -145,7 +145,7 @@ public class TrckMetric
    *
    * @param timestamp Time when the metric was created or logged in RFC3339 format
    */
-  public void setTimestamp(@Nonnull final OffsetDateTime timestamp) {
+  public void setTimestamp(@Nullable final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -157,7 +157,7 @@ public class TrckMetric
    * @return The same instance of this {@link TrckMetric} class
    */
   @Nonnull
-  public TrckMetric step(@Nonnull final Integer step) {
+  public TrckMetric step(@Nullable final Integer step) {
     this.step = step;
     return this;
   }
@@ -179,7 +179,7 @@ public class TrckMetric
    * @param step step is an optional integer that represents any measurement of training progress
    *     (number of training iterations, number of epochs, and so on) for the metric Minimum: 0
    */
-  public void setStep(@Nonnull final Integer step) {
+  public void setStep(@Nullable final Integer step) {
     this.step = step;
   }
 
@@ -190,7 +190,7 @@ public class TrckMetric
    * @return The same instance of this {@link TrckMetric} class
    */
   @Nonnull
-  public TrckMetric labels(@Nonnull final List<TrckLabel> labels) {
+  public TrckMetric labels(@Nullable final List<TrckLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -225,7 +225,7 @@ public class TrckMetric
    *
    * @param labels a list of name-value object pairs associated with some metric.
    */
-  public void setLabels(@Nonnull final List<TrckLabel> labels) {
+  public void setLabels(@Nullable final List<TrckLabel> labels) {
     this.labels = labels;
   }
 

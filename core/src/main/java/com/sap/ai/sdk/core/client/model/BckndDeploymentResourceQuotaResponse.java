@@ -51,7 +51,7 @@ public class BckndDeploymentResourceQuotaResponse
    * @return The same instance of this {@link BckndDeploymentResourceQuotaResponse} class
    */
   @Nonnull
-  public BckndDeploymentResourceQuotaResponse usage(@Nonnull final BckndDeploymentUsage usage) {
+  public BckndDeploymentResourceQuotaResponse usage(@Nullable final BckndDeploymentUsage usage) {
     this.usage = usage;
     return this;
   }
@@ -71,7 +71,7 @@ public class BckndDeploymentResourceQuotaResponse
    *
    * @param usage The usage of this {@link BckndDeploymentResourceQuotaResponse}
    */
-  public void setUsage(@Nonnull final BckndDeploymentUsage usage) {
+  public void setUsage(@Nullable final BckndDeploymentUsage usage) {
     this.usage = usage;
   }
 

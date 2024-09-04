@@ -118,7 +118,7 @@ public class LLMChoice
    * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
-  public LLMChoice logprobs(@Nonnull final Map<String, List<BigDecimal>> logprobs) {
+  public LLMChoice logprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
     return this;
   }
@@ -153,14 +153,17 @@ public class LLMChoice
    *
    * @param logprobs Log probabilities
    */
-  public void setLogprobs(@Nonnull final Map<String, List<BigDecimal>> logprobs) {
+  public void setLogprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
   }
 
   /**
    * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
    *
-   * @param finishReason Reason for stopping the model
+   * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
+   *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
+   *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+   *     enforced by the LLM model provider or the content filtering module
    * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
@@ -170,7 +173,10 @@ public class LLMChoice
   }
 
   /**
-   * Reason for stopping the model
+   * Reason the model stopped generating tokens. &#39;stop&#39; if the model hit a natural stop
+   * point or a provided stop sequence, &#39;length&#39; if the maximum token number was reached,
+   * &#39;content_filter&#39; if content was omitted due to a filter enforced by the LLM model
+   * provider or the content filtering module
    *
    * @return finishReason The finishReason of this {@link LLMChoice} instance.
    */
@@ -182,7 +188,10 @@ public class LLMChoice
   /**
    * Set the finishReason of this {@link LLMChoice} instance.
    *
-   * @param finishReason Reason for stopping the model
+   * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
+   *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
+   *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+   *     enforced by the LLM model provider or the content filtering module
    */
   public void setFinishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
@@ -311,7 +320,10 @@ public class LLMChoice
     /**
      * Set the finishReason of this {@link LLMChoice} instance.
      *
-     * @param finishReason Reason for stopping the model
+     * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model
+     *     hit a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum
+     *     token number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+     *     enforced by the LLM model provider or the content filtering module
      * @return The LLMChoice instance.
      */
     LLMChoice finishReason(@Nonnull final String finishReason);

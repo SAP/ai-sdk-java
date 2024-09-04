@@ -87,7 +87,7 @@ public class TrckGetMetricResource
    * @return The same instance of this {@link TrckGetMetricResource} class
    */
   @Nonnull
-  public TrckGetMetricResource metrics(@Nonnull final List<TrckGetMetric> metrics) {
+  public TrckGetMetricResource metrics(@Nullable final List<TrckGetMetric> metrics) {
     this.metrics = metrics;
     return this;
   }
@@ -122,7 +122,7 @@ public class TrckGetMetricResource
    *
    * @param metrics Array of Metric items
    */
-  public void setMetrics(@Nonnull final List<TrckGetMetric> metrics) {
+  public void setMetrics(@Nullable final List<TrckGetMetric> metrics) {
     this.metrics = metrics;
   }
 
@@ -134,7 +134,7 @@ public class TrckGetMetricResource
    * @return The same instance of this {@link TrckGetMetricResource} class
    */
   @Nonnull
-  public TrckGetMetricResource tags(@Nonnull final List<TrckTag> tags) {
+  public TrckGetMetricResource tags(@Nullable final List<TrckTag> tags) {
     this.tags = tags;
     return this;
   }
@@ -170,7 +170,7 @@ public class TrckGetMetricResource
    * @param tags a list of name-value object pairs associated with the execution/deployment. Tags
    *     are queryable.
    */
-  public void setTags(@Nonnull final List<TrckTag> tags) {
+  public void setTags(@Nullable final List<TrckTag> tags) {
     this.tags = tags;
   }
 
@@ -181,7 +181,7 @@ public class TrckGetMetricResource
    * @return The same instance of this {@link TrckGetMetricResource} class
    */
   @Nonnull
-  public TrckGetMetricResource customInfo(@Nonnull final List<TrckCustomInfoObject> customInfo) {
+  public TrckGetMetricResource customInfo(@Nullable final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
     return this;
   }
@@ -215,7 +215,7 @@ public class TrckGetMetricResource
    *
    * @param customInfo
    */
-  public void setCustomInfo(@Nonnull final List<TrckCustomInfoObject> customInfo) {
+  public void setCustomInfo(@Nullable final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
   }
 

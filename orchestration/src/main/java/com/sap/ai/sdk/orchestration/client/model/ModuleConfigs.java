@@ -124,7 +124,7 @@ public class ModuleConfigs
    */
   @Nonnull
   public ModuleConfigs filteringModuleConfig(
-      @Nonnull final FilteringModuleConfig filteringModuleConfig) {
+      @Nullable final FilteringModuleConfig filteringModuleConfig) {
     this.filteringModuleConfig = filteringModuleConfig;
     return this;
   }
@@ -144,7 +144,8 @@ public class ModuleConfigs
    *
    * @param filteringModuleConfig The filteringModuleConfig of this {@link ModuleConfigs}
    */
-  public void setFilteringModuleConfig(@Nonnull final FilteringModuleConfig filteringModuleConfig) {
+  public void setFilteringModuleConfig(
+      @Nullable final FilteringModuleConfig filteringModuleConfig) {
     this.filteringModuleConfig = filteringModuleConfig;
   }
 
@@ -156,7 +157,8 @@ public class ModuleConfigs
    * @return The same instance of this {@link ModuleConfigs} class
    */
   @Nonnull
-  public ModuleConfigs maskingModuleConfig(@Nonnull final MaskingModuleConfig maskingModuleConfig) {
+  public ModuleConfigs maskingModuleConfig(
+      @Nullable final MaskingModuleConfig maskingModuleConfig) {
     this.maskingModuleConfig = maskingModuleConfig;
     return this;
   }
@@ -176,7 +178,7 @@ public class ModuleConfigs
    *
    * @param maskingModuleConfig The maskingModuleConfig of this {@link ModuleConfigs}
    */
-  public void setMaskingModuleConfig(@Nonnull final MaskingModuleConfig maskingModuleConfig) {
+  public void setMaskingModuleConfig(@Nullable final MaskingModuleConfig maskingModuleConfig) {
     this.maskingModuleConfig = maskingModuleConfig;
   }
 
@@ -189,7 +191,7 @@ public class ModuleConfigs
    */
   @Nonnull
   public ModuleConfigs groundingModuleConfig(
-      @Nonnull final GroundingModuleConfig groundingModuleConfig) {
+      @Nullable final GroundingModuleConfig groundingModuleConfig) {
     this.groundingModuleConfig = groundingModuleConfig;
     return this;
   }
@@ -209,7 +211,8 @@ public class ModuleConfigs
    *
    * @param groundingModuleConfig The groundingModuleConfig of this {@link ModuleConfigs}
    */
-  public void setGroundingModuleConfig(@Nonnull final GroundingModuleConfig groundingModuleConfig) {
+  public void setGroundingModuleConfig(
+      @Nullable final GroundingModuleConfig groundingModuleConfig) {
     this.groundingModuleConfig = groundingModuleConfig;
   }
 
