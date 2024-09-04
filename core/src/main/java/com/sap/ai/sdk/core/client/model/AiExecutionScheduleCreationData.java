@@ -156,7 +156,7 @@ public class AiExecutionScheduleCreationData
    * @return The same instance of this {@link AiExecutionScheduleCreationData} class
    */
   @Nonnull
-  public AiExecutionScheduleCreationData start(@Nonnull final OffsetDateTime start) {
+  public AiExecutionScheduleCreationData start(@Nullable final OffsetDateTime start) {
     this.start = start;
     return this;
   }
@@ -177,7 +177,7 @@ public class AiExecutionScheduleCreationData
    * @param start Timestamp, defining when the executions should start running periodically,
    *     defaults to now
    */
-  public void setStart(@Nonnull final OffsetDateTime start) {
+  public void setStart(@Nullable final OffsetDateTime start) {
     this.start = start;
   }
 
@@ -189,7 +189,7 @@ public class AiExecutionScheduleCreationData
    * @return The same instance of this {@link AiExecutionScheduleCreationData} class
    */
   @Nonnull
-  public AiExecutionScheduleCreationData end(@Nonnull final OffsetDateTime end) {
+  public AiExecutionScheduleCreationData end(@Nullable final OffsetDateTime end) {
     this.end = end;
     return this;
   }
@@ -209,7 +209,7 @@ public class AiExecutionScheduleCreationData
    *
    * @param end Timestamp, defining when the executions should stop running
    */
-  public void setEnd(@Nonnull final OffsetDateTime end) {
+  public void setEnd(@Nullable final OffsetDateTime end) {
     this.end = end;
   }
 

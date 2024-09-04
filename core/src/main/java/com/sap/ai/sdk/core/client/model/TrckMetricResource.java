@@ -86,7 +86,7 @@ public class TrckMetricResource
    * @return The same instance of this {@link TrckMetricResource} class
    */
   @Nonnull
-  public TrckMetricResource metrics(@Nonnull final List<TrckMetric> metrics) {
+  public TrckMetricResource metrics(@Nullable final List<TrckMetric> metrics) {
     this.metrics = metrics;
     return this;
   }
@@ -121,7 +121,7 @@ public class TrckMetricResource
    *
    * @param metrics Array of Metric items
    */
-  public void setMetrics(@Nonnull final List<TrckMetric> metrics) {
+  public void setMetrics(@Nullable final List<TrckMetric> metrics) {
     this.metrics = metrics;
   }
 
@@ -133,7 +133,7 @@ public class TrckMetricResource
    * @return The same instance of this {@link TrckMetricResource} class
    */
   @Nonnull
-  public TrckMetricResource tags(@Nonnull final List<TrckTag> tags) {
+  public TrckMetricResource tags(@Nullable final List<TrckTag> tags) {
     this.tags = tags;
     return this;
   }
@@ -169,7 +169,7 @@ public class TrckMetricResource
    * @param tags a list of name-value object pairs associated with the execution/deployment. Tags
    *     are queryable.
    */
-  public void setTags(@Nonnull final List<TrckTag> tags) {
+  public void setTags(@Nullable final List<TrckTag> tags) {
     this.tags = tags;
   }
 
@@ -180,7 +180,7 @@ public class TrckMetricResource
    * @return The same instance of this {@link TrckMetricResource} class
    */
   @Nonnull
-  public TrckMetricResource customInfo(@Nonnull final List<TrckCustomInfoObject> customInfo) {
+  public TrckMetricResource customInfo(@Nullable final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
     return this;
   }
@@ -213,7 +213,7 @@ public class TrckMetricResource
    *
    * @param customInfo
    */
-  public void setCustomInfo(@Nonnull final List<TrckCustomInfoObject> customInfo) {
+  public void setCustomInfo(@Nullable final List<TrckCustomInfoObject> customInfo) {
     this.customInfo = customInfo;
   }
 

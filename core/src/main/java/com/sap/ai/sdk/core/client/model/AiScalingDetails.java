@@ -44,7 +44,7 @@ public class AiScalingDetails
    * @return The same instance of this {@link AiScalingDetails} class
    */
   @Nonnull
-  public AiScalingDetails backendDetails(@Nonnull final Object backendDetails) {
+  public AiScalingDetails backendDetails(@Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
     return this;
   }
@@ -64,7 +64,7 @@ public class AiScalingDetails
    *
    * @param backendDetails backend-specific details of the deployment
    */
-  public void setBackendDetails(@Nonnull final Object backendDetails) {
+  public void setBackendDetails(@Nullable final Object backendDetails) {
     this.backendDetails = backendDetails;
   }
 

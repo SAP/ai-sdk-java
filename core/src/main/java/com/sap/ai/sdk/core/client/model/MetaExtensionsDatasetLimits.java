@@ -54,7 +54,7 @@ public class MetaExtensionsDatasetLimits
    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
    */
   @Nonnull
-  public MetaExtensionsDatasetLimits maxUploadFileSize(@Nonnull final Integer maxUploadFileSize) {
+  public MetaExtensionsDatasetLimits maxUploadFileSize(@Nullable final Integer maxUploadFileSize) {
     this.maxUploadFileSize = maxUploadFileSize;
     return this;
   }
@@ -76,7 +76,7 @@ public class MetaExtensionsDatasetLimits
    * @param maxUploadFileSize Max size (in bytes) of a single uploaded file allowed by this runtime
    *     per resource group.
    */
-  public void setMaxUploadFileSize(@Nonnull final Integer maxUploadFileSize) {
+  public void setMaxUploadFileSize(@Nullable final Integer maxUploadFileSize) {
     this.maxUploadFileSize = maxUploadFileSize;
   }
 
@@ -88,7 +88,8 @@ public class MetaExtensionsDatasetLimits
    * @return The same instance of this {@link MetaExtensionsDatasetLimits} class
    */
   @Nonnull
-  public MetaExtensionsDatasetLimits maxFilesPerDataset(@Nonnull final Integer maxFilesPerDataset) {
+  public MetaExtensionsDatasetLimits maxFilesPerDataset(
+      @Nullable final Integer maxFilesPerDataset) {
     this.maxFilesPerDataset = maxFilesPerDataset;
     return this;
   }
@@ -109,7 +110,7 @@ public class MetaExtensionsDatasetLimits
    *
    * @param maxFilesPerDataset Max number of files per dataset. &lt;0 means unlimited.
    */
-  public void setMaxFilesPerDataset(@Nonnull final Integer maxFilesPerDataset) {
+  public void setMaxFilesPerDataset(@Nullable final Integer maxFilesPerDataset) {
     this.maxFilesPerDataset = maxFilesPerDataset;
   }
 
@@ -123,7 +124,7 @@ public class MetaExtensionsDatasetLimits
    */
   @Nonnull
   public MetaExtensionsDatasetLimits acceptedContentTypes(
-      @Nonnull final List<String> acceptedContentTypes) {
+      @Nullable final List<String> acceptedContentTypes) {
     this.acceptedContentTypes = acceptedContentTypes;
     return this;
   }
@@ -161,7 +162,7 @@ public class MetaExtensionsDatasetLimits
    * @param acceptedContentTypes The acceptedContentTypes of this {@link
    *     MetaExtensionsDatasetLimits}
    */
-  public void setAcceptedContentTypes(@Nonnull final List<String> acceptedContentTypes) {
+  public void setAcceptedContentTypes(@Nullable final List<String> acceptedContentTypes) {
     this.acceptedContentTypes = acceptedContentTypes;
   }
 

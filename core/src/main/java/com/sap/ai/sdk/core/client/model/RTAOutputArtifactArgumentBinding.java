@@ -82,7 +82,7 @@ public class RTAOutputArtifactArgumentBinding
    * @return The same instance of this {@link RTAOutputArtifactArgumentBinding} class
    */
   @Nonnull
-  public RTAOutputArtifactArgumentBinding url(@Nonnull final String url) {
+  public RTAOutputArtifactArgumentBinding url(@Nullable final String url) {
     this.url = url;
     return this;
   }
@@ -105,7 +105,7 @@ public class RTAOutputArtifactArgumentBinding
    *     secret called &#39;some_bucket-object_store_secret&#39;. If not provided, a default will be
    *     assumed.
    */
-  public void setUrl(@Nonnull final String url) {
+  public void setUrl(@Nullable final String url) {
     this.url = url;
   }
 

@@ -49,7 +49,7 @@ public class BckndCommonResourceQuotaResponse
    */
   @Nonnull
   public BckndCommonResourceQuotaResponse usage(
-      @Nonnull final BckndCommonResourceQuotaResponseUsage usage) {
+      @Nullable final BckndCommonResourceQuotaResponseUsage usage) {
     this.usage = usage;
     return this;
   }
@@ -69,7 +69,7 @@ public class BckndCommonResourceQuotaResponse
    *
    * @param usage The usage of this {@link BckndCommonResourceQuotaResponse}
    */
-  public void setUsage(@Nonnull final BckndCommonResourceQuotaResponseUsage usage) {
+  public void setUsage(@Nullable final BckndCommonResourceQuotaResponseUsage usage) {
     this.usage = usage;
   }
 

@@ -53,7 +53,7 @@ public class BckndTenant
    * @return The same instance of this {@link BckndTenant} class
    */
   @Nonnull
-  public BckndTenant tenantId(@Nonnull final String tenantId) {
+  public BckndTenant tenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
@@ -73,7 +73,7 @@ public class BckndTenant
    *
    * @param tenantId tenant id
    */
-  public void setTenantId(@Nonnull final String tenantId) {
+  public void setTenantId(@Nullable final String tenantId) {
     this.tenantId = tenantId;
   }
 
@@ -84,7 +84,7 @@ public class BckndTenant
    * @return The same instance of this {@link BckndTenant} class
    */
   @Nonnull
-  public BckndTenant zoneId(@Nonnull final String zoneId) {
+  public BckndTenant zoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
     return this;
   }
@@ -104,7 +104,7 @@ public class BckndTenant
    *
    * @param zoneId zone id
    */
-  public void setZoneId(@Nonnull final String zoneId) {
+  public void setZoneId(@Nullable final String zoneId) {
     this.zoneId = zoneId;
   }
 
@@ -115,7 +115,7 @@ public class BckndTenant
    * @return The same instance of this {@link BckndTenant} class
    */
   @Nonnull
-  public BckndTenant realSubaccountId(@Nonnull final String realSubaccountId) {
+  public BckndTenant realSubaccountId(@Nullable final String realSubaccountId) {
     this.realSubaccountId = realSubaccountId;
     return this;
   }
@@ -135,7 +135,7 @@ public class BckndTenant
    *
    * @param realSubaccountId real sub account id
    */
-  public void setRealSubaccountId(@Nonnull final String realSubaccountId) {
+  public void setRealSubaccountId(@Nullable final String realSubaccountId) {
     this.realSubaccountId = realSubaccountId;
   }
 
@@ -146,7 +146,7 @@ public class BckndTenant
    * @return The same instance of this {@link BckndTenant} class
    */
   @Nonnull
-  public BckndTenant servicePlan(@Nonnull final String servicePlan) {
+  public BckndTenant servicePlan(@Nullable final String servicePlan) {
     this.servicePlan = servicePlan;
     return this;
   }
@@ -166,7 +166,7 @@ public class BckndTenant
    *
    * @param servicePlan service plan
    */
-  public void setServicePlan(@Nonnull final String servicePlan) {
+  public void setServicePlan(@Nullable final String servicePlan) {
     this.servicePlan = servicePlan;
   }
 

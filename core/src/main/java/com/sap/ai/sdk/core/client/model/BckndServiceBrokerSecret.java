@@ -50,7 +50,7 @@ public class BckndServiceBrokerSecret
    * @return The same instance of this {@link BckndServiceBrokerSecret} class
    */
   @Nonnull
-  public BckndServiceBrokerSecret name(@Nonnull final String name) {
+  public BckndServiceBrokerSecret name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -70,7 +70,7 @@ public class BckndServiceBrokerSecret
    *
    * @param name broker secret name
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
@@ -82,7 +82,7 @@ public class BckndServiceBrokerSecret
    * @return The same instance of this {@link BckndServiceBrokerSecret} class
    */
   @Nonnull
-  public BckndServiceBrokerSecret passwordKeyRef(@Nonnull final String passwordKeyRef) {
+  public BckndServiceBrokerSecret passwordKeyRef(@Nullable final String passwordKeyRef) {
     this.passwordKeyRef = passwordKeyRef;
     return this;
   }
@@ -102,7 +102,7 @@ public class BckndServiceBrokerSecret
    *
    * @param passwordKeyRef username key reference in broker secret
    */
-  public void setPasswordKeyRef(@Nonnull final String passwordKeyRef) {
+  public void setPasswordKeyRef(@Nullable final String passwordKeyRef) {
     this.passwordKeyRef = passwordKeyRef;
   }
 
@@ -114,7 +114,7 @@ public class BckndServiceBrokerSecret
    * @return The same instance of this {@link BckndServiceBrokerSecret} class
    */
   @Nonnull
-  public BckndServiceBrokerSecret usernameKeyRef(@Nonnull final String usernameKeyRef) {
+  public BckndServiceBrokerSecret usernameKeyRef(@Nullable final String usernameKeyRef) {
     this.usernameKeyRef = usernameKeyRef;
     return this;
   }
@@ -134,7 +134,7 @@ public class BckndServiceBrokerSecret
    *
    * @param usernameKeyRef password key reference in broker secret
    */
-  public void setUsernameKeyRef(@Nonnull final String usernameKeyRef) {
+  public void setUsernameKeyRef(@Nullable final String usernameKeyRef) {
     this.usernameKeyRef = usernameKeyRef;
   }
 

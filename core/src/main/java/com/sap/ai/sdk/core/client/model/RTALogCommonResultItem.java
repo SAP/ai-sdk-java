@@ -48,7 +48,7 @@ public class RTALogCommonResultItem
    * @return The same instance of this {@link RTALogCommonResultItem} class
    */
   @Nonnull
-  public RTALogCommonResultItem timestamp(@Nonnull final OffsetDateTime timestamp) {
+  public RTALogCommonResultItem timestamp(@Nullable final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -68,7 +68,7 @@ public class RTALogCommonResultItem
    *
    * @param timestamp Datetime in RFC 3339.
    */
-  public void setTimestamp(@Nonnull final OffsetDateTime timestamp) {
+  public void setTimestamp(@Nullable final OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -79,7 +79,7 @@ public class RTALogCommonResultItem
    * @return The same instance of this {@link RTALogCommonResultItem} class
    */
   @Nonnull
-  public RTALogCommonResultItem msg(@Nonnull final String msg) {
+  public RTALogCommonResultItem msg(@Nullable final String msg) {
     this.msg = msg;
     return this;
   }
@@ -99,7 +99,7 @@ public class RTALogCommonResultItem
    *
    * @param msg message content.
    */
-  public void setMsg(@Nonnull final String msg) {
+  public void setMsg(@Nullable final String msg) {
     this.msg = msg;
   }
 

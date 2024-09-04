@@ -114,7 +114,7 @@ public class AiExecutionCreationResponse
    * @return The same instance of this {@link AiExecutionCreationResponse} class
    */
   @Nonnull
-  public AiExecutionCreationResponse status(@Nonnull final AiExecutionStatus status) {
+  public AiExecutionCreationResponse status(@Nullable final AiExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -134,7 +134,7 @@ public class AiExecutionCreationResponse
    *
    * @param status The status of this {@link AiExecutionCreationResponse}
    */
-  public void setStatus(@Nonnull final AiExecutionStatus status) {
+  public void setStatus(@Nullable final AiExecutionStatus status) {
     this.status = status;
   }
 

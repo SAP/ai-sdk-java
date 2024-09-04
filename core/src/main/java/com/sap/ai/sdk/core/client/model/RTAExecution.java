@@ -205,7 +205,7 @@ public class RTAExecution
    * @return The same instance of this {@link RTAExecution} class
    */
   @Nonnull
-  public RTAExecution id(@Nonnull final String id) {
+  public RTAExecution id(@Nullable final String id) {
     this.id = id;
     return this;
   }
@@ -225,7 +225,7 @@ public class RTAExecution
    *
    * @param id ID of the execution
    */
-  public void setId(@Nonnull final String id) {
+  public void setId(@Nullable final String id) {
     this.id = id;
   }
 
@@ -236,7 +236,7 @@ public class RTAExecution
    * @return The same instance of this {@link RTAExecution} class
    */
   @Nonnull
-  public RTAExecution status(@Nonnull final StatusEnum status) {
+  public RTAExecution status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -256,7 +256,7 @@ public class RTAExecution
    *
    * @param status Status of the execution
    */
-  public void setStatus(@Nonnull final StatusEnum status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 
@@ -267,7 +267,7 @@ public class RTAExecution
    * @return The same instance of this {@link RTAExecution} class
    */
   @Nonnull
-  public RTAExecution statusMessage(@Nonnull final String statusMessage) {
+  public RTAExecution statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -287,7 +287,7 @@ public class RTAExecution
    *
    * @param statusMessage Execution status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -298,7 +298,7 @@ public class RTAExecution
    * @return The same instance of this {@link RTAExecution} class
    */
   @Nonnull
-  public RTAExecution submissionTimestamp(@Nonnull final OffsetDateTime submissionTimestamp) {
+  public RTAExecution submissionTimestamp(@Nullable final OffsetDateTime submissionTimestamp) {
     this.submissionTimestamp = submissionTimestamp;
     return this;
   }
@@ -308,7 +308,7 @@ public class RTAExecution
    *
    * @return submissionTimestamp The submissionTimestamp of this {@link RTAExecution} instance.
    */
-  @Nonnull
+  @Nullable
   public OffsetDateTime getSubmissionTimestamp() {
     return submissionTimestamp;
   }
@@ -318,7 +318,7 @@ public class RTAExecution
    *
    * @param submissionTimestamp Timestamp of execution submission
    */
-  public void setSubmissionTimestamp(@Nonnull final OffsetDateTime submissionTimestamp) {
+  public void setSubmissionTimestamp(@Nullable final OffsetDateTime submissionTimestamp) {
     this.submissionTimestamp = submissionTimestamp;
   }
 
@@ -329,7 +329,7 @@ public class RTAExecution
    * @return The same instance of this {@link RTAExecution} class
    */
   @Nonnull
-  public RTAExecution startTimestamp(@Nonnull final OffsetDateTime startTimestamp) {
+  public RTAExecution startTimestamp(@Nullable final OffsetDateTime startTimestamp) {
     this.startTimestamp = startTimestamp;
     return this;
   }
@@ -339,7 +339,7 @@ public class RTAExecution
    *
    * @return startTimestamp The startTimestamp of this {@link RTAExecution} instance.
    */
-  @Nonnull
+  @Nullable
   public OffsetDateTime getStartTimestamp() {
     return startTimestamp;
   }
@@ -349,7 +349,7 @@ public class RTAExecution
    *
    * @param startTimestamp Timestamp of execution start
    */
-  public void setStartTimestamp(@Nonnull final OffsetDateTime startTimestamp) {
+  public void setStartTimestamp(@Nullable final OffsetDateTime startTimestamp) {
     this.startTimestamp = startTimestamp;
   }
 
@@ -360,7 +360,7 @@ public class RTAExecution
    * @return The same instance of this {@link RTAExecution} class
    */
   @Nonnull
-  public RTAExecution finishTimestamp(@Nonnull final OffsetDateTime finishTimestamp) {
+  public RTAExecution finishTimestamp(@Nullable final OffsetDateTime finishTimestamp) {
     this.finishTimestamp = finishTimestamp;
     return this;
   }
@@ -370,7 +370,7 @@ public class RTAExecution
    *
    * @return finishTimestamp The finishTimestamp of this {@link RTAExecution} instance.
    */
-  @Nonnull
+  @Nullable
   public OffsetDateTime getFinishTimestamp() {
     return finishTimestamp;
   }
@@ -380,7 +380,7 @@ public class RTAExecution
    *
    * @param finishTimestamp Timestamp of execution finish
    */
-  public void setFinishTimestamp(@Nonnull final OffsetDateTime finishTimestamp) {
+  public void setFinishTimestamp(@Nullable final OffsetDateTime finishTimestamp) {
     this.finishTimestamp = finishTimestamp;
   }
 

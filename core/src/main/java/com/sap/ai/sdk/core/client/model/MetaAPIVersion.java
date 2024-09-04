@@ -50,7 +50,7 @@ public class MetaAPIVersion
    * @return The same instance of this {@link MetaAPIVersion} class
    */
   @Nonnull
-  public MetaAPIVersion versionId(@Nonnull final String versionId) {
+  public MetaAPIVersion versionId(@Nullable final String versionId) {
     this.versionId = versionId;
     return this;
   }
@@ -70,7 +70,7 @@ public class MetaAPIVersion
    *
    * @param versionId API version identifier
    */
-  public void setVersionId(@Nonnull final String versionId) {
+  public void setVersionId(@Nullable final String versionId) {
     this.versionId = versionId;
   }
 
@@ -81,7 +81,7 @@ public class MetaAPIVersion
    * @return The same instance of this {@link MetaAPIVersion} class
    */
   @Nonnull
-  public MetaAPIVersion url(@Nonnull final String url) {
+  public MetaAPIVersion url(@Nullable final String url) {
     this.url = url;
     return this;
   }
@@ -101,7 +101,7 @@ public class MetaAPIVersion
    *
    * @param url URL of the API version
    */
-  public void setUrl(@Nonnull final String url) {
+  public void setUrl(@Nullable final String url) {
     this.url = url;
   }
 
@@ -112,7 +112,7 @@ public class MetaAPIVersion
    * @return The same instance of this {@link MetaAPIVersion} class
    */
   @Nonnull
-  public MetaAPIVersion description(@Nonnull final String description) {
+  public MetaAPIVersion description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -132,7 +132,7 @@ public class MetaAPIVersion
    *
    * @param description version description
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
