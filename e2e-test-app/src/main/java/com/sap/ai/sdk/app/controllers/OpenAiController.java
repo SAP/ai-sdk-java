@@ -80,7 +80,7 @@ class OpenAiController {
           }
         };
 
-    ThreadContextExecutors.getExecutor().submit(consumeStream);
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
@@ -124,7 +124,7 @@ class OpenAiController {
           }
         };
 
-    ThreadContextExecutors.getExecutor().submit(consumeStream);
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
