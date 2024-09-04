@@ -43,7 +43,7 @@ public class FilteringModuleConfig
   /**
    * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
    *
-   * @param input The input of this {@link FilteringModuleConfig}
+   * @param input List of provider type and filters
    * @return The same instance of this {@link FilteringModuleConfig} class
    */
   @Nonnull
@@ -53,7 +53,7 @@ public class FilteringModuleConfig
   }
 
   /**
-   * Get input
+   * List of provider type and filters
    *
    * @return input The input of this {@link FilteringModuleConfig} instance.
    */
@@ -65,7 +65,7 @@ public class FilteringModuleConfig
   /**
    * Set the input of this {@link FilteringModuleConfig} instance.
    *
-   * @param input The input of this {@link FilteringModuleConfig}
+   * @param input List of provider type and filters
    */
   public void setInput(@Nonnull final FilteringConfig input) {
     this.input = input;
@@ -74,7 +74,7 @@ public class FilteringModuleConfig
   /**
    * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
    *
-   * @param output The output of this {@link FilteringModuleConfig}
+   * @param output List of provider type and filters
    * @return The same instance of this {@link FilteringModuleConfig} class
    */
   @Nonnull
@@ -84,7 +84,7 @@ public class FilteringModuleConfig
   }
 
   /**
-   * Get output
+   * List of provider type and filters
    *
    * @return output The output of this {@link FilteringModuleConfig} instance.
    */
@@ -96,7 +96,7 @@ public class FilteringModuleConfig
   /**
    * Set the output of this {@link FilteringModuleConfig} instance.
    *
-   * @param output The output of this {@link FilteringModuleConfig}
+   * @param output List of provider type and filters
    */
   public void setOutput(@Nonnull final FilteringConfig output) {
     this.output = output;

@@ -17,17 +17,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.Filter;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.ProviderType;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
@@ -85,15 +84,14 @@ public class OrchestrationUnitTest {
         final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
         final var filter =
-            Filter.create()
-                .type(ProviderType.AZURE_CONTENT_SAFETY)
+            FilterConfig.create()
+                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
                 .config(
-                    FilterConfig.create()
+                    AzureContentSafety.create()
                         .hate(filterThreshold)
                         .selfHarm(filterThreshold)
                         .sexual(filterThreshold)
                         .violence(filterThreshold));
-
         final var filteringConfig =
             FilteringModuleConfig.create()
                 .input(FilteringConfig.create().filters(filter))

@@ -22,6 +22,10 @@ public enum DPIEntities {
 
   ORG("profile-org"),
 
+  UNIVERSITY("profile-university"),
+
+  LOCATION("profile-location"),
+
   EMAIL("profile-email"),
 
   PHONE("profile-phone"),
@@ -34,7 +38,13 @@ public enum DPIEntities {
 
   URL("profile-url"),
 
+  USERNAME_PASSWORD("profile-username-password"),
+
+  NATIONALID("profile-nationalid"),
+
   IBAN("profile-iban"),
+
+  SSN("profile-ssn"),
 
   CREDIT_CARD_NUMBER("profile-credit-card-number"),
 
@@ -44,9 +54,19 @@ public enum DPIEntities {
 
   NATIONALITY("profile-nationality"),
 
+  RELIGIOUS_GROUP("profile-religious-group"),
+
   POLITICAL_GROUP("profile-political-group"),
 
-  ETHNICITY("profile-ethnicity");
+  PRONOUNS_GENDER("profile-pronouns-gender"),
+
+  GENDER("profile-gender"),
+
+  SEXUAL_ORIENTATION("profile-sexual-orientation"),
+
+  TRADE_UNION("profile-trade-union"),
+
+  SENSITIVE_DATA("profile-sensitive-data");
 
   private final String value;
 
