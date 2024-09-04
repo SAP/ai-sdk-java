@@ -197,12 +197,87 @@ final String resultMessage = result.getChoices().get(0).getMessage().getContent(
 
 See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat completion with a model not in defined `OpenAiModel`
+### Chat completion with a model not defined in `OpenAiModel`
 
 ```java
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
+
+### Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+#### Print the stream to the console
+This is a simple example to get started:
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<String> stream = client.streamChatCompletion(request)) {
+  stream.forEach(deltaString -> System.out.println(deltaString));
+}
+```
+
+<details>
+<summary>It's also possible to collect the total output</summary>
+<pre>
+
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
+    stream.peek(totalOutput::addDelta).forEach(deltaObject -> System.out.println(deltaObject));
+}
+
+// access aggregated information from total output, e.g.
+System.out.println("Tokens: " + totalOutput.getUsage().getCompletionTokens());
+```
+</pre>
+</details>
+
+#### Framework-agnostic example
+This example passes the stream of chat completion delta messages to a generic `Consumer<String>`.
+```java
+Consumer<String> emit;
+
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+// Do the request before the thread to easily throw errors
+Stream<String> stream = client.streamChatCompletion(request);
+
+ThreadContextExecutors.getExecutor().execute(() -> {
+    // try-with-resources ensures the stream is closed
+    try (stream) {
+        // send is defined by your framework
+        stream.forEach(delta -> emit.accept(delta));
+    }
+});
+```
+
+#### Spring Boot example
+
+Please find [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
 
