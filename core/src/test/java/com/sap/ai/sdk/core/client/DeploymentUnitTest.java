@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
@@ -22,6 +23,9 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -114,7 +118,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                           "deploymentUrl": "",
                           "id": "d5b764fe55b3e87c",
                           "message": "AiDeployment scheduled.",
-                          "status": "UNKNOWN"
+                          "status": "FOOBAR"
                         }
                         """)));
 
@@ -128,7 +132,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl()).isEqualTo("");
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
-    assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN);
+    assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN_DEFAULT_OPEN_API);
   }
 
   @Test
