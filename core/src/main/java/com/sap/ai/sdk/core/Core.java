@@ -162,6 +162,7 @@ public class Core {
             // generated code this is actually necessary, because the generated code assumes this
             // path to be present on the destination
             .uri(destination.getUri().resolve("/v2"))
+            .header("AI-Client-Type", "AI SDK Java")
             .build();
     return destination;
   }
