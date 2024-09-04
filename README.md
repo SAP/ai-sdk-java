@@ -182,6 +182,15 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 ### Simple chat completion
 
 ```java
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Hello World! Why is this phrase so famous?");
+
+final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+```
+
+### Chat completion message history
+
+```java
 final var systemMessage =
     new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
 final var userMessage =

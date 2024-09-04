@@ -31,11 +31,7 @@ class OpenAiController {
   @GetMapping("/chatCompletion")
   @Nonnull
   public static OpenAiChatCompletionOutput chatCompletion() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatUserMessage().addText("Who is the prettiest")));
-
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Who is the prettiest");
   }
 
   /**

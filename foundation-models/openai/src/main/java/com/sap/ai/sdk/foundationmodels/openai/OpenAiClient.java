@@ -9,12 +9,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -102,6 +104,22 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param prompt a text message.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
+      throws OpenAiClientException {
+    final var parameters =
+        new OpenAiChatCompletionParameters()
+            .setMessages(List.of(new OpenAiChatUserMessage().addText(prompt)));
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
