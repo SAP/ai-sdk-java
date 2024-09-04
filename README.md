@@ -265,6 +265,7 @@ OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 // Do the request before the thread to easily return errors
 Stream<String> stream = client.streamChatCompletion(request);
 
+// non-blocking asynchronous execution
 ThreadContextExecutors.getExecutor().execute(() -> {
     // try-with-resources ensures the stream is closed
     try (stream) {
