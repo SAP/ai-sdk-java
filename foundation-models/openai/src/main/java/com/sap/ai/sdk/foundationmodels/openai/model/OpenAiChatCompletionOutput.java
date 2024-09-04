@@ -2,6 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,4 +26,16 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput {
   @JsonProperty("system_fingerprint")
   @Getter(onMethod_ = @Nonnull)
   private String systemFingerprint;
+
+  /**
+   * Get the message content from the output.
+   *
+   * <p>Note: If there are multiple choices only the first one is returned
+   *
+   * @return the message content or empty string.
+   */
+  @Nonnull
+  public String getContent() {
+    return Objects.requireNonNullElse(getChoices().get(0).getMessage().getContent(), "");
+  }
 }

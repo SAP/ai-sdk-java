@@ -185,10 +185,10 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Hello World! Why is this phrase so famous?");
 
-final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+final String resultMessage = result.getContent();
 ```
 
-### Chat completion message history
+### Message history
 
 ```java
 final var systemMessage =
@@ -201,7 +201,7 @@ final var request =
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
-final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+final String resultMessage = result.getContent();
 ```
 
 See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
