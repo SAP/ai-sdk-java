@@ -262,6 +262,7 @@ OpenAiChatCompletionParameters request =
         .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
 
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+// Do the request before the thread to easily return errors
 Stream<String> stream = client.streamChatCompletion(request);
 
 ThreadContextExecutors.getExecutor().execute(() -> {
