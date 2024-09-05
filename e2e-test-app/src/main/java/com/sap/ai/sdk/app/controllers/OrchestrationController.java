@@ -92,7 +92,8 @@ class OrchestrationController {
                 .entities(
                     DPIEntityConfig.create().type(DPIEntities.EMAIL),
                     DPIEntityConfig.create().type(DPIEntities.GENDER));
-        final var maskingModuleConfig = MaskingModuleConfig.create().maskingProviders(maskingProviderConfig);
+        final var maskingModuleConfig =
+            MaskingModuleConfig.create().maskingProviders(maskingProviderConfig);
 
         return CompletionPostRequest.create()
             .orchestrationConfig(
