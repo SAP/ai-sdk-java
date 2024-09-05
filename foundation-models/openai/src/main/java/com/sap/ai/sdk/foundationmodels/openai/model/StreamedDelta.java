@@ -17,7 +17,7 @@ public interface StreamedDelta {
    *
    * <p>Note: If there are multiple choices only the first one is returned
    *
-   * <p>Note: The first two and the last delta do not contain any content
+   * <p>Note: Some deltas do not contain any content
    *
    * @return the message content or empty string.
    */

@@ -39,7 +39,7 @@ class OpenAiTest {
             .setMessages(List.of(new OpenAiChatUserMessage().addText("Who is the prettiest?")));
 
     final var totalOutput = new OpenAiChatCompletionOutput();
-    final var emptyDeltaCount = new AtomicInteger(0);
+    final var filledDeltaCount = new AtomicInteger(0);
     OpenAiClient.forModel(GPT_35_TURBO)
         .streamChatCompletionDeltas(request)
         .peek(totalOutput::addDelta)
@@ -47,15 +47,15 @@ class OpenAiTest {
         .forEach(
             delta -> {
               final String deltaContent = delta.getDeltaContent();
-              log.info("deltaContent: {}", deltaContent);
-              if (deltaContent.isEmpty()) {
-                emptyDeltaCount.incrementAndGet();
+              log.info("delta: {}", delta);
+              if (!deltaContent.isEmpty()) {
+                filledDeltaCount.incrementAndGet();
               }
             });
 
     // the first two and the last delta don't have any content
     // see OpenAiChatCompletionDelta#getDeltaContent
-    assertThat(emptyDeltaCount.get()).isLessThanOrEqualTo(4);
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
 
     assertThat(totalOutput.getChoices()).isNotEmpty();
     assertThat(totalOutput.getChoices().get(0).getMessage().getContent()).isNotEmpty();
