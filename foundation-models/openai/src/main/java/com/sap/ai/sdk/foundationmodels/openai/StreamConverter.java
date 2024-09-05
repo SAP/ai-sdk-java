@@ -59,7 +59,7 @@ class StreamConverter {
           done = true;
           stopHandler.close();
         }
-      } catch (IOException e) {
+      } catch (final IOException e) {
         done = true;
         stopHandler.close();
         throw new UncheckedIOException("Iterator stopped unexpectedly.", e);
