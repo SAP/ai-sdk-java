@@ -27,10 +27,10 @@ class StreamConverter {
      * Read next entry for Stream.
      *
      * @return The next entry, or {@code null} when no further entry can be read.
-     * @throws Exception if no entry can be read anymore, unexpected.
+     * @throws IOException if no entry can be read anymore, unexpected.
      */
     @Nullable
-    T readEntry() throws Exception;
+    T readEntry() throws IOException;
   }
 
   @FunctionalInterface
