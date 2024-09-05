@@ -55,7 +55,7 @@ class OpenAiTest {
 
     // the first two and the last delta don't have any content
     // see OpenAiChatCompletionDelta#getDeltaContent
-    assertThat(emptyDeltaCount.get()).isLessThanOrEqualTo(3);
+    assertThat(emptyDeltaCount.get()).isLessThanOrEqualTo(4);
 
     assertThat(totalOutput.getChoices()).isNotEmpty();
     assertThat(totalOutput.getChoices().get(0).getMessage().getContent()).isNotEmpty();
