@@ -8,10 +8,14 @@ import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
@@ -81,6 +85,15 @@ class OrchestrationController {
                 .input(FilteringConfig.create().filters(List.of(filter)))
                 .output(FilteringConfig.create().filters(List.of(filter)));
 
+        final var maskingProviderConfig =
+            MaskingProviderConfig.create()
+                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
+                .entities(
+                    DPIEntityConfig.create().type(DPIEntities.EMAIL),
+                    DPIEntityConfig.create().type(DPIEntities.GENDER));
+        final var maskingModuleConfig = MaskingModuleConfig.create().maskingProviders(maskingProviderConfig);
+
         return CompletionPostRequest.create()
             .orchestrationConfig(
                 OrchestrationConfig.create()
@@ -88,7 +101,8 @@ class OrchestrationController {
                         ModuleConfigs.create()
                             .llmModuleConfig(LLM_CONFIG)
                             .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
+                            .filteringModuleConfig(filteringConfig)
+                            .maskingModuleConfig(maskingModuleConfig)))
             .inputParams(inputParams);
       };
 
