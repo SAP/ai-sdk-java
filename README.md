@@ -206,12 +206,77 @@ final String resultMessage = result.getContent();
 
 See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat completion with a model not in defined `OpenAiModel`
+### Chat completion with a model not defined in `OpenAiModel`
 
 ```java
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
+
+### Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+#### Stream the chat completion asynchronously
+This is a blocking example for streaming and printing directly to the console:
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<String> stream = client.streamChatCompletion(request)) {
+    stream.forEach(deltaString -> {
+        System.out.print(deltaString);
+        System.out.flush();
+    });
+}
+```
+
+<details>
+<summary>It's also possible to aggregate the total output.</summary>
+
+The following example is non-blocking.
+Any asynchronous library can be used, e.g. classic Thread API.
+
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// Do the request before the thread starts to handle exceptions during request initialization 
+Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
+
+Thread thread = new Thread(() -> {
+    // try-with-resources ensures the stream is closed
+    try (stream) {
+        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+    }
+});
+thread.start(); // non-blocking
+
+thread.join(); // blocking
+
+// access aggregated information from total output, e.g.
+Integer tokens = totalOutput.getUsage().getCompletionTokens();
+System.out.println("Tokens: " + tokens);
+```
+
+</details>
+
+#### Spring Boot example
+
+Please find [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
 
