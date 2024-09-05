@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -57,10 +59,10 @@ class StreamConverter {
           done = true;
           stopHandler.close();
         }
-      } catch (Exception e) {
+      } catch (IOException e) {
         done = true;
         stopHandler.close();
-        throw new IllegalStateException("Iterator stopped unexpectedly.", e);
+        throw new UncheckedIOException("Iterator stopped unexpectedly.", e);
       }
       return !done;
     }
@@ -68,7 +70,7 @@ class StreamConverter {
     @Override
     public T next() {
       if (next == null && !hasNext()) {
-        throw new IllegalStateException("next() called without checking hasNext()");
+        throw new NoSuchElementException();
       }
       return next;
     }
