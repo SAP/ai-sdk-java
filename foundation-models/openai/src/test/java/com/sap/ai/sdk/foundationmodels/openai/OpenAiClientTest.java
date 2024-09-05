@@ -18,7 +18,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
@@ -30,9 +29,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -84,7 +85,7 @@ class OpenAiClientTest {
     verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
   }
 
-  private static Runnable[] chatCompletionCalls() {
+  private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
       () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
       () ->
@@ -96,7 +97,7 @@ class OpenAiClientTest {
   }
 
   @ParameterizedTest
-  @MethodSource("chatCompletionCalls")
+  @MethodSource("errorHandlingCalls")
   void chatCompletionErrorHandling(@Nonnull final Runnable request) {
     final var errorJson =
         """
@@ -169,23 +170,28 @@ class OpenAiClientTest {
     softly.assertAll();
   }
 
-  @Test
-  void chatCompletion() throws IOException {
+  private static Callable<?>[] chatCompletionCalls() {
+    return new Callable[] {
+      () -> {
+        final var userMessage =
+            new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
+        final var request = new OpenAiChatCompletionParameters().setMessages(List.of(userMessage));
+        return client.chatCompletion(request);
+      },
+      () -> client.chatCompletion("Hello World! Why is this phrase so famous?")
+    };
+  }
+
+  @SneakyThrows
+  @ParameterizedTest
+  @MethodSource("chatCompletionCalls")
+  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionOutput> request) {
     try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
 
       final String response = new String(inputStream.readAllBytes());
       stubFor(post("/chat/completions").willReturn(okJson(response)));
 
-      final var systemMessage =
-          new OpenAiChatMessage.OpenAiChatSystemMessage()
-              .setContent(
-                  "You are a helpful, friendly and sometimes slightly snarky AI assistant!");
-      final var userMessage =
-          new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-      final var request =
-          new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
-
-      final var result = client.chatCompletion(request);
+      final OpenAiChatCompletionOutput result = request.call();
 
       assertThat(result).isNotNull();
       assertThat(result.getCreated()).isEqualTo(1719300073);
@@ -252,7 +258,7 @@ class OpenAiClientTest {
               .withRequestBody(
                   equalToJson(
                       """
-                          {"messages":[{"role":"system","content":"You are a helpful, friendly and sometimes slightly snarky AI assistant!"},{"role":"user","content":[{"type":"text","text":"Hello World! Why is this phrase so famous?"}]}]}""")));
+                          {"messages":[{"role":"user","content":[{"type":"text","text":"Hello World! Why is this phrase so famous?"}]}]}""")));
     }
   }
 
