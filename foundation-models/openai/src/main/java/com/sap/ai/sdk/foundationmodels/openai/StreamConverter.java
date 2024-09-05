@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Spliterator.NONNULL;
+import static java.util.Spliterator.ORDERED;
 
 import io.vavr.control.Try;
 import java.io.BufferedReader;
@@ -10,7 +12,6 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -98,7 +99,7 @@ class StreamConverter {
                 .onFailure(e -> log.error("Could not close HTTP input stream", e));
 
     final var iterator = new HandledIterator<>(reader::readLine, closeHandler);
-    final var spliterator = Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED);
+    final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
     return StreamSupport.stream(spliterator, false).onClose(closeHandler::close);
   }
 }
