@@ -36,6 +36,9 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput {
    */
   @Nonnull
   public String getContent() {
+    if (getChoices().isEmpty()) {
+      return "";
+    }
     return Objects.requireNonNullElse(getChoices().get(0).getMessage().getContent(), "");
   }
 }

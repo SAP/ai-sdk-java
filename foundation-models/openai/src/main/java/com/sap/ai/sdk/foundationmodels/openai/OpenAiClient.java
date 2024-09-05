@@ -97,19 +97,6 @@ public final class OpenAiClient {
   /**
    * Generate a completion for the given prompt.
    *
-   * @param parameters the prompt, including messages and other parameters.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   */
-  @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
-  }
-
-  /**
-   * Generate a completion for the given prompt.
-   *
    * @param prompt a text message.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
@@ -120,6 +107,19 @@ public final class OpenAiClient {
     final var parameters =
         new OpenAiChatCompletionParameters()
             .setMessages(List.of(new OpenAiChatUserMessage().addText(prompt)));
+    return chatCompletion(parameters);
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param parameters the prompt, including messages and other parameters.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletion(
+      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
