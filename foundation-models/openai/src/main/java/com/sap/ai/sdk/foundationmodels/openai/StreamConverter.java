@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
@@ -22,10 +21,28 @@ import org.apache.hc.core5.http.HttpEntity;
 @Slf4j
 class StreamConverter {
 
+  @FunctionalInterface
+  private interface ReadHandler<T> {
+    /**
+     * Read next entry for Stream.
+     *
+     * @return The next entry, or {@code null} when no further entry can be read.
+     * @throws Exception if no entry can be read anymore, unexpected.
+     */
+    @Nullable
+    T readEntry() throws Exception;
+  }
+
+  @FunctionalInterface
+  private interface CloseHandler {
+    /** Close handler to be called when Stream terminated. */
+    void close();
+  }
+
   @RequiredArgsConstructor
   private static class HandledIterator<T> implements Iterator<T> {
-    private final Callable<T> producer;
-    private final Runnable stopper;
+    private final ReadHandler<T> readHandler;
+    private final CloseHandler stopHandler;
     private boolean done = false;
     private T next = null;
 
@@ -35,15 +52,15 @@ class StreamConverter {
         return false;
       }
       try {
-        next = producer.call();
+        next = readHandler.readEntry();
         if (next == null) {
           done = true;
-          stopper.run();
+          stopHandler.close();
         }
       } catch (Exception e) {
         done = true;
-        stopper.run();
-        throw new RuntimeException(e);
+        stopHandler.close();
+        throw new IllegalStateException("Iterator stopped unexpectedly.", e);
       }
       return !done;
     }
@@ -51,14 +68,16 @@ class StreamConverter {
     @Override
     public T next() {
       if (next == null && !hasNext()) {
-        throw new IllegalStateException();
+        throw new IllegalStateException("next() called without checking hasNext()");
       }
       return next;
     }
   }
 
+  @SuppressWarnings("PMD.CloseResource")
   @Nonnull
-  static Stream<String> streamLines(@Nullable HttpEntity entity) throws OpenAiClientException {
+  static Stream<String> streamLines(@Nullable final HttpEntity entity)
+      throws OpenAiClientException {
     if (entity == null) {
       throw new OpenAiClientException("OpenAI response was empty.");
     }
@@ -71,13 +90,13 @@ class StreamConverter {
     }
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8));
-    final Runnable closeHandler =
+    final CloseHandler closeHandler =
         () ->
             Try.run(reader::close)
                 .onFailure(e -> log.error("Could not close HTTP input stream", e));
 
     final var iterator = new HandledIterator<>(reader::readLine, closeHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED);
-    return StreamSupport.stream(spliterator, false).onClose(closeHandler);
+    return StreamSupport.stream(spliterator, false).onClose(closeHandler::close);
   }
 }
