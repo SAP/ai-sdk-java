@@ -55,7 +55,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel) {
-    final var destination = Core.getDestinationForModel(foundationModel.model(), "default");
+    final var destination = Core.getDestinationForModel("default", foundationModel.model());
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
