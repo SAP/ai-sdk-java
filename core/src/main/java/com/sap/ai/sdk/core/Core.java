@@ -63,14 +63,17 @@ public class Core {
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments =
-        new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
+        new DeploymentApi(getClient())
+            .deploymentQuery(
+                resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
 
     return deployments.getResources().stream()
-        .filter(deployment -> "orchestration".equals(deployment.getScenarioId()))
         .map(AiDeployment::getId)
         .findFirst()
         .orElseThrow(
-            () -> new NoSuchElementException("No deployment found with scenario id orchestration"));
+            () ->
+                new NoSuchElementException(
+                    "No running deployment found with scenario id \"orchestration\""));
   }
 
   /**
@@ -259,14 +262,19 @@ public class Core {
   private static String getDeploymentForModel(
       @Nonnull final String modelName, @Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments = new DeploymentApi(getClient()).deploymentQuery(resourceGroup);
+    final var deployments =
+        new DeploymentApi(getClient())
+            .deploymentQuery(
+                resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
 
     return deployments.getResources().stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
         .map(AiDeployment::getId)
         .findFirst()
         .orElseThrow(
-            () -> new NoSuchElementException("No deployment found with model name " + modelName));
+            () ->
+                new NoSuchElementException(
+                    "No running deployment found with model name " + modelName));
   }
 
   /** This exists because getBackendDetails() is broken */
