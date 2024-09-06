@@ -244,9 +244,9 @@
         }
       }
     },
-    "value" : 4.383861032584438,
+    "value" : 3.4295587745587746,
     "weight" : 1.0,
-    "confidence" : 9.645390070921987,
+    "confidence" : 7.179487179487181,
     "usedValues" : [ {
       "type" : "ScoreValue",
       "score" : {
@@ -1262,22 +1262,19 @@
         "type" : "UnpatchedVulnerabilitiesScore",
         "name" : "How well vulnerabilities are patched"
       },
-      "value" : 10.0,
+      "value" : 0.0,
       "weight" : 0.5,
-      "confidence" : 10.0,
+      "confidence" : 0.0,
       "usedValues" : [ {
-        "type" : "VulnerabilitiesValue",
+        "type" : "UnknownValue",
         "feature" : {
           "type" : "VulnerabilitiesFeature",
           "name" : "Info about vulnerabilities in open-source project"
         },
-        "vulnerabilities" : {
-          "entries" : [ ]
-        },
         "explanation" : [ ]
       } ],
-      "explanation" : [ "No unpatched vulnerabilities found which is good" ],
-      "isUnknown" : false,
+      "explanation" : [ ],
+      "isUnknown" : true,
       "isNotApplicable" : false,
       "feature" : {
         "type" : "UnpatchedVulnerabilitiesScore",
@@ -1519,17 +1516,14 @@
         },
         "name" : "Assesses security testing and vulnerability discovery"
       },
-      "value" : 2.0,
+      "value" : 0.0,
       "weight" : 0.6,
-      "confidence" : 10.0,
+      "confidence" : 5.0,
       "usedValues" : [ {
-        "type" : "VulnerabilitiesValue",
+        "type" : "UnknownValue",
         "feature" : {
           "type" : "VulnerabilitiesFeature",
           "name" : "Info about vulnerabilities in open-source project"
-        },
-        "vulnerabilities" : {
-          "entries" : [ ]
         },
         "explanation" : [ ]
       }, {
@@ -2727,5 +2721,5 @@
       }
     }
   },
-  "label" : [ "OssSecurityRating$SecurityLabel", "BAD" ]
+  "label" : [ "OssSecurityRating$SecurityLabel", "UNCLEAR" ]
 }
