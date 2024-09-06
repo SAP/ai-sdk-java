@@ -9,8 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sap.ai.sdk.core.client.DeploymentApi;
-import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingBuilder;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
@@ -25,8 +23,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOpt
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -49,31 +45,8 @@ public class Core {
   @Nonnull
   public static ApiClient getOrchestrationClient(@Nonnull final String resourceGroup) {
     return getClient(
-        getDestinationForDeployment(getOrchestrationDeployment(resourceGroup), resourceGroup));
-  }
-
-  /**
-   * Get the deployment id from the scenario id. If there are multiple deployments of the same
-   * scenario id, the first one is returned.
-   *
-   * @param resourceGroup the resource group.
-   * @return the deployment id
-   * @throws NoSuchElementException if no deployment is found for the scenario id.
-   */
-  private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
-      throws NoSuchElementException {
-    final var deployments =
-        new DeploymentApi(getClient())
-            .deploymentQuery(
-                resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
-
-    return deployments.getResources().stream()
-        .map(AiDeployment::getId)
-        .findFirst()
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "No running deployment found with scenario id \"orchestration\""));
+        getDestinationForDeployment(
+            DeploymentCache.getDeploymentId(resourceGroup, "orchestration"), resourceGroup));
   }
 
   /**
@@ -245,61 +218,8 @@ public class Core {
    */
   @Nonnull
   public static Destination getDestinationForModel(
-      @Nonnull final String modelName, @Nonnull final String resourceGroup) {
+      @Nonnull final String resourceGroup, @Nonnull final String modelName) {
     return getDestinationForDeployment(
-        getDeploymentForModel(modelName, resourceGroup), resourceGroup);
-  }
-
-  /**
-   * Get the deployment id from the model name. If there are multiple deployments of the same model,
-   * the first one is returned.
-   *
-   * @param modelName the model name.
-   * @param resourceGroup the resource group.
-   * @return the deployment id
-   * @throws NoSuchElementException if no deployment is found for the model name.
-   */
-  private static String getDeploymentForModel(
-      @Nonnull final String modelName, @Nonnull final String resourceGroup)
-      throws NoSuchElementException {
-    final var deployments =
-        new DeploymentApi(getClient())
-            .deploymentQuery(
-                resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
-
-    return deployments.getResources().stream()
-        .filter(deployment -> isDeploymentOfModel(modelName, deployment))
-        .map(AiDeployment::getId)
-        .findFirst()
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "No running deployment found with model name " + modelName));
-  }
-
-  /** This exists because getBackendDetails() is broken */
-  private static boolean isDeploymentOfModel(
-      @Nonnull final String modelName, @Nonnull final AiDeployment deployment) {
-    final var deploymentDetails = deployment.getDetails();
-    // The AI Core specification doesn't mention that this is nullable, but it can be.
-    // Remove this check when the specification is fixed.
-    if (deploymentDetails == null) {
-      return false;
-    }
-    final var resources = deploymentDetails.getResources();
-    if (resources == null) {
-      return false;
-    }
-    if (!resources.getCustomFieldNames().contains("backend_details")) {
-      return false;
-    }
-    final var detailsObject = resources.getCustomField("backend_details");
-
-    if (detailsObject instanceof Map<?, ?> details
-        && details.get("model") instanceof Map<?, ?> model
-        && model.get("name") instanceof String name) {
-      return modelName.equals(name);
-    }
-    return false;
+        DeploymentCache.getDeploymentId(resourceGroup, modelName), resourceGroup);
   }
 }
