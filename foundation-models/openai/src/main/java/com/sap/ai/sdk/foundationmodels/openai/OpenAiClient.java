@@ -98,7 +98,7 @@ public final class OpenAiClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Generate a completion for the given user prompt.
    *
    * @param prompt a text message.
    * @return the completion output
