@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
 
+/**
+ * Cache for deployment IDs. This class is used to get the deployment id for the orchestration
+ * scenario or for a model.
+ */
 class DeploymentCache {
   private static final DeploymentApi API = new DeploymentApi(getClient());
 
@@ -18,7 +22,18 @@ class DeploymentCache {
    */
   private static final Map<String, String> CACHE = new HashMap<>();
 
+  // Eagerly load all deployments into the cache.
   static {
+    resetCache();
+  }
+
+  /**
+   * Remove all entries from the cache and reload all deployments.
+   *
+   * <p><b>Call this method if you delete a deployment.</b>
+   */
+  public static void resetCache() {
+    CACHE.clear();
     final var deployments = API.deploymentQuery("default").getResources();
     deployments.forEach(
         deployment ->
@@ -26,10 +41,10 @@ class DeploymentCache {
   }
 
   /**
-   * Get the deployment id for the given scenario or model name.
+   * Get the deployment id for the orchestration scenario or any foundation model.
    *
    * @param resourceGroup the resource group, usually "default".
-   * @param name the scenario or model name.
+   * @param name "orchestration" or the model name.
    * @return the deployment id.
    */
   public static String getDeploymentId(
@@ -73,8 +88,8 @@ class DeploymentCache {
    * Get the deployment id from the model name. If there are multiple deployments of the same model,
    * the first one is returned.
    *
-   * @param modelName the model name.
    * @param resourceGroup the resource group.
+   * @param modelName the model name.
    * @return the deployment id
    * @throws NoSuchElementException if no deployment is found for the model name.
    */
