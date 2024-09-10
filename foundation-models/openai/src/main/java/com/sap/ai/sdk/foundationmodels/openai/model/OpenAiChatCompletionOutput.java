@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,11 +36,15 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    * <p>Note: If there are multiple choices only the first one is returned
    *
    * @return the message content or empty string.
+   * @throws OpenAiClientException if the content filter filtered the output.
    */
   @Nonnull
-  public String getContent() {
+  public String getContent() throws OpenAiClientException {
     if (getChoices().isEmpty()) {
       return "";
+    }
+    if ("content_filter".equals(getChoices().get(0).getFinishReason())) {
+      throw new OpenAiClientException("Content filter filtered the output.");
     }
     return Objects.requireNonNullElse(getChoices().get(0).getMessage().getContent(), "");
   }
