@@ -112,8 +112,11 @@ class OpenAiController {
 
     final Runnable consumeStream =
         () -> {
-          stream.forEach(deltaMessage -> send(emitter, deltaMessage));
-          emitter.complete();
+          try (stream) {
+            stream.forEach(deltaMessage -> send(emitter, deltaMessage));
+          } finally {
+            emitter.complete();
+          }
         };
 
     ThreadContextExecutors.getExecutor().execute(consumeStream);
