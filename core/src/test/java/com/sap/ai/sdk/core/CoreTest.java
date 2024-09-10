@@ -44,7 +44,7 @@ public class CoreTest {
           }
         }
         """;
-    assertThat(getDestination(AICORE_SERVICE_KEY).asHttp().getUri().toString())
-        .isEqualTo("https://api.ai.core/v2");
+    var result = getDestination(AICORE_SERVICE_KEY).asHttp();
+    assertThat(result.getUri()).hasToString("https://api.ai.core/v2");
   }
 }
