@@ -248,7 +248,10 @@ OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
 
 Thread thread = new Thread(() -> {
-    stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+    // try-with-resources ensures the stream is closed
+    try (stream) {
+        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+    }
 });
 thread.start(); // non-blocking
 
