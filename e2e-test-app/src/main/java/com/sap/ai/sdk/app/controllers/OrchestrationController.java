@@ -15,6 +15,7 @@ import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
+import com.sap.ai.sdk.orchestration.client.model.TemplateRefTemplateRef;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,7 @@ class OrchestrationController {
                 .role("user")
                 .content(
                     "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
+        final var templatingConfig = TemplatingModuleConfig.create().templateRef(TemplateRefTemplateRef.create().scenario("").name("").version(""));
 
         final var filter =
             FilterConfig.create()

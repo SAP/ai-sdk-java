@@ -24,9 +24,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TemplatingModuleConfig */
+/** TemplateRef */
 // CHECKSTYLE:OFF
-public class TemplatingModuleConfig
+public class TemplateRef
 // CHECKSTYLE:ON
 {
   @JsonProperty("template_ref")
@@ -35,17 +35,16 @@ public class TemplatingModuleConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  protected TemplatingModuleConfig() {}
+  protected TemplateRef() {}
 
   /**
-   * Set the templateRef of this {@link TemplatingModuleConfig} instance and return the same
-   * instance.
+   * Set the templateRef of this {@link TemplateRef} instance and return the same instance.
    *
-   * @param templateRef The templateRef of this {@link TemplatingModuleConfig}
-   * @return The same instance of this {@link TemplatingModuleConfig} class
+   * @param templateRef The templateRef of this {@link TemplateRef}
+   * @return The same instance of this {@link TemplateRef} class
    */
   @Nonnull
-  public TemplatingModuleConfig templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
+  public TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
     this.templateRef = templateRef;
     return this;
   }
@@ -53,7 +52,7 @@ public class TemplatingModuleConfig
   /**
    * Get templateRef
    *
-   * @return templateRef The templateRef of this {@link TemplatingModuleConfig} instance.
+   * @return templateRef The templateRef of this {@link TemplateRef} instance.
    */
   @Nonnull
   public TemplateRefTemplateRef getTemplateRef() {
@@ -61,16 +60,16 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Set the templateRef of this {@link TemplatingModuleConfig} instance.
+   * Set the templateRef of this {@link TemplateRef} instance.
    *
-   * @param templateRef The templateRef of this {@link TemplatingModuleConfig}
+   * @param templateRef The templateRef of this {@link TemplateRef}
    */
   public void setTemplateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
     this.templateRef = templateRef;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TemplatingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link TemplateRef}.
    *
    * @return The set of properties names
    */
@@ -81,7 +80,7 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TemplatingModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link TemplateRef} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,15 +89,14 @@ public class TemplatingModuleConfig
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "TemplatingModuleConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TemplateRef has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link TemplatingModuleConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TemplateRef} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -116,9 +114,9 @@ public class TemplatingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplatingModuleConfig templatingModuleConfig = (TemplatingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, templatingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.templateRef, templatingModuleConfig.templateRef);
+    final TemplateRef templateRef = (TemplateRef) o;
+    return Objects.equals(this.cloudSdkCustomFields, templateRef.cloudSdkCustomFields)
+        && Objects.equals(this.templateRef, templateRef.templateRef);
   }
 
   @Override
@@ -130,7 +128,7 @@ public class TemplatingModuleConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TemplatingModuleConfig {\n");
+    sb.append("class TemplateRef {\n");
     sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -150,21 +148,21 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TemplatingModuleConfig}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRef} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (templateRef) -> new TemplatingModuleConfig().templateRef(templateRef);
+    return (templateRef) -> new TemplateRef().templateRef(templateRef);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the templateRef of this {@link TemplatingModuleConfig} instance.
+     * Set the templateRef of this {@link TemplateRef} instance.
      *
-     * @param templateRef The templateRef of this {@link TemplatingModuleConfig}
-     * @return The TemplatingModuleConfig instance.
+     * @param templateRef The templateRef of this {@link TemplateRef}
+     * @return The TemplateRef instance.
      */
-    TemplatingModuleConfig templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
+    TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
   }
 }

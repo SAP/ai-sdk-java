@@ -24,53 +24,52 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TemplatingModuleConfig */
+/** TemplateRefByID */
 // CHECKSTYLE:OFF
-public class TemplatingModuleConfig
+public class TemplateRefByID
 // CHECKSTYLE:ON
 {
-  @JsonProperty("template_ref")
-  private TemplateRefTemplateRef templateRef;
+  @JsonProperty("id")
+  private String id;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  protected TemplatingModuleConfig() {}
+  protected TemplateRefByID() {}
 
   /**
-   * Set the templateRef of this {@link TemplatingModuleConfig} instance and return the same
-   * instance.
+   * Set the id of this {@link TemplateRefByID} instance and return the same instance.
    *
-   * @param templateRef The templateRef of this {@link TemplatingModuleConfig}
-   * @return The same instance of this {@link TemplatingModuleConfig} class
+   * @param id ID of the template in prompt registry
+   * @return The same instance of this {@link TemplateRefByID} class
    */
   @Nonnull
-  public TemplatingModuleConfig templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
-    this.templateRef = templateRef;
+  public TemplateRefByID id(@Nonnull final String id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get templateRef
+   * ID of the template in prompt registry
    *
-   * @return templateRef The templateRef of this {@link TemplatingModuleConfig} instance.
+   * @return id The id of this {@link TemplateRefByID} instance.
    */
   @Nonnull
-  public TemplateRefTemplateRef getTemplateRef() {
-    return templateRef;
+  public String getId() {
+    return id;
   }
 
   /**
-   * Set the templateRef of this {@link TemplatingModuleConfig} instance.
+   * Set the id of this {@link TemplateRefByID} instance.
    *
-   * @param templateRef The templateRef of this {@link TemplatingModuleConfig}
+   * @param id ID of the template in prompt registry
    */
-  public void setTemplateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
-    this.templateRef = templateRef;
+  public void setId(@Nonnull final String id) {
+    this.id = id;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TemplatingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link TemplateRefByID}.
    *
    * @return The set of properties names
    */
@@ -81,7 +80,7 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TemplatingModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link TemplateRefByID} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,15 +89,14 @@ public class TemplatingModuleConfig
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "TemplatingModuleConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TemplateRefByID has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link TemplatingModuleConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TemplateRefByID} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -116,22 +114,22 @@ public class TemplatingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplatingModuleConfig templatingModuleConfig = (TemplatingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, templatingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.templateRef, templatingModuleConfig.templateRef);
+    final TemplateRefByID templateRefByID = (TemplateRefByID) o;
+    return Objects.equals(this.cloudSdkCustomFields, templateRefByID.cloudSdkCustomFields)
+        && Objects.equals(this.id, templateRefByID.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateRef, cloudSdkCustomFields);
+    return Objects.hash(id, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TemplatingModuleConfig {\n");
-    sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
+    sb.append("class TemplateRefByID {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -150,21 +148,21 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TemplatingModuleConfig}
+   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRefByID}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (templateRef) -> new TemplatingModuleConfig().templateRef(templateRef);
+    return (id) -> new TemplateRefByID().id(id);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the templateRef of this {@link TemplatingModuleConfig} instance.
+     * Set the id of this {@link TemplateRefByID} instance.
      *
-     * @param templateRef The templateRef of this {@link TemplatingModuleConfig}
-     * @return The TemplatingModuleConfig instance.
+     * @param id ID of the template in prompt registry
+     * @return The TemplateRefByID instance.
      */
-    TemplatingModuleConfig templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
+    TemplateRefByID id(@Nonnull final String id);
   }
 }
