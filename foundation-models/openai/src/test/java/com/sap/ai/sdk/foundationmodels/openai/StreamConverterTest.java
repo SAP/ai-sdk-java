@@ -42,5 +42,6 @@ public class StreamConverterTest {
     assertThat(streamCounter).hasValue(StreamConverter.BUFFER_SIZE * 4);
     verify(inputStream, times(TEMPLATE.length() + 1))
         .read(any(), anyInt(), eq(StreamConverter.BUFFER_SIZE));
+    verify(inputStream, times(1)).close();
   }
 }
