@@ -24,6 +24,9 @@ import org.apache.hc.core5.http.HttpEntity;
 @Slf4j
 class StreamConverter {
 
+  /** see {@link BufferedReader#DEFAULT_CHAR_BUFFER_SIZE} */
+  static final int BUFFER_SIZE = 8192;
+
   @FunctionalInterface
   private interface ReadHandler<T> {
     /**
@@ -92,7 +95,7 @@ class StreamConverter {
       throw new OpenAiClientException("Failed to read response content.", e);
     }
 
-    final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8));
+    final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
     final CloseHandler closeHandler =
         () ->
             Try.run(reader::close)
