@@ -63,7 +63,10 @@ public class BckndExtendedService
     PROVISIONING("PROVISIONING"),
 
     /** The DEPROVISIONING option of this BckndExtendedService */
-    DEPROVISIONING("DEPROVISIONING");
+    DEPROVISIONING("DEPROVISIONING"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this BckndExtendedService */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -107,7 +110,7 @@ public class BckndExtendedService
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

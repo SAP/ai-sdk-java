@@ -71,7 +71,10 @@ public class RTADeployment
     UNKNOWN("UNKNOWN"),
 
     /** The DELETING option of this RTADeployment */
-    DELETING("DELETING");
+    DELETING("DELETING"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RTADeployment */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -115,7 +118,7 @@ public class RTADeployment
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -141,7 +144,10 @@ public class RTADeployment
     CASCADE_UPDATE("CASCADE-UPDATE"),
 
     /** The DELETE option of this RTADeployment */
-    DELETE("DELETE");
+    DELETE("DELETE"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RTADeployment */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -185,7 +191,7 @@ public class RTADeployment
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

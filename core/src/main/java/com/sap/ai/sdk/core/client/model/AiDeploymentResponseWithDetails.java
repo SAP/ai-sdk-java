@@ -62,7 +62,10 @@ public class AiDeploymentResponseWithDetails
     STOPPED("STOPPED"),
 
     /** The DELETED option of this AiDeploymentResponseWithDetails */
-    DELETED("DELETED");
+    DELETED("DELETED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiDeploymentResponseWithDetails */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -106,7 +109,7 @@ public class AiDeploymentResponseWithDetails
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -125,7 +128,10 @@ public class AiDeploymentResponseWithDetails
     DELETE("DELETE"),
 
     /** The CASCADE_UPDATE option of this AiDeploymentResponseWithDetails */
-    CASCADE_UPDATE("CASCADE-UPDATE");
+    CASCADE_UPDATE("CASCADE-UPDATE"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiDeploymentResponseWithDetails */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 

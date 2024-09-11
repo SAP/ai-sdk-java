@@ -24,7 +24,9 @@ public enum AzureThreshold {
 
   NUMBER_4(4),
 
-  NUMBER_6(6);
+  NUMBER_6(6),
+
+  NUMBER_unknown_default_open_api(11184809);
 
   private final Integer value;
 
@@ -62,6 +64,6 @@ public enum AzureThreshold {
         return b;
       }
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    return NUMBER_unknown_default_open_api;
   }
 }

@@ -34,7 +34,10 @@ public class FilterConfig
   /** String represents name of the filter provider */
   public enum TypeEnum {
     /** The AZURE_CONTENT_SAFETY option of this FilterConfig */
-    AZURE_CONTENT_SAFETY("azure_content_safety");
+    AZURE_CONTENT_SAFETY("azure_content_safety"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this FilterConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -78,7 +81,7 @@ public class FilterConfig
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

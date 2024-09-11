@@ -114,7 +114,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                           "deploymentUrl": "",
                           "id": "d5b764fe55b3e87c",
                           "message": "AiDeployment scheduled.",
-                          "status": "UNKNOWN"
+                          "status": "FOOBAR"
                         }
                         """)));
 
@@ -128,7 +128,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl()).isEqualTo("");
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
-    assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN);
+    assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN_DEFAULT_OPEN_API);
   }
 
   @Test

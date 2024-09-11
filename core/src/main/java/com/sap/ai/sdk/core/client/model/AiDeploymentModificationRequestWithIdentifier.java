@@ -43,7 +43,10 @@ public class AiDeploymentModificationRequestWithIdentifier
     STOPPED("STOPPED"),
 
     /** The DELETED option of this AiDeploymentModificationRequestWithIdentifier */
-    DELETED("DELETED");
+    DELETED("DELETED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiDeploymentModificationRequestWithIdentifier */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -87,7 +90,7 @@ public class AiDeploymentModificationRequestWithIdentifier
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

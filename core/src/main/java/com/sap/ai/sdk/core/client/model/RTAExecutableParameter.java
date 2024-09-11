@@ -43,7 +43,10 @@ public class RTAExecutableParameter
   /** Type of the signature argument */
   public enum TypeEnum {
     /** The STRING option of this RTAExecutableParameter */
-    STRING("string");
+    STRING("string"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RTAExecutableParameter */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -87,7 +90,7 @@ public class RTAExecutableParameter
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

@@ -58,7 +58,10 @@ public class AiArtifact
     RESULTSET("resultset"),
 
     /** The OTHER option of this AiArtifact */
-    OTHER("other");
+    OTHER("other"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiArtifact */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -102,7 +105,7 @@ public class AiArtifact
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

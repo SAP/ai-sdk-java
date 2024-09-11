@@ -42,7 +42,10 @@ public class BckndServiceServicePlanItemMetadata
     KUBERNETES("kubernetes"),
 
     /** The SAPBTP option of this BckndServiceServicePlanItemMetadata */
-    SAPBTP("sapbtp");
+    SAPBTP("sapbtp"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this BckndServiceServicePlanItemMetadata */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -86,7 +89,7 @@ public class BckndServiceServicePlanItemMetadata
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
