@@ -2,8 +2,10 @@ package com.sap.ai.sdk.core.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,6 +61,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
 
     final AiConfigurationList configurationList =
         new ConfigurationApi(getClient(destination)).configurationQuery("default");
+
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
     assertThat(configurationList.getResources().size()).isEqualTo(1);
@@ -82,7 +85,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
-                    .withStatus(HttpStatus.SC_OK)
+                    .withStatus(HttpStatus.SC_CREATED)
                     .withHeader("content-type", "application/json")
                     .withBody(
                         """
@@ -92,20 +95,42 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    AiConfigurationBaseData configurationBaseData =
+    final AiArtifactArgumentBinding inputArtifactBindingsItem =
+        AiArtifactArgumentBinding.create()
+            .key("spam-data")
+            .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7");
+    final AiConfigurationBaseData configurationBaseData =
         AiConfigurationBaseData.create()
             .name("i538344_exec_config")
             .executableId("aicore-nvidia")
             .scenarioId("foundation-models")
-            .addInputArtifactBindingsItem(
-                AiArtifactArgumentBinding.create()
-                    .key("spam-data")
-                    .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7"));
+            .addInputArtifactBindingsItem(inputArtifactBindingsItem);
     final AiConfigurationCreationResponse configuration =
         new ConfigurationApi(getClient(destination))
             .configurationCreate("default", configurationBaseData);
+
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");
+
+    wireMockServer.verify(
+        postRequestedFor(urlPathEqualTo("/lm/configurations"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "name": "i538344_exec_config",
+                      "executableId": "aicore-nvidia",
+                      "scenarioId": "foundation-models",
+                      "parameterBindings":[],
+                      "inputArtifactBindings": [
+                        {
+                          "key": "spam-data",
+                          "artifactId": "744b0136-ed4b-49b1-bd10-08c236ed5ce7"
+                        }
+                      ]
+                    }
+                    """)));
   }
 }

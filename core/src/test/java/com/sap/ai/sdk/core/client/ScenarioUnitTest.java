@@ -52,10 +52,13 @@ public class ScenarioUnitTest extends WireMockTestServer {
 
     final AiScenarioList scenarioList =
         new ScenarioApi(getClient(destination)).scenarioQuery("default");
+
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
     assertThat(scenarioList.getResources().size()).isEqualTo(1);
-    AiScenario scenario = scenarioList.getResources().get(0);
+
+    final AiScenario scenario = scenarioList.getResources().get(0);
+
     assertThat(scenario.getId()).isEqualTo("foundation-models");
     assertThat(scenario.getName()).isEqualTo("foundation-models");
     assertThat(scenario.getLabels().get(0).getKey()).isEqualTo("scenarios.ai.sap.com/llm");
@@ -87,14 +90,16 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    AiVersionList versionList =
+    final AiVersionList versionList =
         new ScenarioApi(getClient(destination))
             .scenarioQueryVersions("default", "foundation-models");
+
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
     assertThat(versionList.getResources().size()).isEqualTo(1);
 
-    AiVersion version = versionList.getResources().get(0);
+    final AiVersion version = versionList.getResources().get(0);
+
     assertThat(version.getCreatedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
     assertThat(version.getId()).isEqualTo("0.0.1");
     assertThat(version.getModifiedAt()).isEqualTo("2024-05-08T08:41:23+00:00");

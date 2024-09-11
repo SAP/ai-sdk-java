@@ -2,8 +2,10 @@ package com.sap.ai.sdk.core.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +56,9 @@ public class ArtifactUnitTest extends WireMockTestServer {
     assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
     assertThat(artifactList.getResources().size()).isEqualTo(1);
-    AiArtifact artifact = artifactList.getResources().get(0);
+
+    final AiArtifact artifact = artifactList.getResources().get(0);
+
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-05-22T07:40:30Z");
     assertThat(artifact.getDescription()).isEqualTo("dataset for aicore training");
     assertThat(artifact.getId()).isEqualTo("744b0136-ed4b-49b1-bd10-08c236ed5ce7");
@@ -72,7 +76,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
-                    .withStatus(HttpStatus.SC_OK)
+                    .withStatus(HttpStatus.SC_CREATED)
                     .withHeader("content-type", "application/json")
                     .withBody(
                         """
@@ -83,11 +87,12 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    AiArtifactPostData artifactPostData =
+    final AiArtifactPostData artifactPostData =
         AiArtifactPostData.create()
             .name("default")
             .kind(AiArtifactPostData.KindEnum.DATASET)
             .url("ai://default/spam/data")
+            .scenarioId("foundation-models")
             .scenarioId("foundation-models")
             .description("dataset for aicore training");
     final AiArtifactCreationResponse artifact =
@@ -97,6 +102,22 @@ public class ArtifactUnitTest extends WireMockTestServer {
     assertThat(artifact.getId()).isEqualTo("1a84bb38-4a84-4d12-a5aa-300ae7d33fb4");
     assertThat(artifact.getMessage()).isEqualTo("AiArtifact acknowledged");
     assertThat(artifact.getUrl()).isEqualTo("ai://default/spam/data");
+
+    wireMockServer.verify(
+        postRequestedFor(urlPathEqualTo("/lm/artifacts"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "name": "default",
+                      "kind": "dataset",
+                      "url": "ai://default/spam/data",
+                      "scenarioId": "foundation-models",
+                      "description": "dataset for aicore training",
+                      "labels": []
+                    }
+                    """)));
   }
 
   @Test
@@ -121,7 +142,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                             }
                             """)));
 
-    AiArtifact artifact =
+    final AiArtifact artifact =
         new ArtifactApi(getClient(destination))
             .artifactGet("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
 
