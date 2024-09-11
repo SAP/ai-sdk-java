@@ -44,7 +44,7 @@ public class ArtifactQuery400Response
    * @return The same instance of this {@link ArtifactQuery400Response} class
    */
   @Nonnull
-  public ArtifactQuery400Response error(@Nonnull final AiApiError error) {
+  public ArtifactQuery400Response error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class ArtifactQuery400Response
    *
    * @param error The error of this {@link ArtifactQuery400Response}
    */
-  public void setError(@Nonnull final AiApiError error) {
+  public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 

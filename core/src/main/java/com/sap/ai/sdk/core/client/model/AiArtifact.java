@@ -148,7 +148,7 @@ public class AiArtifact
    * @return The same instance of this {@link AiArtifact} class
    */
   @Nonnull
-  public AiArtifact labels(@Nonnull final List<AiLabel> labels) {
+  public AiArtifact labels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -183,7 +183,7 @@ public class AiArtifact
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<AiLabel> labels) {
+  public void setLabels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
   }
 
@@ -287,7 +287,7 @@ public class AiArtifact
    * @return The same instance of this {@link AiArtifact} class
    */
   @Nonnull
-  public AiArtifact description(@Nonnull final String description) {
+  public AiArtifact description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -307,7 +307,7 @@ public class AiArtifact
    *
    * @param description Description of the artifact
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -380,7 +380,7 @@ public class AiArtifact
    * @return The same instance of this {@link AiArtifact} class
    */
   @Nonnull
-  public AiArtifact configurationId(@Nonnull final String configurationId) {
+  public AiArtifact configurationId(@Nullable final String configurationId) {
     this.configurationId = configurationId;
     return this;
   }
@@ -400,7 +400,7 @@ public class AiArtifact
    *
    * @param configurationId ID of the configuration
    */
-  public void setConfigurationId(@Nonnull final String configurationId) {
+  public void setConfigurationId(@Nullable final String configurationId) {
     this.configurationId = configurationId;
   }
 
@@ -411,7 +411,7 @@ public class AiArtifact
    * @return The same instance of this {@link AiArtifact} class
    */
   @Nonnull
-  public AiArtifact executionId(@Nonnull final String executionId) {
+  public AiArtifact executionId(@Nullable final String executionId) {
     this.executionId = executionId;
     return this;
   }
@@ -431,7 +431,7 @@ public class AiArtifact
    *
    * @param executionId ID of the execution
    */
-  public void setExecutionId(@Nonnull final String executionId) {
+  public void setExecutionId(@Nullable final String executionId) {
     this.executionId = executionId;
   }
 
@@ -504,7 +504,7 @@ public class AiArtifact
    * @return The same instance of this {@link AiArtifact} class
    */
   @Nonnull
-  public AiArtifact scenario(@Nonnull final AiScenario scenario) {
+  public AiArtifact scenario(@Nullable final AiScenario scenario) {
     this.scenario = scenario;
     return this;
   }
@@ -514,7 +514,7 @@ public class AiArtifact
    *
    * @return scenario The scenario of this {@link AiArtifact} instance.
    */
-  @Nonnull
+  @Nullable
   public AiScenario getScenario() {
     return scenario;
   }
@@ -524,7 +524,7 @@ public class AiArtifact
    *
    * @param scenario The scenario of this {@link AiArtifact}
    */
-  public void setScenario(@Nonnull final AiScenario scenario) {
+  public void setScenario(@Nullable final AiScenario scenario) {
     this.scenario = scenario;
   }
 

@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 /** OpenAI chat completion input parameters. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   /** A list of messages comprising the conversation so far. */
   @JsonProperty("messages")

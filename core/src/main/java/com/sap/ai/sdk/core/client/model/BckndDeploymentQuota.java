@@ -48,7 +48,7 @@ public class BckndDeploymentQuota
    * @return The same instance of this {@link BckndDeploymentQuota} class
    */
   @Nonnull
-  public BckndDeploymentQuota maxCount(@Nonnull final Integer maxCount) {
+  public BckndDeploymentQuota maxCount(@Nullable final Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
@@ -69,7 +69,7 @@ public class BckndDeploymentQuota
    * @param maxCount The value can be 0(disabled) or a positive integer defining the maximum allowed
    *     number
    */
-  public void setMaxCount(@Nonnull final Integer maxCount) {
+  public void setMaxCount(@Nullable final Integer maxCount) {
     this.maxCount = maxCount;
   }
 
@@ -82,7 +82,7 @@ public class BckndDeploymentQuota
    */
   @Nonnull
   public BckndDeploymentQuota maxReplicaPerDeployment(
-      @Nonnull final Integer maxReplicaPerDeployment) {
+      @Nullable final Integer maxReplicaPerDeployment) {
     this.maxReplicaPerDeployment = maxReplicaPerDeployment;
     return this;
   }
@@ -103,7 +103,7 @@ public class BckndDeploymentQuota
    *
    * @param maxReplicaPerDeployment The maxReplicaPerDeployment of this {@link BckndDeploymentQuota}
    */
-  public void setMaxReplicaPerDeployment(@Nonnull final Integer maxReplicaPerDeployment) {
+  public void setMaxReplicaPerDeployment(@Nullable final Integer maxReplicaPerDeployment) {
     this.maxReplicaPerDeployment = maxReplicaPerDeployment;
   }
 

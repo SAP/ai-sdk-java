@@ -48,7 +48,7 @@ public class AiDeploymentCreationRequest
    * @return The same instance of this {@link AiDeploymentCreationRequest} class
    */
   @Nonnull
-  public AiDeploymentCreationRequest ttl(@Nonnull final String ttl) {
+  public AiDeploymentCreationRequest ttl(@Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
@@ -59,7 +59,7 @@ public class AiDeploymentCreationRequest
    *
    * @return ttl The ttl of this {@link AiDeploymentCreationRequest} instance.
    */
-  @Nonnull
+  @Nullable
   public String getTtl() {
     return ttl;
   }
@@ -70,7 +70,7 @@ public class AiDeploymentCreationRequest
    * @param ttl Time to live for a deployment. Its value can be either null or a number followed by
    *     the unit (any of following values, minutes(m|M), hours(h|H) or days(d|D))
    */
-  public void setTtl(@Nonnull final String ttl) {
+  public void setTtl(@Nullable final String ttl) {
     this.ttl = ttl;
   }
 

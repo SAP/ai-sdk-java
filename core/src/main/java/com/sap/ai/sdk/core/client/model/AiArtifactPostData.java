@@ -129,7 +129,7 @@ public class AiArtifactPostData
    * @return The same instance of this {@link AiArtifactPostData} class
    */
   @Nonnull
-  public AiArtifactPostData labels(@Nonnull final List<AiLabel> labels) {
+  public AiArtifactPostData labels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -164,7 +164,7 @@ public class AiArtifactPostData
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<AiLabel> labels) {
+  public void setLabels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
   }
 
@@ -268,7 +268,7 @@ public class AiArtifactPostData
    * @return The same instance of this {@link AiArtifactPostData} class
    */
   @Nonnull
-  public AiArtifactPostData description(@Nonnull final String description) {
+  public AiArtifactPostData description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -288,7 +288,7 @@ public class AiArtifactPostData
    *
    * @param description Description of the artifact
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 

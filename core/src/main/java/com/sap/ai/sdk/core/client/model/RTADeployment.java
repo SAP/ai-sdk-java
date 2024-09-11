@@ -272,7 +272,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment id(@Nonnull final String id) {
+  public RTADeployment id(@Nullable final String id) {
     this.id = id;
     return this;
   }
@@ -292,7 +292,7 @@ public class RTADeployment
    *
    * @param id ID of the deployment
    */
-  public void setId(@Nonnull final String id) {
+  public void setId(@Nullable final String id) {
     this.id = id;
   }
 
@@ -303,7 +303,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment deploymentUrl(@Nonnull final String deploymentUrl) {
+  public RTADeployment deploymentUrl(@Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
     return this;
   }
@@ -323,7 +323,7 @@ public class RTADeployment
    *
    * @param deploymentUrl Consumption URL of the pipeline deployment
    */
-  public void setDeploymentUrl(@Nonnull final String deploymentUrl) {
+  public void setDeploymentUrl(@Nullable final String deploymentUrl) {
     this.deploymentUrl = deploymentUrl;
   }
 
@@ -335,7 +335,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment latestRunningTargetId(@Nonnull final String latestRunningTargetId) {
+  public RTADeployment latestRunningTargetId(@Nullable final String latestRunningTargetId) {
     this.latestRunningTargetId = latestRunningTargetId;
     return this;
   }
@@ -355,7 +355,7 @@ public class RTADeployment
    *
    * @param latestRunningTargetId Target ID of the latest running deployment
    */
-  public void setLatestRunningTargetId(@Nonnull final String latestRunningTargetId) {
+  public void setLatestRunningTargetId(@Nullable final String latestRunningTargetId) {
     this.latestRunningTargetId = latestRunningTargetId;
   }
 
@@ -367,7 +367,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment targetId(@Nonnull final String targetId) {
+  public RTADeployment targetId(@Nullable final String targetId) {
     this.targetId = targetId;
     return this;
   }
@@ -388,7 +388,7 @@ public class RTADeployment
    * @param targetId Client provided reference, with which the status of a PATCHed deployment can be
    *     tracked
    */
-  public void setTargetId(@Nonnull final String targetId) {
+  public void setTargetId(@Nullable final String targetId) {
     this.targetId = targetId;
   }
 
@@ -399,7 +399,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment ttl(@Nonnull final String ttl) {
+  public RTADeployment ttl(@Nullable final String ttl) {
     this.ttl = ttl;
     return this;
   }
@@ -419,7 +419,7 @@ public class RTADeployment
    *
    * @param ttl TTL value of deployment
    */
-  public void setTtl(@Nonnull final String ttl) {
+  public void setTtl(@Nullable final String ttl) {
     this.ttl = ttl;
   }
 
@@ -430,7 +430,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment status(@Nonnull final StatusEnum status) {
+  public RTADeployment status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -450,7 +450,7 @@ public class RTADeployment
    *
    * @param status Deployment status
    */
-  public void setStatus(@Nonnull final StatusEnum status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 
@@ -461,7 +461,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment statusMessage(@Nonnull final String statusMessage) {
+  public RTADeployment statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -481,7 +481,7 @@ public class RTADeployment
    *
    * @param statusMessage Deployment status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 
@@ -494,7 +494,7 @@ public class RTADeployment
    * @return The same instance of this {@link RTADeployment} class
    */
   @Nonnull
-  public RTADeployment lastOperation(@Nonnull final LastOperationEnum lastOperation) {
+  public RTADeployment lastOperation(@Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
     return this;
   }
@@ -518,7 +518,7 @@ public class RTADeployment
    *     after user sends POST - create deployment, UPDATE after user sends PATCH - update
    *     deployment, and DELETE after user sends DELETE - delete deployment
    */
-  public void setLastOperation(@Nonnull final LastOperationEnum lastOperation) {
+  public void setLastOperation(@Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;
   }
 

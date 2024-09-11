@@ -44,7 +44,7 @@ public class KpiGet400Response
    * @return The same instance of this {@link KpiGet400Response} class
    */
   @Nonnull
-  public KpiGet400Response error(@Nonnull final KpiApiError error) {
+  public KpiGet400Response error(@Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class KpiGet400Response
    *
    * @param error The error of this {@link KpiGet400Response}
    */
-  public void setError(@Nonnull final KpiApiError error) {
+  public void setError(@Nullable final KpiApiError error) {
     this.error = error;
   }
 

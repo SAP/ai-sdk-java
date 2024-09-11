@@ -44,7 +44,7 @@ public class BckndErrorResponse
    * @return The same instance of this {@link BckndErrorResponse} class
    */
   @Nonnull
-  public BckndErrorResponse error(@Nonnull final BckndError error) {
+  public BckndErrorResponse error(@Nullable final BckndError error) {
     this.error = error;
     return this;
   }
@@ -64,7 +64,7 @@ public class BckndErrorResponse
    *
    * @param error The error of this {@link BckndErrorResponse}
    */
-  public void setError(@Nonnull final BckndError error) {
+  public void setError(@Nullable final BckndError error) {
     this.error = error;
   }
 

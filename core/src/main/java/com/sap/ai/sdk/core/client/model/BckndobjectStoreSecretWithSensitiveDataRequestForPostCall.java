@@ -146,7 +146,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    */
   @Nonnull
   public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall bucket(
-      @Nonnull final String bucket) {
+      @Nullable final String bucket) {
     this.bucket = bucket;
     return this;
   }
@@ -168,7 +168,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param bucket Bucket to be used
    */
-  public void setBucket(@Nonnull final String bucket) {
+  public void setBucket(@Nullable final String bucket) {
     this.bucket = bucket;
   }
 
@@ -182,7 +182,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    */
   @Nonnull
   public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall endpoint(
-      @Nonnull final String endpoint) {
+      @Nullable final String endpoint) {
     this.endpoint = endpoint;
     return this;
   }
@@ -204,7 +204,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param endpoint Optional parameter - URL of the storage server (S3 only)
    */
-  public void setEndpoint(@Nonnull final String endpoint) {
+  public void setEndpoint(@Nullable final String endpoint) {
     this.endpoint = endpoint;
   }
 
@@ -218,7 +218,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    */
   @Nonnull
   public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall region(
-      @Nonnull final String region) {
+      @Nullable final String region) {
     this.region = region;
     return this;
   }
@@ -240,7 +240,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param region Optional parameter - Region of the storage server (S3 only)
    */
-  public void setRegion(@Nonnull final String region) {
+  public void setRegion(@Nullable final String region) {
     this.region = region;
   }
 
@@ -254,7 +254,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    */
   @Nonnull
   public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall pathPrefix(
-      @Nonnull final String pathPrefix) {
+      @Nullable final String pathPrefix) {
     this.pathPrefix = pathPrefix;
     return this;
   }
@@ -276,7 +276,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param pathPrefix prefix folder to be added to storage path
    */
-  public void setPathPrefix(@Nonnull final String pathPrefix) {
+  public void setPathPrefix(@Nullable final String pathPrefix) {
     this.pathPrefix = pathPrefix;
   }
 
@@ -290,7 +290,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    */
   @Nonnull
   public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall verifyssl(
-      @Nonnull final String verifyssl) {
+      @Nullable final String verifyssl) {
     this.verifyssl = verifyssl;
     return this;
   }
@@ -312,7 +312,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param verifyssl 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
    */
-  public void setVerifyssl(@Nonnull final String verifyssl) {
+  public void setVerifyssl(@Nullable final String verifyssl) {
     this.verifyssl = verifyssl;
   }
 
@@ -326,7 +326,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    */
   @Nonnull
   public BckndobjectStoreSecretWithSensitiveDataRequestForPostCall usehttps(
-      @Nonnull final String usehttps) {
+      @Nullable final String usehttps) {
     this.usehttps = usehttps;
     return this;
   }
@@ -348,7 +348,7 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    *
    * @param usehttps 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
    */
-  public void setUsehttps(@Nonnull final String usehttps) {
+  public void setUsehttps(@Nullable final String usehttps) {
     this.usehttps = usehttps;
   }
 

@@ -50,7 +50,7 @@ public class BckndExecutableResourceQuotaResponseQuota
    */
   @Nonnull
   public BckndExecutableResourceQuotaResponseQuota servingTemplateMaxCount(
-      @Nonnull final Integer servingTemplateMaxCount) {
+      @Nullable final Integer servingTemplateMaxCount) {
     this.servingTemplateMaxCount = servingTemplateMaxCount;
     return this;
   }
@@ -73,7 +73,7 @@ public class BckndExecutableResourceQuotaResponseQuota
    * @param servingTemplateMaxCount The value can be 0(disabled) or a positive integer defining the
    *     maximum allowed number
    */
-  public void setServingTemplateMaxCount(@Nonnull final Integer servingTemplateMaxCount) {
+  public void setServingTemplateMaxCount(@Nullable final Integer servingTemplateMaxCount) {
     this.servingTemplateMaxCount = servingTemplateMaxCount;
   }
 
@@ -87,7 +87,7 @@ public class BckndExecutableResourceQuotaResponseQuota
    */
   @Nonnull
   public BckndExecutableResourceQuotaResponseQuota workflowTemplateMaxCount(
-      @Nonnull final Integer workflowTemplateMaxCount) {
+      @Nullable final Integer workflowTemplateMaxCount) {
     this.workflowTemplateMaxCount = workflowTemplateMaxCount;
     return this;
   }
@@ -110,7 +110,7 @@ public class BckndExecutableResourceQuotaResponseQuota
    * @param workflowTemplateMaxCount The value can be 0(disabled) or a positive integer defining the
    *     maximum allowed number
    */
-  public void setWorkflowTemplateMaxCount(@Nonnull final Integer workflowTemplateMaxCount) {
+  public void setWorkflowTemplateMaxCount(@Nullable final Integer workflowTemplateMaxCount) {
     this.workflowTemplateMaxCount = workflowTemplateMaxCount;
   }
 

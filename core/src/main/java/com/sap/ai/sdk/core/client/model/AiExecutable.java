@@ -83,7 +83,7 @@ public class AiExecutable
    * @return The same instance of this {@link AiExecutable} class
    */
   @Nonnull
-  public AiExecutable labels(@Nonnull final List<AiLabel> labels) {
+  public AiExecutable labels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -118,7 +118,7 @@ public class AiExecutable
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<AiLabel> labels) {
+  public void setLabels(@Nullable final List<AiLabel> labels) {
     this.labels = labels;
   }
 
@@ -160,7 +160,7 @@ public class AiExecutable
    * @return The same instance of this {@link AiExecutable} class
    */
   @Nonnull
-  public AiExecutable description(@Nonnull final String description) {
+  public AiExecutable description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -180,7 +180,7 @@ public class AiExecutable
    *
    * @param description Description of the executable
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -222,7 +222,7 @@ public class AiExecutable
    * @return The same instance of this {@link AiExecutable} class
    */
   @Nonnull
-  public AiExecutable scenarioId(@Nonnull final String scenarioId) {
+  public AiExecutable scenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
     return this;
   }
@@ -242,7 +242,7 @@ public class AiExecutable
    *
    * @param scenarioId ID of the scenario
    */
-  public void setScenarioId(@Nonnull final String scenarioId) {
+  public void setScenarioId(@Nullable final String scenarioId) {
     this.scenarioId = scenarioId;
   }
 
@@ -284,7 +284,7 @@ public class AiExecutable
    * @return The same instance of this {@link AiExecutable} class
    */
   @Nonnull
-  public AiExecutable parameters(@Nonnull final List<AiExecutableParameter> parameters) {
+  public AiExecutable parameters(@Nullable final List<AiExecutableParameter> parameters) {
     this.parameters = parameters;
     return this;
   }
@@ -319,7 +319,7 @@ public class AiExecutable
    *
    * @param parameters Executable parameters
    */
-  public void setParameters(@Nonnull final List<AiExecutableParameter> parameters) {
+  public void setParameters(@Nullable final List<AiExecutableParameter> parameters) {
     this.parameters = parameters;
   }
 
@@ -330,7 +330,7 @@ public class AiExecutable
    * @return The same instance of this {@link AiExecutable} class
    */
   @Nonnull
-  public AiExecutable inputArtifacts(@Nonnull final List<AiExecutableArtifact> inputArtifacts) {
+  public AiExecutable inputArtifacts(@Nullable final List<AiExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
     return this;
   }
@@ -366,7 +366,7 @@ public class AiExecutable
    *
    * @param inputArtifacts Executable parameters
    */
-  public void setInputArtifacts(@Nonnull final List<AiExecutableArtifact> inputArtifacts) {
+  public void setInputArtifacts(@Nullable final List<AiExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
   }
 
@@ -377,7 +377,7 @@ public class AiExecutable
    * @return The same instance of this {@link AiExecutable} class
    */
   @Nonnull
-  public AiExecutable outputArtifacts(@Nonnull final List<AiExecutableArtifact> outputArtifacts) {
+  public AiExecutable outputArtifacts(@Nullable final List<AiExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
@@ -413,7 +413,7 @@ public class AiExecutable
    *
    * @param outputArtifacts Executable parameters
    */
-  public void setOutputArtifacts(@Nonnull final List<AiExecutableArtifact> outputArtifacts) {
+  public void setOutputArtifacts(@Nullable final List<AiExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 

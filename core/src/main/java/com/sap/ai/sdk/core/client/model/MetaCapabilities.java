@@ -57,7 +57,7 @@ public class MetaCapabilities
    * @return The same instance of this {@link MetaCapabilities} class
    */
   @Nonnull
-  public MetaCapabilities runtimeIdentifier(@Nonnull final String runtimeIdentifier) {
+  public MetaCapabilities runtimeIdentifier(@Nullable final String runtimeIdentifier) {
     this.runtimeIdentifier = runtimeIdentifier;
     return this;
   }
@@ -77,7 +77,7 @@ public class MetaCapabilities
    *
    * @param runtimeIdentifier The name of the runtime
    */
-  public void setRuntimeIdentifier(@Nonnull final String runtimeIdentifier) {
+  public void setRuntimeIdentifier(@Nullable final String runtimeIdentifier) {
     this.runtimeIdentifier = runtimeIdentifier;
   }
 
@@ -89,7 +89,7 @@ public class MetaCapabilities
    * @return The same instance of this {@link MetaCapabilities} class
    */
   @Nonnull
-  public MetaCapabilities runtimeApiVersion(@Nonnull final String runtimeApiVersion) {
+  public MetaCapabilities runtimeApiVersion(@Nullable final String runtimeApiVersion) {
     this.runtimeApiVersion = runtimeApiVersion;
     return this;
   }
@@ -109,7 +109,7 @@ public class MetaCapabilities
    *
    * @param runtimeApiVersion The runtimeApiVersion of this {@link MetaCapabilities}
    */
-  public void setRuntimeApiVersion(@Nonnull final String runtimeApiVersion) {
+  public void setRuntimeApiVersion(@Nullable final String runtimeApiVersion) {
     this.runtimeApiVersion = runtimeApiVersion;
   }
 
@@ -120,7 +120,7 @@ public class MetaCapabilities
    * @return The same instance of this {@link MetaCapabilities} class
    */
   @Nonnull
-  public MetaCapabilities description(@Nonnull final String description) {
+  public MetaCapabilities description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -140,7 +140,7 @@ public class MetaCapabilities
    *
    * @param description The description of this {@link MetaCapabilities}
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -182,7 +182,7 @@ public class MetaCapabilities
    * @return The same instance of this {@link MetaCapabilities} class
    */
   @Nonnull
-  public MetaCapabilities extensions(@Nonnull final MetaExtensions extensions) {
+  public MetaCapabilities extensions(@Nullable final MetaExtensions extensions) {
     this.extensions = extensions;
     return this;
   }
@@ -202,7 +202,7 @@ public class MetaCapabilities
    *
    * @param extensions The extensions of this {@link MetaCapabilities}
    */
-  public void setExtensions(@Nonnull final MetaExtensions extensions) {
+  public void setExtensions(@Nullable final MetaExtensions extensions) {
     this.extensions = extensions;
   }
 

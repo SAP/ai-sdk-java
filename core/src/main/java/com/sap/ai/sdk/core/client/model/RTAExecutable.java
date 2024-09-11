@@ -139,7 +139,7 @@ public class RTAExecutable
    * @return The same instance of this {@link RTAExecutable} class
    */
   @Nonnull
-  public RTAExecutable description(@Nonnull final String description) {
+  public RTAExecutable description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -159,7 +159,7 @@ public class RTAExecutable
    *
    * @param description Description of the executable
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -201,7 +201,7 @@ public class RTAExecutable
    * @return The same instance of this {@link RTAExecutable} class
    */
   @Nonnull
-  public RTAExecutable inputArtifacts(@Nonnull final List<RTAExecutableArtifact> inputArtifacts) {
+  public RTAExecutable inputArtifacts(@Nullable final List<RTAExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
     return this;
   }
@@ -237,7 +237,7 @@ public class RTAExecutable
    *
    * @param inputArtifacts List of Artifacts that the executable expects as input artifacts
    */
-  public void setInputArtifacts(@Nonnull final List<RTAExecutableArtifact> inputArtifacts) {
+  public void setInputArtifacts(@Nullable final List<RTAExecutableArtifact> inputArtifacts) {
     this.inputArtifacts = inputArtifacts;
   }
 
@@ -250,7 +250,8 @@ public class RTAExecutable
    * @return The same instance of this {@link RTAExecutable} class
    */
   @Nonnull
-  public RTAExecutable outputArtifacts(@Nonnull final List<RTAExecutableArtifact> outputArtifacts) {
+  public RTAExecutable outputArtifacts(
+      @Nullable final List<RTAExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
     return this;
   }
@@ -289,7 +290,7 @@ public class RTAExecutable
    *     managed internally, a storage location will have to be specified when triggering an
    *     execution
    */
-  public void setOutputArtifacts(@Nonnull final List<RTAExecutableArtifact> outputArtifacts) {
+  public void setOutputArtifacts(@Nullable final List<RTAExecutableArtifact> outputArtifacts) {
     this.outputArtifacts = outputArtifacts;
   }
 
@@ -300,7 +301,7 @@ public class RTAExecutable
    * @return The same instance of this {@link RTAExecutable} class
    */
   @Nonnull
-  public RTAExecutable parameters(@Nonnull final List<RTAExecutableParameter> parameters) {
+  public RTAExecutable parameters(@Nullable final List<RTAExecutableParameter> parameters) {
     this.parameters = parameters;
     return this;
   }
@@ -335,7 +336,7 @@ public class RTAExecutable
    *
    * @param parameters Executable parameters
    */
-  public void setParameters(@Nonnull final List<RTAExecutableParameter> parameters) {
+  public void setParameters(@Nullable final List<RTAExecutableParameter> parameters) {
     this.parameters = parameters;
   }
 
@@ -377,7 +378,7 @@ public class RTAExecutable
    * @return The same instance of this {@link RTAExecutable} class
    */
   @Nonnull
-  public RTAExecutable labels(@Nonnull final List<RTALabel> labels) {
+  public RTAExecutable labels(@Nullable final List<RTALabel> labels) {
     this.labels = labels;
     return this;
   }
@@ -412,7 +413,7 @@ public class RTAExecutable
    *
    * @param labels Arbitrary labels as meta information
    */
-  public void setLabels(@Nonnull final List<RTALabel> labels) {
+  public void setLabels(@Nullable final List<RTALabel> labels) {
     this.labels = labels;
   }
 

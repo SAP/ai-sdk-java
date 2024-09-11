@@ -51,7 +51,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
    * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
    */
   @Nonnull
-  public MetaAiApiCapabilitiesBulkUpdates executions(@Nonnull final Boolean executions) {
+  public MetaAiApiCapabilitiesBulkUpdates executions(@Nullable final Boolean executions) {
     this.executions = executions;
     return this;
   }
@@ -71,7 +71,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
    *
    * @param executions The executions of this {@link MetaAiApiCapabilitiesBulkUpdates}
    */
-  public void setExecutions(@Nonnull final Boolean executions) {
+  public void setExecutions(@Nullable final Boolean executions) {
     this.executions = executions;
   }
 
@@ -83,7 +83,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
    * @return The same instance of this {@link MetaAiApiCapabilitiesBulkUpdates} class
    */
   @Nonnull
-  public MetaAiApiCapabilitiesBulkUpdates deployments(@Nonnull final Boolean deployments) {
+  public MetaAiApiCapabilitiesBulkUpdates deployments(@Nullable final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -103,7 +103,7 @@ public class MetaAiApiCapabilitiesBulkUpdates
    *
    * @param deployments The deployments of this {@link MetaAiApiCapabilitiesBulkUpdates}
    */
-  public void setDeployments(@Nonnull final Boolean deployments) {
+  public void setDeployments(@Nullable final Boolean deployments) {
     this.deployments = deployments;
   }
 

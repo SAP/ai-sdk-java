@@ -129,7 +129,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService name(@Nonnull final String name) {
+  public BckndExtendedService name(@Nullable final String name) {
     this.name = name;
     return this;
   }
@@ -149,7 +149,7 @@ public class BckndExtendedService
    *
    * @param name service name
    */
-  public void setName(@Nonnull final String name) {
+  public void setName(@Nullable final String name) {
     this.name = name;
   }
 
@@ -160,7 +160,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService description(@Nonnull final String description) {
+  public BckndExtendedService description(@Nullable final String description) {
     this.description = description;
     return this;
   }
@@ -180,7 +180,7 @@ public class BckndExtendedService
    *
    * @param description service description
    */
-  public void setDescription(@Nonnull final String description) {
+  public void setDescription(@Nullable final String description) {
     this.description = description;
   }
 
@@ -191,7 +191,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService url(@Nonnull final String url) {
+  public BckndExtendedService url(@Nullable final String url) {
     this.url = url;
     return this;
   }
@@ -211,7 +211,7 @@ public class BckndExtendedService
    *
    * @param url service broker url
    */
-  public void setUrl(@Nonnull final String url) {
+  public void setUrl(@Nullable final String url) {
     this.url = url;
   }
 
@@ -223,7 +223,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService brokerSecret(@Nonnull final BckndServiceBrokerSecret brokerSecret) {
+  public BckndExtendedService brokerSecret(@Nullable final BckndServiceBrokerSecret brokerSecret) {
     this.brokerSecret = brokerSecret;
     return this;
   }
@@ -243,7 +243,7 @@ public class BckndExtendedService
    *
    * @param brokerSecret The brokerSecret of this {@link BckndExtendedService}
    */
-  public void setBrokerSecret(@Nonnull final BckndServiceBrokerSecret brokerSecret) {
+  public void setBrokerSecret(@Nullable final BckndServiceBrokerSecret brokerSecret) {
     this.brokerSecret = brokerSecret;
   }
 
@@ -255,7 +255,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService capabilities(@Nonnull final BckndServiceCapabilities capabilities) {
+  public BckndExtendedService capabilities(@Nullable final BckndServiceCapabilities capabilities) {
     this.capabilities = capabilities;
     return this;
   }
@@ -275,7 +275,7 @@ public class BckndExtendedService
    *
    * @param capabilities The capabilities of this {@link BckndExtendedService}
    */
-  public void setCapabilities(@Nonnull final BckndServiceCapabilities capabilities) {
+  public void setCapabilities(@Nullable final BckndServiceCapabilities capabilities) {
     this.capabilities = capabilities;
   }
 
@@ -288,7 +288,7 @@ public class BckndExtendedService
    */
   @Nonnull
   public BckndExtendedService serviceCatalog(
-      @Nonnull final List<BckndServiceServiceCatalogItem> serviceCatalog) {
+      @Nullable final List<BckndServiceServiceCatalogItem> serviceCatalog) {
     this.serviceCatalog = serviceCatalog;
     return this;
   }
@@ -325,7 +325,7 @@ public class BckndExtendedService
    * @param serviceCatalog The serviceCatalog of this {@link BckndExtendedService}
    */
   public void setServiceCatalog(
-      @Nonnull final List<BckndServiceServiceCatalogItem> serviceCatalog) {
+      @Nullable final List<BckndServiceServiceCatalogItem> serviceCatalog) {
     this.serviceCatalog = serviceCatalog;
   }
 
@@ -336,7 +336,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService status(@Nonnull final StatusEnum status) {
+  public BckndExtendedService status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -356,7 +356,7 @@ public class BckndExtendedService
    *
    * @param status aggregated status of the service
    */
-  public void setStatus(@Nonnull final StatusEnum status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 
@@ -368,7 +368,7 @@ public class BckndExtendedService
    * @return The same instance of this {@link BckndExtendedService} class
    */
   @Nonnull
-  public BckndExtendedService statusMessage(@Nonnull final String statusMessage) {
+  public BckndExtendedService statusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
     return this;
   }
@@ -388,7 +388,7 @@ public class BckndExtendedService
    *
    * @param statusMessage status message
    */
-  public void setStatusMessage(@Nonnull final String statusMessage) {
+  public void setStatusMessage(@Nullable final String statusMessage) {
     this.statusMessage = statusMessage;
   }
 

@@ -50,7 +50,7 @@ public class MetaAiApiLimits
    * @return The same instance of this {@link MetaAiApiLimits} class
    */
   @Nonnull
-  public MetaAiApiLimits executions(@Nonnull final MetaAiApiLimitsExecutions executions) {
+  public MetaAiApiLimits executions(@Nullable final MetaAiApiLimitsExecutions executions) {
     this.executions = executions;
     return this;
   }
@@ -70,7 +70,7 @@ public class MetaAiApiLimits
    *
    * @param executions The executions of this {@link MetaAiApiLimits}
    */
-  public void setExecutions(@Nonnull final MetaAiApiLimitsExecutions executions) {
+  public void setExecutions(@Nullable final MetaAiApiLimitsExecutions executions) {
     this.executions = executions;
   }
 
@@ -81,7 +81,7 @@ public class MetaAiApiLimits
    * @return The same instance of this {@link MetaAiApiLimits} class
    */
   @Nonnull
-  public MetaAiApiLimits deployments(@Nonnull final MetaAiApiLimitsDeployments deployments) {
+  public MetaAiApiLimits deployments(@Nullable final MetaAiApiLimitsDeployments deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -101,7 +101,7 @@ public class MetaAiApiLimits
    *
    * @param deployments The deployments of this {@link MetaAiApiLimits}
    */
-  public void setDeployments(@Nonnull final MetaAiApiLimitsDeployments deployments) {
+  public void setDeployments(@Nullable final MetaAiApiLimitsDeployments deployments) {
     this.deployments = deployments;
   }
 
@@ -114,7 +114,7 @@ public class MetaAiApiLimits
    */
   @Nonnull
   public MetaAiApiLimits timeToLiveDeployments(
-      @Nonnull final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
+      @Nullable final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
     return this;
   }
@@ -136,7 +136,7 @@ public class MetaAiApiLimits
    * @param timeToLiveDeployments The timeToLiveDeployments of this {@link MetaAiApiLimits}
    */
   public void setTimeToLiveDeployments(
-      @Nonnull final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
+      @Nullable final MetaAiApiLimitsTimeToLiveDeployments timeToLiveDeployments) {
     this.timeToLiveDeployments = timeToLiveDeployments;
   }
 

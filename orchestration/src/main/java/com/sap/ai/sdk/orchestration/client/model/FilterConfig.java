@@ -14,8 +14,10 @@ package com.sap.ai.sdk.orchestration.client.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,22 +26,67 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Filters classifiers to be used */
+/** FilterConfig */
 // CHECKSTYLE:OFF
 public class FilterConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("Hate")
-  private AzureThreshold hate;
+  /** String represents name of the filter provider */
+  public enum TypeEnum {
+    /** The AZURE_CONTENT_SAFETY option of this FilterConfig */
+    AZURE_CONTENT_SAFETY("azure_content_safety");
 
-  @JsonProperty("SelfHarm")
-  private AzureThreshold selfHarm;
+    private String value;
 
-  @JsonProperty("Sexual")
-  private AzureThreshold sexual;
+    TypeEnum(String value) {
+      this.value = value;
+    }
 
-  @JsonProperty("Violence")
-  private AzureThreshold violence;
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type FilterConfig
+     */
+    @JsonCreator
+    @Nonnull
+    public static TypeEnum fromValue(@Nonnull final String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  @JsonProperty("type")
+  private TypeEnum type;
+
+  @JsonProperty("config")
+  private AzureContentSafety config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -47,127 +94,65 @@ public class FilterConfig
   protected FilterConfig() {}
 
   /**
-   * Set the hate of this {@link FilterConfig} instance and return the same instance.
+   * Set the type of this {@link FilterConfig} instance and return the same instance.
    *
-   * @param hate The hate of this {@link FilterConfig}
+   * @param type String represents name of the filter provider
    * @return The same instance of this {@link FilterConfig} class
    */
   @Nonnull
-  public FilterConfig hate(@Nonnull final AzureThreshold hate) {
-    this.hate = hate;
+  public FilterConfig type(@Nonnull final TypeEnum type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get hate
+   * String represents name of the filter provider
    *
-   * @return hate The hate of this {@link FilterConfig} instance.
+   * @return type The type of this {@link FilterConfig} instance.
    */
   @Nonnull
-  public AzureThreshold getHate() {
-    return hate;
+  public TypeEnum getType() {
+    return type;
   }
 
   /**
-   * Set the hate of this {@link FilterConfig} instance.
+   * Set the type of this {@link FilterConfig} instance.
    *
-   * @param hate The hate of this {@link FilterConfig}
+   * @param type String represents name of the filter provider
    */
-  public void setHate(@Nonnull final AzureThreshold hate) {
-    this.hate = hate;
+  public void setType(@Nonnull final TypeEnum type) {
+    this.type = type;
   }
 
   /**
-   * Set the selfHarm of this {@link FilterConfig} instance and return the same instance.
+   * Set the config of this {@link FilterConfig} instance and return the same instance.
    *
-   * @param selfHarm The selfHarm of this {@link FilterConfig}
+   * @param config The config of this {@link FilterConfig}
    * @return The same instance of this {@link FilterConfig} class
    */
   @Nonnull
-  public FilterConfig selfHarm(@Nonnull final AzureThreshold selfHarm) {
-    this.selfHarm = selfHarm;
+  public FilterConfig config(@Nullable final AzureContentSafety config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get selfHarm
+   * Get config
    *
-   * @return selfHarm The selfHarm of this {@link FilterConfig} instance.
+   * @return config The config of this {@link FilterConfig} instance.
    */
   @Nonnull
-  public AzureThreshold getSelfHarm() {
-    return selfHarm;
+  public AzureContentSafety getConfig() {
+    return config;
   }
 
   /**
-   * Set the selfHarm of this {@link FilterConfig} instance.
+   * Set the config of this {@link FilterConfig} instance.
    *
-   * @param selfHarm The selfHarm of this {@link FilterConfig}
+   * @param config The config of this {@link FilterConfig}
    */
-  public void setSelfHarm(@Nonnull final AzureThreshold selfHarm) {
-    this.selfHarm = selfHarm;
-  }
-
-  /**
-   * Set the sexual of this {@link FilterConfig} instance and return the same instance.
-   *
-   * @param sexual The sexual of this {@link FilterConfig}
-   * @return The same instance of this {@link FilterConfig} class
-   */
-  @Nonnull
-  public FilterConfig sexual(@Nonnull final AzureThreshold sexual) {
-    this.sexual = sexual;
-    return this;
-  }
-
-  /**
-   * Get sexual
-   *
-   * @return sexual The sexual of this {@link FilterConfig} instance.
-   */
-  @Nonnull
-  public AzureThreshold getSexual() {
-    return sexual;
-  }
-
-  /**
-   * Set the sexual of this {@link FilterConfig} instance.
-   *
-   * @param sexual The sexual of this {@link FilterConfig}
-   */
-  public void setSexual(@Nonnull final AzureThreshold sexual) {
-    this.sexual = sexual;
-  }
-
-  /**
-   * Set the violence of this {@link FilterConfig} instance and return the same instance.
-   *
-   * @param violence The violence of this {@link FilterConfig}
-   * @return The same instance of this {@link FilterConfig} class
-   */
-  @Nonnull
-  public FilterConfig violence(@Nonnull final AzureThreshold violence) {
-    this.violence = violence;
-    return this;
-  }
-
-  /**
-   * Get violence
-   *
-   * @return violence The violence of this {@link FilterConfig} instance.
-   */
-  @Nonnull
-  public AzureThreshold getViolence() {
-    return violence;
-  }
-
-  /**
-   * Set the violence of this {@link FilterConfig} instance.
-   *
-   * @param violence The violence of this {@link FilterConfig}
-   */
-  public void setViolence(@Nonnull final AzureThreshold violence) {
-    this.violence = violence;
+  public void setConfig(@Nullable final AzureContentSafety config) {
+    this.config = config;
   }
 
   /**
@@ -218,15 +203,13 @@ public class FilterConfig
     }
     final FilterConfig filterConfig = (FilterConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, filterConfig.cloudSdkCustomFields)
-        && Objects.equals(this.hate, filterConfig.hate)
-        && Objects.equals(this.selfHarm, filterConfig.selfHarm)
-        && Objects.equals(this.sexual, filterConfig.sexual)
-        && Objects.equals(this.violence, filterConfig.violence);
+        && Objects.equals(this.type, filterConfig.type)
+        && Objects.equals(this.config, filterConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hate, selfHarm, sexual, violence, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
@@ -234,10 +217,8 @@ public class FilterConfig
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class FilterConfig {\n");
-    sb.append("    hate: ").append(toIndentedString(hate)).append("\n");
-    sb.append("    selfHarm: ").append(toIndentedString(selfHarm)).append("\n");
-    sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
-    sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -255,8 +236,22 @@ public class FilterConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link FilterConfig} instance. No arguments are required. */
-  public static FilterConfig create() {
-    return new FilterConfig();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link FilterConfig} instance
+   * with all required arguments.
+   */
+  public static Builder create() {
+    return (type) -> new FilterConfig().type(type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the type of this {@link FilterConfig} instance.
+     *
+     * @param type String represents name of the filter provider
+     * @return The FilterConfig instance.
+     */
+    FilterConfig type(@Nonnull final TypeEnum type);
   }
 }

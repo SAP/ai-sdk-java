@@ -48,7 +48,7 @@ public class MetaAiApiCapabilitiesLogs
    * @return The same instance of this {@link MetaAiApiCapabilitiesLogs} class
    */
   @Nonnull
-  public MetaAiApiCapabilitiesLogs executions(@Nonnull final Boolean executions) {
+  public MetaAiApiCapabilitiesLogs executions(@Nullable final Boolean executions) {
     this.executions = executions;
     return this;
   }
@@ -68,7 +68,7 @@ public class MetaAiApiCapabilitiesLogs
    *
    * @param executions The executions of this {@link MetaAiApiCapabilitiesLogs}
    */
-  public void setExecutions(@Nonnull final Boolean executions) {
+  public void setExecutions(@Nullable final Boolean executions) {
     this.executions = executions;
   }
 
@@ -80,7 +80,7 @@ public class MetaAiApiCapabilitiesLogs
    * @return The same instance of this {@link MetaAiApiCapabilitiesLogs} class
    */
   @Nonnull
-  public MetaAiApiCapabilitiesLogs deployments(@Nonnull final Boolean deployments) {
+  public MetaAiApiCapabilitiesLogs deployments(@Nullable final Boolean deployments) {
     this.deployments = deployments;
     return this;
   }
@@ -100,7 +100,7 @@ public class MetaAiApiCapabilitiesLogs
    *
    * @param deployments The deployments of this {@link MetaAiApiCapabilitiesLogs}
    */
-  public void setDeployments(@Nonnull final Boolean deployments) {
+  public void setDeployments(@Nullable final Boolean deployments) {
     this.deployments = deployments;
   }
 

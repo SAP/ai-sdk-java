@@ -82,7 +82,7 @@ public class BckndUsageResourcePlanItem
    * @return The same instance of this {@link BckndUsageResourcePlanItem} class
    */
   @Nonnull
-  public BckndUsageResourcePlanItem resourcePlanType(@Nonnull final String resourcePlanType) {
+  public BckndUsageResourcePlanItem resourcePlanType(@Nullable final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
     return this;
   }
@@ -103,7 +103,7 @@ public class BckndUsageResourcePlanItem
    *
    * @param resourcePlanType The resourcePlanType of this {@link BckndUsageResourcePlanItem}
    */
-  public void setResourcePlanType(@Nonnull final String resourcePlanType) {
+  public void setResourcePlanType(@Nullable final String resourcePlanType) {
     this.resourcePlanType = resourcePlanType;
   }
 
@@ -117,7 +117,7 @@ public class BckndUsageResourcePlanItem
    */
   @Nonnull
   public BckndUsageResourcePlanItem configuredMaxReplicas(
-      @Nonnull final Integer configuredMaxReplicas) {
+      @Nullable final Integer configuredMaxReplicas) {
     this.configuredMaxReplicas = configuredMaxReplicas;
     return this;
   }
@@ -139,7 +139,7 @@ public class BckndUsageResourcePlanItem
    * @param configuredMaxReplicas The configuredMaxReplicas of this {@link
    *     BckndUsageResourcePlanItem}
    */
-  public void setConfiguredMaxReplicas(@Nonnull final Integer configuredMaxReplicas) {
+  public void setConfiguredMaxReplicas(@Nullable final Integer configuredMaxReplicas) {
     this.configuredMaxReplicas = configuredMaxReplicas;
   }
 

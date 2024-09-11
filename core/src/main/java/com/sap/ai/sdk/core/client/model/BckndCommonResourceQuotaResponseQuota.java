@@ -46,7 +46,7 @@ public class BckndCommonResourceQuotaResponseQuota
    * @return The same instance of this {@link BckndCommonResourceQuotaResponseQuota} class
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponseQuota maxCount(@Nonnull final Integer maxCount) {
+  public BckndCommonResourceQuotaResponseQuota maxCount(@Nullable final Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
@@ -67,7 +67,7 @@ public class BckndCommonResourceQuotaResponseQuota
    * @param maxCount The value can be 0(disabled) or a positive integer defining the maximum allowed
    *     number
    */
-  public void setMaxCount(@Nonnull final Integer maxCount) {
+  public void setMaxCount(@Nullable final Integer maxCount) {
     this.maxCount = maxCount;
   }
 

@@ -48,7 +48,7 @@ public class AiExecutionBulkModificationResponse
    */
   @Nonnull
   public AiExecutionBulkModificationResponse executions(
-      @Nonnull final List<AiExecutionModificationResponseListInner> executions) {
+      @Nullable final List<AiExecutionModificationResponseListInner> executions) {
     this.executions = executions;
     return this;
   }
@@ -85,7 +85,7 @@ public class AiExecutionBulkModificationResponse
    * @param executions The executions of this {@link AiExecutionBulkModificationResponse}
    */
   public void setExecutions(
-      @Nonnull final List<AiExecutionModificationResponseListInner> executions) {
+      @Nullable final List<AiExecutionModificationResponseListInner> executions) {
     this.executions = executions;
   }
 

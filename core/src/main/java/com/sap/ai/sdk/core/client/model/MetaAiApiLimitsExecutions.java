@@ -46,7 +46,7 @@ public class MetaAiApiLimitsExecutions
    * @return The same instance of this {@link MetaAiApiLimitsExecutions} class
    */
   @Nonnull
-  public MetaAiApiLimitsExecutions maxRunningCount(@Nonnull final Integer maxRunningCount) {
+  public MetaAiApiLimitsExecutions maxRunningCount(@Nullable final Integer maxRunningCount) {
     this.maxRunningCount = maxRunningCount;
     return this;
   }
@@ -67,7 +67,7 @@ public class MetaAiApiLimitsExecutions
    * @param maxRunningCount Max nr of executions allowed by this runtime per resource group. &lt;0
    *     means unlimited.
    */
-  public void setMaxRunningCount(@Nonnull final Integer maxRunningCount) {
+  public void setMaxRunningCount(@Nullable final Integer maxRunningCount) {
     this.maxRunningCount = maxRunningCount;
   }
 

@@ -3,7 +3,7 @@
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
 [![Fosstars security rating](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_report.md)
 
-# AI SDK for Java
+# SAP Cloud SDK for AI (for Java)
 
 # ⚠️ This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change ⚠️
 
@@ -197,12 +197,77 @@ final String resultMessage = result.getChoices().get(0).getMessage().getContent(
 
 See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat completion with a model not in defined `OpenAiModel`
+### Chat completion with a model not defined in `OpenAiModel`
 
 ```java
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
+
+### Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+#### Stream the chat completion asynchronously
+This is a blocking example for streaming and printing directly to the console:
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<String> stream = client.streamChatCompletion(request)) {
+    stream.forEach(deltaString -> {
+        System.out.print(deltaString);
+        System.out.flush();
+    });
+}
+```
+
+<details>
+<summary>It's also possible to aggregate the total output.</summary>
+
+The following example is non-blocking.
+Any asynchronous library can be used, e.g. classic Thread API.
+
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+
+OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// Do the request before the thread starts to handle exceptions during request initialization 
+Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
+
+Thread thread = new Thread(() -> {
+    // try-with-resources ensures the stream is closed
+    try (stream) {
+        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+    }
+});
+thread.start(); // non-blocking
+
+thread.join(); // blocking
+
+// access aggregated information from total output, e.g.
+Integer tokens = totalOutput.getUsage().getCompletionTokens();
+System.out.println("Tokens: " + tokens);
+```
+
+</details>
+
+#### Spring Boot example
+
+Please find [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
 
@@ -336,20 +401,21 @@ final var template =
             "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
 final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-final var filterStrict =
-    Filter.create()
-        .type(ProviderType.AZURE_CONTENT_SAFETY)
+final var filterStrict = 
+    FilterConfig.create()
+        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            FilterConfig.create()
+            AzureContentSafety.create()
                 .hate(NUMBER_0)
                 .selfHarm(NUMBER_0)
                 .sexual(NUMBER_0)
                 .violence(NUMBER_0));
+
 final var filterLoose =
-    Filter.create()
-        .type(ProviderType.AZURE_CONTENT_SAFETY)
+    FilterConfig.create()
+        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            FilterConfig.create()
+            AzureContentSafety.create()
                 .hate(NUMBER_4)
                 .selfHarm(NUMBER_4)
                 .sexual(NUMBER_4)
@@ -412,14 +478,55 @@ DeploymentApi api = new DeploymentApi(client);
 
 For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
 
-## Requirements and Setup
+## Requirements and Setup for AI Core
 
-### Set AI Core credentials as environment variable
+For any AI Core service interaction, the SAP AI SDK requires credentials to be available at application runtime.
+By default, the credentials are extracted automatically from a service instance of type "aicore" bound to the application. 
+Running the application locally without this service binding will throw an exception:
 
-- Running the application locally without a service binding will throw:
+```
+Could not find any matching service bindings for service identifier 'aicore'
+```
 
-  `Could not find any matching service bindings for service identifier 'aicore'`
-- Go into the BTP Cockpit
+There are multiple options to register the service binding:
+* Regular service binding in SAP BTP Cloud Foundry (resulting in `VCAP_SERVICES` env var entry).
+* Set an environment variable explicitly: `AICORE_SERVICE_KEY`
+* Define and use a _Destination_ in _BTP Destination Service_.
+* (For CAP applications) use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach _(not recommended for production)_.
+  * For example: `cds bind --to aicore --exec mvn spring-boot:run`
+* Leveraging `"user-provided"` service binding _(not recommended for production)_.
+* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` declaration in application _(not recommended for production)_.
+
+### Regular service binding in SAP BTP Cloud Foundry
+
+* Bind an existing service instance of type `aicore` to your application.
+  [With SAP BTP multiple options are available](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications): using the web interface, the CLI, MTA or manifest.
+
+<details><summary>After application restart, there should be an "aicore" entry in environment variable <code>VCAP_SERVICES</code>.</summary>
+
+```json
+{
+  "aicore": [
+      {
+        "clientid": "...",
+        "clientsecret": "...",
+        "url": "...",
+        "identityzone": "...",
+        "identityzoneid": "...",
+        "appname": "...",
+        "serviceurls": {
+          "AI_API_URL": "..."
+        }
+      }
+  ]
+}
+```
+
+</details>
+
+### Set credentials as dedicated environment variable
+
+- Go into the SAP BTP Cockpit
 - Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
 - Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
 
@@ -428,7 +535,33 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ```
 
-### Run the Spring Boot application
+### Define and use a Destination
+
+* Lookup service-key credentials as explained in the previous step for `AICORE_SERVICE_KEY`.
+
+* <details><summary>Define a new destination in the SAP BTP Destination Service using the service-key credentials</summary>
+  
+  * (Destinations can be added on subaccount level and on service instance level.)
+  * (The URL field requires an additional path segment: `/v2`)
+  * **Name**: _my-aicore_
+  * **Type**: HTTP
+  * **URL**: _[serviceurls.AI_API_URL]/v2_
+  * **Proxy-Type**: Internet
+  * **Authentication**: _Oauth2ClientCredentials_
+  * **Client ID**: _[clientid]_
+  * **Client Secret**: _[clientsecret]_
+  * **Token Service URL Type**: Dedicated
+  * **Token Service URL**: _[url]_
+  
+  </details>
+
+* At application runtime the following can be executed:
+  ```java
+  Destination destination = DestinationAccessor.getDestination("my-aicore");
+  ApiClient client = Core.getClient(destination);
+  ```
+
+### Run the Spring Boot test application
 
 ```shell
 cd e2e-test-app
