@@ -62,7 +62,10 @@ public class RTAExecution
     STOPPED("STOPPED"),
 
     /** The UNKNOWN option of this RTAExecution */
-    UNKNOWN("UNKNOWN");
+    UNKNOWN("UNKNOWN"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RTAExecution */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -106,7 +109,7 @@ public class RTAExecution
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

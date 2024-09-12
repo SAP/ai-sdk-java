@@ -37,7 +37,10 @@ public class MaskingProviderConfig
   /** Type of masking service provider */
   public enum TypeEnum {
     /** The SAP_DATA_PRIVACY_INTEGRATION option of this MaskingProviderConfig */
-    SAP_DATA_PRIVACY_INTEGRATION("sap_data_privacy_integration");
+    SAP_DATA_PRIVACY_INTEGRATION("sap_data_privacy_integration"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this MaskingProviderConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -81,7 +84,7 @@ public class MaskingProviderConfig
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -94,7 +97,10 @@ public class MaskingProviderConfig
     ANONYMIZATION("anonymization"),
 
     /** The PSEUDONYMIZATION option of this MaskingProviderConfig */
-    PSEUDONYMIZATION("pseudonymization");
+    PSEUDONYMIZATION("pseudonymization"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this MaskingProviderConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -138,7 +144,7 @@ public class MaskingProviderConfig
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

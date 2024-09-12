@@ -43,7 +43,10 @@ public class AiExecutableParameter
   /** Type of the executable parameter */
   public enum TypeEnum {
     /** The STRING option of this AiExecutableParameter */
-    STRING("string");
+    STRING("string"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiExecutableParameter */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -87,7 +90,7 @@ public class AiExecutableParameter
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

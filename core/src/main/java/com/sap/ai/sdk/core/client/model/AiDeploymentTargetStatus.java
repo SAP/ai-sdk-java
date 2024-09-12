@@ -18,7 +18,9 @@ import javax.annotation.Nonnull;
 
 /** Status */
 public enum AiDeploymentTargetStatus {
-  STOPPED("STOPPED");
+  STOPPED("STOPPED"),
+
+  UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
@@ -56,6 +58,6 @@ public enum AiDeploymentTargetStatus {
         return b;
       }
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }

@@ -58,7 +58,10 @@ public class RTAArtifact
     RESULTSET("resultset"),
 
     /** The OTHER option of this RTAArtifact */
-    OTHER("other");
+    OTHER("other"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RTAArtifact */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -102,7 +105,7 @@ public class RTAArtifact
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
