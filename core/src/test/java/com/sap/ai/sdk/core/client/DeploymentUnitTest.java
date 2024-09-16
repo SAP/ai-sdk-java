@@ -331,4 +331,25 @@ public class DeploymentUnitTest extends WireMockTestServer {
                           }
                           """)));
   }
+  
+  @Test
+  void getDeploymentCount() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/deployments/$count"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        1
+                        """)));
+    
+    final int count = new DeploymentApi(getClient(destination)).deploymentCount("default");
+    
+    assertThat(count).isEqualTo(1);
+  }
+  
+  
 }

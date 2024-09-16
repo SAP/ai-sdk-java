@@ -290,4 +290,23 @@ public class ExecutionUnitTest extends WireMockTestServer {
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(equalToJson("{\"targetStatus\":\"STOPPED\"}")));
   }
+  
+  @Test
+  void getExecutionCount() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/executions/$count"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        1
+                        """)));
+    
+    final int count = new ExecutionApi(getClient(destination)).executionCount("default");
+    
+    assertThat(count).isEqualTo(1);
+  }
 }
