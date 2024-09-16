@@ -58,7 +58,10 @@ public class BckndResourceGroup
     ERROR("ERROR"),
 
     /** The PROVISIONING option of this BckndResourceGroup */
-    PROVISIONING("PROVISIONING");
+    PROVISIONING("PROVISIONING"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this BckndResourceGroup */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -102,7 +105,7 @@ public class BckndResourceGroup
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

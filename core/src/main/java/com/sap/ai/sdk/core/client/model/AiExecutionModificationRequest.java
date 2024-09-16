@@ -37,7 +37,10 @@ public class AiExecutionModificationRequest
   /** Desired target status of the execution (currently only STOPPED is supported) */
   public enum TargetStatusEnum {
     /** The STOPPED option of this AiExecutionModificationRequest */
-    STOPPED("STOPPED");
+    STOPPED("STOPPED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiExecutionModificationRequest */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -81,7 +84,7 @@ public class AiExecutionModificationRequest
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

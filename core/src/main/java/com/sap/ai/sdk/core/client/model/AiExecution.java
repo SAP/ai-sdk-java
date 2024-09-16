@@ -58,7 +58,10 @@ public class AiExecution
     STOPPED("STOPPED"),
 
     /** The DELETED option of this AiExecution */
-    DELETED("DELETED");
+    DELETED("DELETED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AiExecution */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -102,7 +105,7 @@ public class AiExecution
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

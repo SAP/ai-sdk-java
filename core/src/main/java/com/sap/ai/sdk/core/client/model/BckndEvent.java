@@ -41,7 +41,10 @@ public class BckndEvent
     PROVISION("PROVISION"),
 
     /** The DEPROVISION option of this BckndEvent */
-    DEPROVISION("DEPROVISION");
+    DEPROVISION("DEPROVISION"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this BckndEvent */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -85,7 +88,7 @@ public class BckndEvent
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -101,7 +104,10 @@ public class BckndEvent
     FAILED("FAILED"),
 
     /** The PENDING option of this BckndEvent */
-    PENDING("PENDING");
+    PENDING("PENDING"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this BckndEvent */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -145,7 +151,7 @@ public class BckndEvent
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
