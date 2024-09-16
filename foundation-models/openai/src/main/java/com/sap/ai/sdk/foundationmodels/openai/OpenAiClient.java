@@ -104,6 +104,7 @@ public final class OpenAiClient {
    * @param systemPrompt the system prompt
    * @return the client
    */
+  @Nonnull
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
     parameters =
         new OpenAiChatCompletionParameters()
