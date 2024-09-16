@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -25,7 +26,6 @@ import lombok.experimental.Accessors;
 public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   /** A list of messages comprising the conversation so far. */
   @JsonProperty("messages")
-  @Setter(onParam_ = @Nonnull)
   private List<OpenAiChatMessage> messages;
 
   /**
@@ -196,5 +196,14 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   @Nonnull
   public OpenAiChatCompletionParameters setStop(@Nullable final String... values) {
     return (OpenAiChatCompletionParameters) super.setStop(values);
+  }
+
+  @Nonnull
+  public OpenAiChatCompletionParameters addMessages(@Nonnull final OpenAiChatMessage... messages) {
+    if (this.messages == null) {
+      this.messages = new ArrayList<>();
+    }
+    this.messages.addAll(Arrays.asList(messages));
+    return this;
   }
 }

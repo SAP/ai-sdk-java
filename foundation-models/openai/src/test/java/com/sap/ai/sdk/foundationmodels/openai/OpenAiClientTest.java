@@ -18,6 +18,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
@@ -173,12 +174,17 @@ class OpenAiClientTest {
   private static Callable<?>[] chatCompletionCalls() {
     return new Callable[] {
       () -> {
+        final var systemMessage = new OpenAiChatSystemMessage().setContent("You are a helpful AI");
         final var userMessage =
             new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-        final var request = new OpenAiChatCompletionParameters().setMessages(List.of(userMessage));
+        final var request =
+            new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
         return client.chatCompletion(request);
       },
-      () -> client.chatCompletion("Hello World! Why is this phrase so famous?")
+      () ->
+          client
+              .withSystemPrompt("You are a helpful AI")
+              .chatCompletion("Hello World! Why is this phrase so famous?")
     };
   }
 
@@ -258,7 +264,18 @@ class OpenAiClientTest {
               .withRequestBody(
                   equalToJson(
                       """
-                          {"messages":[{"role":"user","content":[{"type":"text","text":"Hello World! Why is this phrase so famous?"}]}]}""")));
+                      {
+                        "messages" : [ {
+                          "role" : "system",
+                          "content" : "You are a helpful AI"
+                        }, {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "Hello World! Why is this phrase so famous?"
+                          } ]
+                        } ]
+                      }""")));
     }
   }
 
@@ -319,11 +336,9 @@ class OpenAiClientTest {
 
       final var request =
           new OpenAiChatCompletionParameters()
-              .setMessages(
-                  List.of(
-                      new OpenAiChatUserMessage()
-                          .addText(
-                              "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+              .addMessages(
+                  new OpenAiChatUserMessage()
+                      .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
@@ -354,11 +369,9 @@ class OpenAiClientTest {
 
       final var request =
           new OpenAiChatCompletionParameters()
-              .setMessages(
-                  List.of(
-                      new OpenAiChatUserMessage()
-                          .addText(
-                              "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+              .addMessages(
+                  new OpenAiChatUserMessage()
+                      .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 

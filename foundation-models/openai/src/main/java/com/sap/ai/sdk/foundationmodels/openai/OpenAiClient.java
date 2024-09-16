@@ -10,6 +10,7 @@ import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
@@ -18,7 +19,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import java.io.IOException;
-import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -36,6 +36,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON;
+  private OpenAiChatCompletionParameters parameters = null;
 
   static {
     JACKSON =
@@ -98,6 +99,19 @@ public final class OpenAiClient {
   }
 
   /**
+   * Add a system prompt before user prompts.
+   *
+   * @param systemPrompt the system prompt
+   * @return the client
+   */
+  public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
+    parameters =
+        new OpenAiChatCompletionParameters()
+            .addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    return this;
+  }
+
+  /**
    * Generate a completion for the given user prompt.
    *
    * @param prompt a text message.
@@ -107,9 +121,10 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    final var parameters =
-        new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatUserMessage().addText(prompt)));
+    if (parameters == null) {
+      parameters = new OpenAiChatCompletionParameters();
+    }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
     return chatCompletion(parameters);
   }
 
@@ -123,6 +138,10 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    if (this.parameters != null) {
+      log.warn(
+          "Previously set messages will be ignored, set it as an argument of this method instead.");
+    }
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
