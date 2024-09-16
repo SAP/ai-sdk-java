@@ -183,7 +183,9 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 
 ```java
 final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Hello World! Why is this phrase so famous?");
+    OpenAiClient.forModel(GPT_35_TURBO)
+        .withSystemPrompt("You are a helpful AI")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
 
 final String resultMessage = result.getContent();
 ```
@@ -196,7 +198,7 @@ final var systemMessage =
 final var userMessage =
     new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
 final var request =
-    new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
+    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
@@ -224,7 +226,7 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
 OpenAiChatCompletionParameters request =
     new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+        .addMessages(new OpenAiChatUserMessage().addText(msg));
 
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
@@ -248,7 +250,7 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
 OpenAiChatCompletionParameters request =
     new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+        .addMessages(new OpenAiChatUserMessage().addText(msg));
 
 OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);

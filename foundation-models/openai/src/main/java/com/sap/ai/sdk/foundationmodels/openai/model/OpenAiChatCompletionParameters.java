@@ -198,6 +198,12 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
     return (OpenAiChatCompletionParameters) super.setStop(values);
   }
 
+  /**
+   * Add messages to the conversation.
+   *
+   * @param messages The messages to add.
+   * @return this instance for chaining.
+   */
   @Nonnull
   public OpenAiChatCompletionParameters addMessages(@Nonnull final OpenAiChatMessage... messages) {
     if (this.messages == null) {
