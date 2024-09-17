@@ -12,7 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
 /** Test server for all unit tests. */
-abstract class WireMockTestServer {
+public abstract class WireMockTestServer {
   private static final WireMockConfiguration WIREMOCK_CONFIGURATION =
       wireMockConfig().dynamicPort();
 
