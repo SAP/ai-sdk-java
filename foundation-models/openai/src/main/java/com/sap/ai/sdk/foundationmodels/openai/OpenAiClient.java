@@ -120,7 +120,7 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
     if (systemPrompt != null) {
       parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
     }
@@ -155,7 +155,7 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
     if (systemPrompt != null) {
       parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
     }
