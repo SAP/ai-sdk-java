@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingBuilder;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
@@ -36,8 +37,12 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class Core {
 
-  /** The cache for deployment ids, is eagerly loaded. */
-  private static final DeploymentCache CACHE = new DeploymentCache();
+  // for testing only, will be removed once we make this class an instance
+  static {
+    if (!DeploymentCache.isLoaded()) {
+      DeploymentCache.eagerlyLoaded(new DeploymentApi(getClient()));
+    }
+  }
 
   /**
    * <b>Requires an AI Core service binding.</b>
@@ -49,7 +54,7 @@ public class Core {
   public static ApiClient getOrchestrationClient(@Nonnull final String resourceGroup) {
     return getClient(
         getDestinationForDeployment(
-            CACHE.getDeploymentId(resourceGroup, "orchestration"), resourceGroup));
+            DeploymentCache.getDeploymentId(resourceGroup, "orchestration"), resourceGroup));
   }
 
   /**
@@ -223,6 +228,6 @@ public class Core {
   public static Destination getDestinationForModel(
       @Nonnull final String resourceGroup, @Nonnull final String modelName) {
     return getDestinationForDeployment(
-        CACHE.getDeploymentId(resourceGroup, modelName), resourceGroup);
+        DeploymentCache.getDeploymentId(resourceGroup, modelName), resourceGroup);
   }
 }

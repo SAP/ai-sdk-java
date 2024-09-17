@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.Core.getClient;
-
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -18,26 +16,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class DeploymentCache {
   /** The client to use for deployment queries. */
-  DeploymentApi API;
+  static DeploymentApi API;
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private final Map<String, String> CACHE = new HashMap<>();
+  private static final Map<String, String> CACHE = new HashMap<>();
 
-  /*
-   * Create a new DeploymentCache and eagerly load all deployments into the cache.
-   */
-  DeploymentCache() {
-    API = new DeploymentApi(getClient());
+  static boolean isLoaded() {
+    return API != null;
+  }
+
+  public static void eagerlyLoaded(@Nonnull final DeploymentApi client) {
+    API = client;
     resetCache();
   }
 
-  /*
-   * Create a new DeploymentCache and eagerly load all deployments into the cache.
-   * @param client the client to use for deployment queries
-   */
-  DeploymentCache(@Nonnull final DeploymentApi client) {
+  public static void lazyLoaded(@Nonnull final DeploymentApi client) {
     API = client;
-    resetCache();
   }
 
   /**
@@ -45,7 +39,7 @@ class DeploymentCache {
    *
    * <p><b>Call this method whenever a deployment is deleted.</b>
    */
-  public void resetCache() {
+  public static void resetCache() {
     CACHE.clear();
     try {
       final var deployments = API.deploymentQuery("default").getResources();
@@ -62,7 +56,8 @@ class DeploymentCache {
    * @param name "orchestration" or the model name.
    * @return the deployment id.
    */
-  public String getDeploymentId(@Nonnull final String resourceGroup, @Nonnull final String name) {
+  public static String getDeploymentId(
+      @Nonnull final String resourceGroup, @Nonnull final String name) {
     return CACHE.computeIfAbsent(
         name,
         n -> {
@@ -82,7 +77,7 @@ class DeploymentCache {
    * @return the deployment id
    * @throws NoSuchElementException if no deployment is found for the scenario id.
    */
-  private String getOrchestrationDeployment(@Nonnull final String resourceGroup)
+  private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments =
         API.deploymentQuery(
@@ -106,7 +101,7 @@ class DeploymentCache {
    * @return the deployment id
    * @throws NoSuchElementException if no deployment is found for the model name.
    */
-  private String getDeploymentForModel(
+  private static String getDeploymentForModel(
       @Nonnull final String resourceGroup, @Nonnull final String modelName)
       throws NoSuchElementException {
     final var deployments =
