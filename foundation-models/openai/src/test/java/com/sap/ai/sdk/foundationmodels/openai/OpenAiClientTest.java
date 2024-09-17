@@ -42,6 +42,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -273,6 +274,58 @@ class OpenAiClientTest {
                           "content" : [ {
                             "type" : "text",
                             "text" : "Hello World! Why is this phrase so famous?"
+                          } ]
+                        } ]
+                      }""")));
+    }
+  }
+
+  @Test
+  @DisplayName("Chat history is not implemented yet")
+  void history() throws IOException {
+    try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
+
+      final String response = new String(inputStream.readAllBytes());
+      stubFor(post("/chat/completions").willReturn(okJson(response)));
+
+      client.withSystemPrompt("system prompt").chatCompletion("chat completion 1");
+
+      verify(
+          exactly(1),
+          postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withRequestBody(
+                  equalToJson(
+                      """
+                      {
+                        "messages" : [ {
+                          "role" : "system",
+                          "content" : "system prompt"
+                        }, {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "chat completion 1"
+                          } ]
+                        } ]
+                      }""")));
+
+      client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
+
+      verify(
+          exactly(1),
+          postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withRequestBody(
+                  equalToJson(
+                      """
+                      {
+                        "messages" : [ {
+                          "role" : "system",
+                          "content" : "system prompt"
+                        }, {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "chat completion 2"
                           } ]
                         } ]
                       }""")));

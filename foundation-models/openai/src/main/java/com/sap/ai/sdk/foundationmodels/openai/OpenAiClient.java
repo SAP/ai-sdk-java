@@ -138,10 +138,7 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    if (systemPrompt != null) {
-      log.warn(
-          "Previously set messages will be ignored, set it as an argument of this method instead.");
-    }
+    warnIfUnsupportedUsage();
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
@@ -182,8 +179,16 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
     parameters.enableStreaming();
     return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
+  }
+
+  private void warnIfUnsupportedUsage() {
+    if (systemPrompt != null) {
+      log.warn(
+          "Previously set messages will be ignored, set it as an argument of this method instead.");
+    }
   }
 
   /**
