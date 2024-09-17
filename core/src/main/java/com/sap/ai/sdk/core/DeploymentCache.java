@@ -4,24 +4,39 @@ import static com.sap.ai.sdk.core.Core.getClient;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
+import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Cache for deployment IDs. This class is used to get the deployment id for the orchestration
  * scenario or for a model.
  */
+@Slf4j
 class DeploymentCache {
   /** The client to use for deployment queries. */
-  static DeploymentApi API = new DeploymentApi(getClient());
+  DeploymentApi API;
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private static final Map<String, String> CACHE = new HashMap<>();
+  private final Map<String, String> CACHE = new HashMap<>();
 
-  // Eagerly load all deployments into the cache.
-  static {
+  /*
+   * Create a new DeploymentCache and eagerly load all deployments into the cache.
+   */
+  DeploymentCache() {
+    API = new DeploymentApi(getClient());
+    resetCache();
+  }
+
+  /*
+   * Create a new DeploymentCache and eagerly load all deployments into the cache.
+   * @param client the client to use for deployment queries
+   */
+  DeploymentCache(DeploymentApi client) {
+    API = client;
     resetCache();
   }
 
@@ -30,10 +45,14 @@ class DeploymentCache {
    *
    * <p><b>Call this method whenever a deployment is deleted.</b>
    */
-  public static void resetCache() {
+  public void resetCache() {
     CACHE.clear();
-    final var deployments = API.deploymentQuery("default").getResources();
-    deployments.forEach(deployment -> CACHE.put(getModelName(deployment), deployment.getId()));
+    try {
+      final var deployments = API.deploymentQuery("default").getResources();
+      deployments.forEach(deployment -> CACHE.put(getModelName(deployment), deployment.getId()));
+    } catch (final OpenApiRequestException e) {
+      log.error("Failed to load deployments into cache", e);
+    }
   }
 
   /**
@@ -43,8 +62,7 @@ class DeploymentCache {
    * @param name "orchestration" or the model name.
    * @return the deployment id.
    */
-  public static String getDeploymentId(
-      @Nonnull final String resourceGroup, @Nonnull final String name) {
+  public String getDeploymentId(@Nonnull final String resourceGroup, @Nonnull final String name) {
     return CACHE.computeIfAbsent(
         name,
         n -> {
@@ -64,7 +82,7 @@ class DeploymentCache {
    * @return the deployment id
    * @throws NoSuchElementException if no deployment is found for the scenario id.
    */
-  private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
+  private String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments =
         API.deploymentQuery(
@@ -88,7 +106,7 @@ class DeploymentCache {
    * @return the deployment id
    * @throws NoSuchElementException if no deployment is found for the model name.
    */
-  private static String getDeploymentForModel(
+  private String getDeploymentForModel(
       @Nonnull final String resourceGroup, @Nonnull final String modelName)
       throws NoSuchElementException {
     final var deployments =

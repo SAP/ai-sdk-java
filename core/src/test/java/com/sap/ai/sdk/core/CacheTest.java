@@ -13,9 +13,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CacheTest extends WireMockTestServer {
+
+  DeploymentCache cacheUnderTest = new DeploymentCache(new DeploymentApi(destination));
+
   @BeforeEach
   void setup() {
-    DeploymentCache.API = new DeploymentApi(destination);
     wireMockServer.resetRequests();
   }
 
@@ -94,12 +96,12 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeployment() {
     stubGPT4();
-    DeploymentCache.resetCache();
+    cacheUnderTest.resetCache();
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentId("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentId("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
   }
 
@@ -115,14 +117,14 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeploymentAfterReset() {
     stubEmpty();
-    DeploymentCache.resetCache();
+    cacheUnderTest.resetCache();
     stubGPT4();
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentId("default", "gpt-4-32k");
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentId("default", "gpt-4-32k");
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
   }
 }

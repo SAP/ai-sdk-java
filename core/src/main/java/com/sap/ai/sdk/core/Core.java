@@ -36,6 +36,9 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class Core {
 
+  /** The cache for deployment ids, is eagerly loaded. */
+  private static final DeploymentCache CACHE = new DeploymentCache();
+
   /**
    * <b>Requires an AI Core service binding.</b>
    *
@@ -46,7 +49,7 @@ public class Core {
   public static ApiClient getOrchestrationClient(@Nonnull final String resourceGroup) {
     return getClient(
         getDestinationForDeployment(
-            DeploymentCache.getDeploymentId(resourceGroup, "orchestration"), resourceGroup));
+            CACHE.getDeploymentId(resourceGroup, "orchestration"), resourceGroup));
   }
 
   /**
@@ -220,6 +223,6 @@ public class Core {
   public static Destination getDestinationForModel(
       @Nonnull final String resourceGroup, @Nonnull final String modelName) {
     return getDestinationForDeployment(
-        DeploymentCache.getDeploymentId(resourceGroup, modelName), resourceGroup);
+        CACHE.getDeploymentId(resourceGroup, modelName), resourceGroup);
   }
 }
