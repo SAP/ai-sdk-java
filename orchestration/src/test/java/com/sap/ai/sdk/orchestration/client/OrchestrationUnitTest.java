@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.core.DeploymentCache;
+import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
@@ -112,6 +114,7 @@ public class OrchestrationUnitTest {
   void setup(WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
+    DeploymentCache.lazyLoaded(new DeploymentApi(destination));
     client = new OrchestrationCompletionApi(getClient(destination));
   }
 

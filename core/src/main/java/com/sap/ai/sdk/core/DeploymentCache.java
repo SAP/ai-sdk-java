@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * scenario or for a model.
  */
 @Slf4j
-class DeploymentCache {
+public class DeploymentCache {
   /** The client to use for deployment queries. */
   static DeploymentApi API;
 
@@ -25,11 +25,21 @@ class DeploymentCache {
     return API != null;
   }
 
+  /**
+   * Eagerly load the deployment cache with the given client.
+   *
+   * @param client the deployment client.
+   */
   public static void eagerlyLoaded(@Nonnull final DeploymentApi client) {
     API = client;
     resetCache();
   }
 
+  /**
+   * Lazy load the deployment cache with the given client.
+   *
+   * @param client the deployment client.
+   */
   public static void lazyLoaded(@Nonnull final DeploymentApi client) {
     API = client;
   }
