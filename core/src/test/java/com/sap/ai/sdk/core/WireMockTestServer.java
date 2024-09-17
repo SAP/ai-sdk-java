@@ -1,9 +1,10 @@
-package com.sap.ai.sdk.core.client;
+package com.sap.ai.sdk.core;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,5 +22,6 @@ public abstract class WireMockTestServer {
     wireMockServer = new WireMockServer(WIREMOCK_CONFIGURATION);
     wireMockServer.start();
     destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
+    DeploymentCache.lazyLoaded(new DeploymentApi(destination));
   }
 }
