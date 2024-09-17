@@ -14,12 +14,10 @@ import javax.annotation.Nonnull;
  * scenario or for a model.
  */
 class DeploymentCache {
-  private static final DeploymentApi API = new DeploymentApi(getClient());
+  /** The client to use for deployment queries. */
+  static DeploymentApi API = new DeploymentApi(getClient());
 
-  /**
-   * Cache for deployment ids. The key is the scenario + model name and the value is the deployment
-   * id.
-   */
+  /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
   private static final Map<String, String> CACHE = new HashMap<>();
 
   // Eagerly load all deployments into the cache.
@@ -30,14 +28,12 @@ class DeploymentCache {
   /**
    * Remove all entries from the cache and reload all deployments.
    *
-   * <p><b>Call this method if you delete a deployment.</b>
+   * <p><b>Call this method whenever a deployment is deleted.</b>
    */
   public static void resetCache() {
     CACHE.clear();
     final var deployments = API.deploymentQuery("default").getResources();
-    deployments.forEach(
-        deployment ->
-            CACHE.put(deployment.getScenarioId() + getModelName(deployment), deployment.getId()));
+    deployments.forEach(deployment -> CACHE.put(getModelName(deployment), deployment.getId()));
   }
 
   /**
@@ -71,9 +67,8 @@ class DeploymentCache {
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments =
-        new DeploymentApi(getClient())
-            .deploymentQuery(
-                resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
+        API.deploymentQuery(
+            resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
 
     return deployments.getResources().stream()
         .map(AiDeployment::getId)
@@ -97,9 +92,8 @@ class DeploymentCache {
       @Nonnull final String resourceGroup, @Nonnull final String modelName)
       throws NoSuchElementException {
     final var deployments =
-        new DeploymentApi(getClient())
-            .deploymentQuery(
-                resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
+        API.deploymentQuery(
+            resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
 
     return deployments.getResources().stream()
         .filter(deployment -> modelName.equals(getModelName(deployment)))
@@ -113,6 +107,9 @@ class DeploymentCache {
 
   /** This exists because getBackendDetails() is broken */
   private static String getModelName(@Nonnull final AiDeployment deployment) {
+    if ("orchestration".equals(deployment.getScenarioId())) {
+      return "orchestration";
+    }
     final var deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
     // Remove this check when the specification is fixed.
