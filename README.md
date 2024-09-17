@@ -224,14 +224,10 @@ This is a blocking example for streaming and printing directly to the console:
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .addMessages(new OpenAiChatUserMessage().addText(msg));
-
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
-try( Stream<String> stream = client.streamChatCompletion(request)) {
+try( Stream<String> stream = client.streamChatCompletion(msg)) {
     stream.forEach(deltaString -> {
         System.out.print(deltaString);
         System.out.flush();

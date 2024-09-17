@@ -36,7 +36,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON;
-  private OpenAiChatCompletionParameters parameters = null;
+  private String systemPrompt = null;
 
   static {
     JACKSON =
@@ -106,9 +106,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
-    parameters =
-        new OpenAiChatCompletionParameters()
-            .addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    this.systemPrompt = systemPrompt;
     return this;
   }
 
@@ -122,8 +120,9 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    if (parameters == null) {
-      parameters = new OpenAiChatCompletionParameters();
+    OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
     }
     parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
     return chatCompletion(parameters);
@@ -139,7 +138,7 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    if (this.parameters != null) {
+    if (systemPrompt != null) {
       log.warn(
           "Previously set messages will be ignored, set it as an argument of this method instead.");
     }
@@ -149,13 +148,18 @@ public final class OpenAiClient {
   /**
    * Generate a completion for the given prompt.
    *
-   * @param parameters the prompt, including messages and other parameters.
+   * @param prompt a text message.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    */
   @Nonnull
-  public Stream<String> streamChatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+  public Stream<String> streamChatCompletion(@Nonnull final String prompt)
+      throws OpenAiClientException {
+    OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
     return streamChatCompletionDeltas(parameters)
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);

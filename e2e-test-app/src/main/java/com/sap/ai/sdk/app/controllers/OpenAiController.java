@@ -98,13 +98,11 @@ class OpenAiController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .addMessages(
-                new OpenAiChatUserMessage()
-                    .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
-
-    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+    final var stream =
+        OpenAiClient.forModel(GPT_35_TURBO)
+            .withSystemPrompt("Be a good, honest AI and answer the following question:")
+            .streamChatCompletion(
+                "Can you give me the first 100 numbers of the Fibonacci sequence?");
 
     final var emitter = new ResponseBodyEmitter();
 
