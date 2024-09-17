@@ -35,7 +35,7 @@ class DeploymentCache {
    * Create a new DeploymentCache and eagerly load all deployments into the cache.
    * @param client the client to use for deployment queries
    */
-  DeploymentCache(DeploymentApi client) {
+  DeploymentCache(@Nonnull final DeploymentApi client) {
     API = client;
     resetCache();
   }
