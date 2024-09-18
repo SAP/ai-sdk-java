@@ -24,7 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.33.0.
+ * AI Core in version 2.34.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -260,6 +260,8 @@ public class SecretApi extends AbstractOpenApiService {
    *
    * <p><b>400</b> - The request was malformed and could thus not be processed.
    *
+   * <p><b>404</b> - The specified resource was not found
+   *
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
    * @param authorization (optional) Authorization bearer token containing a JWT token.
@@ -336,6 +338,8 @@ public class SecretApi extends AbstractOpenApiService {
    * <p><b>200</b> - The secrets were fetched
    *
    * <p><b>400</b> - The request was malformed and could thus not be processed.
+   *
+   * <p><b>404</b> - The specified resource was not found
    *
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
