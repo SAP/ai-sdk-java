@@ -182,17 +182,28 @@ See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
 ### Simple chat completion
 
 ```java
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO)
+        .withSystemPrompt("You are a helpful AI")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
+
+final String resultMessage = result.getContent();
+```
+
+### Message history
+
+```java
 final var systemMessage =
     new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
 final var userMessage =
     new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
 final var request =
-    new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
+    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
-final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+final String resultMessage = result.getContent();
 ```
 
 See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
@@ -213,14 +224,10 @@ This is a blocking example for streaming and printing directly to the console:
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
-
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
-try( Stream<String> stream = client.streamChatCompletion(request)) {
+try( Stream<String> stream = client.streamChatCompletion(msg)) {
     stream.forEach(deltaString -> {
         System.out.print(deltaString);
         System.out.flush();
@@ -239,7 +246,7 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
 OpenAiChatCompletionParameters request =
     new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+        .addMessages(new OpenAiChatUserMessage().addText(msg));
 
 OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
