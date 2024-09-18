@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sap.ai.sdk.core.WireMockTestServer;
 import com.sap.ai.sdk.core.client.model.AiScenario;
 import com.sap.ai.sdk.core.client.model.AiScenarioList;
 import org.apache.hc.core5.http.HttpStatus;
