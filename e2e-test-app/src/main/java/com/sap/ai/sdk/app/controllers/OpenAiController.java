@@ -41,11 +41,7 @@ class OpenAiController {
   @GetMapping("/chatCompletion")
   @Nonnull
   public static OpenAiChatCompletionOutput chatCompletion() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatUserMessage().addText("Who is the prettiest")));
-
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Who is the prettiest");
   }
 
   /**
@@ -59,8 +55,7 @@ class OpenAiController {
   public static ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas() {
     final var msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var request =
-        new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+        new OpenAiChatCompletionParameters().addMessages(new OpenAiChatUserMessage().addText(msg));
 
     final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
 
@@ -103,15 +98,11 @@ class OpenAiController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .setMessages(
-                List.of(
-                    new OpenAiChatUserMessage()
-                        .addText(
-                            "Can you give me the first 100 numbers of the Fibonacci sequence?")));
-
-    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletion(request);
+    final var stream =
+        OpenAiClient.forModel(GPT_35_TURBO)
+            .withSystemPrompt("Be a good, honest AI and answer the following question:")
+            .streamChatCompletion(
+                "Can you give me the first 100 numbers of the Fibonacci sequence?");
 
     final var emitter = new ResponseBodyEmitter();
 
@@ -150,13 +141,12 @@ class OpenAiController {
   public static OpenAiChatCompletionOutput chatCompletionImage() {
     final var request =
         new OpenAiChatCompletionParameters()
-            .setMessages(
-                List.of(
-                    new OpenAiChatUserMessage()
-                        .addText("Describe the following image.")
-                        .addImage(
-                            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
-                            ImageDetailLevel.HIGH)));
+            .addMessages(
+                new OpenAiChatUserMessage()
+                    .addText("Describe the following image.")
+                    .addImage(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
+                        ImageDetailLevel.HIGH));
 
     return OpenAiClient.forModel(GPT_4O).chatCompletion(request);
   }
@@ -180,7 +170,7 @@ class OpenAiController {
     final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
     final var request =
         new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatUserMessage().addText(question)))
+            .addMessages(new OpenAiChatUserMessage().addText(question))
             .setTools(List.of(tool))
             .setToolChoiceFunction("fibonacci");
 

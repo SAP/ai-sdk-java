@@ -18,7 +18,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
@@ -30,9 +30,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -40,6 +42,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -84,7 +87,7 @@ class OpenAiClientTest {
     verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
   }
 
-  private static Runnable[] chatCompletionCalls() {
+  private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
       () -> client.chatCompletion(new OpenAiChatCompletionParameters()),
       () ->
@@ -96,7 +99,7 @@ class OpenAiClientTest {
   }
 
   @ParameterizedTest
-  @MethodSource("chatCompletionCalls")
+  @MethodSource("errorHandlingCalls")
   void chatCompletionErrorHandling(@Nonnull final Runnable request) {
     final var errorJson =
         """
@@ -169,23 +172,33 @@ class OpenAiClientTest {
     softly.assertAll();
   }
 
-  @Test
-  void chatCompletion() throws IOException {
+  private static Callable<?>[] chatCompletionCalls() {
+    return new Callable[] {
+      () -> {
+        final var systemMessage = new OpenAiChatSystemMessage().setContent("You are a helpful AI");
+        final var userMessage =
+            new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
+        final var request =
+            new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
+        return client.chatCompletion(request);
+      },
+      () ->
+          client
+              .withSystemPrompt("You are a helpful AI")
+              .chatCompletion("Hello World! Why is this phrase so famous?")
+    };
+  }
+
+  @SneakyThrows
+  @ParameterizedTest
+  @MethodSource("chatCompletionCalls")
+  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionOutput> request) {
     try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
 
       final String response = new String(inputStream.readAllBytes());
       stubFor(post("/chat/completions").willReturn(okJson(response)));
 
-      final var systemMessage =
-          new OpenAiChatMessage.OpenAiChatSystemMessage()
-              .setContent(
-                  "You are a helpful, friendly and sometimes slightly snarky AI assistant!");
-      final var userMessage =
-          new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-      final var request =
-          new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
-
-      final var result = client.chatCompletion(request);
+      final OpenAiChatCompletionOutput result = request.call();
 
       assertThat(result).isNotNull();
       assertThat(result.getCreated()).isEqualTo(1719300073);
@@ -252,7 +265,70 @@ class OpenAiClientTest {
               .withRequestBody(
                   equalToJson(
                       """
-                          {"messages":[{"role":"system","content":"You are a helpful, friendly and sometimes slightly snarky AI assistant!"},{"role":"user","content":[{"type":"text","text":"Hello World! Why is this phrase so famous?"}]}]}""")));
+                      {
+                        "messages" : [ {
+                          "role" : "system",
+                          "content" : "You are a helpful AI"
+                        }, {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "Hello World! Why is this phrase so famous?"
+                          } ]
+                        } ]
+                      }""")));
+    }
+  }
+
+  @Test
+  @DisplayName("Chat history is not implemented yet")
+  void history() throws IOException {
+    try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
+
+      final String response = new String(inputStream.readAllBytes());
+      stubFor(post("/chat/completions").willReturn(okJson(response)));
+
+      client.withSystemPrompt("system prompt").chatCompletion("chat completion 1");
+
+      verify(
+          exactly(1),
+          postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withRequestBody(
+                  equalToJson(
+                      """
+                      {
+                        "messages" : [ {
+                          "role" : "system",
+                          "content" : "system prompt"
+                        }, {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "chat completion 1"
+                          } ]
+                        } ]
+                      }""")));
+
+      client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
+
+      verify(
+          exactly(1),
+          postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withRequestBody(
+                  equalToJson(
+                      """
+                      {
+                        "messages" : [ {
+                          "role" : "system",
+                          "content" : "system prompt"
+                        }, {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "chat completion 2"
+                          } ]
+                        } ]
+                      }""")));
     }
   }
 
@@ -313,11 +389,9 @@ class OpenAiClientTest {
 
       final var request =
           new OpenAiChatCompletionParameters()
-              .setMessages(
-                  List.of(
-                      new OpenAiChatUserMessage()
-                          .addText(
-                              "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+              .addMessages(
+                  new OpenAiChatUserMessage()
+                      .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
@@ -348,11 +422,9 @@ class OpenAiClientTest {
 
       final var request =
           new OpenAiChatCompletionParameters()
-              .setMessages(
-                  List.of(
-                      new OpenAiChatUserMessage()
-                          .addText(
-                              "Can you give me the first 100 numbers of the Fibonacci sequence?")));
+              .addMessages(
+                  new OpenAiChatUserMessage()
+                      .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 
