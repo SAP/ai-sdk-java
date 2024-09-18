@@ -32,7 +32,7 @@
     <module>core</module>
     <module>orchestration</module>
     <module>foundation-models/openai</module>
-    <module>e2e-test-app</module>
+    <module>sample-code/spring-app</module>
   </modules>
   <distributionManagement>
     <repository>
@@ -133,7 +133,7 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk.app</groupId>
-        <artifactId>e2e-test-app</artifactId>
+        <artifactId>spring-app</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
