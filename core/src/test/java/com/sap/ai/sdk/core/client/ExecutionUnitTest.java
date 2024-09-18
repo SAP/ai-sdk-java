@@ -200,8 +200,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getConfigurationId()).isEqualTo("218b651d-113d-4da0-be15-b63a644a92fb");
     assertThat(execution.getConfigurationName()).isEqualTo("i749902_exec_conf");
     assertThat(execution.getCreatedAt()).isEqualTo("2024-09-09T19:09:57Z");
-    // executableId is not in the generated client.
-    assertThat(execution.getCustomField("executableId")).isEqualTo("wt-spam-detection-i749902");
+    assertThat(execution.getExecutableId()).isEqualTo("wt-spam-detection-i749902");
     assertThat(execution.getId()).isEqualTo("e529e8bd58740bc9");
     assertThat(execution.getModifiedAt()).isEqualTo("2024-09-09T19:11:17Z");
     assertThat(execution.getScenarioId()).isEqualTo("scenario-spam-detection-i749902");
