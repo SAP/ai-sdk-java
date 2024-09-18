@@ -21,8 +21,8 @@ public class DeploymentCache {
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
   private static final Map<String, String> CACHE = new HashMap<>();
 
-  static boolean isLoaded() {
-    return API != null;
+  static boolean isEmpty() {
+    return API == null;
   }
 
   /**
@@ -32,7 +32,7 @@ public class DeploymentCache {
    */
   public static void eagerlyLoaded(@Nonnull final DeploymentApi client) {
     API = client;
-    resetCache();
+    loadCache();
   }
 
   /**
@@ -45,12 +45,20 @@ public class DeploymentCache {
   }
 
   /**
-   * Remove all entries from the cache and reload all deployments.
+   * Remove all entries from the cache.
    *
-   * <p><b>Call this method whenever a deployment is deleted.</b>
+   * <p><b>Call both clearCache and {@link #loadCache} method whenever a deployment is deleted.</b>
    */
-  public static void resetCache() {
+  public static void clearCache() {
     CACHE.clear();
+  }
+
+  /**
+   * Load all deployments into the cache
+   *
+   * <p><b>Call both {@link #clearCache} and loadCache method whenever a deployment is deleted.</b>
+   */
+  public static void loadCache() {
     try {
       final var deployments = API.deploymentQuery("default").getResources();
       deployments.forEach(deployment -> CACHE.put(getModelName(deployment), deployment.getId()));
@@ -66,8 +74,12 @@ public class DeploymentCache {
    * @param name "orchestration" or the model name.
    * @return the deployment id.
    */
+  @Nonnull
   public static String getDeploymentId(
       @Nonnull final String resourceGroup, @Nonnull final String name) {
+    if (DeploymentCache.isEmpty()) {
+      loadCache();
+    }
     return CACHE.computeIfAbsent(
         name,
         n -> {

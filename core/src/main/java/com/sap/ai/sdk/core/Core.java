@@ -39,8 +39,8 @@ public class Core {
 
   // for testing only, will be removed once we make this class an instance
   static {
-    if (!DeploymentCache.isLoaded()) {
-      DeploymentCache.eagerlyLoaded(new DeploymentApi(getClient()));
+    if (DeploymentCache.isEmpty()) {
+      DeploymentCache.lazyLoaded(new DeploymentApi(getClient()));
     }
   }
 
