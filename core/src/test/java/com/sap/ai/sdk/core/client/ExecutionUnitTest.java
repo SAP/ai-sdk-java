@@ -77,9 +77,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getConfigurationId()).isEqualTo("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
     assertThat(execution.getConfigurationName()).isEqualTo("spam-detection-execution-config-0");
     assertThat(execution.getCreatedAt()).isEqualTo("2023-08-05T14:07:52Z");
-    // executableId is not in the generated client, but we can still get it from the
-    // cloudSdkCustomFields
-    assertThat(execution.getCustomField("executableId")).isEqualTo("wt-spam-detection-i343697");
+    assertThat(execution.getExecutableId()).isEqualTo("wt-spam-detection-i343697");
     assertThat(execution.getOutputArtifacts().get(0).getId())
         .isEqualTo("be0d728f-1cb2-4ff4-97ad-45c54ac592f6");
     assertThat(execution.getOutputArtifacts().get(0).getKind())
