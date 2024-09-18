@@ -77,7 +77,7 @@ public class DeploymentCache {
   @Nonnull
   public static String getDeploymentId(
       @Nonnull final String resourceGroup, @Nonnull final String name) {
-    if (DeploymentCache.isEmpty()) {
+    if (isEmpty()) {
       loadCache();
     }
     return CACHE.computeIfAbsent(
