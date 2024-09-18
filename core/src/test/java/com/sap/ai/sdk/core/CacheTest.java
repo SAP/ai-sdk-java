@@ -94,7 +94,7 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeployment() {
     stubGPT4();
-    DeploymentCache.resetCache();
+    DeploymentCache.loadCache();
 
     DeploymentCache.getDeploymentId("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
@@ -115,7 +115,7 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeploymentAfterReset() {
     stubEmpty();
-    DeploymentCache.resetCache();
+    DeploymentCache.loadCache();
     stubGPT4();
 
     DeploymentCache.getDeploymentId("default", "gpt-4-32k");
