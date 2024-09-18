@@ -331,7 +331,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                           }
                           """)));
   }
-  
+
   @Test
   void getDeploymentCount() {
     wireMockServer.stubFor(
@@ -341,15 +341,12 @@ public class DeploymentUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody(
-                        """
+                    .withBody("""
                         1
                         """)));
-    
+
     final int count = new DeploymentApi(getClient(destination)).deploymentCount("default");
-    
+
     assertThat(count).isEqualTo(1);
   }
-  
-  
 }

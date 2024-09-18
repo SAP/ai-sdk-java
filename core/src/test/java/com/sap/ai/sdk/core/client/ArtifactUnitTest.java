@@ -157,4 +157,22 @@ public class ArtifactUnitTest extends WireMockTestServer {
     assertThat(artifact.getUrl())
         .isEqualTo("https://file-examples.com/wp-content/storage/2017/10/file-sample_150kB.pdf");
   }
+
+  @Test
+  void getArtifactCount() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/artifacts/$count"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody("""
+                        4
+                        """)));
+
+    final int count = new ArtifactApi(getClient(destination)).artifactCount("default");
+
+    assertThat(count).isEqualTo(4);
+  }
 }
