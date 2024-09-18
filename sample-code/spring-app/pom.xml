@@ -7,7 +7,7 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
-  <artifactId>e2e-test-app</artifactId>
+  <artifactId>spring-app</artifactId>
   <name>End-to-end test application</name>
   <description>Spring Boot application that tests AI clients when deployed in BTP.</description>
 
