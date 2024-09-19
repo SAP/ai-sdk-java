@@ -4,6 +4,8 @@ about: Report an issue with the SAP AI SDK for Java
 ---
 
 <!--
+For any issue with the AI Core client, use the Slack Support Channel for  AI Core https://sap-ml.slack.com/archives/C01DZC6EGB0 then simply type "/support-request"
+
 Thank you for reporting an issue with the SAP AI SDK for Java. We prepared this issue template for you to help you with collecting and providing necessary information.
 
 _Please_ take the time to fill out the information in this template. _It is vital_ to get an understanding of the problem and find out what is going wrong. It really enables us to come back to you with meaningful help as fast as possible.
@@ -76,6 +78,7 @@ If you cannot share your project for confidentiality reasons, please consider pr
 
 ### Checklist
 
+- [ ] This is not an AI Core client issue -> [Slack Support Channel for  AI Core](https://sap-ml.slack.com/archives/C01DZC6EGB0)
 - [ ] Description provided with all relevant information
 - [ ] Exception and stack trace provided
 - [ ] Attached debug logs
