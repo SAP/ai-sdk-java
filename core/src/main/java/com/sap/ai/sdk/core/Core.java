@@ -283,7 +283,7 @@ public class Core {
       return false;
     }
     Object detailsObject = resources.getBackendDetails();
-    // TODO workaround for AIWDF-2124
+    // workaround for AIWDF-2124
     if (detailsObject == null) {
       if (!resources.getCustomFieldNames().contains("backend_details")) {
         return false;
