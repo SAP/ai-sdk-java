@@ -285,11 +285,10 @@ public class Core {
     Object detailsObject = resources.getBackendDetails();
     // workaround for https://jira.tools.sap/browse/AIWDF-2124
     if (detailsObject == null) {
-      if (resources.getCustomFieldNames().contains("backend_details")) {
-        detailsObject = resources.getCustomField("backend_details");
-      } else {
+      if (!resources.getCustomFieldNames().contains("backend_details")) {
         return false;
       }
+      detailsObject = resources.getCustomField("backend_details");
     }
 
     if (detailsObject instanceof Map<?, ?> details
