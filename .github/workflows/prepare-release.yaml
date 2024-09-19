@@ -111,7 +111,7 @@ jobs:
 
   create-code-pr:
     name: "Create Code PR"
-    needs: [ bump-version, run-ci, create-release, create-docs-pr, create-release-notes-pr ]
+    needs: [ bump-version, create-release, create-docs-pr, create-release-notes-pr ]
     outputs:
       pr-url: ${{ steps.create-code-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
@@ -145,7 +145,7 @@ jobs:
 
   handle-failure:
     runs-on: ubuntu-latest
-    needs: [ bump-version, run-ci, create-release, create-docs-pr, create-release-notes-pr, create-code-pr ]
+    needs: [ bump-version, create-release, create-docs-pr, create-release-notes-pr, create-code-pr ]
     permissions:
       contents: write # needed to delete the GitHub release
     if: ${{ failure() }}
