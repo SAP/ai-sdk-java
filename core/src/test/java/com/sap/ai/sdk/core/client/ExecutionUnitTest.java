@@ -16,15 +16,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.core.client.model.AiArtifact;
 import com.sap.ai.sdk.core.client.model.AiEnactmentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecution;
+import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationRequest;
+import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionList;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequest;
+import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequestWithIdentifier;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponse;
+import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponseListInner;
 import com.sap.ai.sdk.core.client.model.AiExecutionResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
 import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
 import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
+import java.util.Set;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -350,5 +355,66 @@ public class ExecutionUnitTest extends WireMockTestServer {
     // `container` and `pod` properties are not in the generated client.
     assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("init");
     assertThat(rtaLogCommonResultItem.getCustomField("pod")).isEqualTo("ee467bea5af28adb");
+  }
+
+  @Test
+  void patchBulkExecutions() {
+    wireMockServer.stubFor(
+        patch(urlPathEqualTo("/lm/executions"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_ACCEPTED)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                           "executions": [
+                             {
+                               "id": "e00ff1560daa8a86",
+                               "message": "Execution modification scheduled"
+                             }
+                           ]
+                         }
+                        """)));
+
+    final AiExecutionBulkModificationRequest executionBulkModificationRequest =
+        AiExecutionBulkModificationRequest.create()
+            .executions(
+                Set.of(
+                    AiExecutionModificationRequestWithIdentifier.create()
+                        .id("e00ff1560daa8a86")
+                        .targetStatus(
+                            AiExecutionModificationRequestWithIdentifier.TargetStatusEnum
+                                .STOPPED)));
+    final AiExecutionBulkModificationResponse executionBulkModificationResponse =
+        new ExecutionApi(getClient(destination))
+            .executionBatchModify("default", executionBulkModificationRequest);
+
+    assertThat(executionBulkModificationResponse).isNotNull();
+    assertThat(executionBulkModificationResponse.getExecutions().size()).isEqualTo(1);
+
+    AiExecutionModificationResponseListInner executionModificationResponseListInner =
+        executionBulkModificationResponse.getExecutions().get(0);
+
+    assertThat(executionModificationResponseListInner.getId()).isEqualTo("e00ff1560daa8a86");
+    assertThat(executionModificationResponseListInner.getMessage())
+        .isEqualTo("Execution modification scheduled");
+
+    wireMockServer.verify(
+        patchRequestedFor(urlPathEqualTo("/lm/executions"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "executions": [
+                        {
+                          "id": "e00ff1560daa8a86",
+                          "targetStatus": "STOPPED"
+                        }
+                      ]
+                    }
+                    """)));
   }
 }
