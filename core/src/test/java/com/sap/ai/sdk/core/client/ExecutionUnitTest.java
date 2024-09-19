@@ -23,6 +23,8 @@ import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -304,5 +306,49 @@ public class ExecutionUnitTest extends WireMockTestServer {
     final int count = new ExecutionApi(getClient(destination)).executionCount("default");
 
     assertThat(count).isEqualTo(1);
+  }
+
+  @Test
+  void getExecutionLogs() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/executions/ee467bea5af28adb/logs"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                           "data": {
+                             "result": [
+                               {
+                                 "container": "init",
+                                 "msg": "time=\\"2024-09-18T13:19:40.527Z\\" level=info msg=\\"Starting Workflow Executor\\" version=v3.5.4+960af33.dirty",
+                                 "pod": "ee467bea5af28adb",
+                                 "timestamp": "2024-09-18T13:19:40.527449310+00:00"
+                               }
+                             ]
+                           }
+                         }
+                        """)));
+
+    final RTALogCommonResponse logResponse =
+        new ExecutionApi(getClient(destination).addDefaultHeader("AI-Resource-Group", "default"))
+            .kubesubmitV4ExecutionsGetLogs("ee467bea5af28adb");
+
+    assertThat(logResponse).isNotNull();
+    assertThat(logResponse.getData().getResult().size()).isEqualTo(1);
+
+    RTALogCommonResultItem rtaLogCommonResultItem = logResponse.getData().getResult().get(0);
+
+    assertThat(rtaLogCommonResultItem.getTimestamp())
+        .isEqualTo("2024-09-18T13:19:40.527449310+00:00");
+    assertThat(rtaLogCommonResultItem.getMsg())
+        .isEqualTo(
+            "time=\"2024-09-18T13:19:40.527Z\" level=info msg=\"Starting Workflow Executor\" version=v3.5.4+960af33.dirty");
+    // `container` and `pod` properties are not in the generated client.
+    assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("init");
+    assertThat(rtaLogCommonResultItem.getCustomField("pod")).isEqualTo("ee467bea5af28adb");
   }
 }
