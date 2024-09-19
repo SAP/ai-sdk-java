@@ -283,7 +283,7 @@ public class Core {
       return false;
     }
     Object detailsObject = resources.getBackendDetails();
-    // TODO workaround for https://jira.tools.sap/browse/AIWDF-2124
+    // TODO workaround for AIWDF-2124
     if (detailsObject == null) {
       if (!resources.getCustomFieldNames().contains("backend_details")) {
         return false;
