@@ -10,6 +10,8 @@ on:
       release-version:
         description: "The Version to Release"
         required: false
+  push:
+    branches: [ "main" ]
 
 jobs:
   bump-version:
