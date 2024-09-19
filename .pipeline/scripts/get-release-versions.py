@@ -1,6 +1,6 @@
 import os
 import re
-import json
+import xml.etree.ElementTree as xml
 import subprocess
 import unittest
 
@@ -33,18 +33,20 @@ class TestDetermineVersions(unittest.TestCase):
                          {'input_version': '1.2.3-M2', 'current_snapshot': '1.2.3-SNAPSHOT','new_snapshot_version': '1.2.3-SNAPSHOT'})
 
 def write_versions_github_output():
-    with open("latest.json", "r") as file:
-        current_snapshot = json.load(file)["version"]
+    tree = xml.parse("pom.xml")
+    # get the value of version, which is inside of project
+    current_snapshot = tree.find(".//{http://maven.apache.org/POM/4.0.0}version").text
+    print(f"Current snapshot: {current_snapshot}")
 
-        input_version = os.environ.get("INPUT_VERSION")
+    input_version = os.environ.get("INPUT_VERSION")
 
-        calculated_versions = determine_versions(current_snapshot, input_version)
+    calculated_versions = determine_versions(current_snapshot, input_version)
 
-        github_output = os.environ.get("GITHUB_OUTPUT")
-        with open(github_output, "a") as f:
-            f.write(f"RELEASE_VERSION={calculated_versions['input_version']}\n")
-            f.write(f"CURRENT_SNAPSHOT={calculated_versions['current_snapshot']}\n")
-            f.write(f"NEW_SNAPSHOT={calculated_versions['new_snapshot_version']}\n")
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    with open(github_output, "a") as f:
+        f.write(f"RELEASE_VERSION={calculated_versions['input_version']}\n")
+        f.write(f"CURRENT_SNAPSHOT={calculated_versions['current_snapshot']}\n")
+        f.write(f"NEW_SNAPSHOT={calculated_versions['new_snapshot_version']}\n")
 
 if __name__ == '__main__':
     write_versions_github_output()
