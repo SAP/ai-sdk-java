@@ -28,6 +28,11 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
+      - name: "Prepare git"
+        run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "SAP Cloud SDK Bot"
+
       - name: "Determine Versions"
         id: determine-versions
         run: python .pipeline/scripts/get-release-versions.py
@@ -121,6 +126,11 @@ jobs:
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
 
+      - name: "Prepare git"
+        run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "SAP Cloud SDK Bot"
+
       - name: "Set New Version"
         run: |
           python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
@@ -154,6 +164,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
+
+      - name: "Prepare git"
+        run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "SAP Cloud SDK Bot"
 
       - name: "Delete Release"
         if: ${{ needs.create-release.outputs.release-url != '' }}
