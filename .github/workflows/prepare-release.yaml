@@ -63,7 +63,7 @@ jobs:
 
   create-release:
     name: "Create GitHub Release"
-    needs: [ bump-version, run-ci ]
+    needs: [ bump-version ]
     outputs:
       release-name: ${{ steps.create-release.outputs.RELEASE_NAME }}
       release-url: ${{ steps.create-release.outputs.RELEASE_URL }}
