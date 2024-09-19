@@ -282,10 +282,14 @@ public class Core {
     if (resources == null) {
       return false;
     }
-    if (!resources.getCustomFieldNames().contains("backend_details")) {
-      return false;
+    Object detailsObject = resources.getBackendDetails();
+    // workaround for AIWDF-2124
+    if (detailsObject == null) {
+      if (!resources.getCustomFieldNames().contains("backend_details")) {
+        return false;
+      }
+      detailsObject = resources.getCustomField("backend_details");
     }
-    final var detailsObject = resources.getCustomField("backend_details");
 
     if (detailsObject instanceof Map<?, ?> details
         && details.get("model") instanceof Map<?, ?> model
