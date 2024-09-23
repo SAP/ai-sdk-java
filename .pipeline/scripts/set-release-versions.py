@@ -20,9 +20,6 @@ def _update_readme(sdk_version):
 def _update_pom_files(sdk_version):
     _update_version_tags(sdk_version)
 
-    with open("latest.json", "w") as f:
-        f.write('{\n    "version": "%s"\n}\n' % sdk_version)
-
 
 def _update_version_tags(sdk_version):
     for root, dirs, files in os.walk(os.getcwd()):
