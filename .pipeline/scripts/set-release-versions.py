@@ -18,10 +18,6 @@ def _update_readme(sdk_version):
     _update_file("README.md", r'(a:sdk-core%20AND%20v:)(.+\))', r'\g<1>%s)' % sdk_version)
 
 def _update_pom_files(sdk_version):
-    _update_version_tags(sdk_version)
-
-
-def _update_version_tags(sdk_version):
     for root, dirs, files in os.walk(os.getcwd()):
         for file in files:
             if file == "pom.xml":
