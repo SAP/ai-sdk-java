@@ -130,7 +130,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.4.0</version>
         <configuration>
           <filesets>
             <fileset>
@@ -150,7 +149,6 @@
       <plugin>
         <groupId>com.sap.cloud.sdk.datamodel</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>${cloud-sdk.version}</version>
         <configuration>
           <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
           <apiMaturity>released</apiMaturity>
