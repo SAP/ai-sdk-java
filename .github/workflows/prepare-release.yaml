@@ -33,6 +33,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} # this is needed so that the same token is used when pushing our changes later. Otherwise, our on: push workflows (i.e. our continuous integration) won't be triggered.
 
       - name: "Prepare git"
         run: |
@@ -73,7 +74,7 @@ jobs:
           git push origin $TAG_NAME
 
   create-release:
-    name: "Create GitHub Release"
+    name: "Create Release Artifacts"
     needs: [ bump-version ]
     outputs:
       release-name: ${{ steps.create-release.outputs.RELEASE_NAME }}
@@ -126,6 +127,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} # this is needed so that the same token is used when pushing our changes later. Otherwise, our on: push workflows (i.e. our continuous integration) won't be triggered.
 
       - name: "Prepare git"
         run: |
