@@ -28,6 +28,7 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
 import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
 import java.util.Map;
 import java.util.Set;
@@ -90,7 +91,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
-    assertThat(deploymentList.getResources().size()).isEqualTo(1);
+    assertThat(deploymentList.getResources()).hasSize(1);
 
     final AiDeployment deployment = deploymentList.getResources().get(0);
 
@@ -104,9 +105,8 @@ public class DeploymentUnitTest extends WireMockTestServer {
     final var expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
     assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
         .isEqualTo(expected);
-    assertThat(
-            deployment.getDetails().getScaling().getCustomFieldNames().contains("backend_details"))
-        .isTrue();
+    assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
+        .contains("backend_details");
     assertThat(deployment.getId()).isEqualTo("d19b998f347341aa");
     assertThat(deployment.getLastOperation()).isEqualTo(AiDeployment.LastOperationEnum.CREATE);
     assertThat(deployment.getLatestRunningConfigurationId())
@@ -145,7 +145,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
             .deploymentCreate("default", deploymentCreationRequest);
 
     assertThat(deployment).isNotNull();
-    assertThat(deployment.getDeploymentUrl()).isEqualTo("");
+    assertThat(deployment.getDeploymentUrl()).isEmpty();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
     assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN_DEFAULT_OPEN_API);
@@ -275,16 +275,10 @@ public class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
     // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
-    assertThat(
-            deployment
-                .getDetails()
-                .getResources()
-                .getCustomFieldNames()
-                .contains("backend_details"))
-        .isTrue();
-    assertThat(
-            deployment.getDetails().getScaling().getCustomFieldNames().contains("backend_details"))
-        .isTrue();
+    assertThat(deployment.getDetails().getResources().getCustomFieldNames())
+        .contains("backend_details");
+    assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
+        .contains("backend_details");
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
         .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
@@ -381,12 +375,14 @@ public class DeploymentUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final var logs =
+    // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed
+    // to include the header on the request.
+    final RTALogCommonResponse logs =
         new DeploymentApi(getClient(destination).addDefaultHeader("Ai-Resource-Group", "default"))
             .kubesubmitV4DeploymentsGetLogs("d19b998f347341aa");
 
     assertThat(logs).isNotNull();
-    assertThat(logs.getData().getResult().size()).isEqualTo(1);
+    assertThat(logs.getData().getResult()).hasSize(1);
 
     RTALogCommonResultItem rtaLogCommonResultItem = logs.getData().getResult().get(0);
 

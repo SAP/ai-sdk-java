@@ -352,7 +352,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(rtaLogCommonResultItem.getMsg())
         .isEqualTo(
             "time=\"2024-09-18T13:19:40.527Z\" level=info msg=\"Starting Workflow Executor\" version=v3.5.4+960af33.dirty");
-    // `container` and `pod` properties are not in the generated client.
+    // `container` and `pod` properties are not defined in spec.
     assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("init");
     assertThat(rtaLogCommonResultItem.getCustomField("pod")).isEqualTo("ee467bea5af28adb");
   }
