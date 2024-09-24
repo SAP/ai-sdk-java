@@ -7,7 +7,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ class OpenAiTest {
   void streamChatCompletion() {
     final var request =
         new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatUserMessage().addText("Who is the prettiest?")));
+            .addMessages(new OpenAiChatUserMessage().addText("Who is the prettiest?"));
 
     final var totalOutput = new OpenAiChatCompletionOutput();
     final var filledDeltaCount = new AtomicInteger(0);

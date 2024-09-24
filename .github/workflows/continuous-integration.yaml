@@ -93,7 +93,7 @@ jobs:
       - name: "Slack Notification"
         ## currently disabled, as there are no main builds yet
         if: false
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {

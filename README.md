@@ -51,7 +51,7 @@ We maintain [a list of currently available and tested AI Core APIs](docs/list-of
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -67,7 +67,7 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Create a Deployment
 
@@ -88,7 +88,7 @@ public AiDeploymentCreationResponse createDeployment() {
 }
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
 
 ### Delete a Deployment
 
@@ -110,7 +110,7 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 }
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
 
 ## OpenAI chat completion
 
@@ -161,7 +161,7 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -177,9 +177,20 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Simple chat completion
+
+```java
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO)
+        .withSystemPrompt("You are a helpful AI")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
+
+final String resultMessage = result.getContent();
+```
+
+### Message history
 
 ```java
 final var systemMessage =
@@ -187,15 +198,15 @@ final var systemMessage =
 final var userMessage =
     new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
 final var request =
-    new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
+    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
-final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+final String resultMessage = result.getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
 ### Chat completion with a model not defined in `OpenAiModel`
 
@@ -213,14 +224,10 @@ This is a blocking example for streaming and printing directly to the console:
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
-
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
-try( Stream<String> stream = client.streamChatCompletion(request)) {
+try( Stream<String> stream = client.streamChatCompletion(msg)) {
     stream.forEach(deltaString -> {
         System.out.print(deltaString);
         System.out.flush();
@@ -239,7 +246,7 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
 OpenAiChatCompletionParameters request =
     new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+        .addMessages(new OpenAiChatUserMessage().addText(msg));
 
 OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
@@ -266,7 +273,7 @@ System.out.println("Tokens: " + tokens);
 
 #### Spring Boot example
 
-Please find [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+Please find [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
@@ -302,7 +309,7 @@ It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat com
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -318,7 +325,7 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Chat completion template
 
@@ -348,7 +355,7 @@ final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Messages history
 
@@ -383,7 +390,7 @@ final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Chat completion filter
 
@@ -447,7 +454,7 @@ final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 
 ### Set model parameters
@@ -564,7 +571,7 @@ export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ### Run the Spring Boot test application
 
 ```shell
-cd e2e-test-app
+cd sample-code/spring-app
 mvn spring-boot:run
 ```
 

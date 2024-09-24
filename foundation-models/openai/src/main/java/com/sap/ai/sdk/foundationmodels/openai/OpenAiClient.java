@@ -10,6 +10,8 @@ import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
@@ -34,6 +36,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON;
+  private String systemPrompt = null;
 
   static {
     JACKSON =
@@ -96,6 +99,36 @@ public final class OpenAiClient {
   }
 
   /**
+   * Add a system prompt before user prompts.
+   *
+   * @param systemPrompt the system prompt
+   * @return the client
+   */
+  @Nonnull
+  public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
+    this.systemPrompt = systemPrompt;
+    return this;
+  }
+
+  /**
+   * Generate a completion for the given user prompt.
+   *
+   * @param prompt a text message.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
+      throws OpenAiClientException {
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
+    return chatCompletion(parameters);
+  }
+
+  /**
    * Generate a completion for the given prompt.
    *
    * @param parameters the prompt, including messages and other parameters.
@@ -105,19 +138,25 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
   /**
    * Generate a completion for the given prompt.
    *
-   * @param parameters the prompt, including messages and other parameters.
+   * @param prompt a text message.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    */
   @Nonnull
-  public Stream<String> streamChatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+  public Stream<String> streamChatCompletion(@Nonnull final String prompt)
+      throws OpenAiClientException {
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
     return streamChatCompletionDeltas(parameters)
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
@@ -140,8 +179,16 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
     parameters.enableStreaming();
     return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
+  }
+
+  private void warnIfUnsupportedUsage() {
+    if (systemPrompt != null) {
+      log.warn(
+          "Previously set messages will be ignored, set it as an argument of this method instead.");
+    }
   }
 
   /**

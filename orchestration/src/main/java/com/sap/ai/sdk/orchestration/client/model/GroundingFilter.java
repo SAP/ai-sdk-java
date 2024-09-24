@@ -48,7 +48,10 @@ public class GroundingFilter
     VECTOR("vector"),
 
     /** The HELP_SAP_COM option of this GroundingFilter */
-    HELP_SAP_COM("help.sap.com");
+    HELP_SAP_COM("help.sap.com"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingFilter */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -92,7 +95,7 @@ public class GroundingFilter
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
