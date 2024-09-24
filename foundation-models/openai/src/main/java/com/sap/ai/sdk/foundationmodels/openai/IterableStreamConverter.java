@@ -4,7 +4,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Spliterator.NONNULL;
 import static java.util.Spliterator.ORDERED;
 
-import io.vavr.CheckedFunction0;
 import io.vavr.control.Try;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Spliterators;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
@@ -23,6 +23,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.HttpEntity;
 
+/**
+ * Internal utility class to convert from a reading handler to {@link Iterable} and {@link Stream}.
+ *
+ * <p><strong>Note:</strong> All operations are sequential in nature. Thread safety is not
+ * guaranteed.
+ *
+ * @param <T> Iterated item type.
+ */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class IterableStreamConverter<T> implements Iterator<T> {
@@ -30,7 +38,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
   static final int BUFFER_SIZE = 8192;
 
   /** Read next entry for Stream or {@code null} when no further entry can be read. */
-  private final CheckedFunction0<T> readHandler;
+  private final Callable<T> readHandler;
 
   /** Close handler to be called when Stream terminated. */
   private final Runnable stopHandler;
@@ -39,6 +47,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
   private boolean isNextFetched = false;
   private T next = null;
 
+  @SuppressWarnings("checkstyle:IllegalCatch")
   @Override
   public boolean hasNext() {
     if (isDone) {
@@ -48,17 +57,17 @@ class IterableStreamConverter<T> implements Iterator<T> {
       return true;
     }
     try {
-      next = readHandler.apply();
+      next = readHandler.call();
       isNextFetched = true;
       if (next == null) {
         isDone = true;
         stopHandler.run();
       }
-    } catch (final Throwable t) {
+    } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      final var e = t instanceof IOException e1 ? e1 : new IOException(t.getMessage(), t);
-      throw new UncheckedIOException("Iterator stopped unexpectedly.", e);
+      final var ex = e instanceof IOException e1 ? e1 : new IOException(e.getMessage(), e);
+      throw new UncheckedIOException("Iterator stopped unexpectedly.", ex);
     }
     return !isDone;
   }
@@ -72,6 +81,15 @@ class IterableStreamConverter<T> implements Iterator<T> {
     return next;
   }
 
+  /**
+   * Create a sequential Stream of lines from an HTTP response string (UTF-8). The underlying {@link
+   * InputStream} is closed, when the resulting Stream is closed (e.g. via try-with-resources) or
+   * when an exception occurred.
+   *
+   * @param entity The HTTP entity object.
+   * @return A sequential Stream object.
+   * @throws OpenAiClientException if the provided HTTP entity object is {@code null} or empty.
+   */
   @SuppressWarnings("PMD.CloseResource")
   @Nonnull
   static Stream<String> lines(@Nullable final HttpEntity entity) throws OpenAiClientException {
