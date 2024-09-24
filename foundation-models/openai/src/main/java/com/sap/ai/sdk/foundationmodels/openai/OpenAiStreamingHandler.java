@@ -37,7 +37,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
   private Stream<D> parseResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
 
-    return StreamConverter.streamLines(response.getEntity())
+    return IterableStreamConverter.lines(response.getEntity())
         // half of the lines are empty newlines, the last line is "data: [DONE]"
         .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
         .peek(

@@ -17,16 +17,16 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.junit.jupiter.api.Test;
 
-public class StreamConverterTest {
+public class IterableStreamConverterTest {
   @SneakyThrows
   @Test
-  void testStreamLines() {
+  void testLines() {
     final var TEMPLATE = "THIS\nIS\nA\nTEST\n";
-    final var input = TEMPLATE.repeat(StreamConverter.BUFFER_SIZE);
+    final var input = TEMPLATE.repeat(IterableStreamConverter.BUFFER_SIZE);
     final var inputStream = spy(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = StreamConverter.streamLines(entity);
+    final var sut = IterableStreamConverter.lines(entity);
     verify(inputStream, never()).read();
     verify(inputStream, never()).read(any());
     verify(inputStream, never()).read(any(), anyInt(), anyInt());
@@ -39,9 +39,9 @@ public class StreamConverterTest {
                     .containsAnyOf("THIS", "IS", "A", "TEST")
                     .doesNotContainAnyWhitespaces());
 
-    assertThat(streamCounter).hasValue(StreamConverter.BUFFER_SIZE * 4);
+    assertThat(streamCounter).hasValue(IterableStreamConverter.BUFFER_SIZE * 4);
     verify(inputStream, times(TEMPLATE.length() + 1))
-        .read(any(), anyInt(), eq(StreamConverter.BUFFER_SIZE));
+        .read(any(), anyInt(), eq(IterableStreamConverter.BUFFER_SIZE));
     verify(inputStream, times(1)).close();
   }
 }
