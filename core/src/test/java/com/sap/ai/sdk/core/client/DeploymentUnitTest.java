@@ -14,17 +14,24 @@ import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiDeployment;
+import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationRequest;
+import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
+import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequestWithIdentifier;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
+import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponseListInner;
 import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
 import java.util.Map;
+import java.util.Set;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -84,7 +91,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
-    assertThat(deploymentList.getResources().size()).isEqualTo(1);
+    assertThat(deploymentList.getResources()).hasSize(1);
 
     final AiDeployment deployment = deploymentList.getResources().get(0);
 
@@ -98,9 +105,8 @@ public class DeploymentUnitTest extends WireMockTestServer {
     final var expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
     assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
         .isEqualTo(expected);
-    assertThat(
-            deployment.getDetails().getScaling().getCustomFieldNames().contains("backend_details"))
-        .isTrue();
+    assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
+        .contains("backend_details");
     assertThat(deployment.getId()).isEqualTo("d19b998f347341aa");
     assertThat(deployment.getLastOperation()).isEqualTo(AiDeployment.LastOperationEnum.CREATE);
     assertThat(deployment.getLatestRunningConfigurationId())
@@ -139,7 +145,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
             .deploymentCreate("default", deploymentCreationRequest);
 
     assertThat(deployment).isNotNull();
-    assertThat(deployment.getDeploymentUrl()).isEqualTo("");
+    assertThat(deployment.getDeploymentUrl()).isEmpty();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     assertThat(deployment.getMessage()).isEqualTo("AiDeployment scheduled.");
     assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN_DEFAULT_OPEN_API);
@@ -269,16 +275,10 @@ public class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
     // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
-    assertThat(
-            deployment
-                .getDetails()
-                .getResources()
-                .getCustomFieldNames()
-                .contains("backend_details"))
-        .isTrue();
-    assertThat(
-            deployment.getDetails().getScaling().getCustomFieldNames().contains("backend_details"))
-        .isTrue();
+    assertThat(deployment.getDetails().getResources().getCustomFieldNames())
+        .contains("backend_details");
+    assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
+        .contains("backend_details");
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
         .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
@@ -348,5 +348,113 @@ public class DeploymentUnitTest extends WireMockTestServer {
     final int count = new DeploymentApi(getClient(destination)).deploymentCount("default");
 
     assertThat(count).isEqualTo(1);
+  }
+
+  @Test
+  void getDeploymentLogs() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/deployments/d19b998f347341aa/logs"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                           "data": {
+                             "result": [
+                               {
+                                 "container": "storage-initializer",
+                                 "msg": "INFO:root:Copying contents of s3://hcp-8b6797d5-fc66-4fde-bdcf-0800987e1837/i749902/e529e8bd58740bc9/classifier-model-output to local",
+                                 "pod": "d058d4774af7edfb-predictor-00001-deployment-74fbb96d88-bqlqb",
+                                 "timestamp": "2024-09-18T16:06:50.914532860+00:00"
+                               }
+                             ]
+                           }
+                         }
+                        """)));
+
+    // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed
+    // to include the header on the request.
+    final RTALogCommonResponse logs =
+        new DeploymentApi(getClient(destination).addDefaultHeader("Ai-Resource-Group", "default"))
+            .kubesubmitV4DeploymentsGetLogs("d19b998f347341aa");
+
+    assertThat(logs).isNotNull();
+    assertThat(logs.getData().getResult()).hasSize(1);
+
+    RTALogCommonResultItem rtaLogCommonResultItem = logs.getData().getResult().get(0);
+
+    assertThat(rtaLogCommonResultItem.getTimestamp())
+        .isEqualTo("2024-09-18T16:06:50.914532860+00:00");
+    assertThat(rtaLogCommonResultItem.getMsg())
+        .isEqualTo(
+            "INFO:root:Copying contents of s3://hcp-8b6797d5-fc66-4fde-bdcf-0800987e1837/i749902/e529e8bd58740bc9/classifier-model-output to local");
+    // `container` and `pod` are not defined in spec
+    assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("storage-initializer");
+    assertThat(rtaLogCommonResultItem.getCustomField("pod"))
+        .isEqualTo("d058d4774af7edfb-predictor-00001-deployment-74fbb96d88-bqlqb");
+  }
+
+  @Test
+  void patchBulkDeployments() {
+    wireMockServer.stubFor(
+        patch(urlPathEqualTo("/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_ACCEPTED)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                          "deployments": [
+                            {
+                              "id": "d1e736f50d15f357",
+                              "message": "Deployment modification scheduled"
+                            }
+                          ]
+                        }
+                        """)));
+
+    final AiDeploymentBulkModificationRequest bulkModificationRequest =
+        AiDeploymentBulkModificationRequest.create()
+            .deployments(
+                Set.of(
+                    AiDeploymentModificationRequestWithIdentifier.create()
+                        .id("d1e736f50d15f357")
+                        .targetStatus(
+                            AiDeploymentModificationRequestWithIdentifier.TargetStatusEnum
+                                .STOPPED)));
+    final AiDeploymentBulkModificationResponse bulkModificationResponse =
+        new DeploymentApi(getClient(destination))
+            .deploymentBatchModify("default", bulkModificationRequest);
+
+    assertThat(bulkModificationResponse).isNotNull();
+    assertThat(bulkModificationResponse.getDeployments()).hasSize(1);
+
+    final AiDeploymentModificationResponseListInner modificationResponseListInner =
+        bulkModificationResponse.getDeployments().get(0);
+
+    assertThat(modificationResponseListInner.getId()).isEqualTo("d1e736f50d15f357");
+    assertThat(modificationResponseListInner.getMessage())
+        .isEqualTo("Deployment modification scheduled");
+
+    wireMockServer.verify(
+        patchRequestedFor(urlPathEqualTo("/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                          {
+                            "deployments": [
+                              {
+                                "id": "d1e736f50d15f357",
+                                "targetStatus": "STOPPED"
+                              }
+                            ]
+                          }
+                          """)));
   }
 }
