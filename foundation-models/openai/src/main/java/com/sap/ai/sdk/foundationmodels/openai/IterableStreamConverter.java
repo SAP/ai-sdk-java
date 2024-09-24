@@ -35,27 +35,32 @@ class IterableStreamConverter<T> implements Iterator<T> {
   /** Close handler to be called when Stream terminated. */
   private final Runnable stopHandler;
 
-  private boolean done = false;
+  private boolean isDone = false;
+  private boolean isNextFetched = false;
   private T next = null;
 
   @Override
   public boolean hasNext() {
-    if (done) {
+    if (isDone) {
       return false;
+    }
+    if (isNextFetched) {
+      return true;
     }
     try {
       next = readHandler.apply();
+      isNextFetched = true;
       if (next == null) {
-        done = true;
+        isDone = true;
         stopHandler.run();
       }
     } catch (final Throwable t) {
-      done = true;
+      isDone = true;
       stopHandler.run();
       final var e = t instanceof IOException e1 ? e1 : new IOException(t.getMessage(), t);
       throw new UncheckedIOException("Iterator stopped unexpectedly.", e);
     }
-    return !done;
+    return !isDone;
   }
 
   @Override
@@ -63,6 +68,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
     if (next == null && !hasNext()) {
       throw new NoSuchElementException();
     }
+    isNextFetched = false;
     return next;
   }
 
