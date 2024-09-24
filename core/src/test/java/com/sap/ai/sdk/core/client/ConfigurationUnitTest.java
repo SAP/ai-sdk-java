@@ -65,12 +65,12 @@ public class ConfigurationUnitTest extends WireMockTestServer {
 
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
-    assertThat(configurationList.getResources().size()).isEqualTo(1);
+    assertThat(configurationList.getResources()).hasSize(1);
     AiConfiguration configuration = configurationList.getResources().get(0);
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-04-17T15:19:45Z");
     assertThat(configuration.getExecutableId()).isEqualTo("azure-openai");
     assertThat(configuration.getId()).isEqualTo("7652a231-ba9b-4fcc-b473-2c355cb21b61");
-    assertThat(configuration.getInputArtifactBindings().size()).isEqualTo(0);
+    assertThat(configuration.getInputArtifactBindings()).isEmpty();
     assertThat(configuration.getName()).isEqualTo("gpt-4-32k");
     assertThat(configuration.getParameterBindings().get(0).getKey()).isEqualTo("modelName");
     assertThat(configuration.getParameterBindings().get(0).getValue()).isEqualTo("gpt-4-32k");
@@ -194,9 +194,9 @@ public class ConfigurationUnitTest extends WireMockTestServer {
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-09-11T09:14:31Z");
     assertThat(configuration.getExecutableId()).isEqualTo("st-spam-detection-i749902");
     assertThat(configuration.getId()).isEqualTo("6ff6cb80-87db-45f0-b718-4e1d96e66332");
-    assertThat(configuration.getInputArtifactBindings().size()).isEqualTo(1);
+    assertThat(configuration.getInputArtifactBindings()).hasSize(1);
     assertThat(configuration.getName()).isEqualTo("i749902_depl_conf");
-    assertThat(configuration.getParameterBindings().size()).isEqualTo(1);
+    assertThat(configuration.getParameterBindings()).hasSize(1);
     assertThat(configuration.getScenarioId()).isEqualTo("scenario-spam-detection-i749902");
 
     AiArtifactArgumentBinding aiArtifactArgumentBinding =
