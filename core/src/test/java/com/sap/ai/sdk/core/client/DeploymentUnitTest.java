@@ -276,8 +276,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
     // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
     assertThat(deployment.getDetails().getResources().getCustomFieldNames())
-        .contains("backend_details")
-    ;
+        .contains("backend_details");
     assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
         .contains("backend_details");
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
@@ -376,7 +375,8 @@ public class DeploymentUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed to include the
+    // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed
+    // to include the
     // header on the request.
     final RTALogCommonResponse logs =
         new DeploymentApi(getClient(destination).addDefaultHeader("Ai-Resource-Group", "default"))
