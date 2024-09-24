@@ -1,5 +1,6 @@
 import os
 import re
+import xml.etree.ElementTree as xml
 import subprocess
 import unittest
 
@@ -32,8 +33,9 @@ class TestDetermineVersions(unittest.TestCase):
                          {'input_version': '1.2.3-M2', 'current_snapshot': '1.2.3-SNAPSHOT','new_snapshot_version': '1.2.3-SNAPSHOT'})
 
 def write_versions_github_output():
-    with open("pom.xml", "r") as file:
-        current_snapshot = re.search(r'<sdk\.version>(.*?)</sdk\.version>', file.read()).group(1)
+    tree = xml.parse("pom.xml")
+    # get the value of version, which is inside of project
+    current_snapshot = tree.find(".//{http://maven.apache.org/POM/4.0.0}version").text
     print(f"Current snapshot: {current_snapshot}")
 
     input_version = os.environ.get("INPUT_VERSION")
