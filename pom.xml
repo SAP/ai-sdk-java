@@ -58,12 +58,12 @@
     <system-stubs.version>2.1.3</system-stubs.version>
     <springframework.version>6.1.13</springframework.version>
     <mockito.version>5.13.0</mockito.version>
-
+    <!--  Quality assurance  -->
     <enforcer.skipBanLoggingFrameworks>false</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
-
+    <!-- plugins -->
     <skipRelease>true</skipRelease>
   </properties>
 
@@ -76,7 +76,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-
+      <!-- scope "compile" -->
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
@@ -87,7 +87,7 @@
         <artifactId>spring-web</artifactId>
         <version>${springframework.version}</version>
       </dependency>
-
+      <!-- scope "test" -->
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
@@ -117,7 +117,7 @@
         <version>${mockito.version}</version>
         <scope>test</scope>
       </dependency>
-
+      <!-- Modules BoM -->
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
         <artifactId>core</artifactId>
@@ -150,7 +150,7 @@
   </dependencies>
   <build>
     <pluginManagement>
-
+      <!-- Children projects inherit the configuration -->
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -222,9 +222,9 @@
             </goals>
             <configuration>
               <rules>
-                <banDistributionManagement />
-                <banDuplicatePomDependencyVersions />
-                <dependencyConvergence />
+                <banDistributionManagement/>
+                <banDuplicatePomDependencyVersions/>
+                <dependencyConvergence/>
               </rules>
             </configuration>
           </execution>
@@ -240,7 +240,7 @@
                   <excludes>
                     <exclude>javax.servlet:servlet-api</exclude>
                     <exclude>javax.ws.rs:jsr311-api</exclude>
-
+                    <!--  use javax.ws.rs:javax.ws.rs-api  -->
                     <exclude>commons-httpclient:commons-httpclient</exclude>
                   </excludes>
                 </bannedDependencies>
@@ -348,15 +348,15 @@
           <ignoreNonCompile>false</ignoreNonCompile>
           <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
           <ignoredUnusedDeclaredDependencies combine.children="append">
-
+            <!--  ignore annotations that are not visible on bytecode level  -->
             <ignoredUnusedDeclaredDependency>com.google.code.findbugs:jsr305</ignoredUnusedDeclaredDependency>
-
+            <!-- Logging API, adapters and default implementation for tests -->
             <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-api</ignoredUnusedDeclaredDependency>
             <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j</ignoredUnusedDeclaredDependency>
             <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple</ignoredUnusedDeclaredDependency>
-
+            <!-- Lombok usage for code generation -->
             <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
-
+            <!-- By default, JUnit5 adapters are added to every module to ensure no tests are skipped -->
             <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
@@ -391,13 +391,13 @@
         <configuration>
 
           <java>
-
-            <removeUnusedImports />
-            <googleJavaFormat />
+            <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#java -->
+            <removeUnusedImports/>
+            <googleJavaFormat/>
           </java>
 
           <pom>
-
+            <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#maven-pom -->
             <includes>
               <include>**/pom.xml</include>
             </includes>
@@ -410,8 +410,8 @@
         </configuration>
         <executions>
           <execution>
-
-
+            <!-- compile:apply instead of the default validate:check -->
+            <!-- because we want it to run AFTER the OpenAPI generator and FIX (apply) the generated code -->
             <goals>
               <goal>apply</goal>
             </goals>
@@ -425,7 +425,7 @@
         <version>3.5.0</version>
         <configuration>
           <configLocation>.pipeline/checkstyle.xml</configLocation>
-
+          <!-- Exclude generated clients -->
           <suppressionsLocation>.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
           <linkXRef>false</linkXRef>
         </configuration>
@@ -445,13 +445,14 @@
           <rulesets>
             <ruleset>.pipeline/pmd.xml</ruleset>
             <ruleset>.pipeline/sdk_specific_pmd_rules.xml</ruleset>
-
+            <!-- content of the PMD default rule set for Java can be found here:
+https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/main/resources/rulesets/java/maven-pmd-plugin-default.xml;hb=HEAD -->
             <ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
           </rulesets>
           <linkXRef>false</linkXRef>
           <targetJdk>${maven.compiler.target}</targetJdk>
           <excludes>
-
+            <!-- Exclude generated clients -->
             <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/client/**/*</exclude>
           </excludes>
@@ -463,7 +464,7 @@
         <version>4.8.6.3</version>
         <configuration>
           <includeFilterFile>.pipeline/spotbugs.xml</includeFilterFile>
-
+          <!-- Exclude generated clients -->
           <excludeFilterFile>.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
           <effort>Max</effort>
           <threshold>Low</threshold>
@@ -476,7 +477,7 @@
         <version>0.8.12</version>
         <configuration>
           <excludes>
-
+            <!-- Exclude generated clients and end to end application from test coverage -->
             <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/client/**/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
@@ -484,7 +485,7 @@
         </configuration>
       </plugin>
       <plugin>
-
+        <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.version}</version>
@@ -500,7 +501,7 @@
           </execution>
         </executions>
       </plugin>
-
+      <!-- The plugins configuration below will not be inherited by children projects, they are specific to the parent pom -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
