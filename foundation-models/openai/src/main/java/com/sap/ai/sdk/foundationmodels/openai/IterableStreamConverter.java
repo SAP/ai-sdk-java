@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Spliterators;
@@ -66,8 +65,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
     } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      final var ex = e instanceof IOException e1 ? e1 : new IOException(e.getMessage(), e);
-      throw new UncheckedIOException("Iterator stopped unexpectedly.", ex);
+      throw new IllegalStateException("Iterator stopped unexpectedly.", e);
     }
     return !isDone;
   }
