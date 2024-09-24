@@ -27,6 +27,32 @@ class StreamConverter {
   /** see {@link BufferedReader#DEFAULT_CHAR_BUFFER_SIZE} */
   static final int BUFFER_SIZE = 8192;
 
+  @SuppressWarnings("PMD.CloseResource")
+  @Nonnull
+  static Stream<String> streamLines(@Nullable final HttpEntity entity)
+      throws OpenAiClientException {
+    if (entity == null) {
+      throw new OpenAiClientException("OpenAI response was empty.");
+    }
+
+    final InputStream inputStream;
+    try {
+      inputStream = entity.getContent();
+    } catch (IOException e) {
+      throw new OpenAiClientException("Failed to read response content.", e);
+    }
+
+    final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
+    final CloseHandler closeHandler =
+        () ->
+            Try.run(reader::close)
+                .onFailure(e -> log.error("Could not close HTTP input stream", e));
+
+    final var iterator = new SequentialIterator<>(reader::readLine, closeHandler);
+    final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
+    return StreamSupport.stream(spliterator, /* NOT PARALLEL */ false).onClose(closeHandler::close);
+  }
+
   @FunctionalInterface
   private interface ReadHandler<T> {
     /**
@@ -46,7 +72,7 @@ class StreamConverter {
   }
 
   @RequiredArgsConstructor
-  private static class HandledIterator<T> implements Iterator<T> {
+  private static class SequentialIterator<T> implements Iterator<T> {
     private final ReadHandler<T> readHandler;
     private final CloseHandler stopHandler;
     private boolean done = false;
@@ -78,31 +104,5 @@ class StreamConverter {
       }
       return next;
     }
-  }
-
-  @SuppressWarnings("PMD.CloseResource")
-  @Nonnull
-  static Stream<String> streamLines(@Nullable final HttpEntity entity)
-      throws OpenAiClientException {
-    if (entity == null) {
-      throw new OpenAiClientException("OpenAI response was empty.");
-    }
-
-    final InputStream inputStream;
-    try {
-      inputStream = entity.getContent();
-    } catch (IOException e) {
-      throw new OpenAiClientException("Failed to read response content.", e);
-    }
-
-    final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
-    final CloseHandler closeHandler =
-        () ->
-            Try.run(reader::close)
-                .onFailure(e -> log.error("Could not close HTTP input stream", e));
-
-    final var iterator = new HandledIterator<>(reader::readLine, closeHandler);
-    final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
-    return StreamSupport.stream(spliterator, false).onClose(closeHandler::close);
   }
 }
