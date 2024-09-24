@@ -64,11 +64,15 @@ class OpenAiController {
     final Runnable consumeStream =
         () -> {
           final var totalOutput = new OpenAiChatCompletionOutput();
-          stream
-              .peek(totalOutput::addDelta)
-              .forEach(delta -> send(emitter, delta.getDeltaContent()));
-          send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
-          emitter.complete();
+          // try-with-resources ensures the stream is closed
+          try (stream) {
+            stream
+                .peek(totalOutput::addDelta)
+                .forEach(delta -> send(emitter, delta.getDeltaContent()));
+          } finally {
+            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+            emitter.complete();
+          }
         };
 
     ThreadContextExecutors.getExecutor().execute(consumeStream);
