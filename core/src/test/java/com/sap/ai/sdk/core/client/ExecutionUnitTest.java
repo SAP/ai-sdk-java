@@ -16,13 +16,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.core.client.model.AiArtifact;
 import com.sap.ai.sdk.core.client.model.AiEnactmentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecution;
+import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationRequest;
+import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionList;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequest;
+import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequestWithIdentifier;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponse;
+import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponseListInner;
 import com.sap.ai.sdk.core.client.model.AiExecutionResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
+import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
+import java.util.Set;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -304,5 +311,110 @@ public class ExecutionUnitTest extends WireMockTestServer {
     final int count = new ExecutionApi(getClient(destination)).executionCount("default");
 
     assertThat(count).isEqualTo(1);
+  }
+
+  @Test
+  void getExecutionLogs() {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/lm/executions/ee467bea5af28adb/logs"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                           "data": {
+                             "result": [
+                               {
+                                 "container": "init",
+                                 "msg": "time=\\"2024-09-18T13:19:40.527Z\\" level=info msg=\\"Starting Workflow Executor\\" version=v3.5.4+960af33.dirty",
+                                 "pod": "ee467bea5af28adb",
+                                 "timestamp": "2024-09-18T13:19:40.527449310+00:00"
+                               }
+                             ]
+                           }
+                         }
+                        """)));
+
+    final RTALogCommonResponse logResponse =
+        new ExecutionApi(getClient(destination).addDefaultHeader("AI-Resource-Group", "default"))
+            .kubesubmitV4ExecutionsGetLogs("ee467bea5af28adb");
+
+    assertThat(logResponse).isNotNull();
+    assertThat(logResponse.getData().getResult().size()).isEqualTo(1);
+
+    RTALogCommonResultItem rtaLogCommonResultItem = logResponse.getData().getResult().get(0);
+
+    assertThat(rtaLogCommonResultItem.getTimestamp())
+        .isEqualTo("2024-09-18T13:19:40.527449310+00:00");
+    assertThat(rtaLogCommonResultItem.getMsg())
+        .isEqualTo(
+            "time=\"2024-09-18T13:19:40.527Z\" level=info msg=\"Starting Workflow Executor\" version=v3.5.4+960af33.dirty");
+    // `container` and `pod` properties are not defined in spec.
+    assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("init");
+    assertThat(rtaLogCommonResultItem.getCustomField("pod")).isEqualTo("ee467bea5af28adb");
+  }
+
+  @Test
+  void patchBulkExecutions() {
+    wireMockServer.stubFor(
+        patch(urlPathEqualTo("/lm/executions"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_ACCEPTED)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                           "executions": [
+                             {
+                               "id": "e00ff1560daa8a86",
+                               "message": "Execution modification scheduled"
+                             }
+                           ]
+                         }
+                        """)));
+
+    final AiExecutionBulkModificationRequest executionBulkModificationRequest =
+        AiExecutionBulkModificationRequest.create()
+            .executions(
+                Set.of(
+                    AiExecutionModificationRequestWithIdentifier.create()
+                        .id("e00ff1560daa8a86")
+                        .targetStatus(
+                            AiExecutionModificationRequestWithIdentifier.TargetStatusEnum
+                                .STOPPED)));
+    final AiExecutionBulkModificationResponse executionBulkModificationResponse =
+        new ExecutionApi(getClient(destination))
+            .executionBatchModify("default", executionBulkModificationRequest);
+
+    assertThat(executionBulkModificationResponse).isNotNull();
+    assertThat(executionBulkModificationResponse.getExecutions().size()).isEqualTo(1);
+
+    AiExecutionModificationResponseListInner executionModificationResponseListInner =
+        executionBulkModificationResponse.getExecutions().get(0);
+
+    assertThat(executionModificationResponseListInner.getId()).isEqualTo("e00ff1560daa8a86");
+    assertThat(executionModificationResponseListInner.getMessage())
+        .isEqualTo("Execution modification scheduled");
+
+    wireMockServer.verify(
+        patchRequestedFor(urlPathEqualTo("/lm/executions"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "executions": [
+                        {
+                          "id": "e00ff1560daa8a86",
+                          "targetStatus": "STOPPED"
+                        }
+                      ]
+                    }
+                    """)));
   }
 }

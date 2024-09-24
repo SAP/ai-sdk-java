@@ -59,7 +59,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
-    assertThat(scenarioList.getResources().size()).isEqualTo(1);
+    assertThat(scenarioList.getResources()).hasSize(1);
 
     final AiScenario scenario = scenarioList.getResources().get(0);
 
@@ -100,7 +100,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
 
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
-    assertThat(versionList.getResources().size()).isEqualTo(1);
+    assertThat(versionList.getResources()).hasSize(1);
 
     final AiVersion version = versionList.getResources().get(0);
 
@@ -187,7 +187,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
-    assertThat(scenarioList.getResources().size()).isEqualTo(1);
+    assertThat(scenarioList.getResources()).hasSize(1);
 
     final AiModelBaseData scenario = scenarioList.getResources().get(0);
     assertThat(scenario.getDescription()).isEqualTo("Mistral mixtral-8x7b-instruct-v01 model");
@@ -196,7 +196,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
 
     AiModelVersion aiModelVersion = scenario.getVersions().get(0);
     assertThat(aiModelVersion.getName()).isEqualTo("202407");
-    assertThat(aiModelVersion.isIsLatest()).isEqualTo(true);
+    assertThat(aiModelVersion.isIsLatest()).isTrue();
     // deprecated and retirementDate properties are not defined in spec.
     assertThat(aiModelVersion.getCustomField("deprecated")).isEqualTo(false);
     assertThat(aiModelVersion.getCustomField("retirementDate")).isEqualTo("");

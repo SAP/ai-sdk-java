@@ -55,7 +55,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
 
     assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
-    assertThat(artifactList.getResources().size()).isEqualTo(1);
+    assertThat(artifactList.getResources()).hasSize(1);
 
     final AiArtifact artifact = artifactList.getResources().get(0);
 
@@ -148,7 +148,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
 
     assertThat(artifact).isNotNull();
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-08-23T09:13:21Z");
-    assertThat(artifact.getDescription()).isEqualTo("");
+    assertThat(artifact.getDescription()).isEmpty();
     assertThat(artifact.getId()).isEqualTo("777dea85-e9b1-4a7b-9bea-14769b977633");
     assertThat(artifact.getKind()).isEqualTo(AiArtifact.KindEnum.OTHER);
     assertThat(artifact.getModifiedAt()).isEqualTo("2024-08-23T09:13:21Z");
