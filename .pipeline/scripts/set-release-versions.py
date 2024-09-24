@@ -25,6 +25,9 @@ def _update_version_tags(sdk_version):
         for file in files:
             if file == "pom.xml":
                 _update_version_tag(os.path.join(root, file), sdk_version)
+                # the function above adds a space to empty elements, we remove the space:
+                # " />" -> "/>"
+                _update_file(os.path.join(root, file), r' />', '/>')
 
 
 def _update_version_tag(pom_file, sdk_version):
