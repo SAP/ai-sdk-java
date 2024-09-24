@@ -68,6 +68,7 @@ class OpenAiController {
               .peek(totalOutput::addDelta)
               .forEach(delta -> send(emitter, delta.getDeltaContent()));
           send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+          emitter.complete();
         };
 
     ThreadContextExecutors.getExecutor().execute(consumeStream);
