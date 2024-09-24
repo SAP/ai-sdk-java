@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Spliterator.NONNULL;
 import static java.util.Spliterator.ORDERED;
 
+import io.vavr.CheckedFunction0;
 import io.vavr.control.Try;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,38 +44,24 @@ class StreamConverter {
     }
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
-    final CloseHandler closeHandler =
+    final Runnable closeHandler =
         () ->
             Try.run(reader::close)
                 .onFailure(e -> log.error("Could not close HTTP input stream", e));
 
     final var iterator = new SequentialIterator<>(reader::readLine, closeHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
-    return StreamSupport.stream(spliterator, /* NOT PARALLEL */ false).onClose(closeHandler::close);
-  }
-
-  @FunctionalInterface
-  private interface ReadHandler<T> {
-    /**
-     * Read next entry for Stream.
-     *
-     * @return The next entry, or {@code null} when no further entry can be read.
-     * @throws IOException if no entry can be read anymore, unexpected.
-     */
-    @Nullable
-    T readEntry() throws IOException;
-  }
-
-  @FunctionalInterface
-  private interface CloseHandler {
-    /** Close handler to be called when Stream terminated. */
-    void close();
+    return StreamSupport.stream(spliterator, /* NOT PARALLEL */ false).onClose(closeHandler::run);
   }
 
   @RequiredArgsConstructor
   private static class SequentialIterator<T> implements Iterator<T> {
-    private final ReadHandler<T> readHandler;
-    private final CloseHandler stopHandler;
+    /** Read next entry for Stream or {@code null} when no further entry can be read. */
+    private final CheckedFunction0<T> readHandler;
+
+    /** Close handler to be called when Stream terminated. */
+    private final Runnable stopHandler;
+
     private boolean done = false;
     private T next = null;
 
@@ -84,14 +71,15 @@ class StreamConverter {
         return false;
       }
       try {
-        next = readHandler.readEntry();
+        next = readHandler.apply();
         if (next == null) {
           done = true;
-          stopHandler.close();
+          stopHandler.run();
         }
-      } catch (final IOException e) {
+      } catch (final Throwable t) {
         done = true;
-        stopHandler.close();
+        stopHandler.run();
+        var e = t instanceof IOException e1 ? e1 : new IOException(t.getMessage(), t);
         throw new UncheckedIOException("Iterator stopped unexpectedly.", e);
       }
       return !done;
