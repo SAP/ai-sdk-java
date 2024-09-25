@@ -188,18 +188,7 @@
           <skipTests>${skipTests}</skipTests>
         </configuration>
       </plugin>
-      <!-- Skip sources and Release -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <configuration>
-              <skipSource>true</skipSource>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+      <!-- Skip release -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
