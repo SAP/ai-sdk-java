@@ -16,11 +16,10 @@ public interface ApiClientResolver extends ApiClientContainer {
     return processors ->
         resourceGroup ->
             () -> {
-              final var deploymentId = choice.getDeploymentId(this, resourceGroup);
+              final var id = choice.getDeploymentId(this, resourceGroup);
               final var destination = this.getDestination().asHttp();
               final var builder = DefaultHttpDestination.fromDestination(destination);
-              final var context =
-                  new DestinationProcessor.Context(destination, deploymentId, resourceGroup);
+              final var context = new DestinationProcessor.Context(destination, id, resourceGroup);
               for (final DestinationProcessor processor : processors) {
                 processor.process(builder, context);
               }
