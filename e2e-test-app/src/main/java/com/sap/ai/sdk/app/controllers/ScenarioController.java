@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.core.Core.getClient;
-
+import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.core.client.ScenarioApi;
 import com.sap.ai.sdk.core.client.model.AiModelList;
 import com.sap.ai.sdk.core.client.model.AiScenarioList;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("unused") // debug method that doesn't need to be tested
 public class ScenarioController {
 
-  private static final ScenarioApi API = new ScenarioApi(getClient());
+  private static final ScenarioApi API = new ScenarioApi(Core.getInstance().getClient());
 
   /**
    * Get the list of available scenarios

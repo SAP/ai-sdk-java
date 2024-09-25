@@ -1,12 +1,13 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.sap.ai.sdk.core.DeploymentChoice.withModel;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sap.ai.sdk.core.ApiClientResolver;
 import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
@@ -28,8 +29,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-
-import static com.sap.ai.sdk.core.ApiClientResolver.Service.OPENAI;
 
 /** Client for interacting with OpenAI models. */
 @Slf4j
@@ -58,7 +57,11 @@ public final class OpenAiClient {
    */
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel) {
-    final var destination = Core.getInstance().forService(OPENAI).model(foundationModel.model()).resourceGroup("default").getDestination();
+    final var destination =
+        Core.getInstance()
+            .forDeployment(withModel(foundationModel.model()))
+            .resourceGroup("default")
+            .getDestination();
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
   }

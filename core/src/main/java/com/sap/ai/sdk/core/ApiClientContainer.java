@@ -10,21 +10,38 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-class ApiClientBuilder {
+@FunctionalInterface
+public interface ApiClientContainer {
+  @Nonnull
+  Destination getDestination();
 
-  @RequiredArgsConstructor
-  enum ApiClientConstructor {
-    SERIALIZE_WITH_NULL_VALUES(ApiClient::new),
-    SERIALIZE_WITHOUT_NULL_VALUES(ApiClientConstructor::withoutNull);
+  @Nonnull
+  default ApiClient getClient() {
+    return getClient(ClientOptions.SERIALIZE_WITHOUT_NULL_VALUES);
+  }
+
+  @Nonnull
+  default ApiClient getClient(@Nonnull final ClientOptions options) {
+    final Destination destination = getDestination();
+    return options.getInitializer().apply(destination);
+  }
+
+  interface ClientOptions {
+    @Nonnull
+    Function<Destination, ApiClient> getInitializer();
+
+    ClientOptions SERIALIZE_WITH_NULL_VALUES = () -> ApiClient::new;
+
+    ClientOptions SERIALIZE_WITHOUT_NULL_VALUES = () -> ClientOptions::withoutNull;
 
     @SuppressWarnings("UnstableApiUsage")
+    @Nonnull
     private static ApiClient withoutNull(@Nonnull final Destination destination) {
       final var objectMapper =
           new Jackson2ObjectMapperBuilder()
@@ -45,7 +62,5 @@ class ApiClientBuilder {
 
       return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
     }
-
-    final Function<Destination, ApiClient> finalizer;
   }
 }

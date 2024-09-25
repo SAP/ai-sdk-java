@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.core.Core.getClient;
-
+import com.sap.ai.sdk.core.Core;
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/deployments")
 class DeploymentController {
 
-  private static final DeploymentApi API = new DeploymentApi(getClient());
+  private static final DeploymentApi API = new DeploymentApi(Core.getInstance().getClient());
 
   /**
    * Create and delete a deployment with the Java specific configuration ID
