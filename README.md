@@ -51,7 +51,7 @@ We maintain [a list of currently available and tested AI Core APIs](docs/list-of
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -67,7 +67,7 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Create a Deployment
 
@@ -88,7 +88,7 @@ public AiDeploymentCreationResponse createDeployment() {
 }
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
 
 ### Delete a Deployment
 
@@ -110,7 +110,7 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 }
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
 
 ## OpenAI chat completion
 
@@ -161,7 +161,7 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -177,9 +177,20 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Simple chat completion
+
+```java
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO)
+        .withSystemPrompt("You are a helpful AI")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
+
+final String resultMessage = result.getContent();
+```
+
+### Message history
 
 ```java
 final var systemMessage =
@@ -187,15 +198,15 @@ final var systemMessage =
 final var userMessage =
     new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
 final var request =
-    new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
+    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
 final OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
-final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+final String resultMessage = result.getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
 ### Chat completion with a model not defined in `OpenAiModel`
 
@@ -213,14 +224,10 @@ This is a blocking example for streaming and printing directly to the console:
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
-
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
-try( Stream<String> stream = client.streamChatCompletion(request)) {
+try( Stream<String> stream = client.streamChatCompletion(msg)) {
     stream.forEach(deltaString -> {
         System.out.print(deltaString);
         System.out.flush();
@@ -239,7 +246,7 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
 OpenAiChatCompletionParameters request =
     new OpenAiChatCompletionParameters()
-        .setMessages(List.of(new OpenAiChatUserMessage().addText(msg)));
+        .addMessages(new OpenAiChatUserMessage().addText(msg));
 
 OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
@@ -266,7 +273,7 @@ System.out.println("Tokens: " + tokens);
 
 #### Spring Boot example
 
-Please find [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+Please find [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
@@ -302,7 +309,7 @@ It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat com
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -318,7 +325,7 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Chat completion template
 
@@ -348,7 +355,7 @@ final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Messages history
 
@@ -383,7 +390,7 @@ final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Chat completion filter
 
@@ -447,7 +454,7 @@ final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 
 ### Set model parameters
@@ -478,14 +485,55 @@ DeploymentApi api = new DeploymentApi(client);
 
 For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
 
-## Requirements and Setup
+## Requirements and Setup for AI Core
 
-### Set AI Core credentials as environment variable
+For any AI Core service interaction, the SAP AI SDK requires credentials to be available at application runtime.
+By default, the credentials are extracted automatically from a service instance of type "aicore" bound to the application. 
+Running the application locally without this service binding will throw an exception:
 
-- Running the application locally without a service binding will throw:
+```
+Could not find any matching service bindings for service identifier 'aicore'
+```
 
-  `Could not find any matching service bindings for service identifier 'aicore'`
-- Go into the BTP Cockpit
+There are multiple options to register the service binding:
+* Regular service binding in SAP BTP Cloud Foundry (resulting in `VCAP_SERVICES` env var entry).
+* Set an environment variable explicitly: `AICORE_SERVICE_KEY`
+* Define and use a _Destination_ in _BTP Destination Service_.
+* (For CAP applications) use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach _(not recommended for production)_.
+  * For example: `cds bind --to aicore --exec mvn spring-boot:run`
+* Leveraging `"user-provided"` service binding _(not recommended for production)_.
+* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` declaration in application _(not recommended for production)_.
+
+### Regular service binding in SAP BTP Cloud Foundry
+
+* Bind an existing service instance of type `aicore` to your application.
+  [With SAP BTP multiple options are available](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications): using the web interface, the CLI, MTA or manifest.
+
+<details><summary>After application restart, there should be an "aicore" entry in environment variable <code>VCAP_SERVICES</code>.</summary>
+
+```json
+{
+  "aicore": [
+      {
+        "clientid": "...",
+        "clientsecret": "...",
+        "url": "...",
+        "identityzone": "...",
+        "identityzoneid": "...",
+        "appname": "...",
+        "serviceurls": {
+          "AI_API_URL": "..."
+        }
+      }
+  ]
+}
+```
+
+</details>
+
+### Set credentials as dedicated environment variable
+
+- Go into the SAP BTP Cockpit
 - Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
 - Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
 
@@ -494,10 +542,36 @@ For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-
 export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ```
 
-### Run the Spring Boot application
+### Define and use a Destination
+
+* Lookup service-key credentials as explained in the previous step for `AICORE_SERVICE_KEY`.
+
+* <details><summary>Define a new destination in the SAP BTP Destination Service using the service-key credentials</summary>
+  
+  * (Destinations can be added on subaccount level and on service instance level.)
+  * (The URL field requires an additional path segment: `/v2`)
+  * **Name**: _my-aicore_
+  * **Type**: HTTP
+  * **URL**: _[serviceurls.AI_API_URL]/v2_
+  * **Proxy-Type**: Internet
+  * **Authentication**: _Oauth2ClientCredentials_
+  * **Client ID**: _[clientid]_
+  * **Client Secret**: _[clientsecret]_
+  * **Token Service URL Type**: Dedicated
+  * **Token Service URL**: _[url]_
+  
+  </details>
+
+* At application runtime the following can be executed:
+  ```java
+  Destination destination = DestinationAccessor.getDestination("my-aicore");
+  ApiClient client = Core.getClient(destination);
+  ```
+
+### Run the Spring Boot test application
 
 ```shell
-cd e2e-test-app
+cd sample-code/spring-app
 mvn spring-boot:run
 ```
 

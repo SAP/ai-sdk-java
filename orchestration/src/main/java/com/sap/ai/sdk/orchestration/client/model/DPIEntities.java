@@ -66,7 +66,9 @@ public enum DPIEntities {
 
   TRADE_UNION("profile-trade-union"),
 
-  SENSITIVE_DATA("profile-sensitive-data");
+  SENSITIVE_DATA("profile-sensitive-data"),
+
+  UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
@@ -104,6 +106,6 @@ public enum DPIEntities {
         return b;
       }
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }
