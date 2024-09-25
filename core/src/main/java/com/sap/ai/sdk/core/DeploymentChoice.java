@@ -7,25 +7,52 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 
+/** A deployment choice helper class. */
 @FunctionalInterface
 public interface DeploymentChoice {
+  /**
+   * Get the deployment id.
+   *
+   * @param resolver the API client resolver.
+   * @param resourceGroup The resource group.
+   * @return the deployment id.
+   */
   @Nonnull
   String getDeploymentId(
       @Nonnull final ApiClientResolver resolver, @Nonnull final String resourceGroup);
 
+  /** Deployment choice for orchestration. */
   DeploymentChoice ORCHESTRATION = withScenario("orchestration");
 
+  /**
+   * Create a deployment choice with a specific deployment id.
+   *
+   * @param deploymentId the deployment id.
+   * @return the deployment choice.
+   */
   @Nonnull
   static DeploymentChoice withId(@Nonnull final String deploymentId) {
     return (resolver, resourceGroup) -> deploymentId;
   }
 
+  /**
+   * Create a deployment choice with a specific model name.
+   *
+   * @param modelName the model name.
+   * @return the deployment choice.
+   */
   @Nonnull
   static DeploymentChoice withModel(@Nonnull final String modelName) {
     final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
     return (resolver, resourceGroup) -> getDeploymentId(resolver, resourceGroup, p);
   }
 
+  /**
+   * Create a deployment choice with a specific scenario id.
+   *
+   * @param scenarioId the scenario id.
+   * @return the deployment choice.
+   */
   @Nonnull
   static DeploymentChoice withScenario(@Nonnull final String scenarioId) {
     final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());

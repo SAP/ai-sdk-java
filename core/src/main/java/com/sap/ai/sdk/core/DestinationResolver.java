@@ -19,6 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 
+/** Utility class to resolve the destination pointing to the AI Core service. */
 @Slf4j
 class DestinationResolver {
 

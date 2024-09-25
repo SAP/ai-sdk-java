@@ -9,6 +9,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,15 +22,16 @@ public class Core implements ApiClientResolver {
   /**
    * ONLY USE FOR TESTING.
    *
-   * @param core
-   * @param callable
-   * @return
-   * @param <T>
-   * @throws Exception
+   * @param core the core instance.
+   * @param callable the callable.
+   * @return the result of the callable.
+   * @param <T> the type of the result.
+   * @throws Exception if the callable throws an exception.
    */
   @Beta
-  public static synchronized <T> T executeWithCore(Core core, Callable<T> callable)
-      throws Exception {
+  @Nullable
+  public static synchronized <T> T executeWithCore(
+      @Nonnull final Core core, @Nonnull final Callable<T> callable) throws Exception {
     Core oldInstance = instance;
     instance = core;
     try {
@@ -39,6 +41,12 @@ public class Core implements ApiClientResolver {
     }
   }
 
+  /**
+   * Get an API client resolver for destination.
+   *
+   * @param destination the destination.
+   * @return the API client resolver.
+   */
   @Nonnull
   public ApiClientResolver withDestination(@Nonnull final Destination destination) {
     return () -> destination;

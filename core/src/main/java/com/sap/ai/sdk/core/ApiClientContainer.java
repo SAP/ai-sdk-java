@@ -16,30 +16,61 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+/** Container for an API client and destination. */
 @FunctionalInterface
 public interface ApiClientContainer {
+  /**
+   * Get the destination.
+   *
+   * @return the destination
+   */
   @Nonnull
   Destination getDestination();
 
+  /**
+   * Get the API client.
+   *
+   * @return the API client
+   */
   @Nonnull
   default ApiClient getClient() {
     return getClient(ClientOptions.SERIALIZE_WITHOUT_NULL_VALUES);
   }
 
+  /**
+   * Get the API client with options.
+   *
+   * @param options the options
+   * @return the API client
+   */
   @Nonnull
   default ApiClient getClient(@Nonnull final ClientOptions options) {
     final Destination destination = getDestination();
     return options.getInitializer().apply(destination);
   }
 
+  /** Options for the API client. */
   interface ClientOptions {
+    /**
+     * Get the initializer for the API client.
+     *
+     * @return the initializer
+     */
     @Nonnull
     Function<Destination, ApiClient> getInitializer();
 
+    /** Serialize with null values. */
     ClientOptions SERIALIZE_WITH_NULL_VALUES = () -> ApiClient::new;
 
+    /** Serialize without null values. */
     ClientOptions SERIALIZE_WITHOUT_NULL_VALUES = () -> ClientOptions::withoutNull;
 
+    /**
+     * Helper method to Serialize without null values.
+     *
+     * @param destination the destination
+     * @return the API client
+     */
     @SuppressWarnings("UnstableApiUsage")
     @Nonnull
     private static ApiClient withoutNull(@Nonnull final Destination destination) {
