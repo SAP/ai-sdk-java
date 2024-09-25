@@ -87,7 +87,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "sapmachine"
-          java-version: "17"
+          java-version: ${{ env.JAVA_VERSION }}
           server-id: ossrh
           server-username: MAVEN_CENTRAL_USER # env variable for username in deploy
           server-password: MAVEN_CENTRAL_PASSWORD # env variable for token in deploy
@@ -96,6 +96,8 @@ jobs:
         id: download-asset
         run: |
           gh release download ${{ needs.prerequisites.outputs.release-tag }} --dir ./ --repo "${{ github.repository }}"
+          # x=extract v=verbose z=decompress f=file C=destination directory
+          tar -xvzf release-artifacts.tar.gz -C .
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
