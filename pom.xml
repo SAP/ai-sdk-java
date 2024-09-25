@@ -43,8 +43,7 @@
 
   <properties>
     <project.rootdir>${project.basedir}</project.rootdir>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cloud-sdk.version>5.12.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.0</junit-jupiter.version>
@@ -450,7 +449,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
           </rulesets>
           <linkXRef>false</linkXRef>
-          <targetJdk>${maven.compiler.target}</targetJdk>
+          <targetJdk>${maven.compiler.release}</targetJdk>
           <excludes>
             <!-- Exclude generated clients -->
             <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
