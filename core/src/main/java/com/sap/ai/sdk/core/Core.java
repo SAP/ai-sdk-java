@@ -30,9 +30,10 @@ public class Core implements ApiClientResolver {
    */
   @Beta
   @Nullable
+  @SuppressWarnings("PMD.SignatureDeclareThrowsException")
   public static synchronized <T> T executeWithCore(
       @Nonnull final Core core, @Nonnull final Callable<T> callable) throws Exception {
-    Core oldInstance = instance;
+    final var oldInstance = instance;
     instance = core;
     try {
       return callable.call();

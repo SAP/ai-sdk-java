@@ -74,14 +74,6 @@ public interface ApiClientResolver extends ApiClientContainer {
   /** Helper interface to process the destination. */
   @FunctionalInterface
   interface DestinationProcessor {
-    /**
-     * Process the destination.
-     *
-     * @param builder the destination builder.
-     * @param context the context.
-     */
-    void process(
-        @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Context context);
 
     /** Update the URI. */
     DestinationProcessor UPDATE_URI =
@@ -95,6 +87,15 @@ public interface ApiClientResolver extends ApiClientContainer {
     /** Add the AI-Resource-Group header. */
     DestinationProcessor ADD_HEADER =
         (builder, context) -> builder.header("AI-Resource-Group", context.resourceGroup);
+
+    /**
+     * Process the destination.
+     *
+     * @param builder the destination builder.
+     * @param context the context.
+     */
+    void process(
+        @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Context context);
 
     /** Helper class to hold the context. */
     @Value

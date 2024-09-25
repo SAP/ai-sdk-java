@@ -51,6 +51,13 @@ public interface ApiClientContainer {
 
   /** Options for the API client. */
   interface ClientOptions {
+
+    /** Serialize with null values. */
+    ClientOptions SERIALIZE_WITH_NULL_VALUES = () -> ApiClient::new;
+
+    /** Serialize without null values. */
+    ClientOptions SERIALIZE_WITHOUT_NULL_VALUES = () -> ClientOptions::withoutNull;
+
     /**
      * Get the initializer for the API client.
      *
@@ -58,12 +65,6 @@ public interface ApiClientContainer {
      */
     @Nonnull
     Function<Destination, ApiClient> getInitializer();
-
-    /** Serialize with null values. */
-    ClientOptions SERIALIZE_WITH_NULL_VALUES = () -> ApiClient::new;
-
-    /** Serialize without null values. */
-    ClientOptions SERIALIZE_WITHOUT_NULL_VALUES = () -> ClientOptions::withoutNull;
 
     /**
      * Helper method to Serialize without null values.

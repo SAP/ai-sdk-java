@@ -10,6 +10,9 @@ import javax.annotation.Nonnull;
 /** A deployment choice helper class. */
 @FunctionalInterface
 public interface DeploymentChoice {
+  /** Deployment choice for orchestration. */
+  DeploymentChoice ORCHESTRATION = withScenario("orchestration");
+
   /**
    * Get the deployment id.
    *
@@ -20,9 +23,6 @@ public interface DeploymentChoice {
   @Nonnull
   String getDeploymentId(
       @Nonnull final ApiClientResolver resolver, @Nonnull final String resourceGroup);
-
-  /** Deployment choice for orchestration. */
-  DeploymentChoice ORCHESTRATION = withScenario("orchestration");
 
   /**
    * Create a deployment choice with a specific deployment id.
