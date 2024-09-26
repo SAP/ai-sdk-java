@@ -231,6 +231,20 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>3.2.6</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
           <version>3.1.3</version>
           <executions>
@@ -274,20 +288,6 @@
                 <version>${project.version}</version>
                 <packaging>${project.packaging}</packaging>
               </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.2.6</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
             </execution>
           </executions>
         </plugin>
@@ -581,6 +581,10 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
       </plugin>
       <!-- The plugins configuration below will not be inherited by children projects, they are specific to the parent pom -->
       <plugin>
