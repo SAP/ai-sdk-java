@@ -101,8 +101,8 @@ jobs:
       - name: "Create Release"
         id: create-release
         run: |
-          # Create a tarball of only pom and jar files into release-artifacts.tar.gz
-          tar --exclude=./release-artifacts.tar.gz -czf release-artifacts.tar.gz $(find . -name 'pom.xml' -o -name '*.jar')
+          # Create a tarball of the whole repository into release-artifacts.tar.gz
+          tar --exclude=./release-artifacts.tar.gz -czf release-artifacts.tar.gz .
 
           RELEASE_NAME="rel/${{ needs.bump-version.outputs.release-version }}"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT

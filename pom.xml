@@ -209,6 +209,8 @@
               </goals>
               <phase>deploy</phase>
               <configuration>
+                <url>file:./temp_local_repo</url>
+                <repositoryId>local</repositoryId>
                 <file>${project.basedir}/target/${project.artifactId}-${project.version}.jar</file>
                 <sources>${project.basedir}/target/${project.artifactId}-${project.version}-sources.jar</sources>
                 <pomFile>${project.basedir}/pom.xml</pomFile>
@@ -517,6 +519,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <execution>
             <configuration>
               <file>${project.basedir}/pom.xml</file>
+              <!-- The parent has no sources -->
               <sources>${empty.property}</sources>
             </configuration>
           </execution>
@@ -530,6 +533,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <execution>
             <configuration>
               <file>${project.basedir}/pom.xml</file>
+              <!-- The parent has no sources -->
               <sources>${empty.property}</sources>
             </configuration>
           </execution>

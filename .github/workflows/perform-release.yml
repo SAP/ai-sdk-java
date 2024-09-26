@@ -13,7 +13,7 @@ on:
         type: boolean
 
 env:
-  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C -Dmaven.skipRelease=false
   JAVA_VERSION: 17
 
 jobs:
@@ -106,6 +106,15 @@ jobs:
           echo "${{ secrets.PGP_PRIVATE_KEY }}" | gpg --batch --passphrase "$PASSPHRASE" --import
         env:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+
+      - name: "Deploy Locally"
+        run: >
+          mvn
+          $MVN_CLI_ARGS
+          -DaltDeploymentRepository=local::file:./temp_local_repo
+          -Dgpg.passphrase="${{ secrets.PGP_PASSPHRASE }}"
+          -Dgpg.keyname="${{ secrets.MAVEN_CENTRAL_USER }}"
+          deploy
 
       - name: "Deploy Staging"
         run: >
