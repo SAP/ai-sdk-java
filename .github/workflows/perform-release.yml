@@ -108,7 +108,7 @@ jobs:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Deploy Locally"
-        run: |
+        run: >
           mvn
           $MVN_CLI_ARGS
           -DaltDeploymentRepository=local::file:./temp_local_repo
@@ -121,13 +121,9 @@ jobs:
           # Create an empty directory to correctly execute the plugin
           mkdir temp
           cd temp
-          mvn
-          $MVN_CLI_ARGS
-          org.sonatype.plugins:nexus-staging-maven-plugin:1.7.0:deploy-staged-repository
-          -DserverId=ossrh
-          -DnexusUrl=https://oss.sonatype.org
-          -DrepositoryDirectory=./temp_local_repo
-          -DstagingProfileId=$MAVEN_CENTRAL_PROFILE_ID
+          MVN_ARGS="$MVN_CLI_ARGS org.sonatype.plugins:nexus-staging-maven-plugin:1.7.0:deploy-staged-repository -DserverId=ossrh -DnexusUrl=https://oss.sonatype.org -DrepositoryDirectory=./temp_local_repo -DstagingProfileId=$MAVEN_CENTRAL_PROFILE_ID"
+          mvn $MVN_ARGS
+
         env:
           MAVEN_CENTRAL_USER: ${{ secrets.SONATYPE_TOKEN_NAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_TOKEN_PASS }}
