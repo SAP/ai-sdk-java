@@ -36,9 +36,13 @@
   </modules>
   <distributionManagement>
     <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org</url>
+    </repository>
+    <snapshotRepository>
       <id>artifactory-snapshots</id>
       <url>https://common.repositories.cloud.sap/artifactory/build-snapshots-cloudsdk</url>
-    </repository>
+    </snapshotRepository>
   </distributionManagement>
 
   <properties>
@@ -64,8 +68,6 @@
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
-    <!-- plugins -->
-    <skipRelease>true</skipRelease>
   </properties>
 
   <dependencyManagement>
@@ -218,7 +220,6 @@
                 <artifactId>${project.artifactId}</artifactId>
                 <version>${project.version}</version>
                 <packaging>${project.packaging}</packaging>
-                <skip>${skipRelease}</skip>
               </configuration>
             </execution>
           </executions>

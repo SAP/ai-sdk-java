@@ -13,7 +13,7 @@ on:
         type: boolean
 
 env:
-  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C -Dmaven.skipRelease=false
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C -DskipTests
   JAVA_VERSION: 17
 
 jobs:
@@ -108,7 +108,7 @@ jobs:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Deploy Locally"
-        run: >
+        run: |
           mvn
           $MVN_CLI_ARGS
           -DaltDeploymentRepository=local::file:./temp_local_repo
@@ -117,10 +117,13 @@ jobs:
           deploy
 
       - name: "Deploy Staging"
-        run: >
+        run: |
+          # Create an empty directory to correctly execute the plugin
+          mkdir temp
+          cd temp
           mvn
           $MVN_CLI_ARGS
-          org.sonatype.plugins:nexus-staging-maven-plugin:1.6.13:deploy-staged-repository
+          org.sonatype.plugins:nexus-staging-maven-plugin:1.7.0:deploy-staged-repository
           -DserverId=ossrh
           -DnexusUrl=https://oss.sonatype.org
           -DrepositoryDirectory=./temp_local_repo
