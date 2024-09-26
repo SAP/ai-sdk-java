@@ -564,6 +564,10 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
       <!-- The plugins configuration below will not be inherited by children projects, they are specific to the parent pom -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
