@@ -18,14 +18,14 @@ import org.springframework.web.client.RestTemplate;
 
 /** Container for an API client and destination. */
 @FunctionalInterface
-public interface ApiClientContainer {
+public interface AiClientAuto {
   /**
    * Get the destination.
    *
    * @return the destination
    */
   @Nonnull
-  Destination getDestination();
+  Destination destination();
 
   /**
    * Get the API client.
@@ -33,8 +33,8 @@ public interface ApiClientContainer {
    * @return the API client
    */
   @Nonnull
-  default ApiClient getClient() {
-    return getClient(ClientOptions.SERIALIZE_WITHOUT_NULL_VALUES);
+  default ApiClient client() {
+    return client(ClientOptions.SERIALIZE_WITHOUT_NULL_VALUES);
   }
 
   /**
@@ -44,8 +44,8 @@ public interface ApiClientContainer {
    * @return the API client
    */
   @Nonnull
-  default ApiClient getClient(@Nonnull final ClientOptions options) {
-    final Destination destination = getDestination();
+  default ApiClient client(@Nonnull final ClientOptions options) {
+    final Destination destination = destination();
     return options.getInitializer().apply(destination);
   }
 
