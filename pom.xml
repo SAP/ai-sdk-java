@@ -34,6 +34,10 @@
     <module>foundation-models/openai</module>
     <module>sample-code/spring-app</module>
   </modules>
+  <scm>
+    <connection/>
+    <url/>
+  </scm>
   <distributionManagement>
     <repository>
       <id>ossrh</id>
@@ -179,6 +183,53 @@
           </executions>
         </plugin>
         <plugin>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok-maven-plugin</artifactId>
+          <version>1.18.20.0</version>
+          <configuration>
+            <addOutputDirectory>false</addOutputDirectory>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.34</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <id>delombok</id>
+              <goals>
+                <goal>delombok</goal>
+              </goals>
+              <phase>generate-sources</phase>
+              <configuration>
+                <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.10.0</version>
+          <configuration>
+            <quiet>true</quiet>
+            <additionalOptions>-Xdoclint:none</additionalOptions>
+            <show>protected</show>
+            <sourcepath>${project.basedir}/target/delombok</sourcepath>
+          </configuration>
+          <executions>
+            <execution>
+              <id>javadoc-jar</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
           <version>3.1.3</version>
@@ -191,6 +242,7 @@
               <configuration>
                 <file>${project.basedir}/target/${project.artifactId}-${project.version}.jar</file>
                 <sources>${project.basedir}/target/${project.artifactId}-${project.version}-sources.jar</sources>
+                <javadoc>${project.basedir}/target/${project.artifactId}-${project.version}-javadoc.jar</javadoc>
                 <pomFile>${project.basedir}/pom.xml</pomFile>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>${project.artifactId}</artifactId>
@@ -215,6 +267,7 @@
                 <repositoryId>local</repositoryId>
                 <file>${project.basedir}/target/${project.artifactId}-${project.version}.jar</file>
                 <sources>${project.basedir}/target/${project.artifactId}-${project.version}-sources.jar</sources>
+                <javadoc>${project.basedir}/target/${project.artifactId}-${project.version}-javadoc.jar</javadoc>
                 <pomFile>${project.basedir}/pom.xml</pomFile>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>${project.artifactId}</artifactId>
@@ -522,6 +575,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <file>${project.basedir}/pom.xml</file>
               <!-- The parent has no sources -->
               <sources>${empty.property}</sources>
+              <javadoc>${empty.property}</javadoc>
             </configuration>
           </execution>
         </executions>
@@ -536,6 +590,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <file>${project.basedir}/pom.xml</file>
               <!-- The parent has no sources -->
               <sources>${empty.property}</sources>
+              <javadoc>${empty.property}</javadoc>
             </configuration>
           </execution>
         </executions>
