@@ -102,8 +102,7 @@ jobs:
         id: create-release
         run: |
           # Create a tarball of the whole repository into release-artifacts.tar.gz
-          touch release-artifacts.tar.gz
-          tar --exclude=./release-artifacts.tar.gz -czf release-artifacts.tar.gz .
+          tar --exclude=./release-artifacts.tar.gz -czf release-artifacts.tar.gz . --warning=no-file-changed
 
           RELEASE_NAME="rel/${{ needs.bump-version.outputs.release-version }}"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
