@@ -108,13 +108,9 @@ jobs:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Deploy Locally"
-        run: >
-          mvn
-          $MVN_CLI_ARGS
-          -DaltDeploymentRepository=local::file:./temp_local_repo
-          -Dgpg.passphrase="${{ secrets.PGP_PASSPHRASE }}"
-          -Dgpg.keyname="${{ secrets.MAVEN_CENTRAL_USER }}"
-          deploy
+        run: |
+          MVN_ARGS="${{ env.MVN_CLI_ARGS }} -DaltDeploymentRepository=local::file:./temp_local_repo -Dgpg.passphrase=${{ secrets.PGP_PASSPHRASE }} -Dgpg.keyname=${{ secrets.MAVEN_CENTRAL_USER }} deploy"
+          mvn $MVN_ARGS
 
       - name: "Deploy Staging"
         run: |
