@@ -108,9 +108,16 @@ jobs:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Deploy Locally"
-        run: |
-          MVN_ARGS="${{ env.MVN_CLI_ARGS }} -DaltDeploymentRepository=local::file:./temp_local_repo -Dgpg.passphrase=${{ secrets.PGP_PASSPHRASE }} -Dgpg.keyname=${{ secrets.MAVEN_CENTRAL_USER }} deploy"
-          mvn $MVN_ARGS
+        run: >
+          mvn
+          $MVN_CLI_ARGS
+          -DaltDeploymentRepository=local::file:./temp_local_repo
+          -Dgpg.passphrase="$GPG_PASSPHRASE"
+          -Dgpg.keyname="$MAVEN_CENTRAL_USER"
+          deploy
+        env:
+          MAVEN_CENTRAL_USER: ${{ secrets.MAVEN_CENTRAL_USER }}
+          GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Deploy Staging"
         run: |
@@ -119,7 +126,6 @@ jobs:
           cd temp
           MVN_ARGS="$MVN_CLI_ARGS org.sonatype.plugins:nexus-staging-maven-plugin:1.7.0:deploy-staged-repository -DserverId=ossrh -DnexusUrl=https://oss.sonatype.org -DrepositoryDirectory=./temp_local_repo -DstagingProfileId=$MAVEN_CENTRAL_PROFILE_ID"
           mvn $MVN_ARGS
-
         env:
           MAVEN_CENTRAL_USER: ${{ secrets.SONATYPE_TOKEN_NAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_TOKEN_PASS }}
