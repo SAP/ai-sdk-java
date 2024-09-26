@@ -102,7 +102,7 @@ jobs:
         id: create-release
         run: |
           # Create a tarball of the whole repository into release-artifacts.tar.gz
-          tar --exclude=./release-artifacts.tar.gz -czf release-artifacts.tar.gz . --warning=no-file-changed
+          tar -czf ../release-artifacts.tar.gz .
 
           RELEASE_NAME="rel/${{ needs.bump-version.outputs.release-version }}"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
@@ -111,7 +111,7 @@ jobs:
           --target ${{ needs.bump-version.outputs.release-commit }} \
           --title "Release ${{ needs.bump-version.outputs.release-version }}" \
           --draft --generate-notes) \
-          release-artifacts.tar.gz
+          ../release-artifacts.tar.gz
           
           echo "RELEASE_URL=$RELEASE_URL" >> $GITHUB_OUTPUT
         env:
