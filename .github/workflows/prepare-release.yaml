@@ -110,8 +110,8 @@ jobs:
           RELEASE_URL=$(gh release create "$RELEASE_NAME" \
           --target ${{ needs.bump-version.outputs.release-commit }} \
           --title "Release ${{ needs.bump-version.outputs.release-version }}" \
-          --draft --generate-notes) \
-          release-artifacts.tar.gz
+          --draft --generate-notes \
+          release-artifacts.tar.gz)
           
           echo "RELEASE_URL=$RELEASE_URL" >> $GITHUB_OUTPUT
         env:
