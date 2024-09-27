@@ -78,7 +78,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretCreationResponse kubesubmitV4ObjectStoreSecretsCreate(
+  public BckndobjectStoreSecretCreationResponse create(
       @Nonnull
           final BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
               bckndobjectStoreSecretWithSensitiveDataRequestForPostCall,
@@ -91,7 +91,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
     // set
     if (bckndobjectStoreSecretWithSensitiveDataRequestForPostCall == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndobjectStoreSecretWithSensitiveDataRequestForPostCall' when calling kubesubmitV4ObjectStoreSecretsCreate");
+          "Missing the required parameter 'bckndobjectStoreSecretWithSensitiveDataRequestForPostCall' when calling create");
     }
 
     final String localVarPath =
@@ -149,13 +149,12 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretCreationResponse kubesubmitV4ObjectStoreSecretsCreate(
+  public BckndobjectStoreSecretCreationResponse create(
       @Nonnull
           final BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
               bckndobjectStoreSecretWithSensitiveDataRequestForPostCall)
       throws OpenApiRequestException {
-    return kubesubmitV4ObjectStoreSecretsCreate(
-        bckndobjectStoreSecretWithSensitiveDataRequestForPostCall, null, null);
+    return create(bckndobjectStoreSecretWithSensitiveDataRequestForPostCall, null, null);
   }
 
   /**
@@ -179,7 +178,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretDeletionResponse kubesubmitV4ObjectStoreSecretsDelete(
+  public BckndobjectStoreSecretDeletionResponse delete(
       @Nonnull final String objectStoreName,
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
@@ -189,7 +188,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
     // verify the required parameter 'objectStoreName' is set
     if (objectStoreName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'objectStoreName' when calling kubesubmitV4ObjectStoreSecretsDelete");
+          "Missing the required parameter 'objectStoreName' when calling delete");
     }
 
     // create path and map variables
@@ -251,9 +250,9 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretDeletionResponse kubesubmitV4ObjectStoreSecretsDelete(
-      @Nonnull final String objectStoreName) throws OpenApiRequestException {
-    return kubesubmitV4ObjectStoreSecretsDelete(objectStoreName, null, null);
+  public BckndobjectStoreSecretDeletionResponse delete(@Nonnull final String objectStoreName)
+      throws OpenApiRequestException {
+    return delete(objectStoreName, null, null);
   }
 
   /**
@@ -280,7 +279,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretStatus kubesubmitV4ObjectStoreSecretsGet(
+  public BckndobjectStoreSecretStatus get(
       @Nonnull final String objectStoreName,
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
@@ -290,7 +289,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
     // verify the required parameter 'objectStoreName' is set
     if (objectStoreName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'objectStoreName' when calling kubesubmitV4ObjectStoreSecretsGet");
+          "Missing the required parameter 'objectStoreName' when calling get");
     }
 
     // create path and map variables
@@ -355,9 +354,9 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretStatus kubesubmitV4ObjectStoreSecretsGet(
-      @Nonnull final String objectStoreName) throws OpenApiRequestException {
-    return kubesubmitV4ObjectStoreSecretsGet(objectStoreName, null, null);
+  public BckndobjectStoreSecretStatus get(@Nonnull final String objectStoreName)
+      throws OpenApiRequestException {
+    return get(objectStoreName, null, null);
   }
 
   /**
@@ -384,7 +383,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretModificationResponse kubesubmitV4ObjectStoreSecretsPatch(
+  public BckndobjectStoreSecretModificationResponse patch(
       @Nonnull final String objectStoreName,
       @Nonnull
           final BckndobjectStoreSecretWithSensitiveDataRequest
@@ -397,13 +396,13 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
     // verify the required parameter 'objectStoreName' is set
     if (objectStoreName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'objectStoreName' when calling kubesubmitV4ObjectStoreSecretsPatch");
+          "Missing the required parameter 'objectStoreName' when calling patch");
     }
 
     // verify the required parameter 'bckndobjectStoreSecretWithSensitiveDataRequest' is set
     if (bckndobjectStoreSecretWithSensitiveDataRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndobjectStoreSecretWithSensitiveDataRequest' when calling kubesubmitV4ObjectStoreSecretsPatch");
+          "Missing the required parameter 'bckndobjectStoreSecretWithSensitiveDataRequest' when calling patch");
     }
 
     // create path and map variables
@@ -469,14 +468,13 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretModificationResponse kubesubmitV4ObjectStoreSecretsPatch(
+  public BckndobjectStoreSecretModificationResponse patch(
       @Nonnull final String objectStoreName,
       @Nonnull
           final BckndobjectStoreSecretWithSensitiveDataRequest
               bckndobjectStoreSecretWithSensitiveDataRequest)
       throws OpenApiRequestException {
-    return kubesubmitV4ObjectStoreSecretsPatch(
-        objectStoreName, bckndobjectStoreSecretWithSensitiveDataRequest, null, null);
+    return patch(objectStoreName, bckndobjectStoreSecretWithSensitiveDataRequest, null, null);
   }
 
   /**
@@ -507,7 +505,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretStatusResponse kubesubmitV4ObjectStoreSecretsQuery(
+  public BckndobjectStoreSecretStatusResponse query(
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
       @Nullable final Boolean $count,
@@ -575,8 +573,7 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndobjectStoreSecretStatusResponse kubesubmitV4ObjectStoreSecretsQuery()
-      throws OpenApiRequestException {
-    return kubesubmitV4ObjectStoreSecretsQuery(null, null, null, null, null);
+  public BckndobjectStoreSecretStatusResponse query() throws OpenApiRequestException {
+    return query(null, null, null, null, null);
   }
 }

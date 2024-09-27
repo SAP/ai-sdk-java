@@ -38,7 +38,7 @@ class DeploymentController {
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
-        API.create("default", new AiDeploymentCreationRequest().configurationId(configId));
+        API.create("default", AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED

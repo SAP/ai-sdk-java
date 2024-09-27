@@ -70,7 +70,7 @@ public class KpiApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public KpiResultSet kpiGet(@Nullable final Set<KpiColumnName> $select)
+  public KpiResultSet get(@Nullable final Set<KpiColumnName> $select)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -129,7 +129,7 @@ public class KpiApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public KpiResultSet kpiGet() throws OpenApiRequestException {
-    return kpiGet(null);
+  public KpiResultSet get() throws OpenApiRequestException {
+    return get(null);
   }
 }

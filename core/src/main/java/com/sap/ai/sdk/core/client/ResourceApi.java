@@ -66,7 +66,7 @@ public class ResourceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndResourceGetResponse kubesubmitV4ResourcesGet(@Nullable final String authorization)
+  public BckndResourceGetResponse get(@Nullable final String authorization)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -119,8 +119,8 @@ public class ResourceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndResourceGetResponse kubesubmitV4ResourcesGet() throws OpenApiRequestException {
-    return kubesubmitV4ResourcesGet(null);
+  public BckndResourceGetResponse get() throws OpenApiRequestException {
+    return get(null);
   }
 
   /**
@@ -140,7 +140,7 @@ public class ResourceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndResourcePatchResponse kubesubmitV4ResourcesPatch(
+  public BckndResourcePatchResponse patch(
       @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,
       @Nullable final String authorization)
       throws OpenApiRequestException {
@@ -149,7 +149,7 @@ public class ResourceApi extends AbstractOpenApiService {
     // verify the required parameter 'bckndResourcePatchBody' is set
     if (bckndResourcePatchBody == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndResourcePatchBody' when calling kubesubmitV4ResourcesPatch");
+          "Missing the required parameter 'bckndResourcePatchBody' when calling patch");
     }
 
     final String localVarPath =
@@ -202,8 +202,8 @@ public class ResourceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndResourcePatchResponse kubesubmitV4ResourcesPatch(
+  public BckndResourcePatchResponse patch(
       @Nonnull final BckndResourcePatchBody bckndResourcePatchBody) throws OpenApiRequestException {
-    return kubesubmitV4ResourcesPatch(bckndResourcePatchBody, null);
+    return patch(bckndResourcePatchBody, null);
   }
 }

@@ -62,6 +62,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
 
     final AiConfigurationList configurationList =
         new ConfigurationApi(getClient(destination)).query("default");
+
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
     assertThat(configurationList.getResources()).hasSize(1);
@@ -107,6 +108,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
             .addInputArtifactBindingsItem(inputArtifactBindingsItem);
     final AiConfigurationCreationResponse configuration =
         new ConfigurationApi(getClient(destination)).create("default", configurationBaseData);
+
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");
@@ -145,8 +147,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         3
                         """)));
 
-    final int configurationCount =
-        new ConfigurationApi(getClient(destination)).configurationCount("default");
+    final int configurationCount = new ConfigurationApi(getClient(destination)).count("default");
 
     assertThat(configurationCount).isEqualTo(3);
   }
@@ -185,7 +186,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
 
     final AiConfiguration configuration =
         new ConfigurationApi(getClient(destination))
-            .configurationGet("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
+            .get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-09-11T09:14:31Z");

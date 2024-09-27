@@ -77,7 +77,7 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiDeploymentBulkModificationResponse deploymentBatchModify(
+  public AiDeploymentBulkModificationResponse batchModify(
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiDeploymentBulkModificationRequest aiDeploymentBulkModificationRequest)
       throws OpenApiRequestException {
@@ -86,13 +86,13 @@ public class DeploymentApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentBatchModify");
+          "Missing the required parameter 'aiResourceGroup' when calling batchModify");
     }
 
     // verify the required parameter 'aiDeploymentBulkModificationRequest' is set
     if (aiDeploymentBulkModificationRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiDeploymentBulkModificationRequest' when calling deploymentBatchModify");
+          "Missing the required parameter 'aiDeploymentBulkModificationRequest' when calling batchModify");
     }
 
     final String localVarPath =
@@ -148,7 +148,7 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Integer deploymentCount(
+  public Integer count(
       @Nonnull final String aiResourceGroup,
       @Nullable final List<String> executableIds,
       @Nullable final String configurationId,
@@ -160,7 +160,7 @@ public class DeploymentApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentCount");
+          "Missing the required parameter 'aiResourceGroup' when calling count");
     }
 
     final String localVarPath =
@@ -222,9 +222,8 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Integer deploymentCount(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return deploymentCount(aiResourceGroup, null, null, null, null);
+  public Integer count(@Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    return count(aiResourceGroup, null, null, null, null);
   }
 
   /**
@@ -243,7 +242,7 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiDeploymentCreationResponse deploymentCreate(
+  public AiDeploymentCreationResponse create(
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiDeploymentCreationRequest aiDeploymentCreationRequest)
       throws OpenApiRequestException {
@@ -252,13 +251,13 @@ public class DeploymentApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentCreate");
+          "Missing the required parameter 'aiResourceGroup' when calling create");
     }
 
     // verify the required parameter 'aiDeploymentCreationRequest' is set
     if (aiDeploymentCreationRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiDeploymentCreationRequest' when calling deploymentCreate");
+          "Missing the required parameter 'aiDeploymentCreationRequest' when calling create");
     }
 
     final String localVarPath =
@@ -314,7 +313,7 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiDeploymentDeletionResponse deploymentDelete(
+  public AiDeploymentDeletionResponse delete(
       @Nonnull final String aiResourceGroup, @Nonnull final String deploymentId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -322,13 +321,13 @@ public class DeploymentApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentDelete");
+          "Missing the required parameter 'aiResourceGroup' when calling delete");
     }
 
     // verify the required parameter 'deploymentId' is set
     if (deploymentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'deploymentId' when calling deploymentDelete");
+          "Missing the required parameter 'deploymentId' when calling delete");
     }
 
     // create path and map variables
@@ -388,7 +387,7 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiDeploymentResponseWithDetails deploymentGet(
+  public AiDeploymentResponseWithDetails get(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String deploymentId,
       @Nullable final String $select)
@@ -398,13 +397,13 @@ public class DeploymentApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentGet");
+          "Missing the required parameter 'aiResourceGroup' when calling get");
     }
 
     // verify the required parameter 'deploymentId' is set
     if (deploymentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'deploymentId' when calling deploymentGet");
+          "Missing the required parameter 'deploymentId' when calling get");
     }
 
     // create path and map variables
@@ -465,208 +464,10 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiDeploymentResponseWithDetails deploymentGet(
+  public AiDeploymentResponseWithDetails get(
       @Nonnull final String aiResourceGroup, @Nonnull final String deploymentId)
       throws OpenApiRequestException {
-    return deploymentGet(aiResourceGroup, deploymentId, null);
-  }
-
-  /**
-   * Update target status or configuration of a deployment
-   *
-   * <p>Update target status of a deployment to stop a deployment or change the configuration to be
-   * used by the deployment after synchronously checking the correctness of the configuration. A
-   * change of configuration is only allowed for RUNNING and PENDING deployments.
-   *
-   * <p><b>202</b> - The modification of the deployment has been scheduled successfully
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * <p><b>404</b> - The specified resource was not found
-   *
-   * <p><b>412</b> - The service didn&#39;t meet the precondition needed to execute this operation
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @param deploymentId Deployment identifier
-   * @param aiDeploymentModificationRequest The value for the parameter
-   *     aiDeploymentModificationRequest
-   * @return AiDeploymentModificationResponse
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiDeploymentModificationResponse deploymentModify(
-      @Nonnull final String aiResourceGroup,
-      @Nonnull final String deploymentId,
-      @Nonnull final AiDeploymentModificationRequest aiDeploymentModificationRequest)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = aiDeploymentModificationRequest;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentModify");
-    }
-
-    // verify the required parameter 'deploymentId' is set
-    if (deploymentId == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'deploymentId' when calling deploymentModify");
-    }
-
-    // verify the required parameter 'aiDeploymentModificationRequest' is set
-    if (aiDeploymentModificationRequest == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiDeploymentModificationRequest' when calling deploymentModify");
-    }
-
-    // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("deploymentId", deploymentId);
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/deployments/{deploymentId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiDeploymentModificationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiDeploymentModificationResponse>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.PATCH,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Get list of deployments
-   *
-   * <p>Retrieve a list of deployments that match the specified filter criteria. Filter criteria
-   * include a list of executableIds, a scenarioId, a configurationId, or a deployment status. With
-   * top/skip parameters it is possible to paginate the result list. With select parameter it is
-   * possible to select only status.
-   *
-   * <p><b>200</b> - A list of deployments
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup (required) Specify a resource group id
-   * @param executableIds (optional Limit query to only these executable IDs
-   * @param configurationId (optional) Configuration identifier
-   * @param scenarioId (optional) Scenario identifier
-   * @param status (optional) Filter by status
-   * @param $top (optional, default to 10000) Number of results to display
-   * @param $skip (optional) Number of results to be skipped from the ordered list of results
-   * @param $select (optional) Allows to request a specified set of properties for each entity
-   * @return AiDeploymentList
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiDeploymentList deploymentQuery(
-      @Nonnull final String aiResourceGroup,
-      @Nullable final List<String> executableIds,
-      @Nullable final String configurationId,
-      @Nullable final String scenarioId,
-      @Nullable final String status,
-      @Nullable final Integer $top,
-      @Nullable final Integer $skip,
-      @Nullable final String $select)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deploymentQuery");
-    }
-
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/deployments").build().toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "executableIds",
-            executableIds));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "configurationId", configurationId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "status", status));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$select", $select));
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiDeploymentList> localVarReturnType =
-        new ParameterizedTypeReference<AiDeploymentList>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.GET,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Get list of deployments
-   *
-   * <p>Retrieve a list of deployments that match the specified filter criteria. Filter criteria
-   * include a list of executableIds, a scenarioId, a configurationId, or a deployment status. With
-   * top/skip parameters it is possible to paginate the result list. With select parameter it is
-   * possible to select only status.
-   *
-   * <p><b>200</b> - A list of deployments
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @return AiDeploymentList
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiDeploymentList deploymentQuery(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return deploymentQuery(aiResourceGroup, null, null, null, null, null, null, null);
+    return get(aiResourceGroup, deploymentId, null);
   }
 
   /**
@@ -701,7 +502,7 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs(
+  public RTALogCommonResponse getLogs(
       @Nonnull final String deploymentId,
       @Nullable final String authorization,
       @Nullable final Integer $top,
@@ -714,7 +515,7 @@ public class DeploymentApi extends AbstractOpenApiService {
     // verify the required parameter 'deploymentId' is set
     if (deploymentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'deploymentId' when calling kubesubmitV4DeploymentsGetLogs");
+          "Missing the required parameter 'deploymentId' when calling getLogs");
     }
 
     // create path and map variables
@@ -782,8 +583,206 @@ public class DeploymentApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public RTALogCommonResponse kubesubmitV4DeploymentsGetLogs(@Nonnull final String deploymentId)
+  public RTALogCommonResponse getLogs(@Nonnull final String deploymentId)
       throws OpenApiRequestException {
-    return kubesubmitV4DeploymentsGetLogs(deploymentId, null, null, null, null, null);
+    return getLogs(deploymentId, null, null, null, null, null);
+  }
+
+  /**
+   * Update target status or configuration of a deployment
+   *
+   * <p>Update target status of a deployment to stop a deployment or change the configuration to be
+   * used by the deployment after synchronously checking the correctness of the configuration. A
+   * change of configuration is only allowed for RUNNING and PENDING deployments.
+   *
+   * <p><b>202</b> - The modification of the deployment has been scheduled successfully
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specified resource was not found
+   *
+   * <p><b>412</b> - The service didn&#39;t meet the precondition needed to execute this operation
+   *
+   * @param aiResourceGroup Specify a resource group id
+   * @param deploymentId Deployment identifier
+   * @param aiDeploymentModificationRequest The value for the parameter
+   *     aiDeploymentModificationRequest
+   * @return AiDeploymentModificationResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public AiDeploymentModificationResponse modify(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String deploymentId,
+      @Nonnull final AiDeploymentModificationRequest aiDeploymentModificationRequest)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = aiDeploymentModificationRequest;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling modify");
+    }
+
+    // verify the required parameter 'deploymentId' is set
+    if (deploymentId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'deploymentId' when calling modify");
+    }
+
+    // verify the required parameter 'aiDeploymentModificationRequest' is set
+    if (aiDeploymentModificationRequest == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiDeploymentModificationRequest' when calling modify");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("deploymentId", deploymentId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/lm/deployments/{deploymentId}")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
+
+    final ParameterizedTypeReference<AiDeploymentModificationResponse> localVarReturnType =
+        new ParameterizedTypeReference<AiDeploymentModificationResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.PATCH,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get list of deployments
+   *
+   * <p>Retrieve a list of deployments that match the specified filter criteria. Filter criteria
+   * include a list of executableIds, a scenarioId, a configurationId, or a deployment status. With
+   * top/skip parameters it is possible to paginate the result list. With select parameter it is
+   * possible to select only status.
+   *
+   * <p><b>200</b> - A list of deployments
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup (required) Specify a resource group id
+   * @param executableIds (optional Limit query to only these executable IDs
+   * @param configurationId (optional) Configuration identifier
+   * @param scenarioId (optional) Scenario identifier
+   * @param status (optional) Filter by status
+   * @param $top (optional, default to 10000) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
+   * @param $select (optional) Allows to request a specified set of properties for each entity
+   * @return AiDeploymentList
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public AiDeploymentList query(
+      @Nonnull final String aiResourceGroup,
+      @Nullable final List<String> executableIds,
+      @Nullable final String configurationId,
+      @Nullable final String scenarioId,
+      @Nullable final String status,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip,
+      @Nullable final String $select)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling query");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/lm/deployments").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(
+            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
+            "executableIds",
+            executableIds));
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "configurationId", configurationId));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "status", status));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$select", $select));
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
+
+    final ParameterizedTypeReference<AiDeploymentList> localVarReturnType =
+        new ParameterizedTypeReference<AiDeploymentList>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get list of deployments
+   *
+   * <p>Retrieve a list of deployments that match the specified filter criteria. Filter criteria
+   * include a list of executableIds, a scenarioId, a configurationId, or a deployment status. With
+   * top/skip parameters it is possible to paginate the result list. With select parameter it is
+   * possible to select only status.
+   *
+   * <p><b>200</b> - A list of deployments
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup Specify a resource group id
+   * @return AiDeploymentList
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public AiDeploymentList query(@Nonnull final String aiResourceGroup)
+      throws OpenApiRequestException {
+    return query(aiResourceGroup, null, null, null, null, null, null, null);
   }
 }
