@@ -157,7 +157,6 @@
   </dependencies>
   <build>
     <pluginManagement>
-      <!-- Children projects inherit the configuration -->
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -462,6 +461,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
   <profiles>
     <profile>
       <id>release</id>
+      <!-- Children projects inherit the configuration -->
       <build>
         <pluginManagement>
           <plugins>

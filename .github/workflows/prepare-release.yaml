@@ -71,7 +71,7 @@ jobs:
           git push origin $TAG_NAME
 
   create-release:
-    name: "Create Release Artifacts"
+    name: "Create GitHub Release"
     needs: [ bump-version ]
     outputs:
       release-name: ${{ steps.create-release.outputs.RELEASE_NAME }}
