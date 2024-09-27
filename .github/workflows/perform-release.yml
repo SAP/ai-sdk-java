@@ -13,7 +13,7 @@ on:
         type: boolean
 
 env:
-  MVN_CLI_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C -DskipTests
+  MVN_CLI_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version -DskipTests
   JAVA_VERSION: 17
 
 jobs:
@@ -112,12 +112,11 @@ jobs:
           mvn
           $MVN_CLI_ARGS
           -DaltDeploymentRepository=local::file:./temp_local_repo
-          -Dgpg.passphrase="$GPG_PASSPHRASE"
-          -Dgpg.keyname="$MAVEN_CENTRAL_USER"
+          -P release
           deploy
         env:
           MAVEN_CENTRAL_USER: ${{ secrets.MAVEN_CENTRAL_USER }}
-          GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Deploy Staging"
         run: |
