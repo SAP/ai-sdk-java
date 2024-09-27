@@ -2,6 +2,8 @@ name: "Continuous Integration"
 on:
   pull_request:
     branches: [ "*" ]
+  push:
+    branches: [ "main" ]
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -27,6 +29,9 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
+
+      - name: "REUSE Compliance Check"
+        uses: fsfe/reuse-action@v4
 
       - name: "Format code"
         run: |
@@ -88,7 +93,7 @@ jobs:
       - name: "Slack Notification"
         ## currently disabled, as there are no main builds yet
         if: false
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {
@@ -97,5 +102,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      #TODO: CodeQL step
       #TODO: Blackduck and security rating steps

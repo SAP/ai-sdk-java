@@ -27,4 +27,12 @@ public class OpenAiUsage {
   @JsonProperty("total_tokens")
   @Getter(onMethod_ = @Nonnull)
   private Integer totalTokens;
+
+  void addDelta(@Nonnull final OpenAiUsage delta) {
+    if (delta.getCompletionTokens() != null) {
+      completionTokens = delta.getCompletionTokens();
+    }
+    promptTokens = delta.getPromptTokens();
+    totalTokens = delta.getTotalTokens();
+  }
 }

@@ -7,14 +7,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.Core;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import java.io.IOException;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +35,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  private static final ObjectMapper JACKSON;
+  static final ObjectMapper JACKSON;
+  private String systemPrompt = null;
 
   static {
     JACKSON =
@@ -93,6 +99,36 @@ public final class OpenAiClient {
   }
 
   /**
+   * Add a system prompt before user prompts.
+   *
+   * @param systemPrompt the system prompt
+   * @return the client
+   */
+  @Nonnull
+  public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
+    this.systemPrompt = systemPrompt;
+    return this;
+  }
+
+  /**
+   * Generate a completion for the given user prompt.
+   *
+   * @param prompt a text message.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
+      throws OpenAiClientException {
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
+    return chatCompletion(parameters);
+  }
+
+  /**
    * Generate a completion for the given prompt.
    *
    * @param parameters the prompt, including messages and other parameters.
@@ -102,7 +138,57 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param prompt a text message.
+   * @return A stream of message deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   */
+  @Nonnull
+  public Stream<String> streamChatCompletion(@Nonnull final String prompt)
+      throws OpenAiClientException {
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+    }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
+    return streamChatCompletionDeltas(parameters)
+        .peek(OpenAiClient::throwOnContentFilter)
+        .map(OpenAiChatCompletionDelta::getDeltaContent);
+  }
+
+  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
+    final String finishReason = delta.getFinishReason();
+    if (finishReason != null && finishReason.equals("content_filter")) {
+      throw new OpenAiClientException("Content filter filtered the output.");
+    }
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param parameters the prompt, including messages and other parameters.
+   * @return A stream of chat completion delta elements.
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
+      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    parameters.enableStreaming();
+    return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
+  }
+
+  private void warnIfUnsupportedUsage() {
+    if (systemPrompt != null) {
+      log.warn(
+          "Previously set messages will be ignored, set it as an argument of this method instead.");
+    }
   }
 
   /**
@@ -129,6 +215,16 @@ public final class OpenAiClient {
     return executeRequest(request, responseType);
   }
 
+  @Nonnull
+  private <D extends StreamedDelta> Stream<D> executeStream(
+      @Nonnull final String path,
+      @Nonnull final Object payload,
+      @Nonnull final Class<D> deltaType) {
+    final var request = new HttpPost(path);
+    serializeAndSetHttpEntity(request, payload);
+    return streamRequest(request, deltaType);
+  }
+
   private static void serializeAndSetHttpEntity(
       @Nonnull final BasicClassicHttpRequest request, @Nonnull final Object payload) {
     try {
@@ -145,9 +241,22 @@ public final class OpenAiClient {
     try {
       @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return client.execute(request, new OpenAiResponseHandler<>(responseType, JACKSON));
+      return client.execute(request, new OpenAiResponseHandler<>(responseType));
     } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed.", e);
+      throw new OpenAiClientException("Request to OpenAI model failed", e);
+    }
+  }
+
+  @Nonnull
+  private <D extends StreamedDelta> Stream<D> streamRequest(
+      final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
+    try {
+      @SuppressWarnings("UnstableApiUsage")
+      final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      return new OpenAiStreamingHandler<>(deltaType)
+          .handleResponse(client.executeOpen(null, request, null));
+    } catch (final IOException e) {
+      throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
   }
 }

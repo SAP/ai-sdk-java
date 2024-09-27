@@ -1,6 +1,9 @@
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-java)](https://api.reuse.software/info/github.com/SAP/ai-sdk-java)
+![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg?branch=main)
+![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
+[![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
+[![Fosstars security rating](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_report.md)
 
-# AI SDK for Java
+# SAP Cloud SDK for AI (for Java)
 
 # ⚠️ This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change ⚠️
 
@@ -48,7 +51,7 @@ We maintain [a list of currently available and tested AI Core APIs](docs/list-of
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -64,7 +67,7 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Create a Deployment
 
@@ -75,18 +78,17 @@ public AiDeploymentCreationResponse createDeployment() {
       new DeploymentApi(getClient())
           .create(
               "default",
-              new AiDeploymentCreationRequest().configurationId("12345-123-123-123-123456abcdefg"));
-
-  Objects.requireNonNull(deployment, "Deployment creation failed");
+              AiDeploymentCreationRequest.create()
+                  .configurationId("12345-123-123-123-123456abcdefg"));
 
   String id = deployment.getId();
-  Status status = deployment.getStatus();
+  AiExecutionStatus status = deployment.getStatus();
 
   return deployment;
 }
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
 
 ### Delete a Deployment
 
@@ -95,12 +97,12 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 
   DeploymentApi client = new DeploymentApi(getClient());
 
-  if (deployment.getStatus() == Status.RUNNING) {
+  if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
     // Only RUNNING deployments can be STOPPED
     client.modify(
         "default",
         deployment.getId(),
-        new AiDeploymentModificationRequest().targetStatus(Status.STOPPED));
+        AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
   }
   // Wait a few seconds for the deployment to stop
   // Only UNKNOWN and STOPPED deployments can be DELETED
@@ -108,7 +110,7 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 }
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
 
 ## OpenAI chat completion
 
@@ -159,7 +161,7 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -175,29 +177,104 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Simple chat completion
 
 ```java
-final var userMessage =
-    new OpenAiChatUserMessage().setContent("Hello World! Why is this phrase so famous?");
-final var request =
-    new OpenAiChatCompletionParameters().setMessages(List.of(systemMessage, userMessage));
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO)
+        .withSystemPrompt("You are a helpful AI")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
 
-final OpenAiChatCompletionOutput result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
-
-final String resultMessage = result.getChoices().get(0).getMessage().getContent();
+final String resultMessage = result.getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+### Message history
 
-### Chat completion with a model not in defined `OpenAiModel`
+```java
+final var systemMessage =
+    new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
+final var userMessage =
+    new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
+final var request =
+    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
+
+final OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+
+final String resultMessage = result.getContent();
+```
+
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+
+### Chat completion with a model not defined in `OpenAiModel`
 
 ```java
 final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(new OpenAiModel(model)).chatCompletion(request);
+    OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
+
+### Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+#### Stream the chat completion asynchronously
+This is a blocking example for streaming and printing directly to the console:
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// try-with-resources on stream ensures the connection will be closed
+try( Stream<String> stream = client.streamChatCompletion(msg)) {
+    stream.forEach(deltaString -> {
+        System.out.print(deltaString);
+        System.out.flush();
+    });
+}
+```
+
+<details>
+<summary>It's also possible to aggregate the total output.</summary>
+
+The following example is non-blocking.
+Any asynchronous library can be used, e.g. classic Thread API.
+
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+OpenAiChatCompletionParameters request =
+    new OpenAiChatCompletionParameters()
+        .addMessages(new OpenAiChatUserMessage().addText(msg));
+
+OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+
+// Do the request before the thread starts to handle exceptions during request initialization 
+Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
+
+Thread thread = new Thread(() -> {
+    // try-with-resources ensures the stream is closed
+    try (stream) {
+        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+    }
+});
+thread.start(); // non-blocking
+
+thread.join(); // blocking
+
+// access aggregated information from total output, e.g.
+Integer tokens = totalOutput.getUsage().getCompletionTokens();
+System.out.println("Tokens: " + tokens);
+```
+
+</details>
+
+#### Spring Boot example
+
+Please find [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Orchestration chat completion
 
@@ -232,7 +309,7 @@ final OpenAiChatCompletionOutput result =
   - Java 17 or higher
   - Maven 3.9 or higher
   - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-ai-core-credentials-as-environment-variable)
+- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
 
 ### Maven dependencies
 
@@ -248,131 +325,136 @@ Add the following dependencies to your `pom.xml` file:
 </dependencies>
 ```
 
-See [an example pom in our Spring Boot application](e2e-test-app/pom.xml)
+See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
 
 ### Chat completion template
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 final var inputParams =
     Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-final var template = new ChatMessage().content("{{?input}}").role("user");
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+final var template = ChatMessage.create().role("user").content("{{?input}}");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
-                        .templatingModuleConfig(templatingConfig)
-                        .llmModuleConfig(llmConfig)))
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
+                        .templatingModuleConfig(templatingConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
         .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Messages history
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 List<ChatMessage> messagesHistory =
     List.of(
-        new ChatMessage().content("What is the capital of France?").role("user"),
-        new ChatMessage().content("The capital of France is Paris.").role("assistant"));
-final var message = new ChatMessage().content("What is the typical food there?").role("user");
+        ChatMessage.create().role("user").content("What is the capital of France?"),
+        ChatMessage.create().role("assistant").content("The capital of France is Paris."));
 
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(message));
+final var message =
+    ChatMessage.create().role("user").content("What is the typical food there?");
+final var templatingConfig = TemplatingModuleConfig.create().template(message);
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
-                        .templatingModuleConfig(templatingConfig)
-                        .llmModuleConfig(llmConfig)))
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
+                        .templatingModuleConfig(templatingConfig)))
+        .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
         .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Chat completion filter
 
 ```java
-final var llmConfig = new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
+final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 final var inputParams =
     Map.of(
         "disclaimer",
         "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
 final var template =
-    new ChatMessage()
+    ChatMessage.create()
+        .role("user")
         .content(
-            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}")
-        .role("user");
-final var templatingConfig = new TemplatingModuleConfig().template(List.of(template));
+            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-final var filterStrict =
-    new Filter()
-        .type(ProviderType.AZURE_CONTENT_SAFETY)
+final var filterStrict = 
+    FilterConfig.create()
+        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            new FilterConfig()
+            AzureContentSafety.create()
                 .hate(NUMBER_0)
                 .selfHarm(NUMBER_0)
                 .sexual(NUMBER_0)
                 .violence(NUMBER_0));
+
 final var filterLoose =
-    new Filter()
-        .type(ProviderType.AZURE_CONTENT_SAFETY)
+    FilterConfig.create()
+        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            new FilterConfig()
+            AzureContentSafety.create()
                 .hate(NUMBER_4)
                 .selfHarm(NUMBER_4)
                 .sexual(NUMBER_4)
                 .violence(NUMBER_4));
 
 final var filteringConfig =
-    new FilteringModuleConfig()
-        .input(new FilteringConfig().filters(List.of(filterStrict))) // changing the input to filterLoose will allow the message to pass
-        .output(new FilteringConfig().filters(List.of(filterStrict)));
+    FilteringModuleConfig.create()
+        // changing the input to filterLoose will allow the message to pass
+        .input(FilteringConfig.create().filters(filterStrict))
+        .output(FilteringConfig.create().filters(filterStrict));
 
 final var config =
-    new CompletionPostRequest()
+    CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig()
+            OrchestrationConfig.create()
                 .moduleConfigurations(
-                    new ModuleConfigs()
+                    ModuleConfigs.create()
+                        .llmModuleConfig(llmConfig)
                         .templatingModuleConfig(templatingConfig)
-                        .filteringModuleConfig(filteringConfig)
-                        .llmModuleConfig(llmConfig)))
+                        .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
 final CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient("default"))
-        .orchestrationV1EndpointsCreate(config); // this fails with Bad Request because the strict filter prohibits the input message
+        // this fails with Bad Request because the strict filter prohibits the input message
+        .orchestrationV1EndpointsCreate(config);
 
-final String message =
+final String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
-See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 
 ### Set model parameters
@@ -380,8 +462,8 @@ See [an example in our Spring Boot application](e2e-test-app/src/main/java/com/s
 Change your LLM module configuration to add model parameters:
 
 ```java
-var llmModuleConfig =
-    new LLMModuleConfig()
+var llmConfig =
+    LLMModuleConfig.create()
         .modelName("gpt-35-turbo")
         .modelParams(
             Map.of(
@@ -403,23 +485,93 @@ DeploymentApi api = new DeploymentApi(client);
 
 For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
 
-## Requirements and Setup
+## Requirements and Setup for AI Core
 
-### Set AI Core credentials as environment variable
+For any AI Core service interaction, the SAP AI SDK requires credentials to be available at application runtime.
+By default, the credentials are extracted automatically from a service instance of type "aicore" bound to the application. 
+Running the application locally without this service binding will throw an exception:
 
-- Go into the BTP Cockpit
+```
+Could not find any matching service bindings for service identifier 'aicore'
+```
+
+There are multiple options to register the service binding:
+* Regular service binding in SAP BTP Cloud Foundry (resulting in `VCAP_SERVICES` env var entry).
+* Set an environment variable explicitly: `AICORE_SERVICE_KEY`
+* Define and use a _Destination_ in _BTP Destination Service_.
+* (For CAP applications) use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach _(not recommended for production)_.
+  * For example: `cds bind --to aicore --exec mvn spring-boot:run`
+* Leveraging `"user-provided"` service binding _(not recommended for production)_.
+* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` declaration in application _(not recommended for production)_.
+
+### Regular service binding in SAP BTP Cloud Foundry
+
+* Bind an existing service instance of type `aicore` to your application.
+  [With SAP BTP multiple options are available](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications): using the web interface, the CLI, MTA or manifest.
+
+<details><summary>After application restart, there should be an "aicore" entry in environment variable <code>VCAP_SERVICES</code>.</summary>
+
+```json
+{
+  "aicore": [
+      {
+        "clientid": "...",
+        "clientsecret": "...",
+        "url": "...",
+        "identityzone": "...",
+        "identityzoneid": "...",
+        "appname": "...",
+        "serviceurls": {
+          "AI_API_URL": "..."
+        }
+      }
+  ]
+}
+```
+
+</details>
+
+### Set credentials as dedicated environment variable
+
+- Go into the SAP BTP Cockpit
 - Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
-- Set it as an environment variable `aicore` in your IDE
+- Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
 
   Or in your terminal:
 ```shell
-export aicore='{   "serviceurls": {     "AI_API_URL": ...'
+export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
 ```
 
-### Run the Spring Boot application
+### Define and use a Destination
+
+* Lookup service-key credentials as explained in the previous step for `AICORE_SERVICE_KEY`.
+
+* <details><summary>Define a new destination in the SAP BTP Destination Service using the service-key credentials</summary>
+  
+  * (Destinations can be added on subaccount level and on service instance level.)
+  * (The URL field requires an additional path segment: `/v2`)
+  * **Name**: _my-aicore_
+  * **Type**: HTTP
+  * **URL**: _[serviceurls.AI_API_URL]/v2_
+  * **Proxy-Type**: Internet
+  * **Authentication**: _Oauth2ClientCredentials_
+  * **Client ID**: _[clientid]_
+  * **Client Secret**: _[clientsecret]_
+  * **Token Service URL Type**: Dedicated
+  * **Token Service URL**: _[url]_
+  
+  </details>
+
+* At application runtime the following can be executed:
+  ```java
+  Destination destination = DestinationAccessor.getDestination("my-aicore");
+  ApiClient client = Core.getClient(destination);
+  ```
+
+### Run the Spring Boot test application
 
 ```shell
-cd e2e-test-app
+cd sample-code/spring-app
 mvn spring-boot:run
 ```
 

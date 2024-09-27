@@ -131,7 +131,7 @@ public class OpenAiChatCompletionParametersTest {
   public void testCompletionParameters() {
     var params =
         new OpenAiChatCompletionParameters()
-            .setMessages(List.of(new OpenAiChatMessage.OpenAiChatUserMessage().addText("foo")))
+            .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText("foo"))
             .setResponseFormat(JSON_OBJECT);
 
     // serialization check

@@ -19,6 +19,7 @@ import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationLoader;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -26,8 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -62,7 +63,6 @@ public class Core {
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments = new DeploymentApi(getClient(getDestination())).query(resourceGroup);
-    Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()
         .filter(deployment -> "orchestration".equals(deployment.getScenarioId()))
@@ -74,7 +74,7 @@ public class Core {
 
   /**
    * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
-   * aicore}.</b>
+   * AICORE_SERVICE_KEY}.</b>
    *
    * @return a generic <code>AI Core</code> ApiClient.
    */
@@ -114,14 +114,28 @@ public class Core {
   }
 
   /**
-   * <b>Requires an AI Core service binding OR a service key in the environment variable {@code
-   * aicore}.</b>
+   * Get a destination pointing to the AI Core service.
+   *
+   * <p><b>Requires an AI Core service binding OR a service key in the environment variable {@code
+   * AICORE_SERVICE_KEY}.</b>
    *
    * @return a destination pointing to the AI Core service.
    */
   @Nonnull
   public static Destination getDestination() {
-    final var serviceKey = System.getenv("aicore");
+    final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
+    return getDestination(serviceKey);
+  }
+
+  /**
+   * <b>For testing only</b>
+   *
+   * <p>Get a destination pointing to the AI Core service.
+   *
+   * @param serviceKey The service key in JSON format.
+   * @return a destination pointing to the AI Core service.
+   */
+  static HttpDestination getDestination(@Nullable final String serviceKey) {
     final var serviceKeyPresent = serviceKey != null;
     final var aiCoreBindingPresent =
         DefaultServiceBindingAccessor.getInstance().getServiceBindings().stream()
@@ -147,6 +161,7 @@ public class Core {
             // generated code this is actually necessary, because the generated code assumes this
             // path to be present on the destination
             .uri(destination.getUri().resolve("/v2"))
+            .header("AI-Client-Type", "AI SDK Java")
             .build();
     return destination;
   }
@@ -160,7 +175,7 @@ public class Core {
   private static void addServiceBinding(@Nonnull final String serviceKey) {
     log.info(
         """
-          Found a service key in environment variable "aicore".
+          Found a service key in environment variable "AICORE_SERVICE_KEY".
           Using a service key is recommended for local testing only.
           Bind the AI Core service to the application for productive usage.""");
 
@@ -169,7 +184,7 @@ public class Core {
       credentials = new ObjectMapper().readValue(serviceKey, new TypeReference<>() {});
     } catch (JsonProcessingException e) {
       throw new AiCoreCredentialsInvalidException(
-          "Error in parsing service key from the \"aicore\" environment variable.", e);
+          "Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.", e);
     }
 
     final var binding =
@@ -244,7 +259,6 @@ public class Core {
       @Nonnull final String modelName, @Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments = new DeploymentApi(getClient()).query(resourceGroup);
-    Objects.requireNonNull(deployments, "Deployment get request failed");
 
     return deployments.getResources().stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
@@ -267,10 +281,14 @@ public class Core {
     if (resources == null) {
       return false;
     }
-    if (!resources.getCustomFieldNames().contains("backend_details")) {
-      return false;
+    Object detailsObject = resources.getBackendDetails();
+    // workaround for AIWDF-2124
+    if (detailsObject == null) {
+      if (!resources.getCustomFieldNames().contains("backend_details")) {
+        return false;
+      }
+      detailsObject = resources.getCustomField("backend_details");
     }
-    final var detailsObject = resources.getCustomField("backend_details");
 
     if (detailsObject instanceof Map<?, ?> details
         && details.get("model") instanceof Map<?, ?> model
