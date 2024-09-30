@@ -57,7 +57,7 @@ def _update_version_tag(pom_file, sdk_version):
         parent_tags[0].find("xmlns:version", namespaces=namespaces).text = sdk_version
 
     # not sure why, but tree.write() (as used in other functions) produces a differently formatted XML declaration...
-    # that's why we the file is written in this kind of hacky manner
+    # that's why the file is written in this kind of hacky manner
     with open(pom_file, "w") as f:
         f.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + ElementTree.tostring(root).decode() + "\n")
 
