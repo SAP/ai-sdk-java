@@ -34,65 +34,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Default entities supported by data privacy and integration service
+ * Gets or Sets DataRepositoryType
  */
-public enum DPIEntities {
+public enum DataRepositoryType {
   
-  PERSON("profile-person"),
+  VECTOR("vector"),
   
-  ORG("profile-org"),
-  
-  UNIVERSITY("profile-university"),
-  
-  LOCATION("profile-location"),
-  
-  EMAIL("profile-email"),
-  
-  PHONE("profile-phone"),
-  
-  ADDRESS("profile-address"),
-  
-  SAPIDS_INTERNAL("profile-sapids-internal"),
-  
-  SAPIDS_PUBLIC("profile-sapids-public"),
-  
-  URL("profile-url"),
-  
-  USERNAME_PASSWORD("profile-username-password"),
-  
-  NATIONALID("profile-nationalid"),
-  
-  IBAN("profile-iban"),
-  
-  SSN("profile-ssn"),
-  
-  CREDIT_CARD_NUMBER("profile-credit-card-number"),
-  
-  PASSPORT("profile-passport"),
-  
-  DRIVERLICENSE("profile-driverlicense"),
-  
-  NATIONALITY("profile-nationality"),
-  
-  RELIGIOUS_GROUP("profile-religious-group"),
-  
-  POLITICAL_GROUP("profile-political-group"),
-  
-  PRONOUNS_GENDER("profile-pronouns-gender"),
-  
-  GENDER("profile-gender"),
-  
-  SEXUAL_ORIENTATION("profile-sexual-orientation"),
-  
-  TRADE_UNION("profile-trade-union"),
-  
-  SENSITIVE_DATA("profile-sensitive-data"),
+  HELP_SAP_COM("help.sap.com"),
   
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  DPIEntities(String value) {
+  DataRepositoryType(String value) {
     this.value = value;
   }
 
@@ -120,13 +74,13 @@ public enum DPIEntities {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static DPIEntities fromValue(@Nonnull final String value) {
-    for (final DPIEntities b : DPIEntities.values()) {
+  public static DataRepositoryType fromValue(@Nonnull final String value) {
+    for (final DataRepositoryType b : DataRepositoryType.values()) {
       if (b.value.equals(value)) {
         return b;
       }
     }
-    return UNKNOWN_DEFAULT_OPEN_API;
+    return null;
   }
 }
 

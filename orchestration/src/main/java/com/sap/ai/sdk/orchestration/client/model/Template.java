@@ -26,9 +26,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.Template;
-import com.sap.ai.sdk.orchestration.client.model.TemplateRef;
-import com.sap.ai.sdk.orchestration.client.model.TemplateRefTemplateRef;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,10 +40,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * TemplatingModuleConfig
+ * Template
  */
 // CHECKSTYLE:OFF
-public class TemplatingModuleConfig 
+public class Template 
 // CHECKSTYLE:ON
 {
   @JsonProperty("template")
@@ -55,30 +52,27 @@ public class TemplatingModuleConfig
   @JsonProperty("defaults")
   private Object defaults;
 
-  @JsonProperty("template_ref")
-  private TemplateRefTemplateRef templateRef;
-
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected TemplatingModuleConfig() {  }
+  protected Template() {  }
 
   /**
-   * Set the template of this {@link TemplatingModuleConfig} instance and return the same instance.
+   * Set the template of this {@link Template} instance and return the same instance.
    *
    * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-   * @return The same instance of this {@link TemplatingModuleConfig} class
+   * @return The same instance of this {@link Template} class
    */
-  @Nonnull public TemplatingModuleConfig template( @Nonnull final List<ChatMessage> template) {
+  @Nonnull public Template template( @Nonnull final List<ChatMessage> template) {
     this.template = template;
     return this;
   }
   /**
-   * Add one template instance to this {@link TemplatingModuleConfig}.
+   * Add one template instance to this {@link Template}.
    * @param templateItem The template that should be added
-   * @return The same instance of type {@link TemplatingModuleConfig}
+   * @return The same instance of type {@link Template}
    */
-  @Nonnull public TemplatingModuleConfig addTemplateItem( @Nonnull final ChatMessage templateItem) {
+  @Nonnull public Template addTemplateItem( @Nonnull final ChatMessage templateItem) {
     if (this.template == null) {
       this.template = new ArrayList<>();
     }
@@ -88,14 +82,14 @@ public class TemplatingModuleConfig
 
   /**
    * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-   * @return template  The template of this {@link TemplatingModuleConfig} instance.
+   * @return template  The template of this {@link Template} instance.
    */
   @Nonnull public List<ChatMessage> getTemplate() {
     return template;
   }
 
   /**
-   * Set the template of this {@link TemplatingModuleConfig} instance.
+   * Set the template of this {@link Template} instance.
    *
    * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
    */
@@ -104,26 +98,26 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Set the defaults of this {@link TemplatingModuleConfig} instance and return the same instance.
+   * Set the defaults of this {@link Template} instance and return the same instance.
    *
    * @param defaults  Optional default values for the template. If a parameter has no default it is required.
-   * @return The same instance of this {@link TemplatingModuleConfig} class
+   * @return The same instance of this {@link Template} class
    */
-  @Nonnull public TemplatingModuleConfig defaults( @Nullable final Object defaults) {
+  @Nonnull public Template defaults( @Nullable final Object defaults) {
     this.defaults = defaults;
     return this;
   }
 
   /**
    * Optional default values for the template. If a parameter has no default it is required.
-   * @return defaults  The defaults of this {@link TemplatingModuleConfig} instance.
+   * @return defaults  The defaults of this {@link Template} instance.
    */
   @Nonnull public Object getDefaults() {
     return defaults;
   }
 
   /**
-   * Set the defaults of this {@link TemplatingModuleConfig} instance.
+   * Set the defaults of this {@link Template} instance.
    *
    * @param defaults  Optional default values for the template. If a parameter has no default it is required.
    */
@@ -132,35 +126,7 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Set the templateRef of this {@link TemplatingModuleConfig} instance and return the same instance.
-   *
-   * @param templateRef  The templateRef of this {@link TemplatingModuleConfig}
-   * @return The same instance of this {@link TemplatingModuleConfig} class
-   */
-  @Nonnull public TemplatingModuleConfig templateRef( @Nonnull final TemplateRefTemplateRef templateRef) {
-    this.templateRef = templateRef;
-    return this;
-  }
-
-  /**
-   * Get templateRef
-   * @return templateRef  The templateRef of this {@link TemplatingModuleConfig} instance.
-   */
-  @Nonnull public TemplateRefTemplateRef getTemplateRef() {
-    return templateRef;
-  }
-
-  /**
-   * Set the templateRef of this {@link TemplatingModuleConfig} instance.
-   *
-   * @param templateRef  The templateRef of this {@link TemplatingModuleConfig}
-   */
-  public void setTemplateRef( @Nonnull final TemplateRefTemplateRef templateRef) {
-    this.templateRef = templateRef;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link TemplatingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link Template}.
    * @return The set of properties names
    */
   @JsonIgnore
@@ -170,7 +136,7 @@ public class TemplatingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TemplatingModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link Template} instance.
    * @param name  The name of the property
    * @return The value of the property
    * @throws NoSuchElementException  If no property with the given name could be found.
@@ -178,13 +144,13 @@ public class TemplatingModuleConfig
   @Nullable
   public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
-        throw new NoSuchElementException("TemplatingModuleConfig has no field with name '" + name + "'.");
+        throw new NoSuchElementException("Template has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link TemplatingModuleConfig} instance. If the map previously contained a mapping
+   * Set an unrecognizable property of this {@link Template} instance. If the map previously contained a mapping
    * for the key, the old value is replaced by the specified value.
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -204,25 +170,23 @@ public class TemplatingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplatingModuleConfig templatingModuleConfig = (TemplatingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, templatingModuleConfig.cloudSdkCustomFields) &&
-        Objects.equals(this.template, templatingModuleConfig.template) &&
-        Objects.equals(this.defaults, templatingModuleConfig.defaults) &&
-        Objects.equals(this.templateRef, templatingModuleConfig.templateRef);
+    final Template template = (Template) o;
+    return Objects.equals(this.cloudSdkCustomFields, template.cloudSdkCustomFields) &&
+        Objects.equals(this.template, template.template) &&
+        Objects.equals(this.defaults, template.defaults);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(template, defaults, templateRef, cloudSdkCustomFields);
+    return Objects.hash(template, defaults, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TemplatingModuleConfig {\n");
+    sb.append("class Template {\n");
     sb.append("    template: ").append(toIndentedString(template)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
-    sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
     cloudSdkCustomFields.forEach((k,v) -> sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
@@ -240,43 +204,31 @@ public class TemplatingModuleConfig
   }
 
     /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link TemplatingModuleConfig} instance with all required arguments.
+    * Create a type-safe, fluent-api builder object to construct a new {@link Template} instance with all required arguments.
     */
     public static Builder create() {
-        return (template) -> (templateRef) -> new TemplatingModuleConfig().template(template).templateRef(templateRef);
+        return (template) -> new Template().template(template);
     }
     /**
     * Builder helper class.
     */
     public interface Builder {
         /**
-        * Set the template of this {@link TemplatingModuleConfig} instance.
+        * Set the template of this {@link Template} instance.
         *
         * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-        * @return The TemplatingModuleConfig builder.
+        * @return The Template instance.
         */
-        Builder1 template( @Nonnull final List<ChatMessage> template);
+        Template template( @Nonnull final List<ChatMessage> template);
         /**
-        * Set the template of this {@link TemplatingModuleConfig} instance.
+        * Set the template of this {@link Template} instance.
         *
         * @param template  A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-        * @return The TemplatingModuleConfig builder.
+        * @return The Template instance.
         */
-        default Builder1 template( @Nonnull final ChatMessage... template) {
+        default Template template( @Nonnull final ChatMessage... template) {
             return template(Arrays.asList(template));
         }
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the templateRef of this {@link TemplatingModuleConfig} instance.
-        *
-        * @param templateRef  The templateRef of this {@link TemplatingModuleConfig}
-        * @return The TemplatingModuleConfig instance.
-        */
-        TemplatingModuleConfig templateRef( @Nonnull final TemplateRefTemplateRef templateRef);
     }
 
 }

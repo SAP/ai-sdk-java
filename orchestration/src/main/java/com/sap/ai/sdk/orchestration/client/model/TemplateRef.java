@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.sap.ai.sdk.orchestration.client.model.TemplateRefTemplateRef;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -36,81 +37,50 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * ChatMessage
+ * TemplateRef
  */
 // CHECKSTYLE:OFF
-public class ChatMessage 
+public class TemplateRef 
 // CHECKSTYLE:ON
 {
-  @JsonProperty("role")
-  private String role;
-
-  @JsonProperty("content")
-  private String content;
+  @JsonProperty("template_ref")
+  private TemplateRefTemplateRef templateRef;
 
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected ChatMessage() {  }
+  protected TemplateRef() {  }
 
   /**
-   * Set the role of this {@link ChatMessage} instance and return the same instance.
+   * Set the templateRef of this {@link TemplateRef} instance and return the same instance.
    *
-   * @param role  The role of this {@link ChatMessage}
-   * @return The same instance of this {@link ChatMessage} class
+   * @param templateRef  The templateRef of this {@link TemplateRef}
+   * @return The same instance of this {@link TemplateRef} class
    */
-  @Nonnull public ChatMessage role( @Nonnull final String role) {
-    this.role = role;
+  @Nonnull public TemplateRef templateRef( @Nonnull final TemplateRefTemplateRef templateRef) {
+    this.templateRef = templateRef;
     return this;
   }
 
   /**
-   * Get role
-   * @return role  The role of this {@link ChatMessage} instance.
+   * Get templateRef
+   * @return templateRef  The templateRef of this {@link TemplateRef} instance.
    */
-  @Nonnull public String getRole() {
-    return role;
+  @Nonnull public TemplateRefTemplateRef getTemplateRef() {
+    return templateRef;
   }
 
   /**
-   * Set the role of this {@link ChatMessage} instance.
+   * Set the templateRef of this {@link TemplateRef} instance.
    *
-   * @param role  The role of this {@link ChatMessage}
+   * @param templateRef  The templateRef of this {@link TemplateRef}
    */
-  public void setRole( @Nonnull final String role) {
-    this.role = role;
+  public void setTemplateRef( @Nonnull final TemplateRefTemplateRef templateRef) {
+    this.templateRef = templateRef;
   }
 
   /**
-   * Set the content of this {@link ChatMessage} instance and return the same instance.
-   *
-   * @param content  The content of this {@link ChatMessage}
-   * @return The same instance of this {@link ChatMessage} class
-   */
-  @Nonnull public ChatMessage content( @Nonnull final String content) {
-    this.content = content;
-    return this;
-  }
-
-  /**
-   * Get content
-   * @return content  The content of this {@link ChatMessage} instance.
-   */
-  @Nonnull public String getContent() {
-    return content;
-  }
-
-  /**
-   * Set the content of this {@link ChatMessage} instance.
-   *
-   * @param content  The content of this {@link ChatMessage}
-   */
-  public void setContent( @Nonnull final String content) {
-    this.content = content;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link ChatMessage}.
+   * Get the names of the unrecognizable properties of the {@link TemplateRef}.
    * @return The set of properties names
    */
   @JsonIgnore
@@ -120,7 +90,7 @@ public class ChatMessage
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ChatMessage} instance.
+   * Get the value of an unrecognizable property of this {@link TemplateRef} instance.
    * @param name  The name of the property
    * @return The value of the property
    * @throws NoSuchElementException  If no property with the given name could be found.
@@ -128,13 +98,13 @@ public class ChatMessage
   @Nullable
   public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
-        throw new NoSuchElementException("ChatMessage has no field with name '" + name + "'.");
+        throw new NoSuchElementException("TemplateRef has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ChatMessage} instance. If the map previously contained a mapping
+   * Set an unrecognizable property of this {@link TemplateRef} instance. If the map previously contained a mapping
    * for the key, the old value is replaced by the specified value.
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -154,23 +124,21 @@ public class ChatMessage
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ChatMessage chatMessage = (ChatMessage) o;
-    return Objects.equals(this.cloudSdkCustomFields, chatMessage.cloudSdkCustomFields) &&
-        Objects.equals(this.role, chatMessage.role) &&
-        Objects.equals(this.content, chatMessage.content);
+    final TemplateRef templateRef = (TemplateRef) o;
+    return Objects.equals(this.cloudSdkCustomFields, templateRef.cloudSdkCustomFields) &&
+        Objects.equals(this.templateRef, templateRef.templateRef);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(role, content, cloudSdkCustomFields);
+    return Objects.hash(templateRef, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ChatMessage {\n");
-    sb.append("    role: ").append(toIndentedString(role)).append("\n");
-    sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    sb.append("class TemplateRef {\n");
+    sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
     cloudSdkCustomFields.forEach((k,v) -> sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
@@ -188,34 +156,22 @@ public class ChatMessage
   }
 
     /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link ChatMessage} instance with all required arguments.
+    * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRef} instance with all required arguments.
     */
     public static Builder create() {
-        return (role) -> (content) -> new ChatMessage().role(role).content(content);
+        return (templateRef) -> new TemplateRef().templateRef(templateRef);
     }
     /**
     * Builder helper class.
     */
     public interface Builder {
         /**
-        * Set the role of this {@link ChatMessage} instance.
+        * Set the templateRef of this {@link TemplateRef} instance.
         *
-        * @param role  The role of this {@link ChatMessage}
-        * @return The ChatMessage builder.
+        * @param templateRef  The templateRef of this {@link TemplateRef}
+        * @return The TemplateRef instance.
         */
-        Builder1 role( @Nonnull final String role);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder1 {
-        /**
-        * Set the content of this {@link ChatMessage} instance.
-        *
-        * @param content  The content of this {@link ChatMessage}
-        * @return The ChatMessage instance.
-        */
-        ChatMessage content( @Nonnull final String content);
+        TemplateRef templateRef( @Nonnull final TemplateRefTemplateRef templateRef);
     }
 
 }

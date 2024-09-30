@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -37,50 +36,56 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * DPIEntityConfig
+ * Stream options for output filtering. Will be ignored if stream is false.
  */
 // CHECKSTYLE:OFF
-public class DPIEntityConfig 
+public class FilteringStreamOptions 
 // CHECKSTYLE:ON
 {
-  @JsonProperty("type")
-  private DPIEntities type;
+  @JsonProperty("overlap")
+  private Integer overlap = 0;
 
   @JsonAnySetter
   @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-  protected DPIEntityConfig() {  }
+  protected FilteringStreamOptions() {  }
 
   /**
-   * Set the type of this {@link DPIEntityConfig} instance and return the same instance.
+   * Set the overlap of this {@link FilteringStreamOptions} instance and return the same instance.
    *
-   * @param type  Type of entity to be masked
-   * @return The same instance of this {@link DPIEntityConfig} class
+   * @param overlap  Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.
+   * Minimum: 0
+   * Maximum: 10000
+   * @return The same instance of this {@link FilteringStreamOptions} class
    */
-  @Nonnull public DPIEntityConfig type( @Nonnull final DPIEntities type) {
-    this.type = type;
+  @Nonnull public FilteringStreamOptions overlap( @Nullable final Integer overlap) {
+    this.overlap = overlap;
     return this;
   }
 
   /**
-   * Type of entity to be masked
-   * @return type  The type of this {@link DPIEntityConfig} instance.
+   * Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.
+   * minimum: 0
+   * maximum: 10000
+   * @return overlap  The overlap of this {@link FilteringStreamOptions} instance.
    */
-  @Nonnull public DPIEntities getType() {
-    return type;
+  @Nonnull public Integer getOverlap() {
+    return overlap;
   }
 
   /**
-   * Set the type of this {@link DPIEntityConfig} instance.
+   * Set the overlap of this {@link FilteringStreamOptions} instance.
    *
-   * @param type  Type of entity to be masked
+   * @param overlap  Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.
+   * Minimum: 0
+   * Maximum: 10000
    */
-  public void setType( @Nonnull final DPIEntities type) {
-    this.type = type;
+  public void setOverlap( @Nullable final Integer overlap) {
+    this.overlap = overlap;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DPIEntityConfig}.
+   * Get the names of the unrecognizable properties of the {@link FilteringStreamOptions}.
    * @return The set of properties names
    */
   @JsonIgnore
@@ -90,7 +95,7 @@ public class DPIEntityConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DPIEntityConfig} instance.
+   * Get the value of an unrecognizable property of this {@link FilteringStreamOptions} instance.
    * @param name  The name of the property
    * @return The value of the property
    * @throws NoSuchElementException  If no property with the given name could be found.
@@ -98,13 +103,13 @@ public class DPIEntityConfig
   @Nullable
   public Object getCustomField( @Nonnull final String name ) throws NoSuchElementException {
     if( !cloudSdkCustomFields.containsKey(name) ) {
-        throw new NoSuchElementException("DPIEntityConfig has no field with name '" + name + "'.");
+        throw new NoSuchElementException("FilteringStreamOptions has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link DPIEntityConfig} instance. If the map previously contained a mapping
+   * Set an unrecognizable property of this {@link FilteringStreamOptions} instance. If the map previously contained a mapping
    * for the key, the old value is replaced by the specified value.
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -124,21 +129,21 @@ public class DPIEntityConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DPIEntityConfig dpIEntityConfig = (DPIEntityConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, dpIEntityConfig.cloudSdkCustomFields) &&
-        Objects.equals(this.type, dpIEntityConfig.type);
+    final FilteringStreamOptions filteringStreamOptions = (FilteringStreamOptions) o;
+    return Objects.equals(this.cloudSdkCustomFields, filteringStreamOptions.cloudSdkCustomFields) &&
+        Objects.equals(this.overlap, filteringStreamOptions.overlap);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(overlap, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DPIEntityConfig {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("class FilteringStreamOptions {\n");
+    sb.append("    overlap: ").append(toIndentedString(overlap)).append("\n");
     cloudSdkCustomFields.forEach((k,v) -> sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
@@ -156,22 +161,10 @@ public class DPIEntityConfig
   }
 
     /**
-    * Create a type-safe, fluent-api builder object to construct a new {@link DPIEntityConfig} instance with all required arguments.
+    * Create a new {@link FilteringStreamOptions} instance. No arguments are required.
     */
-    public static Builder create() {
-        return (type) -> new DPIEntityConfig().type(type);
-    }
-    /**
-    * Builder helper class.
-    */
-    public interface Builder {
-        /**
-        * Set the type of this {@link DPIEntityConfig} instance.
-        *
-        * @param type  Type of entity to be masked
-        * @return The DPIEntityConfig instance.
-        */
-        DPIEntityConfig type( @Nonnull final DPIEntities type);
+    public static FilteringStreamOptions create() {
+        return new FilteringStreamOptions();
     }
 
 }
