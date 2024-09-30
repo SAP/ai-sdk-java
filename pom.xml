@@ -46,7 +46,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cloud-sdk.version>5.12.0</cloud-sdk.version>
+    <cloud-sdk.version>5.13.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.0</junit-jupiter.version>
     <wiremock.version>3.9.1</wiremock.version>
     <assertj-core.version>3.26.3</assertj-core.version>
@@ -402,7 +402,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.3</version>
+        <version>4.8.6.4</version>
         <configuration>
           <includeFilterFile>.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
