@@ -188,30 +188,6 @@
           <skipTests>${skipTests}</skipTests>
         </configuration>
       </plugin>
-      <!-- Skip release -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>deploy-file</goal>
-            </goals>
-            <phase>deploy</phase>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </execution>
-          <execution>
-            <id>default-deploy</id>
-            <goals/>
-            <phase>deploy</phase>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 </project>
