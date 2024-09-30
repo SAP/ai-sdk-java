@@ -34,6 +34,6 @@ public class ScenarioController {
   @GetMapping("/models")
   @Nullable
   public AiModelList getModels() {
-    return API.get_0("foundation-models", "default");
+    return API.queryModels("foundation-models", "default");
   }
 }
