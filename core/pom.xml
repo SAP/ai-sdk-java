@@ -176,6 +176,9 @@
                 <pojoBuildMethodName/>
                 <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                 <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                <removeOperationIdPrefix>true</removeOperationIdPrefix>
+                <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
+                <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
               </additionalProperties>
             </configuration>
           </execution>

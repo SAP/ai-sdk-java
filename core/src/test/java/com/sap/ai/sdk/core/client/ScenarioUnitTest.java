@@ -54,8 +54,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiScenarioList scenarioList =
-        new ScenarioApi(getClient(destination)).scenarioQuery("default");
+    final AiScenarioList scenarioList = new ScenarioApi(getClient(destination)).query("default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
@@ -95,8 +94,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         """)));
 
     final AiVersionList versionList =
-        new ScenarioApi(getClient(destination))
-            .scenarioQueryVersions("default", "foundation-models");
+        new ScenarioApi(getClient(destination)).queryVersions("default", "foundation-models");
 
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
@@ -137,7 +135,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         """)));
 
     final AiScenario scenario =
-        new ScenarioApi(getClient(destination)).scenarioGet("default", "foundation-models");
+        new ScenarioApi(getClient(destination)).get("default", "foundation-models");
 
     assertThat(scenario).isNotNull();
     assertThat(scenario.getCreatedAt()).isEqualTo("2023-11-03T14:02:46+00:00");
@@ -183,7 +181,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                             """)));
 
     final AiModelList scenarioList =
-        new ScenarioApi(getClient(destination)).modelsGet("foundation-models", "default");
+        new ScenarioApi(getClient(destination)).queryModels("foundation-models", "default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
@@ -197,8 +195,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
     AiModelVersion aiModelVersion = scenario.getVersions().get(0);
     assertThat(aiModelVersion.getName()).isEqualTo("202407");
     assertThat(aiModelVersion.isIsLatest()).isTrue();
-    // deprecated and retirementDate properties are not defined in spec.
-    assertThat(aiModelVersion.getCustomField("deprecated")).isEqualTo(false);
-    assertThat(aiModelVersion.getCustomField("retirementDate")).isEqualTo("");
+    assertThat(aiModelVersion.isDeprecated()).isEqualTo(false);
+    assertThat(aiModelVersion.getRetirementDate()).isEqualTo("");
   }
 }
