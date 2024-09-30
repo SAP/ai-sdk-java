@@ -381,7 +381,7 @@
             <goals>
               <goal>apply</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>process-sources</phase>
           </execution>
         </executions>
       </plugin>
