@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 class DeploymentController {
 
   private static final DeploymentApi API = new DeploymentApi(getClient());
+  private static final String AI_RESOURCE_GROUP = "default";
 
   /**
    * Create and delete a deployment with the Java specific configuration ID
@@ -45,11 +46,11 @@ class DeploymentController {
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
-        API.create("default", AiDeploymentCreationRequest.create().configurationId(configId));
+        API.create(AI_RESOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
-    return API.delete("default", deployment.getId());
+    return API.delete(AI_RESOURCE_GROUP, deployment.getId());
   }
 
   /**
@@ -73,7 +74,7 @@ class DeploymentController {
         .map(
             deployment ->
                 API.modify(
-                    "default",
+                    AI_RESOURCE_GROUP,
                     deployment.getId(),
                     AiDeploymentModificationRequest.create()
                         .targetStatus(AiDeploymentTargetStatus.STOPPED)))
@@ -98,7 +99,7 @@ class DeploymentController {
 
     // DELETE my deployments
     return myDeployments.stream()
-        .map(deployment -> API.delete("default", deployment.getId()))
+        .map(deployment -> API.delete(AI_RESOURCE_GROUP, deployment.getId()))
         .toList();
   }
 
@@ -111,7 +112,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
-    final AiDeploymentList deploymentList = API.query("default");
+    final AiDeploymentList deploymentList = API.query(AI_RESOURCE_GROUP);
 
     return deploymentList.getResources().stream()
         .filter(deployment -> configId.equals(deployment.getConfigurationId()))
@@ -126,38 +127,40 @@ class DeploymentController {
   @GetMapping("/getAll")
   @Nullable
   public AiDeploymentList getAll() {
-    return API.query("default");
+    return API.query(AI_RESOURCE_GROUP);
   }
 
   /**
    * Create a configuration, and deploy it.
    *
+   * <p>This is to be invoked from a unit test.
+   *
+   * @param model The OpenAI model to deploy
    * @return the deployment creation response
    */
-  @GetMapping("/createConfigToDeploy")
   @Nonnull
-  public AiDeploymentCreationResponse createConfigToDeploy() {
+  public AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
 
     // Create a configuration
-    final String model = OpenAiModel.DALL_E_3.model();
-    final var modelNameParameter = AiParameterArgumentBinding.create().key("model").value(model);
+    final var modelNameParameter =
+        AiParameterArgumentBinding.create().key("model").value(model.model());
     final var modelVersion =
         AiParameterArgumentBinding.create().key("modelVersion").value("latest");
     final var configurationBaseData =
         AiConfigurationBaseData.create()
-            .name(model)
+            .name(model.model())
             .executableId("azure-openai")
             .scenarioId("foundation-models")
             .addParameterBindingsItem(modelNameParameter)
             .addParameterBindingsItem(modelVersion);
 
     final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi(getClient()).configurationCreate("default", configurationBaseData);
+        new ConfigurationApi(getClient()).create(AI_RESOURCE_GROUP, configurationBaseData);
 
     // Create a deployment from the configuration
     final var deploymentCreationRequest =
         AiDeploymentCreationRequest.create().configurationId(configuration.getId());
 
-    return API.deploymentCreate("default", deploymentCreationRequest);
+    return API.create(AI_RESOURCE_GROUP, deploymentCreationRequest);
   }
 }
