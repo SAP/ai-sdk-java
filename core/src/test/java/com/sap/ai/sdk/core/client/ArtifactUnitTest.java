@@ -141,8 +141,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                             """)));
 
     final AiArtifact artifact =
-        new ArtifactApi(getClient(destination))
-            .get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
+        new ArtifactApi(client).get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
 
     assertThat(artifact).isNotNull();
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-08-23T09:13:21Z");

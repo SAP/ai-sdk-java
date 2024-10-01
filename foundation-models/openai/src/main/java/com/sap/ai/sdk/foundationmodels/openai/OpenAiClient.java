@@ -59,7 +59,7 @@ public final class OpenAiClient {
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel) {
     final var destination =
-            new AiCoreService()
+        new AiCoreService()
             .withDeploymentByModel(foundationModel.model())
             .withResourceGroup("default")
             .destination();

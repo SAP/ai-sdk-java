@@ -59,8 +59,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiConfigurationList configurationList =
-        new ConfigurationApi(client).query("default");
+    final AiConfigurationList configurationList = new ConfigurationApi(client).query("default");
 
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
@@ -184,8 +183,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         """)));
 
     final AiConfiguration configuration =
-        new ConfigurationApi(client)
-            .get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
+        new ConfigurationApi(client).get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-09-11T09:14:31Z");

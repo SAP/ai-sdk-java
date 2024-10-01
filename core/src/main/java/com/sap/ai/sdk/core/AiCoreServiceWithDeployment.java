@@ -163,7 +163,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
       @Nonnull final Predicate<AiDeployment> predicate)
       throws NoSuchElementException {
     final var deploymentService = new DeploymentApi(core.client());
-    final var deployments = deploymentService.deploymentQuery(core.getDeploymentId());
+    final var deployments = deploymentService.query(core.getDeploymentId());
 
     final var first =
         deployments.getResources().stream().filter(predicate).map(AiDeployment::getId).findFirst();
