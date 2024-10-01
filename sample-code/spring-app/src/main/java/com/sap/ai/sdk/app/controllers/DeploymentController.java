@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 class DeploymentController {
 
   private static final DeploymentApi API = new DeploymentApi(getClient());
-  private static final String AI_RESOURCE_GROUP = "default";
 
   /**
    * Create and delete a deployment with the Java specific configuration ID
@@ -45,12 +44,11 @@ class DeploymentController {
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
-        API.create(
-            AI_RESOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
+        API.create("default", AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
-    return API.delete(AI_RESOURCE_GROUP, deployment.getId());
+    return API.delete("default", deployment.getId());
   }
 
   /**
@@ -74,7 +72,7 @@ class DeploymentController {
         .map(
             deployment ->
                 API.modify(
-                    AI_RESOURCE_GROUP,
+                    "default",
                     deployment.getId(),
                     AiDeploymentModificationRequest.create()
                         .targetStatus(AiDeploymentTargetStatus.STOPPED)))
@@ -99,7 +97,7 @@ class DeploymentController {
 
     // DELETE my deployments
     return myDeployments.stream()
-        .map(deployment -> API.delete(AI_RESOURCE_GROUP, deployment.getId()))
+        .map(deployment -> API.delete("default", deployment.getId()))
         .toList();
   }
 
@@ -112,7 +110,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
-    final AiDeploymentList deploymentList = API.query(AI_RESOURCE_GROUP);
+    final AiDeploymentList deploymentList = API.query("default");
 
     return deploymentList.getResources().stream()
         .filter(deployment -> configId.equals(deployment.getConfigurationId()))
@@ -127,7 +125,7 @@ class DeploymentController {
   @GetMapping("/getAll")
   @Nullable
   public AiDeploymentList getAll() {
-    return API.query(AI_RESOURCE_GROUP);
+    return API.query("default");
   }
 
   /**
@@ -136,7 +134,7 @@ class DeploymentController {
    * <p>This is to be invoked from a unit test.
    *
    * @param model The OpenAI model to deploy
-   * @return the deployment creation responsex
+   * @return the deployment creation response
    */
   @Nonnull
   @SuppressWarnings("unused") // debug method that doesn't need to be tested
@@ -156,12 +154,12 @@ class DeploymentController {
             .addParameterBindingsItem(modelVersion);
 
     final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi(getClient()).create(AI_RESOURCE_GROUP, configurationBaseData);
+        new ConfigurationApi(getClient()).create("default", configurationBaseData);
 
     // Create a deployment from the configuration
     final var deploymentCreationRequest =
         AiDeploymentCreationRequest.create().configurationId(configuration.getId());
 
-    return API.create(AI_RESOURCE_GROUP, deploymentCreationRequest);
+    return API.create("default", deploymentCreationRequest);
   }
 }
