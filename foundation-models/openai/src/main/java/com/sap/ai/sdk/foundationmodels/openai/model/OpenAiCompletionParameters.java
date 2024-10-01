@@ -138,7 +138,7 @@ public class OpenAiCompletionParameters {
 
   /**
    * Please use {@link
-   * com.sap.ai.sdk.foundationmodels.openai.OpenAiClient#streamChatCompletion(OpenAiChatCompletionParameters)}
+   * com.sap.ai.sdk.foundationmodels.openai.OpenAiClient#streamChatCompletionDeltas(OpenAiChatCompletionParameters)}
    * instead.
    *
    * <p>Enable streaming of the completion. If enabled, partial message deltas will be sent.
