@@ -5,7 +5,6 @@ import static com.sap.ai.sdk.core.Core.getClient;
 import com.sap.ai.sdk.core.client.ScenarioApi;
 import com.sap.ai.sdk.core.client.model.AiModelList;
 import com.sap.ai.sdk.core.client.model.AiScenarioList;
-
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
