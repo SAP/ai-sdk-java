@@ -9,23 +9,24 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 /** Connectivity convenience methods for AI Core with deployment. */
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
 
   // the deployment id to be used
   @Nonnull private final Function<AiCoreServiceWithDeployment, String> deploymentId;
 
   // the base destination to be used
-  @Nonnull private final Function<AiCoreServiceWithDeployment, Destination> destination;
+  @Nonnull private final Supplier<Destination> destination;
 
   // the resource group, "default" if null
-  @Nullable private final Function<AiCoreServiceWithDeployment, String> resourceGroup;
+  @Nullable private final String resourceGroup;
 
   /**
    * Create a new instance of the AI Core service with a specific deployment id and destination.
@@ -35,14 +36,14 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    */
   public AiCoreServiceWithDeployment(
       @Nonnull final Function<AiCoreServiceWithDeployment, String> deploymentId,
-      @Nonnull final Function<AiCoreServiceWithDeployment, Destination> destination) {
+      @Nonnull final Supplier<Destination> destination) {
     this(deploymentId, destination, null);
   }
 
   @Nonnull
   @Override
   public Destination destination() {
-    final var dest = destination.apply(this).asHttp();
+    final var dest = destination.get().asHttp();
     final var builder = DefaultHttpDestination.fromDestination(dest);
     updateDestination(builder, dest);
     return builder.build();
@@ -56,18 +57,6 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    */
   @Nonnull
   public AiCoreServiceWithDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return withResourceGroup((core) -> resourceGroup);
-  }
-
-  /**
-   * Set the resource group.
-   *
-   * @param resourceGroup The resource group handler.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public AiCoreServiceWithDeployment withResourceGroup(
-      @Nonnull final Function<AiCoreServiceWithDeployment, String> resourceGroup) {
     return new AiCoreServiceWithDeployment(deploymentId, destination, resourceGroup);
   }
 
@@ -79,19 +68,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    */
   @Nonnull
   public AiCoreServiceWithDeployment withDestination(@Nonnull final Destination destination) {
-    return withDestination((core) -> destination);
-  }
-
-  /**
-   * Set the destination.
-   *
-   * @param destination The destination handler.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public AiCoreServiceWithDeployment withDestination(
-      @Nonnull final Function<AiCoreServiceWithDeployment, Destination> destination) {
-    return new AiCoreServiceWithDeployment(deploymentId, destination, resourceGroup);
+    return new AiCoreServiceWithDeployment(deploymentId, () -> destination, resourceGroup);
   }
 
   /**
@@ -113,7 +90,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    */
   @Nonnull
   protected String getResourceGroup() {
-    return resourceGroup == null ? "default" : resourceGroup.apply(this);
+    return resourceGroup == null ? "default" : resourceGroup;
   }
 
   /**

@@ -52,7 +52,7 @@ public class AiCoreService implements AiCoreServiceStub {
    */
   @Nonnull
   public AiCoreServiceWithDeployment withDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreServiceWithDeployment(c -> deploymentId, c -> this.destination());
+    return new AiCoreServiceWithDeployment(c -> deploymentId, this::destination);
   }
 
   /**
@@ -64,7 +64,7 @@ public class AiCoreService implements AiCoreServiceStub {
   @Nonnull
   public AiCoreServiceWithDeployment withDeploymentByModel(@Nonnull final String modelName) {
     final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
-    return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), c -> this.destination());
+    return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), this::destination);
   }
 
   /**
@@ -76,7 +76,7 @@ public class AiCoreService implements AiCoreServiceStub {
   @Nonnull
   public AiCoreServiceWithDeployment withDeploymentByScenario(@Nonnull final String scenarioId) {
     final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), c -> this.destination());
+    return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), this::destination);
   }
 
   /**

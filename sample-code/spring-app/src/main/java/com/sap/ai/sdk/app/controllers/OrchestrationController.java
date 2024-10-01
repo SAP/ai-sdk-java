@@ -29,12 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
 
-private static final OrchestrationCompletionApi API =
-    new OrchestrationCompletionApi(
-        new AiCoreService()
-            .withDeploymentByScenario("orchestration")
-            .withResourceGroup("default")
-            .client());
+  private static final OrchestrationCompletionApi API =
+      new OrchestrationCompletionApi(
+          new AiCoreService().withDeploymentByScenario("orchestration").client());
 
   static final String MODEL = "gpt-35-turbo";
 
