@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 /** Container for an API client and destination. */
 @FunctionalInterface
-public interface AiClientAuto {
+public interface AiCoreServiceStub {
   /**
    * Get the destination.
    *

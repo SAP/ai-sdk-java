@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.sap.ai.sdk.core.AiClient;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.OrchestrationCompletionApi;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
@@ -31,9 +31,9 @@ class OrchestrationController {
 
   private static final OrchestrationCompletionApi API =
       new OrchestrationCompletionApi(
-          AiClient.custom()
-              .forDeploymentByScenario("orchestration")
-              .resourceGroup("default")
+          new AiCoreService()
+              .withDeploymentByScenario("orchestration")
+              .withResourceGroup("default")
               .client());
 
   static final String MODEL = "gpt-35-turbo";

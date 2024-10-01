@@ -4,7 +4,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.sap.ai.sdk.core.AiClient;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -25,7 +25,7 @@ abstract class WireMockTestServer {
     wireMockServer = new WireMockServer(WIREMOCK_CONFIGURATION);
     wireMockServer.start();
     destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
-    client = AiClient.custom().withDestination(destination).client();
+    client = new AiCoreService().withDestination(destination).client();
   }
 
   // Reset WireMock before each test to ensure clean state
