@@ -75,7 +75,7 @@ See [an example pom in our Spring Boot application](sample-code/spring-app/pom.x
 public AiDeploymentCreationResponse createDeployment() {
 
   final AiDeploymentCreationResponse deployment =
-      new DeploymentApi(new AiCoreService().cllient())
+      new DeploymentApi(new AiCoreService().client())
           .create(
               "default",
               AiDeploymentCreationRequest.create()
@@ -95,7 +95,7 @@ See [an example in our Spring Boot application](sample-code/spring-app/src/main/
 ```java
 public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationResponse deployment) {
 
-  DeploymentApi client = new DeploymentApi(new AiCoreService().cllient());
+  DeploymentApi client = new DeploymentApi(new AiCoreService().client());
 
   if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
     // Only RUNNING deployments can be STOPPED
@@ -479,7 +479,7 @@ See [an example in our unit test](orchestration/src/test/java/com/sap/ai/sdk/orc
 
 To add a header to AI Core requests, use the following code:
 ```java
-ApiClient client = new AiCoreService().cllient().addDefaultHeader("header-key", "header-value");
+ApiClient client = new AiCoreService().client().addDefaultHeader("header-key", "header-value");
 DeploymentApi api = new DeploymentApi(client);
 ```
 
