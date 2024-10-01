@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -80,7 +80,6 @@ public class OpenAiCompletionParameters {
    * contain the stop sequence.
    */
   @JsonProperty("stop")
-  @Setter(value = AccessLevel.NONE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @Nullable
   private List<String> stop;
@@ -103,18 +102,51 @@ public class OpenAiCompletionParameters {
   private Double frequencyPenalty;
 
   /**
-   * <b>NOTE:</b> This method is currently not supported. Therefore, it stays protected.<br>
-   * <br>
    * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only
    * server-sent events as they become available, with the stream terminated by a `data: [DONE]`
    * message. Default: false.
    */
   @JsonProperty("stream")
-  @Setter(value = AccessLevel.NONE)
-  @Nullable
-  private Boolean stream; // TODO for implementation details, please find
+  private Boolean stream;
 
-  // https://github.com/Azure/azure-rest-api-specs/blob/3cb1b51638616435470fc10ea00de92512186ece/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-02-01/inference.json#L1149
+  /**
+   * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only
+   * <a
+   * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format">server-sent
+   * events</a> as they become available, with the stream terminated by a {@code data: [DONE]}
+   * message. Only set this when you set {@code stream: true}.
+   */
+  @JsonProperty("stream_options")
+  private OpenAiStreamOptions streamOptions;
+
+  /** "stream_options": { "include_usage": "true" } */
+  @RequiredArgsConstructor
+  @Setter
+  @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+  @EqualsAndHashCode
+  @ToString
+  public static class OpenAiStreamOptions {
+    /**
+     * If set, an additional chunk will be streamed before the {@code data: [DONE]} message. The
+     * usage field on this chunk shows the token usage statistics for the entire request, and the
+     * choices field will always be an empty array. All other chunks will also include a {@code
+     * usage} field, but with a null value.
+     */
+    @JsonProperty("include_usage")
+    private Boolean include_usage;
+  }
+
+  /**
+   * Please use {@link
+   * com.sap.ai.sdk.foundationmodels.openai.OpenAiClient#streamChatCompletionDeltas(OpenAiChatCompletionParameters)}
+   * instead.
+   *
+   * <p>Enable streaming of the completion. If enabled, partial message deltas will be sent.
+   */
+  public void enableStreaming() {
+    this.stream = true;
+    this.streamOptions = new OpenAiStreamOptions().setInclude_usage(true);
+  }
 
   /**
    * Up to four sequences where the API will stop generating further tokens. The returned text won't

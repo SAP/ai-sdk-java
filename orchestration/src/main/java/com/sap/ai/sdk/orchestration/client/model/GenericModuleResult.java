@@ -78,7 +78,7 @@ public class GenericModuleResult
    * @return The same instance of this {@link GenericModuleResult} class
    */
   @Nonnull
-  public GenericModuleResult data(@Nonnull final Object data) {
+  public GenericModuleResult data(@Nullable final Object data) {
     this.data = data;
     return this;
   }
@@ -98,7 +98,7 @@ public class GenericModuleResult
    *
    * @param data Additional data object from the module
    */
-  public void setData(@Nonnull final Object data) {
+  public void setData(@Nullable final Object data) {
     this.data = data;
   }
 

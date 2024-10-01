@@ -62,8 +62,7 @@ public class Core {
    */
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments =
-        new DeploymentApi(getClient(getDestination())).deploymentQuery(resourceGroup);
+    final var deployments = new DeploymentApi(getClient(getDestination())).query(resourceGroup);
 
     return deployments.getResources().stream()
         .filter(deployment -> "orchestration".equals(deployment.getScenarioId()))
@@ -162,6 +161,7 @@ public class Core {
             // generated code this is actually necessary, because the generated code assumes this
             // path to be present on the destination
             .uri(destination.getUri().resolve("/v2"))
+            .header("AI-Client-Type", "AI SDK Java")
             .build();
     return destination;
   }
@@ -258,7 +258,7 @@ public class Core {
   private static String getDeploymentForModel(
       @Nonnull final String modelName, @Nonnull final String resourceGroup)
       throws NoSuchElementException {
-    final var deployments = new DeploymentApi(getClient()).deploymentQuery(resourceGroup);
+    final var deployments = new DeploymentApi(getClient()).query(resourceGroup);
 
     return deployments.getResources().stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
@@ -281,10 +281,14 @@ public class Core {
     if (resources == null) {
       return false;
     }
-    if (!resources.getCustomFieldNames().contains("backend_details")) {
-      return false;
+    Object detailsObject = resources.getBackendDetails();
+    // workaround for AIWDF-2124
+    if (detailsObject == null) {
+      if (!resources.getCustomFieldNames().contains("backend_details")) {
+        return false;
+      }
+      detailsObject = resources.getCustomField("backend_details");
     }
-    final var detailsObject = resources.getCustomField("backend_details");
 
     if (detailsObject instanceof Map<?, ?> details
         && details.get("model") instanceof Map<?, ?> model

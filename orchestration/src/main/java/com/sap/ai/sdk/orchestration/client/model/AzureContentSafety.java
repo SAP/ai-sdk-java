@@ -53,7 +53,7 @@ public class AzureContentSafety
    * @return The same instance of this {@link AzureContentSafety} class
    */
   @Nonnull
-  public AzureContentSafety hate(@Nonnull final AzureThreshold hate) {
+  public AzureContentSafety hate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
@@ -73,7 +73,7 @@ public class AzureContentSafety
    *
    * @param hate The hate of this {@link AzureContentSafety}
    */
-  public void setHate(@Nonnull final AzureThreshold hate) {
+  public void setHate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
   }
 
@@ -84,7 +84,7 @@ public class AzureContentSafety
    * @return The same instance of this {@link AzureContentSafety} class
    */
   @Nonnull
-  public AzureContentSafety selfHarm(@Nonnull final AzureThreshold selfHarm) {
+  public AzureContentSafety selfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
@@ -104,7 +104,7 @@ public class AzureContentSafety
    *
    * @param selfHarm The selfHarm of this {@link AzureContentSafety}
    */
-  public void setSelfHarm(@Nonnull final AzureThreshold selfHarm) {
+  public void setSelfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
@@ -115,7 +115,7 @@ public class AzureContentSafety
    * @return The same instance of this {@link AzureContentSafety} class
    */
   @Nonnull
-  public AzureContentSafety sexual(@Nonnull final AzureThreshold sexual) {
+  public AzureContentSafety sexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
@@ -135,7 +135,7 @@ public class AzureContentSafety
    *
    * @param sexual The sexual of this {@link AzureContentSafety}
    */
-  public void setSexual(@Nonnull final AzureThreshold sexual) {
+  public void setSexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
@@ -146,7 +146,7 @@ public class AzureContentSafety
    * @return The same instance of this {@link AzureContentSafety} class
    */
   @Nonnull
-  public AzureContentSafety violence(@Nonnull final AzureThreshold violence) {
+  public AzureContentSafety violence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
@@ -166,7 +166,7 @@ public class AzureContentSafety
    *
    * @param violence The violence of this {@link AzureContentSafety}
    */
-  public void setViolence(@Nonnull final AzureThreshold violence) {
+  public void setViolence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
   }
 

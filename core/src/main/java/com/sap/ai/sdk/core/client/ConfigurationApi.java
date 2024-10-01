@@ -24,7 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.33.0.
+ * AI Core in version 2.35.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -75,7 +75,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Integer configurationCount(
+  public Integer count(
       @Nonnull final String aiResourceGroup,
       @Nullable final String scenarioId,
       @Nullable final String $search,
@@ -87,7 +87,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling configurationCount");
+          "Missing the required parameter 'aiResourceGroup' when calling count");
     }
 
     final String localVarPath =
@@ -150,9 +150,8 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Integer configurationCount(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return configurationCount(aiResourceGroup, null, null, null, null);
+  public Integer count(@Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    return count(aiResourceGroup, null, null, null, null);
   }
 
   /**
@@ -171,7 +170,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiConfigurationCreationResponse configurationCreate(
+  public AiConfigurationCreationResponse create(
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiConfigurationBaseData aiConfigurationBaseData)
       throws OpenApiRequestException {
@@ -180,13 +179,13 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling configurationCreate");
+          "Missing the required parameter 'aiResourceGroup' when calling create");
     }
 
     // verify the required parameter 'aiConfigurationBaseData' is set
     if (aiConfigurationBaseData == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiConfigurationBaseData' when calling configurationCreate");
+          "Missing the required parameter 'aiConfigurationBaseData' when calling create");
     }
 
     final String localVarPath =
@@ -241,7 +240,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiConfiguration configurationGet(
+  public AiConfiguration get(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String configurationId,
       @Nullable final String $expand)
@@ -251,13 +250,13 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling configurationGet");
+          "Missing the required parameter 'aiResourceGroup' when calling get");
     }
 
     // verify the required parameter 'configurationId' is set
     if (configurationId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'configurationId' when calling configurationGet");
+          "Missing the required parameter 'configurationId' when calling get");
     }
 
     // create path and map variables
@@ -318,10 +317,10 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiConfiguration configurationGet(
+  public AiConfiguration get(
       @Nonnull final String aiResourceGroup, @Nonnull final String configurationId)
       throws OpenApiRequestException {
-    return configurationGet(aiResourceGroup, configurationId, null);
+    return get(aiResourceGroup, configurationId, null);
   }
 
   /**
@@ -348,7 +347,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiConfigurationList configurationQuery(
+  public AiConfigurationList query(
       @Nonnull final String aiResourceGroup,
       @Nullable final String scenarioId,
       @Nullable final Integer $top,
@@ -363,7 +362,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling configurationQuery");
+          "Missing the required parameter 'aiResourceGroup' when calling query");
     }
 
     final String localVarPath =
@@ -429,8 +428,8 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiConfigurationList configurationQuery(@Nonnull final String aiResourceGroup)
+  public AiConfigurationList query(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    return configurationQuery(aiResourceGroup, null, null, null, null, null, null, null);
+    return query(aiResourceGroup, null, null, null, null, null, null, null);
   }
 }

@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /** OpenAI content filter detected result. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class OpenAiContentFilterDetectedResult extends OpenAiContentFilterResultBase {
   /** Whether the content was detected. */
   @JsonProperty("detected")

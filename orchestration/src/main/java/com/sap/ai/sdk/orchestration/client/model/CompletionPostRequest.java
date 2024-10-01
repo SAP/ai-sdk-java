@@ -88,7 +88,7 @@ public class CompletionPostRequest
    * @return The same instance of this {@link CompletionPostRequest} class
    */
   @Nonnull
-  public CompletionPostRequest inputParams(@Nonnull final Map<String, String> inputParams) {
+  public CompletionPostRequest inputParams(@Nullable final Map<String, String> inputParams) {
     this.inputParams = inputParams;
     return this;
   }
@@ -123,7 +123,7 @@ public class CompletionPostRequest
    *
    * @param inputParams The inputParams of this {@link CompletionPostRequest}
    */
-  public void setInputParams(@Nonnull final Map<String, String> inputParams) {
+  public void setInputParams(@Nullable final Map<String, String> inputParams) {
     this.inputParams = inputParams;
   }
 
@@ -136,7 +136,7 @@ public class CompletionPostRequest
    * @return The same instance of this {@link CompletionPostRequest} class
    */
   @Nonnull
-  public CompletionPostRequest messagesHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+  public CompletionPostRequest messagesHistory(@Nullable final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
     return this;
   }
@@ -174,7 +174,7 @@ public class CompletionPostRequest
    * @param messagesHistory History of chat messages. Can be used to provide system and assistant
    *     messages to set the context of the conversation. Will be merged with the template message
    */
-  public void setMessagesHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+  public void setMessagesHistory(@Nullable final List<ChatMessage> messagesHistory) {
     this.messagesHistory = messagesHistory;
   }
 

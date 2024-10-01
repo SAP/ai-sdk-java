@@ -20,7 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.33.0.
+ * AI Core in version 2.35.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -66,7 +66,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetApplicationQuota(
+  public BckndCommonResourceQuotaResponse getApplicationQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -120,9 +120,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetApplicationQuota()
-      throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetApplicationQuota(null, null);
+  public BckndCommonResourceQuotaResponse getApplicationQuota() throws OpenApiRequestException {
+    return getApplicationQuota(null, null);
   }
 
   /**
@@ -134,6 +133,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    *
    * <p><b>400</b> - The request was malformed and could thus not be processed.
    *
+   * <p><b>404</b> - The specified resource was not found
+   *
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
    * @param authorization (optional) Authorization bearer token containing a JWT token.
@@ -143,7 +144,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndDeploymentResourceQuotaResponse kubesubmitV4ResourceQuotaGetDeploymentQuota(
+  public BckndDeploymentResourceQuotaResponse getDeploymentQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -193,15 +194,16 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    *
    * <p><b>400</b> - The request was malformed and could thus not be processed.
    *
+   * <p><b>404</b> - The specified resource was not found
+   *
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
    * @return BckndDeploymentResourceQuotaResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndDeploymentResourceQuotaResponse kubesubmitV4ResourceQuotaGetDeploymentQuota()
-      throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetDeploymentQuota(null, null);
+  public BckndDeploymentResourceQuotaResponse getDeploymentQuota() throws OpenApiRequestException {
+    return getDeploymentQuota(null, null);
   }
 
   /**
@@ -220,7 +222,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota(
+  public BckndCommonResourceQuotaResponse getDockerRegistrySecretQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -276,9 +278,9 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota()
+  public BckndCommonResourceQuotaResponse getDockerRegistrySecretQuota()
       throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetDockerRegistrySecretQuota(null, null);
+    return getDockerRegistrySecretQuota(null, null);
   }
 
   /**
@@ -297,7 +299,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndExecutableResourceQuotaResponse kubesubmitV4ResourceQuotaGetExecutableQuota(
+  public BckndExecutableResourceQuotaResponse getExecutableQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -351,9 +353,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndExecutableResourceQuotaResponse kubesubmitV4ResourceQuotaGetExecutableQuota()
-      throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetExecutableQuota(null, null);
+  public BckndExecutableResourceQuotaResponse getExecutableQuota() throws OpenApiRequestException {
+    return getExecutableQuota(null, null);
   }
 
   /**
@@ -372,7 +373,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetGenericSecretQuota(
+  public BckndCommonResourceQuotaResponse getGenericSecretQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -426,9 +427,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetGenericSecretQuota()
-      throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetGenericSecretQuota(null, null);
+  public BckndCommonResourceQuotaResponse getGenericSecretQuota() throws OpenApiRequestException {
+    return getGenericSecretQuota(null, null);
   }
 
   /**
@@ -447,7 +447,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetRepositoryQuota(
+  public BckndCommonResourceQuotaResponse getRepositoryQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -501,9 +501,8 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetRepositoryQuota()
-      throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetRepositoryQuota(null, null);
+  public BckndCommonResourceQuotaResponse getRepositoryQuota() throws OpenApiRequestException {
+    return getRepositoryQuota(null, null);
   }
 
   /**
@@ -522,7 +521,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetResourceGroupQuota(
+  public BckndCommonResourceQuotaResponse getResourceGroupQuota(
       @Nullable final String authorization, @Nullable final Boolean quotaOnly)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -576,8 +575,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndCommonResourceQuotaResponse kubesubmitV4ResourceQuotaGetResourceGroupQuota()
-      throws OpenApiRequestException {
-    return kubesubmitV4ResourceQuotaGetResourceGroupQuota(null, null);
+  public BckndCommonResourceQuotaResponse getResourceGroupQuota() throws OpenApiRequestException {
+    return getResourceGroupQuota(null, null);
   }
 }

@@ -34,7 +34,10 @@ public class GroundingModuleConfig
   /** Gets or Sets groundingService */
   public enum GroundingServiceEnum {
     /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
-    DOCUMENT_GROUNDING_SERVICE("document_grounding_service");
+    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingModuleConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -78,7 +81,7 @@ public class GroundingModuleConfig
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -136,7 +139,7 @@ public class GroundingModuleConfig
    */
   @Nonnull
   public GroundingModuleConfig groundingServiceConfiguration(
-      @Nonnull
+      @Nullable
           final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
     return this;
@@ -160,7 +163,7 @@ public class GroundingModuleConfig
    *     GroundingModuleConfig}
    */
   public void setGroundingServiceConfiguration(
-      @Nonnull
+      @Nullable
           final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
     this.groundingServiceConfiguration = groundingServiceConfiguration;
   }

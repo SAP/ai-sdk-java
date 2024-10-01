@@ -34,7 +34,10 @@ public class AzureContentSafetyFilterConfig
   /** String represents name of the filter provider */
   public enum TypeEnum {
     /** The AZURE_CONTENT_SAFETY option of this AzureContentSafetyFilterConfig */
-    AZURE_CONTENT_SAFETY("azure_content_safety");
+    AZURE_CONTENT_SAFETY("azure_content_safety"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AzureContentSafetyFilterConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -78,7 +81,7 @@ public class AzureContentSafetyFilterConfig
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
@@ -133,7 +136,7 @@ public class AzureContentSafetyFilterConfig
    * @return The same instance of this {@link AzureContentSafetyFilterConfig} class
    */
   @Nonnull
-  public AzureContentSafetyFilterConfig config(@Nonnull final AzureContentSafety config) {
+  public AzureContentSafetyFilterConfig config(@Nullable final AzureContentSafety config) {
     this.config = config;
     return this;
   }
@@ -153,7 +156,7 @@ public class AzureContentSafetyFilterConfig
    *
    * @param config The config of this {@link AzureContentSafetyFilterConfig}
    */
-  public void setConfig(@Nonnull final AzureContentSafety config) {
+  public void setConfig(@Nullable final AzureContentSafety config) {
     this.config = config;
   }
 
