@@ -9,12 +9,15 @@ import io.vavr.control.Try;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ScenarioTest {
 
   @Test
-  public void declaredOpenAiModelsList() {
+  @DisplayName("Declared OpenAI models must match AI Core's available OpenAI models")
+  public void openAiModelAvailability() {
 
     // Gather the expected list of OpenAI models
     final AiModelList aiModelListResponse = new ScenarioController().getModels();
@@ -43,7 +46,7 @@ public class ScenarioTest {
       }
     }
 
-    // Compare the declared OpenAI models with the expected list of OpenAI models
+    // Assert that the declared OpenAI models match the expected list
     assertThat(declaredOpenAiModelList).hasSameElementsAs(expectedOpenAiModelList);
   }
 }
