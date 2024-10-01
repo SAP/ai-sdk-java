@@ -112,7 +112,7 @@ jobs:
           mvn
           $MVN_CLI_ARGS
           -DaltDeploymentRepository=local::file:./temp_local_repo
-          -P release
+          -Drelease
           deploy
         env:
           MAVEN_CENTRAL_USER: ${{ secrets.MAVEN_CENTRAL_USER }}

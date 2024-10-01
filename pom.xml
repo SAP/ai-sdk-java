@@ -32,7 +32,6 @@
     <module>core</module>
     <module>orchestration</module>
     <module>foundation-models/openai</module>
-    <module>sample-code/spring-app</module>
   </modules>
   <scm>
     <connection/>
@@ -167,11 +166,6 @@
           <groupId>com.sap.cloud.sdk.datamodel</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>${cloud-sdk.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -460,7 +454,23 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
   </build>
   <profiles>
     <profile>
+      <id>non-release</id>
+      <activation>
+        <property>
+          <name>!release</name>
+        </property>
+      </activation>
+      <modules>
+        <module>sample-code/spring-app</module>
+      </modules>
+    </profile>
+    <profile>
       <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
       <!-- Children projects inherit the configuration -->
       <build>
         <pluginManagement>
@@ -565,6 +575,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-deploy-plugin</artifactId>
+              <version>3.1.3</version>
               <executions>
                 <execution>
                   <goals>
