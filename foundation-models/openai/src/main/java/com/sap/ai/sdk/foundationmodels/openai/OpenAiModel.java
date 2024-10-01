@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
  *
  * @param model a deployed OpenAI model
  */
-@SuppressWarnings("unused")
 public record OpenAiModel(@Nonnull String model) {
 
   /** Azure OpenAI dall-e-3 image generate model */
