@@ -85,7 +85,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentList deploymentList = new DeploymentApi(client).deploymentQuery("default");
+    final AiDeploymentList deploymentList = new DeploymentApi(client).query("default");
 
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
@@ -139,7 +139,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         AiDeploymentCreationRequest.create()
             .configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(client).deploymentCreate("default", deploymentCreationRequest);
+        new DeploymentApi(client).create("default", deploymentCreationRequest);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEmpty();
@@ -179,7 +179,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED);
     final AiDeploymentModificationResponse deployment =
         new DeploymentApi(client)
-            .deploymentModify("default", "d19b998f347341aa", configModification);
+            .modify("default", "d19b998f347341aa", configModification);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -217,7 +217,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     final AiDeploymentDeletionResponse deployment =
-        new DeploymentApi(client).deploymentDelete("default", "d5b764fe55b3e87c");
+        new DeploymentApi(client).delete("default", "d5b764fe55b3e87c");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -262,7 +262,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     final AiDeploymentResponseWithDetails deployment =
-        new DeploymentApi(client).deploymentGet("default", "db1d64d9f06be467");
+        new DeploymentApi(client).get("default", "db1d64d9f06be467");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getConfigurationId()).isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
@@ -310,7 +310,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
             .configurationId("6ff6cb80-87db-45f0-b718-4e1d96e66332");
     final AiDeploymentModificationResponse deployment =
         new DeploymentApi(client)
-            .deploymentModify("default", "d03050a2ab7055cc", configModification);
+            .modify("default", "d03050a2ab7055cc", configModification);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d03050a2ab7055cc");
@@ -342,7 +342,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         1
                         """)));
 
-    final int count = new DeploymentApi(client).deploymentCount("default");
+    final int count = new DeploymentApi(client).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -376,7 +376,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     // to include the header on the request.
     final RTALogCommonResponse logs =
         new DeploymentApi(client.addDefaultHeader("Ai-Resource-Group", "default"))
-            .kubesubmitV4DeploymentsGetLogs("d19b998f347341aa");
+            .getLogs("d19b998f347341aa");
 
     assertThat(logs).isNotNull();
     assertThat(logs.getData().getResult()).hasSize(1);
@@ -425,7 +425,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                             AiDeploymentModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
     final AiDeploymentBulkModificationResponse bulkModificationResponse =
-        new DeploymentApi(client).deploymentBatchModify("default", bulkModificationRequest);
+        new DeploymentApi(client).batchModify("default", bulkModificationRequest);
 
     assertThat(bulkModificationResponse).isNotNull();
     assertThat(bulkModificationResponse.getDeployments()).hasSize(1);

@@ -22,7 +22,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.34.0.
+ * AI Core in version 2.35.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -69,15 +69,14 @@ public class FileApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse fileDelete(
-      @Nonnull final String path, @Nullable final String aiResourceGroup)
+  public OpenApiResponse delete(@Nonnull final String path, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
     // verify the required parameter 'path' is set
     if (path == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'path' when calling fileDelete");
+          "Missing the required parameter 'path' when calling delete");
     }
 
     // create path and map variables
@@ -136,8 +135,8 @@ public class FileApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse fileDelete(@Nonnull final String path) throws OpenApiRequestException {
-    return fileDelete(path, null);
+  public OpenApiResponse delete(@Nonnull final String path) throws OpenApiRequestException {
+    return delete(path, null);
   }
 
   /**
@@ -157,14 +156,14 @@ public class FileApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File fileDownload(@Nonnull final String path, @Nullable final String aiResourceGroup)
+  public File download(@Nonnull final String path, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
     // verify the required parameter 'path' is set
     if (path == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'path' when calling fileDownload");
+          "Missing the required parameter 'path' when calling download");
     }
 
     // create path and map variables
@@ -222,8 +221,8 @@ public class FileApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File fileDownload(@Nonnull final String path) throws OpenApiRequestException {
-    return fileDownload(path, null);
+  public File download(@Nonnull final String path) throws OpenApiRequestException {
+    return download(path, null);
   }
 
   /**
@@ -258,7 +257,7 @@ public class FileApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DSetFileCreationResponse fileUpload(
+  public DSetFileCreationResponse upload(
       @Nonnull final String path,
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean overwrite,
@@ -269,7 +268,7 @@ public class FileApi extends AbstractOpenApiService {
     // verify the required parameter 'path' is set
     if (path == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'path' when calling fileUpload");
+          "Missing the required parameter 'path' when calling upload");
     }
 
     // create path and map variables
@@ -342,8 +341,8 @@ public class FileApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DSetFileCreationResponse fileUpload(@Nonnull final String path)
+  public DSetFileCreationResponse upload(@Nonnull final String path)
       throws OpenApiRequestException {
-    return fileUpload(path, null, null, null);
+    return upload(path, null, null, null);
   }
 }

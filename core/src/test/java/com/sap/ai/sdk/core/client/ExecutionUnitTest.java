@@ -82,7 +82,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionList executionList = new ExecutionApi(client).executionQuery("default");
+    final AiExecutionList executionList = new ExecutionApi(client).query("default");
 
     assertThat(executionList).isNotNull();
     assertThat(executionList.getCount()).isEqualTo(1);
@@ -137,7 +137,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     final AiEnactmentCreationRequest enactmentCreationRequest =
         AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
     final AiExecutionCreationResponse execution =
-        new ExecutionApi(client).executionCreate("default", enactmentCreationRequest);
+        new ExecutionApi(client).create("default", enactmentCreationRequest);
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
@@ -197,7 +197,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         """)));
 
     final AiExecutionResponseWithDetails execution =
-        new ExecutionApi(client).executionGet("default", "e529e8bd58740bc9");
+        new ExecutionApi(client).get("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getCompletionTime()).isEqualTo("2024-09-09T19:10:58Z");
@@ -248,7 +248,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         """)));
 
     final AiExecutionDeletionResponse execution =
-        new ExecutionApi(client).executionDelete("default", "e529e8bd58740bc9");
+        new ExecutionApi(client).delete("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("e529e8bd58740bc9");
@@ -279,7 +279,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
             .targetStatus(AiExecutionModificationRequest.TargetStatusEnum.STOPPED);
     final AiExecutionModificationResponse aiExecutionModificationResponse =
         new ExecutionApi(client)
-            .executionModify("default", "eec3c6ea18bac6da", aiExecutionModificationRequest);
+            .modify("default", "eec3c6ea18bac6da", aiExecutionModificationRequest);
 
     assertThat(aiExecutionModificationResponse).isNotNull();
     assertThat(aiExecutionModificationResponse.getId()).isEqualTo("eec3c6ea18bac6da");
@@ -305,7 +305,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         1
                         """)));
 
-    final int count = new ExecutionApi(client).executionCount("default");
+    final int count = new ExecutionApi(client).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -337,7 +337,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
 
     final RTALogCommonResponse logResponse =
         new ExecutionApi(client.addDefaultHeader("AI-Resource-Group", "default"))
-            .kubesubmitV4ExecutionsGetLogs("ee467bea5af28adb");
+            .getLogs("ee467bea5af28adb");
 
     assertThat(logResponse).isNotNull();
     assertThat(logResponse.getData().getResult().size()).isEqualTo(1);
@@ -385,7 +385,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                             AiExecutionModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
     final AiExecutionBulkModificationResponse executionBulkModificationResponse =
-        new ExecutionApi(client).executionBatchModify("default", executionBulkModificationRequest);
+        new ExecutionApi(client).batchModify("default", executionBulkModificationRequest);
 
     assertThat(executionBulkModificationResponse).isNotNull();
     assertThat(executionBulkModificationResponse.getExecutions().size()).isEqualTo(1);
