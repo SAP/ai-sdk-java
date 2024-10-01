@@ -2,9 +2,13 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.core.Core.getClient;
 
+import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.DeploymentApi;
+import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
+import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
@@ -13,6 +17,9 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -121,5 +128,37 @@ class DeploymentController {
   @Nullable
   public AiDeploymentList getAll() {
     return API.deploymentQuery("default");
+  }
+
+  /**
+   * Create a configuration, and deploy it.
+   *
+   * @return the deployment creation response
+   */
+  @GetMapping("/createConfigToDeploy")
+  @Nonnull
+  public AiDeploymentCreationResponse createConfigToDeploy() {
+
+    // Create a configuration
+    final String model = OpenAiModel.DALL_E_3.model();
+    final var modelNameParameter = AiParameterArgumentBinding.create().key("model").value(model);
+    final var modelVersion =
+        AiParameterArgumentBinding.create().key("modelVersion").value("latest");
+    final var configurationBaseData =
+        AiConfigurationBaseData.create()
+            .name(model)
+            .executableId("azure-openai")
+            .scenarioId("foundation-models")
+            .addParameterBindingsItem(modelNameParameter)
+            .addParameterBindingsItem(modelVersion);
+
+    final AiConfigurationCreationResponse configuration =
+        new ConfigurationApi(getClient()).configurationCreate("default", configurationBaseData);
+
+    // Create a deployment from the configuration
+    final var deploymentCreationRequest =
+        AiDeploymentCreationRequest.create().configurationId(configuration.getId());
+
+    return API.deploymentCreate("default", deploymentCreationRequest);
   }
 }
