@@ -79,8 +79,15 @@ public class AiCoreService implements AiCoreServiceStub {
     return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), c -> this.destination());
   }
 
+  /**
+   * Get a destination using the default service binding loading logic.
+   *
+   * @return The destination.
+   * @throws DestinationAccessException If the destination cannot be accessed.
+   * @throws DestinationNotFoundException If the destination cannot be found.
+   */
   @Nonnull
-  private static Destination getDefaultDestination()
+  protected static Destination getDefaultDestination()
       throws DestinationAccessException, DestinationNotFoundException {
     final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);

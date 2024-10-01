@@ -65,8 +65,9 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @param resourceGroup The resource group handler.
    * @return A new instance of the AI Core service.
    */
+  @Nonnull
   public AiCoreServiceWithDeployment withResourceGroup(
-      Function<AiCoreServiceWithDeployment, String> resourceGroup) {
+      @Nonnull final Function<AiCoreServiceWithDeployment, String> resourceGroup) {
     return new AiCoreServiceWithDeployment(deploymentId, destination, resourceGroup);
   }
 
@@ -76,7 +77,8 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @param destination The destination.
    * @return A new instance of the AI Core service.
    */
-  public AiCoreServiceWithDeployment withDestination(Destination destination) {
+  @Nonnull
+  public AiCoreServiceWithDeployment withDestination(@Nonnull final Destination destination) {
     return withDestination((core) -> destination);
   }
 
@@ -86,8 +88,9 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @param destination The destination handler.
    * @return A new instance of the AI Core service.
    */
+  @Nonnull
   public AiCoreServiceWithDeployment withDestination(
-      Function<AiCoreServiceWithDeployment, Destination> destination) {
+      @Nonnull final Function<AiCoreServiceWithDeployment, Destination> destination) {
     return new AiCoreServiceWithDeployment(deploymentId, destination, resourceGroup);
   }
 
@@ -97,7 +100,8 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @param builder The new destination builder.
    * @param d The original destination.
    */
-  protected void updateDestination(DefaultHttpDestination.Builder builder, HttpDestination d) {
+  protected void updateDestination(
+      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final HttpDestination d) {
     builder.uri(d.getUri().resolve("/v2/inference/deployments/%s/".formatted(getDeploymentId())));
     builder.header("AI-Resource-Group", getResourceGroup());
   }
@@ -107,6 +111,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    *
    * @return The resource group.
    */
+  @Nonnull
   protected String getResourceGroup() {
     return resourceGroup == null ? "default" : resourceGroup.apply(this);
   }
@@ -116,6 +121,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    *
    * @return The deployment id.
    */
+  @Nonnull
   protected String getDeploymentId() {
     return deploymentId.apply(this);
   }
