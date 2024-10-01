@@ -13,9 +13,7 @@ import io.vavr.control.Try;
 import org.junit.jupiter.api.Test;
 
 public class ScenarioTest {
-
-  static final String OPENAI_MODEL_EXECUTABLE_ID = "azure-openai";
-
+  
   @Test
   public void declaredOpenAiModelsList() {
 
@@ -28,7 +26,7 @@ public class ScenarioTest {
 
     List<String> expectedOpenAiModelList = new ArrayList<>();
     for (AiModelBaseData model : aiModelList) {
-      if (OPENAI_MODEL_EXECUTABLE_ID.equals(model.getExecutableId())) {
+      if (model.getExecutableId().equals("azure-openai")) {
         expectedOpenAiModelList.add(model.getModel());
       }
     }
