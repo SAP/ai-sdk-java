@@ -21,17 +21,24 @@ import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +51,8 @@ import org.springframework.web.client.HttpClientErrorException;
 @WireMockTest
 public class OrchestrationUnitTest {
   private OrchestrationCompletionApi client;
+  private final Function<String, InputStream> TEST_FILE_LOADER =
+      filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   private static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create()
@@ -65,6 +74,33 @@ public class OrchestrationUnitTest {
                               .llmModuleConfig(LLM_CONFIG)
                               .templatingModuleConfig(templatingModuleConfig)))
               .inputParams(Map.of());
+
+  private static final Function<MaskingProviderConfig.MethodEnum, CompletionPostRequest>
+      MASKING_CONFIG =
+          (MaskingProviderConfig.MethodEnum maskingType) -> {
+            final var inputParams = Map.of("orgCV", "Patrick Morgan +49 (970) 333-3833");
+            final var template =
+                ChatMessage.create().role("user").content("What is the nationality of {{?orgCV}}");
+            final var templatingConfig = TemplatingModuleConfig.create().template(template);
+
+            final var maskingProvider =
+                MaskingProviderConfig.create()
+                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
+                    .entities(DPIEntityConfig.create().type(DPIEntities.PHONE));
+            final var maskingConfig =
+                MaskingModuleConfig.create().maskingProviders(maskingProvider);
+
+            return CompletionPostRequest.create()
+                .orchestrationConfig(
+                    OrchestrationConfig.create()
+                        .moduleConfigurations(
+                            ModuleConfigs.create()
+                                .llmModuleConfig(LLM_CONFIG)
+                                .templatingModuleConfig(templatingConfig)
+                                .maskingModuleConfig(maskingConfig)))
+                .inputParams(inputParams);
+          };
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
@@ -116,73 +152,69 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplating() throws IOException {
-    final String response =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("templatingResponse.json")
-                .readAllBytes());
-    stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+  void templating() throws IOException {
+    try (var inputStream = TEST_FILE_LOADER.apply("templatingResponse.json")) {
+      final String response = new String(inputStream.readAllBytes());
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
-    final var inputParams =
-        Map.of("input", "Reply with 'Orchestration Service is working!' in German");
+      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
+      final var template = ChatMessage.create().role("user").content("{{?input}}");
+      final var inputParams =
+          Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var result = client.orchestrationV1EndpointsCreate(config);
+      final var config =
+          TEMPLATE_CONFIG
+              .apply(TemplatingModuleConfig.create().template(template))
+              .inputParams(inputParams);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
-        .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = result.getModuleResults().getLlm();
-    assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
-    assertThat(llm.getObject()).isEqualTo("chat.completion");
-    assertThat(llm.getCreated()).isEqualTo(1721224505);
-    assertThat(llm.getModel()).isEqualTo("gpt-35-turbo-16k");
-    var choices = llm.getChoices();
-    assertThat(choices.get(0).getIndex()).isEqualTo(0);
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(7);
-    assertThat(usage.getPromptTokens()).isEqualTo(19);
-    assertThat(usage.getTotalTokens()).isEqualTo(26);
-    assertThat(result.getOrchestrationResult().getId())
-        .isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
-    assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
-    assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
-    assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
-    choices = result.getOrchestrationResult().getChoices();
-    assertThat(choices.get(0).getIndex()).isEqualTo(0);
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = result.getOrchestrationResult().getUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(7);
-    assertThat(usage.getPromptTokens()).isEqualTo(19);
-    assertThat(usage.getTotalTokens()).isEqualTo(26);
+      final var result = client.orchestrationV1EndpointsCreate(config);
 
-    // verify that null fields are absent from the sent request
-    final String request =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("templatingRequest.json")
-                .readAllBytes());
-    verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+      assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+          .isEqualTo("Reply with 'Orchestration Service is working!' in German");
+      assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
+      var llm = result.getModuleResults().getLlm();
+      assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
+      assertThat(llm.getObject()).isEqualTo("chat.completion");
+      assertThat(llm.getCreated()).isEqualTo(1721224505);
+      assertThat(llm.getModel()).isEqualTo("gpt-35-turbo-16k");
+      var choices = llm.getChoices();
+      assertThat(choices.get(0).getIndex()).isEqualTo(0);
+      assertThat(choices.get(0).getMessage().getContent())
+          .isEqualTo("Orchestration Service funktioniert!");
+      assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+      assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+      var usage = llm.getUsage();
+      assertThat(usage.getCompletionTokens()).isEqualTo(7);
+      assertThat(usage.getPromptTokens()).isEqualTo(19);
+      assertThat(usage.getTotalTokens()).isEqualTo(26);
+      assertThat(result.getOrchestrationResult().getId())
+          .isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
+      assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
+      assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
+      assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
+      choices = result.getOrchestrationResult().getChoices();
+      assertThat(choices.get(0).getIndex()).isEqualTo(0);
+      assertThat(choices.get(0).getMessage().getContent())
+          .isEqualTo("Orchestration Service funktioniert!");
+      assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+      assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+      usage = result.getOrchestrationResult().getUsage();
+      assertThat(usage.getCompletionTokens()).isEqualTo(7);
+      assertThat(usage.getPromptTokens()).isEqualTo(19);
+      assertThat(usage.getTotalTokens()).isEqualTo(26);
+
+      // verify that null fields are absent from the sent request
+      try (var requestInputStream = TEST_FILE_LOADER.apply("templatingRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(
+            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      }
+    }
   }
 
   @Test
-  void testTemplatingBadRequest() {
+  void templatingBadRequest() {
     stubFor(
         post(urlPathEqualTo("/completion"))
             .willReturn(
@@ -214,32 +246,28 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void testFilteringLoose() throws IOException {
-    final String response =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("filteringLooseResponse.json")
-                .readAllBytes());
-    stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+  void filteringLoose() throws IOException {
+    try (var inputStream = TEST_FILE_LOADER.apply("filteringLooseResponse.json")) {
+      final String response = new String(inputStream.readAllBytes());
 
-    final var config = FILTERING_CONFIG.apply(NUMBER_4);
+      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    client.orchestrationV1EndpointsCreate(config);
-    // the result is asserted in the verify step below
+      final var config = FILTERING_CONFIG.apply(NUMBER_4);
 
-    // verify that null fields are absent from the sent request
-    final String request =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("filteringLooseRequest.json")
-                .readAllBytes());
-    verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      client.orchestrationV1EndpointsCreate(config);
+      // the result is asserted in the verify step below
+
+      // verify that null fields are absent from the sent request
+      try (var requestInputStream = TEST_FILE_LOADER.apply("filteringLooseRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(
+            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      }
+    }
   }
 
   @Test
-  void testFilteringStrict() {
+  void filteringStrict() {
     final String response =
         """
             {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
@@ -253,39 +281,62 @@ public class OrchestrationUnitTest {
   }
 
   @Test
-  void testMessagesHistory() throws IOException {
-    final String response =
-        new String(
-            getClass()
-                .getClassLoader()
-                // the response is not asserted in this test
-                .getResourceAsStream("templatingResponse.json")
-                .readAllBytes());
-    stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+  void messagesHistory() throws IOException {
+    try (var inputStream = TEST_FILE_LOADER.apply("templatingResponse.json")) {
+      final String response = new String(inputStream.readAllBytes());
 
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(message))
-            .messagesHistory(messagesHistory);
+      final List<ChatMessage> messagesHistory =
+          List.of(
+              ChatMessage.create().role("user").content("What is the capital of France?"),
+              ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+      final var message =
+          ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var result = client.orchestrationV1EndpointsCreate(config);
+      final var config =
+          TEMPLATE_CONFIG
+              .apply(TemplatingModuleConfig.create().template(message))
+              .messagesHistory(messagesHistory);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+      final var result = client.orchestrationV1EndpointsCreate(config);
 
-    // verify that the history is sent correctly
-    final String request =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("messagesHistoryRequest.json")
-                .readAllBytes());
-    verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+
+      // verify that the history is sent correctly
+      try (var requestInputStream = TEST_FILE_LOADER.apply("messagesHistoryRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(
+            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      }
+    }
+  }
+
+  @Test
+  void maskingAnonymization() throws IOException {
+    try (var inputStream = TEST_FILE_LOADER.apply("maskingResponse.json")) {
+      final String response = new String(inputStream.readAllBytes());
+
+      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+
+      final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
+      final var result = client.orchestrationV1EndpointsCreate(config);
+
+      assertThat(result).isNotNull();
+      GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+      assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
+      assertThat(inputMasking.getData()).isNotNull();
+      final var choices = result.getOrchestrationResult().getChoices();
+      assertThat(choices.get(0).getMessage().getContent())
+          .isEqualTo(
+              "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
+
+      // verify that the history is sent correctly
+      try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(
+            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      }
+    }
   }
 }
