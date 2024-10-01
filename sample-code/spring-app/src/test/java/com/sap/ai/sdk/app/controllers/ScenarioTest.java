@@ -13,7 +13,7 @@ import io.vavr.control.Try;
 import org.junit.jupiter.api.Test;
 
 public class ScenarioTest {
-  
+
   @Test
   public void declaredOpenAiModelsList() {
 
