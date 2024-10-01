@@ -139,6 +139,7 @@ class DeploymentController {
    * @return the deployment creation responsex
    */
   @Nonnull
+  @SuppressWarnings("unused") // debug method that doesn't need to be tested
   public AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
 
     // Create a configuration
