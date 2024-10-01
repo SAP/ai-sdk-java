@@ -5,11 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.core.client.model.AiModelBaseData;
 import com.sap.ai.sdk.core.client.model.AiModelList;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
+import io.vavr.control.Try;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.vavr.control.Try;
 import org.junit.jupiter.api.Test;
 
 public class ScenarioTest {

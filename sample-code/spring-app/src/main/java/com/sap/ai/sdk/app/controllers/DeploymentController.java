@@ -14,12 +14,11 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
+import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +45,8 @@ class DeploymentController {
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
-        API.create(AI_RESOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
+        API.create(
+            AI_RESOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
