@@ -136,7 +136,7 @@ class DeploymentController {
    * <p>This is to be invoked from a unit test.
    *
    * @param model The OpenAI model to deploy
-   * @return the deployment creation response
+   * @return the deployment creation responsex
    */
   @Nonnull
   public AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
