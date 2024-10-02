@@ -201,16 +201,16 @@ class OpenAiClientTest {
       final OpenAiChatCompletionOutput result = request.call();
 
       assertThat(result).isNotNull();
-      assertThat(result.getCreated()).isEqualTo(1719300073);
-      assertThat(result.getId()).isEqualTo("chatcmpl-9dumHtDEyysGFnknk17n4Lt37tg7T");
-      assertThat(result.getModel()).isEqualTo("gpt-4-32k");
+      assertThat(result.getCreated()).isEqualTo(1727436279);
+      assertThat(result.getId()).isEqualTo("chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf");
+      assertThat(result.getModel()).isEqualTo("gpt-35-turbo");
       assertThat(result.getObject()).isEqualTo("chat.completion");
       assertThat(result.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
       assertThat(result.getUsage()).isNotNull();
-      assertThat(result.getUsage().getCompletionTokens()).isEqualTo(54);
+      assertThat(result.getUsage().getCompletionTokens()).isEqualTo(20);
       assertThat(result.getUsage().getPromptTokens()).isEqualTo(13);
-      assertThat(result.getUsage().getTotalTokens()).isEqualTo(67);
+      assertThat(result.getUsage().getTotalTokens()).isEqualTo(33);
 
       assertThat(result.getPromptFilterResults()).hasSize(1);
       assertThat(result.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
@@ -226,13 +226,12 @@ class OpenAiClientTest {
       assertThat(promptFilterResults.getHate()).isNotNull();
       assertThat(promptFilterResults.getHate().isFiltered()).isFalse();
       assertThat(promptFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
-      // TODO: update the JSON response and those assertions
-      assertThat(promptFilterResults.getSelfHarm()).isNull();
+      assertThat(promptFilterResults.getSelfHarm()).isNotNull();
+      assertThat(promptFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
+      assertThat(promptFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(promptFilterResults.getProfanity()).isNull();
       assertThat(promptFilterResults.getError()).isNull();
-      assertThat(promptFilterResults.getJailbreak()).isNotNull();
-      assertThat(promptFilterResults.getJailbreak().isFiltered()).isFalse();
-      assertThat(promptFilterResults.getJailbreak().isDetected()).isFalse();
+      assertThat(promptFilterResults.getJailbreak()).isNull();
 
       assertThat(result.getChoices()).hasSize(1);
       OpenAiChatCompletionChoice choice = result.getChoices().get(0);
@@ -240,9 +239,9 @@ class OpenAiClientTest {
       assertThat(choice.getIndex()).isEqualTo(0);
       assertThat(choice.getMessage().getContent())
           .isEqualTo(
-              """
-                This is a highly subjective question as the concept of beauty differs from one person to another. It's based on personal preferences and cultural standards. There are attractive people in all walks of life and industries, making it impossible to universally determine who is the "prettiest".""");
+              "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
       assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
+      assertThat(choice.getMessage().getTool_calls()).isNull();
 
       OpenAiContentFilterPromptResults contentFilterResults = choice.getContentFilterResults();
       assertThat(contentFilterResults).isNotNull();
@@ -255,7 +254,9 @@ class OpenAiClientTest {
       assertThat(contentFilterResults.getHate()).isNotNull();
       assertThat(contentFilterResults.getHate().isFiltered()).isFalse();
       assertThat(contentFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
-      assertThat(contentFilterResults.getSelfHarm()).isNull();
+      assertThat(contentFilterResults.getSelfHarm()).isNotNull();
+      assertThat(contentFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
+      assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(contentFilterResults.getProfanity()).isNull();
       assertThat(contentFilterResults.getError()).isNull();
       assertThat(contentFilterResults.getJailbreak()).isNull();
