@@ -90,6 +90,12 @@ jobs:
       - name: "Coverage Report"
         run: python .pipeline/scripts/print-coverage.py --jacoco-report-pattern "**/target/site/jacoco/jacoco.csv"
 
+      - name: "OWASP Dependency check"
+        run: mvn org.owasp:dependency-check-maven:10.0.4:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=dependency-check-suppression.xml
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+
       - name: "Slack Notification"
         ## currently disabled, as there are no main builds yet
         if: false
@@ -102,4 +108,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      #TODO: Blackduck and security rating steps
