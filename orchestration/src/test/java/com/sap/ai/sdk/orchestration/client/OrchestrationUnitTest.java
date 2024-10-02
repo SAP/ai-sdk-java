@@ -75,75 +75,6 @@ public class OrchestrationUnitTest {
                               .templatingModuleConfig(templatingModuleConfig)))
               .inputParams(Map.of());
 
-  private static final CompletionPostRequest MASKING_CONFIG;
-
-  static {
-    final var inputParams = Map.of("orgCV", "Patrick Morgan +49 (970) 333-3833");
-    final var template =
-        ChatMessage.create().role("user").content("What is the nationality of {{?orgCV}}");
-    final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-    final var maskingProvider =
-        MaskingProviderConfig.create()
-            .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-            .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-            .entities(DPIEntityConfig.create().type(DPIEntities.PHONE));
-    final var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
-
-    MASKING_CONFIG =
-        CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .maskingModuleConfig(maskingConfig)))
-            .inputParams(inputParams);
-  }
-
-  /**
-   * Creates a config from a filter threshold. The config includes a template and has input and
-   * output filters
-   */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
-      (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-        final var filter =
-            FilterConfig.create()
-                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-                .config(
-                    AzureContentSafety.create()
-                        .hate(filterThreshold)
-                        .selfHarm(filterThreshold)
-                        .sexual(filterThreshold)
-                        .violence(filterThreshold));
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(FilteringConfig.create().filters(filter))
-                .output(FilteringConfig.create().filters(filter));
-
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
-      };
-
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
@@ -245,6 +176,48 @@ public class OrchestrationUnitTest {
             "400 Bad Request: \"{<EOL>  \"request_id\": \"51043a32-01f5-429a-b0e7-3a99432e43a4\",<EOL>  \"code\": 400,<EOL>  \"message\": \"Missing required parameters: ['input']\",<EOL>  \"location\": \"Module: Templating\",<EOL>  \"module_results\": {}<EOL>}<EOL>\"");
   }
 
+  /**
+   * Creates a config from a filter threshold. The config includes a template and has input and
+   * output filters
+   */
+  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
+      (AzureThreshold filterThreshold) -> {
+        final var inputParams =
+            Map.of(
+                "disclaimer",
+                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
+        final var template =
+            ChatMessage.create()
+                .role("user")
+                .content(
+                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
+        final var templatingConfig = TemplatingModuleConfig.create().template(template);
+
+        final var filter =
+            FilterConfig.create()
+                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+                .config(
+                    AzureContentSafety.create()
+                        .hate(filterThreshold)
+                        .selfHarm(filterThreshold)
+                        .sexual(filterThreshold)
+                        .violence(filterThreshold));
+        final var filteringConfig =
+            FilteringModuleConfig.create()
+                .input(FilteringConfig.create().filters(filter))
+                .output(FilteringConfig.create().filters(filter));
+
+        return CompletionPostRequest.create()
+            .orchestrationConfig(
+                OrchestrationConfig.create()
+                    .moduleConfigurations(
+                        ModuleConfigs.create()
+                            .llmModuleConfig(LLM_CONFIG)
+                            .templatingModuleConfig(templatingConfig)
+                            .filteringModuleConfig(filteringConfig)))
+            .inputParams(inputParams);
+      };
+
   @Test
   void filteringLoose() throws IOException {
     stubFor(
@@ -312,6 +285,33 @@ public class OrchestrationUnitTest {
     }
   }
 
+  private static final CompletionPostRequest MASKING_CONFIG;
+
+  static {
+    final var inputParams = Map.of("orgCV", "Patrick Morgan +49 (970) 333-3833");
+    final var template =
+        ChatMessage.create().role("user").content("What is the nationality of {{?orgCV}}");
+    final var templatingConfig = TemplatingModuleConfig.create().template(template);
+
+    final var maskingProvider =
+        MaskingProviderConfig.create()
+            .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+            .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
+            .entities(DPIEntityConfig.create().type(DPIEntities.PHONE));
+    final var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+
+    MASKING_CONFIG =
+        CompletionPostRequest.create()
+            .orchestrationConfig(
+                OrchestrationConfig.create()
+                    .moduleConfigurations(
+                        ModuleConfigs.create()
+                            .llmModuleConfig(LLM_CONFIG)
+                            .templatingModuleConfig(templatingConfig)
+                            .maskingModuleConfig(maskingConfig)))
+            .inputParams(inputParams);
+  }
+
   @Test
   void maskingAnonymization() throws IOException {
     stubFor(
@@ -332,7 +332,7 @@ public class OrchestrationUnitTest {
         .isEqualTo(
             "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
 
-    // verify that the history is sent correctly
+    // verify that the request is sent correctly
     try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
