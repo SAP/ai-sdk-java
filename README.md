@@ -458,6 +458,10 @@ See [an example in our Spring Boot application](sample-code/spring-app/src/main/
 
 ### Data masking
 
+In the following example we use the data masking module to anonymize persons and phone numbers in the input.
+
+In this case, the input will be masked before the call to the LLM. However, data can not be unmasked in the LLM output.
+
 ```java
 final var inputParams = Map.of("privateInfo", "Patrick Morgan +49 (970) 333-3833");
 final var template =
