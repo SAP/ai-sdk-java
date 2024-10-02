@@ -75,32 +75,32 @@ public class OrchestrationUnitTest {
                               .templatingModuleConfig(templatingModuleConfig)))
               .inputParams(Map.of());
 
-  private static final Function<MaskingProviderConfig.MethodEnum, CompletionPostRequest>
-      MASKING_CONFIG =
-          (MaskingProviderConfig.MethodEnum maskingType) -> {
-            final var inputParams = Map.of("orgCV", "Patrick Morgan +49 (970) 333-3833");
-            final var template =
-                ChatMessage.create().role("user").content("What is the nationality of {{?orgCV}}");
-            final var templatingConfig = TemplatingModuleConfig.create().template(template);
+  private static final CompletionPostRequest MASKING_CONFIG;
 
-            final var maskingProvider =
-                MaskingProviderConfig.create()
-                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-                    .entities(DPIEntityConfig.create().type(DPIEntities.PHONE));
-            final var maskingConfig =
-                MaskingModuleConfig.create().maskingProviders(maskingProvider);
+  static {
+    final var inputParams = Map.of("orgCV", "Patrick Morgan +49 (970) 333-3833");
+    final var template =
+        ChatMessage.create().role("user").content("What is the nationality of {{?orgCV}}");
+    final var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-            return CompletionPostRequest.create()
-                .orchestrationConfig(
-                    OrchestrationConfig.create()
-                        .moduleConfigurations(
-                            ModuleConfigs.create()
-                                .llmModuleConfig(LLM_CONFIG)
-                                .templatingModuleConfig(templatingConfig)
-                                .maskingModuleConfig(maskingConfig)))
-                .inputParams(inputParams);
-          };
+    final var maskingProvider =
+        MaskingProviderConfig.create()
+            .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+            .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
+            .entities(DPIEntityConfig.create().type(DPIEntities.PHONE));
+    final var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+
+    MASKING_CONFIG =
+        CompletionPostRequest.create()
+            .orchestrationConfig(
+                OrchestrationConfig.create()
+                    .moduleConfigurations(
+                        ModuleConfigs.create()
+                            .llmModuleConfig(LLM_CONFIG)
+                            .templatingModuleConfig(templatingConfig)
+                            .maskingModuleConfig(maskingConfig)))
+            .inputParams(inputParams);
+  }
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
@@ -321,8 +321,7 @@ public class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
-    final var result = client.orchestrationV1EndpointsCreate(config);
+    final var result = client.orchestrationV1EndpointsCreate(MASKING_CONFIG);
 
     assertThat(result).isNotNull();
     GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
