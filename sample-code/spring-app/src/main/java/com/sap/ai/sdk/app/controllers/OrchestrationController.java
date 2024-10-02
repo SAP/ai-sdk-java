@@ -23,6 +23,7 @@ import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,33 +98,10 @@ class OrchestrationController {
       };
 
   private static final List<DPIEntityConfig> ALL_DPI_ENTITIES =
-      List.of(
-          DPIEntityConfig.create().type(DPIEntities.EMAIL),
-          DPIEntityConfig.create().type(DPIEntities.PERSON),
-          DPIEntityConfig.create().type(DPIEntities.ORG),
-          DPIEntityConfig.create().type(DPIEntities.UNIVERSITY),
-          DPIEntityConfig.create().type(DPIEntities.LOCATION),
-          DPIEntityConfig.create().type(DPIEntities.EMAIL),
-          DPIEntityConfig.create().type(DPIEntities.PHONE),
-          DPIEntityConfig.create().type(DPIEntities.ADDRESS),
-          DPIEntityConfig.create().type(DPIEntities.SAPIDS_INTERNAL),
-          DPIEntityConfig.create().type(DPIEntities.SAPIDS_PUBLIC),
-          DPIEntityConfig.create().type(DPIEntities.URL),
-          DPIEntityConfig.create().type(DPIEntities.USERNAME_PASSWORD),
-          DPIEntityConfig.create().type(DPIEntities.NATIONALID),
-          DPIEntityConfig.create().type(DPIEntities.IBAN),
-          DPIEntityConfig.create().type(DPIEntities.SSN),
-          DPIEntityConfig.create().type(DPIEntities.CREDIT_CARD_NUMBER),
-          DPIEntityConfig.create().type(DPIEntities.PASSPORT),
-          DPIEntityConfig.create().type(DPIEntities.DRIVERLICENSE),
-          DPIEntityConfig.create().type(DPIEntities.NATIONALITY),
-          DPIEntityConfig.create().type(DPIEntities.RELIGIOUS_GROUP),
-          DPIEntityConfig.create().type(DPIEntities.POLITICAL_GROUP),
-          DPIEntityConfig.create().type(DPIEntities.PRONOUNS_GENDER),
-          DPIEntityConfig.create().type(DPIEntities.GENDER),
-          DPIEntityConfig.create().type(DPIEntities.SEXUAL_ORIENTATION),
-          DPIEntityConfig.create().type(DPIEntities.TRADE_UNION),
-          DPIEntityConfig.create().type(DPIEntities.SENSITIVE_DATA));
+      Stream.of(DPIEntities.values())
+          .filter(entity -> entity != DPIEntities.UNKNOWN_DEFAULT_OPEN_API)
+          .map(entity -> DPIEntityConfig.create().type(entity))
+          .toList();
 
   /**
    * Creates a config from a masking type (anonymization or pseudonymization). The config includes a
