@@ -24,7 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.33.0.
+ * AI Core in version 2.35.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -85,7 +85,7 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Integer artifactCount(
+  public Integer count(
       @Nonnull final String aiResourceGroup,
       @Nullable final String scenarioId,
       @Nullable final String executionId,
@@ -100,7 +100,7 @@ public class ArtifactApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling artifactCount");
+          "Missing the required parameter 'aiResourceGroup' when calling count");
     }
 
     final String localVarPath =
@@ -167,9 +167,8 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Integer artifactCount(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return artifactCount(aiResourceGroup, null, null, null, null, null, null, null);
+  public Integer count(@Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    return count(aiResourceGroup, null, null, null, null, null, null, null);
   }
 
   /**
@@ -187,7 +186,7 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiArtifactCreationResponse artifactCreate(
+  public AiArtifactCreationResponse create(
       @Nonnull final String aiResourceGroup, @Nonnull final AiArtifactPostData aiArtifactPostData)
       throws OpenApiRequestException {
     final Object localVarPostBody = aiArtifactPostData;
@@ -195,13 +194,13 @@ public class ArtifactApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling artifactCreate");
+          "Missing the required parameter 'aiResourceGroup' when calling create");
     }
 
     // verify the required parameter 'aiArtifactPostData' is set
     if (aiArtifactPostData == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiArtifactPostData' when calling artifactCreate");
+          "Missing the required parameter 'aiArtifactPostData' when calling create");
     }
 
     final String localVarPath =
@@ -256,7 +255,7 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiArtifact artifactGet(
+  public AiArtifact get(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String artifactId,
       @Nullable final String $expand)
@@ -266,13 +265,13 @@ public class ArtifactApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling artifactGet");
+          "Missing the required parameter 'aiResourceGroup' when calling get");
     }
 
     // verify the required parameter 'artifactId' is set
     if (artifactId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'artifactId' when calling artifactGet");
+          "Missing the required parameter 'artifactId' when calling get");
     }
 
     // create path and map variables
@@ -333,10 +332,9 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiArtifact artifactGet(
-      @Nonnull final String aiResourceGroup, @Nonnull final String artifactId)
+  public AiArtifact get(@Nonnull final String aiResourceGroup, @Nonnull final String artifactId)
       throws OpenApiRequestException {
-    return artifactGet(aiResourceGroup, artifactId, null);
+    return get(aiResourceGroup, artifactId, null);
   }
 
   /**
@@ -374,7 +372,7 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiArtifactList artifactQuery(
+  public AiArtifactList query(
       @Nonnull final String aiResourceGroup,
       @Nullable final String scenarioId,
       @Nullable final String executionId,
@@ -392,7 +390,7 @@ public class ArtifactApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling artifactQuery");
+          "Missing the required parameter 'aiResourceGroup' when calling query");
     }
 
     final String localVarPath =
@@ -463,9 +461,8 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public AiArtifactList artifactQuery(@Nonnull final String aiResourceGroup)
+  public AiArtifactList query(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    return artifactQuery(
-        aiResourceGroup, null, null, null, null, null, null, null, null, null, null);
+    return query(aiResourceGroup, null, null, null, null, null, null, null, null, null, null);
   }
 }

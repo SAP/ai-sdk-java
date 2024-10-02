@@ -1,0 +1,10 @@
+applications:
+  - name: e2e-app-java
+    random-route: true
+    path: target/spring-app.jar
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
+    buildpacks:
+      - java_buildpack
+    services:
+      - default_aicore

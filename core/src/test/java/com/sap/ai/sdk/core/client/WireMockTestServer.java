@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
 /** Test server for all unit tests. */
@@ -21,5 +22,11 @@ abstract class WireMockTestServer {
     wireMockServer = new WireMockServer(WIREMOCK_CONFIGURATION);
     wireMockServer.start();
     destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
+  }
+
+  // Reset WireMock before each test to ensure clean state
+  @AfterEach
+  void reset() {
+    wireMockServer.resetAll();
   }
 }

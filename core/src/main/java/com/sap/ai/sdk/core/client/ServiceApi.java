@@ -21,7 +21,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.33.0.
+ * AI Core in version 2.35.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -70,7 +70,7 @@ public class ServiceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndExtendedService kubesubmitV4AiservicesGet(
+  public BckndExtendedService get(
       @Nonnull final String serviceName, @Nullable final String authorization)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -78,7 +78,7 @@ public class ServiceApi extends AbstractOpenApiService {
     // verify the required parameter 'serviceName' is set
     if (serviceName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'serviceName' when calling kubesubmitV4AiservicesGet");
+          "Missing the required parameter 'serviceName' when calling get");
     }
 
     // create path and map variables
@@ -138,9 +138,9 @@ public class ServiceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndExtendedService kubesubmitV4AiservicesGet(@Nonnull final String serviceName)
+  public BckndExtendedService get(@Nonnull final String serviceName)
       throws OpenApiRequestException {
-    return kubesubmitV4AiservicesGet(serviceName, null);
+    return get(serviceName, null);
   }
 
   /**
@@ -159,7 +159,7 @@ public class ServiceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndServiceList kubesubmitV4AiservicesGetAll(@Nullable final String authorization)
+  public BckndServiceList getAll(@Nullable final String authorization)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -212,7 +212,7 @@ public class ServiceApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndServiceList kubesubmitV4AiservicesGetAll() throws OpenApiRequestException {
-    return kubesubmitV4AiservicesGetAll(null);
+  public BckndServiceList getAll() throws OpenApiRequestException {
+    return getAll(null);
   }
 }
