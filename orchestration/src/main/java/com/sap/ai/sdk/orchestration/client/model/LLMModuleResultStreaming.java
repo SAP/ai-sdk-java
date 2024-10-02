@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 
 /** Output of LLM module. Follows the OpenAI spec. */
 // CHECKSTYLE:OFF
-public class LLMModuleResult
+public class LLMModuleResultStreaming
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -56,16 +56,16 @@ public class LLMModuleResult
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  protected LLMModuleResult() {}
+  protected LLMModuleResultStreaming() {}
 
   /**
-   * Set the id of this {@link LLMModuleResult} instance and return the same instance.
+   * Set the id of this {@link LLMModuleResultStreaming} instance and return the same instance.
    *
    * @param id ID of the response
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult id(@Nonnull final String id) {
+  public LLMModuleResultStreaming id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
@@ -73,7 +73,7 @@ public class LLMModuleResult
   /**
    * ID of the response
    *
-   * @return id The id of this {@link LLMModuleResult} instance.
+   * @return id The id of this {@link LLMModuleResultStreaming} instance.
    */
   @Nonnull
   public String getId() {
@@ -81,7 +81,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the id of this {@link LLMModuleResult} instance.
+   * Set the id of this {@link LLMModuleResultStreaming} instance.
    *
    * @param id ID of the response
    */
@@ -90,13 +90,13 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the _object of this {@link LLMModuleResult} instance and return the same instance.
+   * Set the _object of this {@link LLMModuleResultStreaming} instance and return the same instance.
    *
    * @param _object Object type
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult _object(@Nonnull final String _object) {
+  public LLMModuleResultStreaming _object(@Nonnull final String _object) {
     this._object = _object;
     return this;
   }
@@ -104,7 +104,7 @@ public class LLMModuleResult
   /**
    * Object type
    *
-   * @return _object The _object of this {@link LLMModuleResult} instance.
+   * @return _object The _object of this {@link LLMModuleResultStreaming} instance.
    */
   @Nonnull
   public String getObject() {
@@ -112,7 +112,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the _object of this {@link LLMModuleResult} instance.
+   * Set the _object of this {@link LLMModuleResultStreaming} instance.
    *
    * @param _object Object type
    */
@@ -121,13 +121,13 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the created of this {@link LLMModuleResult} instance and return the same instance.
+   * Set the created of this {@link LLMModuleResultStreaming} instance and return the same instance.
    *
    * @param created Unix timestamp
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult created(@Nonnull final Integer created) {
+  public LLMModuleResultStreaming created(@Nonnull final Integer created) {
     this.created = created;
     return this;
   }
@@ -135,7 +135,7 @@ public class LLMModuleResult
   /**
    * Unix timestamp
    *
-   * @return created The created of this {@link LLMModuleResult} instance.
+   * @return created The created of this {@link LLMModuleResultStreaming} instance.
    */
   @Nonnull
   public Integer getCreated() {
@@ -143,7 +143,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the created of this {@link LLMModuleResult} instance.
+   * Set the created of this {@link LLMModuleResultStreaming} instance.
    *
    * @param created Unix timestamp
    */
@@ -152,13 +152,13 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the model of this {@link LLMModuleResult} instance and return the same instance.
+   * Set the model of this {@link LLMModuleResultStreaming} instance and return the same instance.
    *
    * @param model Model name
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult model(@Nonnull final String model) {
+  public LLMModuleResultStreaming model(@Nonnull final String model) {
     this.model = model;
     return this;
   }
@@ -166,7 +166,7 @@ public class LLMModuleResult
   /**
    * Model name
    *
-   * @return model The model of this {@link LLMModuleResult} instance.
+   * @return model The model of this {@link LLMModuleResultStreaming} instance.
    */
   @Nonnull
   public String getModel() {
@@ -174,7 +174,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the model of this {@link LLMModuleResult} instance.
+   * Set the model of this {@link LLMModuleResultStreaming} instance.
    *
    * @param model Model name
    */
@@ -183,14 +183,14 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the systemFingerprint of this {@link LLMModuleResult} instance and return the same
+   * Set the systemFingerprint of this {@link LLMModuleResultStreaming} instance and return the same
    * instance.
    *
    * @param systemFingerprint System fingerprint
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult systemFingerprint(@Nullable final String systemFingerprint) {
+  public LLMModuleResultStreaming systemFingerprint(@Nullable final String systemFingerprint) {
     this.systemFingerprint = systemFingerprint;
     return this;
   }
@@ -198,7 +198,8 @@ public class LLMModuleResult
   /**
    * System fingerprint
    *
-   * @return systemFingerprint The systemFingerprint of this {@link LLMModuleResult} instance.
+   * @return systemFingerprint The systemFingerprint of this {@link LLMModuleResultStreaming}
+   *     instance.
    */
   @Nonnull
   public String getSystemFingerprint() {
@@ -206,7 +207,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the systemFingerprint of this {@link LLMModuleResult} instance.
+   * Set the systemFingerprint of this {@link LLMModuleResultStreaming} instance.
    *
    * @param systemFingerprint System fingerprint
    */
@@ -215,25 +216,25 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the choices of this {@link LLMModuleResult} instance and return the same instance.
+   * Set the choices of this {@link LLMModuleResultStreaming} instance and return the same instance.
    *
    * @param choices Choices
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult choices(@Nonnull final List<LLMChoiceStreaming> choices) {
+  public LLMModuleResultStreaming choices(@Nonnull final List<LLMChoiceStreaming> choices) {
     this.choices = choices;
     return this;
   }
 
   /**
-   * Add one choices instance to this {@link LLMModuleResult}.
+   * Add one choices instance to this {@link LLMModuleResultStreaming}.
    *
    * @param choicesItem The choices that should be added
-   * @return The same instance of type {@link LLMModuleResult}
+   * @return The same instance of type {@link LLMModuleResultStreaming}
    */
   @Nonnull
-  public LLMModuleResult addChoicesItem(@Nonnull final LLMChoiceStreaming choicesItem) {
+  public LLMModuleResultStreaming addChoicesItem(@Nonnull final LLMChoiceStreaming choicesItem) {
     if (this.choices == null) {
       this.choices = new ArrayList<>();
     }
@@ -244,7 +245,7 @@ public class LLMModuleResult
   /**
    * Choices
    *
-   * @return choices The choices of this {@link LLMModuleResult} instance.
+   * @return choices The choices of this {@link LLMModuleResultStreaming} instance.
    */
   @Nonnull
   public List<LLMChoiceStreaming> getChoices() {
@@ -252,7 +253,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the choices of this {@link LLMModuleResult} instance.
+   * Set the choices of this {@link LLMModuleResultStreaming} instance.
    *
    * @param choices Choices
    */
@@ -261,13 +262,13 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the usage of this {@link LLMModuleResult} instance and return the same instance.
+   * Set the usage of this {@link LLMModuleResultStreaming} instance and return the same instance.
    *
-   * @param usage The usage of this {@link LLMModuleResult}
-   * @return The same instance of this {@link LLMModuleResult} class
+   * @param usage The usage of this {@link LLMModuleResultStreaming}
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
    */
   @Nonnull
-  public LLMModuleResult usage(@Nonnull final TokenUsage usage) {
+  public LLMModuleResultStreaming usage(@Nullable final TokenUsage usage) {
     this.usage = usage;
     return this;
   }
@@ -275,7 +276,7 @@ public class LLMModuleResult
   /**
    * Get usage
    *
-   * @return usage The usage of this {@link LLMModuleResult} instance.
+   * @return usage The usage of this {@link LLMModuleResultStreaming} instance.
    */
   @Nonnull
   public TokenUsage getUsage() {
@@ -283,16 +284,16 @@ public class LLMModuleResult
   }
 
   /**
-   * Set the usage of this {@link LLMModuleResult} instance.
+   * Set the usage of this {@link LLMModuleResultStreaming} instance.
    *
-   * @param usage The usage of this {@link LLMModuleResult}
+   * @param usage The usage of this {@link LLMModuleResultStreaming}
    */
-  public void setUsage(@Nonnull final TokenUsage usage) {
+  public void setUsage(@Nullable final TokenUsage usage) {
     this.usage = usage;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link LLMModuleResult}.
+   * Get the names of the unrecognizable properties of the {@link LLMModuleResultStreaming}.
    *
    * @return The set of properties names
    */
@@ -303,7 +304,7 @@ public class LLMModuleResult
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link LLMModuleResult} instance.
+   * Get the value of an unrecognizable property of this {@link LLMModuleResultStreaming} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -312,14 +313,15 @@ public class LLMModuleResult
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("LLMModuleResult has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "LLMModuleResultStreaming has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link LLMModuleResult} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link LLMModuleResultStreaming} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -337,15 +339,15 @@ public class LLMModuleResult
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final LLMModuleResult llMModuleResult = (LLMModuleResult) o;
-    return Objects.equals(this.cloudSdkCustomFields, llMModuleResult.cloudSdkCustomFields)
-        && Objects.equals(this.id, llMModuleResult.id)
-        && Objects.equals(this._object, llMModuleResult._object)
-        && Objects.equals(this.created, llMModuleResult.created)
-        && Objects.equals(this.model, llMModuleResult.model)
-        && Objects.equals(this.systemFingerprint, llMModuleResult.systemFingerprint)
-        && Objects.equals(this.choices, llMModuleResult.choices)
-        && Objects.equals(this.usage, llMModuleResult.usage);
+    final LLMModuleResultStreaming llMModuleResultStreaming = (LLMModuleResultStreaming) o;
+    return Objects.equals(this.cloudSdkCustomFields, llMModuleResultStreaming.cloudSdkCustomFields)
+        && Objects.equals(this.id, llMModuleResultStreaming.id)
+        && Objects.equals(this._object, llMModuleResultStreaming._object)
+        && Objects.equals(this.created, llMModuleResultStreaming.created)
+        && Objects.equals(this.model, llMModuleResultStreaming.model)
+        && Objects.equals(this.systemFingerprint, llMModuleResultStreaming.systemFingerprint)
+        && Objects.equals(this.choices, llMModuleResultStreaming.choices)
+        && Objects.equals(this.usage, llMModuleResultStreaming.usage);
   }
 
   @Override
@@ -358,7 +360,7 @@ public class LLMModuleResult
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class LLMModuleResult {\n");
+    sb.append("class LLMModuleResultStreaming {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    _object: ").append(toIndentedString(_object)).append("\n");
     sb.append("    created: ").append(toIndentedString(created)).append("\n");
@@ -384,8 +386,8 @@ public class LLMModuleResult
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link LLMModuleResult}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * LLMModuleResultStreaming} instance with all required arguments.
    */
   public static Builder create() {
     return (id) ->
@@ -393,23 +395,21 @@ public class LLMModuleResult
             (created) ->
                 (model) ->
                     (choices) ->
-                        (usage) ->
-                            new LLMModuleResult()
-                                .id(id)
-                                ._object(_object)
-                                .created(created)
-                                .model(model)
-                                .choices(choices)
-                                .usage(usage);
+                        new LLMModuleResultStreaming()
+                            .id(id)
+                            ._object(_object)
+                            .created(created)
+                            .model(model)
+                            .choices(choices);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the id of this {@link LLMModuleResult} instance.
+     * Set the id of this {@link LLMModuleResultStreaming} instance.
      *
      * @param id ID of the response
-     * @return The LLMModuleResult builder.
+     * @return The LLMModuleResultStreaming builder.
      */
     Builder1 id(@Nonnull final String id);
   }
@@ -417,10 +417,10 @@ public class LLMModuleResult
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the _object of this {@link LLMModuleResult} instance.
+     * Set the _object of this {@link LLMModuleResultStreaming} instance.
      *
      * @param _object Object type
-     * @return The LLMModuleResult builder.
+     * @return The LLMModuleResultStreaming builder.
      */
     Builder2 _object(@Nonnull final String _object);
   }
@@ -428,10 +428,10 @@ public class LLMModuleResult
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the created of this {@link LLMModuleResult} instance.
+     * Set the created of this {@link LLMModuleResultStreaming} instance.
      *
      * @param created Unix timestamp
-     * @return The LLMModuleResult builder.
+     * @return The LLMModuleResultStreaming builder.
      */
     Builder3 created(@Nonnull final Integer created);
   }
@@ -439,10 +439,10 @@ public class LLMModuleResult
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the model of this {@link LLMModuleResult} instance.
+     * Set the model of this {@link LLMModuleResultStreaming} instance.
      *
      * @param model Model name
-     * @return The LLMModuleResult builder.
+     * @return The LLMModuleResultStreaming builder.
      */
     Builder4 model(@Nonnull final String model);
   }
@@ -450,32 +450,21 @@ public class LLMModuleResult
   /** Builder helper class. */
   public interface Builder4 {
     /**
-     * Set the choices of this {@link LLMModuleResult} instance.
+     * Set the choices of this {@link LLMModuleResultStreaming} instance.
      *
      * @param choices Choices
-     * @return The LLMModuleResult builder.
+     * @return The LLMModuleResultStreaming instance.
      */
-    Builder5 choices(@Nonnull final List<LLMChoiceStreaming> choices);
+    LLMModuleResultStreaming choices(@Nonnull final List<LLMChoiceStreaming> choices);
 
     /**
-     * Set the choices of this {@link LLMModuleResult} instance.
+     * Set the choices of this {@link LLMModuleResultStreaming} instance.
      *
      * @param choices Choices
-     * @return The LLMModuleResult builder.
+     * @return The LLMModuleResultStreaming instance.
      */
-    default Builder5 choices(@Nonnull final LLMChoiceStreaming... choices) {
+    default LLMModuleResultStreaming choices(@Nonnull final LLMChoiceStreaming... choices) {
       return choices(Arrays.asList(choices));
     }
-  }
-
-  /** Builder helper class. */
-  public interface Builder5 {
-    /**
-     * Set the usage of this {@link LLMModuleResult} instance.
-     *
-     * @param usage The usage of this {@link LLMModuleResult}
-     * @return The LLMModuleResult instance.
-     */
-    LLMModuleResult usage(@Nonnull final TokenUsage usage);
   }
 }
