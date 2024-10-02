@@ -76,48 +76,6 @@ public class OrchestrationUnitTest {
                               .templatingModuleConfig(templatingModuleConfig)))
               .inputParams(Map.of());
 
-  /**
-   * Creates a config from a filter threshold. The config includes a template and has input and
-   * output filters
-   */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
-      (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-        final var filter =
-            FilterConfig.create()
-                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-                .config(
-                    AzureContentSafety.create()
-                        .hate(filterThreshold)
-                        .selfHarm(filterThreshold)
-                        .sexual(filterThreshold)
-                        .violence(filterThreshold));
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(InputFilteringConfig.create().filters(filter))
-                .output(OutputFilteringConfig.create().filters(filter));
-
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
-      };
-
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
@@ -247,8 +205,8 @@ public class OrchestrationUnitTest {
                         .violence(filterThreshold));
         final var filteringConfig =
             FilteringModuleConfig.create()
-                .input(FilteringConfig.create().filters(filter))
-                .output(FilteringConfig.create().filters(filter));
+                .input(InputFilteringConfig.create().filters(filter))
+                .output(OutputFilteringConfig.create().filters(filter));
 
         return CompletionPostRequest.create()
             .orchestrationConfig(
