@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.orchestration.client;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -153,63 +153,63 @@ public class OrchestrationUnitTest {
 
   @Test
   void templating() throws IOException {
-    try (var inputStream = TEST_FILE_LOADER.apply("templatingResponse.json")) {
-      final String response = new String(inputStream.readAllBytes());
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
 
-      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var inputParams =
+        Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-      final var template = ChatMessage.create().role("user").content("{{?input}}");
-      final var inputParams =
-          Map.of("input", "Reply with 'Orchestration Service is working!' in German");
+    final var config =
+        TEMPLATE_CONFIG
+            .apply(TemplatingModuleConfig.create().template(template))
+            .inputParams(inputParams);
 
-      final var config =
-          TEMPLATE_CONFIG
-              .apply(TemplatingModuleConfig.create().template(template))
-              .inputParams(inputParams);
+    final var result = client.orchestrationV1EndpointsCreate(config);
 
-      final var result = client.orchestrationV1EndpointsCreate(config);
+    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+        .isEqualTo("Reply with 'Orchestration Service is working!' in German");
+    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
+    var llm = result.getModuleResults().getLlm();
+    assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
+    assertThat(llm.getObject()).isEqualTo("chat.completion");
+    assertThat(llm.getCreated()).isEqualTo(1721224505);
+    assertThat(llm.getModel()).isEqualTo("gpt-35-turbo-16k");
+    var choices = llm.getChoices();
+    assertThat(choices.get(0).getIndex()).isEqualTo(0);
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo("Orchestration Service funktioniert!");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    var usage = llm.getUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(7);
+    assertThat(usage.getPromptTokens()).isEqualTo(19);
+    assertThat(usage.getTotalTokens()).isEqualTo(26);
+    assertThat(result.getOrchestrationResult().getId())
+        .isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
+    assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
+    assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
+    assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
+    choices = result.getOrchestrationResult().getChoices();
+    assertThat(choices.get(0).getIndex()).isEqualTo(0);
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo("Orchestration Service funktioniert!");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    usage = result.getOrchestrationResult().getUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(7);
+    assertThat(usage.getPromptTokens()).isEqualTo(19);
+    assertThat(usage.getTotalTokens()).isEqualTo(26);
 
-      assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-      assertThat(result.getModuleResults().getTemplating().get(0).getContent())
-          .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-      assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-      var llm = result.getModuleResults().getLlm();
-      assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
-      assertThat(llm.getObject()).isEqualTo("chat.completion");
-      assertThat(llm.getCreated()).isEqualTo(1721224505);
-      assertThat(llm.getModel()).isEqualTo("gpt-35-turbo-16k");
-      var choices = llm.getChoices();
-      assertThat(choices.get(0).getIndex()).isEqualTo(0);
-      assertThat(choices.get(0).getMessage().getContent())
-          .isEqualTo("Orchestration Service funktioniert!");
-      assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-      assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-      var usage = llm.getUsage();
-      assertThat(usage.getCompletionTokens()).isEqualTo(7);
-      assertThat(usage.getPromptTokens()).isEqualTo(19);
-      assertThat(usage.getTotalTokens()).isEqualTo(26);
-      assertThat(result.getOrchestrationResult().getId())
-          .isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
-      assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
-      assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
-      assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
-      choices = result.getOrchestrationResult().getChoices();
-      assertThat(choices.get(0).getIndex()).isEqualTo(0);
-      assertThat(choices.get(0).getMessage().getContent())
-          .isEqualTo("Orchestration Service funktioniert!");
-      assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-      assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-      usage = result.getOrchestrationResult().getUsage();
-      assertThat(usage.getCompletionTokens()).isEqualTo(7);
-      assertThat(usage.getPromptTokens()).isEqualTo(19);
-      assertThat(usage.getTotalTokens()).isEqualTo(26);
-
-      // verify that null fields are absent from the sent request
-      try (var requestInputStream = TEST_FILE_LOADER.apply("templatingRequest.json")) {
-        final String request = new String(requestInputStream.readAllBytes());
-        verify(
-            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
-      }
+    // verify that null fields are absent from the sent request
+    try (var requestInputStream = TEST_FILE_LOADER.apply("templatingRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
     }
   }
 
@@ -247,22 +247,22 @@ public class OrchestrationUnitTest {
 
   @Test
   void filteringLoose() throws IOException {
-    try (var inputStream = TEST_FILE_LOADER.apply("filteringLooseResponse.json")) {
-      final String response = new String(inputStream.readAllBytes());
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("filteringLooseResponse.json")
+                    .withHeader("Content-Type", "application/json")));
 
-      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+    final var config = FILTERING_CONFIG.apply(NUMBER_4);
 
-      final var config = FILTERING_CONFIG.apply(NUMBER_4);
+    client.orchestrationV1EndpointsCreate(config);
+    // the result is asserted in the verify step below
 
-      client.orchestrationV1EndpointsCreate(config);
-      // the result is asserted in the verify step below
-
-      // verify that null fields are absent from the sent request
-      try (var requestInputStream = TEST_FILE_LOADER.apply("filteringLooseRequest.json")) {
-        final String request = new String(requestInputStream.readAllBytes());
-        verify(
-            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
-      }
+    // verify that null fields are absent from the sent request
+    try (var requestInputStream = TEST_FILE_LOADER.apply("filteringLooseRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
     }
   }
 
@@ -282,61 +282,61 @@ public class OrchestrationUnitTest {
 
   @Test
   void messagesHistory() throws IOException {
-    try (var inputStream = TEST_FILE_LOADER.apply("templatingResponse.json")) {
-      final String response = new String(inputStream.readAllBytes());
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
 
-      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+    final List<ChatMessage> messagesHistory =
+        List.of(
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
-      final List<ChatMessage> messagesHistory =
-          List.of(
-              ChatMessage.create().role("user").content("What is the capital of France?"),
-              ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-      final var message =
-          ChatMessage.create().role("user").content("What is the typical food there?");
+    final var config =
+        TEMPLATE_CONFIG
+            .apply(TemplatingModuleConfig.create().template(message))
+            .messagesHistory(messagesHistory);
 
-      final var config =
-          TEMPLATE_CONFIG
-              .apply(TemplatingModuleConfig.create().template(message))
-              .messagesHistory(messagesHistory);
+    final var result = client.orchestrationV1EndpointsCreate(config);
 
-      final var result = client.orchestrationV1EndpointsCreate(config);
+    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
-      assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-
-      // verify that the history is sent correctly
-      try (var requestInputStream = TEST_FILE_LOADER.apply("messagesHistoryRequest.json")) {
-        final String request = new String(requestInputStream.readAllBytes());
-        verify(
-            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
-      }
+    // verify that the history is sent correctly
+    try (var requestInputStream = TEST_FILE_LOADER.apply("messagesHistoryRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
     }
   }
 
   @Test
   void maskingAnonymization() throws IOException {
-    try (var inputStream = TEST_FILE_LOADER.apply("maskingResponse.json")) {
-      final String response = new String(inputStream.readAllBytes());
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("maskingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
 
-      stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
+    final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
+    final var result = client.orchestrationV1EndpointsCreate(config);
 
-      final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
-      final var result = client.orchestrationV1EndpointsCreate(config);
+    assertThat(result).isNotNull();
+    GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
+    assertThat(inputMasking.getData()).isNotNull();
+    final var choices = result.getOrchestrationResult().getChoices();
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo(
+            "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
 
-      assertThat(result).isNotNull();
-      GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
-      assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
-      assertThat(inputMasking.getData()).isNotNull();
-      final var choices = result.getOrchestrationResult().getChoices();
-      assertThat(choices.get(0).getMessage().getContent())
-          .isEqualTo(
-              "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
-
-      // verify that the history is sent correctly
-      try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
-        final String request = new String(requestInputStream.readAllBytes());
-        verify(
-            postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
-      }
+    // verify that the history is sent correctly
+    try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
     }
   }
 }
