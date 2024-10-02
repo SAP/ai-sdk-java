@@ -30,10 +30,10 @@ public class FilteringModuleConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("input")
-  private FilteringConfig input;
+  private InputFilteringConfig input;
 
   @JsonProperty("output")
-  private FilteringConfig output;
+  private OutputFilteringConfig output;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -47,7 +47,7 @@ public class FilteringModuleConfig
    * @return The same instance of this {@link FilteringModuleConfig} class
    */
   @Nonnull
-  public FilteringModuleConfig input(@Nullable final FilteringConfig input) {
+  public FilteringModuleConfig input(@Nullable final InputFilteringConfig input) {
     this.input = input;
     return this;
   }
@@ -58,7 +58,7 @@ public class FilteringModuleConfig
    * @return input The input of this {@link FilteringModuleConfig} instance.
    */
   @Nonnull
-  public FilteringConfig getInput() {
+  public InputFilteringConfig getInput() {
     return input;
   }
 
@@ -67,7 +67,7 @@ public class FilteringModuleConfig
    *
    * @param input List of provider type and filters
    */
-  public void setInput(@Nullable final FilteringConfig input) {
+  public void setInput(@Nullable final InputFilteringConfig input) {
     this.input = input;
   }
 
@@ -78,7 +78,7 @@ public class FilteringModuleConfig
    * @return The same instance of this {@link FilteringModuleConfig} class
    */
   @Nonnull
-  public FilteringModuleConfig output(@Nullable final FilteringConfig output) {
+  public FilteringModuleConfig output(@Nullable final OutputFilteringConfig output) {
     this.output = output;
     return this;
   }
@@ -89,7 +89,7 @@ public class FilteringModuleConfig
    * @return output The output of this {@link FilteringModuleConfig} instance.
    */
   @Nonnull
-  public FilteringConfig getOutput() {
+  public OutputFilteringConfig getOutput() {
     return output;
   }
 
@@ -98,7 +98,7 @@ public class FilteringModuleConfig
    *
    * @param output List of provider type and filters
    */
-  public void setOutput(@Nullable final FilteringConfig output) {
+  public void setOutput(@Nullable final OutputFilteringConfig output) {
     this.output = output;
   }
 
