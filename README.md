@@ -456,6 +456,43 @@ final String messageResult =
 
 See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
+### Data masking
+
+```java
+final var inputParams = Map.of("privateInfo", "Patrick Morgan +49 (970) 333-3833");
+final var template =
+    ChatMessage.create().role("user").content("What is the nationality of {{?privateInfo}}");
+final var templatingConfig = TemplatingModuleConfig.create().template(template);
+
+final var maskingProvider =
+    MaskingProviderConfig.create()
+        .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+        .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
+        .entities(
+            DPIEntityConfig.create().type(DPIEntities.PHONE),
+            DPIEntityConfig.create().type(DPIEntities.PERSON));
+final var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+
+final CompletionPostRequest config =
+    CompletionPostRequest.create()
+        .orchestrationConfig(
+            OrchestrationConfig.create()
+                .moduleConfigurations(
+                    ModuleConfigs.create()
+                        .llmModuleConfig(LLM_CONFIG)
+                        .templatingModuleConfig(templatingConfig)
+                        .maskingModuleConfig(maskingConfig)))
+        .inputParams(inputParams);
+
+final CompletionPostResponse result =
+    new OrchestrationCompletionApi(getOrchestrationClient("default"))
+        .orchestrationV1EndpointsCreate(config);
+
+final String messageResult =
+    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+```
+
+See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
 
 ### Set model parameters
 
