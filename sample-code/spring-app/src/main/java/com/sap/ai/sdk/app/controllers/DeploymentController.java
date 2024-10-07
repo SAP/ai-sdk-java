@@ -1,14 +1,21 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.core.AiCoreService;
+
+import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.DeploymentApi;
+import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
+import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
+import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -119,5 +126,40 @@ class DeploymentController {
   @Nullable
   public AiDeploymentList getAll() {
     return API.query("default");
+  }
+
+  /**
+   * Create a configuration, and deploy it.
+   *
+   * <p>This is to be invoked from a unit test.
+   *
+   * @param model The OpenAI model to deploy
+   * @return the deployment creation response
+   */
+  @Nonnull
+  @SuppressWarnings("unused") // debug method that doesn't need to be tested
+  public AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
+
+    // Create a configuration
+    final var modelNameParameter =
+        AiParameterArgumentBinding.create().key("model").value(model.model());
+    final var modelVersion =
+        AiParameterArgumentBinding.create().key("modelVersion").value("latest");
+    final var configurationBaseData =
+        AiConfigurationBaseData.create()
+            .name(model.model())
+            .executableId("azure-openai")
+            .scenarioId("foundation-models")
+            .addParameterBindingsItem(modelNameParameter)
+            .addParameterBindingsItem(modelVersion);
+
+    final AiConfigurationCreationResponse configuration =
+        new ConfigurationApi(getClient()).create("default", configurationBaseData);
+
+    // Create a deployment from the configuration
+    final var deploymentCreationRequest =
+        AiDeploymentCreationRequest.create().configurationId(configuration.getId());
+
+    return API.create("default", deploymentCreationRequest);
   }
 }
