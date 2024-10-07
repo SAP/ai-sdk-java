@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingBuilder;
+import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingMerger;
 import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 /** Utility class to resolve the destination pointing to the AI Core service. */
 @Slf4j
 class DestinationResolver {
+  static ServiceBindingAccessor accessor = DefaultServiceBindingAccessor.getInstance();
 
   /**
    * <b>For testing only</b>
@@ -35,7 +37,7 @@ class DestinationResolver {
   static HttpDestination getDestination(@Nullable final String serviceKey) {
     final var serviceKeyPresent = serviceKey != null;
     final var aiCoreBindingPresent =
-        DefaultServiceBindingAccessor.getInstance().getServiceBindings().stream()
+        accessor.getServiceBindings().stream()
             .anyMatch(
                 serviceBinding ->
                     ServiceIdentifier.AI_CORE.equals(
@@ -89,7 +91,6 @@ class DestinationResolver {
             .withServiceIdentifier(ServiceIdentifier.AI_CORE)
             .withCredentials(credentials)
             .build();
-    final var accessor = DefaultServiceBindingAccessor.getInstance();
     final var newAccessor =
         new ServiceBindingMerger(
             List.of(accessor, () -> List.of(binding)), ServiceBindingMerger.KEEP_EVERYTHING);
