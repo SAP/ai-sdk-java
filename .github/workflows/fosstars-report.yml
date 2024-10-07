@@ -5,6 +5,7 @@ on:
     - cron: "0 0 * * *" # every day at midnight
 
 env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   JAVA_VERSION: 17
 
 jobs:
@@ -21,6 +22,11 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
+
+      - name: "Build SDK"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          mvn $MVN_ARGS
 
       - name: "OWASP Dependency check"
         run: mvn org.owasp:dependency-check-maven:10.0.4:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=.pipeline/dependency-check-suppression.xml
