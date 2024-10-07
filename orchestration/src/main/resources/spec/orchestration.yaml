@@ -8,7 +8,7 @@ info:
   version: 0.0.1
 
 servers:
-  - url: '/v1'
+  - url: "/v1"
 
 tags:
   - name: Orchestrated Completion
@@ -25,18 +25,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompletionPostRequest'
+              $ref: "#/components/schemas/CompletionPostRequest"
       responses:
         200:
-          description: 'Successful response'
+          description: "Successful response"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompletionPostResponse'
+                $ref: "#/components/schemas/CompletionPostResponse"
         400:
-          $ref: '#/components/responses/BadRequest'
+          $ref: "#/components/responses/BadRequest"
         default:
-          $ref: '#/components/responses/CommonError'
+          $ref: "#/components/responses/CommonError"
 
   /healthz:
     get:
@@ -44,15 +44,15 @@ paths:
         - OrchestrationHealthz
       operationId: orchestration.v1.endpoints.healthz
       responses:
-        '200':
-          description: 'Service is up and running.'
+        "200":
+          description: "Service is up and running."
           content:
             text/plain:
               schema:
                 type: string
-                example: 'OK'
-        '503':
-          description: 'Service is unavailable.'
+                example: "OK"
+        "503":
+          description: "Service is unavailable."
           content:
             application/json:
               schema:
@@ -60,7 +60,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: 'Service Unavailable'
+                    example: "Service Unavailable"
 
 components:
   schemas:
@@ -70,23 +70,24 @@ components:
         - orchestration_config
       properties:
         orchestration_config:
-          $ref: '#/components/schemas/OrchestrationConfig'
+          $ref: "#/components/schemas/OrchestrationConfig"
         input_params:
           type: object
           example:
-            groundingInput: 'What is SAP Joule?'
-            inputContext: 'optimizing supply chain management'
+            groundingInput: "What is SAP Joule?"
+            inputContext: "optimizing supply chain management"
           additionalProperties:
             type: string
         messages_history:
           allOf:
-            - $ref: '#/components/schemas/ChatMessages'
+            - $ref: "#/components/schemas/ChatMessages"
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
     ChatMessages:
       type: array
+      minItems: 1
       items:
-        $ref: '#/components/schemas/ChatMessage'
+        $ref: "#/components/schemas/ChatMessage"
 
     ChatMessage:
       type: object
@@ -99,7 +100,23 @@ components:
           example: user
         content:
           type: string
-          example: 'What is SAP S/4HANA?'
+      
+    ChatDelta:
+      type: object
+      required:
+        - content
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+          default: ""
+
+    # InputParamsEntry:
+    #   oneOf:
+    #     - type: string
+    #     - type: number
+    #       example: "What is SAP S/4HANA?"
 
     CompletionPostResponse:
       type: object
@@ -111,11 +128,24 @@ components:
         request_id:
           description: ID of the request
           type: string
-          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+          example: "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
         module_results:
-          $ref: '#/components/schemas/ModuleResults'
+          $ref: "#/components/schemas/ModuleResults"
         orchestration_result:
-          $ref: '#/components/schemas/LLMModuleResult'
+          $ref: "#/components/schemas/LLMModuleResult"
+    
+    CompletionPostResponseStreaming:
+      type: object
+      required:
+        - request_id
+      properties:
+        request_id:
+          description: ID of the request
+          type: string
+        module_results:
+          $ref: "#/components/schemas/ModuleResults"
+        orchestration_result:
+          $ref: "#/components/schemas/LLMModuleResultStreaming"
 
     OrchestrationConfig:
       type: object
@@ -123,7 +153,13 @@ components:
         - module_configurations
       properties:
         module_configurations:
-          $ref: '#/components/schemas/ModuleConfigs'
+          $ref: "#/components/schemas/ModuleConfigs"
+        stream:
+          type: boolean
+          description: If true, the response will be streamed back to the client
+          default: false
+        stream_options:
+          $ref: "#/components/schemas/GlobalStreamOptions"
 
     ModuleConfigs:
       type: object
@@ -132,15 +168,15 @@ components:
         - templating_module_config
       properties:
         llm_module_config:
-          $ref: '#/components/schemas/LLMModuleConfig'
+          $ref: "#/components/schemas/LLMModuleConfig"
         templating_module_config:
-          $ref: '#/components/schemas/TemplatingModuleConfig'
+          $ref: "#/components/schemas/TemplatingModuleConfig"
         filtering_module_config:
-          $ref: '#/components/schemas/FilteringModuleConfig'
+          $ref: "#/components/schemas/FilteringModuleConfig"
         masking_module_config:
-          $ref: '#/components/schemas/MaskingModuleConfig'
+          $ref: "#/components/schemas/MaskingModuleConfig"
         grounding_module_config:
-          $ref: '#/components/schemas/GroundingModuleConfig'
+          $ref: "#/components/schemas/GroundingModuleConfig"
 
     ModuleResults:
       description: Results of each module.
@@ -148,21 +184,34 @@ components:
       additionalProperties: false
       properties:
         grounding:
-          $ref: '#/components/schemas/GenericModuleResult'
+          $ref: "#/components/schemas/GenericModuleResult"
         templating:
-          $ref: '#/components/schemas/ChatMessages'
+          $ref: "#/components/schemas/ChatMessages"
         input_masking:
-          $ref: '#/components/schemas/GenericModuleResult'
+          $ref: "#/components/schemas/GenericModuleResult"
         input_filtering:
-          $ref: '#/components/schemas/GenericModuleResult'
+          $ref: "#/components/schemas/GenericModuleResult"
         llm:
-          $ref: '#/components/schemas/LLMModuleResult'
+          $ref: "#/components/schemas/LLMModuleResult"
         output_filtering:
-          $ref: '#/components/schemas/GenericModuleResult'
+          $ref: "#/components/schemas/GenericModuleResult"
         output_unmasking:
           type: array
           items:
-            $ref: '#/components/schemas/LLMChoice'
+            oneOf:
+              - $ref: "#/components/schemas/LLMChoice"
+
+    GlobalStreamOptions:
+      description: Options for streaming. Will be ignored if stream is false.
+      type: object
+      additionalProperties: false
+      properties:
+        chunk_size:
+          type: integer
+          description: Number of characters per chunk that post-LLM modules operate on. 
+          default: 100
+          minimum: 1
+          maximum: 10000 # currently determined by max_size of ACS text records
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -173,7 +222,7 @@ components:
       properties:
         model_name:
           description: Model name as in LLM Access configuration
-          example: 'gpt-4'
+          example: "gpt-4"
           type: string
         model_params:
           description: Model parameters
@@ -187,7 +236,7 @@ components:
         model_version:
           description: Version of the model to use
           type: string
-          default: 'latest'
+          default: "latest"
 
     GenericModuleResult:
       type: object
@@ -204,6 +253,11 @@ components:
           description: Additional data object from the module
 
     LLMModuleResult:
+      description: Output of LLM module. Follows the OpenAI spec.
+      oneOf:
+        - $ref: "#/components/schemas/LLMModuleResultSynchronous"
+
+    LLMModuleResultSynchronous:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
       required:
@@ -217,7 +271,7 @@ components:
         id:
           type: string
           description: ID of the response
-          example: 'chatcmpl-9rO0aLoPKY7RtqkWi1317bazHEVFr'
+          example: "chatcmpl-9rO0aLoPKY7RtqkWi1317bazHEVFr"
         object:
           type: string
           description: Object type
@@ -229,18 +283,51 @@ components:
         model:
           type: string
           description: Model name
-          example: 'gpt-4'
+          example: "gpt-4"
         system_fingerprint:
           type: string
           description: System fingerprint
-          example: 'fp_44709d6fcb'
+          example: "fp_44709d6fcb"
         choices:
           type: array
           description: Choices
           items:
-            $ref: '#/components/schemas/LLMChoice'
+            $ref: "#/components/schemas/LLMChoice"
         usage:
-          $ref: '#/components/schemas/TokenUsage'
+          $ref: "#/components/schemas/TokenUsage"
+
+    LLMModuleResultStreaming:
+      type: object
+      description: Output of LLM module. Follows the OpenAI spec.
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          description: ID of the response
+        object:
+          type: string
+          description: Object type
+        created:
+          type: integer
+          description: Unix timestamp
+        model:
+          type: string
+          description: Model name
+        system_fingerprint:
+          type: string
+          description: System fingerprint
+        choices:
+          type: array
+          description: Choices
+          items:
+            $ref: "#/components/schemas/LLMChoiceStreaming"
+        usage:
+          $ref: "#/components/schemas/TokenUsage"
 
     LLMChoice:
       type: object
@@ -254,7 +341,7 @@ components:
           description: Index of the choice
           example: 0
         message:
-          $ref: '#/components/schemas/ChatMessage'
+          $ref: "#/components/schemas/ChatMessage"
         logprobs:
           type: object
           description: Log probabilities
@@ -266,6 +353,28 @@ components:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
           example: stop
+
+    LLMChoiceStreaming:
+      type: object
+      required:
+        - index
+        - delta
+      properties:
+        index:
+          type: integer
+          description: Index of the choice
+        delta:
+          $ref: "#/components/schemas/ChatDelta"
+        logprobs:
+          type: object
+          description: Log probabilities
+          additionalProperties:
+            type: array
+            items:
+              type: number
+        finish_reason:
+          type: string
+          description: Reason for stopping the model
 
     TokenUsage:
       type: object
@@ -291,13 +400,18 @@ components:
     # --- Templating Module ---
 
     TemplatingModuleConfig:
+      oneOf:
+        - $ref: "#/components/schemas/Template"
+
+    # --- Templating Module with User Defined Template ---
+    Template:
       type: object
       required:
         - template
       properties:
         template:
           allOf:
-            - $ref: '#/components/schemas/ChatMessages'
+            - $ref: "#/components/schemas/ChatMessages"
           description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
@@ -305,9 +419,52 @@ components:
       example:
         template:
           - role: user
-            content: 'How can the features of AI in SAP BTP specifially {{?groundingOutput}}, be applied to {{?inputContext}}'
+            content: "How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}"
         defaults:
           inputContext: The default text that will be used in the template if inputContext is not set
+    
+    # --- Templating Module with reference to Prompt Registry ---
+    TemplateRef:
+      type: object
+      required:
+        - template_ref
+      properties:
+        template_ref:
+          type: object
+          description: Reference to a template in the prompt registry by ID or by scenario, name and version
+          oneOf:
+            - $ref: "#/components/schemas/TemplateRefByID"
+    
+    TemplateRefByID:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: ID of the template in prompt registry
+          example: "template_id"
+
+    TemplateRefByScenarioNameVersion:
+      type: object
+      required:
+        - scenario
+        - name
+        - version
+      properties:
+        scenario:
+          type: string
+          description: Scenario name
+          example: "some-scenario"
+        name:
+          type: string
+          description: Name of the template
+          example: "some-template-name"
+        version:
+          type: string
+          description: Version of the template
+          example: "some version, can be `latest`"
+
 
     # --- Filtering Module ---
     FilteringModuleConfig:
@@ -315,29 +472,57 @@ components:
       properties:
         input:
           allOf:
-            - $ref: '#/components/schemas/FilteringConfig'
+            - $ref: "#/components/schemas/InputFilteringConfig"
           description: List of provider type and filters
         output:
           allOf:
-            - $ref: '#/components/schemas/FilteringConfig'
+            - $ref: "#/components/schemas/OutputFilteringConfig"
           description: List of provider type and filters
       additionalProperties: false
 
-    FilteringConfig:
+    InputFilteringConfig:
       type: object
       required:
         - filters
+      additionalProperties: false
       properties:
         filters:
           description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/FilterConfig'
+            $ref: "#/components/schemas/FilterConfig"
+    
+    OutputFilteringConfig:
+      type: object
+      required:
+        - filters
+      additionalProperties: false
+      properties:
+        filters:
+          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/FilterConfig"
+        stream_options:
+          $ref: "#/components/schemas/FilteringStreamOptions"
+
+    FilteringStreamOptions:
+      description: Stream options for output filtering. Will be ignored if stream is false.
+      type: object
+      additionalProperties: false
+      properties:
+        overlap:
+          type: integer
+          description: Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.
+          default: 0
+          minimum: 0
+          maximum: 10000
 
     FilterConfig:
       oneOf:
-        - $ref: '#/components/schemas/AzureContentSafetyFilterConfig'
+        - $ref: "#/components/schemas/AzureContentSafetyFilterConfig"
 
     AzureContentSafetyFilterConfig:
       type: object
@@ -351,21 +536,21 @@ components:
             - azure_content_safety
           example: azure_content_safety
         config:
-          $ref: '#/components/schemas/AzureContentSafety'
+          $ref: "#/components/schemas/AzureContentSafety"
 
     AzureContentSafety:
       description: Filter configuration for Azure Content Safety
       type: object
       additionalProperties: false
       properties:
-        'Hate':
-          $ref: '#/components/schemas/AzureThreshold'
-        'SelfHarm':
-          $ref: '#/components/schemas/AzureThreshold'
-        'Sexual':
-          $ref: '#/components/schemas/AzureThreshold'
-        'Violence':
-          $ref: '#/components/schemas/AzureThreshold'
+        "Hate":
+          $ref: "#/components/schemas/AzureThreshold"
+        "SelfHarm":
+          $ref: "#/components/schemas/AzureThreshold"
+        "Sexual":
+          $ref: "#/components/schemas/AzureThreshold"
+        "Violence":
+          $ref: "#/components/schemas/AzureThreshold"
 
     AzureThreshold:
       type: integer
@@ -387,22 +572,22 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/MaskingProviderConfig'
+            $ref: "#/components/schemas/MaskingProviderConfig"
           description: List of masking service providers
       additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
-        - $ref: '#/components/schemas/DPIConfig'
+        - $ref: "#/components/schemas/DPIConfig"
 
     DPIConfig:
       type: object
-      required:
+      required: 
         - type
         - method
         - entities
       properties:
-        type:
+        type: 
           description: Type of masking service provider
           type: string
           enum:
@@ -418,7 +603,7 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/DPIEntityConfig'
+            $ref: "#/components/schemas/DPIEntityConfig"
 
     DPIEntityConfig:
       type: object
@@ -428,7 +613,7 @@ components:
         type:
           description: Type of entity to be masked
           allOf:
-            - $ref: '#/components/schemas/DPIEntities'
+            - $ref: "#/components/schemas/DPIEntities"
 
     DPIEntities:
       description: Default entities supported by data privacy and integration service
@@ -460,74 +645,162 @@ components:
         - profile-trade-union
         - profile-sensitive-data
 
-    # --- Grounding Module ---
 
+    # --- Grounding Module ---
     GroundingModuleConfig:
       type: object
       required:
-        - grounding_service
+        - type
+        - config
       properties:
-        grounding_service:
+        type:
           type: string
-          enum:
+          anyOf:
+          - enum:
             - document_grounding_service
+          - {}
           example: document_grounding_service
-        grounding_service_configuration:
+        config:
           type: object
           required:
-            - grounding_input_parameters
-            - grounding_output_parameter
+            - input_params
+            - output_param
           properties:
             filters:
               type: array
               items:
-                $ref: '#/components/schemas/GroundingFilter'
+                oneOf:
+                  - $ref: "#/components/schemas/DocumentGroundingFilter"
               description: Document grounding service filters to be used
-            grounding_input_parameters:
+            input_params:
               type: array
               items:
                 type: string
                 example: groundingInput
               description: Contains the input parameters used for grounding input questions
-            grounding_output_parameter:
+            output_param:
               type: string
               description: Parameter name used for grounding output
               example: groundingOutput
-    GroundingFilter:
+    DocumentGroundingFilter:
       type: object
+      required:
+        - id
+        - data_repository_type
       properties:
         id:
-          type: string
-          example: 'string'
-        search_configuration:
-          type: object
-          example: {}
+          $ref: "#/components/schemas/GroundingFilterId"
+        search_config:
+          $ref: "#/components/schemas/GroundingFilterSearchConfiguration"
         data_repositories:
           type: array
           items:
             type: string
-          example: ['*']
+          title: DataRepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+          - "*"
         data_repository_type:
           type: string
-          enum:
-            - vector
-            - help.sap.com
-          example: help.sap.com
+          $ref: "#/components/schemas/DataRepositoryType"
+          description: Only include DataRepositories with the given type.
         data_repository_metadata:
           type: array
           items:
-            type: object
-          example: []
+            $ref: "#/components/schemas/KeyValueListPair"
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
         document_metadata:
           type: array
           items:
-            type: object
-          example: []
+            $ref: "#/components/schemas/SearchDocumentKeyValueListPair"
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
         chunk_metadata:
           type: array
           items:
-            type: object
-          example: []
+            $ref: "#/components/schemas/KeyValueListPair"
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+      minProperties: 1
+    GroundingFilterId:
+      title: Id
+      description: Identifier of this SearchFilter - unique per request.
+    GroundingFilterSearchConfiguration:
+      nullable: true
+      properties:
+        max_chunk_count:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxchunkcount
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+        max_document_count:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxdocumentcount
+          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+      title: SearchConfiguration
+      minProperties: 0
+      maxProperties: 1
+    DataRepositoryType:
+      type: string
+      anyOf:
+        - enum:
+          - vector
+          - help.sap.com
+        - {}
+      title: DataRepositoryType
+    KeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+      type: object
+      required:
+      - key
+      - value
+      title: KeyValueListPair
+    SearchDocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        select_mode:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchSelectOptionEnum"
+          title: Selectmode
+          description: Select mode for search filters
+      type: object
+      required:
+      - key
+      - value
+      title: SearchDocumentKeyValueListPair
+    SearchSelectOptionEnum:
+      type: string
+      anyOf:
+        - enum:
+          - ignoreIfKeyAbsent
+        - {}
+      title: SearchSelectOptionEnum
 
     ErrorResponse:
       type: object
@@ -539,7 +812,7 @@ components:
       properties:
         request_id:
           type: string
-          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+          example: "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
         code:
           type: integer
           example: 400
@@ -549,9 +822,9 @@ components:
         location:
           type: string
           description: Where the error occurred
-          example: 'LLM Module'
+          example: "LLM Module"
         module_results:
-          $ref: '#/components/schemas/ModuleResults'
+          $ref: "#/components/schemas/ModuleResults"
 
   responses:
     BadRequest:
@@ -559,10 +832,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
     CommonError:
       description: Common Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
