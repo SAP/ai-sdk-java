@@ -19,7 +19,8 @@
           }
         ]
       }
-    }
+    },
+    "stream" : false
   },
   "input_params": {},
   "messages_history": [

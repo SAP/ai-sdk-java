@@ -32,6 +32,12 @@ public class OrchestrationConfig
   @JsonProperty("module_configurations")
   private ModuleConfigs moduleConfigurations;
 
+  @JsonProperty("stream")
+  private Boolean stream = false;
+
+  @JsonProperty("stream_options")
+  private GlobalStreamOptions streamOptions;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -69,6 +75,69 @@ public class OrchestrationConfig
    */
   public void setModuleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations) {
     this.moduleConfigurations = moduleConfigurations;
+  }
+
+  /**
+   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   *
+   * @param stream If true, the response will be streamed back to the client
+   * @return The same instance of this {@link OrchestrationConfig} class
+   */
+  @Nonnull
+  public OrchestrationConfig stream(@Nullable final Boolean stream) {
+    this.stream = stream;
+    return this;
+  }
+
+  /**
+   * If true, the response will be streamed back to the client
+   *
+   * @return stream The stream of this {@link OrchestrationConfig} instance.
+   */
+  @Nonnull
+  public Boolean isStream() {
+    return stream;
+  }
+
+  /**
+   * Set the stream of this {@link OrchestrationConfig} instance.
+   *
+   * @param stream If true, the response will be streamed back to the client
+   */
+  public void setStream(@Nullable final Boolean stream) {
+    this.stream = stream;
+  }
+
+  /**
+   * Set the streamOptions of this {@link OrchestrationConfig} instance and return the same
+   * instance.
+   *
+   * @param streamOptions The streamOptions of this {@link OrchestrationConfig}
+   * @return The same instance of this {@link OrchestrationConfig} class
+   */
+  @Nonnull
+  public OrchestrationConfig streamOptions(@Nullable final GlobalStreamOptions streamOptions) {
+    this.streamOptions = streamOptions;
+    return this;
+  }
+
+  /**
+   * Get streamOptions
+   *
+   * @return streamOptions The streamOptions of this {@link OrchestrationConfig} instance.
+   */
+  @Nonnull
+  public GlobalStreamOptions getStreamOptions() {
+    return streamOptions;
+  }
+
+  /**
+   * Set the streamOptions of this {@link OrchestrationConfig} instance.
+   *
+   * @param streamOptions The streamOptions of this {@link OrchestrationConfig}
+   */
+  public void setStreamOptions(@Nullable final GlobalStreamOptions streamOptions) {
+    this.streamOptions = streamOptions;
   }
 
   /**
@@ -120,12 +189,14 @@ public class OrchestrationConfig
     }
     final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.moduleConfigurations, orchestrationConfig.moduleConfigurations);
+        && Objects.equals(this.moduleConfigurations, orchestrationConfig.moduleConfigurations)
+        && Objects.equals(this.stream, orchestrationConfig.stream)
+        && Objects.equals(this.streamOptions, orchestrationConfig.streamOptions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(moduleConfigurations, cloudSdkCustomFields);
+    return Objects.hash(moduleConfigurations, stream, streamOptions, cloudSdkCustomFields);
   }
 
   @Override
@@ -136,6 +207,8 @@ public class OrchestrationConfig
     sb.append("    moduleConfigurations: ")
         .append(toIndentedString(moduleConfigurations))
         .append("\n");
+    sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
+    sb.append("    streamOptions: ").append(toIndentedString(streamOptions)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

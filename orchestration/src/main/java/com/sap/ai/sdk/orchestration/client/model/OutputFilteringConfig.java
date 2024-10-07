@@ -27,40 +27,43 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** FilteringConfig */
+/** OutputFilteringConfig */
 // CHECKSTYLE:OFF
-public class FilteringConfig
+public class OutputFilteringConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("filters")
   private List<FilterConfig> filters = new ArrayList<>();
 
+  @JsonProperty("stream_options")
+  private FilteringStreamOptions streamOptions;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  protected FilteringConfig() {}
+  protected OutputFilteringConfig() {}
 
   /**
-   * Set the filters of this {@link FilteringConfig} instance and return the same instance.
+   * Set the filters of this {@link OutputFilteringConfig} instance and return the same instance.
    *
    * @param filters Configuration for content filtering services that should be used for the given
    *     filtering step (input filtering or output filtering).
-   * @return The same instance of this {@link FilteringConfig} class
+   * @return The same instance of this {@link OutputFilteringConfig} class
    */
   @Nonnull
-  public FilteringConfig filters(@Nonnull final List<FilterConfig> filters) {
+  public OutputFilteringConfig filters(@Nonnull final List<FilterConfig> filters) {
     this.filters = filters;
     return this;
   }
 
   /**
-   * Add one filters instance to this {@link FilteringConfig}.
+   * Add one filters instance to this {@link OutputFilteringConfig}.
    *
    * @param filtersItem The filters that should be added
-   * @return The same instance of type {@link FilteringConfig}
+   * @return The same instance of type {@link OutputFilteringConfig}
    */
   @Nonnull
-  public FilteringConfig addFiltersItem(@Nonnull final FilterConfig filtersItem) {
+  public OutputFilteringConfig addFiltersItem(@Nonnull final FilterConfig filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -72,7 +75,7 @@ public class FilteringConfig
    * Configuration for content filtering services that should be used for the given filtering step
    * (input filtering or output filtering).
    *
-   * @return filters The filters of this {@link FilteringConfig} instance.
+   * @return filters The filters of this {@link OutputFilteringConfig} instance.
    */
   @Nonnull
   public List<FilterConfig> getFilters() {
@@ -80,7 +83,7 @@ public class FilteringConfig
   }
 
   /**
-   * Set the filters of this {@link FilteringConfig} instance.
+   * Set the filters of this {@link OutputFilteringConfig} instance.
    *
    * @param filters Configuration for content filtering services that should be used for the given
    *     filtering step (input filtering or output filtering).
@@ -90,7 +93,39 @@ public class FilteringConfig
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link FilteringConfig}.
+   * Set the streamOptions of this {@link OutputFilteringConfig} instance and return the same
+   * instance.
+   *
+   * @param streamOptions The streamOptions of this {@link OutputFilteringConfig}
+   * @return The same instance of this {@link OutputFilteringConfig} class
+   */
+  @Nonnull
+  public OutputFilteringConfig streamOptions(@Nullable final FilteringStreamOptions streamOptions) {
+    this.streamOptions = streamOptions;
+    return this;
+  }
+
+  /**
+   * Get streamOptions
+   *
+   * @return streamOptions The streamOptions of this {@link OutputFilteringConfig} instance.
+   */
+  @Nonnull
+  public FilteringStreamOptions getStreamOptions() {
+    return streamOptions;
+  }
+
+  /**
+   * Set the streamOptions of this {@link OutputFilteringConfig} instance.
+   *
+   * @param streamOptions The streamOptions of this {@link OutputFilteringConfig}
+   */
+  public void setStreamOptions(@Nullable final FilteringStreamOptions streamOptions) {
+    this.streamOptions = streamOptions;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link OutputFilteringConfig}.
    *
    * @return The set of properties names
    */
@@ -101,7 +136,7 @@ public class FilteringConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link FilteringConfig} instance.
+   * Get the value of an unrecognizable property of this {@link OutputFilteringConfig} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -110,14 +145,15 @@ public class FilteringConfig
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("FilteringConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "OutputFilteringConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link FilteringConfig} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link OutputFilteringConfig} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -135,22 +171,24 @@ public class FilteringConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final FilteringConfig filteringConfig = (FilteringConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, filteringConfig.cloudSdkCustomFields)
-        && Objects.equals(this.filters, filteringConfig.filters);
+    final OutputFilteringConfig outputFilteringConfig = (OutputFilteringConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, outputFilteringConfig.cloudSdkCustomFields)
+        && Objects.equals(this.filters, outputFilteringConfig.filters)
+        && Objects.equals(this.streamOptions, outputFilteringConfig.streamOptions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filters, cloudSdkCustomFields);
+    return Objects.hash(filters, streamOptions, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class FilteringConfig {\n");
+    sb.append("class OutputFilteringConfig {\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
+    sb.append("    streamOptions: ").append(toIndentedString(streamOptions)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -169,32 +207,32 @@ public class FilteringConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link FilteringConfig}
+   * Create a type-safe, fluent-api builder object to construct a new {@link OutputFilteringConfig}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (filters) -> new FilteringConfig().filters(filters);
+    return (filters) -> new OutputFilteringConfig().filters(filters);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the filters of this {@link FilteringConfig} instance.
+     * Set the filters of this {@link OutputFilteringConfig} instance.
      *
      * @param filters Configuration for content filtering services that should be used for the given
      *     filtering step (input filtering or output filtering).
-     * @return The FilteringConfig instance.
+     * @return The OutputFilteringConfig instance.
      */
-    FilteringConfig filters(@Nonnull final List<FilterConfig> filters);
+    OutputFilteringConfig filters(@Nonnull final List<FilterConfig> filters);
 
     /**
-     * Set the filters of this {@link FilteringConfig} instance.
+     * Set the filters of this {@link OutputFilteringConfig} instance.
      *
      * @param filters Configuration for content filtering services that should be used for the given
      *     filtering step (input filtering or output filtering).
-     * @return The FilteringConfig instance.
+     * @return The OutputFilteringConfig instance.
      */
-    default FilteringConfig filters(@Nonnull final FilterConfig... filters) {
+    default OutputFilteringConfig filters(@Nonnull final FilterConfig... filters) {
       return filters(Arrays.asList(filters));
     }
   }
