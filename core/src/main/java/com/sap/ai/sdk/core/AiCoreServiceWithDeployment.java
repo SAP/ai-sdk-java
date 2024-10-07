@@ -26,7 +26,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
   @Nonnull private final Supplier<Destination> destination;
 
   // the resource group, "default" if null
-  @Nullable private final String resourceGroup;
+  @Nonnull private final String resourceGroup;
 
   /**
    * Create a new instance of the AI Core service with a specific deployment id and destination.
@@ -37,7 +37,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
   public AiCoreServiceWithDeployment(
       @Nonnull final Function<AiCoreServiceWithDeployment, String> deploymentId,
       @Nonnull final Supplier<Destination> destination) {
-    this(deploymentId, destination, null);
+    this(deploymentId, destination, "default");
   }
 
   @Nonnull
