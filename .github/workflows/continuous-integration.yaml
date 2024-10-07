@@ -97,8 +97,7 @@ jobs:
 
 
       - name: "Slack Notification"
-        ## currently disabled, as there are no main builds yet
-        if: false
+        if: ${{ github.ref == 'refs/heads/main' && failure() }}
         uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |

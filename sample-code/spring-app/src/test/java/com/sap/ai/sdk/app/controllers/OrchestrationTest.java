@@ -3,6 +3,8 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -57,6 +59,30 @@ class OrchestrationTest {
 
   @Test
   void messagesHistory() {
-    assertThat(new OrchestrationController()).isNotNull();
+    CompletionPostResponse result = new OrchestrationController().messagesHistory();
+    final var choices = result.getOrchestrationResult().getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void maskingAnonymization() {
+    final var result = new OrchestrationController().maskingAnonymization();
+    assertThat(result).isNotNull();
+    GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage()).isNotEmpty();
+    assertThat(inputMasking.getData()).isNotNull();
+    final var choices = result.getOrchestrationResult().getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void maskingPseudonymization() {
+    final var result = new OrchestrationController().maskingPseudonymization();
+    assertThat(result).isNotNull();
+    GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage()).isNotEmpty();
+    assertThat(inputMasking.getData()).isNotNull();
+    final var choices = result.getOrchestrationResult().getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }

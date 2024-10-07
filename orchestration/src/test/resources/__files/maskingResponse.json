@@ -1,0 +1,76 @@
+{
+  "request_id": "4c1b423d-f3a9-443e-9876-091888b0d585",
+  "module_results": {
+    "grounding": null,
+    "templating": [
+      {
+        "role": "user",
+        "content": "What is the nationality of Patrick Morgan +49 (970) 333-3833"
+      }
+    ],
+    "input_masking": {
+      "message": "Input to LLM is masked successfully.",
+      "data": {
+        "masked_template": [
+          {
+            "role": "user",
+            "content": "What is the nationality of Patrick Morgan MASKED_PHONE_NUMBER"
+          }
+        ]
+      }
+    },
+    "input_filtering": null,
+    "llm": {
+      "object": "chat.completion",
+      "id": "chatcmpl-ADVDtCV54jp7BCKxeyWs3MWPFNx3N",
+      "created": 1727781649,
+      "model": "gpt-35-turbo",
+      "system_fingerprint": "fp_e49e4201a9",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "I'm sorry, I cannot provide information about specific individuals, including their nationality."
+          },
+          "logprobs": {
+
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 18,
+        "total_tokens": 34
+      }
+    },
+    "output_filtering": null,
+    "output_unmasking": []
+  },
+  "orchestration_result": {
+    "object": "chat.completion",
+    "id": "chatcmpl-ADVDtCV54jp7BCKxeyWs3MWPFNx3N",
+    "created": 1727781649,
+    "model": "gpt-35-turbo",
+    "system_fingerprint": "fp_e49e4201a9",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "I'm sorry, I cannot provide information about specific individuals, including their nationality."
+        },
+        "logprobs": {
+
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 16,
+      "prompt_tokens": 18,
+      "total_tokens": 34
+    }
+  }
+}
