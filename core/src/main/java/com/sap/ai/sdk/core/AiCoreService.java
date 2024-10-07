@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.AiCoreServiceWithDeployment.getDeploymentId;
-import static com.sap.ai.sdk.core.AiCoreServiceWithDeployment.isDeploymentOfModel;
+import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentId;
+import static com.sap.ai.sdk.core.AiCoreDeployment.isDeploymentOfModel;
 
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 /** Connectivity convenience methods for AI Core. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class AiCoreService implements AiCoreServiceStub {
+public class AiCoreService implements AiCoreDestination {
 
   // the destination to be used for AI Core service calls.
   @Nonnull private final Supplier<Destination> destination;
@@ -51,8 +51,8 @@ public class AiCoreService implements AiCoreServiceStub {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreServiceWithDeployment withDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreServiceWithDeployment(c -> deploymentId, this::destination);
+  public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
+    return new AiCoreDeployment(c -> deploymentId, this::destination);
   }
 
   /**
@@ -62,9 +62,9 @@ public class AiCoreService implements AiCoreServiceStub {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreServiceWithDeployment withDeploymentByModel(@Nonnull final String modelName) {
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
     final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
-    return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), this::destination);
+    return new AiCoreDeployment(c -> getDeploymentId(c, p), this::destination);
   }
 
   /**
@@ -74,9 +74,9 @@ public class AiCoreService implements AiCoreServiceStub {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreServiceWithDeployment withDeploymentByScenario(@Nonnull final String scenarioId) {
+  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
     final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreServiceWithDeployment(c -> getDeploymentId(c, p), this::destination);
+    return new AiCoreDeployment(c -> getDeploymentId(c, p), this::destination);
   }
 
   /**

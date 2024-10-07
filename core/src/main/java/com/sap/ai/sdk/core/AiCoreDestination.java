@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 /** Container for an API client and destination. */
 @FunctionalInterface
-public interface AiCoreServiceStub {
+public interface AiCoreDestination {
   /**
    * Get the destination.
    *
@@ -50,6 +50,7 @@ public interface AiCoreServiceStub {
   }
 
   /** Options for the API client. */
+  @FunctionalInterface
   interface ClientOptions {
 
     /** Serialize with null values. */

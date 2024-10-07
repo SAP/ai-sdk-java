@@ -17,10 +17,10 @@ import lombok.RequiredArgsConstructor;
 
 /** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
+public class AiCoreDeployment implements AiCoreDestination {
 
   // the deployment id to be used
-  @Nonnull private final Function<AiCoreServiceWithDeployment, String> deploymentId;
+  @Nonnull private final Function<AiCoreDeployment, String> deploymentId;
 
   // the base destination to be used
   @Nonnull private final Supplier<Destination> destination;
@@ -34,8 +34,8 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @param deploymentId The deployment id handler.
    * @param destination The destination handler.
    */
-  public AiCoreServiceWithDeployment(
-      @Nonnull final Function<AiCoreServiceWithDeployment, String> deploymentId,
+  public AiCoreDeployment(
+      @Nonnull final Function<AiCoreDeployment, String> deploymentId,
       @Nonnull final Supplier<Destination> destination) {
     this(deploymentId, destination, null);
   }
@@ -56,8 +56,8 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreServiceWithDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return new AiCoreServiceWithDeployment(deploymentId, destination, resourceGroup);
+  public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
+    return new AiCoreDeployment(deploymentId, destination, resourceGroup);
   }
 
   /**
@@ -67,8 +67,8 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreServiceWithDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreServiceWithDeployment(deploymentId, () -> destination, resourceGroup);
+  public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
+    return new AiCoreDeployment(deploymentId, () -> destination, resourceGroup);
   }
 
   /**
@@ -142,8 +142,7 @@ public class AiCoreServiceWithDeployment implements AiCoreServiceStub {
    */
   @Nonnull
   static String getDeploymentId(
-      @Nonnull final AiCoreServiceWithDeployment core,
-      @Nonnull final Predicate<AiDeployment> predicate)
+      @Nonnull final AiCoreDeployment core, @Nonnull final Predicate<AiDeployment> predicate)
       throws NoSuchElementException {
     final var deploymentService = new DeploymentApi(core.client());
     final var deployments = deploymentService.query(core.getDeploymentId());

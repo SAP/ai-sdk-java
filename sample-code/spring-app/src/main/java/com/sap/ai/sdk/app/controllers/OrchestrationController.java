@@ -36,7 +36,7 @@ class OrchestrationController {
 
   private static final OrchestrationCompletionApi API =
       new OrchestrationCompletionApi(
-          new AiCoreService().withDeploymentByScenario("orchestration").client());
+          new AiCoreService().forDeploymentByScenario("orchestration").client());
 
   static final String MODEL = "gpt-35-turbo";
 
