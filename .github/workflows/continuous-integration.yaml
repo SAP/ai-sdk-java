@@ -12,7 +12,7 @@ env:
 
 jobs:
 
-  continous-integration:
+  continuous-integration:
     # https://wiki.one.int.sap/wiki/display/DevFw/SUGAR
     runs-on: ubuntu-latest
     steps:
