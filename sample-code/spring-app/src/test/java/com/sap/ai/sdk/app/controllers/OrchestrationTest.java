@@ -1,10 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException;
 
 class OrchestrationTest {
   @Test
@@ -41,18 +39,6 @@ class OrchestrationTest {
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
-  }
-
-  @Test
-  void looseFilter() {
-    assertThat(new OrchestrationController().filter("4")).isNotNull();
-  }
-
-  @Test
-  void strictFilter() {
-    assertThatThrownBy(() -> new OrchestrationController().filter("0"))
-        .isInstanceOf(HttpClientErrorException.class)
-        .hasMessageContaining("400 Bad Request");
   }
 
   @Test

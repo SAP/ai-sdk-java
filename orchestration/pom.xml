@@ -33,8 +33,16 @@
   <dependencies>
     <!-- scope "compile" -->
     <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sap.cloud.sdk.datamodel</groupId>
       <artifactId>openapi-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.core5</groupId>
+      <artifactId>httpcore5</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -60,6 +68,18 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
     </dependency>
+    <!-- optional dependencies -->
+    <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-core</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <!-- scope "provided" -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <!-- scope "test" -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -79,11 +99,6 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.ai.sdk</groupId>
-      <artifactId>core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

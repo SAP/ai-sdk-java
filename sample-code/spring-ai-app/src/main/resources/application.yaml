@@ -1,0 +1,5 @@
+com.sap.ai.sdk:
+  orchestration:
+    llm:
+      modelName: gpt-35-turbo
+      modelVersion: latest
