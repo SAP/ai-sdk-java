@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 /** Utility class to resolve the destination pointing to the AI Core service. */
 @Slf4j
 class DestinationResolver {
+  static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
+  static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
   static ServiceBindingAccessor accessor = DefaultServiceBindingAccessor.getInstance();
 
   /**
@@ -60,7 +62,7 @@ class DestinationResolver {
             // generated code this is actually necessary, because the generated code assumes this
             // path to be present on the destination
             .uri(destination.getUri().resolve("/v2"))
-            .header("AI-Client-Type", "AI SDK Java")
+            .property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE)
             .build();
     return destination;
   }

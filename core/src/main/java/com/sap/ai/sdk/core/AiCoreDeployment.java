@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.core;
 
+import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
+import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
+
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 /** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AiCoreDeployment implements AiCoreDestination {
+  private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   // the deployment id handler to be used, based on resource group
   @Nonnull private final Function<String, String> deploymentId;
@@ -34,7 +38,7 @@ public class AiCoreDeployment implements AiCoreDestination {
   /**
    * Create a new instance of the AI Core service with a specific deployment id and destination.
    *
-   * @param deploymentId The deployment id handler.
+   * @param deploymentId The deployment id handler, based on resource group.
    * @param destination The destination handler.
    */
   public AiCoreDeployment(
@@ -83,7 +87,8 @@ public class AiCoreDeployment implements AiCoreDestination {
   protected void updateDestination(
       @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final HttpDestination d) {
     builder.uri(d.getUri().resolve("/v2/inference/deployments/%s/".formatted(getDeploymentId())));
-    builder.header("AI-Resource-Group", getResourceGroup());
+    builder.property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE);
+    builder.property(AI_RESOURCE_GROUP, getResourceGroup());
   }
 
   /**
@@ -96,8 +101,14 @@ public class AiCoreDeployment implements AiCoreDestination {
     return deploymentId.apply(getResourceGroup());
   }
 
-  /** This exists because getBackendDetails() is broken */
-  static boolean isDeploymentOfModel(
+  /**
+   * This exists because getBackendDetails() is broken
+   *
+   * @param modelName The model name.
+   * @param deployment The deployment.
+   * @return true if the deployment is of the model.
+   */
+  protected static boolean isDeploymentOfModel(
       @Nonnull final String modelName, @Nonnull final AiDeployment deployment) {
     final var deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
@@ -134,7 +145,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @throws NoSuchElementException if no deployment is found for the scenario id.
    */
   @Nonnull
-  static String getDeploymentId(
+  protected static String getDeploymentId(
       @Nonnull final ApiClient client,
       @Nonnull final String resourceGroup,
       @Nonnull final Predicate<AiDeployment> predicate)
