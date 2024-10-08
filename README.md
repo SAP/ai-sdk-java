@@ -61,18 +61,23 @@ Could not find any matching service bindings for service identifier 'aicore'
 
 There are multiple ways to provide these credentials:
 
-* **Option 1:** Set an environment variable explicitly: `AICORE_SERVICE_KEY`
-* **Option 2:** Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry)
-* **Option 3:** Define and use a _Destination_ in the SAP BTP Destination Service
+| Option       | Description                                                                                              |
+|--------------|----------------------------------------------------------------------------------------------------------|
+| **Option 1** | Set an environment variable explicitly: `AICORE_SERVICE_KEY`                                             |
+| **Option 2** | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
+| **Option 3** | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
 
 Additional methods (not recommended for production):
 
-* Use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach for
+- Use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach for
   CAP applications (e.g., `cds bind --to aicore --exec mvn spring-boot:run`)
-* Leverage a "user-provided" service binding
-* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
+- Leverage a "user-provided" service binding
+- Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
 
 ### Option 1: Set Credentials as Environment Variable
+
+<details>
+<summary>Click to view detailed steps</summary>
 
 **Obtain Service Credentials:**
 
@@ -87,10 +92,15 @@ Additional methods (not recommended for production):
 Example:
 
 ```shell
-export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
+export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
 ```
 
+</details>
+
 ### Option 2: Regular Service Binding in SAP BTP Cloud Foundry
+
+<details>
+<summary>Click to view detailed steps</summary>
 
 **Bind an existing `aicore` service instance to your application**
 
@@ -102,7 +112,7 @@ SAP BTP provides multiple ways to do this:
 
 [Learn more about binding service instances to applications](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications)
 
-<details><summary>After restarting your application, you should see an "aicore" entry in the `VCAP_SERVICES` environment variable:</summary>
+After restarting your application, you should see an "aicore" entry in the `VCAP_SERVICES` environment variable:
 
 ```json
 {
@@ -122,6 +132,9 @@ SAP BTP provides multiple ways to do this:
 </details>
 
 ### Option 3: Define and Use a Destination
+
+<details>
+<summary>Click to view detailed steps</summary>
 
 **Obtain Service Credentials:** (Same as in Option 1)
 
@@ -146,6 +159,8 @@ SAP BTP provides multiple ways to do this:
 Destination destination = DestinationAccessor.getDestination("my-aicore");
 ApiClient client = Core.getClient(destination);
 ```
+
+</details>
 
 ---
 
@@ -182,13 +197,13 @@ public class OpenAiExample {
   public static void main(String[] args) {
     // Initialize the client for GPT-3.5 Turbo model
     OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
-
+    
     // Perform chat completion
     OpenAiChatCompletionOutput result =
-            client
-                    .withSystemPrompt("You are a helpful assistant.")
-                    .chatCompletion("Hello World! Why is this phrase so famous?");
-
+        client
+            .withSystemPrompt("You are a helpful assistant.")
+            .chatCompletion("Hello World! Why is this phrase so famous?");
+    
     // Output the result
     String content = result.getContent();
     System.out.println("AI Response: " + content);
@@ -207,6 +222,7 @@ mvn spring-boot:run
 ```
 
 ### Deploying to Cloud Foundry (Optional)
+
 When deploying your application to Cloud Foundry, use **service binding** to provide the AI Core credentials as per
 [Option 2](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 
@@ -217,7 +233,8 @@ Build your application using Maven and deploy it to Cloud Foundry:
    cf push
    ```
 
-That's it! Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely via service binding.
+That's it! Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely
+via service binding.
 
 ---
 
