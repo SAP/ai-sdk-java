@@ -24,7 +24,6 @@
 - [Documentation](#documentation)
 - [Code Snippets](#code-snippets)
 - [Contribute, Support and Feedback](#contribute-support-and-feedback)
-    - [Set-up Formatting](#set-up-formatting)
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
 - [Licensing](#licensing)
@@ -257,11 +256,6 @@ This project is open to feature requests/suggestions, bug reports etc.
 via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues). Contribution and feedback are encouraged and always
 welcome. For more information about how to contribute, the project structure, as well as additional contribution
 information, see our [Contribution Guidelines](CONTRIBUTING.md).
-
-### Set-up Formatting
-
-- Install the Google Java Format plugin on Intellij and follow
-  these [instructions](https://github.com/google/google-java-format?tab=readme-ov-file#intellij-android-studio-and-other-jetbrains-ides).
 
 ## Security / Disclosure
 
