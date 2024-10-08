@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.Core.getDestination;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,12 +7,12 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-public class CoreTest {
+public class DestinationResolverTest {
 
   @Test
   @SneakyThrows
   void getDestinationWithoutEnvVarFailsLocally() {
-    assertThatThrownBy(() -> getDestination(null))
+    assertThatThrownBy(() -> DestinationResolver.getDestination(null))
         .isExactlyInstanceOf(DestinationAccessException.class)
         .hasMessage("Could not find any matching service bindings for service identifier 'aicore'");
   }
@@ -21,8 +20,8 @@ public class CoreTest {
   @Test
   @SneakyThrows
   void getDestinationWithBrokenEnvVarFailsLocally() {
-    assertThatThrownBy(() -> getDestination(""))
-        .isExactlyInstanceOf(Core.AiCoreCredentialsInvalidException.class)
+    assertThatThrownBy(() -> DestinationResolver.getDestination(""))
+        .isExactlyInstanceOf(DestinationResolver.AiCoreCredentialsInvalidException.class)
         .hasMessage(
             "Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.");
   }
@@ -44,7 +43,7 @@ public class CoreTest {
           }
         }
         """;
-    var result = getDestination(AICORE_SERVICE_KEY).asHttp();
+    var result = DestinationResolver.getDestination(AICORE_SERVICE_KEY).asHttp();
     assertThat(result.getUri()).hasToString("https://api.ai.core/v2");
   }
 }

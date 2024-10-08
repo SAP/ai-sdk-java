@@ -10,7 +10,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.patchRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiDeployment;
@@ -86,8 +85,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentList deploymentList =
-        new DeploymentApi(getClient(destination)).query("default");
+    final AiDeploymentList deploymentList = new DeploymentApi(client).query("default");
 
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
@@ -141,7 +139,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         AiDeploymentCreationRequest.create()
             .configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(getClient(destination)).create("default", deploymentCreationRequest);
+        new DeploymentApi(client).create("default", deploymentCreationRequest);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEmpty();
@@ -180,8 +178,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     final AiDeploymentModificationRequest configModification =
         AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED);
     final AiDeploymentModificationResponse deployment =
-        new DeploymentApi(getClient(destination))
-            .modify("default", "d19b998f347341aa", configModification);
+        new DeploymentApi(client).modify("default", "d19b998f347341aa", configModification);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -219,7 +216,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     final AiDeploymentDeletionResponse deployment =
-        new DeploymentApi(getClient(destination)).delete("default", "d5b764fe55b3e87c");
+        new DeploymentApi(client).delete("default", "d5b764fe55b3e87c");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -264,7 +261,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         """)));
 
     final AiDeploymentResponseWithDetails deployment =
-        new DeploymentApi(getClient(destination)).get("default", "db1d64d9f06be467");
+        new DeploymentApi(client).get("default", "db1d64d9f06be467");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getConfigurationId()).isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
@@ -311,8 +308,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         AiDeploymentModificationRequest.create()
             .configurationId("6ff6cb80-87db-45f0-b718-4e1d96e66332");
     final AiDeploymentModificationResponse deployment =
-        new DeploymentApi(getClient(destination))
-            .modify("default", "d03050a2ab7055cc", configModification);
+        new DeploymentApi(client).modify("default", "d03050a2ab7055cc", configModification);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d03050a2ab7055cc");
@@ -344,7 +340,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         1
                         """)));
 
-    final int count = new DeploymentApi(getClient(destination)).count("default");
+    final int count = new DeploymentApi(client).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -377,7 +373,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed
     // to include the header on the request.
     final RTALogCommonResponse logs =
-        new DeploymentApi(getClient(destination).addDefaultHeader("Ai-Resource-Group", "default"))
+        new DeploymentApi(client.addDefaultHeader("Ai-Resource-Group", "default"))
             .getLogs("d19b998f347341aa");
 
     assertThat(logs).isNotNull();
@@ -427,7 +423,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                             AiDeploymentModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
     final AiDeploymentBulkModificationResponse bulkModificationResponse =
-        new DeploymentApi(getClient(destination)).batchModify("default", bulkModificationRequest);
+        new DeploymentApi(client).batchModify("default", bulkModificationRequest);
 
     assertThat(bulkModificationResponse).isNotNull();
     assertThat(bulkModificationResponse.getDeployments()).hasSize(1);

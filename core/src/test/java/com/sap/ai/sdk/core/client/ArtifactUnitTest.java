@@ -7,7 +7,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiArtifact;
@@ -50,7 +49,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactList artifactList = new ArtifactApi(getClient(destination)).query("default");
+    final AiArtifactList artifactList = new ArtifactApi(client).query("default");
 
     assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
@@ -95,7 +94,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
             .scenarioId("foundation-models")
             .description("dataset for aicore training");
     final AiArtifactCreationResponse artifact =
-        new ArtifactApi(getClient(destination)).create("default", artifactPostData);
+        new ArtifactApi(client).create("default", artifactPostData);
 
     assertThat(artifact).isNotNull();
     assertThat(artifact.getId()).isEqualTo("1a84bb38-4a84-4d12-a5aa-300ae7d33fb4");
@@ -142,8 +141,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                             """)));
 
     final AiArtifact artifact =
-        new ArtifactApi(getClient(destination))
-            .get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
+        new ArtifactApi(client).get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
 
     assertThat(artifact).isNotNull();
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-08-23T09:13:21Z");
@@ -170,7 +168,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         4
                         """)));
 
-    final int count = new ArtifactApi(getClient(destination)).count("default");
+    final int count = new ArtifactApi(client).count("default");
 
     assertThat(count).isEqualTo(4);
   }

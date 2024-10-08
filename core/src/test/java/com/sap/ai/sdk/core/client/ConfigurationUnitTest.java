@@ -7,7 +7,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiArtifactArgumentBinding;
@@ -60,8 +59,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiConfigurationList configurationList =
-        new ConfigurationApi(getClient(destination)).query("default");
+    final AiConfigurationList configurationList = new ConfigurationApi(client).query("default");
 
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
@@ -107,7 +105,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
             .scenarioId("foundation-models")
             .addInputArtifactBindingsItem(inputArtifactBindingsItem);
     final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi(getClient(destination)).create("default", configurationBaseData);
+        new ConfigurationApi(client).create("default", configurationBaseData);
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
@@ -147,7 +145,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         3
                         """)));
 
-    final int configurationCount = new ConfigurationApi(getClient(destination)).count("default");
+    final int configurationCount = new ConfigurationApi(client).count("default");
 
     assertThat(configurationCount).isEqualTo(3);
   }
@@ -185,8 +183,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         """)));
 
     final AiConfiguration configuration =
-        new ConfigurationApi(getClient(destination))
-            .get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
+        new ConfigurationApi(client).get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-09-11T09:14:31Z");
