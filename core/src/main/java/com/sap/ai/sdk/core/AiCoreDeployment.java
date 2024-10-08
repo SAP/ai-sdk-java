@@ -5,6 +5,7 @@ import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -12,20 +13,23 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AiCoreDeployment implements AiCoreDestination {
 
-  // the deployment id to be used
-  @Nonnull private final Function<AiCoreDeployment, String> deploymentId;
+  // the deployment id handler to be used, based on resource group
+  @Nonnull private final Function<String, String> deploymentId;
 
-  // the base destination to be used
+  // the base destination handler to be used
   @Nonnull private final Supplier<Destination> destination;
 
   // the resource group, "default" if null
-  @Nonnull private final String resourceGroup;
+  @Getter(AccessLevel.PROTECTED)
+  @Nonnull
+  private final String resourceGroup;
 
   /**
    * Create a new instance of the AI Core service with a specific deployment id and destination.
@@ -34,7 +38,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @param destination The destination handler.
    */
   public AiCoreDeployment(
-      @Nonnull final Function<AiCoreDeployment, String> deploymentId,
+      @Nonnull final Function<String, String> deploymentId,
       @Nonnull final Supplier<Destination> destination) {
     this(deploymentId, destination, "default");
   }
@@ -83,23 +87,13 @@ public class AiCoreDeployment implements AiCoreDestination {
   }
 
   /**
-   * Get the resource group.
-   *
-   * @return The resource group.
-   */
-  @Nonnull
-  protected String getResourceGroup() {
-    return resourceGroup == null ? "default" : resourceGroup;
-  }
-
-  /**
    * Get the deployment id.
    *
    * @return The deployment id.
    */
   @Nonnull
   protected String getDeploymentId() {
-    return deploymentId.apply(this);
+    return deploymentId.apply(getResourceGroup());
   }
 
   /** This exists because getBackendDetails() is broken */
@@ -141,10 +135,11 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   static String getDeploymentId(
-      @Nonnull final AiCoreDeployment core, @Nonnull final Predicate<AiDeployment> predicate)
+      @Nonnull final ApiClient client,
+      @Nonnull final String resourceGroup,
+      @Nonnull final Predicate<AiDeployment> predicate)
       throws NoSuchElementException {
-    final var deploymentService = new DeploymentApi(core.client());
-    final var deployments = deploymentService.query(core.getDeploymentId());
+    final var deployments = new DeploymentApi(client).query(resourceGroup);
 
     final var first =
         deployments.getResources().stream().filter(predicate).map(AiDeployment::getId).findFirst();

@@ -52,7 +52,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(c -> deploymentId, this::destination);
+    return new AiCoreDeployment(res -> deploymentId, this::destination);
   }
 
   /**
@@ -64,7 +64,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
     final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
-    return new AiCoreDeployment(c -> getDeploymentId(c, p), this::destination);
+    return new AiCoreDeployment(res -> getDeploymentId(client(), res, p), this::destination);
   }
 
   /**
@@ -76,7 +76,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
     final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreDeployment(c -> getDeploymentId(c, p), this::destination);
+    return new AiCoreDeployment(res -> getDeploymentId(client(), res, p), this::destination);
   }
 
   /**
