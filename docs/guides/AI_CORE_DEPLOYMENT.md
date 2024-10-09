@@ -4,22 +4,40 @@
 
 - [Introduction](#introduction)
 - [Prerequisites](#prerequisites)
-- [Maven Dependencies](#maven-dependencies)
+    - [Maven Dependencies](#maven-dependencies)
 - [Usage](#usage)
-  - [Create a Deployment](#create-a-deployment)
-  - [Delete a Deployment](#delete-a-deployment)
+    - [Create a Deployment](#create-a-deployment)
+    - [Delete a Deployment](#delete-a-deployment)
 
 ## Introduction
 
-This guide provides examples on how to create and manage deployments in SAP AI Core using the SAP AI
-SDK for Java.
+This guide provides examples on how to create and manage deployments in SAP AI Core using the SAP AI SDK for Java.
 
 ## Prerequisites
 
-Before proceeding, ensure you have met the general requirements outlined in
-the [README.md](../../README.md#general-requirements). 
+Before using the AI Core module, ensure that you have met all the general requirements outlined in
+the [README.md](../../README.md#general-requirements). Additionally, include the
+necessary Maven dependency in your project.
 
-Additionally, to carry out the examples in this guide, you need:
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+
+<dependency>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>core</artifactId>
+    <version>${ai-sdk.version}</version>
+</dependency>
+```
+
+See [an example pom in our Spring Boot application](../../sample-code/spring-app/pom.xml)
+
+## Usage
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in
+this guide:
 
 - **An AI Core Configuration** created in SAP AI Core.
     - <details>
@@ -47,26 +65,7 @@ Additionally, to carry out the examples in this guide, you need:
       ```
       </details>
 
-## Maven dependencies
-
-Add the following dependencies to your `pom.xml` file:
-
-```xml
-
-<dependencies>
-    <dependency>
-        <groupId>com.sap.ai.sdk</groupId>
-        <artifactId>core</artifactId>
-        <version>${ai-sdk.version}</version>
-    </dependency>
-</dependencies>
-```
-
-See [an example pom in our Spring Boot application](../../sample-code/spring-app/pom.xml)
-
-## Usage
-
-## Create a Deployment
+### Create a Deployment
 
 Use the following code snippet to create a deployment in SAP AI Core:
 
@@ -87,9 +86,11 @@ public AiDeploymentCreationResponse createDeployment() {
 }
 ```
 
-Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.
+Refer to
+the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+in our Spring Boot application for a complete example.
 
-## Delete a Deployment
+### Delete a Deployment
 
 ```java
 public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationResponse deployment) {
@@ -109,4 +110,6 @@ public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationRespons
 }
 ```
 
-Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.
+Refer to
+the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
+in our Spring Boot application for a complete example.

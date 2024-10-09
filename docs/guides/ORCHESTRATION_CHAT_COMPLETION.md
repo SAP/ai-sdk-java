@@ -4,7 +4,7 @@
 
 - [Introduction](#introduction)
 - [Prerequisites](#prerequisites)
-- [Maven Dependencies](#maven-dependencies)
+  - [Maven Dependencies](#maven-dependencies)
 - [Usage](#usage)
     - [Chat completion with Templates](#chat-completion-with-templates)
     - [Message history](#message-history)
@@ -18,9 +18,30 @@ This guide provides examples of how to use the Orchestration service in SAP AI C
 
 ## Prerequisites
 
-Before proceeding, ensure you have met the general requirements outlined in the [README.md](../../README.md#general-requirements).
+Before using the AI Core module, ensure that you have met all the general requirements outlined in
+the [README.md](../../README.md#general-requirements). Additionally, include the
+necessary Maven dependency in your project.
 
-Additionally, to carry out the examples in this guide, you need:
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>orchestration</artifactId>
+    <version>${ai-sdk.version}</version>
+  </dependency>
+</dependencies>
+```
+
+See [an example `pom.xml` in our Spring Boot application](../../sample-code/spring-app/pom.xml).
+
+## Usage
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in
+this guide:
 
 - **A Deployed Orchestration Service in SAP AI Core**
     - Refer to the [Orchestration Documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for setup instructions.
@@ -49,25 +70,7 @@ Additionally, to carry out the examples in this guide, you need:
       ```
 
       </details>
-
-## Maven Dependencies
-
-Add the following dependency to your `pom.xml` file:
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.sap.ai.sdk</groupId>
-    <artifactId>orchestration</artifactId>
-    <version>${ai-sdk.version}</version>
-  </dependency>
-</dependencies>
-```
-
-See [an example `pom.xml` in our Spring Boot application](../../sample-code/spring-app/pom.xml).
-
-## Usage
-
+    
 ### Chat completion with Templates
 
 Use a chat completion template to generate a response in German:

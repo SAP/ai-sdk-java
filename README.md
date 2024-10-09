@@ -164,8 +164,6 @@ ApiClient client = Core.getClient(destination);
 
 </details>
 
----
-
 ## Getting Started
 
 ### What You'll Build
@@ -178,39 +176,27 @@ The application will send a prompt to the AI model and display the generated res
 Before you begin, ensure you have:
 
 - Met the [General Requirements](#general-requirements).
+- Met the OpenAI Chat Completion module specific requirements 
+  - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
 - Set up the AI Core credentials
-  using [Option 1: Set Credentials as Environment Variable](#option-1-set-credentials-as-environment-variable).
+  using [(1) Environment Variable](#option-1-set-credentials-as-environment-variable)
+  or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 - Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
-    - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
-- Include the necessary
-  maven [dependencies for Open AI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#maven-dependencies) in
-  your `pom.xml`.
+  - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
 
 ### Write the Code
 
 Create a Java class (e.g., `OpenAiExample.java`) and include the following code:
 
 ```java
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
+// Initialize the client for GPT-3.5 Turbo model
+OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
 
-public class OpenAiExample {
-  public static void main(String[] args) {
-    // Initialize the client for GPT-3.5 Turbo model
-    OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
-    
-    // Perform chat completion
-    OpenAiChatCompletionOutput result =
-        client
-            .withSystemPrompt("You are a helpful assistant.")
-            .chatCompletion("Hello World! Why is this phrase so famous?");
-    
-    // Output the result
-    String content = result.getContent();
-    System.out.println("AI Response: " + content);
-  }
-}
+// Perform chat completion
+OpenAiChatCompletionOutput result =
+    client
+        .withSystemPrompt("You are a helpful assistant.")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
 ```
 
 ### Run and Test the Application Locally
@@ -225,7 +211,8 @@ mvn spring-boot:run
 
 ### Deploying to Cloud Foundry (Optional)
 
-When deploying your application to Cloud Foundry, use **service binding** to provide the AI Core credentials as per
+When deploying your productive application to Cloud Foundry, it is recommended to use **service binding** to provide 
+the AI Core credentials as per
 [Option 2](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 
 Build your application using Maven and deploy it to Cloud Foundry:
@@ -237,8 +224,6 @@ Build your application using Maven and deploy it to Cloud Foundry:
 
 That's it! Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely
 via service binding.
-
----
 
 ## Documentation
 

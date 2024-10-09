@@ -16,17 +16,41 @@
 
 ## Introduction
 
-This guide demonstrates how to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed on SAP AI Core.
+This guide demonstrates how to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed
+on SAP AI Core.
 
 ## Prerequisites
 
-Before proceeding, ensure you have met the general requirements outlined in
-the [README.md](../../README.md#general-requirements).
+Before using the AI Core module, ensure that you have met all the general requirements outlined in
+the [README.md](../../README.md#general-requirements). Additionally, include the
+necessary Maven dependency in your project.
 
-Additionally, to carry out the examples in this guide, you need:
+### Maven Dependencies
+
+Add the following dependency to your `pom.xml` file:
+
+```xml
+
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>openai</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+</dependencies>
+```
+
+See [an example pom in our Spring Boot application](../../sample-code/spring-app/pom.xml)
+
+## Usage
+
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in
+this guide:
 
 - **A Deployed OpenAI Model in SAP AI Core**
-    - Refer to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core) for setup instructions.
+    - Refer
+      to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
+      for setup instructions.
     - <details>
       <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
 
@@ -68,26 +92,6 @@ Additionally, to carry out the examples in this guide, you need:
 
       </details>
 
-## Maven Dependencies
-
-Add the following dependency to your `pom.xml` file:
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-        <artifactId>openai</artifactId>
-        <version>${ai-sdk.version}</version>
-    </dependency>
-</dependencies>
-```
-
-See [an example pom in our Spring Boot application](../../sample-code/spring-app/pom.xml)
-
-## Usage
-
-Below are several examples demonstrating how to use the OpenAI client for chat completion tasks.
-
 ### Simple chat completion
 
 ```java
@@ -126,7 +130,8 @@ final OpenAiChatCompletionOutput result =
 
 ### Stream chat completion
 
-It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in
+real-time.
 
 #### Asynchronous Streaming
 
@@ -138,19 +143,25 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
-try( Stream<String> stream = client.streamChatCompletion(msg)) {
-    stream.forEach(deltaString -> {
-        System.out.print(deltaString);
-        System.out.flush();
-    });
-}
-```
+try(
+Stream<String> stream = client.streamChatCompletion(msg)){
+    stream.
 
+forEach(deltaString ->{
+    System.out.
+
+print(deltaString);
+        System.out.
+
+flush();
+    });
+        }
+```
 
 #### Aggregating Total Output
 
-The following example is non-blocking and demonstrates how to aggregate the complete response. Any asynchronous library can be used, such as the classic Thread API.
-
+The following example is non-blocking and demonstrates how to aggregate the complete response. Any asynchronous library
+can be used, such as the classic Thread API.
 
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
@@ -166,21 +177,29 @@ OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
 
 Thread thread = new Thread(() -> {
-    // try-with-resources ensures the stream is closed
-    try (stream) {
-        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
-    }
+  // try-with-resources ensures the stream is closed
+  try (stream) {
+    stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
+  }
 });
-thread.start(); // non-blocking
+thread.
 
-thread.join(); // blocking
+start(); // non-blocking
+
+thread.
+
+join(); // blocking
 
 // access aggregated information from total output, e.g.
 Integer tokens = totalOutput.getUsage().getCompletionTokens();
-System.out.println("Tokens: " + tokens);
+System.out.
+
+println("Tokens: "+tokens);
 ```
 
 #### Spring Boot example
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
-It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+Please
+find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend
+in real-time.
