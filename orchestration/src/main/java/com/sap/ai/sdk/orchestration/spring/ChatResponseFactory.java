@@ -1,17 +1,16 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import com.google.common.base.Strings;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import org.apache.commons.lang3.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.model.MessageAggregator;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Radu
@@ -35,7 +34,7 @@ class ChatResponseFactory {
   private static AssistantMessage convertToAssistantMessage(@Nonnull final LLMChoice choice) {
     // TODO: Test
     Map<String, Object> metadata = new HashMap<>();
-    if (StringUtils.isNotBlank(choice.getFinishReason())) {
+    if (!Strings.isNullOrEmpty(choice.getFinishReason())) {
       metadata.put("finish_reason", choice.getFinishReason());
     }
     if (choice.getIndex() != null) {
@@ -55,7 +54,7 @@ class ChatResponseFactory {
     var orchestrationResponse = completionResponse.getOrchestrationResult();
 
     // TODO: Test
-    if (StringUtils.isNotBlank(completionResponse.getRequestId())) {
+    if (!Strings.isNullOrEmpty(completionResponse.getRequestId())) {
       metadataBuilder.withKeyValue("requestId", completionResponse.getRequestId());
     }
 
@@ -63,15 +62,15 @@ class ChatResponseFactory {
       metadataBuilder.withKeyValue("created", orchestrationResponse.getCreated());
     }
 
-    if (StringUtils.isNotBlank(orchestrationResponse.getId())) {
+    if (!Strings.isNullOrEmpty(orchestrationResponse.getId())) {
       metadataBuilder.withId(orchestrationResponse.getId());
     }
 
-    if (StringUtils.isNotBlank(orchestrationResponse.getModel())) {
+    if (!Strings.isNullOrEmpty(orchestrationResponse.getModel())) {
       metadataBuilder.withModel(orchestrationResponse.getModel());
     }
 
-    if (StringUtils.isNotBlank(orchestrationResponse.getObject())) {
+    if (!Strings.isNullOrEmpty(orchestrationResponse.getObject())) {
       metadataBuilder.withKeyValue("object", orchestrationResponse.getObject());
     }
 

@@ -70,25 +70,6 @@
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -111,6 +92,12 @@
         <version>${spring.ai.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <!-- optional dependencies -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>${spring.boot.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
@@ -173,6 +160,26 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
@@ -192,7 +199,11 @@
               <rules>
                 <banDistributionManagement/>
                 <banDuplicatePomDependencyVersions/>
-                <dependencyConvergence/>
+                <dependencyConvergence>
+                  <excludes>
+                    <!--                    <exclude>io.projectreactor:*</exclude>-->
+                  </excludes>
+                </dependencyConvergence>
               </rules>
             </configuration>
           </execution>
@@ -296,7 +307,8 @@
             <configuration>
               <rules>
                 <bannedDependencies>
-                  <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests will (silently) simply not be executed.</message>
+                  <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests
+                                        will (silently) simply not be executed.</message>
                   <excludes>
                     <exclude>junit:junit</exclude>
                   </excludes>
@@ -414,7 +426,7 @@
             <ruleset>.pipeline/pmd.xml</ruleset>
             <ruleset>.pipeline/sdk_specific_pmd_rules.xml</ruleset>
             <!-- content of the PMD default rule set for Java can be found here:
-https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/main/resources/rulesets/java/maven-pmd-plugin-default.xml;hb=HEAD -->
+            https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/main/resources/rulesets/java/maven-pmd-plugin-default.xml;hb=HEAD -->
             <ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
           </rulesets>
           <linkXRef>false</linkXRef>

@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 // TODO can this be a static inner class?

@@ -46,15 +46,15 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
       throws OrchestrationClientException {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw new OrchestrationClientException(
-          "Response from Orchestration service was empty.");
+      throw new OrchestrationClientException("Response from Orchestration service was empty.");
     }
     final var content = getContent(responseEntity);
     try {
       return JACKSON.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response from orchestration service: {}", content);
-      throw new OrchestrationClientException("Failed to parse response from orchestration service", e);
+      throw new OrchestrationClientException(
+          "Failed to parse response from orchestration service", e);
     }
   }
 
@@ -89,7 +89,9 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
       throw exception;
     }
 
-    log.error("The orchestration service responded with an HTTP error and the following content: {}", content);
+    log.error(
+        "The orchestration service responded with an HTTP error and the following content: {}",
+        content);
     final var contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       throw exception;
@@ -105,7 +107,8 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
    * @param baseException a base exception to add the error message to.
    */
   static void parseErrorAndThrow(
-      @Nonnull final String errorResponse, @Nonnull final OrchestrationClientException baseException)
+      @Nonnull final String errorResponse,
+      @Nonnull final OrchestrationClientException baseException)
       throws OrchestrationClientException {
     final var maybeError = Try.of(() -> JACKSON.readValue(errorResponse, ErrorResponse.class));
     if (maybeError.isFailure()) {
@@ -114,6 +117,7 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
     }
 
     throw new OrchestrationClientException(
-        "%s and error message: '%s'".formatted(baseException.getMessage(), maybeError.get().getMessage()));
+        "%s and error message: '%s'"
+            .formatted(baseException.getMessage(), maybeError.get().getMessage()));
   }
 }

@@ -1,10 +1,5 @@
 package com.sap.ai.sdk.app.controllers;
 
-import javax.annotation.Nullable;
-
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
@@ -13,9 +8,9 @@ import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +25,7 @@ class OrchestrationController {
   @Autowired OrchestrationChatModel client;
 
   String example1() {
-    var response = client.call(new Prompt("Hello World!"));
+    ChatResponse response = client.call(new Prompt("Hello World!"));
 
     return response.getResult().getOutput().getContent();
   }

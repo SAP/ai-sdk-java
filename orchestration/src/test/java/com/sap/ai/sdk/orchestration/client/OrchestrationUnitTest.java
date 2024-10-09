@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
@@ -43,7 +45,7 @@ import org.springframework.web.client.HttpClientErrorException;
  */
 @WireMockTest
 public class OrchestrationUnitTest {
-  private OrchestrationCompletionApi client;
+  private OrchestrationClient client;
 
   private static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create()
@@ -55,16 +57,9 @@ public class OrchestrationUnitTest {
                   "frequency_penalty", 0,
                   "presence_penalty", 0));
 
-  private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
-      (TemplatingModuleConfig templatingModuleConfig) ->
-          CompletionPostRequest.create()
-              .orchestrationConfig(
-                  OrchestrationConfig.create()
-                      .moduleConfigurations(
-                          ModuleConfigs.create()
-                              .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)))
-              .inputParams(Map.of());
+  private static final TemplatingModuleConfig TEMPLATE_CONFIG =
+      TemplatingModuleConfig.create().template(List.of(ChatMessage.create().role("user").content("{{?input}}")));
+
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
@@ -96,23 +91,13 @@ public class OrchestrationUnitTest {
             FilteringModuleConfig.create()
                 .input(FilteringConfig.create().filters(filter))
                 .output(FilteringConfig.create().filters(filter));
-
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
       };
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    client = new OrchestrationCompletionApi(getClient(destination));
+    client = new OrchestrationClient(destination).withLlmConfig(LLM_CONFIG);
   }
 
   @Test
@@ -125,16 +110,12 @@ public class OrchestrationUnitTest {
                 .readAllBytes());
     stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
+    var prompt = new OrchestrationPrompt(inputParams);
 
-    final var result = client.orchestrationV1EndpointsCreate(config);
+    final var result = client.chatCompletion(prompt);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
