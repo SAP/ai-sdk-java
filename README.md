@@ -194,7 +194,7 @@ Before you begin, ensure you have:
 
 ### Write the Code
 
-Create a Java class (e.g., `OpenAiExample.java`) and include the following code:
+Add the following code to the controller or service class in your Spring Boot application:
 
 ```java
 // Initialize the client for GPT-3.5 Turbo model
@@ -209,12 +209,11 @@ final OpenAiChatCompletionOutput result =
 
 ### Run and Test the Application Locally
 
-Ensure that the `AICORE_SERVICE_KEY` environment variable is set in your terminal or IDE. 
-
 Then, compile and run your application:
 
 ```shell
-cd sample-code/spring-app
+cd your-spring-app/
+
 mvn compile
 mvn spring-boot:run
 ```
@@ -250,9 +249,7 @@ ApiClient client = Core.getClient().addDefaultHeader("header-key", "header-value
 DeploymentApi api = new DeploymentApi(client);
 ```
 
-For more customization, creating
-a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders)
-is also possible.
+For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
 
 ### More Examples
 
