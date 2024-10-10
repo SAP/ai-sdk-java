@@ -175,7 +175,7 @@ ApiClient client = Core.getClient(destination);
 
 ### What You'll Build
 
-In this quickstart, you'll build a simple Java application that uses the OpenAI GPT-3.5 Turbo model for chat completion. 
+In this quickstart, you'll build a simple Spring Boot application that uses the OpenAI GPT-3.5 Turbo model for chat completion.
 
 The application will send a prompt to the AI model and display the generated response.
 
@@ -215,6 +215,7 @@ Then, compile and run your application:
 
 ```shell
 cd sample-code/spring-app
+mvn compile
 mvn spring-boot:run
 ```
 
