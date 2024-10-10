@@ -31,9 +31,13 @@
 ## Introduction
 
 Welcome to the **SAP Cloud SDK for AI (for Java)**. This SDK enables developers to seamlessly integrate AI capabilities,
-such as chat completion, into their Java-based business applications using SAP's Generative AI Hub. Leverage powerful
-features like templating, grounding, data masking, and content filtering to build intelligent applications. The SDK
-simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
+such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
+
+Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent
+applications.
+
+The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI
+integration.
 
 ## General Requirements
 
@@ -51,8 +55,11 @@ See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app
 
 ## Connecting to SAP AI Core
 
-To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime. By default,
-the SDK automatically extracts these credentials from a service instance of type `aicore` bound to your application. If
+To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime. 
+
+By default, the SDK automatically extracts these credentials from a service instance of type `aicore` bound to your application. 
+
+If
 running the application locally without this service binding, you may encounter an exception:
 
 ```
@@ -168,7 +175,8 @@ ApiClient client = Core.getClient(destination);
 
 ### What You'll Build
 
-In this quickstart, you'll build a simple Java application that uses the OpenAI GPT-3.5 Turbo model for chat completion.
+In this quickstart, you'll build a simple Java application that uses the OpenAI GPT-3.5 Turbo model for chat completion. 
+
 The application will send a prompt to the AI model and display the generated response.
 
 ### Prerequisites
@@ -176,13 +184,13 @@ The application will send a prompt to the AI model and display the generated res
 Before you begin, ensure you have:
 
 - Met the [General Requirements](#general-requirements).
-- Met the OpenAI Chat Completion module specific requirements 
-  - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
+- Met the OpenAI Chat Completion module specific requirements
+    - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
 - Set up the AI Core credentials
   using [(1) Environment Variable](#option-1-set-credentials-as-environment-variable)
   or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 - Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
-  - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
+    - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
 
 ### Write the Code
 
@@ -190,10 +198,10 @@ Create a Java class (e.g., `OpenAiExample.java`) and include the following code:
 
 ```java
 // Initialize the client for GPT-3.5 Turbo model
-OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
+final OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
 
 // Perform chat completion
-OpenAiChatCompletionOutput result =
+final OpenAiChatCompletionOutput result =
     client
         .withSystemPrompt("You are a helpful assistant.")
         .chatCompletion("Hello World! Why is this phrase so famous?");
@@ -201,8 +209,9 @@ OpenAiChatCompletionOutput result =
 
 ### Run and Test the Application Locally
 
-Ensure that the `AICORE_SERVICE_KEY` environment variable is set in your terminal or IDE. Then, compile and run your
-application:
+Ensure that the `AICORE_SERVICE_KEY` environment variable is set in your terminal or IDE. 
+
+Then, compile and run your application:
 
 ```shell
 cd sample-code/spring-app
@@ -211,19 +220,15 @@ mvn spring-boot:run
 
 ### Deploying to Cloud Foundry (Optional)
 
-When deploying your productive application to Cloud Foundry, it is recommended to use **service binding** to provide 
-the AI Core credentials as per
-[Option 2](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
+When deploying your productive application to Cloud Foundry, it is recommended to use **service binding** to provide the AI Core credentials as per [Option 2](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 
 Build your application using Maven and deploy it to Cloud Foundry:
 
    ```shell
-   mvn clean package
    cf push
    ```
 
-That's it! Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely
-via service binding.
+That's it! Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely via service binding.
 
 ## Documentation
 
@@ -233,9 +238,9 @@ For more detailed information and advanced usage, please refer to the following:
 - [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
 - [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
-## Code Snippets
+## FAQs
 
-### Add a header to every request
+### How to add a custom header to AI Core requests?
 
 To add a header to AI Core requests, use the following code:
 
@@ -256,25 +261,24 @@ Explore example applications and code snippets:
 
 ## Contribute, Support and Feedback
 
-This project is open to feature requests/suggestions, bug reports etc.
-via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues). Contribution and feedback are encouraged and always
-welcome. For more information about how to contribute, the project structure, as well as additional contribution
-information, see our [Contribution Guidelines](CONTRIBUTING.md).
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues). Contribution and feedback are encouraged and always welcome. 
+
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Security / Disclosure
 
-If you find any bug that may be a security problem, please follow our instructions
-at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it. Please do not
-create GitHub issues for security-related doubts or problems.
+If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it. 
+
+Please do not create GitHub issues for security-related doubts or problems.
 
 ## Code of Conduct
 
-We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for
-everyone. By participating in this project, you agree to abide by
-its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone. 
+
+By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
 
 ## Licensing
 
-Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors. Please see our [LICENSE](LICENSE) for
-copyright and license information. Detailed information including third-party components and their licensing/copyright
-information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).
+Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors. Please see our [LICENSE](LICENSE) for copyright and license information. 
+
+Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).

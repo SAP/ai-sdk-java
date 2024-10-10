@@ -22,15 +22,15 @@ on SAP AI Core.
 ## Prerequisites
 
 Before using the AI Core module, ensure that you have met all the general requirements outlined in
-the [README.md](../../README.md#general-requirements). Additionally, include the
-necessary Maven dependency in your project.
+the [README.md](../../README.md#general-requirements). 
+
+Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
 
 Add the following dependency to your `pom.xml` file:
 
 ```xml
-
 <dependencies>
     <dependency>
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -143,19 +143,13 @@ String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
 
 // try-with-resources on stream ensures the connection will be closed
-try(
-Stream<String> stream = client.streamChatCompletion(msg)){
-    stream.
-
-forEach(deltaString ->{
-    System.out.
-
-print(deltaString);
-        System.out.
-
-flush();
-    });
-        }
+try (Stream<String> stream = client.streamChatCompletion(msg)) {
+    stream.forEach(
+        deltaString -> {
+            System.out.print(deltaString);
+            System.out.flush();
+        });
+}
 ```
 
 #### Aggregating Total Output
@@ -164,37 +158,35 @@ The following example is non-blocking and demonstrates how to aggregate the comp
 can be used, such as the classic Thread API.
 
 ```java
-String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .addMessages(new OpenAiChatUserMessage().addText(msg));
+final OpenAiChatMessage.OpenAiChatUserMessage userMessage =
+    new OpenAiChatMessage.OpenAiChatUserMessage().addText(message);
+final OpenAiChatCompletionParameters requestParameters =
+    new OpenAiChatCompletionParameters().addMessages(userMessage);
 
-OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+final OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+final var totalOutput = new OpenAiChatCompletionOutput();
 
-// Do the request before the thread starts to handle exceptions during request initialization 
-Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
+// Prepare the stream before starting the thread to handle any initialization exceptions
+final Stream<OpenAiChatCompletionDelta> stream =
+    client.streamChatCompletionDeltas(requestParameters);
 
-Thread thread = new Thread(() -> {
-  // try-with-resources ensures the stream is closed
-  try (stream) {
-    stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
-  }
-});
-thread.
+final var streamProcessor =
+    new Thread(
+        () -> {
+          // try-with-resources ensures the stream is closed after processing
+          try (stream) {
+            stream.peek(totalOutput::addDelta).forEach(System.out::println);
+          }
+        });
 
-start(); // non-blocking
+streamProcessor.start(); // Start processing in a separate thread (non-blocking)
+streamProcessor.join(); // Wait for the thread to finish (blocking)
 
-thread.
-
-join(); // blocking
-
-// access aggregated information from total output, e.g.
-Integer tokens = totalOutput.getUsage().getCompletionTokens();
-System.out.
-
-println("Tokens: "+tokens);
+// Access aggregated information from total output
+final Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
+System.out.println("Tokens used: " + tokensUsed);
 ```
 
 #### Spring Boot example

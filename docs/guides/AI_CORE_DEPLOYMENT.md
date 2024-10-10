@@ -15,16 +15,13 @@ This guide provides examples on how to create and manage deployments in SAP AI C
 
 ## Prerequisites
 
-Before using the AI Core module, ensure that you have met all the general requirements outlined in
-the [README.md](../../README.md#general-requirements). Additionally, include the
-necessary Maven dependency in your project.
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements). Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
 
 Add the following dependency to your `pom.xml` file:
 
 ```xml
-
 <dependency>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>core</artifactId>
@@ -36,8 +33,7 @@ See [an example pom in our Spring Boot application](../../sample-code/spring-app
 
 ## Usage
 
-In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in
-this guide:
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
 
 - **An AI Core Configuration** created in SAP AI Core.
     - <details>
@@ -70,46 +66,38 @@ this guide:
 Use the following code snippet to create a deployment in SAP AI Core:
 
 ```java
-public AiDeploymentCreationResponse createDeployment() {
-  
-  final AiDeploymentCreationResponse deployment =
-      new DeploymentApi(getClient())
-          .create(
-              "default",
-              AiDeploymentCreationRequest.create()
-                  .configurationId("12345-123-123-123-123456abcdefg"));
-  
-  String id = deployment.getId();
-  AiExecutionStatus status = deployment.getStatus();
-  
-  return deployment;
-}
+final var api = new DeploymentApi(getClient());
+final var resourceGroupId = "default";
+
+final AiDeploymentCreationRequest request =
+    AiDeploymentCreationRequest.create().configurationId("12345-123-123-123-123456abcdefg");
+final AiDeploymentCreationResponse deployment = api.create(resourceGroupId, request);
+
+final var id = deployment.getId();
+final AiExecutionStatus status = deployment.getStatus();
 ```
 
-Refer to
-the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
-in our Spring Boot application for a complete example.
+Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.
 
 ### Delete a Deployment
 
 ```java
 public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationResponse deployment) {
   
-  DeploymentApi client = new DeploymentApi(getClient());
+  final DeploymentApi api = new DeploymentApi(getClient());
+  final var resourceGroupId = "default";
   
   if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
     // Only RUNNING deployments can be STOPPED
-    client.modify(
-        "default",
+    api.modify(
+        resourceGroupId,
         deployment.getId(),
         AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
   }
   // Wait a few seconds for the deployment to stop
   // Only UNKNOWN and STOPPED deployments can be DELETED
-  return client.delete("default", deployment.getId());
+  return api.delete(resourceGroupId, deployment.getId());
 }
 ```
 
-Refer to
-the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
-in our Spring Boot application for a complete example.
+Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.

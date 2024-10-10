@@ -18,9 +18,9 @@ This guide provides examples of how to use the Orchestration service in SAP AI C
 
 ## Prerequisites
 
-Before using the AI Core module, ensure that you have met all the general requirements outlined in
-the [README.md](../../README.md#general-requirements). Additionally, include the
-necessary Maven dependency in your project.
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements). 
+
+Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
 
@@ -40,8 +40,7 @@ See [an example `pom.xml` in our Spring Boot application](../../sample-code/spri
 
 ## Usage
 
-In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in
-this guide:
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
 
 - **A Deployed Orchestration Service in SAP AI Core**
     - Refer to the [Orchestration Documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for setup instructions.
@@ -93,8 +92,9 @@ final var config =
                         .templatingModuleConfig(templatingConfig)))
         .inputParams(inputParams);
 
+final var resourceGroupId = "default";
 final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
+    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         .orchestrationV1EndpointsCreate(config);
 
 final String messageResult =
@@ -130,8 +130,9 @@ final var config =
         .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
+final var resourceGroupId = "default";
 final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
+    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         .orchestrationV1EndpointsCreate(config);
 
 final String messageResult =
@@ -195,8 +196,9 @@ final var config =
                         .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
+final var resourceGroupId = "default";
 final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
+    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         // this fails with Bad Request because the strict filter prohibits the input message
         .orchestrationV1EndpointsCreate(config);
 
@@ -236,8 +238,9 @@ final CompletionPostRequest config =
                         .maskingModuleConfig(maskingConfig)))
         .inputParams(inputParams);
 
+final var resourceGroupId = "default";
 final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
+    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         .orchestrationV1EndpointsCreate(config);
 
 final String messageResult =
