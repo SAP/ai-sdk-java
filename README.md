@@ -22,7 +22,7 @@
     - [Run and Test the Application Locally](#run-and-test-the-application-locally)
     - [Deploying to Cloud Foundry (Optional)](#deploying-to-cloud-foundry-optional)
 - [Documentation](#documentation)
-- [Code Snippets](#code-snippets)
+- [FAQs](#faqs)
 - [Contribute, Support and Feedback](#contribute-support-and-feedback)
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
