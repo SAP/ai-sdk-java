@@ -96,6 +96,11 @@
       <!-- optional dependencies -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot</artifactId>
+        <version>${spring.boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-autoconfigure</artifactId>
         <version>${spring.boot.version}</version>
       </dependency>
@@ -201,7 +206,9 @@
                 <banDuplicatePomDependencyVersions/>
                 <dependencyConvergence>
                   <excludes>
-                    <!--                    <exclude>io.projectreactor:*</exclude>-->
+                    <!-- We are using Snapshots of Sprint AI which don't always bring consistent versions -->
+                    <exclude>io.projectreactor:*</exclude>
+                    <exclude>io.micrometer:*</exclude>
                   </excludes>
                 </dependencyConvergence>
               </rules>

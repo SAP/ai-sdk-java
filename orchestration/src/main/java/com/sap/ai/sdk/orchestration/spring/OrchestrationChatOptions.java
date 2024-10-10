@@ -1,29 +1,29 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import java.util.List;
-import java.util.Map;
-
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationConfigBuilder;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.ai.chat.prompt.ChatOptions;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 /** Configuration to be used for orchestration requests. */
 @Data
 @Getter(AccessLevel.PACKAGE)
 @Setter(AccessLevel.NONE)
-public class OrchestrationChatOptions implements ChatOptions, OrchestrationConfigBuilder<OrchestrationChatOptions> {
-  // Unfortunately, Lomboks @Delegate doesn't work with chaining, because "return this" returns the delegate itself
+public class OrchestrationChatOptions
+    implements ChatOptions, OrchestrationConfigBuilder<OrchestrationChatOptions> {
+  // Unfortunately, Lomboks @Delegate doesn't work with chaining, because "return this" returns the
+  // delegate itself
   private OrchestrationConfig delegate = new OrchestrationConfig();
 
   @Nonnull

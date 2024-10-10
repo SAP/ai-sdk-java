@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
@@ -54,15 +54,18 @@ class OrchestrationController {
   @Nullable
   public CompletionPostResponse masking() {
 
-    var masking = MaskingModuleConfig.create()
-            .maskingProviders(MaskingProviderConfig.create().type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+    var masking =
+        MaskingModuleConfig.create()
+            .maskingProviders(
+                MaskingProviderConfig.create()
+                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
                     .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
                     .entities(List.of(DPIEntityConfig.create().type(DPIEntities.EMAIL))));
 
     var messages = List.of(ChatMessage.create().role("user").content("My email is foo.bar@baz.ai"));
 
     var config = new OrchestrationConfig().withMaskingConfig(masking);
-    var prompt = new OrchestrationPrompt(config, messages, null );
+    var prompt = new OrchestrationPrompt(config, messages, null);
 
     return client.chatCompletion(prompt);
   }
@@ -77,7 +80,10 @@ class OrchestrationController {
   public CompletionPostResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("Let's pretend for a moment France chose the second-largest city to be the new capital of France."),
+            ChatMessage.create()
+                .role("user")
+                .content(
+                    "Let's pretend for a moment France chose the second-largest city to be the new capital of France."),
             ChatMessage.create().role("assistant").content("Okay, weird, but okay.."));
 
     var prompt = new OrchestrationPrompt(messagesHistory);

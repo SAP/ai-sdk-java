@@ -11,8 +11,7 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class OrchestrationPrompt {
-  @Nonnull
-  OrchestrationConfig config;
+  @Nonnull OrchestrationConfig config;
   @Nullable List<ChatMessage> messages;
   @Nullable Map<String, String> templateParameters;
 
@@ -30,7 +29,6 @@ public class OrchestrationPrompt {
   public OrchestrationPrompt(List<ChatMessage> messagesHistory) {
     this(new OrchestrationConfig(), messagesHistory, null);
   }
-
 
   public OrchestrationPrompt(Map<String, String> inputParams) {
     this(new OrchestrationConfig(), null, inputParams);

@@ -8,7 +8,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -18,17 +17,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
@@ -58,26 +55,15 @@ public class OrchestrationUnitTest {
                   "presence_penalty", 0));
 
   private static final TemplatingModuleConfig TEMPLATE_CONFIG =
-      TemplatingModuleConfig.create().template(List.of(ChatMessage.create().role("user").content("{{?input}}")));
-
+      TemplatingModuleConfig.create()
+          .template(List.of(ChatMessage.create().role("user").content("{{?input}}")));
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
    * output filters
    */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
+  private static final Function<AzureThreshold, FilteringModuleConfig> FILTERING_CONFIG =
       (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
         final var filter =
             FilterConfig.create()
                 .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
@@ -87,10 +73,9 @@ public class OrchestrationUnitTest {
                         .selfHarm(filterThreshold)
                         .sexual(filterThreshold)
                         .violence(filterThreshold));
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(FilteringConfig.create().filters(filter))
-                .output(FilteringConfig.create().filters(filter));
+        return FilteringModuleConfig.create()
+            .input(FilteringConfig.create().filters(filter))
+            .output(FilteringConfig.create().filters(filter));
       };
 
   @BeforeEach
@@ -179,16 +164,9 @@ public class OrchestrationUnitTest {
                     """,
                     SC_BAD_REQUEST)));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
-    // input params are omitted on purpose to trigger an error
     Map<String, String> inputParams = Map.of();
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
-
-    assertThatThrownBy(() -> client.orchestrationV1EndpointsCreate(config))
+    assertThatThrownBy(() -> client.chatCompletion(new OrchestrationPrompt(inputParams)))
         .isInstanceOf(HttpClientErrorException.class)
         .hasMessage(
             "400 Bad Request: \"{<EOL>  \"request_id\": \"51043a32-01f5-429a-b0e7-3a99432e43a4\",<EOL>  \"code\": 400,<EOL>  \"message\": \"Missing required parameters: ['input']\",<EOL>  \"location\": \"Module: Templating\",<EOL>  \"module_results\": {}<EOL>}<EOL>\"");
@@ -206,7 +184,9 @@ public class OrchestrationUnitTest {
 
     final var config = FILTERING_CONFIG.apply(NUMBER_4);
 
-    client.orchestrationV1EndpointsCreate(config);
+    // TODO implement filtering
+    var prompt = new OrchestrationPrompt(new OrchestrationConfig(), null, null);
+    client.chatCompletion(prompt);
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -228,7 +208,11 @@ public class OrchestrationUnitTest {
 
     final var config = FILTERING_CONFIG.apply(NUMBER_0);
 
-    assertThatThrownBy(() -> client.orchestrationV1EndpointsCreate(config))
+    // TODO implement filtering
+    var prompt = new OrchestrationPrompt(new OrchestrationConfig(), null, null);
+    client.chatCompletion(prompt);
+
+    assertThatThrownBy(() -> client.chatCompletion(prompt))
         .isInstanceOf(HttpClientErrorException.class)
         .hasMessage("400 Bad Request: \"" + response + "\"");
   }
@@ -248,15 +232,11 @@ public class OrchestrationUnitTest {
         List.of(
             ChatMessage.create().role("user").content("What is the capital of France?"),
             ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(message))
-            .messagesHistory(messagesHistory);
-
-    final var result = client.orchestrationV1EndpointsCreate(config);
+    final var result =
+        client.chatCompletion(
+            new OrchestrationPrompt(
+                messagesHistory, Map.of("input", "What is the typical food there?")));
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 

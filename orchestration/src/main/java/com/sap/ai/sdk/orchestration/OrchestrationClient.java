@@ -14,6 +14,8 @@ import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
@@ -21,21 +23,18 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import javax.annotation.Nonnull;
-import java.util.stream.Stream;
-
 @AllArgsConstructor
 public class OrchestrationClient implements OrchestrationConfigBuilder<OrchestrationClient> {
   static final ObjectMapper JACKSON;
 
   static {
     JACKSON =
-            new Jackson2ObjectMapperBuilder()
-                    .modules(new JavaTimeModule())
-                    .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-                    .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-                    .serializationInclusion(JsonInclude.Include.NON_NULL)
-                    .build();
+        new Jackson2ObjectMapperBuilder()
+            .modules(new JavaTimeModule())
+            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
+            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
+            .serializationInclusion(JsonInclude.Include.NON_NULL)
+            .build();
   }
 
   @Nonnull private final OrchestrationConfig config = new OrchestrationConfig();
@@ -109,7 +108,8 @@ public class OrchestrationClient implements OrchestrationConfigBuilder<Orchestra
     }
 
     try {
-      return client.execute(postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
+      return client.execute(
+          postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
     } catch (Exception e) {
       throw new OrchestrationClientException("Failed to execute request", e);
     }

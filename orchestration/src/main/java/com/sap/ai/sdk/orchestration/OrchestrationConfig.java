@@ -4,14 +4,13 @@ import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @Data
 @Setter(AccessLevel.PRIVATE)
@@ -44,20 +43,20 @@ public class OrchestrationConfig implements OrchestrationConfigBuilder<Orchestra
     return this;
   }
 
-  OrchestrationConfig mergeWithDefaults( @Nullable final OrchestrationConfig defaults) {
+  OrchestrationConfig mergeWithDefaults(@Nullable final OrchestrationConfig defaults) {
     if (defaults == null) {
       return this;
     }
     return new OrchestrationConfig(
-            llmConfig != null ? llmConfig : defaults.getLlmConfig(),
-            template != null ? template : defaults.getTemplate(),
-            maskingConfig != null ? maskingConfig : defaults.getMaskingConfig());
+        llmConfig != null ? llmConfig : defaults.getLlmConfig(),
+        template != null ? template : defaults.getTemplate(),
+        maskingConfig != null ? maskingConfig : defaults.getMaskingConfig());
   }
 
   ModuleConfigs toDTO() {
     return ModuleConfigs.create()
-            .llmModuleConfig(llmConfig)
-            .templatingModuleConfig(template)
-            .maskingModuleConfig(maskingConfig);
+        .llmModuleConfig(llmConfig)
+        .templatingModuleConfig(template)
+        .maskingModuleConfig(maskingConfig);
   }
 }

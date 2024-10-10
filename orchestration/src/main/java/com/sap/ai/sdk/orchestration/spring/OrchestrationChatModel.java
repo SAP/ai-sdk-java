@@ -1,30 +1,27 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import static com.sap.ai.sdk.orchestration.spring.ChatResponseFactory.toChatResponse;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-
-import javax.annotation.Nonnull;
-
-import static com.sap.ai.sdk.orchestration.spring.ChatResponseFactory.toChatResponse;
-
 /** Spring AI integration for the orchestration service. */
 @Slf4j
 public class OrchestrationChatModel implements ChatModel {
   private final OrchestrationClient delegate;
 
-  public OrchestrationChatModel( OrchestrationClient client) {
+  public OrchestrationChatModel(OrchestrationClient client) {
     delegate = client;
   }
 
