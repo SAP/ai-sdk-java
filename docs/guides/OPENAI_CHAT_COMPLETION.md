@@ -21,8 +21,7 @@ on SAP AI Core.
 
 ## Prerequisites
 
-Before using the AI Core module, ensure that you have met all the general requirements outlined in
-the [README.md](../../README.md#general-requirements). 
+Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements).
 
 Additionally, include the necessary Maven dependency in your project.
 
@@ -44,8 +43,7 @@ See [an example pom in our Spring Boot application](../../sample-code/spring-app
 
 ## Usage
 
-In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in
-this guide:
+In addition to the prerequisites above, we assume you have already set up the following to carry out the examples in this guide:
 
 - **A Deployed OpenAI Model in SAP AI Core**
     - Refer
@@ -130,8 +128,7 @@ final OpenAiChatCompletionOutput result =
 
 ### Stream chat completion
 
-It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in
-real-time.
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
 #### Asynchronous Streaming
 
@@ -154,8 +151,9 @@ try (Stream<String> stream = client.streamChatCompletion(msg)) {
 
 #### Aggregating Total Output
 
-The following example is non-blocking and demonstrates how to aggregate the complete response. Any asynchronous library
-can be used, such as the classic Thread API.
+The following example is non-blocking and demonstrates how to aggregate the complete response.
+
+Any asynchronous library can be used, such as the classic Thread API.
 
 ```java
 final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
@@ -191,7 +189,5 @@ System.out.println("Tokens used: " + tokensUsed);
 
 #### Spring Boot example
 
-Please
-find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
-It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend
-in real-time.
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java). It shows the usage of Spring
+Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.

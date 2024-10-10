@@ -59,8 +59,7 @@ To interact with SAP AI Core services, the SAP AI SDK requires credentials avail
 
 By default, the SDK automatically extracts these credentials from a service instance of type `aicore` bound to your application. 
 
-If
-running the application locally without this service binding, you may encounter an exception:
+If running the application locally without this service binding, you may encounter an exception:
 
 ```
 Could not find any matching service bindings for service identifier 'aicore'
