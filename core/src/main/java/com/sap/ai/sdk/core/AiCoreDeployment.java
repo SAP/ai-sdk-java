@@ -13,8 +13,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import javax.annotation.Nonnull;
+ import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +23,11 @@ import lombok.RequiredArgsConstructor;
 public class AiCoreDeployment implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
+  // the delegating AI Core Service instance
+  @Nonnull private final AiCoreService service;
+
   // the deployment id handler to be used, based on resource group
   @Nonnull private final Function<String, String> deploymentId;
-
-  // the base destination handler to be used
-  @Nonnull private final Supplier<Destination> destination;
 
   // the resource group, "default" if null
   @Getter(AccessLevel.PROTECTED)
@@ -38,19 +37,18 @@ public class AiCoreDeployment implements AiCoreDestination {
   /**
    * Create a new instance of the AI Core service with a specific deployment id and destination.
    *
+   * @param service The AI Core Service instance.
    * @param deploymentId The deployment id handler, based on resource group.
-   * @param destination The destination handler.
    */
-  public AiCoreDeployment(
-      @Nonnull final Function<String, String> deploymentId,
-      @Nonnull final Supplier<Destination> destination) {
-    this(deploymentId, destination, "default");
+  public AiCoreDeployment( @Nonnull final AiCoreService service,
+                           @Nonnull final Function<String, String> deploymentId) {
+    this(service, deploymentId, "default");
   }
 
   @Nonnull
   @Override
   public Destination destination() {
-    final var dest = destination.get().asHttp();
+    final var dest = service.destination().asHttp();
     final var builder = DefaultHttpDestination.fromDestination(dest);
     updateDestination(builder, dest);
     return builder.build();
@@ -64,7 +62,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return new AiCoreDeployment(deploymentId, destination, resourceGroup);
+    return new AiCoreDeployment( service,deploymentId, resourceGroup);
   }
 
   /**
@@ -75,7 +73,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreDeployment(deploymentId, () -> destination, resourceGroup);
+    return new AiCoreDeployment(service.withDestination(destination),deploymentId, resourceGroup);
   }
 
   /**
@@ -86,8 +84,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   protected void updateDestination(
       @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final HttpDestination d) {
-    builder.uri(d.getUri().resolve("/v2/inference/deployments/%s/".formatted(getDeploymentId())));
-    builder.property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE);
+    builder.uri(d.getUri().resolve("inference/deployments/%s/".formatted(getDeploymentId())));
     builder.property(AI_RESOURCE_GROUP, getResourceGroup());
   }
 
