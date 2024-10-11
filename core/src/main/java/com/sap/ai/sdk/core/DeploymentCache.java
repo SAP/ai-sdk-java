@@ -60,7 +60,7 @@ public class DeploymentCache {
    */
   public static void loadCache() {
     try {
-      final var deployments = API.deploymentQuery("default").getResources();
+      final var deployments = API.query("default").getResources();
       deployments.forEach(deployment -> CACHE.put(getModelName(deployment), deployment.getId()));
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
@@ -102,8 +102,7 @@ public class DeploymentCache {
   private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
       throws NoSuchElementException {
     final var deployments =
-        API.deploymentQuery(
-            resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
+        API.query(resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
 
     return deployments.getResources().stream()
         .map(AiDeployment::getId)
@@ -127,8 +126,7 @@ public class DeploymentCache {
       @Nonnull final String resourceGroup, @Nonnull final String modelName)
       throws NoSuchElementException {
     final var deployments =
-        API.deploymentQuery(
-            resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
+        API.query(resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
 
     return deployments.getResources().stream()
         .filter(deployment -> modelName.equals(getModelName(deployment)))

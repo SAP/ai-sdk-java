@@ -1,10 +1,9 @@
-package com.sap.ai.sdk.core.client;
+package com.sap.ai.sdk.core;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -16,9 +15,9 @@ public abstract class WireMockTestServer {
   private static final WireMockConfiguration WIREMOCK_CONFIGURATION =
       wireMockConfig().dynamicPort();
 
-  static WireMockServer wireMockServer;
-  static Destination destination;
-  static ApiClient client;
+  public static WireMockServer wireMockServer;
+  public static Destination destination;
+  public static ApiClient client;
 
   @BeforeAll
   static void setup() {

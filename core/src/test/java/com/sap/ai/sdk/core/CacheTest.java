@@ -11,7 +11,8 @@ import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CacheTest extends WireMockTestServer {
+class CacheTest extends WireMockTestServer
+{
 
   @BeforeEach
   void setupCache() {

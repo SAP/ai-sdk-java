@@ -7,7 +7,8 @@ import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
-import java.util.function.Predicate;
+
+import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -62,9 +63,9 @@ public class AiCoreService implements AiCoreDestination {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
-    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
-    return new AiCoreDeployment(res -> getDeploymentId(client(), res, p), this::destination);
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) throws NoSuchElementException
+  {
+    return new AiCoreDeployment(this::destination).getDeploymentId(client(), modelName);
   }
 
   /**
@@ -74,9 +75,9 @@ public class AiCoreService implements AiCoreDestination {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
-    final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreDeployment(res -> getDeploymentId(client(), res, p), this::destination);
+  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) throws NoSuchElementException
+  {
+    return new AiCoreDeployment(this::destination).getDeploymentId(client(), scenarioId);
   }
 
   /**
