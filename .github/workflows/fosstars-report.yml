@@ -2,15 +2,51 @@ name: "Fosstars (Security)"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *" # every day at midnight
+
+env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  JAVA_VERSION: 17
 
 jobs:
   create_fosstars_report:
     runs-on: ubuntu-latest
     name: "Security rating"
     steps:
-      - uses: actions/checkout@v4
-      - uses: SAP/fosstars-rating-core-action@v1.14.0
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Build SDK"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          mvn $MVN_ARGS
+
+      - name: "OWASP Dependency check"
+        run: mvn org.owasp:dependency-check-maven:10.0.4:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=.pipeline/dependency-check-suppression.xml
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+      - name: "Fosstars rating"
+        uses: SAP/fosstars-rating-core-action@v1.14.0
         with:
           report-branch: fosstars-report
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "⚠️ OWASP Dependency check failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
