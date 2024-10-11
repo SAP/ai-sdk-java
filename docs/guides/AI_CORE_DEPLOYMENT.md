@@ -67,15 +67,15 @@ In addition to the prerequisites above, we assume you have already set up the fo
 Use the following code snippet to create a deployment in SAP AI Core:
 
 ```java
-final var api = new DeploymentApi(getClient());
-final var resourceGroupId = "default";
+var api = new DeploymentApi(getClient());
+var resourceGroupId = "default";
 
-final AiDeploymentCreationRequest request =
+AiDeploymentCreationRequest request =
     AiDeploymentCreationRequest.create().configurationId("12345-123-123-123-123456abcdefg");
-final AiDeploymentCreationResponse deployment = api.create(resourceGroupId, request);
+AiDeploymentCreationResponse deployment = api.create(resourceGroupId, request);
 
-final var id = deployment.getId();
-final AiExecutionStatus status = deployment.getStatus();
+var id = deployment.getId();
+AiExecutionStatus status = deployment.getStatus();
 ```
 
 Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.
@@ -83,22 +83,22 @@ Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/j
 ### Delete a Deployment
 
 ```java
-public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationResponse deployment) {
+AiDeploymentCreationResponse deployment; // provided
+String deploymentId = deployment.getId();
   
-  final DeploymentApi api = new DeploymentApi(getClient());
-  final var resourceGroupId = "default";
+var api = new DeploymentApi(getClient());
+var resourceGroupId = "default";
   
-  if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
-    // Only RUNNING deployments can be STOPPED
-    api.modify(
-        resourceGroupId,
-        deployment.getId(),
-        AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
-  }
-  // Wait a few seconds for the deployment to stop
-  // Only UNKNOWN and STOPPED deployments can be DELETED
-  return api.delete(resourceGroupId, deployment.getId());
+if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
+  // Only RUNNING deployments can be STOPPED
+  api.modify(
+    resourceGroupId,
+    deploymentId,
+    AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
 }
+// Wait a few seconds for the deployment to stop
+// Only UNKNOWN and STOPPED deployments can be DELETED
+api.delete(resourceGroupId, deployment.getId());
 ```
 
 Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.

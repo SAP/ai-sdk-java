@@ -30,11 +30,10 @@
 
 ## Introduction
 
-Welcome to the **SAP Cloud SDK for AI (for Java)**. This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using
-SAP's Generative AI Hub.
+Welcome to the **SAP Cloud SDK for AI (for Java)**.
+This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
 Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
-The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI
-integration.
+The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
 
 ## General Requirements
 
@@ -52,8 +51,8 @@ See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app
 
 ## Connecting to SAP AI Core
 
-To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime. By default, the SDK automatically extracts these credentials from a service instance of
-type `aicore` bound to your application.
+To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime.
+By default, the SDK automatically extracts these credentials from a service instance of  type `aicore` bound to your application.
 
 If running the application locally without this service binding, you may encounter an exception:
 
@@ -192,10 +191,10 @@ Add the following code to the controller or service class in your Spring Boot ap
 
 ```java
 // Initialize the client for GPT-3.5 Turbo model
-final OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
+OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
 
 // Perform chat completion
-final OpenAiChatCompletionOutput result =
+OpenAiChatCompletionOutput result =
     client
         .withSystemPrompt("You are a helpful assistant.")
         .chatCompletion("Hello World! Why is this phrase so famous?");
@@ -218,11 +217,12 @@ When deploying your productive application to Cloud Foundry, it is recommended t
 
 Build your application using Maven and deploy it to Cloud Foundry:
 
-   ```shell
-   cf push
-   ```
+ ```shell
+ cf push
+ ```
 
-That's it! Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely via service binding.
+That's it!
+Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely via service binding.
 
 ## Documentation
 
@@ -253,7 +253,8 @@ Explore example applications and code snippets:
 
 ## Contribute, Support and Feedback
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues). Contribution and feedback are encouraged and always welcome. 
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues).
+Contribution and feedback are encouraged and always welcome. 
 For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Security / Disclosure

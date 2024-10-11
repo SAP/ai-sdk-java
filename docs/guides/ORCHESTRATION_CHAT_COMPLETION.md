@@ -74,14 +74,14 @@ In addition to the prerequisites above, we assume you have already set up the fo
 Use a chat completion template to generate a response in German:
 
 ```java
-final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
-final var inputParams =
+var inputParams =
     Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-final var template = ChatMessage.create().role("user").content("{{?input}}");
-final var templatingConfig = TemplatingModuleConfig.create().template(template);
+var template = ChatMessage.create().role("user").content("{{?input}}");
+var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-final var config =
+var config =
     CompletionPostRequest.create()
         .orchestrationConfig(
             OrchestrationConfig.create()
@@ -91,12 +91,12 @@ final var config =
                         .templatingModuleConfig(templatingConfig)))
         .inputParams(inputParams);
 
-final var resourceGroupId = "default";
-final CompletionPostResponse result =
+var resourceGroupId = "default";
+CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         .orchestrationV1EndpointsCreate(config);
 
-final String messageResult =
+String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -107,18 +107,18 @@ See [an example in our Spring Boot application](../../sample-code/spring-app/src
 Include a message history to maintain context in the conversation:
 
 ```java
-final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
 List<ChatMessage> messagesHistory =
     List.of(
         ChatMessage.create().role("user").content("What is the capital of France?"),
         ChatMessage.create().role("assistant").content("The capital of France is Paris."));
 
-final var message =
+var message =
     ChatMessage.create().role("user").content("What is the typical food there?");
-final var templatingConfig = TemplatingModuleConfig.create().template(message);
+var templatingConfig = TemplatingModuleConfig.create().template(message);
 
-final var config =
+var config =
     CompletionPostRequest.create()
         .orchestrationConfig(
             OrchestrationConfig.create()
@@ -129,12 +129,12 @@ final var config =
         .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
-final var resourceGroupId = "default";
-final CompletionPostResponse result =
+var resourceGroupId = "default";
+CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         .orchestrationV1EndpointsCreate(config);
 
-final String messageResult =
+String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -145,20 +145,20 @@ See [an example in our Spring Boot application](../../sample-code/spring-app/src
 Apply content filtering to the chat completion:
 
 ```java
-final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
-final var inputParams =
+var inputParams =
     Map.of(
         "disclaimer",
         "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-final var template =
+var template =
     ChatMessage.create()
         .role("user")
         .content(
             "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-final var templatingConfig = TemplatingModuleConfig.create().template(template);
+var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-final var filterStrict = 
+var filterStrict = 
     FilterConfig.create()
         .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
@@ -168,7 +168,7 @@ final var filterStrict =
                 .sexual(NUMBER_0)
                 .violence(NUMBER_0));
 
-final var filterLoose =
+var filterLoose =
     FilterConfig.create()
         .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
@@ -178,13 +178,13 @@ final var filterLoose =
                 .sexual(NUMBER_4)
                 .violence(NUMBER_4));
 
-final var filteringConfig =
+var filteringConfig =
     FilteringModuleConfig.create()
         // changing the input to filterLoose will allow the message to pass
         .input(FilteringConfig.create().filters(filterStrict))
         .output(FilteringConfig.create().filters(filterStrict));
 
-final var config =
+var config =
     CompletionPostRequest.create()
         .orchestrationConfig(
             OrchestrationConfig.create()
@@ -195,13 +195,13 @@ final var config =
                         .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
-final var resourceGroupId = "default";
-final CompletionPostResponse result =
+var resourceGroupId = "default";
+CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         // this fails with Bad Request because the strict filter prohibits the input message
         .orchestrationV1EndpointsCreate(config);
 
-final String messageResult =
+String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 
@@ -212,21 +212,21 @@ See [an example in our Spring Boot application](../../sample-code/spring-app/src
 Use the data masking module to anonymize personal information in the input:
 
 ```java
-final var inputParams = Map.of("privateInfo", "Patrick Morgan +49 (970) 333-3833");
-final var template =
+var inputParams = Map.of("privateInfo", "Patrick Morgan +49 (970) 333-3833");
+var template =
     ChatMessage.create().role("user").content("What is the nationality of {{?privateInfo}}");
-final var templatingConfig = TemplatingModuleConfig.create().template(template);
+var templatingConfig = TemplatingModuleConfig.create().template(template);
 
-final var maskingProvider =
+var maskingProvider =
     MaskingProviderConfig.create()
         .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
         .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
         .entities(
             DPIEntityConfig.create().type(DPIEntities.PHONE),
             DPIEntityConfig.create().type(DPIEntities.PERSON));
-final var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
 
-final CompletionPostRequest config =
+CompletionPostRequest config =
     CompletionPostRequest.create()
         .orchestrationConfig(
             OrchestrationConfig.create()
@@ -237,12 +237,12 @@ final CompletionPostRequest config =
                         .maskingModuleConfig(maskingConfig)))
         .inputParams(inputParams);
 
-final var resourceGroupId = "default";
-final CompletionPostResponse result =
+var resourceGroupId = "default";
+CompletionPostResponse result =
     new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
         .orchestrationV1EndpointsCreate(config);
 
-final String messageResult =
+String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
 ```
 

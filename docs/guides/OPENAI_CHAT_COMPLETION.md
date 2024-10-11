@@ -91,28 +91,28 @@ In addition to the prerequisites above, we assume you have already set up the fo
 ### Simple chat completion
 
 ```java
-final OpenAiChatCompletionOutput result =
+OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO)
         .withSystemPrompt("You are a helpful AI")
         .chatCompletion("Hello World! Why is this phrase so famous?");
 
-final String resultMessage = result.getContent();
+String resultMessage = result.getContent();
 ```
 
 ### Message history
 
 ```java
-final var systemMessage =
+var systemMessage =
     new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
-final var userMessage =
+var userMessage =
     new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-final var request =
+var request =
     new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
-final OpenAiChatCompletionOutput result =
+OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
-final String resultMessage = result.getContent();
+String resultMessage = result.getContent();
 ```
 
 See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
@@ -120,7 +120,7 @@ See [an example in our Spring Boot application](../../sample-code/spring-app/src
 ### Chat Completion with Custom Model
 
 ```java
-final OpenAiChatCompletionOutput result =
+OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
 ```
 
@@ -153,21 +153,21 @@ The following example is non-blocking and demonstrates how to aggregate the comp
 Any asynchronous library can be used, such as the classic Thread API.
 
 ```java
-final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-final OpenAiChatMessage.OpenAiChatUserMessage userMessage =
+OpenAiChatMessage.OpenAiChatUserMessage userMessage =
     new OpenAiChatMessage.OpenAiChatUserMessage().addText(message);
-final OpenAiChatCompletionParameters requestParameters =
+OpenAiChatCompletionParameters requestParameters =
     new OpenAiChatCompletionParameters().addMessages(userMessage);
 
-final OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
-final var totalOutput = new OpenAiChatCompletionOutput();
+OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+var totalOutput = new OpenAiChatCompletionOutput();
 
 // Prepare the stream before starting the thread to handle any initialization exceptions
-final Stream<OpenAiChatCompletionDelta> stream =
+Stream<OpenAiChatCompletionDelta> stream =
     client.streamChatCompletionDeltas(requestParameters);
 
-final var streamProcessor =
+var streamProcessor =
     new Thread(
         () -> {
           // try-with-resources ensures the stream is closed after processing
@@ -180,7 +180,7 @@ streamProcessor.start(); // Start processing in a separate thread (non-blocking)
 streamProcessor.join(); // Wait for the thread to finish (blocking)
 
 // Access aggregated information from total output
-final Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
+Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
 System.out.println("Tokens used: " + tokensUsed);
 ```
 
