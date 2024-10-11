@@ -16,13 +16,11 @@
 
 ## Introduction
 
-This guide demonstrates how to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed
-on SAP AI Core.
+This guide demonstrates how to use the SAP AI SDK for Java to perform chat completion tasks using OpenAI models deployed on SAP AI Core.
 
 ## Prerequisites
 
 Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements).
-
 Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
@@ -152,7 +150,6 @@ try (Stream<String> stream = client.streamChatCompletion(msg)) {
 #### Aggregating Total Output
 
 The following example is non-blocking and demonstrates how to aggregate the complete response.
-
 Any asynchronous library can be used, such as the classic Thread API.
 
 ```java

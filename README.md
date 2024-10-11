@@ -30,12 +30,9 @@
 
 ## Introduction
 
-Welcome to the **SAP Cloud SDK for AI (for Java)**. This SDK enables developers to seamlessly integrate AI capabilities,
-such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
-
-Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent
-applications.
-
+Welcome to the **SAP Cloud SDK for AI (for Java)**. This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using
+SAP's Generative AI Hub.
+Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
 The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI
 integration.
 
@@ -55,9 +52,8 @@ See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app
 
 ## Connecting to SAP AI Core
 
-To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime. 
-
-By default, the SDK automatically extracts these credentials from a service instance of type `aicore` bound to your application. 
+To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime. By default, the SDK automatically extracts these credentials from a service instance of
+type `aicore` bound to your application.
 
 If running the application locally without this service binding, you may encounter an exception:
 
@@ -175,7 +171,6 @@ ApiClient client = Core.getClient(destination);
 ### What You'll Build
 
 In this quickstart, you'll build a simple Spring Boot application that uses the OpenAI GPT-3.5 Turbo model for chat completion.
-
 The application will send a prompt to the AI model and display the generated response.
 
 ### Prerequisites
@@ -259,23 +254,19 @@ Explore example applications and code snippets:
 ## Contribute, Support and Feedback
 
 This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues). Contribution and feedback are encouraged and always welcome. 
-
 For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Security / Disclosure
 
 If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it. 
-
 Please do not create GitHub issues for security-related doubts or problems.
 
 ## Code of Conduct
 
 We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone. 
-
 By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
 
 ## Licensing
 
 Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors. Please see our [LICENSE](LICENSE) for copyright and license information. 
-
 Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).
