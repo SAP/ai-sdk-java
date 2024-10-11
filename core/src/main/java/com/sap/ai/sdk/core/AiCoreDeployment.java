@@ -34,9 +34,8 @@ public class AiCoreDeployment implements AiCoreDestination {
    *
    * @param destination The destination handler.
    */
-  public AiCoreDeployment(
-      @Nonnull final Supplier<Destination> destination) {
-    this( destination, "default");
+  public AiCoreDeployment(@Nonnull final Supplier<Destination> destination) {
+    this(destination, "default");
   }
 
   @Nonnull
@@ -137,9 +136,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @throws NoSuchElementException if no deployment is found for the scenario id.
    */
   @Nonnull
-  protected String getDeploymentId(
-      @Nonnull final ApiClient client,
-      @Nonnull final String name)
+  protected String getDeploymentId(@Nonnull final ApiClient client, @Nonnull final String name)
       throws NoSuchElementException {
     return DeploymentCache.getDeploymentId(resourceGroup, name);
   }
