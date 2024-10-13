@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
@@ -11,11 +13,13 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.ChatPromptTemplate;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,23 +30,50 @@ class OrchestrationController {
   // uses defaults from application.yaml
   @Autowired OrchestrationChatModel client;
 
-  String example1() {
-    ChatResponse response = client.call(new Prompt("Hello World!"));
+  @GetMapping("/completion")
+  ChatResponse completion() {
+    var prompt = new Prompt("What is the capital of France?");
 
-    return response.getResult().getOutput().getContent();
+    return client.call(prompt);
   }
 
-  private void example2() {
-    List<Message> messages =
-        List.of(new SystemMessage("You are a helpful AI."), new UserMessage("Hello World!"));
-    client.call(new Prompt(messages));
+  @GetMapping("/template/local")
+  ChatResponse templateLocal() {
+    var template = new ChatPromptTemplate(List.of(new PromptTemplate("input")));
+    Prompt prompt = template.create(Map.of("input", "Hello World!"));
+
+    return client.call(prompt);
+  }
+
+  @GetMapping("/template/remote")
+  ChatResponse templateRemote() {
+    List<Message> messages = List.of(new UserMessage("{{?input}}"));
+    var opts =
+        new OrchestrationChatOptions()
+            .withTemplate(messages)
+            .withTemplateParameters(Map.of("input", "Hello World!"));
+    var prompt = new Prompt(List.of(), opts);
+
+    return client.call(prompt);
+  }
+
+  @GetMapping("/masking")
+  ChatResponse masking() {
+    var masking = DpiMaskingConfig.forAnonymization().withEntities(DPIEntities.EMAIL);
+
+    var opts = new OrchestrationChatOptions().withMaskingConfig(masking);
+    var prompt =
+        new Prompt(
+            "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
+            opts);
+
+    return client.call(prompt);
   }
 
   private void example3() {
     var opts =
         new OrchestrationChatOptions()
-            .withLlmConfig(
-                LLMModuleConfig.create().modelName("gpt-3.5-turbo").modelParams(Map.of()))
+            .withLlmConfig(LLMModuleConfig.create().modelName("gpt-4o").modelParams(Map.of()))
             .withTemplate(
                 TemplatingModuleConfig.create()
                     .template(

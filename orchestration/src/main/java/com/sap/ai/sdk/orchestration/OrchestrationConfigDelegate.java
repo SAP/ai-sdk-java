@@ -5,7 +5,6 @@ import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
@@ -23,7 +22,7 @@ public class OrchestrationConfigDelegate<T extends OrchestrationConfig<T>>
 
   @Nonnull private Option<LLMModuleConfig> llmConfig = Option.none();
   @Nonnull private Option<TemplatingModuleConfig> template = Option.none();
-  @Nonnull private Option<MaskingModuleConfig> maskingConfig = Option.none();
+  @Nonnull private Option<DpiMaskingConfig> maskingConfig = Option.none();
   @Nonnull private Option<FilterConfig> inputContentFilter = Option.none();
   @Nonnull private Option<FilterConfig> outputContentFilter = Option.none();
 
@@ -45,7 +44,7 @@ public class OrchestrationConfigDelegate<T extends OrchestrationConfig<T>>
 
   @Nonnull
   @Override
-  public T withMaskingConfig(@Nonnull final MaskingModuleConfig maskingConfig) {
+  public T withMaskingConfig(@Nonnull final DpiMaskingConfig maskingConfig) {
     this.maskingConfig = Option.some(maskingConfig);
     return wrapper;
   }
@@ -114,7 +113,10 @@ public class OrchestrationConfigDelegate<T extends OrchestrationConfig<T>>
     ModuleConfigs dto =
         ModuleConfigs.create().llmModuleConfig(llm).templatingModuleConfig(template);
 
-    config.getMaskingConfig().forEach(dto::maskingModuleConfig);
+    config
+        .getMaskingConfig()
+        .map(DpiMaskingConfig::toMaskingModuleDTO)
+        .forEach(dto::maskingModuleConfig);
 
     var maybeInputFilter = config.getInputContentFilter();
     var maybeOutputFilter = config.getOutputContentFilter();

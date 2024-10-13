@@ -2,7 +2,9 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationConfigDelegate;
+import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -12,6 +14,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.prompt.ChatOptions;
 
 /** Configuration to be used for orchestration requests. */
@@ -28,10 +31,23 @@ public class OrchestrationChatOptions
   @Nonnull
   private Map<String, String> templateParameters = Map.of();
 
+  @Nonnull
   public OrchestrationChatOptions withTemplateParameters(
       @Nonnull final Map<String, String> templateParameters) {
     this.templateParameters = templateParameters;
     return this;
+  }
+
+  @Nonnull
+  public OrchestrationChatOptions withTemplate(@Nonnull final List<Message> template) {
+    delegate.withTemplate(TemplatingModuleConfig.create().template(toChatMessages(template)));
+    return this;
+  }
+
+  static List<ChatMessage> toChatMessages(@Nonnull final List<Message> messages) {
+    return messages.stream()
+        .map(m -> ChatMessage.create().role(m.getMessageType().getValue()).content(m.getContent()))
+        .toList();
   }
 
   // region satisfy the ChatOptions interface, delegating to the LLM config

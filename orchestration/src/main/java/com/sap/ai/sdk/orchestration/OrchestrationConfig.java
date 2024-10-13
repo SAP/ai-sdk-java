@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import javax.annotation.Nonnull;
@@ -15,7 +14,7 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   Option<TemplatingModuleConfig> getTemplate();
 
   @Nonnull
-  Option<MaskingModuleConfig> getMaskingConfig();
+  Option<DpiMaskingConfig> getMaskingConfig();
 
   @Nonnull
   Option<FilterConfig> getInputContentFilter();
@@ -30,7 +29,7 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   T withTemplate(@Nonnull final TemplatingModuleConfig template);
 
   @Nonnull
-  T withMaskingConfig(@Nonnull final MaskingModuleConfig maskingConfig);
+  T withMaskingConfig(@Nonnull final DpiMaskingConfig maskingConfig);
 
   @Nonnull
   T withInputContentFilter(@Nonnull final FilterConfig filter);

@@ -1,16 +1,13 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,13 +58,7 @@ class OrchestrationController {
   @GetMapping("/masking")
   @Nonnull
   public CompletionPostResponse masking() {
-    var masking =
-        MaskingModuleConfig.create()
-            .maskingProviders(
-                MaskingProviderConfig.create()
-                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-                    .entities(List.of(DPIEntityConfig.create().type(DPIEntities.EMAIL))));
+    var masking = DpiMaskingConfig.forAnonymization().withEntities(DPIEntities.EMAIL);
 
     var prompt =
         new OrchestrationPrompt(

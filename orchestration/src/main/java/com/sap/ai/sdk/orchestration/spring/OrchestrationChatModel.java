@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.orchestration.spring.ChatResponseFactory.toChatResp
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
@@ -15,9 +14,9 @@ import org.springframework.ai.chat.prompt.Prompt;
 /** Spring AI integration for the orchestration service. */
 @Slf4j
 public class OrchestrationChatModel implements ChatModel {
-  private final OrchestrationClient client;
+  @Nonnull private final OrchestrationClient client;
 
-  public OrchestrationChatModel(OrchestrationClient client) {
+  public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
     this.client = client;
   }
 
@@ -36,14 +35,7 @@ public class OrchestrationChatModel implements ChatModel {
 
   @Nonnull
   private static OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
-    var messages =
-        prompt.getInstructions().stream()
-            .map(
-                m ->
-                    ChatMessage.create()
-                        .role(m.getMessageType().getValue())
-                        .content(m.getContent()))
-            .toList();
+    var messages = OrchestrationChatOptions.toChatMessages(prompt.getInstructions());
 
     var opts = getChatOptions(prompt);
     var orchestrationPrompt = new OrchestrationPrompt(messages, opts.getTemplateParameters());
