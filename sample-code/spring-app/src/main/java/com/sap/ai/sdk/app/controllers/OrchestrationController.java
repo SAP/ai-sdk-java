@@ -12,7 +12,7 @@ import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,12 +24,21 @@ class OrchestrationController {
   static final String MODEL = "gpt-35-turbo";
   private static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
-  private static final TemplatingModuleConfig TEMPLATE_CONFIG =
-      TemplatingModuleConfig.create()
-          .template(ChatMessage.create().role("user").content("What is the capital of France?"));
 
-  OrchestrationClient client =
-      new OrchestrationClient().withLlmConfig(LLM_CONFIG).withTemplate(TEMPLATE_CONFIG);
+  OrchestrationClient client = new OrchestrationClient().withLlmConfig(LLM_CONFIG);
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a template
+   *
+   * @return the assistant message response
+   */
+  @GetMapping("/completion")
+  @Nonnull
+  public CompletionPostResponse completion() {
+    var prompt = new OrchestrationPrompt("What is the capital of France?");
+
+    return client.chatCompletion(prompt);
+  }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
@@ -37,7 +46,7 @@ class OrchestrationController {
    * @return the assistant message response
    */
   @GetMapping("/template")
-  @Nullable
+  @Nonnull
   public CompletionPostResponse template() {
     var template = ChatMessage.create().role("user").content("{{?input}}");
     var inputParams = Map.of("input", "Reply with 'Orchestration Service is working!' in German");
@@ -50,9 +59,8 @@ class OrchestrationController {
   }
 
   @GetMapping("/masking")
-  @Nullable
+  @Nonnull
   public CompletionPostResponse masking() {
-
     var masking =
         MaskingModuleConfig.create()
             .maskingProviders(
@@ -61,30 +69,10 @@ class OrchestrationController {
                     .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
                     .entities(List.of(DPIEntityConfig.create().type(DPIEntities.EMAIL))));
 
-    var messages = List.of(ChatMessage.create().role("user").content("My email is foo.bar@baz.ai"));
-
-    var prompt = new OrchestrationPrompt(messages).withMaskingConfig(masking);
-
-    return client.chatCompletion(prompt);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template
-   *
-   * @return the assistant message response
-   */
-  @GetMapping("/messagesHistory")
-  @Nullable
-  public CompletionPostResponse messagesHistory() {
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Let's pretend for a moment France chose the second-largest city to be the new capital of France."),
-            ChatMessage.create().role("assistant").content("Okay, weird, but okay.."));
-
-    var prompt = new OrchestrationPrompt(messagesHistory);
+    var prompt =
+        new OrchestrationPrompt(
+                "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai")
+            .withMaskingConfig(masking);
 
     return client.chatCompletion(prompt);
   }
