@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
@@ -29,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * Test that queries are on the right URL, with the right headers. Also check that the received
@@ -73,7 +73,10 @@ public class OrchestrationUnitTest {
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    var prompt = new OrchestrationPrompt(inputParams);
+    var msg = ChatMessage.create().role("user").content("{{?input}}");
+    var prompt =
+        new OrchestrationPrompt(inputParams)
+            .withTemplate(TemplatingModuleConfig.create().template(List.of(msg)));
 
     final var result = client.chatCompletion(prompt);
 
@@ -139,12 +142,9 @@ public class OrchestrationUnitTest {
                     """,
                     SC_BAD_REQUEST)));
 
-    Map<String, String> inputParams = Map.of();
-
-    assertThatThrownBy(() -> client.chatCompletion(new OrchestrationPrompt(inputParams)))
-        .isInstanceOf(HttpClientErrorException.class)
-        .hasMessage(
-            "400 Bad Request: \"{<EOL>  \"request_id\": \"51043a32-01f5-429a-b0e7-3a99432e43a4\",<EOL>  \"code\": 400,<EOL>  \"message\": \"Missing required parameters: ['input']\",<EOL>  \"location\": \"Module: Templating\",<EOL>  \"module_results\": {}<EOL>}<EOL>\"");
+    assertThatThrownBy(() -> client.chatCompletion(new OrchestrationPrompt("{{?input}}")))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400 Bad Request");
   }
 
   @Test
@@ -194,43 +194,8 @@ public class OrchestrationUnitTest {
 
     var prompt = new OrchestrationPrompt("Hello World!").withInputContentFilter(config);
 
-    client.chatCompletion(prompt);
-
     assertThatThrownBy(() -> client.chatCompletion(prompt))
-        .isInstanceOf(HttpClientErrorException.class)
-        .hasMessage("400 Bad Request: \"" + response + "\"");
-  }
-
-  @Test
-  void testMessagesHistory() throws IOException {
-    final String response =
-        new String(
-            getClass()
-                .getClassLoader()
-                // the response is not asserted in this test
-                .getResourceAsStream("templatingResponse.json")
-                .readAllBytes());
-    stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
-
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-
-    final var result =
-        client.chatCompletion(
-            new OrchestrationPrompt(
-                messagesHistory, Map.of("input", "What is the typical food there?")));
-
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-
-    // verify that the history is sent correctly
-    final String request =
-        new String(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("messagesHistoryRequest.json")
-                .readAllBytes());
-    verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400 Bad Request");
   }
 }

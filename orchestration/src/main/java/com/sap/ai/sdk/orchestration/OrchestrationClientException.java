@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 public class OrchestrationClientException extends RuntimeException {
-  public OrchestrationClientException(String msg, Exception cause) {
+  public OrchestrationClientException(String msg, Throwable cause) {
     super(msg, cause);
   }
 

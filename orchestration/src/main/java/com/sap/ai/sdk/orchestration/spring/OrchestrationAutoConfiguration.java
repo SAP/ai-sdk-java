@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 @Slf4j
 @AutoConfiguration
 @EnableConfigurationProperties(OrchestrationSpringProperties.class)
-public class OrchestrationSpringAutoConfiguration {
+public class OrchestrationAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   OrchestrationClient orchestrationClient(OrchestrationSpringProperties properties) {

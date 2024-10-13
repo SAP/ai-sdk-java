@@ -11,6 +11,7 @@ import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
@@ -58,7 +59,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   public String chatCompletion(@Nonnull final String userPrompt)
       throws OrchestrationClientException {
     var response = chatCompletion(new OrchestrationPrompt(userPrompt));
-    return response.getOrchestrationResult().getChoices().getFirst().getMessage().getContent();
+    return response.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
   }
 
   /**
@@ -110,7 +111,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
     try {
       return client.execute(
           postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
-    } catch (Exception e) {
+    } catch (IOException e) {
       throw new OrchestrationClientException("Failed to execute request", e);
     }
   }

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
+
   // uses defaults from application.yaml
   @Autowired OrchestrationChatModel client;
 
@@ -70,23 +71,15 @@ class OrchestrationController {
     return client.call(prompt);
   }
 
-  private void example3() {
-    var opts =
-        new OrchestrationChatOptions()
-            .withLlmConfig(LLMModuleConfig.create().modelName("gpt-4o").modelParams(Map.of()))
-            .withTemplate(
-                TemplatingModuleConfig.create()
-                    .template(
-                        ChatMessage.create().role("system").content("You are a helpful AI.")));
-    var prompt = new Prompt("Hello World!", opts);
-  }
 
-  private void example4() {
+  @GetMapping("/chatMemory")
+  ChatResponse chatMemory() {
     InMemoryChatMemory memory = new InMemoryChatMemory();
     MessageChatMemoryAdvisor advisor = new MessageChatMemoryAdvisor(memory);
     ChatClient cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
     var prompt = new Prompt("Hello World!");
 
-    cl.prompt(prompt);
+    cl.prompt(prompt).call();
+    return cl.prompt(prompt).call().chatResponse();
   }
 }
