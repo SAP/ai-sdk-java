@@ -7,6 +7,9 @@ import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
 import java.util.List;
 import java.util.Map;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -45,5 +48,14 @@ class OrchestrationController {
                     .template(
                         ChatMessage.create().role("system").content("You are a helpful AI.")));
     var prompt = new Prompt("Hello World!", opts);
+  }
+
+  private void example4() {
+    InMemoryChatMemory memory = new InMemoryChatMemory();
+    MessageChatMemoryAdvisor advisor = new MessageChatMemoryAdvisor(memory);
+    ChatClient cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+    var prompt = new Prompt("Hello World!");
+
+    cl.prompt(prompt);
   }
 }

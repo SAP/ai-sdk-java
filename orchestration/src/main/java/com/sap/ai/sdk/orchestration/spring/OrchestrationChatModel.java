@@ -3,12 +3,8 @@ package com.sap.ai.sdk.orchestration.spring;
 import static com.sap.ai.sdk.orchestration.spring.ChatResponseFactory.toChatResponse;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
@@ -19,10 +15,10 @@ import org.springframework.ai.chat.prompt.Prompt;
 /** Spring AI integration for the orchestration service. */
 @Slf4j
 public class OrchestrationChatModel implements ChatModel {
-  private final OrchestrationClient delegate;
+  private final OrchestrationClient client;
 
   public OrchestrationChatModel(OrchestrationClient client) {
-    delegate = client;
+    this.client = client;
   }
 
   @Override
@@ -33,49 +29,46 @@ public class OrchestrationChatModel implements ChatModel {
 
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
-    var opts = getOrchestrationConfig(prompt);
-    opts = opts.withTemplate(mergePromptIntoTemplateConfig(prompt, opts));
-
-    var response = delegate.chatCompletion(new OrchestrationPrompt(opts, null, null));
+    var orchestrationPrompt = toOrchestrationPrompt(prompt);
+    var response = client.chatCompletion(orchestrationPrompt);
     return toChatResponse(response);
   }
 
-  /*
-   * Currently, we have to merge the prompt into the template configuration.
-   * This works around the limitation that the template config isn't optional.
-   * This comes at the risk that the prompt unintentionally contains the templating pattern "{{? .. }}".
-   * In this case, the request will fail, since the templating module will try to resolve the parameter.
-   * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
-   */
-  private static TemplatingModuleConfig mergePromptIntoTemplateConfig(
-      @Nonnull Prompt prompt, OrchestrationConfig opts) {
-    // TODO test
-    final var template =
-        opts.getTemplate() != null
-            ? opts.getTemplate()
-            : TemplatingModuleConfig.create().template();
-    final var messagesWithPrompt = new ArrayList<>(template.getTemplate());
+  @Nonnull
+  private static OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
+    var messages =
+        prompt.getInstructions().stream()
+            .map(
+                m ->
+                    ChatMessage.create()
+                        .role(m.getMessageType().getValue())
+                        .content(m.getContent()))
+            .toList();
 
-    prompt.getInstructions().stream()
-        .map(m -> ChatMessage.create().role(m.getMessageType().getValue()).content(m.getContent()))
-        .collect(Collectors.toCollection(() -> messagesWithPrompt));
+    var opts = getChatOptions(prompt);
+    var orchestrationPrompt = new OrchestrationPrompt(messages, opts.getTemplateParameters());
 
-    return TemplatingModuleConfig.create()
-        .template(messagesWithPrompt)
-        .defaults(template.getDefaults());
+    opts.getLlmConfig().forEach(orchestrationPrompt::withLlmConfig);
+    opts.getTemplate().forEach(orchestrationPrompt::withTemplate);
+    opts.getMaskingConfig().forEach(orchestrationPrompt::withMaskingConfig);
+    opts.getInputContentFilter().forEach(orchestrationPrompt::withInputContentFilter);
+    opts.getOutputContentFilter().forEach(orchestrationPrompt::withOutputContentFilter);
+
+    return orchestrationPrompt;
   }
 
-  private static OrchestrationConfig getOrchestrationConfig(@Nonnull final Prompt prompt) {
+  @Nonnull
+  private static OrchestrationChatOptions getChatOptions(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() == null) {
-      return new OrchestrationConfig();
+      return new OrchestrationChatOptions();
     }
-    if (prompt.getOptions() instanceof OrchestrationChatOptions orchestratedChatOptions) {
-      return orchestratedChatOptions.getDelegate();
+    if (prompt.getOptions() instanceof OrchestrationChatOptions opts) {
+      return opts;
     }
-    // TODO test
+    // TODO: Should be build the LLM config out of the provided options instead?
     log.warn(
         "Prompt options are not of type {}. Ignoring provided options.",
         OrchestrationChatOptions.class.getSimpleName());
-    return new OrchestrationConfig();
+    return new OrchestrationChatOptions();
   }
 }

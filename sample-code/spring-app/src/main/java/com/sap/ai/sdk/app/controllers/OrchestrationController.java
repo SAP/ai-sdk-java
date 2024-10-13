@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
@@ -43,9 +42,9 @@ class OrchestrationController {
     var template = ChatMessage.create().role("user").content("{{?input}}");
     var inputParams = Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    var config =
-        new OrchestrationConfig().withTemplate(TemplatingModuleConfig.create().template(template));
-    var prompt = new OrchestrationPrompt(config, null, inputParams);
+    var prompt =
+        new OrchestrationPrompt(inputParams)
+            .withTemplate(TemplatingModuleConfig.create().template(template));
 
     return client.chatCompletion(prompt);
   }
@@ -64,8 +63,7 @@ class OrchestrationController {
 
     var messages = List.of(ChatMessage.create().role("user").content("My email is foo.bar@baz.ai"));
 
-    var config = new OrchestrationConfig().withMaskingConfig(masking);
-    var prompt = new OrchestrationPrompt(config, messages, null);
+    var prompt = new OrchestrationPrompt(messages).withMaskingConfig(masking);
 
     return client.chatCompletion(prompt);
   }

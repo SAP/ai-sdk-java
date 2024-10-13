@@ -1,36 +1,43 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
+import lombok.experimental.Delegate;
 
 @Value
 @AllArgsConstructor
-public class OrchestrationPrompt {
-  @Nonnull OrchestrationConfig config;
-  @Nullable List<ChatMessage> messages;
-  @Nullable Map<String, String> templateParameters;
+public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPrompt> {
+  @Nonnull List<ChatMessage> messages;
+  @Nonnull Map<String, String> templateParameters;
 
-  public OrchestrationPrompt(String message) {
-    this(
-        new OrchestrationConfig(),
-        List.of(ChatMessage.create().role("user").content(message)),
-        null);
+  @Getter(AccessLevel.NONE)
+  @Delegate
+  @Nonnull
+  OrchestrationConfigDelegate<OrchestrationPrompt> delegate =
+      new OrchestrationConfigDelegate<>(this);
+
+  public OrchestrationPrompt(@Nonnull final String message) {
+    this(List.of(ChatMessage.create().role("user").content(message)), Map.of());
   }
 
-  public OrchestrationPrompt(List<ChatMessage> messages, Map<String, String> templateParameters) {
-    this(new OrchestrationConfig(), messages, templateParameters);
+  public OrchestrationPrompt(@Nonnull final List<ChatMessage> messagesHistory) {
+    this(messagesHistory, Map.of());
   }
 
-  public OrchestrationPrompt(List<ChatMessage> messagesHistory) {
-    this(new OrchestrationConfig(), messagesHistory, null);
+  public OrchestrationPrompt(@Nonnull final Map<String, String> inputParams) {
+    this(List.of(), inputParams);
   }
 
-  public OrchestrationPrompt(Map<String, String> inputParams) {
-    this(new OrchestrationConfig(), null, inputParams);
+  @Nonnull
+  ModuleConfigs toModuleConfigDTO(@Nonnull final OrchestrationConfig<?> defaults) {
+    var config = OrchestrationConfigDelegate.fromConfigAndDefaults(delegate, defaults, this);
+    return OrchestrationConfigDelegate.toModuleConfigDTO(config, messages);
   }
 }

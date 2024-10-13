@@ -9,7 +9,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,21 +16,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.HttpClientErrorException;
@@ -57,26 +52,6 @@ public class OrchestrationUnitTest {
   private static final TemplatingModuleConfig TEMPLATE_CONFIG =
       TemplatingModuleConfig.create()
           .template(List.of(ChatMessage.create().role("user").content("{{?input}}")));
-
-  /**
-   * Creates a config from a filter threshold. The config includes a template and has input and
-   * output filters
-   */
-  private static final Function<AzureThreshold, FilteringModuleConfig> FILTERING_CONFIG =
-      (AzureThreshold filterThreshold) -> {
-        final var filter =
-            FilterConfig.create()
-                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-                .config(
-                    AzureContentSafety.create()
-                        .hate(filterThreshold)
-                        .selfHarm(filterThreshold)
-                        .sexual(filterThreshold)
-                        .violence(filterThreshold));
-        return FilteringModuleConfig.create()
-            .input(FilteringConfig.create().filters(filter))
-            .output(FilteringConfig.create().filters(filter));
-      };
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -182,10 +157,16 @@ public class OrchestrationUnitTest {
                 .readAllBytes());
     stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    final var config = FILTERING_CONFIG.apply(NUMBER_4);
+    var config =
+        FilterConfig.create()
+            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+            .config(
+                AzureContentSafety.create()
+                    .hate(AzureThreshold.NUMBER_6)
+                    .selfHarm(AzureThreshold.NUMBER_4));
 
-    // TODO implement filtering
-    var prompt = new OrchestrationPrompt(new OrchestrationConfig(), null, null);
+    var prompt = new OrchestrationPrompt("Hello World!").withOutputContentFilter(config);
+
     client.chatCompletion(prompt);
     // the result is asserted in the verify step below
 
@@ -206,10 +187,13 @@ public class OrchestrationUnitTest {
             {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
     stubFor(post(urlPathEqualTo("/completion")).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
-    final var config = FILTERING_CONFIG.apply(NUMBER_0);
+    var config =
+        FilterConfig.create()
+            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+            .config(AzureContentSafety.create().hate(NUMBER_0).violence(AzureThreshold.NUMBER_2));
 
-    // TODO implement filtering
-    var prompt = new OrchestrationPrompt(new OrchestrationConfig(), null, null);
+    var prompt = new OrchestrationPrompt("Hello World!").withInputContentFilter(config);
+
     client.chatCompletion(prompt);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt))

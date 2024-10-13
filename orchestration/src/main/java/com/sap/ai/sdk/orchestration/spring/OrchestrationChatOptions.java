@@ -1,11 +1,8 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationConfigBuilder;
+import com.sap.ai.sdk.orchestration.OrchestrationConfigDelegate;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-import io.vavr.control.Option;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -14,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Delegate;
 import org.springframework.ai.chat.prompt.ChatOptions;
 
 /** Configuration to be used for orchestration requests. */
@@ -21,29 +19,18 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 @Getter(AccessLevel.PACKAGE)
 @Setter(AccessLevel.NONE)
 public class OrchestrationChatOptions
-    implements ChatOptions, OrchestrationConfigBuilder<OrchestrationChatOptions> {
-  // Unfortunately, Lomboks @Delegate doesn't work with chaining, because "return this" returns the
-  // delegate itself
-  private OrchestrationConfig delegate = new OrchestrationConfig();
+    implements ChatOptions, OrchestrationConfig<OrchestrationChatOptions> {
+  @Delegate @Nonnull
+  private final OrchestrationConfigDelegate<OrchestrationChatOptions> delegate =
+      new OrchestrationConfigDelegate<>(this);
 
+  @Getter(AccessLevel.PUBLIC)
   @Nonnull
-  @Override
-  public OrchestrationChatOptions withLlmConfig(LLMModuleConfig llm) {
-    delegate.withLlmConfig(llm);
-    return this;
-  }
+  private Map<String, String> templateParameters = Map.of();
 
-  @Nonnull
-  @Override
-  public OrchestrationChatOptions withTemplate(TemplatingModuleConfig template) {
-    delegate.withTemplate(template);
-    return this;
-  }
-
-  @Nonnull
-  @Override
-  public OrchestrationChatOptions withMaskingConfig(MaskingModuleConfig maskingConfig) {
-    delegate.withMaskingConfig(maskingConfig);
+  public OrchestrationChatOptions withTemplateParameters(
+      @Nonnull final Map<String, String> templateParameters) {
+    this.templateParameters = templateParameters;
     return this;
   }
 
@@ -51,12 +38,12 @@ public class OrchestrationChatOptions
   @Nullable
   @Override
   public String getModel() {
-    return Option.of(delegate.getLlmConfig()).map(LLMModuleConfig::getModelName).getOrNull();
+    return delegate.getLlmConfig().map(LLMModuleConfig::getModelName).getOrNull();
   }
 
   @Nullable
   String getModelVersion() {
-    return Option.of(delegate.getLlmConfig()).map(LLMModuleConfig::getModelVersion).getOrNull();
+    return delegate.getLlmConfig().map(LLMModuleConfig::getModelVersion).getOrNull();
   }
 
   @Nullable
@@ -109,7 +96,8 @@ public class OrchestrationChatOptions
   @SuppressWarnings("unchecked")
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
-    return Option.of(delegate.getLlmConfig())
+    return delegate
+        .getLlmConfig()
         .map(LLMModuleConfig::getModelParams)
         .map(it -> (Map<String, Object>) it)
         .map(m -> (T) m.get(param))

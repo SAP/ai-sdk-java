@@ -159,6 +159,7 @@
           <!-- Do not delete the output directory because it contains non-generated code -->
           <!-- The generated client is instead deleted by the maven-clean-plugin here above -->
           <deleteOutputDirectory>false</deleteOutputDirectory>
+          <skip>true</skip>
         </configuration>
         <executions>
           <execution>

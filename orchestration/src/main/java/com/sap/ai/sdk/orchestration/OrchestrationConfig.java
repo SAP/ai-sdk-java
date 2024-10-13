@@ -1,62 +1,43 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import io.vavr.control.Option;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Data
-@Setter(AccessLevel.PRIVATE)
-@NoArgsConstructor
-@AllArgsConstructor
-public class OrchestrationConfig implements OrchestrationConfigBuilder<OrchestrationConfig> {
-
-  @Nullable private LLMModuleConfig llmConfig;
-  @Nullable private TemplatingModuleConfig template;
-  @Nullable private MaskingModuleConfig maskingConfig;
+public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
+  @Nonnull
+  Option<LLMModuleConfig> getLlmConfig();
 
   @Nonnull
-  @Override
-  public OrchestrationConfig withLlmConfig(LLMModuleConfig llm) {
-    this.llmConfig = llm;
-    return this;
-  }
+  Option<TemplatingModuleConfig> getTemplate();
 
   @Nonnull
-  @Override
-  public OrchestrationConfig withTemplate(TemplatingModuleConfig template) {
-    this.template = template;
-    return this;
-  }
+  Option<MaskingModuleConfig> getMaskingConfig();
 
   @Nonnull
-  @Override
-  public OrchestrationConfig withMaskingConfig(MaskingModuleConfig maskingConfig) {
-    this.maskingConfig = maskingConfig;
-    return this;
-  }
+  Option<FilterConfig> getInputContentFilter();
 
-  OrchestrationConfig mergeWithDefaults(@Nullable final OrchestrationConfig defaults) {
-    if (defaults == null) {
-      return this;
-    }
-    return new OrchestrationConfig(
-        llmConfig != null ? llmConfig : defaults.getLlmConfig(),
-        template != null ? template : defaults.getTemplate(),
-        maskingConfig != null ? maskingConfig : defaults.getMaskingConfig());
-  }
+  @Nonnull
+  Option<FilterConfig> getOutputContentFilter();
 
-  ModuleConfigs toDTO() {
-    return ModuleConfigs.create()
-        .llmModuleConfig(llmConfig)
-        .templatingModuleConfig(template)
-        .maskingModuleConfig(maskingConfig);
-  }
+  @Nonnull
+  T withLlmConfig(@Nonnull final LLMModuleConfig llm);
+
+  @Nonnull
+  T withTemplate(@Nonnull final TemplatingModuleConfig template);
+
+  @Nonnull
+  T withMaskingConfig(@Nonnull final MaskingModuleConfig maskingConfig);
+
+  @Nonnull
+  T withInputContentFilter(@Nonnull final FilterConfig filter);
+
+  @Nonnull
+  T withOutputContentFilter(@Nonnull final FilterConfig filter);
+
+  // ModuleConfigs toDTO( @Nonnull final OrchestrationConfig defaults, @Nonnull final List<? extends
+  // ChatMessage> messages);
 }
