@@ -40,8 +40,8 @@ class OrchestrationController {
 
   @GetMapping("/template/local")
   ChatResponse templateLocal() {
-    var template = new ChatPromptTemplate(List.of(new PromptTemplate("input")));
-    Prompt prompt = template.create(Map.of("input", "Hello World!"));
+    var template = new PromptTemplate("input");
+    var prompt = template.create(Map.of("input", "Hello World!"));
 
     return client.call(prompt);
   }
@@ -71,11 +71,10 @@ class OrchestrationController {
     return client.call(prompt);
   }
 
-
   @GetMapping("/chatMemory")
   ChatResponse chatMemory() {
-    InMemoryChatMemory memory = new InMemoryChatMemory();
-    MessageChatMemoryAdvisor advisor = new MessageChatMemoryAdvisor(memory);
+    var memory = new InMemoryChatMemory();
+    var advisor = new MessageChatMemoryAdvisor(memory);
     ChatClient cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
     var prompt = new Prompt("Hello World!");
 

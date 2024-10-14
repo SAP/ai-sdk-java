@@ -6,8 +6,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
-@ServletComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
+@ComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk"})
+@ServletComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk"})
 class Application {
   /**
    * Main method to start the Spring Boot application.

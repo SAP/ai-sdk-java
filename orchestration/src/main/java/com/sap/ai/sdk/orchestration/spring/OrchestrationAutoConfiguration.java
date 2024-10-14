@@ -30,10 +30,10 @@ public class OrchestrationAutoConfiguration {
   OrchestrationChatModel orchestrationChatModel(OrchestrationClient client) {
     return new OrchestrationChatModel(client);
   }
-
-  @Bean
-  @ConditionalOnMissingBean
-  ChatClient orchestrationChatModel(OrchestrationChatModel model) {
-    return ChatClient.create(model);
-  }
+//
+//  @Bean
+//  @ConditionalOnMissingBean
+//  ChatClient orchestrationChatClient(OrchestrationChatModel model) {
+//    return ChatClient.create(model);
+//  }
 }

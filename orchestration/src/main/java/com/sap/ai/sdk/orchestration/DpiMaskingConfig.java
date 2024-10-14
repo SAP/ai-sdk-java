@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum.ANONYMIZATION;
+import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum.PSEUDONYMIZATION;
 import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
 
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
@@ -27,7 +28,7 @@ public class DpiMaskingConfig {
 
   @Nonnull
   public static Builder forPseudonymization() {
-    return new DpiMaskingConfig.Builder(ANONYMIZATION);
+    return new DpiMaskingConfig.Builder(PSEUDONYMIZATION);
   }
 
   @Nonnull

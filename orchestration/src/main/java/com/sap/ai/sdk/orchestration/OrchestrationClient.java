@@ -44,7 +44,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
 
   public OrchestrationClient() {
     // TODO: use AiCoreService after refactoring
-    this.destination = Core.getDestination().asHttp();
+    this.destination = Core.getDestinationForDeployment("db1d64d9f06be467", "default").asHttp();
   }
 
   /**
@@ -100,7 +100,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   private CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
     final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-    final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
+    final BasicClassicHttpRequest postRequest = new HttpPost("/v2/inference/deployments/db1d64d9f06be467/completion");
     try {
       final var json = JACKSON.writeValueAsString(request);
       postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
