@@ -1,8 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
-
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -13,7 +10,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
- import javax.annotation.Nonnull;
+import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,10 @@ public class AiCoreDeployment implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   // the delegating AI Core Service instance
-  @Nonnull private final AiCoreService service;
+  @Nonnull private final AiCoreServiceExtension service;
+
+  // the destination handler to be used
+  @Nonnull private final Supplier<Destination> destination;
 
   // the deployment id handler to be used, based on resource group
   @Nonnull private final Function<String, String> deploymentId;
@@ -40,18 +41,24 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @param service The AI Core Service instance.
    * @param deploymentId The deployment id handler, based on resource group.
    */
-  public AiCoreDeployment( @Nonnull final AiCoreService service,
-                           @Nonnull final Function<String, String> deploymentId) {
-    this(service, deploymentId, "default");
+  public AiCoreDeployment(
+      @Nonnull final AiCoreService service, @Nonnull final Function<String, String> deploymentId) {
+    this(service, service::destination, deploymentId, "default");
   }
 
   @Nonnull
   @Override
   public Destination destination() {
-    final var dest = service.destination().asHttp();
+    final var dest = destination.get().asHttp();
     final var builder = DefaultHttpDestination.fromDestination(dest);
-    updateDestination(builder, dest);
-    return builder.build();
+    return createDestination(builder, dest);
+  }
+
+  @Nonnull
+  @Override
+  public ApiClient client() {
+    final var destination = destination();
+    return service.createApiClient(destination);
   }
 
   /**
@@ -62,7 +69,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return new AiCoreDeployment( service,deploymentId, resourceGroup);
+    return new AiCoreDeployment(service, destination, deploymentId, resourceGroup);
   }
 
   /**
@@ -73,7 +80,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreDeployment(service.withDestination(destination),deploymentId, resourceGroup);
+    return new AiCoreDeployment(service, () -> destination, deploymentId, resourceGroup);
   }
 
   /**
@@ -81,11 +88,13 @@ public class AiCoreDeployment implements AiCoreDestination {
    *
    * @param builder The new destination builder.
    * @param d The original destination.
+   * @return The updated destination.
    */
-  protected void updateDestination(
+  protected Destination createDestination(
       @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final HttpDestination d) {
     builder.uri(d.getUri().resolve("inference/deployments/%s/".formatted(getDeploymentId())));
     builder.property(AI_RESOURCE_GROUP, getResourceGroup());
+    return service.createDestination(builder, d);
   }
 
   /**

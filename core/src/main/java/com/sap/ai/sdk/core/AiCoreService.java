@@ -2,30 +2,24 @@ package com.sap.ai.sdk.core;
 
 import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentId;
 import static com.sap.ai.sdk.core.AiCoreDeployment.isDeploymentOfModel;
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperties;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
-
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 /** Connectivity convenience methods for AI Core. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class AiCoreService implements AiCoreDestination {
+public class AiCoreService extends AiCoreServiceExtension implements AiCoreDestination {
 
   // the destination to be used for AI Core service calls.
   @Nonnull private final Supplier<Destination> destination;
@@ -38,7 +32,9 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   @Override
   public Destination destination() {
-    return destination.get();
+    final var dest = destination.get();
+    final var newDestinationBuilder = DefaultHttpDestination.fromDestination(dest);
+    return createDestination(newDestinationBuilder, dest);
   }
 
   /**
@@ -49,19 +45,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-
-    final var newDestinationBuilder = DefaultHttpDestination.fromDestination(destination);
-    final var newDestination = refineDestination(newDestinationBuilder, destination);
-    return new AiCoreService(() -> newDestination);
-  }
-
-  @Nonnull
-  protected Destination refineDestination(
-      @Nonnull final DefaultHttpDestination.Builder builder,
-      @Nonnull final DestinationProperties properties) {
-    String uri = properties.get(DestinationProperty.URI).get();
-    uri = StringUtils.appendIfMissing(uri, "/") + "v2/";
-    return builder.uri(uri).property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE).build();
+    return new AiCoreService(() -> destination);
   }
 
   /**
@@ -108,14 +92,15 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   protected static Destination getDefaultDestination()
-          throws DestinationAccessException, DestinationNotFoundException {
+      throws DestinationAccessException, DestinationNotFoundException {
     final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
+
   @Nonnull
-  protected static ApiClient getApiClient()
-          throws DestinationAccessException, DestinationNotFoundException {
-    final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
-    return DestinationResolver.getDestination(serviceKey);
+  @Override
+  public ApiClient client() {
+    final var destination = destination();
+    return createApiClient(destination);
   }
 }
