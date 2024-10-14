@@ -17,24 +17,38 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import javax.annotation.Nonnull;
+
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-abstract class AiCoreServiceExtension {
+class AiCoreServiceExtension {
+
+  /**
+   * Get a destination using the default service binding loading logic.
+   *
+   * @return The destination.
+   * @throws DestinationAccessException If the destination cannot be accessed.
+   * @throws DestinationNotFoundException If the destination cannot be found.
+   */
+  @Nonnull
+  protected Destination getBaseDestination()
+      throws DestinationAccessException, DestinationNotFoundException {
+      final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
+      return DestinationResolver.getDestination(serviceKey);
+  };
 
   @Nonnull
-  protected Destination createDestination(
+  protected void refineDestinationBuilder(
       @Nonnull final DefaultHttpDestination.Builder builder,
       @Nonnull final DestinationProperties properties) {
     String uri = properties.get(DestinationProperty.URI).get();
     if (!uri.endsWith("/")) {
       uri = uri + "/";
     }
-    uri = uri + "v2/";
-    return builder.uri(uri).property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE).build();
+    builder.uri(uri + "v2/").property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE);
   }
 
   /**

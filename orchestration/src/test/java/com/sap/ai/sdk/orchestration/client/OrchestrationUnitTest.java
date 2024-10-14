@@ -1,7 +1,9 @@
 package com.sap.ai.sdk.orchestration.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -40,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.HttpClientErrorException;
@@ -77,9 +81,31 @@ public class OrchestrationUnitTest {
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
+
+    stubFor(
+            get(urlPathEqualTo("/v2/lm/deployments"))
+                    .withHeader("AI-Resource-Group", equalTo("default"))
+                    .willReturn(
+                            aResponse()
+                                    .withStatus(HttpStatus.SC_OK)
+                                    .withHeader("content-type", "application/json")
+                                    .withBody(
+                                            """
+                                            {
+                                              "resources": [
+                                                {
+                                                  "configurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
+                                                  "id": "d19b998f347341aa",
+                                                  "scenarioId": "orchestration"
+                                                }
+                                              ]
+                                            }
+                                            """)));
+
+
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    final var apiClient = new AiCoreService().withDestination(destination).client();
+    final var apiClient = new AiCoreService().withDestination(destination).forDeploymentByScenario("orchestration").client();
     client = new OrchestrationCompletionApi(apiClient);
   }
 
@@ -316,7 +342,7 @@ public class OrchestrationUnitTest {
   @Test
   void maskingAnonymization() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("maskingResponse.json")

@@ -65,11 +65,11 @@ public class AiCoreServiceTest {
     final var client = core.client();
 
     // verification
-    assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2");
+    assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2/");
     assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
     assertThat(destination.get(DestinationProperty.NAME)).singleElement(STRING).contains("aicore");
     assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
-    assertThat(client.getBasePath()).isEqualTo("https://srv/v2");
+    assertThat(client.getBasePath()).isEqualTo("https://srv/v2/");
     verify(accessor, times(2)).getServiceBindings();
   }
 
@@ -85,7 +85,7 @@ public class AiCoreServiceTest {
     final var client = core.client();
 
     // verification
-    assertThat(destination.get(DestinationProperty.URI)).contains("https://foo.bar");
+    assertThat(destination.get(DestinationProperty.URI)).contains("https://foo.bar/v2/");
     assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
     assertThat(destination.get(DestinationProperty.NAME)).isEmpty();
     assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
@@ -93,21 +93,21 @@ public class AiCoreServiceTest {
   }
 
   @Test
-  void testDeploymnt() {
+  void testDeployment() {
     final var accessor = mock(ServiceBindingAccessor.class);
     DestinationResolver.setAccessor(accessor);
     doReturn(List.of(BINDING)).when(accessor).getServiceBindings();
 
     // execution without errors
     final var destination = new AiCoreService().destination();
-    final var ciient = new AiCoreService().client();
+    final var client = new AiCoreService().client();
 
     // verification
     assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2/");
     assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
     assertThat(destination.get(DestinationProperty.NAME)).singleElement(STRING).contains("aicore");
     assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
-    assertThat(ciient.getBasePath()).isEqualTo("https://srv/v2/");
+    assertThat(client.getBasePath()).isEqualTo("https://srv/v2/");
     verify(accessor, times(2)).getServiceBindings();
   }
 }

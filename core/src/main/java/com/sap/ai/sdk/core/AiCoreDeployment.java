@@ -4,28 +4,27 @@ import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperties;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Delegate;
 
 /** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class AiCoreDeployment implements AiCoreDestination {
+public class AiCoreDeployment extends AiCoreServiceExtension implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   // the delegating AI Core Service instance
-  @Nonnull private final AiCoreServiceExtension service;
-
-  // the destination handler to be used
-  @Nonnull private final Supplier<Destination> destination;
+  @Delegate
+  @Nonnull private final AiCoreServiceExtension delegate;
 
   // the deployment id handler to be used, based on resource group
   @Nonnull private final Function<String, String> deploymentId;
@@ -43,22 +42,23 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   public AiCoreDeployment(
       @Nonnull final AiCoreService service, @Nonnull final Function<String, String> deploymentId) {
-    this(service, service::destination, deploymentId, "default");
+    this(service, deploymentId, "default");
   }
 
   @Nonnull
   @Override
   public Destination destination() {
-    final var dest = destination.get().asHttp();
+    final var dest = getBaseDestination();
     final var builder = DefaultHttpDestination.fromDestination(dest);
-    return createDestination(builder, dest);
+    refineDestinationBuilder(builder, dest);
+    return builder.build();
   }
 
   @Nonnull
   @Override
   public ApiClient client() {
     final var destination = destination();
-    return service.createApiClient(destination);
+    return createApiClient(destination);
   }
 
   /**
@@ -69,7 +69,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return new AiCoreDeployment(service, destination, deploymentId, resourceGroup);
+    return new AiCoreDeployment(this, deploymentId, resourceGroup);
   }
 
   /**
@@ -80,7 +80,10 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreDeployment(service, () -> destination, deploymentId, resourceGroup);
+    return new AiCoreDeployment(this, deploymentId, resourceGroup) {
+      @Getter
+      private final Destination baseDestination = destination;
+    };
   }
 
   /**
@@ -90,11 +93,16 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @param d The original destination.
    * @return The updated destination.
    */
-  protected Destination createDestination(
-      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final HttpDestination d) {
-    builder.uri(d.getUri().resolve("inference/deployments/%s/".formatted(getDeploymentId())));
+  @Override
+  protected void refineDestinationBuilder(
+          @Nonnull final DefaultHttpDestination.Builder builder,
+          @Nonnull final DestinationProperties d) {
+
+    AiCoreService.this.refineDestinationBuilder(builder, d);
+
+    String uri = d.get(DestinationProperty.URI).get();
+    builder.uri(uri+"inference/deployments/%s/".formatted(getDeploymentId())));
     builder.property(AI_RESOURCE_GROUP, getResourceGroup());
-    return service.createDestination(builder, d);
   }
 
   /**

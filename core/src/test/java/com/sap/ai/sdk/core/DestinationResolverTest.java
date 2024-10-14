@@ -44,6 +44,6 @@ public class DestinationResolverTest {
         }
         """;
     var result = DestinationResolver.getDestination(AICORE_SERVICE_KEY).asHttp();
-    assertThat(result.getUri()).hasToString("https://api.ai.core/v2");
+    assertThat(result.getUri()).hasToString("https://api.ai.core");
   }
 }
