@@ -14,12 +14,17 @@ import com.sap.cloud.environment.servicebinding.api.DefaultServiceBinding;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import javax.annotation.Nonnull;
 
 public class AiCoreServiceTest {
 
@@ -112,21 +117,17 @@ public class AiCoreServiceTest {
   }
 
   @Test
-  void testenCustomization() {
-    final var accessor = mock(ServiceBindingAccessor.class);
-    DestinationResolver.setAccessor(accessor);
-    doReturn(List.of(BINDING)).when(accessor).getServiceBindings();
+  void testCustomization() {
+    final var customService = new AiCoreService() {
+      @Nonnull
+      @Override
+      protected ApiClient createApiClient(@Nonnull Destination destination) {
+        return new ApiClient().setBasePath("foo");
+      };
+    };
 
-    // execution without errors
-    final var destination = new AiCoreService().destination();
-    final var client = new AiCoreService().client();
-
-    // verification
-    assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2/");
-    assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
-    assertThat(destination.get(DestinationProperty.NAME)).singleElement(STRING).contains("aicore");
-    assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
-    assertThat(client.getBasePath()).isEqualTo("https://srv/v2/");
-    verify(accessor, times(2)).getServiceBindings();
+    final var customServiceForDeployment = customService.forDeployment("deployment").withResourceGroup("group");
+    ApiClient client = customServiceForDeployment.client();
+    assertThat(client.getBasePath()).isEqualTo("foo");
   }
 }
