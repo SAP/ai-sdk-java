@@ -24,7 +24,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
   @Test
   void getArtifacts() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/artifacts"))
+        get(urlPathEqualTo("/v2/lm/artifacts"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -70,7 +70,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
   @Test
   void postArtifact() {
     wireMockServer.stubFor(
-        post(urlPathEqualTo("/lm/artifacts"))
+        post(urlPathEqualTo("/v2/lm/artifacts"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -102,7 +102,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
     assertThat(artifact.getUrl()).isEqualTo("ai://default/spam/data");
 
     wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo("/lm/artifacts"))
+        postRequestedFor(urlPathEqualTo("/v2/lm/artifacts"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -121,7 +121,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
   @Test
   void getArtifactById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/artifacts/777dea85-e9b1-4a7b-9bea-14769b977633"))
+        get(urlPathEqualTo("/v2/lm/artifacts/777dea85-e9b1-4a7b-9bea-14769b977633"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -158,7 +158,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
   @Test
   void getArtifactCount() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/artifacts/$count"))
+        get(urlPathEqualTo("/v2/lm/artifacts/$count"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()

@@ -32,7 +32,8 @@
           }
         ]
       }
-    }
+    },
+    "stream" : false
   },
   "input_params": {
     "orgCV": "Patrick Morgan +49 (970) 333-3833"

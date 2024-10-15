@@ -25,7 +25,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarios() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios"))
+        get(urlPathEqualTo("/v2/lm/scenarios"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -71,7 +71,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioVersions() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models/versions"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models/versions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -110,7 +110,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -150,7 +150,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioModels() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models/models"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models/models"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()

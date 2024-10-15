@@ -26,7 +26,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void getConfigurations() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/configurations"))
+        get(urlPathEqualTo("/v2/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -80,7 +80,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void postConfiguration() {
     wireMockServer.stubFor(
-        post(urlPathEqualTo("/lm/configurations"))
+        post(urlPathEqualTo("/v2/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -112,7 +112,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");
 
     wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo("/lm/configurations"))
+        postRequestedFor(urlPathEqualTo("/v2/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -135,7 +135,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void getConfigurationCount() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/configurations/$count"))
+        get(urlPathEqualTo("/v2/lm/configurations/$count"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -153,7 +153,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void getConfigurationById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/configurations/6ff6cb80-87db-45f0-b718-4e1d96e66332"))
+        get(urlPathEqualTo("/v2/lm/configurations/6ff6cb80-87db-45f0-b718-4e1d96e66332"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()

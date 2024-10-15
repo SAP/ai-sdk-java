@@ -1,7 +1,9 @@
 package com.sap.ai.sdk.orchestration.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -24,14 +26,15 @@ import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
@@ -40,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.HttpClientErrorException;
@@ -77,16 +81,40 @@ public class OrchestrationUnitTest {
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
+
+    stubFor(
+        get(urlPathEqualTo("/v2/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                          "resources": [
+                            {
+                              "id": "abcdef0123456789",
+                              "scenarioId": "orchestration"
+                            }
+                          ]
+                        }
+                        """)));
+
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    final var apiClient = new AiCoreService().withDestination(destination).client();
+    final var apiClient =
+        new AiCoreService()
+            .withDestination(destination)
+            .forDeploymentByScenario("orchestration")
+            .client();
     client = new OrchestrationCompletionApi(apiClient);
   }
 
   @Test
   void templating() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -141,14 +169,16 @@ public class OrchestrationUnitTest {
     // verify that null fields are absent from the sent request
     try (var requestInputStream = TEST_FILE_LOADER.apply("templatingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 
   @Test
   void templatingBadRequest() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 jsonResponse(
                     """
@@ -205,8 +235,8 @@ public class OrchestrationUnitTest {
                         .violence(filterThreshold));
         final var filteringConfig =
             FilteringModuleConfig.create()
-                .input(FilteringConfig.create().filters(filter))
-                .output(FilteringConfig.create().filters(filter));
+                .input(InputFilteringConfig.create().filters(filter))
+                .output(OutputFilteringConfig.create().filters(filter));
 
         return CompletionPostRequest.create()
             .orchestrationConfig(
@@ -222,7 +252,7 @@ public class OrchestrationUnitTest {
   @Test
   void filteringLoose() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("filteringLooseResponse.json")
@@ -236,7 +266,9 @@ public class OrchestrationUnitTest {
     // verify that null fields are absent from the sent request
     try (var requestInputStream = TEST_FILE_LOADER.apply("filteringLooseRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 
@@ -245,7 +277,9 @@ public class OrchestrationUnitTest {
     final String response =
         """
             {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
-    stubFor(post(urlPathEqualTo("/completion")).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
+    stubFor(
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+            .willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
     final var config = FILTERING_CONFIG.apply(NUMBER_0);
 
@@ -257,7 +291,7 @@ public class OrchestrationUnitTest {
   @Test
   void messagesHistory() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -282,7 +316,9 @@ public class OrchestrationUnitTest {
     // verify that the history is sent correctly
     try (var requestInputStream = TEST_FILE_LOADER.apply("messagesHistoryRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 
@@ -316,7 +352,7 @@ public class OrchestrationUnitTest {
   @Test
   void maskingAnonymization() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("maskingResponse.json")
@@ -336,7 +372,9 @@ public class OrchestrationUnitTest {
     // verify that the request is sent correctly
     try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 }
