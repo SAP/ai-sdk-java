@@ -120,7 +120,7 @@ public class AiCoreServiceTest {
         new AiCoreService() {
           @Nonnull
           @Override
-          protected ApiClient createApiClient(@Nonnull Destination destination) {
+          protected ApiClient getApiClient(@Nonnull final Destination destination) {
             return new ApiClient().setBasePath("foo");
           }
           ;
