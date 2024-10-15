@@ -45,8 +45,8 @@ public class AiCoreService implements AiCoreDestination {
   public AiCoreService() {
     this(
         AiCoreService::getBaseDestination,
-        AiCoreService::createApiClient,
-        AiCoreService::refineDestinationBuilder);
+        AiCoreService::getApiClient,
+        AiCoreService::getDestinationBuilder);
   }
 
   @Nonnull
@@ -127,8 +127,14 @@ public class AiCoreService implements AiCoreDestination {
     return DestinationResolver.getDestination(serviceKey);
   }
 
+  /**
+   * Get the destination builder with adjustments for AI Core.
+   *
+   * @param destination The destination.
+   * @return The destination builder.
+   */
   @Nonnull
-  protected DefaultHttpDestination.Builder refineDestinationBuilder(
+  protected DefaultHttpDestination.Builder getDestinationBuilder(
       @Nonnull final Destination destination) {
     final var builder = DefaultHttpDestination.fromDestination(destination);
     String uri = destination.get(DestinationProperty.URI).get();
@@ -148,7 +154,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  protected ApiClient createApiClient(@Nonnull final Destination destination) {
+  protected ApiClient getApiClient(@Nonnull final Destination destination) {
     final var objectMapper =
         new Jackson2ObjectMapperBuilder()
             .modules(new JavaTimeModule())
