@@ -16,15 +16,13 @@ import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import javax.annotation.Nonnull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
-import javax.annotation.Nonnull;
 
 public class AiCoreServiceTest {
 
@@ -118,15 +116,18 @@ public class AiCoreServiceTest {
 
   @Test
   void testCustomization() {
-    final var customService = new AiCoreService() {
-      @Nonnull
-      @Override
-      protected ApiClient createApiClient(@Nonnull Destination destination) {
-        return new ApiClient().setBasePath("foo");
-      };
-    };
+    final var customService =
+        new AiCoreService() {
+          @Nonnull
+          @Override
+          protected ApiClient createApiClient(@Nonnull Destination destination) {
+            return new ApiClient().setBasePath("foo");
+          }
+          ;
+        };
 
-    final var customServiceForDeployment = customService.forDeployment("deployment").withResourceGroup("group");
+    final var customServiceForDeployment =
+        customService.forDeployment("deployment").withResourceGroup("group");
     ApiClient client = customServiceForDeployment.client();
     assertThat(client.getBasePath()).isEqualTo("foo");
   }
