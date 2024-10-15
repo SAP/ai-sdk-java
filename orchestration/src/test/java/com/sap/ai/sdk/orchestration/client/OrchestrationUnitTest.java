@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,36 +82,38 @@ public class OrchestrationUnitTest {
   void setup(WireMockRuntimeInfo server) {
 
     stubFor(
-            get(urlPathEqualTo("/v2/lm/deployments"))
-                    .withHeader("AI-Resource-Group", equalTo("default"))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(HttpStatus.SC_OK)
-                                    .withHeader("content-type", "application/json")
-                                    .withBody(
-                                            """
-                                            {
-                                              "resources": [
-                                                {
-                                                  "configurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
-                                                  "id": "d19b998f347341aa",
-                                                  "scenarioId": "orchestration"
-                                                }
-                                              ]
-                                            }
-                                            """)));
-
+        get(urlPathEqualTo("/v2/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo("default"))
+            .willReturn(
+                aResponse()
+                    .withStatus(HttpStatus.SC_OK)
+                    .withHeader("content-type", "application/json")
+                    .withBody(
+                        """
+                        {
+                          "resources": [
+                            {
+                              "id": "abcdef0123456789",
+                              "scenarioId": "orchestration"
+                            }
+                          ]
+                        }
+                        """)));
 
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    final var apiClient = new AiCoreService().withDestination(destination).forDeploymentByScenario("orchestration").client();
+    final var apiClient =
+        new AiCoreService()
+            .withDestination(destination)
+            .forDeploymentByScenario("orchestration")
+            .client();
     client = new OrchestrationCompletionApi(apiClient);
   }
 
   @Test
   void templating() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -167,14 +168,16 @@ public class OrchestrationUnitTest {
     // verify that null fields are absent from the sent request
     try (var requestInputStream = TEST_FILE_LOADER.apply("templatingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 
   @Test
   void templatingBadRequest() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 jsonResponse(
                     """
@@ -248,7 +251,7 @@ public class OrchestrationUnitTest {
   @Test
   void filteringLoose() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("filteringLooseResponse.json")
@@ -262,7 +265,9 @@ public class OrchestrationUnitTest {
     // verify that null fields are absent from the sent request
     try (var requestInputStream = TEST_FILE_LOADER.apply("filteringLooseRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 
@@ -271,7 +276,9 @@ public class OrchestrationUnitTest {
     final String response =
         """
             {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
-    stubFor(post(urlPathEqualTo("/completion")).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
+    stubFor(
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+            .willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
     final var config = FILTERING_CONFIG.apply(NUMBER_0);
 
@@ -283,7 +290,7 @@ public class OrchestrationUnitTest {
   @Test
   void messagesHistory() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -308,7 +315,9 @@ public class OrchestrationUnitTest {
     // verify that the history is sent correctly
     try (var requestInputStream = TEST_FILE_LOADER.apply("messagesHistoryRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 
@@ -342,7 +351,7 @@ public class OrchestrationUnitTest {
   @Test
   void maskingAnonymization() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/v2/completion"))
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("maskingResponse.json")
@@ -362,7 +371,9 @@ public class OrchestrationUnitTest {
     // verify that the request is sent correctly
     try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+              .withRequestBody(equalToJson(request)));
     }
   }
 }

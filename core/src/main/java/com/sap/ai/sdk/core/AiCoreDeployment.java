@@ -16,12 +16,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /** Connectivity convenience methods for AI Core with deployment. */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class AiCoreDeployment implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   // the delegating AI Core Service instance
-  @Nonnull private final AiCoreService delegate;
+  @Nonnull private final AiCoreService service;
 
   // the deployment id handler to be used, based on resource group
   @Nonnull private final Function<String, String> deploymentId;
@@ -37,16 +37,25 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @param service The AI Core Service instance.
    * @param deploymentId The deployment id handler, based on resource group.
    */
-  protected AiCoreDeployment(
+  public AiCoreDeployment(
       @Nonnull final AiCoreService service, @Nonnull final Function<String, String> deploymentId) {
     this(service, deploymentId, "default");
+  }
+
+  /**
+   * Create a new instance of the AI Core service with a specific deployment id and destination.
+   *
+   * @param deploymentId The deployment id handler, based on resource group.
+   */
+  public AiCoreDeployment(@Nonnull final String deploymentId) {
+    this(new AiCoreService(), (_ignore) -> deploymentId);
   }
 
   @Nonnull
   @Override
   public Destination destination() {
-    final var dest = delegate.baseDestinationHandler.apply(delegate);
-    DefaultHttpDestination.Builder builder = delegate.builderHandler.apply(delegate, dest);
+    final var dest = service.baseDestinationHandler.apply(service);
+    DefaultHttpDestination.Builder builder = service.builderHandler.apply(service, dest);
     destinationSetUrl(builder, dest);
     destinationSetHeaders(builder, dest);
     return builder.build();
@@ -56,7 +65,7 @@ public class AiCoreDeployment implements AiCoreDestination {
   @Override
   public ApiClient client() {
     final var destination = destination();
-    return delegate.clientHandler.apply(delegate, destination);
+    return service.clientHandler.apply(service, destination);
   }
 
   /**
@@ -67,7 +76,10 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   protected void destinationSetUrl(DefaultHttpDestination.Builder builder, Destination dest) {
     String uri = dest.get(DestinationProperty.URI).get();
-    builder.uri(uri + "inference/deployments/%s/".formatted(getDeploymentId()));
+    if (!uri.endsWith("/")) {
+      uri = uri + "/";
+    }
+    builder.uri(uri + "v2/inference/deployments/%s/".formatted(getDeploymentId()));
   }
 
   /**
@@ -88,7 +100,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return new AiCoreDeployment(delegate, deploymentId, resourceGroup);
+    return new AiCoreDeployment(service, deploymentId, resourceGroup);
   }
 
   /**
@@ -99,7 +111,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreDeployment(delegate.withDestination(destination), deploymentId, resourceGroup);
+    return new AiCoreDeployment(service.withDestination(destination), deploymentId, resourceGroup);
   }
 
   /**
