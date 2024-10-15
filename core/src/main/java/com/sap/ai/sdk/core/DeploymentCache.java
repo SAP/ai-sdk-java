@@ -19,15 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DeploymentCache {
   /** The client to use for deployment queries. */
-  private final DeploymentApi API;
+  protected static DeploymentApi API;
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private final List<AiDeployment> CACHE = new ArrayList<>();
-
-  public DeploymentCache(DeploymentApi api, String resourceGroup) {
-    API = api;
-    loadCache(resourceGroup);
-  }
+  protected static final List<AiDeployment> CACHE = new ArrayList<>();
 
   /**
    * Remove all entries from the cache.
@@ -35,7 +30,7 @@ public class DeploymentCache {
    * <p><b>Call both clearCache and {@link #loadCache} method whenever a deployment is deleted.</b>
    * TODO:test
    */
-  public void clearCache() {
+  public static void clearCache() {
     CACHE.clear();
   }
 
@@ -46,7 +41,7 @@ public class DeploymentCache {
    *
    * @param resourceGroup the resource group, usually "default".
    */
-  public void loadCache(@Nonnull final String resourceGroup) {
+  public static void loadCache(@Nonnull final String resourceGroup) {
     try {
       final var deployments = API.query(resourceGroup).getResources();
       CACHE.addAll(deployments);
@@ -65,7 +60,7 @@ public class DeploymentCache {
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public String getDeploymentIdByModel(
+  public static String getDeploymentIdByModel(
       @Nonnull final String resourceGroup, @Nonnull final String modelName)
       throws NoSuchElementException {
     return getDeploymentIdByModel(modelName)
@@ -80,7 +75,7 @@ public class DeploymentCache {
             });
   }
 
-  private Optional<String> getDeploymentIdByModel(@Nonnull final String modelName) {
+  private static Optional<String> getDeploymentIdByModel(@Nonnull final String modelName) {
     return CACHE.stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
         .findFirst()
@@ -97,7 +92,7 @@ public class DeploymentCache {
    * @throws NoSuchElementException if no running deployment is found for the scenario. TODO: test
    */
   @Nonnull
-  public String getDeploymentIdByScenario(
+  public static String getDeploymentIdByScenario(
       @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
       throws NoSuchElementException {
     return getDeploymentIdByScenario(scenarioId)
@@ -112,7 +107,7 @@ public class DeploymentCache {
             });
   }
 
-  private Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
+  private static Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
     return CACHE.stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()

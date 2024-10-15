@@ -9,7 +9,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -23,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AiCoreDeployment implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
-
-  private static final Map<ApiClient, DeploymentCache> DEPLOYMENT_CACHES = new HashMap<>();
 
   // the deployment id handler to be used, based on resource group
   @Nonnull private final Function<String, String> deploymentId;
@@ -154,11 +151,8 @@ public class AiCoreDeployment implements AiCoreDestination {
       @Nonnull final String resourceGroup,
       @Nonnull final String modelName)
       throws NoSuchElementException {
-    final var deploymentCache =
-        DEPLOYMENT_CACHES.computeIfAbsent(
-            client, c -> new DeploymentCache(new DeploymentApi(client), resourceGroup));
-    System.out.println("DEPLOYMENT_CACHES size" + DEPLOYMENT_CACHES.size());
-    return deploymentCache.getDeploymentIdByModel(resourceGroup, modelName);
+    DeploymentCache.API = new DeploymentApi(client);
+    return DeploymentCache.getDeploymentIdByModel(resourceGroup, modelName);
   }
 
   /**
@@ -177,9 +171,7 @@ public class AiCoreDeployment implements AiCoreDestination {
       @Nonnull final String resourceGroup,
       @Nonnull final String scenarioId)
       throws NoSuchElementException {
-    final var deploymentCache =
-        DEPLOYMENT_CACHES.computeIfAbsent(
-            client, c -> new DeploymentCache(new DeploymentApi(client), resourceGroup));
-    return deploymentCache.getDeploymentIdByScenario(resourceGroup, scenarioId);
+    DeploymentCache.API = new DeploymentApi(client);
+    return DeploymentCache.getDeploymentIdByScenario(resourceGroup, scenarioId);
   }
 }
