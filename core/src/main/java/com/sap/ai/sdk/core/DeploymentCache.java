@@ -27,16 +27,28 @@ public class DeploymentCache {
   /**
    * Remove all entries from the cache.
    *
-   * <p><b>Call both clearCache and {@link #loadCache} method whenever a deployment is deleted.</b>
+   * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
    */
   public static void clearCache() {
     CACHE.clear();
   }
 
   /**
+   * Remove all entries from the cache then load all deployments into the cache.
+   *
+   * <p><b>Call this whenever a deployment is deleted.</b>
+   *
+   * @param resourceGroup the resource group, usually "default".
+   */
+  public static void resetCache(@Nonnull final String resourceGroup) {
+    clearCache();
+    loadCache(resourceGroup);
+  }
+
+  /**
    * Load all deployments into the cache
    *
-   * <p><b>Call both {@link #clearCache} and loadCache method whenever a deployment is deleted.</b>
+   * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
    *
    * @param resourceGroup the resource group, usually "default".
    */
@@ -65,7 +77,7 @@ public class DeploymentCache {
     return getDeploymentIdByModel(modelName)
         .orElseGet(
             () -> {
-              loadCache(resourceGroup);
+              resetCache(resourceGroup);
               return getDeploymentIdByModel(modelName)
                   .orElseThrow(
                       () ->
@@ -97,7 +109,7 @@ public class DeploymentCache {
     return getDeploymentIdByScenario(scenarioId)
         .orElseGet(
             () -> {
-              loadCache(resourceGroup);
+              resetCache(resourceGroup);
               return getDeploymentIdByScenario(scenarioId)
                   .orElseThrow(
                       () ->
