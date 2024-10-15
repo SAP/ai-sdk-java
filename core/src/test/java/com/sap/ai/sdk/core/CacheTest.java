@@ -22,7 +22,7 @@ class CacheTest extends WireMockTestServer {
 
   private static void stubGPT4() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/deployments"))
+        get(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -68,7 +68,7 @@ class CacheTest extends WireMockTestServer {
 
   private static void stubEmpty() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/deployments"))
+        get(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -98,10 +98,10 @@ class CacheTest extends WireMockTestServer {
     DeploymentCache.loadCache("default");
 
     DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
-    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
     DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
-    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
   @Test
@@ -110,13 +110,13 @@ class CacheTest extends WireMockTestServer {
     DeploymentCache.loadCache("default");
 
     DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
-    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
     DeploymentCache.clearCache();
 
     DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
     // the deployment is not in the cache anymore, so we need to fetch it again
-    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
   /**
@@ -136,9 +136,9 @@ class CacheTest extends WireMockTestServer {
 
     DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
     // 1 reset empty and 1 cache miss
-    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
     DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
-    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 }

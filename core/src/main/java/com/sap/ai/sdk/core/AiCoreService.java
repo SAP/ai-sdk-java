@@ -10,19 +10,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.Iterables;
-import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
-import java.util.NoSuchElementException;
-import java.util.function.Supplier;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,8 +92,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
-    return new AiCoreDeployment(
-        res -> getDeploymentIdByModel(client(), res, modelName), this::destination);
+    return new AiCoreDeployment(this, res -> getDeploymentIdByModel(client(), res, modelName));
   }
 
   /**
@@ -109,8 +105,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
-    return new AiCoreDeployment(
-        res -> getDeploymentIdByScenario(client(), res, scenarioId), this::destination);
+    return new AiCoreDeployment(this, res -> getDeploymentIdByScenario(client(), res, scenarioId));
   }
 
   /**
