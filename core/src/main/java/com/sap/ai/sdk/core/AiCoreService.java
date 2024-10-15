@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentId;
-import static com.sap.ai.sdk.core.AiCoreDeployment.isDeploymentOfModel;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 
@@ -10,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.Iterables;
-import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -20,7 +17,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoun
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +76,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(this, res -> deploymentId);
+    return AiCoreDeployment.forDeploymentId(this, deploymentId);
   }
 
   /**
@@ -91,8 +87,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
-    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
-    return new AiCoreDeployment(this, res -> getDeploymentId(client(), res, p));
+    return AiCoreDeployment.forModelName(this, modelName);
   }
 
   /**
@@ -103,8 +98,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
-    final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreDeployment(this, res -> getDeploymentId(client(), res, p));
+    return AiCoreDeployment.forScenarioId(this, scenarioId);
   }
 
   /**
