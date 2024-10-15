@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
@@ -26,6 +27,8 @@ class OrchestrationController {
 
   // uses defaults from application.yaml
   @Autowired OrchestrationChatModel client;
+
+  OrchestrationChatModel clientWithoutDefaults = new OrchestrationChatModel(new OrchestrationClient());
 
   @GetMapping("/completion")
   ChatResponse completion() {

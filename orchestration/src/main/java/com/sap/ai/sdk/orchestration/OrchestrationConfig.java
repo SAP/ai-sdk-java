@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
@@ -23,13 +22,13 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   Option<TemplatingModuleConfig> getTemplate();
 
   @Nonnull
-  Option<DpiMaskingConfig> getMaskingConfig();
+  Option<MaskingConfig> getMaskingConfig();
 
   @Nonnull
-  Option<FilterConfig> getInputContentFilter();
+  Option<ContentFilter> getInputContentFilter();
 
   @Nonnull
-  Option<FilterConfig> getOutputContentFilter();
+  Option<ContentFilter> getOutputContentFilter();
 
   @Nonnull
   T withLlmConfig(@Nonnull final LLMModuleConfig llm);
@@ -38,13 +37,13 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   T withTemplate(@Nonnull final TemplatingModuleConfig template);
 
   @Nonnull
-  T withMaskingConfig(@Nonnull final DpiMaskingConfig maskingConfig);
+  T withMaskingConfig(@Nonnull final MaskingConfig maskingConfig);
 
   @Nonnull
-  T withInputContentFilter(@Nonnull final FilterConfig filter);
+  T withInputContentFilter(@Nonnull final ContentFilter filter);
 
   @Nonnull
-  T withOutputContentFilter(@Nonnull final FilterConfig filter);
+  T withOutputContentFilter(@Nonnull final ContentFilter filter);
 
   /**
    * Copy the configuration into the given target configuration. The copy is
@@ -59,7 +58,7 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
    *
    * @param source The source configuration to copy from.
    */
-  default T copyFrom(@Nonnull final OrchestrationConfig<?> source) {
+  default T copyOrchestrationConfigurationFrom(@Nonnull final OrchestrationConfig<?> source) {
     getLlmConfig().orElse(source::getLlmConfig).forEach(this::withLlmConfig);
     getTemplate().orElse(source::getTemplate).forEach(this::withTemplate);
     getMaskingConfig().orElse(source::getMaskingConfig).forEach(this::withMaskingConfig);

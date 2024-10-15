@@ -8,20 +8,21 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.LENIENT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.MODERATE;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.STRICT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -157,13 +158,7 @@ public class OrchestrationUnitTest {
                 .readAllBytes());
     stubFor(post(urlPathEqualTo("/completion")).willReturn(okJson(response)));
 
-    var config =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                AzureContentSafety.create()
-                    .hate(AzureThreshold.NUMBER_6)
-                    .selfHarm(AzureThreshold.NUMBER_4));
+    var config = new AzureContentFilter().hate(LENIENT).violence(MODERATE);
 
     var prompt = new OrchestrationPrompt("Hello World!").withOutputContentFilter(config);
 
@@ -187,10 +182,7 @@ public class OrchestrationUnitTest {
             {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
     stubFor(post(urlPathEqualTo("/completion")).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
-    var config =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(AzureContentSafety.create().hate(NUMBER_0).violence(AzureThreshold.NUMBER_2));
+    var config = new AzureContentFilter().hate(VERY_STRICT).violence(STRICT);
 
     var prompt = new OrchestrationPrompt("Hello World!").withInputContentFilter(config);
 

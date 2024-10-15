@@ -43,7 +43,7 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   @Nonnull
   ModuleConfigs toModuleConfigDTO(@Nonnull final OrchestrationConfig<?> defaults) {
     // duplicate the prompt config so it isn't modified, to make sure this prompt can be reused
-    var config = new DefaultOrchestrationConfig<>().copyFrom(this).copyFrom(defaults);
-    return DefaultOrchestrationConfig.toModuleConfigDTO(config, messages);
+    var config = new DefaultOrchestrationConfig<>().copyOrchestrationConfigurationFrom(this).copyOrchestrationConfigurationFrom(defaults);
+    return ModuleConfigFactory.toModuleConfigDTO(config, messages);
   }
 }
