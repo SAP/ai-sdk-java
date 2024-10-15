@@ -47,7 +47,8 @@
           ]
         }
       }
-    }
+    },
+    "stream" : false
   },
   "input_params": {
     "disclaimer": "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
