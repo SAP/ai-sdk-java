@@ -28,7 +28,6 @@ public class DeploymentCache {
    * Remove all entries from the cache.
    *
    * <p><b>Call both clearCache and {@link #loadCache} method whenever a deployment is deleted.</b>
-   * TODO:test
    */
   public static void clearCache() {
     CACHE.clear();
@@ -89,7 +88,7 @@ public class DeploymentCache {
    * @param resourceGroup the resource group, usually "default".
    * @param scenarioId the scenario id, can be "orchestration".
    * @return the deployment id.
-   * @throws NoSuchElementException if no running deployment is found for the scenario. TODO: test
+   * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
   public static String getDeploymentIdByScenario(

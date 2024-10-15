@@ -16,6 +16,7 @@ class CacheTest extends WireMockTestServer {
 
   @BeforeEach
   void setupCache() {
+    DeploymentCache.API = new DeploymentApi(client);
     wireMockServer.resetRequests();
   }
 
@@ -94,13 +95,28 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeployment() {
     stubGPT4();
-    var cache = new DeploymentCache(new DeploymentApi(client), "default");
+    DeploymentCache.loadCache("default");
 
-    cache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
 
-    cache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+  }
+
+  @Test
+  void clearCache() {
+    stubGPT4();
+    DeploymentCache.loadCache("default");
+
+    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
+
+    DeploymentCache.clearCache();
+
+    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    // the deployment is not in the cache anymore, so we need to fetch it again
+    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
   }
 
   /**
@@ -115,14 +131,14 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeploymentAfterReset() {
     stubEmpty();
-    var cache = new DeploymentCache(new DeploymentApi(client), "default");
+    DeploymentCache.loadCache("default");
     stubGPT4();
 
-    cache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
 
-    cache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
   }
 }
