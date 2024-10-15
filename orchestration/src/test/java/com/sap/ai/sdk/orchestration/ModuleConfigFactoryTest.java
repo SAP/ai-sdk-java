@@ -1,23 +1,21 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
+import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDTO;
+import static com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
-import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDTO;
-import static com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class ModuleConfigFactoryTest {
   private static final List<ChatMessage> messages = List.of(mock(ChatMessage.class));
@@ -25,20 +23,13 @@ class ModuleConfigFactoryTest {
 
   @BeforeEach
   void setUp() {
-    config = new DefaultOrchestrationConfig<>();
+    config = DefaultOrchestrationConfig.standalone();
     config.withLlmConfig(mock(LLMModuleConfig.class));
   }
 
   @Test
-  void testInstance() {
-    OrchestrationConfig<?> instance = config.instance();
-
-    assertSame(config, instance);
-  }
-
-  @Test
   void testThrowsOnMissingConfig() {
-    config = new DefaultOrchestrationConfig<>();
+    config = DefaultOrchestrationConfig.standalone();
 
     assertThatThrownBy(() -> toModuleConfigDTO(config, messages))
         .isInstanceOf(IllegalStateException.class)
@@ -48,6 +39,16 @@ class ModuleConfigFactoryTest {
     assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("prompt is required");
+  }
+
+  @Test
+  void testLlmConfig() {
+    var llmConfig = mock(LLMModuleConfig.class);
+
+    config.withLlmConfig(llmConfig);
+
+    var result = toModuleConfigDTO(config, messages).getLlmModuleConfig();
+    assertThat(result).isSameAs(llmConfig);
   }
 
   @Test

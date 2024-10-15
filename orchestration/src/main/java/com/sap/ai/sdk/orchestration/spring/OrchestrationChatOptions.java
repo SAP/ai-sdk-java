@@ -19,19 +19,13 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 
 /** Configuration to be used for orchestration requests. */
 @Data
-@Getter(AccessLevel.PACKAGE)
-@Setter(AccessLevel.PRIVATE)
+@Getter(AccessLevel.NONE)
+@Setter(AccessLevel.NONE)
 public class OrchestrationChatOptions
     implements ChatOptions, OrchestrationConfig<OrchestrationChatOptions> {
   @Delegate @Nonnull
   private final DefaultOrchestrationConfig<OrchestrationChatOptions> delegate =
-      new DefaultOrchestrationConfig<>();
-
-  @Nonnull
-  @Override
-  public OrchestrationChatOptions instance() {
-    return this;
-  }
+      DefaultOrchestrationConfig.asDelegateFor(this);
 
   @Getter(AccessLevel.PUBLIC)
   @Nonnull
@@ -114,9 +108,9 @@ public class OrchestrationChatOptions
   @Override
   public OrchestrationChatOptions copy() {
     var copy = new OrchestrationChatOptions();
-
-    // TODO: implement, needed for chat memory apparently
-    throw new RuntimeException("Not implemented");
+    copy.delegate.copyFrom(this.delegate);
+    copy.templateParameters.putAll(this.templateParameters);
+    return copy;
   }
 
   @SuppressWarnings("unchecked")

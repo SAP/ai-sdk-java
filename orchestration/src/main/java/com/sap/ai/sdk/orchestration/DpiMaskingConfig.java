@@ -6,7 +6,6 @@ import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.Ty
 
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -33,11 +32,10 @@ public class DpiMaskingConfig implements MaskingConfig {
   @Nonnull
   MaskingProviderConfig toMaskingProviderDTO() {
     var entities = this.entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
-    return
-        MaskingProviderConfig.create()
-            .type(SAP_DATA_PRIVACY_INTEGRATION)
-            .method(maskingMethod)
-            .entities(entities);
+    return MaskingProviderConfig.create()
+        .type(SAP_DATA_PRIVACY_INTEGRATION)
+        .method(maskingMethod)
+        .entities(entities);
   }
 
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

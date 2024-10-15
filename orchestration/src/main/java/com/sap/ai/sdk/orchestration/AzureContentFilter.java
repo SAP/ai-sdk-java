@@ -1,26 +1,21 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.fromValue;
+
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.fromValue;
-
 @Data
 @Accessors(fluent = true)
 public class AzureContentFilter implements ContentFilter {
-  @Nullable
-  private Setting hate;
-  @Nullable
-  private Setting selfHarm;
-  @Nullable
-  private Setting sexual;
-  @Nullable
-  private Setting violence;
+  @Nullable private Setting hate;
+  @Nullable private Setting selfHarm;
+  @Nullable private Setting sexual;
+  @Nullable private Setting violence;
 
   @RequiredArgsConstructor
   public enum Setting {

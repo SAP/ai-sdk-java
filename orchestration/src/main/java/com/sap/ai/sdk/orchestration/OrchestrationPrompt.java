@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -20,13 +20,8 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   @Getter(AccessLevel.NONE)
   @Delegate
   @Nonnull
-  DefaultOrchestrationConfig<OrchestrationPrompt> delegate = new DefaultOrchestrationConfig<>();
-
-  @Nonnull
-  @Override
-  public OrchestrationPrompt instance() {
-    return this;
-  }
+  DefaultOrchestrationConfig<OrchestrationPrompt> delegate =
+      DefaultOrchestrationConfig.asDelegateFor(this);
 
   public OrchestrationPrompt(@Nonnull final String message) {
     this(List.of(ChatMessage.create().role("user").content(message)), Map.of());
@@ -41,9 +36,15 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   }
 
   @Nonnull
-  ModuleConfigs toModuleConfigDTO(@Nonnull final OrchestrationConfig<?> defaults) {
-    // duplicate the prompt config so it isn't modified, to make sure this prompt can be reused
-    var config = new DefaultOrchestrationConfig<>().copyOrchestrationConfigurationFrom(this).copyOrchestrationConfigurationFrom(defaults);
-    return ModuleConfigFactory.toModuleConfigDTO(config, messages);
+  CompletionPostRequest toCompletionPostRequestDTO(@Nonnull final OrchestrationConfig<?> defaults) {
+    // duplicate the prompt config, then apply the defaults to the copy
+    // that way this prompt remains unchanged and can be reused
+    var config = DefaultOrchestrationConfig.standalone().copyFrom(this).copyFrom(defaults);
+    var moduleConfigDTO = ModuleConfigFactory.toModuleConfigDTO(config, messages);
+    return CompletionPostRequest.create()
+        .orchestrationConfig(
+            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
+                .moduleConfigurations(moduleConfigDTO))
+        .inputParams(templateParameters);
   }
 }

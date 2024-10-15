@@ -28,7 +28,8 @@ class OrchestrationController {
   // uses defaults from application.yaml
   @Autowired OrchestrationChatModel client;
 
-  OrchestrationChatModel clientWithoutDefaults = new OrchestrationChatModel(new OrchestrationClient());
+  OrchestrationChatModel clientWithoutDefaults =
+      new OrchestrationChatModel(new OrchestrationClient().withMaskingConfig());
 
   @GetMapping("/completion")
   ChatResponse completion() {

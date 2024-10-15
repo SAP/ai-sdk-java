@@ -38,19 +38,13 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
 
   @Delegate @Nonnull
   private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
-      new DefaultOrchestrationConfig<>();
+      DefaultOrchestrationConfig.asDelegateFor(this);
 
   @Nonnull private final HttpDestination destination;
 
   public OrchestrationClient() {
     // TODO: use AiCoreService after refactoring
     this.destination = Core.getDestinationForDeployment("db1d64d9f06be467", "default").asHttp();
-  }
-
-  @Nonnull
-  @Override
-  public OrchestrationClient instance() {
-    return this;
   }
 
   /**
@@ -61,11 +55,15 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
    * @throws OrchestrationClientException if the request fails
    */
   @Nonnull
-  // TODO: decide if we want to offer this in addition to the already simple `new Prompt("asdf")`
   public String chatCompletion(@Nonnull final String userPrompt)
       throws OrchestrationClientException {
     var response = chatCompletion(new OrchestrationPrompt(userPrompt));
-    return response.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+
+    var choice = response.getOrchestrationResult().getChoices().get(0);
+    if (choice.getFinishReason().equalsIgnoreCase("content_filter")) {
+      throw new OrchestrationClientException("Output content filter triggered");
+    }
+    return choice.getMessage().getContent();
   }
 
   /**
@@ -78,14 +76,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   public CompletionPostResponse chatCompletion(@Nonnull final OrchestrationPrompt prompt)
       throws OrchestrationClientException {
-    var moduleConfigsDto = prompt.toModuleConfigDTO(clientConfig);
-    var dto =
-        CompletionPostRequest.create()
-            .orchestrationConfig(
-                com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
-                    .moduleConfigurations(moduleConfigsDto))
-            .messagesHistory(prompt.getMessages())
-            .inputParams(prompt.getTemplateParameters());
+    var dto = prompt.toCompletionPostRequestDTO(clientConfig);
 
     return executeRequest(dto);
   }
@@ -106,6 +97,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
     final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+    // TODO: update after AiCoreService refactoring
     final BasicClassicHttpRequest postRequest =
         new HttpPost("/v2/inference/deployments/db1d64d9f06be467/completion");
     try {

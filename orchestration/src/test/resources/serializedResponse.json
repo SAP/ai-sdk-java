@@ -4,7 +4,7 @@
     "templating": [
       {
         "role": "user",
-        "content": "Reply with 'Orchestration Service is working!' in German"
+        "content": "Hello there!"
       }
     ],
     "llm": {
@@ -17,7 +17,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "Orchestration Service funktioniert!"
+            "content": "General Kenobi!"
           },
           "finish_reason": "stop"
         }
@@ -26,6 +26,30 @@
         "completion_tokens": 7,
         "prompt_tokens": 19,
         "total_tokens": 26
+      }
+    },
+    "input_filtering": {
+      "message": "Input filter passed successfully.",
+      "data": {
+        "original_service_response": {
+          "Hate": 0,
+          "SelfHarm": 0,
+          "Sexual": 0,
+          "Violence": 2
+        },
+        "checked_text": "Hello there!"
+      }
+    },
+    "output_filtering": {
+      "message": "Output filter passed successfully.",
+      "data": {
+        "original_service_response": {
+          "Hate": 0,
+          "SelfHarm": 0,
+          "Sexual": 0,
+          "Violence": 2
+        },
+        "checked_text": "General Kenobi!"
       }
     }
   },
@@ -39,7 +63,7 @@
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "Orchestration Service funktioniert!"
+          "content": "General Kenobi!"
         },
         "finish_reason": "stop"
       }

@@ -8,19 +8,18 @@ import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 class ModuleConfigFactory {
   @Nonnull
   static ModuleConfigs toModuleConfigDTO(
-          @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<ChatMessage> messages) {
+      @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<ChatMessage> messages) {
     LLMModuleConfig llm =
-            config
-                    .getLlmConfig()
-                    .getOrElseThrow(() -> new IllegalStateException("LLM module config is required"));
+        config
+            .getLlmConfig()
+            .getOrElseThrow(() -> new IllegalStateException("LLM module config is required"));
 
     /*
      * Currently, we have to merge the prompt into the template configuration.
@@ -35,21 +34,21 @@ class ModuleConfigFactory {
 
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
-              "A prompt is required. Pass at least one message or configure the templating module.");
+          "A prompt is required. Pass at least one message or configure the templating module.");
     }
     TemplatingModuleConfig template = TemplatingModuleConfig.create().template(messagesWithPrompt);
     maybeTemplate.map(TemplatingModuleConfig::getDefaults).forEach(template::defaults);
 
     ModuleConfigs dto =
-            ModuleConfigs.create().llmModuleConfig(llm).templatingModuleConfig(template);
+        ModuleConfigs.create().llmModuleConfig(llm).templatingModuleConfig(template);
 
     config
-            .getMaskingConfig()
-            .filter(DpiMaskingConfig.class::isInstance)
-            .map(DpiMaskingConfig.class::cast)
-            .map(DpiMaskingConfig::toMaskingProviderDTO)
-            .map(it -> MaskingModuleConfig.create().maskingProviders(it))
-            .forEach(dto::maskingModuleConfig);
+        .getMaskingConfig()
+        .filter(DpiMaskingConfig.class::isInstance)
+        .map(DpiMaskingConfig.class::cast)
+        .map(DpiMaskingConfig::toMaskingProviderDTO)
+        .map(it -> MaskingModuleConfig.create().maskingProviders(it))
+        .forEach(dto::maskingModuleConfig);
 
     var maybeInputFilter = config.getInputContentFilter();
     var maybeOutputFilter = config.getOutputContentFilter();
@@ -57,15 +56,17 @@ class ModuleConfigFactory {
     if (maybeInputFilter.isDefined() || maybeOutputFilter.isDefined()) {
       var filter = FilteringModuleConfig.create();
       maybeInputFilter
-              .filter(AzureContentFilter.class::isInstance)
-              .map(AzureContentFilter.class::cast)
-              .map(AzureContentFilter::toFilterConfigDTO)
-              .map(it -> FilteringConfig.create().filters(it)).forEach(filter::input);
+          .filter(AzureContentFilter.class::isInstance)
+          .map(AzureContentFilter.class::cast)
+          .map(AzureContentFilter::toFilterConfigDTO)
+          .map(it -> FilteringConfig.create().filters(it))
+          .forEach(filter::input);
       maybeOutputFilter
-              .filter(AzureContentFilter.class::isInstance)
-              .map(AzureContentFilter.class::cast)
-              .map(AzureContentFilter::toFilterConfigDTO)
-              .map(it -> FilteringConfig.create().filters(it)).forEach(filter::output);
+          .filter(AzureContentFilter.class::isInstance)
+          .map(AzureContentFilter.class::cast)
+          .map(AzureContentFilter::toFilterConfigDTO)
+          .map(it -> FilteringConfig.create().filters(it))
+          .forEach(filter::output);
       dto = dto.filteringModuleConfig(filter);
     }
 

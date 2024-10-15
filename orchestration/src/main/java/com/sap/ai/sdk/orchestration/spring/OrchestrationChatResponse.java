@@ -40,7 +40,7 @@ public class OrchestrationChatResponse extends ChatResponse {
   }
 
   @Nonnull
-  private static List<Generation> toGenerations(@Nonnull final LLMModuleResult result) {
+  static List<Generation> toGenerations(@Nonnull final LLMModuleResult result) {
     return result.getChoices().stream()
         .map(OrchestrationChatResponse::toAssistantMessage)
         .map(Generation::new)
@@ -48,7 +48,7 @@ public class OrchestrationChatResponse extends ChatResponse {
   }
 
   @Nonnull
-  private static AssistantMessage toAssistantMessage(@Nonnull final LLMChoice choice) {
+  static AssistantMessage toAssistantMessage(@Nonnull final LLMChoice choice) {
     Map<String, Object> metadata = new HashMap<>();
     metadata.put("finish_reason", choice.getFinishReason());
     metadata.put("index", choice.getIndex());
@@ -59,7 +59,7 @@ public class OrchestrationChatResponse extends ChatResponse {
   }
 
   @Nonnull
-  private static ChatResponseMetadata toChatResponseMetadata(
+  static ChatResponseMetadata toChatResponseMetadata(
       @Nonnull final LLMModuleResult orchestrationResult) {
     var metadataBuilder = ChatResponseMetadata.builder();
 
