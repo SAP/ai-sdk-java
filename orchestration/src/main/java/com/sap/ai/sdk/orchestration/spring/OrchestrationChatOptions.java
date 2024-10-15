@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import com.sap.ai.sdk.orchestration.DefaultOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationConfigDelegate;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
@@ -24,8 +24,8 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 public class OrchestrationChatOptions
     implements ChatOptions, OrchestrationConfig<OrchestrationChatOptions> {
   @Delegate @Nonnull
-  private final OrchestrationConfigDelegate<OrchestrationChatOptions> delegate =
-      new OrchestrationConfigDelegate<>(this);
+  private final DefaultOrchestrationConfig<OrchestrationChatOptions> delegate =
+      DefaultOrchestrationConfig.asDelegateFor(this);
 
   @Getter(AccessLevel.PUBLIC)
   @Nonnull

@@ -37,8 +37,8 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   }
 
   @Delegate @Nonnull
-  private final OrchestrationConfigDelegate<OrchestrationClient> clientConfig =
-      new OrchestrationConfigDelegate<>(this);
+  private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
+      DefaultOrchestrationConfig.asDelegateFor(this);
 
   @Nonnull private final HttpDestination destination;
 
@@ -98,9 +98,10 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  private CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
+  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
     final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-    final BasicClassicHttpRequest postRequest = new HttpPost("/v2/inference/deployments/db1d64d9f06be467/completion");
+    final BasicClassicHttpRequest postRequest =
+        new HttpPost("/v2/inference/deployments/db1d64d9f06be467/completion");
     try {
       final var json = JACKSON.writeValueAsString(request);
       postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));

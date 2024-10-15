@@ -17,7 +17,7 @@ import lombok.Setter;
 
 @Data
 @Setter(AccessLevel.PRIVATE)
-public class OrchestrationConfigDelegate<T extends OrchestrationConfig<T>>
+public class DefaultOrchestrationConfig<T extends OrchestrationConfig<T>>
     implements OrchestrationConfig<T> {
 
   @Nonnull private Option<LLMModuleConfig> llmConfig = Option.none();
@@ -27,6 +27,42 @@ public class OrchestrationConfigDelegate<T extends OrchestrationConfig<T>>
   @Nonnull private Option<FilterConfig> outputContentFilter = Option.none();
 
   @Nonnull private final T wrapper;
+
+  /**
+   * Create a new instance of {@link DefaultOrchestrationConfig} to delegate to. This is useful when
+   * exposing the {@link OrchestrationConfig} in other objects, without re-implementing it. To
+   * maintain fluent API usage, the given wrapper object will be returned by the fluent methods,
+   * instead of this instance.
+   *
+   * @param wrapper The wrapper that delegates to this object.
+   * @param <T> The type of the wrapper object.
+   * @return The new instance.
+   * @see #standalone()
+   */
+  public static <T extends OrchestrationConfig<T>> DefaultOrchestrationConfig<T> asDelegateFor(
+      @Nonnull final T wrapper) {
+    return new DefaultOrchestrationConfig<>(wrapper);
+  }
+
+  /**
+   * Create an implementation without any object delegating to it. The fluent API will return this
+   * object itself.
+   *
+   * @return The new instance.
+   * @see #asDelegateFor(OrchestrationConfig)
+   */
+  static DefaultOrchestrationConfig<?> standalone() {
+    return new DefaultOrchestrationConfig<>();
+  }
+
+  @SuppressWarnings("unchecked")
+  private DefaultOrchestrationConfig() {
+    this.wrapper = (T) this;
+  }
+
+  private DefaultOrchestrationConfig(@Nonnull final T wrapper) {
+    this.wrapper = wrapper;
+  }
 
   @Nonnull
   @Override
@@ -64,14 +100,11 @@ public class OrchestrationConfigDelegate<T extends OrchestrationConfig<T>>
   }
 
   @Nonnull
-  static <T extends OrchestrationConfig<T>> OrchestrationConfig<T> fromConfigAndDefaults(
+  static OrchestrationConfig<?> fromConfigAndDefaults(
       @Nonnull final OrchestrationConfig<?> config,
-      @Nonnull final OrchestrationConfig<?> defaults,
-      @Nonnull final T wrapperObject) {
+      @Nonnull final OrchestrationConfig<?> defaults) {
 
-    // TODO: discuss, should we set null instead, since the wrapper object is only needed when
-    // mutating the config?
-    var copy = new OrchestrationConfigDelegate<>(wrapperObject);
+    var copy = DefaultOrchestrationConfig.standalone();
 
     copy.llmConfig = config.getLlmConfig().orElse(defaults::getLlmConfig);
     copy.template = config.getTemplate().orElse(defaults::getTemplate);

@@ -4,7 +4,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,10 +29,10 @@ public class OrchestrationAutoConfiguration {
   OrchestrationChatModel orchestrationChatModel(OrchestrationClient client) {
     return new OrchestrationChatModel(client);
   }
-//
-//  @Bean
-//  @ConditionalOnMissingBean
-//  ChatClient orchestrationChatClient(OrchestrationChatModel model) {
-//    return ChatClient.create(model);
-//  }
+  //
+  //  @Bean
+  //  @ConditionalOnMissingBean
+  //  ChatClient orchestrationChatClient(OrchestrationChatModel model) {
+  //    return ChatClient.create(model);
+  //  }
 }

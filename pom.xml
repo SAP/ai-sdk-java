@@ -204,13 +204,7 @@
               <rules>
                 <banDistributionManagement/>
                 <banDuplicatePomDependencyVersions/>
-                <dependencyConvergence>
-                  <excludes>
-                    <!-- We are using Snapshots of Sprint AI which don't always bring consistent versions -->
-                    <exclude>io.projectreactor:*</exclude>
-                    <exclude>io.micrometer:*</exclude>
-                  </excludes>
-                </dependencyConvergence>
+                <!-- disabled due to spring AI snapshots <dependencyConvergence/> -->
               </rules>
             </configuration>
           </execution>
