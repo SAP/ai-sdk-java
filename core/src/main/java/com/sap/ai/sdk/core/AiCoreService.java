@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentIdByModel;
-import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentIdByScenario;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 
@@ -68,7 +66,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-    return new AiCoreService((_ignore) -> destination, clientHandler, builderHandler);
+    return new AiCoreService((service) -> destination, clientHandler, builderHandler);
   }
 
   /**
@@ -79,7 +77,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(this, res -> deploymentId);
+    return AiCoreDeployment.forDeploymentId(this, deploymentId);
   }
 
   /**
@@ -92,7 +90,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
-    return new AiCoreDeployment(this, res -> getDeploymentIdByModel(client(), res, modelName));
+    return AiCoreDeployment.forModelName(this, modelName);
   }
 
   /**
@@ -105,7 +103,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
-    return new AiCoreDeployment(this, res -> getDeploymentIdByScenario(client(), res, scenarioId));
+    return AiCoreDeployment.forScenarioId(this, scenarioId);
   }
 
   /**

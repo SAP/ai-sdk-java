@@ -109,7 +109,7 @@ class DestinationResolver {
    *
    * @param accessor The accessor to be used for service binding resolution.
    */
-  static void setAccessor(@Nullable ServiceBindingAccessor accessor) {
+  static void setAccessor(@Nullable final ServiceBindingAccessor accessor) {
     DestinationResolver.accessor =
         accessor == null ? DefaultServiceBindingAccessor.getInstance() : accessor;
   }

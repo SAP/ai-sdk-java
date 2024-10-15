@@ -2,10 +2,12 @@ package com.sap.ai.sdk.core;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
+import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -17,13 +19,16 @@ import lombok.RequiredArgsConstructor;
 /** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class AiCoreDeployment implements AiCoreDestination {
+
+  private static Map<String, AiDeploymentList> CACHE = new LinkedHashMap<>();
+
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   // the delegating AI Core Service instance
   @Nonnull private final AiCoreService service;
 
-  // the deployment id handler to be used, based on resource group
-  @Nonnull private final Function<String, String> deploymentId;
+  // the deployment id handler to be used, based on instance
+  @Nonnull private final Function<AiCoreDeployment, String> deploymentId;
 
   // the resource group, "default" if null
   @Getter(AccessLevel.PROTECTED)
@@ -31,23 +36,44 @@ public class AiCoreDeployment implements AiCoreDestination {
   private final String resourceGroup;
 
   /**
-   * Create a new instance of the AI Core service with a specific deployment id and destination.
+   * Create a new instance of the AI Core service with a deployment.
    *
-   * @param service The AI Core Service instance.
-   * @param deploymentId The deployment id handler, based on resource group.
+   * @param service The AI Core service.
+   * @param modelName The model name.
+   * @return A new instance of the AI Core service.
    */
-  public AiCoreDeployment(
-      @Nonnull final AiCoreService service, @Nonnull final Function<String, String> deploymentId) {
-    this(service, deploymentId, "default");
+  @Nonnull
+  public static AiCoreDeployment forModelName(
+      @Nonnull final AiCoreService service, @Nonnull final String modelName) {
+    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
+    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(p), "default");
   }
 
   /**
-   * Create a new instance of the AI Core service with a specific deployment id and destination.
+   * Create a new instance of the AI Core service with a deployment.
    *
-   * @param deploymentId The deployment id handler, based on resource group.
+   * @param service The AI Core service.
+   * @param scenarioId The scenario id.
+   * @return A new instance of the AI Core service.
    */
-  public AiCoreDeployment(@Nonnull final String deploymentId) {
-    this(new AiCoreService(), (_ignore) -> deploymentId);
+  @Nonnull
+  public static AiCoreDeployment forScenarioId(
+      @Nonnull final AiCoreService service, @Nonnull final String scenarioId) {
+    final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
+    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(p), "default");
+  }
+
+  /**
+   * Create a new instance of the AI Core service with a deployment.
+   *
+   * @param service The AI Core service.
+   * @param deploymentId The deployment id.
+   * @return A new instance of the AI Core service.
+   */
+  @Nonnull
+  public static AiCoreDeployment forDeploymentId(
+      @Nonnull final AiCoreService service, @Nonnull final String deploymentId) {
+    return new AiCoreDeployment(service, obj -> deploymentId, "default");
   }
 
   @Nonnull
@@ -122,7 +148,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   protected String getDeploymentId() {
-    return deploymentId.apply(getResourceGroup());
+    return deploymentId.apply(this);
   }
 
   /**
