@@ -81,7 +81,7 @@ public class AiCoreDeployment implements AiCoreDestination {
   @Override
   public Destination destination() {
     final var dest = service.baseDestinationHandler.apply(service);
-    DefaultHttpDestination.Builder builder = service.builderHandler.apply(service, dest);
+    final var builder = service.builderHandler.apply(service, dest);
     destinationSetUrl(builder, dest);
     destinationSetHeaders(builder, dest);
     return builder.build();
