@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /** Connectivity convenience methods for AI Core with deployment. */
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AiCoreDeployment implements AiCoreDestination {
 
   private static Map<String, AiDeploymentList> CACHE = new LinkedHashMap<>();
@@ -37,6 +37,18 @@ public class AiCoreDeployment implements AiCoreDestination {
   private final String resourceGroup;
 
   /**
+   * Default constructor with "default" resource group.
+   *
+   * @param service The AI Core service.
+   * @param deploymentId The deployment id handler.
+   */
+  public AiCoreDeployment(
+      @Nonnull final AiCoreService service,
+      @Nonnull final Function<AiCoreDeployment, String> deploymentId) {
+    this(service, deploymentId, "default");
+  }
+
+  /**
    * Create a new instance of the AI Core service with a deployment.
    *
    * @param service The AI Core service.
@@ -47,7 +59,7 @@ public class AiCoreDeployment implements AiCoreDestination {
   public static AiCoreDeployment forModelName(
       @Nonnull final AiCoreService service, @Nonnull final String modelName) {
     final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
-    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(p), "default");
+    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(service.client(), p));
   }
 
   /**
@@ -61,7 +73,7 @@ public class AiCoreDeployment implements AiCoreDestination {
   public static AiCoreDeployment forScenarioId(
       @Nonnull final AiCoreService service, @Nonnull final String scenarioId) {
     final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(p), "default");
+    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(service.client(), p));
   }
 
   /**
@@ -74,7 +86,7 @@ public class AiCoreDeployment implements AiCoreDestination {
   @Nonnull
   public static AiCoreDeployment forDeploymentId(
       @Nonnull final AiCoreService service, @Nonnull final String deploymentId) {
-    return new AiCoreDeployment(service, obj -> deploymentId, "default");
+    return new AiCoreDeployment(service, obj -> deploymentId);
   }
 
   @Nonnull
@@ -196,12 +208,13 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @throws NoSuchElementException if no deployment is found for the scenario id.
    */
   @Nonnull
-  protected String getDeploymentId(@Nonnull final Predicate<AiDeployment> predicate)
+  protected String getDeploymentId(
+      @Nonnull final ApiClient client, @Nonnull final Predicate<AiDeployment> predicate)
       throws NoSuchElementException {
 
     final var resourceGroup = getResourceGroup();
     final var deployments =
-        CACHE.computeIfAbsent(resourceGroup, rg -> new DeploymentApi(client()).query(rg));
+        CACHE.computeIfAbsent(resourceGroup, rg -> new DeploymentApi(client).query(rg));
 
     final var first =
         deployments.getResources().stream().filter(predicate).map(AiDeployment::getId).findFirst();
