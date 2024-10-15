@@ -3,13 +3,16 @@ package com.sap.ai.sdk.core;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 
+import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -20,6 +23,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AiCoreDeployment implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
+
+  private static final Map<ApiClient, DeploymentCache> DEPLOYMENT_CACHES = new HashMap<>();
+
+  // the deployment id handler to be used, based on resource group
+  @Nonnull private final Function<String, String> deploymentId;
 
   // the base destination handler to be used
   @Nonnull private final Supplier<Destination> destination;
@@ -32,10 +40,13 @@ public class AiCoreDeployment implements AiCoreDestination {
   /**
    * Create a new instance of the AI Core service with a specific deployment id and destination.
    *
+   * @param deploymentId The deployment id handler, based on resource group.
    * @param destination The destination handler.
    */
-  public AiCoreDeployment(@Nonnull final Supplier<Destination> destination) {
-    this(destination, "default");
+  public AiCoreDeployment(
+      @Nonnull final Function<String, String> deploymentId,
+      @Nonnull final Supplier<Destination> destination) {
+    this(deploymentId, destination, "default");
   }
 
   @Nonnull
@@ -55,7 +66,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
-    return new AiCoreDeployment(destination, resourceGroup);
+    return new AiCoreDeployment(deploymentId, destination, resourceGroup);
   }
 
   /**
@@ -66,7 +77,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreDeployment(() -> destination, resourceGroup);
+    return new AiCoreDeployment(deploymentId, () -> destination, resourceGroup);
   }
 
   /**
@@ -129,15 +140,46 @@ public class AiCoreDeployment implements AiCoreDestination {
   }
 
   /**
-   * Get the deployment id from the scenario id. If there are multiple deployments of the same
-   * scenario id, the first one is returned.
+   * Get the deployment id from the foundation model name. If there are multiple deployments of the
+   * same model, the first one is returned.
    *
-   * @return the deployment id
-   * @throws NoSuchElementException if no deployment is found for the scenario id.
+   * @param resourceGroup the resource group, usually "default".
+   * @param modelName the name of the foundation model.
+   * @return the deployment id.
+   * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  protected String getDeploymentId(@Nonnull final ApiClient client, @Nonnull final String name)
+  protected static String getDeploymentIdByModel(
+      @Nonnull final ApiClient client,
+      @Nonnull final String resourceGroup,
+      @Nonnull final String modelName)
       throws NoSuchElementException {
-    return DeploymentCache.getDeploymentId(resourceGroup, name);
+    final var deploymentCache =
+        DEPLOYMENT_CACHES.computeIfAbsent(
+            client, c -> new DeploymentCache(new DeploymentApi(client), resourceGroup));
+    System.out.println("DEPLOYMENT_CACHES size" + DEPLOYMENT_CACHES.size());
+    return deploymentCache.getDeploymentIdByModel(resourceGroup, modelName);
+  }
+
+  /**
+   * Get the deployment id from the scenario id. If there are multiple deployments of the * same
+   * model, the first one is returned.
+   *
+   * @param client The API client to do HTTP requests to AI Core.
+   * @param resourceGroup the resource group, usually "default".
+   * @param scenarioId the scenario id, can be "orchestration".
+   * @return the deployment id.
+   * @throws NoSuchElementException if no running deployment is found for the scenario.
+   */
+  @Nonnull
+  public static String getDeploymentIdByScenario(
+      @Nonnull final ApiClient client,
+      @Nonnull final String resourceGroup,
+      @Nonnull final String scenarioId)
+      throws NoSuchElementException {
+    final var deploymentCache =
+        DEPLOYMENT_CACHES.computeIfAbsent(
+            client, c -> new DeploymentCache(new DeploymentApi(client), resourceGroup));
+    return deploymentCache.getDeploymentIdByScenario(resourceGroup, scenarioId);
   }
 }

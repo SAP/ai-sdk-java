@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
+import com.sap.ai.sdk.core.client.WireMockTestServer;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,6 @@ class CacheTest extends WireMockTestServer {
 
   @BeforeEach
   void setupCache() {
-    DeploymentCache.lazyLoaded(new DeploymentApi(destination));
     wireMockServer.resetRequests();
   }
 
@@ -94,12 +94,12 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeployment() {
     stubGPT4();
-    DeploymentCache.loadCache();
+    var cache = new DeploymentCache(new DeploymentApi(client), "default");
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cache.getDeploymentIdByModel("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cache.getDeploymentIdByModel("default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/lm/deployments")));
   }
 
@@ -115,14 +115,14 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeploymentAfterReset() {
     stubEmpty();
-    DeploymentCache.loadCache();
+    var cache = new DeploymentCache(new DeploymentApi(client), "default");
     stubGPT4();
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cache.getDeploymentIdByModel("default", "gpt-4-32k");
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
 
-    DeploymentCache.getDeploymentId("default", "gpt-4-32k");
+    cache.getDeploymentIdByModel("default", "gpt-4-32k");
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/lm/deployments")));
   }
 }

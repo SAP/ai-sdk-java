@@ -1,11 +1,14 @@
 package com.sap.ai.sdk.core;
 
+import static com.sap.ai.sdk.core.AiCoreDeployment.isDeploymentOfModel;
+
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,40 +19,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DeploymentCache {
   /** The client to use for deployment queries. */
-  static DeploymentApi API;
+  private final DeploymentApi API;
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private static final Map<String, String> CACHE = new HashMap<>();
+  private final List<AiDeployment> CACHE = new ArrayList<>();
 
-  static boolean isEmpty() {
-    return API == null;
-  }
-
-  /**
-   * Eagerly load the deployment cache with the given client.
-   *
-   * @param client the deployment client.
-   */
-  public static void eagerlyLoaded(@Nonnull final DeploymentApi client) {
-    API = client;
-    loadCache();
-  }
-
-  /**
-   * Lazy load the deployment cache with the given client.
-   *
-   * @param client the deployment client.
-   */
-  public static void lazyLoaded(@Nonnull final DeploymentApi client) {
-    API = client;
+  public DeploymentCache(DeploymentApi api, String resourceGroup) {
+    API = api;
+    loadCache(resourceGroup);
   }
 
   /**
    * Remove all entries from the cache.
    *
    * <p><b>Call both clearCache and {@link #loadCache} method whenever a deployment is deleted.</b>
+   * TODO:test
    */
-  public static void clearCache() {
+  public void clearCache() {
     CACHE.clear();
   }
 
@@ -57,112 +43,79 @@ public class DeploymentCache {
    * Load all deployments into the cache
    *
    * <p><b>Call both {@link #clearCache} and loadCache method whenever a deployment is deleted.</b>
+   *
+   * @param resourceGroup the resource group, usually "default".
    */
-  public static void loadCache() {
+  public void loadCache(@Nonnull final String resourceGroup) {
     try {
-      final var deployments = API.query("default").getResources();
-      deployments.forEach(deployment -> CACHE.put(getModelName(deployment), deployment.getId()));
+      final var deployments = API.query(resourceGroup).getResources();
+      CACHE.addAll(deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
     }
   }
 
   /**
-   * Get the deployment id for the orchestration scenario or any foundation model.
+   * Get the deployment id from the foundation model name. If there are multiple deployments of the
+   * same model, the first one is returned.
    *
    * @param resourceGroup the resource group, usually "default".
-   * @param name "orchestration" or the model name.
+   * @param modelName the name of the foundation model.
    * @return the deployment id.
+   * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public static String getDeploymentId(
-      @Nonnull final String resourceGroup, @Nonnull final String name) {
-    if (isEmpty()) {
-      loadCache();
-    }
-    return CACHE.computeIfAbsent(
-        name,
-        n -> {
-          if ("orchestration".equals(n)) {
-            return getOrchestrationDeployment(resourceGroup);
-          } else {
-            return getDeploymentForModel(resourceGroup, name);
-          }
-        });
-  }
-
-  /**
-   * Get the deployment id from the scenario id. If there are multiple deployments of the same
-   * scenario id, the first one is returned.
-   *
-   * @param resourceGroup the resource group.
-   * @return the deployment id
-   * @throws NoSuchElementException if no deployment is found for the scenario id.
-   */
-  private static String getOrchestrationDeployment(@Nonnull final String resourceGroup)
-      throws NoSuchElementException {
-    final var deployments =
-        API.query(resourceGroup, null, null, "orchestration", "RUNNING", null, null, null);
-
-    return deployments.getResources().stream()
-        .map(AiDeployment::getId)
-        .findFirst()
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "No running deployment found with scenario id \"orchestration\""));
-  }
-
-  /**
-   * Get the deployment id from the model name. If there are multiple deployments of the same model,
-   * the first one is returned.
-   *
-   * @param resourceGroup the resource group.
-   * @param modelName the model name.
-   * @return the deployment id
-   * @throws NoSuchElementException if no deployment is found for the model name.
-   */
-  private static String getDeploymentForModel(
+  public String getDeploymentIdByModel(
       @Nonnull final String resourceGroup, @Nonnull final String modelName)
       throws NoSuchElementException {
-    final var deployments =
-        API.query(resourceGroup, null, null, "foundation-models", "RUNNING", null, null, null);
-
-    return deployments.getResources().stream()
-        .filter(deployment -> modelName.equals(getModelName(deployment)))
-        .map(AiDeployment::getId)
-        .findFirst()
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "No running deployment found with model name " + modelName));
+    return getDeploymentIdByModel(modelName)
+        .orElseGet(
+            () -> {
+              loadCache(resourceGroup);
+              return getDeploymentIdByModel(modelName)
+                  .orElseThrow(
+                      () ->
+                          new NoSuchElementException(
+                              "No running deployment found for model: " + modelName));
+            });
   }
 
-  /** This exists because getBackendDetails() is broken */
-  private static String getModelName(@Nonnull final AiDeployment deployment) {
-    if ("orchestration".equals(deployment.getScenarioId())) {
-      return "orchestration";
-    }
-    final var deploymentDetails = deployment.getDetails();
-    // The AI Core specification doesn't mention that this is nullable, but it can be.
-    // Remove this check when the specification is fixed.
-    if (deploymentDetails == null) {
-      return "";
-    }
-    final var resources = deploymentDetails.getResources();
-    if (resources == null) {
-      return "";
-    }
-    if (!resources.getCustomFieldNames().contains("backend_details")) {
-      return "";
-    }
-    final var detailsObject = resources.getCustomField("backend_details");
+  private Optional<String> getDeploymentIdByModel(@Nonnull final String modelName) {
+    return CACHE.stream()
+        .filter(deployment -> isDeploymentOfModel(modelName, deployment))
+        .findFirst()
+        .map(AiDeployment::getId);
+  }
 
-    if (detailsObject instanceof Map<?, ?> details
-        && details.get("model") instanceof Map<?, ?> model
-        && model.get("name") instanceof String name) {
-      return name;
-    }
-    return "";
+  /**
+   * Get the deployment id from the scenario id. If there are multiple deployments of the * same
+   * model, the first one is returned.
+   *
+   * @param resourceGroup the resource group, usually "default".
+   * @param scenarioId the scenario id, can be "orchestration".
+   * @return the deployment id.
+   * @throws NoSuchElementException if no running deployment is found for the scenario. TODO: test
+   */
+  @Nonnull
+  public String getDeploymentIdByScenario(
+      @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
+      throws NoSuchElementException {
+    return getDeploymentIdByScenario(scenarioId)
+        .orElseGet(
+            () -> {
+              loadCache(resourceGroup);
+              return getDeploymentIdByScenario(scenarioId)
+                  .orElseThrow(
+                      () ->
+                          new NoSuchElementException(
+                              "No running deployment found for scenario: " + scenarioId));
+            });
+  }
+
+  private Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
+    return CACHE.stream()
+        .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
+        .findFirst()
+        .map(AiDeployment::getId);
   }
 }

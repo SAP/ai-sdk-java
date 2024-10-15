@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.core;
 
+import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentIdByModel;
+import static com.sap.ai.sdk.core.AiCoreDeployment.getDeploymentIdByScenario;
+
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
@@ -52,27 +55,31 @@ public class AiCoreService implements AiCoreDestination {
   }
 
   /**
-   * Set a specific deployment by model name.
+   * Set a specific deployment by model name. If there are multiple deployments of the same model,
+   * the first one is returned.
    *
    * @param modelName The model name to be used for AI Core service calls.
    * @return A new instance of the AI Core service.
+   * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName)
-      throws NoSuchElementException {
-    return new AiCoreDeployment(this::destination).getDeploymentId(client(), modelName);
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
+    return new AiCoreDeployment(
+        res -> getDeploymentIdByModel(client(), res, modelName), this::destination);
   }
 
   /**
-   * Set a specific deployment by scenario id.
+   * Set a specific deployment by scenario id. If there are multiple deployments of the * same
+   * model, the first one is returned.
    *
    * @param scenarioId The scenario id to be used for AI Core service calls.
    * @return A new instance of the AI Core service.
+   * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId)
-      throws NoSuchElementException {
-    return new AiCoreDeployment(this::destination).getDeploymentId(client(), scenarioId);
+  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
+    return new AiCoreDeployment(
+        res -> getDeploymentIdByScenario(client(), res, scenarioId), this::destination);
   }
 
   /**

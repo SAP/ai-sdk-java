@@ -9,7 +9,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.WireMockTestServer;
 import com.sap.ai.sdk.core.client.model.AiArtifactArgumentBinding;
 import com.sap.ai.sdk.core.client.model.AiConfiguration;
 import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;

@@ -14,8 +14,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.core.DeploymentCache;
-import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
@@ -61,7 +59,6 @@ class OpenAiClientTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = OpenAiClient.withCustomDestination(destination);
-    DeploymentCache.lazyLoaded(new DeploymentApi(destination));
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 

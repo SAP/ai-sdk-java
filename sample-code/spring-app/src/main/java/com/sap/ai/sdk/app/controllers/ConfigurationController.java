@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.core.Core.getClient;
-
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.model.AiConfigurationList;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigurationController {
 
-  private static final ConfigurationApi API = new ConfigurationApi(getClient());
+  private static final ApiClient API_CLIENT = new AiCoreService().client();
+  private static final ConfigurationApi API = new ConfigurationApi(API_CLIENT);
 
   /**
    * Get the list of configurations.
@@ -21,6 +22,6 @@ public class ConfigurationController {
    */
   @GetMapping("/configurations")
   AiConfigurationList getConfigurations() {
-    return API.configurationQuery("default");
+    return API.query("default");
   }
 }
