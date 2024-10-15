@@ -65,7 +65,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-    return new AiCoreService((_ignore) -> destination, clientHandler, builderHandler);
+    return new AiCoreService((service) -> destination, clientHandler, builderHandler);
   }
 
   /**
