@@ -74,7 +74,8 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @param builder The destination builder.
    * @param dest The original destination reference.
    */
-  protected void destinationSetUrl(DefaultHttpDestination.Builder builder, Destination dest) {
+  protected void destinationSetUrl(
+      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
     String uri = dest.get(DestinationProperty.URI).get();
     if (!uri.endsWith("/")) {
       uri = uri + "/";
@@ -88,7 +89,8 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @param builder The destination builder.
    * @param dest The original destination reference.
    */
-  protected void destinationSetHeaders(DefaultHttpDestination.Builder builder, Destination dest) {
+  protected void destinationSetHeaders(
+      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
     builder.property(AI_RESOURCE_GROUP, getResourceGroup());
   }
 
