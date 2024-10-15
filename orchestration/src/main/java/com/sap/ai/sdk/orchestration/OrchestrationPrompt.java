@@ -20,8 +20,13 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   @Getter(AccessLevel.NONE)
   @Delegate
   @Nonnull
-  DefaultOrchestrationConfig<OrchestrationPrompt> delegate =
-      DefaultOrchestrationConfig.asDelegateFor(this);
+  DefaultOrchestrationConfig<OrchestrationPrompt> delegate = new DefaultOrchestrationConfig<>();
+
+  @Nonnull
+  @Override
+  public OrchestrationPrompt instance() {
+    return this;
+  }
 
   public OrchestrationPrompt(@Nonnull final String message) {
     this(List.of(ChatMessage.create().role("user").content(message)), Map.of());
@@ -37,7 +42,8 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
 
   @Nonnull
   ModuleConfigs toModuleConfigDTO(@Nonnull final OrchestrationConfig<?> defaults) {
-    var config = DefaultOrchestrationConfig.fromConfigAndDefaults(delegate, defaults);
+    // duplicate the prompt config so it isn't modified, to make sure this prompt can be reused
+    var config = new DefaultOrchestrationConfig<>().copyFrom(this).copyFrom(defaults);
     return DefaultOrchestrationConfig.toModuleConfigDTO(config, messages);
   }
 }

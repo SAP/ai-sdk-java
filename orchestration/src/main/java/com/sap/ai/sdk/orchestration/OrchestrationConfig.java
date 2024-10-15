@@ -14,6 +14,9 @@ import javax.annotation.Nonnull;
  */
 public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   @Nonnull
+  T instance();
+
+  @Nonnull
   Option<LLMModuleConfig> getLlmConfig();
 
   @Nonnull
@@ -42,4 +45,30 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
 
   @Nonnull
   T withOutputContentFilter(@Nonnull final FilterConfig filter);
+
+  /**
+   * Copy the configuration into the given target configuration. The copy is
+   * <strong>shallow</strong> and does <strong>not override</strong> any existing configuration.
+   *
+   * <p>This has two main use cases:
+   *
+   * <ol>
+   *   <li>Duplicating a config
+   *   <li>Applying defaults to a config
+   * </ol>
+   *
+   * @param source The source configuration to copy from.
+   */
+  default T copyFrom(@Nonnull final OrchestrationConfig<?> source) {
+    getLlmConfig().orElse(source::getLlmConfig).forEach(this::withLlmConfig);
+    getTemplate().orElse(source::getTemplate).forEach(this::withTemplate);
+    getMaskingConfig().orElse(source::getMaskingConfig).forEach(this::withMaskingConfig);
+    getInputContentFilter()
+        .orElse(source::getInputContentFilter)
+        .forEach(this::withInputContentFilter);
+    getOutputContentFilter()
+        .orElse(source::getOutputContentFilter)
+        .forEach(this::withOutputContentFilter);
+    return instance();
+  }
 }

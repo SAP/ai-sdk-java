@@ -38,13 +38,19 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
 
   @Delegate @Nonnull
   private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
-      DefaultOrchestrationConfig.asDelegateFor(this);
+      new DefaultOrchestrationConfig<>();
 
   @Nonnull private final HttpDestination destination;
 
   public OrchestrationClient() {
     // TODO: use AiCoreService after refactoring
     this.destination = Core.getDestinationForDeployment("db1d64d9f06be467", "default").asHttp();
+  }
+
+  @Nonnull
+  @Override
+  public OrchestrationClient instance() {
+    return this;
   }
 
   /**
