@@ -5,14 +5,31 @@ import static org.mockito.Mockito.mock;
 
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
+
+import io.vavr.control.Option;
 import org.junit.jupiter.api.Test;
 
 class DefaultOrchestrationConfigTest {
-
   private static final OrchestrationConfig<?> DEFAULT_CONFIG =
       DefaultOrchestrationConfig.standalone()
           .withLlmConfig(mock(LLMModuleConfig.class))
           .withMaskingConfig(mock(MaskingConfig.class));
+
+  @Test
+  void testStandalone() {
+    var config = DefaultOrchestrationConfig.standalone();
+
+    assertThat(config.withMaskingConfig(null)).isSameAs(config);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  void testDelegation() {
+    var mock = mock(OrchestrationConfig.class);
+
+    var config = DefaultOrchestrationConfig.asDelegateFor(mock);
+    assertThat(config.withMaskingConfig(null)).isSameAs(mock);
+  }
 
   @Test
   void testCopy() {
@@ -37,6 +54,7 @@ class DefaultOrchestrationConfigTest {
     assertThat(config)
         .isNotEqualTo(DEFAULT_CONFIG)
         .extracting(OrchestrationConfig::getLlmConfig)
+        .extracting(Option::get)
         .isEqualTo(llm);
   }
 }
