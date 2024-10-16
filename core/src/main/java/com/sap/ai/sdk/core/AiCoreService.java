@@ -79,6 +79,12 @@ public class AiCoreService implements AiCoreDestination {
     return builder.build();
   }
 
+  /**
+   * Update and set the URL for the destination.
+   *
+   * @param builder The destination builder.
+   * @param dest The original destination reference.
+   */
   protected void destinationSetUrl(
       @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
     String uri = dest.get(DestinationProperty.URI).get();
@@ -88,6 +94,11 @@ public class AiCoreService implements AiCoreDestination {
     builder.uri(uri + "v2/inference/deployments/%s/".formatted(deploymentId));
   }
 
+  /**
+   * Update and set the default request headers for the destination.
+   *
+   * @param builder The destination builder.
+   */
   protected void destinationSetHeaders(@Nonnull final DefaultHttpDestination.Builder builder) {
     builder.property(AI_RESOURCE_GROUP, getResourceGroup());
   }

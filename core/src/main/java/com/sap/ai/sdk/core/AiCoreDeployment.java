@@ -8,13 +8,19 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 
+/** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor
 public class AiCoreDeployment implements AiCoreDestination {
   private final AiCoreService aiCoreService;
 
-  // the deployment id handler to be used, based on instance
   @Nonnull private final Function<AiCoreDeployment, String> deploymentId;
 
+  /**
+   * Set the resource group.
+   *
+   * @param resourceGroup The resource group.
+   * @return A new instance of the AI Core service.
+   */
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
     aiCoreService.setResourceGroup(resourceGroup);
@@ -22,12 +28,14 @@ public class AiCoreDeployment implements AiCoreDestination {
   }
 
   @Nonnull
+  @Override
   public Destination destination() throws DestinationAccessException, DestinationNotFoundException {
     aiCoreService.deploymentId = deploymentId.apply(this);
     return aiCoreService.destination();
   }
 
   @Nonnull
+  @Override
   public ApiClient client() {
     aiCoreService.deploymentId = deploymentId.apply(this);
     return aiCoreService.client();
