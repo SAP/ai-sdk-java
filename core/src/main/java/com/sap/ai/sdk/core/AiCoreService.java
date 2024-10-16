@@ -64,7 +64,7 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific base destination.
    *
    * @param destination The destination to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Service based on the provided destination.
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
@@ -75,7 +75,7 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific deployment by id.
    *
    * @param deploymentId The deployment id to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Deployment.
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
@@ -87,7 +87,7 @@ public class AiCoreService implements AiCoreDestination {
    * the first one is returned.
    *
    * @param modelName The model name to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Deployment.
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
@@ -105,7 +105,7 @@ public class AiCoreService implements AiCoreDestination {
    * the first one is returned.
    *
    * @param scenarioId The scenario id to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Deployment.
    * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
