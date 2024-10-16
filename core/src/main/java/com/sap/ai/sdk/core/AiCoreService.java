@@ -19,7 +19,10 @@ import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -32,18 +35,29 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AiCoreService implements AiCoreDestination {
 
-  final Function<AiCoreService, Destination> baseDestinationHandler;
+  Function<AiCoreService, Destination> baseDestinationHandler;
   final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
   final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
 
   private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
 
+  private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
+
+  @Getter(AccessLevel.PROTECTED)
+  @Setter(AccessLevel.PROTECTED)
+  @Nonnull
+  private String resourceGroup;
+
+  @Nonnull String deploymentId;
+
   /** The default constructor. */
   public AiCoreService() {
     this(
-        AiCoreService::getBaseDestination,
         AiCoreService::getApiClient,
-        AiCoreService::getDestinationBuilder);
+        AiCoreService::getDestinationBuilder,
+        "default",
+        "");
+    baseDestinationHandler = AiCoreService::getBaseDestination;
   }
 
   @Nonnull
@@ -57,18 +71,37 @@ public class AiCoreService implements AiCoreDestination {
   @Override
   public Destination destination() {
     final var dest = baseDestinationHandler.apply(this);
-    return builderHandler.apply(this, dest).build();
+    final var builder = builderHandler.apply(this, dest);
+    if (!deploymentId.isEmpty()) {
+      destinationSetUrl(builder, dest);
+      destinationSetHeaders(builder);
+    }
+    return builder.build();
+  }
+
+  protected void destinationSetUrl(
+      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
+    String uri = dest.get(DestinationProperty.URI).get();
+    if (!uri.endsWith("/")) {
+      uri = uri + "/";
+    }
+    builder.uri(uri + "v2/inference/deployments/%s/".formatted(deploymentId));
+  }
+
+  protected void destinationSetHeaders(@Nonnull final DefaultHttpDestination.Builder builder) {
+    builder.property(AI_RESOURCE_GROUP, getResourceGroup());
   }
 
   /**
    * Set a specific base destination.
    *
    * @param destination The destination to be used for AI Core service calls.
-   * @return A new instance of the AI Core Service based on the provided destination.
+   * @return The AI Core Service based on the provided destination.
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-    return new AiCoreService((service) -> destination, clientHandler, builderHandler);
+    baseDestinationHandler = (service) -> destination;
+    return this;
   }
 
   /**
