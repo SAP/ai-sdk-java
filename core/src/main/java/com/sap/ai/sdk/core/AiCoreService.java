@@ -61,7 +61,7 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific base destination.
    *
    * @param destination The destination to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Service based on the provided destination.
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
