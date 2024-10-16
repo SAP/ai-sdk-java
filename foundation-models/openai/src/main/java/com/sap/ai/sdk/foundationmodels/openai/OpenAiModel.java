@@ -5,10 +5,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
-* OpenAiModel represents the OpenAI model that can be used for AI services.
+ * OpenAiModel represents the OpenAI model that can be used for AI services.
+ *
  * @param name The name of the model.
  * @param version The version of the model (optional).
-*/
+ */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
   /** Azure OpenAI dall-e-3 image generate model */
