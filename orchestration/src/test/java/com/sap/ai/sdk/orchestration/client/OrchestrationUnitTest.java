@@ -84,6 +84,7 @@ public class OrchestrationUnitTest {
     stubFor(
         get(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("my-resource-group"))
+            .withHeader("AI-Client-Type", equalTo("AI SDK Java"))
             .willReturn(
                 okJson(
                     """
