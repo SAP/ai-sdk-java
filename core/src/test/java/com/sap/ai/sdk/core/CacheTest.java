@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 class CacheTest extends WireMockTestServer {
 
+  private final DeploymentCache cacheUnderTest = new DeploymentCache();
+
   @BeforeEach
   void setupCache() {
     wireMockServer.resetRequests();
@@ -93,26 +95,26 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeployment() {
     stubGPT4();
-    DeploymentCache.loadCache(client, "default");
+    cacheUnderTest.loadCache(client, "default");
 
-    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
   @Test
   void clearCache() {
     stubGPT4();
-    DeploymentCache.loadCache(client, "default");
+    cacheUnderTest.loadCache(client, "default");
 
-    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    DeploymentCache.clearCache();
+    cacheUnderTest.clearCache();
 
-    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     // the deployment is not in the cache anymore, so we need to query it again
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
@@ -129,14 +131,14 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeploymentAfterReset() {
     stubEmpty();
-    DeploymentCache.loadCache(client, "default");
+    cacheUnderTest.loadCache(client, "default");
     stubGPT4();
 
-    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 }

@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.DeploymentCache.getDeploymentIdByModel;
-import static com.sap.ai.sdk.core.DeploymentCache.getDeploymentIdByScenario;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 
@@ -37,6 +35,8 @@ public class AiCoreService implements AiCoreDestination {
   final Function<AiCoreService, Destination> baseDestinationHandler;
   final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
   final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
+
+  private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
 
   /** The default constructor. */
   public AiCoreService() {
@@ -94,7 +94,10 @@ public class AiCoreService implements AiCoreDestination {
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName)
       throws NoSuchElementException {
     return new AiCoreDeployment(
-        this, obj -> getDeploymentIdByModel(this.client(), obj.getResourceGroup(), modelName));
+        this,
+        obj ->
+            DEPLOYMENT_CACHE.getDeploymentIdByModel(
+                this.client(), obj.getResourceGroup(), modelName));
   }
 
   /**
@@ -109,7 +112,10 @@ public class AiCoreService implements AiCoreDestination {
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId)
       throws NoSuchElementException {
     return new AiCoreDeployment(
-        this, obj -> getDeploymentIdByScenario(this.client(), obj.getResourceGroup(), scenarioId));
+        this,
+        obj ->
+            DEPLOYMENT_CACHE.getDeploymentIdByScenario(
+                this.client(), obj.getResourceGroup(), scenarioId));
   }
 
   /**

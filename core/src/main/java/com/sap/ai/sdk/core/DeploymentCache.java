@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
  * scenario or for a model.
  */
 @Slf4j
-public class DeploymentCache {
+class DeploymentCache {
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  protected static final List<AiDeployment> CACHE = new ArrayList<>();
+  protected final List<AiDeployment> CACHE = new ArrayList<>();
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
@@ -31,8 +31,7 @@ public class DeploymentCache {
    * @param client the API client to query deployments.
    * @param resourceGroup the resource group, usually "default".
    */
-  public static void resetCache(
-      @Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
+  public void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
     clearCache();
     loadCache(client, resourceGroup);
   }
@@ -42,7 +41,7 @@ public class DeploymentCache {
    *
    * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
    */
-  protected static void clearCache() {
+  protected void clearCache() {
     CACHE.clear();
   }
 
@@ -54,8 +53,7 @@ public class DeploymentCache {
    * @param client the API client to query deployments.
    * @param resourceGroup the resource group, usually "default".
    */
-  protected static void loadCache(
-      @Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
+  protected void loadCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
     try {
       final var deployments = new DeploymentApi(client).query(resourceGroup).getResources();
       CACHE.addAll(deployments);
@@ -75,7 +73,7 @@ public class DeploymentCache {
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public static String getDeploymentIdByModel(
+  public String getDeploymentIdByModel(
       @Nonnull final ApiClient client,
       @Nonnull final String resourceGroup,
       @Nonnull final String modelName)
@@ -92,7 +90,7 @@ public class DeploymentCache {
             });
   }
 
-  private static Optional<String> getDeploymentIdByModel(@Nonnull final String modelName) {
+  private Optional<String> getDeploymentIdByModel(@Nonnull final String modelName) {
     return CACHE.stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
         .findFirst()
@@ -110,7 +108,7 @@ public class DeploymentCache {
    * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
-  public static String getDeploymentIdByScenario(
+  public String getDeploymentIdByScenario(
       @Nonnull final ApiClient client,
       @Nonnull final String resourceGroup,
       @Nonnull final String scenarioId)
@@ -127,7 +125,7 @@ public class DeploymentCache {
             });
   }
 
-  private static Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
+  private Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
     return CACHE.stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
