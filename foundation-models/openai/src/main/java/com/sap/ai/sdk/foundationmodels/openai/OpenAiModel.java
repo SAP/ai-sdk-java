@@ -4,6 +4,7 @@ import com.sap.ai.sdk.core.AiModel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/** Azure OpenAI model */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
   /** Azure OpenAI dall-e-3 image generate model */
