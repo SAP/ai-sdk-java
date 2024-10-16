@@ -83,7 +83,7 @@ public class OrchestrationUnitTest {
   void setup(WireMockRuntimeInfo server) {
     stubFor(
         get(urlPathEqualTo("/v2/lm/deployments"))
-            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withHeader("AI-Resource-Group", equalTo("my-resource-group"))
             .willReturn(
                 okJson(
                     """
@@ -104,6 +104,7 @@ public class OrchestrationUnitTest {
         new AiCoreService()
             .withDestination(destination)
             .forDeploymentByScenario("orchestration")
+            .withResourceGroup("my-resource-group")
             .client();
     client = new OrchestrationCompletionApi(apiClient);
   }
