@@ -91,7 +91,8 @@ public class AiCoreService implements AiCoreDestination {
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName)
+      throws NoSuchElementException {
     return new AiCoreDeployment(
         this, obj -> getDeploymentIdByModel(this.client(), obj.getResourceGroup(), modelName));
   }
@@ -105,7 +106,8 @@ public class AiCoreService implements AiCoreDestination {
    * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
+  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId)
+      throws NoSuchElementException {
     return new AiCoreDeployment(
         this, obj -> getDeploymentIdByScenario(this.client(), obj.getResourceGroup(), scenarioId));
   }
