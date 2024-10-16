@@ -72,7 +72,7 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific deployment by id.
    *
    * @param deploymentId The deployment id to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Deployment.
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
@@ -83,7 +83,7 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific deployment by model name.
    *
    * @param modelName The model name to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Deployment.
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
@@ -94,7 +94,7 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific deployment by scenario id.
    *
    * @param scenarioId The scenario id to be used for AI Core service calls.
-   * @return A new instance of the AI Core service.
+   * @return A new instance of the AI Core Deployment.
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
