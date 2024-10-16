@@ -96,7 +96,7 @@ public class AiCoreDeployment implements AiCoreDestination {
     final var dest = service.baseDestinationHandler.apply(service);
     final var builder = service.builderHandler.apply(service, dest);
     destinationSetUrl(builder, dest);
-    destinationSetHeaders(builder, dest);
+    destinationSetHeaders(builder);
     return builder.build();
   }
 
@@ -126,10 +126,8 @@ public class AiCoreDeployment implements AiCoreDestination {
    * Update and set the default request headers for the destination.
    *
    * @param builder The destination builder.
-   * @param dest The original destination reference.
    */
-  protected void destinationSetHeaders(
-      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
+  protected void destinationSetHeaders(@Nonnull final DefaultHttpDestination.Builder builder) {
     builder.property(AI_RESOURCE_GROUP, getResourceGroup());
   }
 
@@ -142,17 +140,6 @@ public class AiCoreDeployment implements AiCoreDestination {
   @Nonnull
   public AiCoreDeployment withResourceGroup(@Nonnull final String resourceGroup) {
     return new AiCoreDeployment(service, deploymentId, resourceGroup);
-  }
-
-  /**
-   * Set the destination.
-   *
-   * @param destination The destination.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public AiCoreDeployment withDestination(@Nonnull final Destination destination) {
-    return new AiCoreDeployment(service.withDestination(destination), deploymentId, resourceGroup);
   }
 
   /**

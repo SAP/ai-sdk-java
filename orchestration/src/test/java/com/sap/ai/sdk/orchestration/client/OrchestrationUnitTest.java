@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -43,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.HttpClientErrorException;
@@ -81,16 +81,13 @@ public class OrchestrationUnitTest {
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
-
     stubFor(
         get(urlPathEqualTo("/v2/lm/deployments"))
-            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withHeader("AI-Resource-Group", equalTo("my-resource-group"))
+            .withHeader("AI-Client-Type", equalTo("AI SDK Java"))
             .willReturn(
-                aResponse()
-                    .withStatus(HttpStatus.SC_OK)
-                    .withHeader("content-type", "application/json")
-                    .withBody(
-                        """
+                okJson(
+                    """
                         {
                           "resources": [
                             {
@@ -103,10 +100,12 @@ public class OrchestrationUnitTest {
 
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
+
     final var apiClient =
         new AiCoreService()
             .withDestination(destination)
             .forDeploymentByScenario("orchestration")
+            .withResourceGroup("my-resource-group")
             .client();
     client = new OrchestrationCompletionApi(apiClient);
   }

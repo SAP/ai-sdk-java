@@ -56,7 +56,7 @@ public class AiCoreServiceTest {
   }
 
   @Test
-  void testSimpleCase() {
+  void testDefaultCase() {
     // setup
     final var accessor = mock(ServiceBindingAccessor.class);
     DestinationResolver.setAccessor(accessor);
@@ -96,25 +96,6 @@ public class AiCoreServiceTest {
   }
 
   @Test
-  void testDeployment() {
-    final var accessor = mock(ServiceBindingAccessor.class);
-    DestinationResolver.setAccessor(accessor);
-    doReturn(List.of(BINDING)).when(accessor).getServiceBindings();
-
-    // execution without errors
-    final var destination = new AiCoreService().destination();
-    final var client = new AiCoreService().client();
-
-    // verification
-    assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2/");
-    assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
-    assertThat(destination.get(DestinationProperty.NAME)).singleElement(STRING).contains("aicore");
-    assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
-    assertThat(client.getBasePath()).isEqualTo("https://srv/v2/");
-    verify(accessor, times(2)).getServiceBindings();
-  }
-
-  @Test
   void testCustomization() {
     final var customService =
         new AiCoreService() {
@@ -139,5 +120,8 @@ public class AiCoreServiceTest {
 
     final var destination = customServiceForDeployment.destination().asHttp();
     assertThat(destination.getUri()).hasToString("https://ai/v2/inference/deployments/deployment/");
+
+    final var resourceGroup = customServiceForDeployment.getResourceGroup();
+    assertThat(resourceGroup).isEqualTo("group");
   }
 }
