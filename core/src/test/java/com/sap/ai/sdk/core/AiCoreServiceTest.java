@@ -120,15 +120,24 @@ public class AiCoreServiceTest {
         new AiCoreService() {
           @Nonnull
           @Override
-          protected ApiClient getApiClient(@Nonnull final Destination destination) {
-            return new ApiClient().setBasePath("foo");
+          protected Destination getBaseDestination() {
+            return DefaultHttpDestination.builder("https://ai").build();
           }
-          ;
+
+          @Nonnull
+          @Override
+          protected ApiClient getApiClient(@Nonnull Destination destination) {
+            return new ApiClient().setBasePath("https://fizz.buzz").setUserAgent("SAP");
+          }
         };
 
     final var customServiceForDeployment =
         customService.forDeployment("deployment").withResourceGroup("group");
-    ApiClient client = customServiceForDeployment.client();
-    assertThat(client.getBasePath()).isEqualTo("foo");
+
+    final var client = customServiceForDeployment.client();
+    assertThat(client.getBasePath()).isEqualTo("https://fizz.buzz");
+
+    final var destination = customServiceForDeployment.destination().asHttp();
+    assertThat(destination.getUri()).hasToString("https://ai/v2/inference/deployments/deployment/");
   }
 }
