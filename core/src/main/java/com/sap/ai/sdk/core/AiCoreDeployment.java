@@ -11,6 +11,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -104,12 +105,12 @@ public class AiCoreDeployment implements AiCoreDestination {
   /**
    * This exists because getBackendDetails() is broken
    *
-   * @param modelName The model name.
+   * @param targetModel The target model object.
    * @param deployment The deployment.
    * @return true if the deployment is of the model.
    */
   protected static boolean isDeploymentOfModel(
-      @Nonnull final String modelName, @Nonnull final AiDeployment deployment) {
+      @Nonnull final AiModel targetModel, @Nonnull final AiDeployment deployment) {
     final var deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
     // Remove this check when the specification is fixed.
@@ -131,9 +132,14 @@ public class AiCoreDeployment implements AiCoreDestination {
 
     if (detailsObject instanceof Map<?, ?> details
         && details.get("model") instanceof Map<?, ?> model
-        && model.get("name") instanceof String name) {
-      return modelName.equals(name);
+        && model.get("name") instanceof String name
+        && targetModel.name().equals(name)) {
+      // if target version is not specified (null), any version is accepted, otherwise they must
+      // match
+      return targetModel.version() == null
+          || Objects.equals(targetModel.version(), model.get("version"));
     }
+
     return false;
   }
 

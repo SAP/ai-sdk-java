@@ -58,12 +58,12 @@ public class AiCoreService implements AiCoreDestination {
   /**
    * Set a specific deployment by model name.
    *
-   * @param modelName The model name to be used for AI Core service calls.
+   * @param model The model to be used for AI Core service calls.
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
-    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final AiModel model) {
+    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(model, deployment);
     return new AiCoreDeployment(res -> getDeploymentId(client(), res, p), this::destination);
   }
 
