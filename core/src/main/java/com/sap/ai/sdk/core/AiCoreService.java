@@ -52,11 +52,7 @@ public class AiCoreService implements AiCoreDestination {
 
   /** The default constructor. */
   public AiCoreService() {
-    this(
-        AiCoreService::getApiClient,
-        AiCoreService::getDestinationBuilder,
-        "default",
-        "");
+    this(AiCoreService::getApiClient, AiCoreService::getDestinationBuilder, "default", "");
     baseDestinationHandler = AiCoreService::getBaseDestination;
   }
 
