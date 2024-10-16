@@ -115,6 +115,8 @@ jobs:
         run: |
           MVN_ARGS="${{ env.MVN_CLI_ARGS }} deploy -Drelease -s settings.xml"
           mvn $MVN_ARGS
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Merge Code PR"
         if: ${{ inputs.skip-pr-merge != 'true' }}
