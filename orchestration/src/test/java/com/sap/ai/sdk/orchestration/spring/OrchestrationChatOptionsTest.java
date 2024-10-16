@@ -40,10 +40,12 @@ class OrchestrationChatOptionsTest {
             .modelName("foo")
             .modelParams(Map.of("temperature", 0.5, "maxTokens", 100));
 
-    var opts1 = new OrchestrationChatOptions()
+    var opts1 =
+        new OrchestrationChatOptions()
             .withTemplateParameters(Map.of("foo", "bar"))
             .withLlmConfig(llm);
-    var opts2 = new OrchestrationChatOptions()
+    var opts2 =
+        new OrchestrationChatOptions()
             .withTemplateParameters(Map.of("foo", "bar"))
             .withLlmConfig(llm);
 

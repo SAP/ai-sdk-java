@@ -113,6 +113,7 @@ public class DefaultOrchestrationConfig<T extends OrchestrationConfig<T>>
    * @param source The source configuration to copy from.
    * @return This (delegate) object.
    */
+  @Nonnull
   public DefaultOrchestrationConfig<T> copyFrom(@Nonnull final OrchestrationConfig<?> source) {
     llmConfig.orElse(source::getLlmConfig).forEach(this::withLlmConfig);
     template.orElse(source::getTemplate).forEach(this::withTemplate);

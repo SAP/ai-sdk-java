@@ -17,8 +17,10 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   @Nonnull List<ChatMessage> messages;
   @Nonnull Map<String, String> templateParameters;
 
+  private interface IDelegate extends OrchestrationConfig<OrchestrationPrompt> {}
+
   @Getter(AccessLevel.NONE)
-  @Delegate
+  @Delegate(types = IDelegate.class)
   @Nonnull
   DefaultOrchestrationConfig<OrchestrationPrompt> delegate =
       DefaultOrchestrationConfig.asDelegateFor(this);

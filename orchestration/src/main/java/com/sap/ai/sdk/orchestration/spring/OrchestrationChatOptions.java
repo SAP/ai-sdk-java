@@ -23,7 +23,11 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 @Setter(AccessLevel.NONE)
 public class OrchestrationChatOptions
     implements ChatOptions, OrchestrationConfig<OrchestrationChatOptions> {
-  @Delegate @Nonnull
+  private interface IDelegate extends OrchestrationConfig<OrchestrationChatOptions> {}
+
+  @Getter(AccessLevel.NONE)
+  @Nonnull
+  @Delegate(types = IDelegate.class)
   private final DefaultOrchestrationConfig<OrchestrationChatOptions> delegate =
       DefaultOrchestrationConfig.asDelegateFor(this);
 

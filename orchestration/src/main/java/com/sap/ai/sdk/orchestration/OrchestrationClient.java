@@ -36,7 +36,10 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
             .build();
   }
 
-  @Delegate @Nonnull
+  private interface IDelegate extends OrchestrationConfig<OrchestrationClient> {}
+
+  @Delegate(types = IDelegate.class)
+  @Nonnull
   private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
       DefaultOrchestrationConfig.asDelegateFor(this);
 
