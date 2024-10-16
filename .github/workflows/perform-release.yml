@@ -107,28 +107,14 @@ jobs:
         env:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
-      - name: "Deploy Locally"
-        run: >
-          mvn
-          $MVN_CLI_ARGS
-          -DaltDeploymentRepository=local::file:./temp_local_repo
-          -Drelease
-          deploy
-        env:
-          MAVEN_CENTRAL_USER: ${{ secrets.MAVEN_CENTRAL_USER }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-
-      - name: "Deploy Staging"
+      - name: "Create settings.xml"
         run: |
-          # Create an empty directory to correctly execute the plugin
-          mkdir temp
-          cd temp
-          MVN_ARGS="$MVN_CLI_ARGS org.sonatype.plugins:nexus-staging-maven-plugin:1.7.0:deploy-staged-repository -DserverId=ossrh -DnexusUrl=https://oss.sonatype.org -DrepositoryDirectory=../temp_local_repo -DstagingProfileId=$MAVEN_CENTRAL_PROFILE_ID"
+          echo ${{ secrets.CENTRAL_SONATYPE_SETTINGS_XML }} > settings.xml
+
+      - name: "Deploy"
+        run: |
+          MVN_ARGS="${{ env.MVN_CLI_ARGS }} deploy -Drelease -s settings.xml"
           mvn $MVN_ARGS
-        env:
-          MAVEN_CENTRAL_USER: ${{ secrets.SONATYPE_TOKEN_NAME }}
-          MAVEN_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_TOKEN_PASS }}
-          MAVEN_CENTRAL_PROFILE_ID: ${{ secrets.MAVEN_CENTRAL_PROFILE_ID }}
 
       - name: "Merge Code PR"
         if: ${{ inputs.skip-pr-merge != 'true' }}
