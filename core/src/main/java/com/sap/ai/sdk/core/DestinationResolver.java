@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.core;
 
+import static com.google.common.collect.Iterables.tryFind;
 import static com.sap.cloud.sdk.cloudplatform.connectivity.OnBehalfOf.TECHNICAL_USER_PROVIDER;
+import static com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions.forService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,14 +12,16 @@ import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingBuilder
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingMerger;
 import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationLoader;
-import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /** Utility class to resolve the destination pointing to the AI Core service. */
@@ -25,7 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 class DestinationResolver {
   static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
   static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
-  static ServiceBindingAccessor accessor = DefaultServiceBindingAccessor.getInstance();
+
+  @Getter(AccessLevel.PROTECTED)
+  @Nonnull
+  private static ServiceBindingAccessor accessor = DefaultServiceBindingAccessor.getInstance();
 
   /**
    * <b>For testing only</b>
@@ -37,34 +44,24 @@ class DestinationResolver {
    */
   @SuppressWarnings("UnstableApiUsage")
   static HttpDestination getDestination(@Nullable final String serviceKey) {
-    final var serviceKeyPresent = serviceKey != null;
-    final var aiCoreBindingPresent =
-        accessor.getServiceBindings().stream()
-            .anyMatch(
-                serviceBinding ->
-                    ServiceIdentifier.AI_CORE.equals(
-                        serviceBinding.getServiceIdentifier().orElse(null)));
+    final Predicate<Object> aiCore = Optional.of(ServiceIdentifier.AI_CORE)::equals;
+    final var serviceBindings = accessor.getServiceBindings();
+    final var aiCoreBinding = tryFind(serviceBindings, b -> aiCore.test(b.getServiceIdentifier()));
 
-    if (!aiCoreBindingPresent && serviceKeyPresent) {
+    final var serviceKeyPresent = serviceKey != null;
+    if (!aiCoreBinding.isPresent() && serviceKeyPresent) {
       addServiceBinding(serviceKey);
     }
 
     // get a destination pointing to the AI Core service
     final var opts =
-        ServiceBindingDestinationOptions.forService(ServiceIdentifier.AI_CORE)
+        (aiCoreBinding.isPresent()
+                ? forService(aiCoreBinding.get())
+                : forService(ServiceIdentifier.AI_CORE))
             .onBehalfOf(TECHNICAL_USER_PROVIDER)
             .build();
-    var destination = ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(opts);
 
-    destination =
-        DefaultHttpDestination.fromDestination(destination)
-            // append the /v2 path here, so we don't have to do it in every request when using the
-            // generated code this is actually necessary, because the generated code assumes this
-            // path to be present on the destination
-            .uri(destination.getUri().resolve("/v2"))
-            .property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE)
-            .build();
-    return destination;
+    return ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(opts);
   }
 
   /**
@@ -105,5 +102,15 @@ class DestinationResolver {
         @Nonnull final String message, @Nonnull final Throwable cause) {
       super(message, cause);
     }
+  }
+
+  /**
+   * For testing set the accessor to be used for service binding resolution.
+   *
+   * @param accessor The accessor to be used for service binding resolution.
+   */
+  static void setAccessor(@Nullable final ServiceBindingAccessor accessor) {
+    DestinationResolver.accessor =
+        accessor == null ? DefaultServiceBindingAccessor.getInstance() : accessor;
   }
 }

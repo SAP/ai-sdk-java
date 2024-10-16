@@ -50,7 +50,7 @@ public class ModuleResults
   private GenericModuleResult outputFiltering;
 
   @JsonProperty("output_unmasking")
-  private List<LLMChoice> outputUnmasking = new ArrayList<>();
+  private List<ModuleResultsOutputUnmaskingInner> outputUnmasking = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -265,7 +265,8 @@ public class ModuleResults
    * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResults outputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
+  public ModuleResults outputUnmasking(
+      @Nullable final List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
     return this;
   }
@@ -277,7 +278,8 @@ public class ModuleResults
    * @return The same instance of type {@link ModuleResults}
    */
   @Nonnull
-  public ModuleResults addOutputUnmaskingItem(@Nonnull final LLMChoice outputUnmaskingItem) {
+  public ModuleResults addOutputUnmaskingItem(
+      @Nonnull final ModuleResultsOutputUnmaskingInner outputUnmaskingItem) {
     if (this.outputUnmasking == null) {
       this.outputUnmasking = new ArrayList<>();
     }
@@ -291,7 +293,7 @@ public class ModuleResults
    * @return outputUnmasking The outputUnmasking of this {@link ModuleResults} instance.
    */
   @Nonnull
-  public List<LLMChoice> getOutputUnmasking() {
+  public List<ModuleResultsOutputUnmaskingInner> getOutputUnmasking() {
     return outputUnmasking;
   }
 
@@ -300,7 +302,8 @@ public class ModuleResults
    *
    * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
    */
-  public void setOutputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
+  public void setOutputUnmasking(
+      @Nullable final List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
   }
 

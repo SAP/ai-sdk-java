@@ -42,7 +42,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void getDeployments() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/deployments"))
+        get(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -119,7 +119,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void postDeployment() {
     wireMockServer.stubFor(
-        post(urlPathEqualTo("/lm/deployments"))
+        post(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -148,7 +148,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getStatus()).isEqualTo(AiExecutionStatus.UNKNOWN_DEFAULT_OPEN_API);
 
     wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo("/lm/deployments"))
+        postRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -162,7 +162,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void patchDeploymentStatus() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/deployments/d19b998f347341aa"))
+        patch(urlPathEqualTo("/v2/lm/deployments/d19b998f347341aa"))
             .willReturn(
                 aResponse()
                     .withStatus(HttpStatus.SC_ACCEPTED)
@@ -186,7 +186,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     // verify that null fields are absent from the sent request
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/deployments/d19b998f347341aa"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/deployments/d19b998f347341aa"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -200,7 +200,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void deleteDeployment() {
     wireMockServer.stubFor(
-        delete(urlPathEqualTo("/lm/deployments/d5b764fe55b3e87c"))
+        delete(urlPathEqualTo("/v2/lm/deployments/d5b764fe55b3e87c"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -227,7 +227,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void getDeploymentById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/deployments/db1d64d9f06be467"))
+        get(urlPathEqualTo("/v2/lm/deployments/db1d64d9f06be467"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -291,7 +291,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void patchDeploymentConfiguration() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/deployments/d03050a2ab7055cc"))
+        patch(urlPathEqualTo("/v2/lm/deployments/d03050a2ab7055cc"))
             .willReturn(
                 aResponse()
                     .withStatus(HttpStatus.SC_ACCEPTED)
@@ -316,7 +316,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     // verify that null fields are absent from the sent request
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/deployments/d03050a2ab7055cc"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/deployments/d03050a2ab7055cc"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -330,7 +330,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void getDeploymentCount() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/deployments/$count"))
+        get(urlPathEqualTo("/v2/lm/deployments/$count"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -348,7 +348,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void getDeploymentLogs() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/deployments/d19b998f347341aa/logs"))
+        get(urlPathEqualTo("/v2/lm/deployments/d19b998f347341aa/logs"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -395,7 +395,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void patchBulkDeployments() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/deployments"))
+        patch(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -436,7 +436,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo("Deployment modification scheduled");
 
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/deployments"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(

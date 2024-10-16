@@ -31,8 +31,8 @@ import javax.annotation.Nullable;
 public class GroundingModuleConfig
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets groundingService */
-  public enum GroundingServiceEnum {
+  /** Gets or Sets type */
+  public enum TypeEnum {
     /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
     DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
 
@@ -41,7 +41,7 @@ public class GroundingModuleConfig
 
     private String value;
 
-    GroundingServiceEnum(String value) {
+    TypeEnum(String value) {
       this.value = value;
     }
 
@@ -75,21 +75,21 @@ public class GroundingModuleConfig
      */
     @JsonCreator
     @Nonnull
-    public static GroundingServiceEnum fromValue(@Nonnull final String value) {
-      for (GroundingServiceEnum b : GroundingServiceEnum.values()) {
+    public static TypeEnum fromValue(@Nonnull final String value) {
+      for (TypeEnum b : TypeEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
       }
-      return UNKNOWN_DEFAULT_OPEN_API;
+      return null;
     }
   }
 
-  @JsonProperty("grounding_service")
-  private GroundingServiceEnum groundingService;
+  @JsonProperty("type")
+  private TypeEnum type;
 
-  @JsonProperty("grounding_service_configuration")
-  private GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration;
+  @JsonProperty("config")
+  private GroundingModuleConfigConfig config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -97,75 +97,65 @@ public class GroundingModuleConfig
   protected GroundingModuleConfig() {}
 
   /**
-   * Set the groundingService of this {@link GroundingModuleConfig} instance and return the same
-   * instance.
+   * Set the type of this {@link GroundingModuleConfig} instance and return the same instance.
    *
-   * @param groundingService The groundingService of this {@link GroundingModuleConfig}
+   * @param type The type of this {@link GroundingModuleConfig}
    * @return The same instance of this {@link GroundingModuleConfig} class
    */
   @Nonnull
-  public GroundingModuleConfig groundingService(
-      @Nonnull final GroundingServiceEnum groundingService) {
-    this.groundingService = groundingService;
+  public GroundingModuleConfig type(@Nullable final TypeEnum type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get groundingService
+   * Get type
    *
-   * @return groundingService The groundingService of this {@link GroundingModuleConfig} instance.
+   * @return type The type of this {@link GroundingModuleConfig} instance.
    */
-  @Nonnull
-  public GroundingServiceEnum getGroundingService() {
-    return groundingService;
+  @Nullable
+  public TypeEnum getType() {
+    return type;
   }
 
   /**
-   * Set the groundingService of this {@link GroundingModuleConfig} instance.
+   * Set the type of this {@link GroundingModuleConfig} instance.
    *
-   * @param groundingService The groundingService of this {@link GroundingModuleConfig}
+   * @param type The type of this {@link GroundingModuleConfig}
    */
-  public void setGroundingService(@Nonnull final GroundingServiceEnum groundingService) {
-    this.groundingService = groundingService;
+  public void setType(@Nullable final TypeEnum type) {
+    this.type = type;
   }
 
   /**
-   * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance and return
-   * the same instance.
+   * Set the config of this {@link GroundingModuleConfig} instance and return the same instance.
    *
-   * @param groundingServiceConfiguration The groundingServiceConfiguration of this {@link
-   *     GroundingModuleConfig}
+   * @param config The config of this {@link GroundingModuleConfig}
    * @return The same instance of this {@link GroundingModuleConfig} class
    */
   @Nonnull
-  public GroundingModuleConfig groundingServiceConfiguration(
-      @Nullable
-          final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
-    this.groundingServiceConfiguration = groundingServiceConfiguration;
+  public GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get groundingServiceConfiguration
+   * Get config
    *
-   * @return groundingServiceConfiguration The groundingServiceConfiguration of this {@link
-   *     GroundingModuleConfig} instance.
+   * @return config The config of this {@link GroundingModuleConfig} instance.
    */
   @Nonnull
-  public GroundingModuleConfigGroundingServiceConfiguration getGroundingServiceConfiguration() {
-    return groundingServiceConfiguration;
+  public GroundingModuleConfigConfig getConfig() {
+    return config;
   }
 
   /**
-   * Set the groundingServiceConfiguration of this {@link GroundingModuleConfig} instance.
+   * Set the config of this {@link GroundingModuleConfig} instance.
    *
-   * @param groundingServiceConfiguration The groundingServiceConfiguration of this {@link
-   *     GroundingModuleConfig}
+   * @param config The config of this {@link GroundingModuleConfig}
    */
-  public void setGroundingServiceConfiguration(
-      @Nullable
-          final GroundingModuleConfigGroundingServiceConfiguration groundingServiceConfiguration) {
-    this.groundingServiceConfiguration = groundingServiceConfiguration;
+  public void setConfig(@Nonnull final GroundingModuleConfigConfig config) {
+    this.config = config;
   }
 
   /**
@@ -217,15 +207,13 @@ public class GroundingModuleConfig
     }
     final GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, groundingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.groundingService, groundingModuleConfig.groundingService)
-        && Objects.equals(
-            this.groundingServiceConfiguration,
-            groundingModuleConfig.groundingServiceConfiguration);
+        && Objects.equals(this.type, groundingModuleConfig.type)
+        && Objects.equals(this.config, groundingModuleConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(groundingService, groundingServiceConfiguration, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
@@ -233,10 +221,8 @@ public class GroundingModuleConfig
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class GroundingModuleConfig {\n");
-    sb.append("    groundingService: ").append(toIndentedString(groundingService)).append("\n");
-    sb.append("    groundingServiceConfiguration: ")
-        .append(toIndentedString(groundingServiceConfiguration))
-        .append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -259,17 +245,28 @@ public class GroundingModuleConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (groundingService) -> new GroundingModuleConfig().groundingService(groundingService);
+    return (type) -> (config) -> new GroundingModuleConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the groundingService of this {@link GroundingModuleConfig} instance.
+     * Set the type of this {@link GroundingModuleConfig} instance.
      *
-     * @param groundingService The groundingService of this {@link GroundingModuleConfig}
+     * @param type The type of this {@link GroundingModuleConfig}
+     * @return The GroundingModuleConfig builder.
+     */
+    Builder1 type(@Nullable final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the config of this {@link GroundingModuleConfig} instance.
+     *
+     * @param config The config of this {@link GroundingModuleConfig}
      * @return The GroundingModuleConfig instance.
      */
-    GroundingModuleConfig groundingService(@Nonnull final GroundingServiceEnum groundingService);
+    GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config);
   }
 }

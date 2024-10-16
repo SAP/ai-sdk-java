@@ -40,7 +40,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutions() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions"))
+        get(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -119,7 +119,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void postExecution() {
     wireMockServer.stubFor(
-        post(urlPathEqualTo("/lm/executions"))
+        post(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -145,7 +145,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
 
     wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo("/lm/executions"))
+        postRequestedFor(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -159,7 +159,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutionById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions/e529e8bd58740bc9"))
+        get(urlPathEqualTo("/v2/lm/executions/e529e8bd58740bc9"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -232,7 +232,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void deleteExecution() {
     wireMockServer.stubFor(
-        delete(urlPathEqualTo("/lm/executions/e529e8bd58740bc9"))
+        delete(urlPathEqualTo("/v2/lm/executions/e529e8bd58740bc9"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -260,7 +260,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void patchExecution() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/executions/eec3c6ea18bac6da"))
+        patch(urlPathEqualTo("/v2/lm/executions/eec3c6ea18bac6da"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -287,7 +287,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo("Execution modification scheduled");
 
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/executions/eec3c6ea18bac6da"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/executions/eec3c6ea18bac6da"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(equalToJson("{\"targetStatus\":\"STOPPED\"}")));
   }
@@ -295,7 +295,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutionCount() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions/$count"))
+        get(urlPathEqualTo("/v2/lm/executions/$count"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -313,7 +313,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutionLogs() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions/ee467bea5af28adb/logs"))
+        get(urlPathEqualTo("/v2/lm/executions/ee467bea5af28adb/logs"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -357,7 +357,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void patchBulkExecutions() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/executions"))
+        patch(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -398,7 +398,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo("Execution modification scheduled");
 
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/executions"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
