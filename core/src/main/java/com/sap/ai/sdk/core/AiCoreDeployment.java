@@ -57,7 +57,7 @@ public class AiCoreDeployment implements AiCoreDestination {
    * @return A new instance of the AI Core service.
    */
   @Nonnull
-  public static AiCoreDeployment forModelName(
+  public static AiCoreDeployment forModel(
       @Nonnull final AiCoreService service, @Nonnull final AiModel model) {
     final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(model, deployment);
     return new AiCoreDeployment(service, obj -> obj.getDeploymentId(service.client(), p));
