@@ -1,13 +1,12 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.AiCoreDeployment.isDeploymentOfModel;
-
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -130,5 +129,41 @@ class DeploymentCache {
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
         .map(AiDeployment::getId);
+  }
+
+  /**
+   * This exists because getBackendDetails() is broken
+   *
+   * @param modelName The model name.
+   * @param deployment The deployment.
+   * @return true if the deployment is of the model.
+   */
+  protected static boolean isDeploymentOfModel(
+      @Nonnull final String modelName, @Nonnull final AiDeployment deployment) {
+    final var deploymentDetails = deployment.getDetails();
+    // The AI Core specification doesn't mention that this is nullable, but it can be.
+    // Remove this check when the specification is fixed.
+    if (deploymentDetails == null) {
+      return false;
+    }
+    final var resources = deploymentDetails.getResources();
+    if (resources == null) {
+      return false;
+    }
+    Object detailsObject = resources.getBackendDetails();
+    // workaround for AIWDF-2124
+    if (detailsObject == null) {
+      if (!resources.getCustomFieldNames().contains("backend_details")) {
+        return false;
+      }
+      detailsObject = resources.getCustomField("backend_details");
+    }
+
+    if (detailsObject instanceof Map<?, ?> details
+        && details.get("model") instanceof Map<?, ?> model
+        && model.get("name") instanceof String name) {
+      return modelName.equals(name);
+    }
+    return false;
   }
 }
