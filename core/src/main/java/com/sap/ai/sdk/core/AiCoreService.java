@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.core;
 
+import static com.sap.ai.sdk.core.DeploymentCache.getDeploymentIdByModel;
+import static com.sap.ai.sdk.core.DeploymentCache.getDeploymentIdByScenario;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
 import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 
@@ -77,7 +79,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return AiCoreDeployment.forDeploymentId(this, deploymentId);
+    return new AiCoreDeployment(this, obj -> deploymentId);
   }
 
   /**
@@ -90,12 +92,13 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
-    return AiCoreDeployment.forModelName(this, modelName);
+    return new AiCoreDeployment(
+        this, obj -> getDeploymentIdByModel(this.client(), obj.getResourceGroup(), modelName));
   }
 
   /**
-   * Set a specific deployment by scenario id. If there are multiple deployments of the * same
-   * model, the first one is returned.
+   * Set a specific deployment by scenario id. If there are multiple deployments of the same model,
+   * the first one is returned.
    *
    * @param scenarioId The scenario id to be used for AI Core service calls.
    * @return A new instance of the AI Core service.
@@ -103,7 +106,8 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
-    return AiCoreDeployment.forScenarioId(this, scenarioId);
+    return new AiCoreDeployment(
+        this, obj -> getDeploymentIdByScenario(this.client(), obj.getResourceGroup(), scenarioId));
   }
 
   /**

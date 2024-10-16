@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.core.AiCoreDeployment.isDeploymentOfModel;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,31 +19,31 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DeploymentCache {
-  /** The client to use for deployment queries. */
-  protected static DeploymentApi API;
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
   protected static final List<AiDeployment> CACHE = new ArrayList<>();
-
-  /**
-   * Remove all entries from the cache.
-   *
-   * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
-   */
-  public static void clearCache() {
-    CACHE.clear();
-  }
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
    *
    * <p><b>Call this whenever a deployment is deleted.</b>
    *
+   * @param client the API client to query deployments.
    * @param resourceGroup the resource group, usually "default".
    */
-  public static void resetCache(@Nonnull final String resourceGroup) {
+  public static void resetCache(
+      @Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
     clearCache();
-    loadCache(resourceGroup);
+    loadCache(client, resourceGroup);
+  }
+
+  /**
+   * Remove all entries from the cache.
+   *
+   * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
+   */
+  protected static void clearCache() {
+    CACHE.clear();
   }
 
   /**
@@ -50,11 +51,13 @@ public class DeploymentCache {
    *
    * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
    *
+   * @param client the API client to query deployments.
    * @param resourceGroup the resource group, usually "default".
    */
-  public static void loadCache(@Nonnull final String resourceGroup) {
+  protected static void loadCache(
+      @Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
     try {
-      final var deployments = API.query(resourceGroup).getResources();
+      final var deployments = new DeploymentApi(client).query(resourceGroup).getResources();
       CACHE.addAll(deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
@@ -65,6 +68,7 @@ public class DeploymentCache {
    * Get the deployment id from the foundation model name. If there are multiple deployments of the
    * same model, the first one is returned.
    *
+   * @param client the API client to maybe reset the cache if the deployment is not found.
    * @param resourceGroup the resource group, usually "default".
    * @param modelName the name of the foundation model.
    * @return the deployment id.
@@ -72,12 +76,14 @@ public class DeploymentCache {
    */
   @Nonnull
   public static String getDeploymentIdByModel(
-      @Nonnull final String resourceGroup, @Nonnull final String modelName)
+      @Nonnull final ApiClient client,
+      @Nonnull final String resourceGroup,
+      @Nonnull final String modelName)
       throws NoSuchElementException {
     return getDeploymentIdByModel(modelName)
         .orElseGet(
             () -> {
-              resetCache(resourceGroup);
+              resetCache(client, resourceGroup);
               return getDeploymentIdByModel(modelName)
                   .orElseThrow(
                       () ->
@@ -97,6 +103,7 @@ public class DeploymentCache {
    * Get the deployment id from the scenario id. If there are multiple deployments of the * same
    * model, the first one is returned.
    *
+   * @param client the API client to maybe reset the cache if the deployment is not found.
    * @param resourceGroup the resource group, usually "default".
    * @param scenarioId the scenario id, can be "orchestration".
    * @return the deployment id.
@@ -104,12 +111,14 @@ public class DeploymentCache {
    */
   @Nonnull
   public static String getDeploymentIdByScenario(
-      @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
+      @Nonnull final ApiClient client,
+      @Nonnull final String resourceGroup,
+      @Nonnull final String scenarioId)
       throws NoSuchElementException {
     return getDeploymentIdByScenario(scenarioId)
         .orElseGet(
             () -> {
-              resetCache(resourceGroup);
+              resetCache(client, resourceGroup);
               return getDeploymentIdByScenario(scenarioId)
                   .orElseThrow(
                       () ->

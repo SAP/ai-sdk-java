@@ -1,13 +1,11 @@
 package com.sap.ai.sdk.core;
 
-import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -41,47 +39,6 @@ public class AiCoreDeployment implements AiCoreDestination {
       @Nonnull final AiCoreService service,
       @Nonnull final Function<AiCoreDeployment, String> deploymentId) {
     this(service, deploymentId, "default");
-  }
-
-  /**
-   * Create a new instance of the AI Core service with a deployment.
-   *
-   * @param service The AI Core service.
-   * @param modelName The model name.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public static AiCoreDeployment forModelName(
-      @Nonnull final AiCoreService service, @Nonnull final String modelName) {
-    return new AiCoreDeployment(
-        service, obj -> obj.getDeploymentIdByModel(service.client(), modelName));
-  }
-
-  /**
-   * Create a new instance of the AI Core service with a deployment.
-   *
-   * @param service The AI Core service.
-   * @param scenarioId The scenario id.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public static AiCoreDeployment forScenarioId(
-      @Nonnull final AiCoreService service, @Nonnull final String scenarioId) {
-    return new AiCoreDeployment(
-        service, obj -> obj.getDeploymentIdByScenario(service.client(), scenarioId));
-  }
-
-  /**
-   * Create a new instance of the AI Core service with a deployment.
-   *
-   * @param service The AI Core service.
-   * @param deploymentId The deployment id.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public static AiCoreDeployment forDeploymentId(
-      @Nonnull final AiCoreService service, @Nonnull final String deploymentId) {
-    return new AiCoreDeployment(service, obj -> deploymentId);
   }
 
   @Nonnull
@@ -193,38 +150,5 @@ public class AiCoreDeployment implements AiCoreDestination {
       return modelName.equals(name);
     }
     return false;
-  }
-
-  /**
-   * Get the deployment id from the foundation model name. If there are multiple deployments of the
-   * same model, the first one is returned.
-   *
-   * @param modelName the name of the foundation model.
-   * @return the deployment id.
-   * @throws NoSuchElementException if no running deployment is found for the model.
-   */
-  @Nonnull
-  protected String getDeploymentIdByModel(
-      @Nonnull final ApiClient client, @Nonnull final String modelName)
-      throws NoSuchElementException {
-    DeploymentCache.API = new DeploymentApi(client);
-    return DeploymentCache.getDeploymentIdByModel(getResourceGroup(), modelName);
-  }
-
-  /**
-   * Get the deployment id from the scenario id. If there are multiple deployments of the same
-   * model, the first one is returned.
-   *
-   * @param client The API client to do HTTP requests to AI Core.
-   * @param scenarioId the scenario id, can be "orchestration".
-   * @return the deployment id.
-   * @throws NoSuchElementException if no running deployment is found for the scenario.
-   */
-  @Nonnull
-  protected String getDeploymentIdByScenario(
-      @Nonnull final ApiClient client, @Nonnull final String scenarioId)
-      throws NoSuchElementException {
-    DeploymentCache.API = new DeploymentApi(client);
-    return DeploymentCache.getDeploymentIdByScenario(getResourceGroup(), scenarioId);
   }
 }

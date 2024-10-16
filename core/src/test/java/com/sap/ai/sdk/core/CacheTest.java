@@ -6,7 +6,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 
-import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.WireMockTestServer;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ class CacheTest extends WireMockTestServer {
 
   @BeforeEach
   void setupCache() {
-    DeploymentCache.API = new DeploymentApi(client);
     wireMockServer.resetRequests();
   }
 
@@ -95,27 +93,27 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeployment() {
     stubGPT4();
-    DeploymentCache.loadCache("default");
+    DeploymentCache.loadCache(client, "default");
 
-    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
   @Test
   void clearCache() {
     stubGPT4();
-    DeploymentCache.loadCache("default");
+    DeploymentCache.loadCache(client, "default");
 
-    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
     DeploymentCache.clearCache();
 
-    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
-    // the deployment is not in the cache anymore, so we need to fetch it again
+    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    // the deployment is not in the cache anymore, so we need to query it again
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -131,14 +129,14 @@ class CacheTest extends WireMockTestServer {
   @Test
   void newDeploymentAfterReset() {
     stubEmpty();
-    DeploymentCache.loadCache("default");
+    DeploymentCache.loadCache(client, "default");
     stubGPT4();
 
-    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    DeploymentCache.getDeploymentIdByModel("default", "gpt-4-32k");
+    DeploymentCache.getDeploymentIdByModel(client, "default", "gpt-4-32k");
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 }
