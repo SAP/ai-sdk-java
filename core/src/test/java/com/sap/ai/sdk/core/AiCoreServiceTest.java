@@ -95,7 +95,6 @@ public class AiCoreServiceTest {
     assertThat(client.getBasePath()).isEqualTo("https://foo.bar/v2/");
   }
 
-
   @Test
   void testCustomization() {
     final var customService =
