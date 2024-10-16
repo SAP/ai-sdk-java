@@ -32,4 +32,22 @@ class OrchestrationChatOptionsTest {
     assertThat(opts.getTemperature()).isEqualTo(0.5);
     assertThat(opts.getMaxTokens()).isEqualTo(100);
   }
+
+  @Test
+  void testEqualsAndHashCode() {
+    var llm =
+        LLMModuleConfig.create()
+            .modelName("foo")
+            .modelParams(Map.of("temperature", 0.5, "maxTokens", 100));
+
+    var opts1 = new OrchestrationChatOptions()
+            .withTemplateParameters(Map.of("foo", "bar"))
+            .withLlmConfig(llm);
+    var opts2 = new OrchestrationChatOptions()
+            .withTemplateParameters(Map.of("foo", "bar"))
+            .withLlmConfig(llm);
+
+    assertThat(opts1).isEqualTo(opts2);
+    assertThat(opts1.hashCode()).isEqualTo(opts2.hashCode());
+  }
 }

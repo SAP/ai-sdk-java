@@ -106,15 +106,17 @@ class SerializationTest {
                 Map.of(
                     "original_service_response",
                     Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 2),
-                        "checked_text", "Hello there!"));
+                    "checked_text",
+                    "Hello there!"));
     var outputFilterResult =
-            GenericModuleResult.create()
-                    .message("Output filter passed successfully.")
-                    .data(
-                            Map.of(
-                                    "original_service_response",
-                                    Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 2),
-                                    "checked_text", "General Kenobi!"));
+        GenericModuleResult.create()
+            .message("Output filter passed successfully.")
+            .data(
+                Map.of(
+                    "original_service_response",
+                    Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 2),
+                    "checked_text",
+                    "General Kenobi!"));
     var expected =
         CompletionPostResponse.create()
             .requestId("26ea36b5-c196-4806-a9a6-a686f0c6ad91")
@@ -122,8 +124,8 @@ class SerializationTest {
                 ModuleResults.create()
                     .templating(List.of(ChatMessage.create().role("user").content("Hello there!")))
                     .llm(llmResult)
-                        .inputFiltering(inputFilterResult)
-                        .outputFiltering(outputFilterResult)
+                    .inputFiltering(inputFilterResult)
+                    .outputFiltering(outputFilterResult)
                     .inputMasking(null)
                     .outputUnmasking(List.of()))
             .orchestrationResult(orchestrationResult);

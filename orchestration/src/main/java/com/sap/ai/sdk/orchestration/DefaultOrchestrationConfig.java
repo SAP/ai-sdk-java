@@ -6,8 +6,11 @@ import io.vavr.control.Option;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @Setter(AccessLevel.PRIVATE)
@@ -21,7 +24,11 @@ public class DefaultOrchestrationConfig<T extends OrchestrationConfig<T>>
   @Nonnull private Option<ContentFilter> inputContentFilter = Option.none();
   @Nonnull private Option<ContentFilter> outputContentFilter = Option.none();
 
-  @Nonnull private final T wrapper;
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  @Getter(AccessLevel.NONE)
+  @Nonnull
+  private final T wrapper;
 
   @SuppressWarnings("unchecked")
   private DefaultOrchestrationConfig() {
@@ -104,6 +111,7 @@ public class DefaultOrchestrationConfig<T extends OrchestrationConfig<T>>
    * </ol>
    *
    * @param source The source configuration to copy from.
+   * @return This (delegate) object.
    */
   public DefaultOrchestrationConfig<T> copyFrom(@Nonnull final OrchestrationConfig<?> source) {
     llmConfig.orElse(source::getLlmConfig).forEach(this::withLlmConfig);

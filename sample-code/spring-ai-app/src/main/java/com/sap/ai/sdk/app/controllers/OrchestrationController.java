@@ -29,7 +29,7 @@ class OrchestrationController {
   @Autowired OrchestrationChatModel client;
 
   OrchestrationChatModel clientWithoutDefaults =
-      new OrchestrationChatModel(new OrchestrationClient().withMaskingConfig());
+      new OrchestrationChatModel(new OrchestrationClient());
 
   @GetMapping("/completion")
   ChatResponse completion() {
