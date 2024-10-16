@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AiCoreDeployment implements AiCoreDestination {
 
-  private static Map<String, AiDeploymentList> CACHE = new LinkedHashMap<>();
+  private static final Map<String, AiDeploymentList> CACHE = new LinkedHashMap<>();
 
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
@@ -53,13 +53,13 @@ public class AiCoreDeployment implements AiCoreDestination {
    * Create a new instance of the AI Core service with a deployment.
    *
    * @param service The AI Core service.
-   * @param modelName The model name.
+   * @param model The model name.
    * @return A new instance of the AI Core service.
    */
   @Nonnull
   public static AiCoreDeployment forModelName(
-      @Nonnull final AiCoreService service, @Nonnull final String modelName) {
-    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(modelName, deployment);
+      @Nonnull final AiCoreService service, @Nonnull final AiModel model) {
+    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(model, deployment);
     return new AiCoreDeployment(service, obj -> obj.getDeploymentId(service.client(), p));
   }
 

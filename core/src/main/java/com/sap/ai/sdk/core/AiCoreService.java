@@ -87,7 +87,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeploymentByModel(@Nonnull final AiModel model) {
-    return AiCoreDeployment.forModelName(this, model.name());
+    return AiCoreDeployment.forModelName(this, model);
   }
 
   /**
