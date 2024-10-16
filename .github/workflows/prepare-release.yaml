@@ -152,7 +152,7 @@ jobs:
           - [ ] Review the [Draft Release](${{ needs.create-release.outputs.release-url }})
           - [ ] Review **and approve** this PR
           - [ ] Trigger the [Perform Release Workflow](${{ github.event.repository.html_url }}/actions/workflows/perform-release.yml)
-          - [ ] Once the `Perform Release` workflow is through, head over to the [OSS Repository](https://oss.sonatype.org/#stagingRepositories) and log in with the credentials in the Team Password Safe. There should be a staged release. Check whether everything looks good and, if so, publish the release.")
+          - [ ] Once the `Perform Release` workflow is through, head over to the [Central Sonatype](https://central.sonatype.com/publishing/deployments) and log in with the credentials in the Team Password Safe. There should be a published release.")
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
