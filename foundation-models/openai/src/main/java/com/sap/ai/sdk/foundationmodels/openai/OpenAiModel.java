@@ -54,7 +54,8 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
    * @param version The version of the model.
    * @return The new instance of OpenAiModel.
    */
-  public OpenAiModel withVersion(@Nonnull String version) {
+  @Nonnull
+  public OpenAiModel withVersion(@Nonnull final String version) {
     return new OpenAiModel(name, version);
   }
 }
