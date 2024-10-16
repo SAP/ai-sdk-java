@@ -109,7 +109,7 @@ jobs:
 
       - name: "Create settings.xml"
         run: |
-          echo ${{ secrets.CENTRAL_SONATYPE_SETTINGS_XML }} > settings.xml
+          echo '${{ secrets.CENTRAL_SONATYPE_SETTINGS_XML }}' > settings.xml
 
       - name: "Deploy"
         run: |
