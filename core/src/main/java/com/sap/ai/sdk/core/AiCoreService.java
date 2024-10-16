@@ -43,11 +43,15 @@ public class AiCoreService implements AiCoreDestination {
 
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
+  /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Getter(AccessLevel.PROTECTED)
   @Setter(AccessLevel.PROTECTED)
   @Nonnull
   private String resourceGroup;
 
+  /**
+   * The deployment id is queried by AiCoreDeployment.destination() or AiCoreDeployment.client().
+   */
   @Nonnull String deploymentId;
 
   /** The default constructor. */
