@@ -6,7 +6,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
