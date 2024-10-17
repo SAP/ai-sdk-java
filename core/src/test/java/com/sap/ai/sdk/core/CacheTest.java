@@ -105,19 +105,7 @@ class CacheTest extends WireMockTestServer {
     stubGPT4();
     cacheUnderTest.loadCache(client, "default");
 
-    final AiModel targetModel =
-        new AiModel() {
-          @Nonnull
-          @Override
-          public String name() {
-            return "gpt-4-32k";
-          }
-
-          @Override
-          public String version() {
-            return null;
-          }
-        };
+    final AiModel targetModel = createAiModel("gpt-4-32k", null);
 
     cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
@@ -131,19 +119,7 @@ class CacheTest extends WireMockTestServer {
     stubGPT4();
     cacheUnderTest.loadCache(client, "default");
 
-    final AiModel targetModel =
-        new AiModel() {
-          @Nonnull
-          @Override
-          public String name() {
-            return "gpt-4-32k";
-          }
-
-          @Override
-          public String version() {
-            return null;
-          }
-        };
+    final AiModel targetModel = createAiModel("gpt-4-32k", null);
 
     cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
@@ -170,19 +146,7 @@ class CacheTest extends WireMockTestServer {
     cacheUnderTest.loadCache(client, "default");
     stubGPT4();
 
-    final AiModel targetModel =
-        new AiModel() {
-          @Nonnull
-          @Override
-          public String name() {
-            return "gpt-4-32k";
-          }
-
-          @Override
-          public String version() {
-            return null;
-          }
-        };
+    final AiModel targetModel = createAiModel("gpt-4-32k", null);
 
     cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
     // 1 reset empty and 1 cache miss
@@ -195,34 +159,8 @@ class CacheTest extends WireMockTestServer {
   @Test
   public void isDeploymentOfModel() {
     // Create a target model
-    final AiModel targetModel =
-        new AiModel() {
-          @Nonnull
-          @Override
-          public String name() {
-            return "gpt-4-32k";
-          }
-
-          @Override
-          public String version() {
-            return "1.0";
-          }
-        };
-
-    // Create a target model with null version
-    final AiModel targetModelWithoutVersion =
-        new AiModel() {
-          @Nonnull
-          @Override
-          public String name() {
-            return "gpt-4-32k";
-          }
-
-          @Override
-          public String version() {
-            return null;
-          }
-        };
+    final AiModel targetModel = createAiModel("gpt-4-32k", null);
+    final AiModel targetModelWithDifferentVersion = createAiModel("gpt-4-32k", "1.0");
 
     // Create a deployment with a different model by version
     final var model = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
@@ -237,7 +175,23 @@ class CacheTest extends WireMockTestServer {
         AiDeploymentDetails.create().resources(AiResourcesDetails.create().backendDetails(model)));
 
     // Check if the deployment is of the target model
-    assertThat(DeploymentCache.isDeploymentOfModel(targetModel, deployment)).isFalse();
-    assertThat(DeploymentCache.isDeploymentOfModel(targetModelWithoutVersion, deployment)).isTrue();
+    assertThat(DeploymentCache.isDeploymentOfModel(targetModel, deployment)).isTrue();
+    assertThat(DeploymentCache.isDeploymentOfModel(targetModelWithDifferentVersion, deployment))
+        .isFalse();
+  }
+
+  public static AiModel createAiModel(String name, String version) {
+    return new AiModel() {
+      @Nonnull
+      @Override
+      public String name() {
+        return name;
+      }
+
+      @Override
+      public String version() {
+        return version;
+      }
+    };
   }
 }
