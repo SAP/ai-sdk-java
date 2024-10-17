@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.app.Application.API_CLIENT;
-
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
@@ -16,6 +15,7 @@ import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/deployments")
 class DeploymentController {
 
+  private static final ApiClient API_CLIENT = new AiCoreService().client();
   private static final DeploymentApi API = new DeploymentApi(API_CLIENT);
 
   /**

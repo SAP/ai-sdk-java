@@ -15,7 +15,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -35,8 +34,6 @@ public class AiCoreService implements AiCoreDestination {
   final Function<AiCoreService, Destination> baseDestinationHandler;
   final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
   final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
-
-  private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
 
   /** The default constructor. */
   public AiCoreService() {
@@ -79,43 +76,29 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(this, obj -> deploymentId);
+    return AiCoreDeployment.forDeploymentId(this, deploymentId);
   }
 
   /**
-   * Set a specific deployment by model name. If there are multiple deployments of the same model,
-   * the first one is returned.
+   * Set a specific deployment by model name.
    *
    * @param modelName The model name to be used for AI Core service calls.
    * @return A new instance of the AI Core Deployment.
-   * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName)
-      throws NoSuchElementException {
-    return new AiCoreDeployment(
-        this,
-        obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByModel(
-                this.client(), obj.getResourceGroup(), modelName));
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName) {
+    return AiCoreDeployment.forModelName(this, modelName);
   }
 
   /**
-   * Set a specific deployment by scenario id. If there are multiple deployments of the same model,
-   * the first one is returned.
+   * Set a specific deployment by scenario id.
    *
    * @param scenarioId The scenario id to be used for AI Core service calls.
    * @return A new instance of the AI Core Deployment.
-   * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId)
-      throws NoSuchElementException {
-    return new AiCoreDeployment(
-        this,
-        obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByScenario(
-                this.client(), obj.getResourceGroup(), scenarioId));
+  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId) {
+    return AiCoreDeployment.forScenarioId(this, scenarioId);
   }
 
   /**
