@@ -480,8 +480,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <version>3.3.1</version>
               <executions>
                 <execution>
+                  <id>attach-sources</id>
                   <goals>
-                    <goal>jar</goal>
+                    <goal>jar-no-fork</goal>
                   </goals>
                   <phase>package</phase>
                 </execution>
@@ -507,7 +508,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                   <goals>
                     <goal>delombok</goal>
                   </goals>
-                  <phase>generate-sources</phase>
+                  <phase>process-sources</phase>
                   <configuration>
                     <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
                     <outputDirectory>${project.build.directory}/delombok</outputDirectory>
@@ -575,26 +576,20 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-deploy-plugin</artifactId>
               <version>3.1.3</version>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>deploy-file</goal>
-                  </goals>
-                  <phase>deploy</phase>
-                  <configuration>
-                    <url>file:./temp_local_repo</url>
-                    <repositoryId>local</repositoryId>
-                    <file>${project.basedir}/target/${project.artifactId}-${project.version}.jar</file>
-                    <sources>${project.basedir}/target/${project.artifactId}-${project.version}-sources.jar</sources>
-                    <javadoc>${project.basedir}/target/${project.artifactId}-${project.version}-javadoc.jar</javadoc>
-                    <pomFile>${project.basedir}/pom.xml</pomFile>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>${project.artifactId}</artifactId>
-                    <version>${project.version}</version>
-                    <packaging>${project.packaging}</packaging>
-                  </configuration>
-                </execution>
-              </executions>
+              <configuration>
+                <skip>true</skip>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.sonatype.central</groupId>
+              <artifactId>central-publishing-maven-plugin</artifactId>
+              <version>0.6.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <deploymentName>SAP AI SDK ${project.version}</deploymentName>
+                <publishingServerId>central</publishingServerId>
+                <autoPublish>false</autoPublish>
+              </configuration>
             </plugin>
           </plugins>
         </pluginManagement>
@@ -632,19 +627,8 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <configuration>
-                  <file>${project.basedir}/pom.xml</file>
-                  <!-- The parent has no sources -->
-                  <sources>${empty.property}</sources>
-                  <javadoc>${empty.property}</javadoc>
-                </configuration>
-              </execution>
-            </executions>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
