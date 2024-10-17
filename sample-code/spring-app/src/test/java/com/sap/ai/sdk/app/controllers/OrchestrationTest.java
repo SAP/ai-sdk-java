@@ -74,6 +74,6 @@ class OrchestrationTest {
     assertThatThrownBy(() -> new OrchestrationController().filter(VERY_STRICT))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
-        .hasMessageContaining("input filter");
+        .hasMessageContaining("Content filtered");
   }
 }
