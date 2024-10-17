@@ -1,18 +1,27 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.LENIENT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class OrchestrationTest {
+  OrchestrationController controller;
+
+  @BeforeEach
+  void setUp() {
+    controller = new OrchestrationController();
+  }
+
   @Test
-  void template() {
-    final var result = new OrchestrationController().template();
+  void testCompletion() {
+    final var result = controller.completion();
 
     assertThat(result.getRequestId()).isNotEmpty();
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
-        .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
     var llm = result.getModuleResults().getLlm();
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
@@ -42,7 +51,29 @@ class OrchestrationTest {
   }
 
   @Test
-  void messagesHistory() {
-    assertThat(new OrchestrationController()).isNotNull();
+  void testTemplate() {
+    var result = controller.template();
+
+    var templateResult = result.getModuleResults().getTemplating().get(0);
+    assertThat(templateResult.getContent())
+        .isEqualTo("Reply with 'The Orchestration Service is working!' in german");
+    assertThat(templateResult.getRole()).isEqualTo("user");
+  }
+
+  @Test
+  void testLenientContentFilter() {
+    var result = controller.filter(LENIENT);
+
+    var filterResult = result.getModuleResults().getInputFiltering();
+
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testStrictContentFilter() {
+    assertThatThrownBy(() -> new OrchestrationController().filter(VERY_STRICT))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400 Bad Request")
+        .hasMessageContaining("input filter");
   }
 }

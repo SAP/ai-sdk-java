@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
@@ -22,7 +23,7 @@ class OrchestrationController {
   private static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
 
-  OrchestrationClient client = new OrchestrationClient().withLlmConfig(LLM_CONFIG);
+  private final OrchestrationClient client = new OrchestrationClient().withLlmConfig(LLM_CONFIG);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
@@ -45,13 +46,24 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   public CompletionPostResponse template() {
-    var template = ChatMessage.create().role("user").content("{{?input}}");
-    var inputParams = Map.of("input", "Reply with 'Orchestration Service is working!' in German");
+    var template = ChatMessage.create().role("user").content("Reply with 'The Orchestration Service is working!' in {{?language}}");
+    var inputParams = Map.of("language", "german");
 
     var prompt =
         new OrchestrationPrompt(inputParams)
             .withTemplate(TemplatingModuleConfig.create().template(template));
 
+    return client.chatCompletion(prompt);
+  }
+
+  @GetMapping("/filter/{level}")
+  @Nonnull
+  public CompletionPostResponse filter(@Nonnull AzureContentFilter.Setting level) {
+    var filter = new AzureContentFilter().hate(level);
+    var prompt = new OrchestrationPrompt("This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.")
+            .withInputContentFilter(filter);
+
+    // if the level is strict, this will throw, if not it will return a result
     return client.chatCompletion(prompt);
   }
 
