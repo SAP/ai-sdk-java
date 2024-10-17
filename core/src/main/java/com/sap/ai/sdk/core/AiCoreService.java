@@ -178,4 +178,17 @@ public class AiCoreService implements AiCoreDestination {
 
     return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
   }
+
+  /**
+   * Remove all entries from the cache then load all deployments into the cache.
+   *
+   * <p><b>Call this whenever a deployment is deleted.</b>
+   *
+   * @param client the API client to query deployments.
+   * @param resourceGroup the resource group, usually "default".
+   */
+  public static void resetCache(
+      @Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
+    DEPLOYMENT_CACHE.resetCache(client, resourceGroup);
+  }
 }
