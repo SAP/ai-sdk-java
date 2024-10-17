@@ -66,7 +66,7 @@ SAP Cloud SDK flavored requirements:
 * Log activity, intermediate results, fallbacks and errors.
 
 
-## State of core class
+## State of Core class
 
 | API                                                                            | Behavior                                                                                                                                     |
 |--------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -83,6 +83,15 @@ Properties:
 * Service Binding lookup itself is not cached by AI SDK itself, but by Service Binding library.
 * Immutable objects.
 * Custom method overloads on (sub-classes of) `AiCoreService` are propagated down to the client.
+
+Consideration:
+* Always assume worst-case:
+  * User instantiates a constant `AiCoreService` in a static context.
+  * Custom Service Binding may be supplied by 3nd party library.
+    Race condition for resolving service bindings may lead to inconsistent behavior.
+  * User switches resource group at runtime.
+  * User switches destination at runtime.
+  * User switches deployment at runtime.
 
 Pro:
 - No redundant HTTP traffic.
