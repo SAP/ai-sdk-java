@@ -121,7 +121,7 @@ public class AiCoreServiceTest {
     final var destination = customServiceForDeployment.destination().asHttp();
     assertThat(destination.getUri()).hasToString("https://ai/v2/inference/deployments/deployment/");
 
-    final var resourceGroup = customServiceForDeployment.getResourceGroup();
+    final var resourceGroup = customService.resourceGroup;
     assertThat(resourceGroup).isEqualTo("group");
   }
 }
