@@ -71,7 +71,7 @@ class DeploymentCache {
   }
 
   private Optional<String> getDeploymentIdByModel(
-      @Nonnull String resourceGroup, @Nonnull final String modelName) {
+      @Nonnull final String resourceGroup, @Nonnull final String modelName) {
     return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
         .findFirst()
@@ -107,7 +107,7 @@ class DeploymentCache {
   }
 
   private Optional<String> getDeploymentIdByScenario(
-      @Nonnull String resourceGroup, @Nonnull final String scenarioId) {
+      @Nonnull final String resourceGroup, @Nonnull final String scenarioId) {
     return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
