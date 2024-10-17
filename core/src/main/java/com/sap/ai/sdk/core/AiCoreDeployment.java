@@ -1,18 +1,10 @@
 package com.sap.ai.sdk.core;
 
-import com.sap.ai.sdk.core.client.DeploymentApi;
-import com.sap.ai.sdk.core.client.model.AiDeployment;
-import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 /** Connectivity convenience methods for AI Core with deployment. */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AiCoreDeployment implements AiCoreDestination {
-
-  private static final Map<String, AiDeploymentList> CACHE = new LinkedHashMap<>();
 
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
@@ -47,47 +37,6 @@ public class AiCoreDeployment implements AiCoreDestination {
       @Nonnull final AiCoreService service,
       @Nonnull final Function<AiCoreDeployment, String> deploymentId) {
     this(service, deploymentId, "default");
-  }
-
-  /**
-   * Create a new instance of the AI Core service with a deployment.
-   *
-   * @param service The AI Core service.
-   * @param model The model name.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public static AiCoreDeployment forModel(
-      @Nonnull final AiCoreService service, @Nonnull final AiModel model) {
-    final Predicate<AiDeployment> p = deployment -> isDeploymentOfModel(model, deployment);
-    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(service.client(), p));
-  }
-
-  /**
-   * Create a new instance of the AI Core service with a deployment.
-   *
-   * @param service The AI Core service.
-   * @param scenarioId The scenario id.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public static AiCoreDeployment forScenarioId(
-      @Nonnull final AiCoreService service, @Nonnull final String scenarioId) {
-    final Predicate<AiDeployment> p = deployment -> scenarioId.equals(deployment.getScenarioId());
-    return new AiCoreDeployment(service, obj -> obj.getDeploymentId(service.client(), p));
-  }
-
-  /**
-   * Create a new instance of the AI Core service with a deployment.
-   *
-   * @param service The AI Core service.
-   * @param deploymentId The deployment id.
-   * @return A new instance of the AI Core service.
-   */
-  @Nonnull
-  public static AiCoreDeployment forDeploymentId(
-      @Nonnull final AiCoreService service, @Nonnull final String deploymentId) {
-    return new AiCoreDeployment(service, obj -> deploymentId);
   }
 
   @Nonnull
@@ -150,68 +99,5 @@ public class AiCoreDeployment implements AiCoreDestination {
   @Nonnull
   protected String getDeploymentId() {
     return deploymentId.apply(this);
-  }
-
-  /**
-   * This exists because getBackendDetails() is broken
-   *
-   * @param targetModel The target model object.
-   * @param deployment The deployment.
-   * @return true if the deployment is of the model.
-   */
-  protected static boolean isDeploymentOfModel(
-      @Nonnull final AiModel targetModel, @Nonnull final AiDeployment deployment) {
-    final var deploymentDetails = deployment.getDetails();
-    // The AI Core specification doesn't mention that this is nullable, but it can be.
-    // Remove this check when the specification is fixed.
-    if (deploymentDetails == null) {
-      return false;
-    }
-    final var resources = deploymentDetails.getResources();
-    if (resources == null) {
-      return false;
-    }
-    Object detailsObject = resources.getBackendDetails();
-    // workaround for AIWDF-2124
-    if (detailsObject == null) {
-      if (!resources.getCustomFieldNames().contains("backend_details")) {
-        return false;
-      }
-      detailsObject = resources.getCustomField("backend_details");
-    }
-
-    if (detailsObject instanceof Map<?, ?> details
-        && details.get("model") instanceof Map<?, ?> model
-        && model.get("name") instanceof String name
-        && targetModel.name().equals(name)) {
-      // if target version is not specified (null), any version is accepted, otherwise they must
-      // match
-      return targetModel.version() == null
-          || Objects.equals(targetModel.version(), model.get("version"));
-    }
-
-    return false;
-  }
-
-  /**
-   * Get the deployment id from the scenario id. If there are multiple deployments of the same
-   * scenario id, the first one is returned.
-   *
-   * @return the deployment id
-   * @throws NoSuchElementException if no deployment is found for the scenario id.
-   */
-  @Nonnull
-  protected String getDeploymentId(
-      @Nonnull final ApiClient client, @Nonnull final Predicate<AiDeployment> predicate)
-      throws NoSuchElementException {
-
-    final var resourceGroup = getResourceGroup();
-    final var deployments =
-        CACHE.computeIfAbsent(resourceGroup, rg -> new DeploymentApi(client).query(rg));
-
-    final var first =
-        deployments.getResources().stream().filter(predicate).map(AiDeployment::getId).findFirst();
-    return first.orElseThrow(
-        () -> new NoSuchElementException("No deployment found with scenario id orchestration"));
   }
 }

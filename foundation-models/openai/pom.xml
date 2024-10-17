@@ -31,7 +31,9 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
-
+  <properties>
+    <project.rootdir>${project.basedir}/../../</project.rootdir>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
