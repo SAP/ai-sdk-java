@@ -34,7 +34,7 @@ public class ScenarioTest {
     List<String> declaredOpenAiModelList = new ArrayList<>();
     for (Field field : declaredFields) {
       if (field.getType().equals(OpenAiModel.class)) {
-        declaredOpenAiModelList.add(((OpenAiModel) field.get(null)).model());
+        declaredOpenAiModelList.add(((OpenAiModel) field.get(null)).name());
       }
     }
 

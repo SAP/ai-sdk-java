@@ -142,12 +142,12 @@ class DeploymentController {
 
     // Create a configuration
     final var modelNameParameter =
-        AiParameterArgumentBinding.create().key("model").value(model.model());
+        AiParameterArgumentBinding.create().key("model").value(model.name());
     final var modelVersion =
         AiParameterArgumentBinding.create().key("modelVersion").value("latest");
     final var configurationBaseData =
         AiConfigurationBaseData.create()
-            .name(model.model())
+            .name(model.name())
             .executableId("azure-openai")
             .scenarioId("foundation-models")
             .addParameterBindingsItem(modelNameParameter)

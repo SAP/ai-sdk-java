@@ -86,18 +86,17 @@ public class AiCoreService implements AiCoreDestination {
    * Set a specific deployment by model name. If there are multiple deployments of the same model,
    * the first one is returned.
    *
-   * @param modelName The model name to be used for AI Core service calls.
+   * @param model The model to be used for AI Core service calls.
    * @return A new instance of the AI Core Deployment.
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final String modelName)
+  public AiCoreDeployment forDeploymentByModel(@Nonnull final AiModel model)
       throws NoSuchElementException {
     return new AiCoreDeployment(
         this,
         obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByModel(
-                this.client(), obj.getResourceGroup(), modelName));
+            DEPLOYMENT_CACHE.getDeploymentIdByModel(this.client(), obj.getResourceGroup(), model));
   }
 
   /**
