@@ -31,7 +31,6 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
-<!---->
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>3.3.4</spring-boot.version>
