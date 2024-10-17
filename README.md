@@ -160,7 +160,7 @@ After restarting your application, you should see an "aicore" entry in the `VCAP
 
 ```java
 Destination destination = DestinationAccessor.getDestination("my-aicore");
-ApiClient client = Core.getClient(destination);
+ApiClient client = new AiCoreService().withDestination(destination);
 ```
 
 </details>
@@ -239,7 +239,7 @@ For more detailed information and advanced usage, please refer to the following:
 To add a header to AI Core requests, use the following code:
 
 ```java
-ApiClient client = Core.getClient().addDefaultHeader("header-key", "header-value");
+ApiClient client = new AiCoreService().client().addDefaultHeader("header-key", "header-value");
 DeploymentApi api = new DeploymentApi(client);
 ```
 
