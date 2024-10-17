@@ -19,10 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -44,14 +41,9 @@ public class AiCoreService implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
-  @Getter(AccessLevel.PROTECTED)
-  @Setter(AccessLevel.PROTECTED)
-  @Nonnull
-  private String resourceGroup;
+  @Nonnull String resourceGroup;
 
-  /**
-   * The deployment id is queried by AiCoreDeployment.destination() or AiCoreDeployment.client().
-   */
+  /** The deployment id is set by AiCoreDeployment.destination() or AiCoreDeployment.client(). */
   @Nonnull String deploymentId;
 
   /** The default constructor. */
@@ -100,7 +92,7 @@ public class AiCoreService implements AiCoreDestination {
    * @param builder The destination builder.
    */
   protected void destinationSetHeaders(@Nonnull final DefaultHttpDestination.Builder builder) {
-    builder.property(AI_RESOURCE_GROUP, getResourceGroup());
+    builder.property(AI_RESOURCE_GROUP, resourceGroup);
   }
 
   /**
@@ -123,7 +115,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(this, obj -> deploymentId);
+    return new AiCoreDeployment(this, () -> deploymentId);
   }
 
   /**
@@ -139,9 +131,7 @@ public class AiCoreService implements AiCoreDestination {
       throws NoSuchElementException {
     return new AiCoreDeployment(
         this,
-        obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByModel(
-                this.client(), obj.getResourceGroup(), modelName));
+        () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this.client(), resourceGroup, modelName));
   }
 
   /**
@@ -157,9 +147,7 @@ public class AiCoreService implements AiCoreDestination {
       throws NoSuchElementException {
     return new AiCoreDeployment(
         this,
-        obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByScenario(
-                this.client(), obj.getResourceGroup(), scenarioId));
+        () -> DEPLOYMENT_CACHE.getDeploymentIdByScenario(client(), resourceGroup, scenarioId));
   }
 
   /**
