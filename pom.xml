@@ -154,6 +154,19 @@
     </dependency>
   </dependencies>
   <build>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+      </resource>
+      <!--  include LICENSE in all jar files  -->
+      <resource>
+        <filtering>false</filtering>
+        <directory>${project.rootdir}</directory>
+        <includes>
+          <include>LICENSE</include>
+        </includes>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>
