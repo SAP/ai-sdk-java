@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sap.ai.sdk.core.Core;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -58,7 +58,11 @@ public final class OpenAiClient {
    */
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel) {
-    final var destination = Core.getDestinationForModel(foundationModel.model(), "default");
+    final var destination =
+        new AiCoreService()
+            .forDeploymentByModel(foundationModel.model())
+            .withResourceGroup("default")
+            .destination();
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
