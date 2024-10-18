@@ -3,11 +3,11 @@ package com.sap.ai.sdk.core;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Represents an AI model. */
+/** An interface defining essential attributes of an AI model. */
 public interface AiModel {
 
   /**
-   * Returns the name of the model.
+   * Get the model's name.
    *
    * @return The name of the model.
    */
@@ -15,9 +15,9 @@ public interface AiModel {
   String name();
 
   /**
-   * Returns the version of the model.
+   * Get the model's version.
    *
-   * @return The version of the model.
+   * @return The version of the model, or null if not specified.
    */
   @Nullable
   String version();

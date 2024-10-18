@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 class DeploymentCache {
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  protected final Set<AiDeployment> CACHE = new HashSet<>();
+  protected final Set<AiDeployment> cache = new HashSet<>();
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
@@ -42,7 +42,7 @@ class DeploymentCache {
    * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
    */
   protected void clearCache() {
-    CACHE.clear();
+    cache.clear();
   }
 
   /**
@@ -56,19 +56,19 @@ class DeploymentCache {
   protected void loadCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
     try {
       final var deployments = new DeploymentApi(client).query(resourceGroup).getResources();
-      CACHE.addAll(deployments);
+      cache.addAll(deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
     }
   }
 
   /**
-   * Get the deployment id from the foundation model name. If there are multiple deployments of the
-   * same model, the first one is returned.
+   * Get the deployment id from the foundation model object. If there are multiple deployments of
+   * the same model, the first one is returned.
    *
    * @param client the API client to maybe reset the cache if the deployment is not found.
    * @param resourceGroup the resource group, usually "default".
-   * @param model the name of the foundation model.
+   * @param model the foundation model.
    * @return the deployment id.
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
@@ -91,7 +91,7 @@ class DeploymentCache {
   }
 
   private Optional<String> getDeploymentIdByModel(@Nonnull final AiModel model) {
-    return CACHE.stream()
+    return cache.stream()
         .filter(deployment -> isDeploymentOfModel(model, deployment))
         .findFirst()
         .map(AiDeployment::getId);
@@ -126,7 +126,7 @@ class DeploymentCache {
   }
 
   private Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
-    return CACHE.stream()
+    return cache.stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
         .map(AiDeployment::getId);

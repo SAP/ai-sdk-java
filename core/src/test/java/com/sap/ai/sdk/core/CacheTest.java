@@ -105,12 +105,12 @@ class CacheTest extends WireMockTestServer {
     stubGPT4();
     cacheUnderTest.loadCache(client, "default");
 
-    final AiModel targetModel = createAiModel("gpt-4-32k", null);
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
+    cacheUnderTest.getDeploymentIdByModel(client, "default", gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
+    cacheUnderTest.getDeploymentIdByModel(client, "default", gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -119,14 +119,14 @@ class CacheTest extends WireMockTestServer {
     stubGPT4();
     cacheUnderTest.loadCache(client, "default");
 
-    final AiModel targetModel = createAiModel("gpt-4-32k", null);
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
+    cacheUnderTest.getDeploymentIdByModel(client, "default", gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
     cacheUnderTest.clearCache();
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
+    cacheUnderTest.getDeploymentIdByModel(client, "default", gpt4);
     // the deployment is not in the cache anymore, so we need to query it again
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
@@ -146,21 +146,22 @@ class CacheTest extends WireMockTestServer {
     cacheUnderTest.loadCache(client, "default");
     stubGPT4();
 
-    final AiModel targetModel = createAiModel("gpt-4-32k", null);
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
+    cacheUnderTest.getDeploymentIdByModel(client, "default", gpt4);
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", targetModel);
+    cacheUnderTest.getDeploymentIdByModel(client, "default", gpt4);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
   @Test
   public void isDeploymentOfModel() {
     // Create a target model
-    final AiModel targetModel = createAiModel("gpt-4-32k", null);
-    final AiModel targetModelWithDifferentVersion = createAiModel("gpt-4-32k", "1.0");
+    final AiModel gpt4AnyVersion = createAiModel("gpt-4-32k", null);
+    final AiModel gpt4Version1 = createAiModel("gpt-4-32k", "1.0");
+    final AiModel gpt4VersionLatest = createAiModel("gpt-4-32k", "latest");
 
     // Create a deployment with a different model by version
     final var model = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
@@ -171,16 +172,16 @@ class CacheTest extends WireMockTestServer {
             .status(AiDeploymentStatus.RUNNING)
             .createdAt(OffsetDateTime.parse("2024-01-22T17:57:23+00:00"))
             .modifiedAt(OffsetDateTime.parse("2024-02-08T08:41:23+00:00"));
-    deployment.setDetails(
-        AiDeploymentDetails.create().resources(AiResourcesDetails.create().backendDetails(model)));
+    deployment.setDetails(AiDeploymentDetails.create().resources(AiResourcesDetails.create()));
+    deployment.getDetails().getResources().setCustomField("backend_details", model);
 
     // Check if the deployment is of the target model
-    assertThat(DeploymentCache.isDeploymentOfModel(targetModel, deployment)).isTrue();
-    assertThat(DeploymentCache.isDeploymentOfModel(targetModelWithDifferentVersion, deployment))
-        .isFalse();
+    assertThat(DeploymentCache.isDeploymentOfModel(gpt4AnyVersion, deployment)).isTrue();
+    assertThat(DeploymentCache.isDeploymentOfModel(gpt4Version1, deployment)).isFalse();
+    assertThat(DeploymentCache.isDeploymentOfModel(gpt4VersionLatest, deployment)).isTrue();
   }
 
-  public static AiModel createAiModel(String name, String version) {
+  static AiModel createAiModel(String name, String version) {
     return new AiModel() {
       @Nonnull
       @Override

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * OpenAiModel represents the OpenAI model that can be used for AI services.
+ * OpenAI models that are available in AI Core.
  *
  * @param name The name of the model.
  * @param version The version of the model (optional).
