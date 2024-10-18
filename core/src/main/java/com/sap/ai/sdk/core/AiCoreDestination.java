@@ -22,7 +22,7 @@ public interface AiCoreDestination {
    */
   @Nonnull
   default ApiClient client() {
-    final var destination = destination();
+    var destination = destination();
     return new ApiClient(destination);
   }
 }
