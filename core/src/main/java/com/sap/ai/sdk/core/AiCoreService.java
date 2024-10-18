@@ -32,18 +32,24 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AiCoreService implements AiCoreDestination {
 
-  final Function<AiCoreService, Destination> baseDestinationHandler;
+  Function<AiCoreService, Destination> baseDestinationHandler;
   final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
   final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
 
   private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
 
+  private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
+
+  /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
+  @Nonnull String resourceGroup;
+
+  /** The deployment id is set by AiCoreDeployment.destination() or AiCoreDeployment.client(). */
+  @Nonnull String deploymentId;
+
   /** The default constructor. */
   public AiCoreService() {
-    this(
-        AiCoreService::getBaseDestination,
-        AiCoreService::getApiClient,
-        AiCoreService::getDestinationBuilder);
+    this(AiCoreService::getApiClient, AiCoreService::getDestinationBuilder, "default", "");
+    baseDestinationHandler = AiCoreService::getBaseDestination;
   }
 
   @Nonnull
@@ -57,18 +63,48 @@ public class AiCoreService implements AiCoreDestination {
   @Override
   public Destination destination() {
     final var dest = baseDestinationHandler.apply(this);
-    return builderHandler.apply(this, dest).build();
+    final var builder = builderHandler.apply(this, dest);
+    if (!deploymentId.isEmpty()) {
+      destinationSetUrl(builder, dest);
+      destinationSetHeaders(builder);
+    }
+    return builder.build();
+  }
+
+  /**
+   * Update and set the URL for the destination.
+   *
+   * @param builder The destination builder.
+   * @param dest The original destination reference.
+   */
+  protected void destinationSetUrl(
+      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
+    String uri = dest.get(DestinationProperty.URI).get();
+    if (!uri.endsWith("/")) {
+      uri = uri + "/";
+    }
+    builder.uri(uri + "v2/inference/deployments/%s/".formatted(deploymentId));
+  }
+
+  /**
+   * Update and set the default request headers for the destination.
+   *
+   * @param builder The destination builder.
+   */
+  protected void destinationSetHeaders(@Nonnull final DefaultHttpDestination.Builder builder) {
+    builder.property(AI_RESOURCE_GROUP, resourceGroup);
   }
 
   /**
    * Set a specific base destination.
    *
    * @param destination The destination to be used for AI Core service calls.
-   * @return A new instance of the AI Core Service based on the provided destination.
+   * @return The AI Core Service based on the provided destination.
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-    return new AiCoreService((service) -> destination, clientHandler, builderHandler);
+    baseDestinationHandler = (service) -> destination;
+    return this;
   }
 
   /**
@@ -79,7 +115,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(this, obj -> deploymentId);
+    return new AiCoreDeployment(this, () -> deploymentId);
   }
 
   /**
@@ -95,9 +131,7 @@ public class AiCoreService implements AiCoreDestination {
       throws NoSuchElementException {
     return new AiCoreDeployment(
         this,
-        obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByModel(
-                this.client(), obj.getResourceGroup(), modelName));
+        () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this.client(), resourceGroup, modelName));
   }
 
   /**
@@ -113,9 +147,7 @@ public class AiCoreService implements AiCoreDestination {
       throws NoSuchElementException {
     return new AiCoreDeployment(
         this,
-        obj ->
-            DEPLOYMENT_CACHE.getDeploymentIdByScenario(
-                this.client(), obj.getResourceGroup(), scenarioId));
+        () -> DEPLOYMENT_CACHE.getDeploymentIdByScenario(client(), resourceGroup, scenarioId));
   }
 
   /**
