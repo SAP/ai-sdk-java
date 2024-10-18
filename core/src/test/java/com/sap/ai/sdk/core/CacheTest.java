@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -122,7 +123,8 @@ class CacheTest extends WireMockTestServer {
     cacheUnderTest.resetCache(client, resourceGroup);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    AiCoreService.resetCache(client, resourceGroup);
+    final var destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
+    new AiCoreService().withDestination(destination).reloadCachedDeployments(resourceGroup);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 }

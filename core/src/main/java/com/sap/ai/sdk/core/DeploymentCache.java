@@ -4,12 +4,12 @@ import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 class DeploymentCache {
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private final Map<String, Set<AiDeployment>> CACHE = new HashMap<>();
+  private final Map<String, Set<AiDeployment>> CACHE = new ConcurrentHashMap<>();
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.

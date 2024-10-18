@@ -216,11 +216,9 @@ public class AiCoreService implements AiCoreDestination {
    *
    * <p><b>Call this whenever a deployment is deleted.</b>
    *
-   * @param client the API client to query deployments.
-   * @param resourceGroup the resource group, usually "default".
+   * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
-  public static void resetCache(
-      @Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
-    DEPLOYMENT_CACHE.resetCache(client, resourceGroup);
+  public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
+    DEPLOYMENT_CACHE.resetCache(client(), resourceGroup);
   }
 }
