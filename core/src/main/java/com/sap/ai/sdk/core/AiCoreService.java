@@ -119,8 +119,8 @@ public class AiCoreService implements AiCoreDestination {
   }
 
   /**
-   * Set a specific deployment by model. If there are multiple deployments of the same model,
-   * the first one is returned.
+   * Set a specific deployment by model. If there are multiple deployments of the same model, the
+   * first one is returned.
    *
    * @param model The model to be used for AI Core service calls.
    * @return A new instance of the AI Core Deployment.
@@ -130,8 +130,7 @@ public class AiCoreService implements AiCoreDestination {
   public AiCoreDeployment forDeploymentByModel(@Nonnull final AiModel model)
       throws NoSuchElementException {
     return new AiCoreDeployment(
-        this,
-        () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this.client(), resourceGroup, model));
+        this, () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this.client(), resourceGroup, model));
   }
 
   /**

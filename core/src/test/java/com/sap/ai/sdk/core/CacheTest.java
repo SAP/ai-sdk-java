@@ -5,18 +5,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import java.util.NoSuchElementException;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentDetails;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiResourcesDetails;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,7 +72,6 @@ class CacheTest extends WireMockTestServer {
     cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
-  
 
   /**
    * The user creates a deployment after starting with an empty cache.
@@ -99,15 +98,17 @@ class CacheTest extends WireMockTestServer {
     cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
-  
+
   @Test
   void resourceGroupIsolation() {
     String resourceGroupA = "A";
     String resourceGroupB = "B";
     stubGPT4(resourceGroupA);
     stubGPT4(resourceGroupB);
-    
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroupA, "gpt-4-32k");
+
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
+
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroupA, gpt4);
     wireMockServer.verify(
         1,
         getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
@@ -117,25 +118,26 @@ class CacheTest extends WireMockTestServer {
         getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo(resourceGroupB)));
   }
-  
+
   @Test
   void exceptionDeploymentNotFound() {
     String resourceGroup = "default";
     stubEmpty(resourceGroup);
-    
-    assertThatThrownBy(
-        () -> cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k"))
+
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
+
+    assertThatThrownBy(() -> cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4))
         .isExactlyInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("No running deployment found for model: gpt-4-32k");
   }
-  
+
   @Test
   void resetCache() {
     String resourceGroup = "default";
     stubGPT4(resourceGroup);
     cacheUnderTest.resetCache(client, resourceGroup);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
-    
+
     final var destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
     new AiCoreService().withDestination(destination).reloadCachedDeployments(resourceGroup);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
@@ -177,6 +179,10 @@ class CacheTest extends WireMockTestServer {
       @Override
       public String version() {
         return version;
+      }
+
+      public String toString() {
+        return name;
       }
     };
   }
