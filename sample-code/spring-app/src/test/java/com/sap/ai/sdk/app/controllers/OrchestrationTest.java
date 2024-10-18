@@ -1,10 +1,10 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.LENIENT;
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var result = controller.filter(LENIENT);
+    var result = controller.filter(AzureContentFilter.Sensitivity.LOW);
 
     var filterResult = result.getModuleResults().getInputFiltering();
 
@@ -71,7 +71,7 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> new OrchestrationController().filter(VERY_STRICT))
+    assertThatThrownBy(() -> new OrchestrationController().filter(HIGH))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");

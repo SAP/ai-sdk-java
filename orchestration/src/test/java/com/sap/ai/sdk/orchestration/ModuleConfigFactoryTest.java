@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDTO;
 import static com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,7 +72,7 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testInputFilter() {
-    var filter = new AzureContentFilter().hate(VERY_STRICT);
+    var filter = new AzureContentFilter().hate(HIGH);
     config.withInputContentFilter(filter);
 
     var result = toModuleConfigDTO(config, messages).getFilteringModuleConfig();
@@ -89,7 +89,7 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testOutputFilter() {
-    var filter = new AzureContentFilter().hate(VERY_STRICT);
+    var filter = new AzureContentFilter().hate(HIGH);
     config.withOutputContentFilter(filter);
 
     var result = toModuleConfigDTO(config, messages).getFilteringModuleConfig();
@@ -117,7 +117,7 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testMasking() {
-    var maskingConfig = DpiMaskingConfig.forAnonymization().withEntities(DPIEntities.ADDRESS);
+    var maskingConfig = DpiMaskingConfig.anonymization().withEntities(DPIEntities.ADDRESS);
     config.withMaskingConfig(maskingConfig);
 
     var result = toModuleConfigDTO(config, messages).getMaskingModuleConfig();

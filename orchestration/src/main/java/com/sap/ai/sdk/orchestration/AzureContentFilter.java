@@ -12,17 +12,16 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(fluent = true)
 public class AzureContentFilter implements ContentFilter {
-  @Nullable private Setting hate;
-  @Nullable private Setting selfHarm;
-  @Nullable private Setting sexual;
-  @Nullable private Setting violence;
+  @Nullable private Sensitivity hate;
+  @Nullable private Sensitivity selfHarm;
+  @Nullable private Sensitivity sexual;
+  @Nullable private Sensitivity violence;
 
   @RequiredArgsConstructor
-  public enum Setting {
-    VERY_STRICT(0),
-    STRICT(2),
-    MODERATE(4),
-    LENIENT(6);
+  public enum Sensitivity {
+    HIGH(0),
+    MEDIUM(2),
+    LOW(4);
 
     private final int value;
   }

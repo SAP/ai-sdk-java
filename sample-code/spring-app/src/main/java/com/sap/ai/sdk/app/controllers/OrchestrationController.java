@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity;
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
@@ -58,7 +59,7 @@ class OrchestrationController {
 
   @GetMapping("/filter/{level}")
   @Nonnull
-  public CompletionPostResponse filter(@Nonnull AzureContentFilter.Setting level) {
+  public CompletionPostResponse filter(@Nonnull Sensitivity level) {
     var filter = new AzureContentFilter().hate(level);
     var prompt = new OrchestrationPrompt("This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.")
             .withInputContentFilter(filter);
@@ -70,7 +71,7 @@ class OrchestrationController {
   @GetMapping("/masking")
   @Nonnull
   public CompletionPostResponse masking() {
-    var masking = DpiMaskingConfig.forAnonymization().withEntities(DPIEntities.EMAIL);
+    var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL, DPIEntities.LOCATION);
 
     var prompt =
         new OrchestrationPrompt(

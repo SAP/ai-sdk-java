@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.LENIENT;
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.MODERATE;
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.STRICT;
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Setting.VERY_STRICT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LENIENT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LOW;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.MEDIUM;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,16 +35,15 @@ class SerializationTest {
             .template(List.of(ChatMessage.create().role("user").content("{{?input}}")))
             .defaults(Map.of("input", "Hello World!"));
 
-    var inputFilter = new AzureContentFilter().selfHarm(LENIENT);
+    var inputFilter = new AzureContentFilter().selfHarm(LOW);
     var outputFilter =
         new AzureContentFilter()
-            .hate(VERY_STRICT)
-            .selfHarm(STRICT)
-            .sexual(MODERATE)
-            .violence(LENIENT);
+            .hate(HIGH)
+            .selfHarm(MEDIUM)
+            .sexual(LOW);
 
     var masking =
-        DpiMaskingConfig.forAnonymization()
+        DpiMaskingConfig.anonymization()
             .withEntities(DPIEntities.ADDRESS, DPIEntities.IBAN, DPIEntities.LOCATION);
     var inputParams = Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
