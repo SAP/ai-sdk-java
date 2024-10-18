@@ -413,14 +413,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.25.0</version>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <rulesets>
             <ruleset>${project.rootdir}/.pipeline/pmd.xml</ruleset>
@@ -436,6 +428,14 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/orchestration/client/**/*</exclude>
           </excludes>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
