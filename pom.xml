@@ -396,9 +396,9 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <configLocation>.pipeline/checkstyle.xml</configLocation>
+          <configLocation>${project.rootdir}/.pipeline/checkstyle.xml</configLocation>
           <!-- Exclude generated clients -->
-          <suppressionsLocation>.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>${project.rootdir}/.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
           <linkXRef>false</linkXRef>
         </configuration>
         <dependencies>
@@ -413,13 +413,20 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.25.0</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <rulesets>
-            <ruleset>.pipeline/pmd.xml</ruleset>
-            <ruleset>.pipeline/sdk_specific_pmd_rules.xml</ruleset>
+            <ruleset>${project.rootdir}/.pipeline/pmd.xml</ruleset>
+            <ruleset>${project.rootdir}/.pipeline/sdk_specific_pmd_rules.xml</ruleset>
             <!-- content of the PMD default rule set for Java can be found here:
 https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/main/resources/rulesets/java/maven-pmd-plugin-default.xml;hb=HEAD -->
-            <ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
           </rulesets>
           <linkXRef>false</linkXRef>
           <targetJdk>${maven.compiler.release}</targetJdk>
@@ -435,9 +442,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.8.6.4</version>
         <configuration>
-          <includeFilterFile>.pipeline/spotbugs.xml</includeFilterFile>
+          <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
-          <excludeFilterFile>.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
+          <excludeFilterFile>${project.rootdir}/.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
           <effort>Max</effort>
           <threshold>Low</threshold>
           <maxHeap>2048</maxHeap>
