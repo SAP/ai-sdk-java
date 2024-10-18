@@ -14,23 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequestWithIdentifier;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponseListInner;
 import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
 import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
 import java.util.Map;
 import java.util.Set;
+import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -85,13 +79,13 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentList deploymentList = new DeploymentApi(client).query("default");
+    val deploymentList = new DeploymentApi(client).query("default");
 
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
     assertThat(deploymentList.getResources()).hasSize(1);
 
-    final AiDeployment deployment = deploymentList.getResources().get(0);
+    val deployment = deploymentList.getResources().get(0);
 
     assertThat(deployment.getConfigurationId()).isEqualTo("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     assertThat(deployment.getConfigurationName()).isEqualTo("gpt-4-32k");
@@ -100,7 +94,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d19b998f347341aa");
     // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
-    final var expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
+    val expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
     assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
         .isEqualTo(expected);
     assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
@@ -135,11 +129,10 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentCreationRequest deploymentCreationRequest =
+    val deploymentCreationRequest =
         AiDeploymentCreationRequest.create()
             .configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
-    final AiDeploymentCreationResponse deployment =
-        new DeploymentApi(client).create("default", deploymentCreationRequest);
+    val deployment = new DeploymentApi(client).create("default", deploymentCreationRequest);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEmpty();
@@ -175,9 +168,9 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentModificationRequest configModification =
+    val configModification =
         AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED);
-    final AiDeploymentModificationResponse deployment =
+    val deployment =
         new DeploymentApi(client).modify("default", "d19b998f347341aa", configModification);
 
     assertThat(deployment).isNotNull();
@@ -215,8 +208,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentDeletionResponse deployment =
-        new DeploymentApi(client).delete("default", "d5b764fe55b3e87c");
+    val deployment = new DeploymentApi(client).delete("default", "d5b764fe55b3e87c");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -260,8 +252,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentResponseWithDetails deployment =
-        new DeploymentApi(client).get("default", "db1d64d9f06be467");
+    val deployment = new DeploymentApi(client).get("default", "db1d64d9f06be467");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getConfigurationId()).isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
@@ -304,10 +295,10 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentModificationRequest configModification =
+    val configModification =
         AiDeploymentModificationRequest.create()
             .configurationId("6ff6cb80-87db-45f0-b718-4e1d96e66332");
-    final AiDeploymentModificationResponse deployment =
+    val deployment =
         new DeploymentApi(client).modify("default", "d03050a2ab7055cc", configModification);
 
     assertThat(deployment).isNotNull();
@@ -340,7 +331,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         1
                         """)));
 
-    final int count = new DeploymentApi(client).count("default");
+    val count = new DeploymentApi(client).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -372,7 +363,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed
     // to include the header on the request.
-    final RTALogCommonResponse logs =
+    val logs =
         new DeploymentApi(client.addDefaultHeader("Ai-Resource-Group", "default"))
             .getLogs("d19b998f347341aa");
 
@@ -413,7 +404,7 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiDeploymentBulkModificationRequest bulkModificationRequest =
+    val bulkModificationRequest =
         AiDeploymentBulkModificationRequest.create()
             .deployments(
                 Set.of(
@@ -422,14 +413,13 @@ public class DeploymentUnitTest extends WireMockTestServer {
                         .targetStatus(
                             AiDeploymentModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
-    final AiDeploymentBulkModificationResponse bulkModificationResponse =
+    val bulkModificationResponse =
         new DeploymentApi(client).batchModify("default", bulkModificationRequest);
 
     assertThat(bulkModificationResponse).isNotNull();
     assertThat(bulkModificationResponse.getDeployments()).hasSize(1);
 
-    final AiDeploymentModificationResponseListInner modificationResponseListInner =
-        bulkModificationResponse.getDeployments().get(0);
+    val modificationResponseListInner = bulkModificationResponse.getDeployments().get(0);
 
     assertThat(modificationResponseListInner.getId()).isEqualTo("d1e736f50d15f357");
     assertThat(modificationResponseListInner.getMessage())

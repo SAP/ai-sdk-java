@@ -21,6 +21,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -55,15 +56,15 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   @Override
   public ApiClient client() {
-    final var destination = destination();
+    val destination = destination();
     return clientHandler.apply(this, destination);
   }
 
   @Nonnull
   @Override
   public Destination destination() {
-    final var dest = baseDestinationHandler.apply(this);
-    final var builder = builderHandler.apply(this, dest);
+    val dest = baseDestinationHandler.apply(this);
+    val builder = builderHandler.apply(this, dest);
     if (!deploymentId.isEmpty()) {
       destinationSetUrl(builder, dest);
       destinationSetHeaders(builder);
@@ -160,7 +161,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected Destination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    final var serviceKey = System.getenv("AICORE_SERVICE_KEY");
+    val serviceKey = System.getenv("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
 
@@ -173,7 +174,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected DefaultHttpDestination.Builder getDestinationBuilder(
       @Nonnull final Destination destination) {
-    final var builder = DefaultHttpDestination.fromDestination(destination);
+    val builder = DefaultHttpDestination.fromDestination(destination);
     String uri = destination.get(DestinationProperty.URI).get();
     if (!uri.endsWith("/")) {
       uri = uri + "/";
@@ -192,7 +193,7 @@ public class AiCoreService implements AiCoreDestination {
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   protected ApiClient getApiClient(@Nonnull final Destination destination) {
-    final var objectMapper =
+    val objectMapper =
         new Jackson2ObjectMapperBuilder()
             .modules(new JavaTimeModule())
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
@@ -200,10 +201,10 @@ public class AiCoreService implements AiCoreDestination {
             .serializationInclusion(JsonInclude.Include.NON_NULL) // THIS STOPS `null` serialization
             .build();
 
-    final var httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+    val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
     httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
 
-    final var rt = new RestTemplate();
+    val rt = new RestTemplate();
     Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
         .forEach(converter -> converter.setObjectMapper(objectMapper));
     rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));

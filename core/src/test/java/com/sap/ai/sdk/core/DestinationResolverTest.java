@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 
 public class DestinationResolverTest {
@@ -29,7 +30,7 @@ public class DestinationResolverTest {
   @Test
   @SneakyThrows
   void getDestinationWithEnvVarSucceedsLocally() {
-    final String AICORE_SERVICE_KEY =
+    val AICORE_SERVICE_KEY =
         """
         {
           "clientid": "",
