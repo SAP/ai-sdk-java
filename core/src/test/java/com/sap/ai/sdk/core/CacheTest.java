@@ -5,9 +5,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
-import org.apache.hc.core5.http.HttpStatus;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,67 +22,24 @@ class CacheTest extends WireMockTestServer {
     wireMockServer.resetRequests();
   }
 
-  private static void stubGPT4() {
+  private static void stubGPT4(String resourceGroup) {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/v2/lm/deployments"))
-            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withHeader("AI-Resource-Group", equalTo(resourceGroup))
             .willReturn(
                 aResponse()
-                    .withStatus(HttpStatus.SC_OK)
-                    .withHeader("content-type", "application/json")
-                    .withBody(
-                        """
-                        {
-                          "count": 1,
-                          "resources": [
-                            {
-                              "configurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
-                              "configurationName": "gpt-4-32k",
-                              "createdAt": "2024-04-17T15:19:53Z",
-                              "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d19b998f347341aa",
-                              "details": {
-                                "resources": {
-                                  "backend_details": {
-                                    "model": {
-                                      "name": "gpt-4-32k",
-                                      "version": "latest"
-                                    }
-                                  }
-                                },
-                                "scaling": {
-                                  "backend_details": {}
-                                }
-                              },
-                              "id": "d19b998f347341aa",
-                              "lastOperation": "CREATE",
-                              "latestRunningConfigurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
-                              "modifiedAt": "2024-05-07T13:05:45Z",
-                              "scenarioId": "foundation-models",
-                              "startTime": "2024-04-17T15:21:15Z",
-                              "status": "RUNNING",
-                              "submissionTime": "2024-04-17T15:20:11Z",
-                              "targetStatus": "RUNNING"
-                            }
-                          ]
-                        }
-                        """)));
+                    .withBodyFile("GPT4DeploymentResponse.json")
+                    .withHeader("Content-Type", "application/json")));
   }
 
-  private static void stubEmpty() {
+  private static void stubEmpty(String resourceGroup) {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/v2/lm/deployments"))
-            .withHeader("AI-Resource-Group", equalTo("default"))
+            .withHeader("AI-Resource-Group", equalTo(resourceGroup))
             .willReturn(
                 aResponse()
-                    .withStatus(HttpStatus.SC_OK)
-                    .withHeader("content-type", "application/json")
-                    .withBody(
-                        """
-                        {
-                          "count": 0,
-                          "resources": []
-                        }
-                        """)));
+                    .withBodyFile("emptyDeploymentResponse.json")
+                    .withHeader("content-type", "application/json")));
   }
 
   /**
@@ -94,29 +53,14 @@ class CacheTest extends WireMockTestServer {
    */
   @Test
   void newDeployment() {
-    stubGPT4();
-    cacheUnderTest.loadCache(client, "default");
+    String resourceGroup = "default";
+    stubGPT4(resourceGroup);
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
-  }
-
-  @Test
-  void clearCache() {
-    stubGPT4();
-    cacheUnderTest.loadCache(client, "default");
-
-    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
-    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
-
-    cacheUnderTest.clearCache();
-
-    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
-    // the deployment is not in the cache anymore, so we need to query it again
-    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
   /**
@@ -130,15 +74,57 @@ class CacheTest extends WireMockTestServer {
    */
   @Test
   void newDeploymentAfterReset() {
-    stubEmpty();
-    cacheUnderTest.loadCache(client, "default");
-    stubGPT4();
+    String resourceGroup = "default";
+    stubEmpty(resourceGroup);
+    cacheUnderTest.resetCache(client, resourceGroup);
+    stubGPT4(resourceGroup);
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, "default", "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
+    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
+  }
+
+  @Test
+  void resourceGroupIsolation() {
+    String resourceGroupA = "A";
+    String resourceGroupB = "B";
+    stubGPT4(resourceGroupA);
+    stubGPT4(resourceGroupB);
+
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroupA, "gpt-4-32k");
+    wireMockServer.verify(
+        1,
+        getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo(resourceGroupA)));
+    wireMockServer.verify(
+        0,
+        getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo(resourceGroupB)));
+  }
+
+  @Test
+  void exceptionDeploymentNotFound() {
+    String resourceGroup = "default";
+    stubEmpty(resourceGroup);
+
+    assertThatThrownBy(
+            () -> cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k"))
+        .isExactlyInstanceOf(NoSuchElementException.class)
+        .hasMessageContaining("No running deployment found for model: gpt-4-32k");
+  }
+
+  @Test
+  void resetCache() {
+    String resourceGroup = "default";
+    stubGPT4(resourceGroup);
+    cacheUnderTest.resetCache(client, resourceGroup);
+    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
+
+    final var destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
+    new AiCoreService().withDestination(destination).reloadCachedDeployments(resourceGroup);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 }

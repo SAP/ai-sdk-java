@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 class DeploymentCache {
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  protected final Set<AiDeployment> CACHE = new HashSet<>();
+  private final Map<String, Set<AiDeployment>> CACHE = new ConcurrentHashMap<>();
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
@@ -30,32 +31,12 @@ class DeploymentCache {
    * @param client the API client to query deployments.
    * @param resourceGroup the resource group, usually "default".
    */
-  public void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
-    clearCache();
-    loadCache(client, resourceGroup);
-  }
-
-  /**
-   * Remove all entries from the cache.
-   *
-   * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
-   */
-  protected void clearCache() {
-    CACHE.clear();
-  }
-
-  /**
-   * Load all deployments into the cache
-   *
-   * <p><b>Call {@link #resetCache} whenever a deployment is deleted.</b>
-   *
-   * @param client the API client to query deployments.
-   * @param resourceGroup the resource group, usually "default".
-   */
-  protected void loadCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
+  void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
+    CACHE.remove(resourceGroup);
     try {
-      final var deployments = new DeploymentApi(client).query(resourceGroup).getResources();
-      CACHE.addAll(deployments);
+      final var deployments =
+          new HashSet<>(new DeploymentApi(client).query(resourceGroup).getResources());
+      CACHE.put(resourceGroup, deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
     }
@@ -72,16 +53,16 @@ class DeploymentCache {
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public String getDeploymentIdByModel(
+  String getDeploymentIdByModel(
       @Nonnull final ApiClient client,
       @Nonnull final String resourceGroup,
       @Nonnull final String modelName)
       throws NoSuchElementException {
-    return getDeploymentIdByModel(modelName)
+    return getDeploymentIdByModel(resourceGroup, modelName)
         .orElseGet(
             () -> {
               resetCache(client, resourceGroup);
-              return getDeploymentIdByModel(modelName)
+              return getDeploymentIdByModel(resourceGroup, modelName)
                   .orElseThrow(
                       () ->
                           new NoSuchElementException(
@@ -89,8 +70,9 @@ class DeploymentCache {
             });
   }
 
-  private Optional<String> getDeploymentIdByModel(@Nonnull final String modelName) {
-    return CACHE.stream()
+  private Optional<String> getDeploymentIdByModel(
+      @Nonnull final String resourceGroup, @Nonnull final String modelName) {
+    return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> isDeploymentOfModel(modelName, deployment))
         .findFirst()
         .map(AiDeployment::getId);
@@ -107,16 +89,16 @@ class DeploymentCache {
    * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
-  public String getDeploymentIdByScenario(
+  String getDeploymentIdByScenario(
       @Nonnull final ApiClient client,
       @Nonnull final String resourceGroup,
       @Nonnull final String scenarioId)
       throws NoSuchElementException {
-    return getDeploymentIdByScenario(scenarioId)
+    return getDeploymentIdByScenario(resourceGroup, scenarioId)
         .orElseGet(
             () -> {
               resetCache(client, resourceGroup);
-              return getDeploymentIdByScenario(scenarioId)
+              return getDeploymentIdByScenario(resourceGroup, scenarioId)
                   .orElseThrow(
                       () ->
                           new NoSuchElementException(
@@ -124,8 +106,9 @@ class DeploymentCache {
             });
   }
 
-  private Optional<String> getDeploymentIdByScenario(@Nonnull final String scenarioId) {
-    return CACHE.stream()
+  private Optional<String> getDeploymentIdByScenario(
+      @Nonnull final String resourceGroup, @Nonnull final String scenarioId) {
+    return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
         .map(AiDeployment::getId);
@@ -138,7 +121,7 @@ class DeploymentCache {
    * @param deployment The deployment.
    * @return true if the deployment is of the model.
    */
-  protected static boolean isDeploymentOfModel(
+  private static boolean isDeploymentOfModel(
       @Nonnull final String modelName, @Nonnull final AiDeployment deployment) {
     final var deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
