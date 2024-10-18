@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 class DeploymentCache {
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private final Map<String, Set<AiDeployment>> CACHE = new ConcurrentHashMap<>();
+  private final Map<String, Set<AiDeployment>> cache = new ConcurrentHashMap<>();
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
@@ -33,11 +33,11 @@ class DeploymentCache {
    * @param resourceGroup the resource group, usually "default".
    */
   void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
-    CACHE.remove(resourceGroup);
+    cache.remove(resourceGroup);
     try {
       final var deployments =
           new HashSet<>(new DeploymentApi(client).query(resourceGroup).getResources());
-      CACHE.put(resourceGroup, deployments);
+      cache.put(resourceGroup, deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
     }
@@ -73,7 +73,7 @@ class DeploymentCache {
 
   private Optional<String> getDeploymentIdByModel(
       @Nonnull final String resourceGroup, @Nonnull final AiModel model) {
-    return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
+    return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> isDeploymentOfModel(model, deployment))
         .findFirst()
         .map(AiDeployment::getId);
@@ -109,7 +109,7 @@ class DeploymentCache {
 
   private Optional<String> getDeploymentIdByScenario(
       @Nonnull final String resourceGroup, @Nonnull final String scenarioId) {
-    return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
+    return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
         .map(AiDeployment::getId);
