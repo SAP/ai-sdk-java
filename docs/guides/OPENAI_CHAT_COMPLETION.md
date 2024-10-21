@@ -117,12 +117,26 @@ String resultMessage = result.getContent();
 
 See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat Completion with Custom Model
+### Chat Completion with Specific Model Version
+
+By default, when no version is specified, the system selects one of the available deployments of the specified model, regardless of its version.
+To target a specific version, you can specify the model version along with the model.
 
 ```java
 OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
+    OpenAiClient.forModel(GPT_35_TURBO.withVersion("1106")).chatCompletion(request);
 ```
+
+### Chat completion with Custom Model
+
+You can also use a custom OpenAI model for chat completion by creating an `OpenAiModel` object. 
+
+```java
+OpenAiChatCompletionOutput result =
+    OpenAiClient.forModel(new OpenAiModel("custom-model", "v1")).chatCompletion(request);
+```
+
+Ensure that the custom model is deployed in SAP AI Core.
 
 ### Stream chat completion
 
