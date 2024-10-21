@@ -396,9 +396,9 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <configLocation>.pipeline/checkstyle.xml</configLocation>
+          <configLocation>${project.rootdir}/.pipeline/checkstyle.xml</configLocation>
           <!-- Exclude generated clients -->
-          <suppressionsLocation>.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>${project.rootdir}/.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
           <linkXRef>false</linkXRef>
         </configuration>
         <dependencies>
