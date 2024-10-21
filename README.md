@@ -160,7 +160,7 @@ After restarting your application, you should see an "aicore" entry in the `VCAP
 
 ```java
 Destination destination = DestinationAccessor.getDestination("my-aicore");
-ApiClient client = new AiCoreService().withDestination(destination);
+AiCoreService client = new AiCoreService().withDestination(destination);
 ```
 
 </details>
