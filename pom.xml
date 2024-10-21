@@ -396,9 +396,9 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <configLocation>${project.rootdir}/.pipeline/checkstyle.xml</configLocation>
+          <configLocation>.pipeline/checkstyle.xml</configLocation>
           <!-- Exclude generated clients -->
-          <suppressionsLocation>${project.rootdir}/.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
           <linkXRef>false</linkXRef>
         </configuration>
         <dependencies>
@@ -443,9 +443,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.8.6.4</version>
         <configuration>
-          <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
+          <includeFilterFile>.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
-          <excludeFilterFile>${project.rootdir}/.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
+          <excludeFilterFile>.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
           <effort>Max</effort>
           <threshold>Low</threshold>
           <maxHeap>2048</maxHeap>
