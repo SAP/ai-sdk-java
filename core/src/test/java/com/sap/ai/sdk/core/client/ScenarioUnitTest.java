@@ -4,7 +4,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiModelBaseData;
@@ -26,7 +25,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarios() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios"))
+        get(urlPathEqualTo("/v2/lm/scenarios"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -54,8 +53,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiScenarioList scenarioList =
-        new ScenarioApi(getClient(destination)).scenarioQuery("default");
+    final AiScenarioList scenarioList = new ScenarioApi(client).query("default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
@@ -73,7 +71,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioVersions() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models/versions"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models/versions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -95,8 +93,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         """)));
 
     final AiVersionList versionList =
-        new ScenarioApi(getClient(destination))
-            .scenarioQueryVersions("default", "foundation-models");
+        new ScenarioApi(client).queryVersions("default", "foundation-models");
 
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
@@ -113,7 +110,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -136,8 +133,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiScenario scenario =
-        new ScenarioApi(getClient(destination)).scenarioGet("default", "foundation-models");
+    final AiScenario scenario = new ScenarioApi(client).get("default", "foundation-models");
 
     assertThat(scenario).isNotNull();
     assertThat(scenario.getCreatedAt()).isEqualTo("2023-11-03T14:02:46+00:00");
@@ -154,7 +150,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioModels() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models/models"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models/models"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -183,7 +179,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                             """)));
 
     final AiModelList scenarioList =
-        new ScenarioApi(getClient(destination)).modelsGet("foundation-models", "default");
+        new ScenarioApi(client).queryModels("foundation-models", "default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
@@ -197,8 +193,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
     AiModelVersion aiModelVersion = scenario.getVersions().get(0);
     assertThat(aiModelVersion.getName()).isEqualTo("202407");
     assertThat(aiModelVersion.isIsLatest()).isTrue();
-    // deprecated and retirementDate properties are not defined in spec.
-    assertThat(aiModelVersion.getCustomField("deprecated")).isEqualTo(false);
-    assertThat(aiModelVersion.getCustomField("retirementDate")).isEqualTo("");
+    assertThat(aiModelVersion.isDeprecated()).isEqualTo(false);
+    assertThat(aiModelVersion.getRetirementDate()).isEqualTo("");
   }
 }

@@ -47,7 +47,10 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   public CompletionPostResponse template() {
-    var template = ChatMessage.create().role("user").content("Reply with 'The Orchestration Service is working!' in {{?language}}");
+    var template =
+        ChatMessage.create()
+            .role("user")
+            .content("Reply with 'The Orchestration Service is working!' in {{?language}}");
     var inputParams = Map.of("language", "german");
 
     var prompt =
@@ -61,7 +64,9 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse filter(@Nonnull Sensitivity level) {
     var filter = new AzureContentFilter().hate(level);
-    var prompt = new OrchestrationPrompt("This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.")
+    var prompt =
+        new OrchestrationPrompt(
+                "This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.")
             .withInputContentFilter(filter);
 
     // if the level is strict, this will throw, if not it will return a result
@@ -71,7 +76,8 @@ class OrchestrationController {
   @GetMapping("/masking")
   @Nonnull
   public CompletionPostResponse masking() {
-    var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL, DPIEntities.LOCATION);
+    var masking =
+        DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL, DPIEntities.LOCATION);
 
     var prompt =
         new OrchestrationPrompt(

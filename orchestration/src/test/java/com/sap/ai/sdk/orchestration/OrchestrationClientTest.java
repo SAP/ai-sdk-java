@@ -9,12 +9,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +33,8 @@ public class OrchestrationClientTest {
 
   @BeforeEach
   void setup() {
-    var destination = DefaultHttpDestination.builder("").build();
-    client = spy(new OrchestrationClient(destination).withLlmConfig(LLM_CONFIG));
+    var mock = mock(AiCoreService.class);
+    client = spy(new OrchestrationClient(mock).withLlmConfig(LLM_CONFIG));
   }
 
   @Test

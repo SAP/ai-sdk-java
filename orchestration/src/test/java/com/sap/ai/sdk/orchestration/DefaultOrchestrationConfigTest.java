@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import java.util.Map;
-
 import io.vavr.control.Option;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class DefaultOrchestrationConfigTest {

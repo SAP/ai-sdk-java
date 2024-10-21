@@ -6,11 +6,10 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sap.ai.sdk.core.Core;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -43,11 +42,10 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
       DefaultOrchestrationConfig.asDelegateFor(this);
 
-  @Nonnull private final HttpDestination destination;
+  @Nonnull private final AiCoreService service;
 
   public OrchestrationClient() {
-    // TODO: use AiCoreService after refactoring
-    this.destination = Core.getDestinationForDeployment("db1d64d9f06be467", "default").asHttp();
+    service = new AiCoreService();
   }
 
   /**
@@ -99,10 +97,9 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
+    final var destination = service.forDeploymentByScenario("orchestration").destination();
     final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-    // TODO: update after AiCoreService refactoring
-    final BasicClassicHttpRequest postRequest =
-        new HttpPost("/v2/inference/deployments/db1d64d9f06be467/completion");
+    final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
       final var json = JACKSON.writeValueAsString(request);
       postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));

@@ -1,9 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LENIENT;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LOW;
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.MEDIUM;
-import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,11 +35,7 @@ class SerializationTest {
             .defaults(Map.of("input", "Hello World!"));
 
     var inputFilter = new AzureContentFilter().selfHarm(LOW);
-    var outputFilter =
-        new AzureContentFilter()
-            .hate(HIGH)
-            .selfHarm(MEDIUM)
-            .sexual(LOW);
+    var outputFilter = new AzureContentFilter().hate(HIGH).selfHarm(MEDIUM).sexual(LOW);
 
     var masking =
         DpiMaskingConfig.anonymization()

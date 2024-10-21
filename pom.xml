@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.sap.ai.sdk</groupId>
   <artifactId>sdk-parent</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>SAP AI SDK - Parent POM</name>
   <description>Parent POM for the SAP AI SDK. Defines dependency versions and plugin configurations</description>
@@ -35,21 +35,31 @@
     <module>sample-code/spring-app</module>
     <module>sample-code/spring-ai-app</module>
   </modules>
+  <scm>
+    <connection/>
+    <url/>
+  </scm>
   <distributionManagement>
     <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org</url>
+    </repository>
+    <snapshotRepository>
       <id>artifactory-snapshots</id>
       <url>https://common.repositories.cloud.sap/artifactory/build-snapshots-cloudsdk</url>
-    </repository>
+    </snapshotRepository>
   </distributionManagement>
 
   <properties>
     <project.rootdir>${project.basedir}</project.rootdir>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit-jupiter.version>5.11.2</junit-jupiter.version>
     <!-- Dependency Versions -->
-    <cloud-sdk.version>5.12.0</cloud-sdk.version>
-    <spring.version>6.1.13</spring.version>
+    <cloud-sdk.version>5.13.0</cloud-sdk.version>
+    <spring.version>6.1.14</spring.version>
     <spring.boot.version>3.3.3</spring.boot.version>
     <spring.ai.version>1.0.0-SNAPSHOT</spring.ai.version>
     <slf4j.version>2.0.16</slf4j.version>
@@ -58,11 +68,10 @@
     <wiremock.version>3.9.1</wiremock.version>
     <assertj-core.version>3.26.3</assertj-core.version>
     <spotless.version>2.43.0</spotless.version>
-    <checkstyle.version>10.18.1</checkstyle.version>
+    <checkstyle.version>10.18.2</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
-    <surefire.version>3.5.0</surefire.version>
-    <system-stubs.version>2.1.3</system-stubs.version>
-    <mockito.version>5.13.0</mockito.version>
+    <surefire.version>3.5.1</surefire.version>
+    <mockito.version>5.14.2</mockito.version>
     <!--  Quality assurance  -->
     <enforcer.skipBanLoggingFrameworks>false</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
@@ -86,6 +95,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- optional dependencies -->
       <dependency>
         <groupId>org.springframework.ai</groupId>
         <artifactId>spring-ai-bom</artifactId>
@@ -93,7 +103,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- optional dependencies -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot</artifactId>
@@ -186,6 +195,33 @@
   </repositories>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+      </resource>
+      <!--  include LICENSE in all jar files  -->
+      <resource>
+        <filtering>false</filtering>
+        <directory>${project.rootdir}</directory>
+        <includes>
+          <include>LICENSE</include>
+        </includes>
+      </resource>
+    </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+        <plugin>
+          <groupId>com.sap.cloud.sdk.datamodel</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>${cloud-sdk.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -370,13 +406,11 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless.version}</version>
         <configuration>
-
           <java>
             <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#java -->
             <removeUnusedImports/>
             <googleJavaFormat/>
           </java>
-
           <pom>
             <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#maven-pom -->
             <includes>
@@ -387,7 +421,6 @@
               <expandEmptyElements>false</expandEmptyElements>
             </sortPom>
           </pom>
-
         </configuration>
         <executions>
           <execution>
@@ -396,7 +429,7 @@
             <goals>
               <goal>apply</goal>
             </goals>
-            <phase>compile</phase>
+            <phase>process-sources</phase>
           </execution>
         </executions>
       </plugin>
@@ -427,11 +460,11 @@
             <ruleset>.pipeline/pmd.xml</ruleset>
             <ruleset>.pipeline/sdk_specific_pmd_rules.xml</ruleset>
             <!-- content of the PMD default rule set for Java can be found here:
-            https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/main/resources/rulesets/java/maven-pmd-plugin-default.xml;hb=HEAD -->
+https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/main/resources/rulesets/java/maven-pmd-plugin-default.xml;hb=HEAD -->
             <ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
           </rulesets>
           <linkXRef>false</linkXRef>
-          <targetJdk>${maven.compiler.target}</targetJdk>
+          <targetJdk>${maven.compiler.release}</targetJdk>
           <excludes>
             <!-- Exclude generated clients -->
             <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
@@ -442,7 +475,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.3</version>
+        <version>4.8.6.4</version>
         <configuration>
           <includeFilterFile>.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
@@ -471,6 +504,194 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.version}</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>non-release</id>
+      <activation>
+        <property>
+          <name>!release</name>
+        </property>
+      </activation>
+      <modules>
+        <module>sample-code/spring-app</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <!-- Children projects inherit the configuration -->
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>3.3.1</version>
+              <executions>
+                <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                    <goal>jar-no-fork</goal>
+                  </goals>
+                  <phase>package</phase>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-maven-plugin</artifactId>
+              <version>1.18.20.0</version>
+              <configuration>
+                <addOutputDirectory>false</addOutputDirectory>
+              </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                  <version>1.18.34</version>
+                </dependency>
+              </dependencies>
+              <executions>
+                <execution>
+                  <id>delombok</id>
+                  <goals>
+                    <goal>delombok</goal>
+                  </goals>
+                  <phase>process-sources</phase>
+                  <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>3.10.1</version>
+              <configuration>
+                <quiet>true</quiet>
+                <additionalOptions>-Xdoclint:none</additionalOptions>
+                <show>protected</show>
+                <sourcepath>${project.basedir}/target/delombok</sourcepath>
+              </configuration>
+              <executions>
+                <execution>
+                  <id>javadoc-jar</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <version>3.2.7</version>
+              <executions>
+                <execution>
+                  <id>sign-artifacts</id>
+                  <goals>
+                    <goal>sign</goal>
+                  </goals>
+                  <phase>verify</phase>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-install-plugin</artifactId>
+              <version>3.1.3</version>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>install-file</goal>
+                  </goals>
+                  <phase>install</phase>
+                  <configuration>
+                    <file>${project.basedir}/target/${project.artifactId}-${project.version}.jar</file>
+                    <sources>${project.basedir}/target/${project.artifactId}-${project.version}-sources.jar</sources>
+                    <javadoc>${project.basedir}/target/${project.artifactId}-${project.version}-javadoc.jar</javadoc>
+                    <pomFile>${project.basedir}/pom.xml</pomFile>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
+                    <packaging>${project.packaging}</packaging>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-deploy-plugin</artifactId>
+              <version>3.1.3</version>
+              <configuration>
+                <skip>true</skip>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.sonatype.central</groupId>
+              <artifactId>central-publishing-maven-plugin</artifactId>
+              <version>0.6.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <deploymentName>SAP AI SDK ${project.version}</deploymentName>
+                <publishingServerId>central</publishingServerId>
+                <autoPublish>false</autoPublish>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+          </plugin>
+          <!-- The plugins configuration below will not be inherited by children projects, they are specific to the parent pom -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-install-plugin</artifactId>
+            <inherited>false</inherited>
+            <executions>
+              <execution>
+                <configuration>
+                  <file>${project.basedir}/pom.xml</file>
+                  <!-- The parent has no sources -->
+                  <sources>${empty.property}</sources>
+                  <javadoc>${empty.property}</javadoc>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

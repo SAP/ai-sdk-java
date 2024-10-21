@@ -60,7 +60,9 @@ class OrchestrationController {
 
   @GetMapping("/masking")
   ChatResponse masking() {
-    var masking = DpiMaskingConfig.anonymization().withEntities(DPIEntities.EMAIL, DPIEntities.ADDRESS, DPIEntities.LOCATION);
+    var masking =
+        DpiMaskingConfig.anonymization()
+            .withEntities(DPIEntities.EMAIL, DPIEntities.ADDRESS, DPIEntities.LOCATION);
 
     var opts = new OrchestrationChatOptions().withMaskingConfig(masking);
     var prompt =

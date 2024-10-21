@@ -1,11 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.FilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
@@ -59,13 +60,13 @@ class ModuleConfigFactory {
           .filter(AzureContentFilter.class::isInstance)
           .map(AzureContentFilter.class::cast)
           .map(AzureContentFilter::toFilterConfigDTO)
-          .map(it -> FilteringConfig.create().filters(it))
+          .map(it -> InputFilteringConfig.create().filters(it))
           .forEach(filter::input);
       maybeOutputFilter
           .filter(AzureContentFilter.class::isInstance)
           .map(AzureContentFilter.class::cast)
           .map(AzureContentFilter::toFilterConfigDTO)
-          .map(it -> FilteringConfig.create().filters(it))
+          .map(it -> OutputFilteringConfig.create().filters(it))
           .forEach(filter::output);
       dto = dto.filteringModuleConfig(filter);
     }

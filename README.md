@@ -5,600 +5,269 @@
 
 # SAP Cloud SDK for AI (for Java)
 
-# ⚠️ This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change ⚠️
-
-## About this project
-
-Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Set up your SAP AI Core instance with SAP Cloud SDK for AI Core.
-
-## List of available and tested APIs
-
-We maintain [a list of currently available and tested AI Core APIs](docs/list-of-tested-APIs.md)
-
-# Documentation
-
-## AI Core Deployment
-
-### Prerequisites
-
-- The AI Core service in BTP
-  - [How to enable the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
-- Created a configuration in AI Core
-  - <details>
-    <summary>An example configuration from the AI Core <code>/configuration</code> endpoint</summary>
-    <pre>
-    {
-      "createdAt": "2024-07-03T12:44:08Z",
-      "executableId": "azure-openai",
-      "id": "12345-123-123-123-123456abcdefg",
-      "inputArtifactBindings": [],
-      "name": "gpt-35-turbo",
-      "parameterBindings": [
-        {
-          "key": "modelName",
-          "value": "gpt-35-turbo"
-        },
-        {
-          "key": "modelVersion",
-          "value": "latest"
-        }
-      ],
-      "scenarioId": "foundation-models"
-    }
-    </pre>
-    </details>
-- A Java project with a Maven `pom.xml`
-  - Java 17 or higher
-  - Maven 3.9 or higher
-  - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
-
-### Maven dependencies
-
-Add the following dependencies to your `pom.xml` file:
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.sap.ai.sdk</groupId>
-    <artifactId>core</artifactId>
-    <version>${ai-sdk.version}</version>
-  </dependency>
-</dependencies>
-```
-
-See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
-
-### Create a Deployment
-
-```java
-public AiDeploymentCreationResponse createDeployment() {
-
-  final AiDeploymentCreationResponse deployment =
-      new DeploymentApi(getClient())
-          .deploymentCreate(
-              "default",
-              AiDeploymentCreationRequest.create()
-                  .configurationId("12345-123-123-123-123456abcdefg"));
-
-  String id = deployment.getId();
-  AiExecutionStatus status = deployment.getStatus();
-
-  return deployment;
-}
-```
-
-See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
-
-### Delete a Deployment
-
-```java
-public AiDeploymentDeletionResponse deleteDeployment(AiDeploymentCreationResponse deployment) {
-
-  DeploymentApi client = new DeploymentApi(getClient());
-
-  if (deployment.getStatus() == AiExecutionStatus.RUNNING) {
-    // Only RUNNING deployments can be STOPPED
-    client.deploymentModify(
-        "default",
-        deployment.getId(),
-        AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED));
-  }
-  // Wait a few seconds for the deployment to stop
-  // Only UNKNOWN and STOPPED deployments can be DELETED
-  return client.deploymentDelete("default", deployment.getId());
-}
-```
-
-See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java)
-
-## OpenAI chat completion
-
-### Prerequisites
-
-- A deployed OpenAI model in AI Core.
-  - [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
-  - <details>
-    <summary>An example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
-    <pre>
-    {
-      "id": "d123456abcdefg",
-      "deploymentUrl": "https://api.ai.region.aws.ml.hana.ondemand.com/v2/inference/deployments/d123456abcdefg",
-      "configurationId": "12345-123-123-123-123456abcdefg",
-      "configurationName": "gpt-35-turbo",
-      "scenarioId": "foundation-models",
-      "status": "RUNNING",
-      "statusMessage": null,
-      "targetStatus": "RUNNING",
-      "lastOperation": "CREATE",
-      "latestRunningConfigurationId": "12345-123-123-123-123456abcdefg",
-      "ttl": null,
-      "details": {
-        "scaling": {
-          "backendDetails": null,
-          "backend_details": {
-          }
-        },
-        "resources": {
-          "backendDetails": null,
-          "backend_details": {
-            "model": {
-              "name": "gpt-35-turbo",
-              "version": "latest"
-            }
-          }
-        }
-      },
-      "createdAt": "2024-07-03T12:44:22Z",
-      "modifiedAt": "2024-07-16T12:44:19Z",
-      "submissionTime": "2024-07-03T12:44:51Z",
-      "startTime": "2024-07-03T12:45:56Z",
-      "completionTime": null
-    }
-    </pre>
-    </details>
-- A Java project with a Maven `pom.xml`
-  - Java 17 or higher
-  - Maven 3.9 or higher
-  - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
-
-### Maven dependencies
-
-Add the following dependencies to your `pom.xml` file:
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-    <artifactId>openai</artifactId>
-    <version>${ai-sdk.version}</version>
-  </dependency>
-</dependencies>
-```
-
-See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
-
-### Simple chat completion
-
-```java
-final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(GPT_35_TURBO)
-        .withSystemPrompt("You are a helpful AI")
-        .chatCompletion("Hello World! Why is this phrase so famous?");
-
-final String resultMessage = result.getContent();
-```
-
-### Message history
-
-```java
-final var systemMessage =
-    new OpenAiChatSystemMessage().setContent("You are a helpful assistant");
-final var userMessage =
-    new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
-final var request =
-    new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
-
-final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
-
-final String resultMessage = result.getContent();
-```
-
-See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
-
-### Chat completion with a model not defined in `OpenAiModel`
-
-```java
-final OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(new OpenAiModel("model")).chatCompletion(request);
-```
-
-### Stream chat completion
-
-It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
-
-#### Stream the chat completion asynchronously
-This is a blocking example for streaming and printing directly to the console:
-```java
-String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
-
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
-
-// try-with-resources on stream ensures the connection will be closed
-try( Stream<String> stream = client.streamChatCompletion(msg)) {
-    stream.forEach(deltaString -> {
-        System.out.print(deltaString);
-        System.out.flush();
-    });
-}
-```
-
-<details>
-<summary>It's also possible to aggregate the total output.</summary>
-
-The following example is non-blocking.
-Any asynchronous library can be used, e.g. classic Thread API.
-
-```java
-String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
-
-OpenAiChatCompletionParameters request =
-    new OpenAiChatCompletionParameters()
-        .addMessages(new OpenAiChatUserMessage().addText(msg));
-
-OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
-
-// Do the request before the thread starts to handle exceptions during request initialization 
-Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request);
-
-Thread thread = new Thread(() -> {
-    // try-with-resources ensures the stream is closed
-    try (stream) {
-        stream.peek(totalOutput::addDelta).forEach(delta -> System.out.println(delta));
-    }
-});
-thread.start(); // non-blocking
-
-thread.join(); // blocking
-
-// access aggregated information from total output, e.g.
-Integer tokens = totalOutput.getUsage().getCompletionTokens();
-System.out.println("Tokens: " + tokens);
-```
-
-</details>
-
-#### Spring Boot example
-
-Please find [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java).
-It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
-
-## Orchestration chat completion
-
-### Prerequisites
-
-- A deployed Orchestration service in AI Core.
-  - [Orchestration documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration)
-  - <details>
-    <summary>An example orchestration deployment from the AI Core <code>/deployments</code> endpoint</summary>
-    <pre>
-    {
-      "id": "d123456abcdefg",
-      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d123456abcdefg",
-      "configurationId": "12345-123-123-123-123456abcdefg",
-      "configurationName": "orchestration",
-      "scenarioId": "orchestration",
-      "status": "RUNNING",
-      "statusMessage": null,
-      "targetStatus": "RUNNING",
-      "lastOperation": "CREATE",
-      "latestRunningConfigurationId": "12345-123-123-123-123456abcdefg",
-      "ttl": null,
-      "createdAt": "2024-08-05T16:17:29Z",
-      "modifiedAt": "2024-08-06T06:32:50Z",
-      "submissionTime": "2024-08-05T16:17:40Z",
-      "startTime": "2024-08-05T16:18:41Z",
-      "completionTime": null
-    }
-    </pre>
-    </details>
-- A Java project with a Maven `pom.xml`
-  - Java 17 or higher
-  - Maven 3.9 or higher
-  - if Spring Boot is used, then minimum version 3
-- [Set the AI Core credentials as an environment variable for local testing](#set-credentials-as-dedicated-environment-variable)
-
-### Maven dependencies
-
-Add the following dependencies to your `pom.xml` file:
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.sap.ai.sdk</groupId>
-    <artifactId>orchestration</artifactId>
-    <version>${ai-sdk.version}</version>
-  </dependency>
-</dependencies>
-```
-
-See [an example pom in our Spring Boot application](sample-code/spring-app/pom.xml)
-
-### Chat completion template
-
-```java
-final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
-
-final var inputParams =
-    Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-final var template = ChatMessage.create().role("user").content("{{?input}}");
-final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-final var config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(llmConfig)
-                        .templatingModuleConfig(templatingConfig)))
-        .inputParams(inputParams);
-
-final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
-        .orchestrationV1EndpointsCreate(config);
-
-final String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
-```
-
-See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
-
-### Messages history
-
-```java
-final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
-
-List<ChatMessage> messagesHistory =
-    List.of(
-        ChatMessage.create().role("user").content("What is the capital of France?"),
-        ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-
-final var message =
-    ChatMessage.create().role("user").content("What is the typical food there?");
-final var templatingConfig = TemplatingModuleConfig.create().template(message);
-
-final var config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(llmConfig)
-                        .templatingModuleConfig(templatingConfig)))
-        .inputParams(Map.of())
-        .messagesHistory(messagesHistory);
-
-final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
-        .orchestrationV1EndpointsCreate(config);
-
-final String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
-```
-
-See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
-
-### Chat completion filter
-
-```java
-final var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
-
-final var inputParams =
-    Map.of(
-        "disclaimer",
-        "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-final var template =
-    ChatMessage.create()
-        .role("user")
-        .content(
-            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-final var filterStrict = 
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_0)
-                .selfHarm(NUMBER_0)
-                .sexual(NUMBER_0)
-                .violence(NUMBER_0));
-
-final var filterLoose =
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_4)
-                .selfHarm(NUMBER_4)
-                .sexual(NUMBER_4)
-                .violence(NUMBER_4));
-
-final var filteringConfig =
-    FilteringModuleConfig.create()
-        // changing the input to filterLoose will allow the message to pass
-        .input(FilteringConfig.create().filters(filterStrict))
-        .output(FilteringConfig.create().filters(filterStrict));
-
-final var config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(llmConfig)
-                        .templatingModuleConfig(templatingConfig)
-                        .filteringModuleConfig(filteringConfig)))
-        .inputParams(inputParams);
-
-final CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient("default"))
-        // this fails with Bad Request because the strict filter prohibits the input message
-        .orchestrationV1EndpointsCreate(config);
-
-final String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
-```
-
-See [an example in our Spring Boot application](sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
-
-
-### Set model parameters
-
-Change your LLM module configuration to add model parameters:
-
-```java
-var llmConfig =
-    LLMModuleConfig.create()
-        .modelName("gpt-35-turbo")
-        .modelParams(
-            Map.of(
-                "max_tokens", 50,
-                "temperature", 0.1,
-                "frequency_penalty", 0,
-                "presence_penalty", 0));
-```
-
-See [an example in our unit test](orchestration/src/test/java/com/sap/ai/sdk/orchestration/client/OrchestrationUnitTest.java)
-
-## Add a header to every request
-
-To add a header to AI Core requests, use the following code:
-```java
-ApiClient client = Core.getClient().addDefaultHeader("header-key", "header-value");
-DeploymentApi api = new DeploymentApi(client);
-```
-
-For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
-
-## Requirements and Setup for AI Core
-
-For any AI Core service interaction, the SAP AI SDK requires credentials to be available at application runtime.
-By default, the credentials are extracted automatically from a service instance of type "aicore" bound to the application. 
-Running the application locally without this service binding will throw an exception:
+> ⚠️ **This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change.** ⚠️
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [General Requirements](#general-requirements)
+- [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
+    - [Option 1: Set Credentials as Environment Variable](#option-1-set-credentials-as-environment-variable)
+    - [Option 2: Regular Service Binding in SAP BTP Cloud Foundry](#option-2-regular-service-binding-in-sap-btp-cloud-foundry)
+    - [Option 3: Define and Use a Destination](#option-3-define-and-use-a-destination)
+- [Getting Started](#getting-started)
+    - [What You'll Build](#what-youll-build)
+    - [Prerequisites](#prerequisites)
+    - [Write the Code](#write-the-code)
+    - [Run and Test the Application Locally](#run-and-test-the-application-locally)
+    - [Deploying to Cloud Foundry (Optional)](#deploying-to-cloud-foundry-optional)
+- [Documentation](#documentation)
+- [FAQs](#faqs)
+- [Contribute, Support and Feedback](#contribute-support-and-feedback)
+- [Security / Disclosure](#security--disclosure)
+- [Code of Conduct](#code-of-conduct)
+- [Licensing](#licensing)
+
+## Introduction
+
+Welcome to the **SAP Cloud SDK for AI (for Java)**.
+This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
+Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
+The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
+
+## General Requirements
+
+To use the SAP AI SDK for Java, the following general prerequisites must be met:
+
+- **Java Development Kit (JDK) 17** or higher installed.
+- **Apache Maven 3.9** or higher installed.
+- **SAP AI Core Service** enabled in your SAP BTP account.
+    - [How to enable the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
+- **SAP AI Core Credentials** to access the AI Core service.
+    - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
+- **(Optional) Spring Boot** version 3 or higher if you are using Spring Boot.
+
+See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
+
+## Connecting to SAP AI Core
+
+To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime.
+By default, the SDK automatically extracts these credentials from a service instance of  type `aicore` bound to your application.
+
+If running the application locally without this service binding, you may encounter an exception:
 
 ```
 Could not find any matching service bindings for service identifier 'aicore'
 ```
 
-There are multiple options to register the service binding:
-* Regular service binding in SAP BTP Cloud Foundry (resulting in `VCAP_SERVICES` env var entry).
-* Set an environment variable explicitly: `AICORE_SERVICE_KEY`
-* Define and use a _Destination_ in _BTP Destination Service_.
-* (For CAP applications) use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach _(not recommended for production)_.
-  * For example: `cds bind --to aicore --exec mvn spring-boot:run`
-* Leveraging `"user-provided"` service binding _(not recommended for production)_.
-* Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` declaration in application _(not recommended for production)_.
+There are multiple ways to provide these credentials:
 
-### Regular service binding in SAP BTP Cloud Foundry
+| Option | Description                                                                                              |
+|--------|----------------------------------------------------------------------------------------------------------|
+| **1**  | Set an environment variable explicitly: `AICORE_SERVICE_KEY`                                             |
+| **2**  | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
+| **3**  | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
 
-* Bind an existing service instance of type `aicore` to your application.
-  [With SAP BTP multiple options are available](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications): using the web interface, the CLI, MTA or manifest.
+Additional methods (not recommended for production):
 
-<details><summary>After application restart, there should be an "aicore" entry in environment variable <code>VCAP_SERVICES</code>.</summary>
+- Use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach for
+  CAP applications (e.g., `cds bind --to aicore --exec mvn spring-boot:run`)
+- Leverage a "user-provided" service binding
+- Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
+
+### Option 1: Set Credentials as Environment Variable
+
+<details>
+<summary>Click to view detailed steps</summary>
+
+
+**1. Obtain Service Credentials:**
+
+- Log into the **SAP BTP Cockpit**
+- Navigate to **Instances and Subscriptions** -> **Instances** -> **AI Core**
+- Click **View Credentials** and copy the JSON content
+
+**2. Set Environment Variable:**
+
+- In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
+
+Example:
+
+```shell
+export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
+```
+
+</details>
+
+### Option 2: Regular Service Binding in SAP BTP Cloud Foundry
+
+<details>
+<summary>Click to view detailed steps</summary>
+
+
+**1. Bind an existing `aicore` service instance to your application**
+
+SAP BTP provides multiple ways to do this:
+
+- Using the web interface
+- Using the CLI
+- Using MTA or manifest files
+
+[Learn more about binding service instances to applications](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications)
+
+After restarting your application, you should see an "aicore" entry in the `VCAP_SERVICES` environment variable:
 
 ```json
 {
   "aicore": [
-      {
-        "clientid": "...",
-        "clientsecret": "...",
-        "url": "...",
-        "identityzone": "...",
-        "identityzoneid": "...",
-        "appname": "...",
-        "serviceurls": {
-          "AI_API_URL": "..."
-        }
+    {
+      "clientid": "...",
+      "clientsecret": "...",
+      "url": "...",
+      "serviceurls": {
+        "AI_API_URL": "..."
       }
+    }
   ]
 }
 ```
 
 </details>
 
-### Set credentials as dedicated environment variable
+### Option 3: Define and Use a Destination
 
-- Go into the SAP BTP Cockpit
-- Instances and Subscriptions -> Instances -> AI Core -> View Credentials -> Copy JSON
-- Set it as an environment variable `AICORE_SERVICE_KEY` in your IDE
+<details>
+<summary>Click to view detailed steps</summary>
 
-  Or in your terminal:
-```shell
-export AICORE_SERVICE_KEY='{   "serviceurls": {     "AI_API_URL": ...'
+**1. Obtain Service Credentials:** (Same as in Option 1)
+
+**2. Create a Destination:**
+
+- In the **SAP BTP Cockpit**, go to **Connectivity** -> **Destinations**
+- Click **New Destination** and configure:
+
+    - **Name**: `my-aicore`
+    - **Type**: `HTTP`
+    - **URL**: `[serviceurls.AI_API_URL]/v2` (append `/v2` to the URL)
+    - **Proxy Type**: `Internet`
+    - **Authentication**: `OAuth2ClientCredentials`
+    - **Client ID**: `[clientid]`
+    - **Client Secret**: `[clientsecret]`
+    - **Token Service URL Type**: `Dedicated`
+    - **Token Service URL**: `[url]`
+
+**3. Use the Destination in Your Application:**
+
+```java
+Destination destination = DestinationAccessor.getDestination("my-aicore");
+ApiClient client = new AiCoreService().withDestination(destination);
 ```
 
-### Define and use a Destination
+</details>
 
-* Lookup service-key credentials as explained in the previous step for `AICORE_SERVICE_KEY`.
+## Getting Started
 
-* <details><summary>Define a new destination in the SAP BTP Destination Service using the service-key credentials</summary>
-  
-  * (Destinations can be added on subaccount level and on service instance level.)
-  * (The URL field requires an additional path segment: `/v2`)
-  * **Name**: _my-aicore_
-  * **Type**: HTTP
-  * **URL**: _[serviceurls.AI_API_URL]/v2_
-  * **Proxy-Type**: Internet
-  * **Authentication**: _Oauth2ClientCredentials_
-  * **Client ID**: _[clientid]_
-  * **Client Secret**: _[clientsecret]_
-  * **Token Service URL Type**: Dedicated
-  * **Token Service URL**: _[url]_
-  
-  </details>
+### What You'll Build
 
-* At application runtime the following can be executed:
-  ```java
-  Destination destination = DestinationAccessor.getDestination("my-aicore");
-  ApiClient client = Core.getClient(destination);
-  ```
+In this quickstart, you'll build a simple Spring Boot application that uses the OpenAI GPT-3.5 Turbo model for chat completion.
+The application will send a prompt to the AI model and display the generated response.
 
-### Run the Spring Boot test application
+### Prerequisites
+
+Before you begin, ensure you have:
+
+- Met the [General Requirements](#general-requirements).
+- Met the OpenAI Chat Completion module specific requirements
+    - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
+- Set up the AI Core credentials
+  using [(1) Environment Variable](#option-1-set-credentials-as-environment-variable)
+  or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
+- Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
+    - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
+
+### Write the Code
+
+Add the following code to the controller or service class in your Spring Boot application:
+
+```java
+// Initialize the client for GPT-3.5 Turbo model
+OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
+
+// Perform chat completion
+OpenAiChatCompletionOutput result =
+    client
+        .withSystemPrompt("You are a helpful assistant.")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
+```
+
+### Run and Test the Application Locally
+
+Then, compile and run your application:
 
 ```shell
-cd sample-code/spring-app
+cd your-spring-app/
+
+mvn compile
 mvn spring-boot:run
 ```
 
-### Deploy to Cloud Foundry
+### Deploying to Cloud Foundry (Optional)
 
-```shell
-mvn clean package
-cf push
+When deploying your productive application to Cloud Foundry, it is recommended to use **service binding** to provide the AI Core credentials as per [Option 2](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
+
+Build your application using Maven and deploy it to Cloud Foundry:
+
+ ```shell
+ cf push
+ ```
+
+That's it!
+Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely via service binding.
+
+## Documentation
+
+For more detailed information and advanced usage, please refer to the following:
+
+- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
+- [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
+- [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+
+## FAQs
+
+### How to add a custom header to AI Core requests?
+
+To add a header to AI Core requests, use the following code:
+
+```java
+ApiClient client = new AiCoreService().client().addDefaultHeader("header-key", "header-value");
+DeploymentApi api = new DeploymentApi(client);
 ```
 
-# Contribute
+For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
 
-### Set-up Formatting
+### More Examples
 
-- Install the Google Java Format plugin on Intellij and follow these [instructions](https://github.com/google/google-java-format?tab=readme-ov-file#intellij-android-studio-and-other-jetbrains-ides).
+Explore example applications and code snippets:
 
-## Support, Feedback, Contributing
+- [Spring Boot Application Example](sample-code/spring-app)
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
+## Contribute, Support and Feedback
+
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-java/issues).
+Contribution and feedback are encouraged and always welcome. 
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Security / Disclosure
-If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it. Please do not create GitHub issues for security-related doubts or problems.
+
+If you find any bug that may be a security problem, please follow our instructions at [in our security policy](https://github.com/SAP/ai-sdk-java/security/policy) on how to report it. 
+Please do not create GitHub issues for security-related doubts or problems.
 
 ## Code of Conduct
 
-We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone. By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone. 
+By participating in this project, you agree to abide by its [Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md) at all times.
 
 ## Licensing
 
-Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).
+Copyright 2024 SAP SE or an SAP affiliate company and ai-sdk-java contributors. Please see our [LICENSE](LICENSE) for copyright and license information. 
+Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/SAP/ai-sdk-java).
