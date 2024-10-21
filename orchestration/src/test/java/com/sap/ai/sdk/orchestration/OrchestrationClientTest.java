@@ -21,11 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 
-/**
- * Test that queries are on the right URL, with the right headers. Also check that the received
- * response is parsed correctly in the generated client.
- */
-public class OrchestrationClientTest {
+class OrchestrationClientTest {
   private OrchestrationClient client;
 
   private static final LLMModuleConfig LLM_CONFIG =

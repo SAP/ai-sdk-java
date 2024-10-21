@@ -23,7 +23,7 @@
           "filters" : [ {
             "type" : "azure_content_safety",
             "config" : {
-              "SelfHarm" : 6
+              "SelfHarm" : 4
             }
           } ]
         },
@@ -33,8 +33,7 @@
             "config" : {
               "Hate" : 0,
               "SelfHarm" : 2,
-              "Sexual": 4,
-              "Violence": 6
+              "Sexual": 4
             }
           } ]
         }
@@ -52,7 +51,8 @@
           } ]
         } ]
       }
-    }
+    },
+    "stream" : false
   },
   "input_params" : {
     "input" : "Reply with 'Orchestration Service is working!' in German"

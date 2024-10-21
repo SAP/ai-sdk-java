@@ -8,9 +8,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.core.AiCoreDeployment;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
@@ -26,7 +31,7 @@ import org.junit.jupiter.api.Test;
  */
 @SuppressWarnings("UnstableApiUsage")
 @WireMockTest
-public class OrchestrationResponseHandlerTest {
+class OrchestrationResponseHandlerTest {
   private OrchestrationClient client;
 
   private static final LLMModuleConfig LLM_CONFIG =
@@ -35,7 +40,11 @@ public class OrchestrationResponseHandlerTest {
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
     var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    client = new OrchestrationClient(destination).withLlmConfig(LLM_CONFIG);
+    var mockService = mock(AiCoreService.class);
+    var mockDeployment = mock(AiCoreDeployment.class);
+    when(mockService.forDeploymentByScenario(any())).thenReturn(mockDeployment);
+    when(mockDeployment.destination()).thenReturn(destination);
+    client = new OrchestrationClient(mockService).withLlmConfig(LLM_CONFIG);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -48,7 +57,7 @@ public class OrchestrationResponseHandlerTest {
   @Test
   void testSuccessResponse() {
     var response =
-        ok().withBodyFile("serializedResponse.json").withHeader("Content-Type", "application/json");
+        ok().withBodyFile("successResponse.json").withHeader("Content-Type", "application/json");
     stubFor(post(anyUrl()).willReturn(response));
 
     var result = client.chatCompletion("Hello there!");

@@ -27,41 +27,6 @@
         "prompt_tokens": 19,
         "total_tokens": 26
       }
-    },
-    "input_filtering": {
-      "message": "Input filter passed successfully.",
-      "data": {
-        "original_service_response": {
-          "Hate": 0,
-          "SelfHarm": 0,
-          "Sexual": 0,
-          "Violence": 2
-        },
-        "checked_text": "Hello there!"
-      }
-    },
-    "input_masking": {
-      "message": "Input to LLM is masked successfully.",
-      "data": {
-        "masked_template": [
-          {
-            "role": "user",
-            "content": "Hello there!"
-          }
-        ]
-      }
-    },
-    "output_filtering": {
-      "message": "Output filter passed successfully.",
-      "data": {
-        "original_service_response": {
-          "Hate": 0,
-          "SelfHarm": 0,
-          "Sexual": 0,
-          "Violence": 2
-        },
-        "checked_text": "General Kenobi!"
-      }
     }
   },
   "orchestration_result": {
