@@ -13,10 +13,8 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -24,8 +22,7 @@ import org.mockito.ArgumentMatchers;
 class OrchestrationClientTest {
   private OrchestrationClient client;
 
-  private static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName("gpt-35-turbo-16k").modelParams(Map.of());
+  private static final LlmConfig LLM_CONFIG = new LlmConfig("gpt-35-turbo-16k");
 
   @BeforeEach
   void setup() {

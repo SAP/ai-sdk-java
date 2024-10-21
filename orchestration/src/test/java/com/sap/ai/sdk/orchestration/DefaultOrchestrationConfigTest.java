@@ -3,15 +3,13 @@ package com.sap.ai.sdk.orchestration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import io.vavr.control.Option;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class DefaultOrchestrationConfigTest {
   private static final OrchestrationConfig<?> DEFAULT_CONFIG =
       DefaultOrchestrationConfig.standalone()
-          .withLlmConfig(mock(LLMModuleConfig.class))
+          .withLlmConfig(mock(LlmConfig.class))
           .withMaskingConfig(mock(MaskingConfig.class));
 
   @Test
@@ -45,7 +43,7 @@ class DefaultOrchestrationConfigTest {
   @Test
   void testApplyingDefaults() {
     var config = DefaultOrchestrationConfig.standalone();
-    var llm = LLMModuleConfig.create().modelName("foo").modelParams(Map.of());
+    var llm = new LlmConfig("foo");
     config.withLlmConfig(llm);
 
     config.copyFrom(DEFAULT_CONFIG);

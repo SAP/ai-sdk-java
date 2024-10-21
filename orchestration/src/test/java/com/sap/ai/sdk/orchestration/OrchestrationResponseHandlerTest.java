@@ -16,11 +16,9 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,8 +32,7 @@ import org.junit.jupiter.api.Test;
 class OrchestrationResponseHandlerTest {
   private OrchestrationClient client;
 
-  private static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName("gpt-35-turbo-16k").modelParams(Map.of());
+  private static final LlmConfig LLM_CONFIG = new LlmConfig("gpt-35-turbo-16k");
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {

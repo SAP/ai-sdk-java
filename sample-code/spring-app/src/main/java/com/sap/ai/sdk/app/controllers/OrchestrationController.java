@@ -3,12 +3,12 @@ package com.sap.ai.sdk.app.controllers;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity;
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
+import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -22,10 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
   static final String MODEL = "gpt-35-turbo";
-  private static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
 
-  private final OrchestrationClient client = new OrchestrationClient().withLlmConfig(LLM_CONFIG);
+  private final OrchestrationClient client =
+      new OrchestrationClient().withLlmConfig(new LlmConfig(MODEL));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
@@ -63,7 +62,7 @@ class OrchestrationController {
 
   @GetMapping("/filter/{level}")
   @Nonnull
-  public CompletionPostResponse filter(@Nonnull @PathVariable(name="level") Sensitivity level) {
+  public CompletionPostResponse filter(@Nonnull @PathVariable(name = "level") Sensitivity level) {
     var filter = new AzureContentFilter().hate(level);
     var prompt =
         new OrchestrationPrompt(
@@ -77,8 +76,7 @@ class OrchestrationController {
   @GetMapping("/masking")
   @Nonnull
   public CompletionPostResponse masking() {
-    var masking =
-        DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
+    var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
 
     var prompt =
         new OrchestrationPrompt(

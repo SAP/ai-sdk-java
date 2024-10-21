@@ -34,11 +34,11 @@ public class DpiMaskingConfig implements MaskingConfig {
 
   @Nonnull
   MaskingProviderConfig toMaskingProviderDTO() {
-    var entities = this.entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
+    var entitiesDTO = entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
     return MaskingProviderConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
-        .entities(entities);
+        .entities(entitiesDTO);
   }
 
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

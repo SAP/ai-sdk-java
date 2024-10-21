@@ -1,8 +1,6 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,12 +14,7 @@ public class OrchestrationAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   OrchestrationClient orchestrationClient(OrchestrationSpringProperties properties) {
-    var llmConfig =
-        LLMModuleConfig.create().modelName(properties.llm().modelName()).modelParams(Map.of());
-    if (properties.llm().modelVersion() != null) {
-      llmConfig.modelVersion(properties.llm().modelVersion());
-    }
-    return new OrchestrationClient().withLlmConfig(llmConfig);
+    return new OrchestrationClient().withLlmConfig(properties.llm());
   }
 
   @Bean

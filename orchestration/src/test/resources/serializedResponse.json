@@ -62,7 +62,17 @@
         },
         "checked_text": "General Kenobi!"
       }
-    }
+    },
+    "output_unmasking": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hello there!"
+        },
+        "finish_reason": "stop"
+      }
+    ]
   },
   "orchestration_result": {
     "id": "chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj",

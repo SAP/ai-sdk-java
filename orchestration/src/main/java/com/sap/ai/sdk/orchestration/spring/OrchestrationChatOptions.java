@@ -1,9 +1,10 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.DefaultOrchestrationConfig;
+import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +60,12 @@ public class OrchestrationChatOptions
   @Nullable
   @Override
   public String getModel() {
-    return delegate.getLlmConfig().map(LLMModuleConfig::getModelName).getOrNull();
+    return delegate.getLlmConfig().map(AiModel::name).getOrNull();
   }
 
   @Nullable
   String getModelVersion() {
-    return delegate.getLlmConfig().map(LLMModuleConfig::getModelVersion).getOrNull();
+    return delegate.getLlmConfig().map(AiModel::version).getOrNull();
   }
 
   @Nullable
@@ -122,8 +123,9 @@ public class OrchestrationChatOptions
   private <T> T getLlmConfigParam(@Nonnull final String param) {
     return delegate
         .getLlmConfig()
-        .map(LLMModuleConfig::getModelParams)
-        .map(it -> (Map<String, Object>) it)
+        .filter(LlmConfig.class::isInstance)
+        .map(LlmConfig.class::cast)
+        .map(LlmConfig::parameters)
         .map(m -> (T) m.get(param))
         .getOrNull();
   }

@@ -11,9 +11,9 @@ import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResults;
+import com.sap.ai.sdk.orchestration.client.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import java.io.IOException;
@@ -25,10 +25,7 @@ class SerializationTest {
 
   @Test
   void testSerialization() throws IOException {
-    var llm =
-        LLMModuleConfig.create()
-            .modelName("gpt-35-turbo-16k")
-            .modelParams(Map.of("temperature", 0.5, "frequency_penalty", 1));
+    var llm = new LlmConfig("gpt-35-turbo-16k", Map.of("temperature", 0.5, "frequency_penalty", 1));
     var template =
         TemplatingModuleConfig.create()
             .template(List.of(ChatMessage.create().role("user").content("{{?input}}")))
@@ -116,8 +113,13 @@ class SerializationTest {
             .message("Input to LLM is masked successfully.")
             .data(
                 Map.of(
-                    "masked_template",
-                    List.of(Map.of("role", "user", "content", "Hello there!"))));
+                    "masked_template", List.of(Map.of("role", "user", "content", "Hello there!"))));
+    var outputMaskingResult =
+        List.of(
+            ModuleResultsOutputUnmaskingInner.create()
+                .index(0)
+                .message(ChatMessage.create().role("assistant").content("Hello there!"))
+                .finishReason("stop"));
     var expected =
         CompletionPostResponse.create()
             .requestId("26ea36b5-c196-4806-a9a6-a686f0c6ad91")
@@ -128,7 +130,7 @@ class SerializationTest {
                     .inputFiltering(inputFilterResult)
                     .outputFiltering(outputFilterResult)
                     .inputMasking(inputMaskingResult)
-                    .outputUnmasking(List.of()))
+                    .outputUnmasking(outputMaskingResult))
             .orchestrationResult(orchestrationResult);
 
     var actual =

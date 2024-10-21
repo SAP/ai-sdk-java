@@ -10,10 +10,11 @@ import static org.mockito.Mockito.mock;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
+import java.util.Map;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ class ModuleConfigFactoryTest {
   @BeforeEach
   void setUp() {
     config = DefaultOrchestrationConfig.standalone();
-    config.withLlmConfig(mock(LLMModuleConfig.class));
+    config.withLlmConfig(mock(LlmConfig.class));
   }
 
   @Test
@@ -35,7 +36,7 @@ class ModuleConfigFactoryTest {
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("LLM module config is required");
 
-    config.withLlmConfig(mock(LLMModuleConfig.class));
+    config.withLlmConfig(mock(LlmConfig.class));
     assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("prompt is required");
@@ -43,12 +44,16 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testLlmConfig() {
-    var llmConfig = mock(LLMModuleConfig.class);
+    var llmConfig = new LlmConfig("foo", "bar", Map.of("baz", "quack"));
 
     config.withLlmConfig(llmConfig);
 
     var result = toModuleConfigDTO(config, messages).getLlmModuleConfig();
-    assertThat(result).isSameAs(llmConfig);
+    assertThat(result.getModelName()).isEqualTo("foo");
+    assertThat(result.getModelVersion()).isEqualTo("bar");
+    assertThat(result.getModelParams())
+        .asInstanceOf(InstanceOfAssertFactories.MAP)
+        .containsEntry("baz", "quack");
   }
 
   @Test

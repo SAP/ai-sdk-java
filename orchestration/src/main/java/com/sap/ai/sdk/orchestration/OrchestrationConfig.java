@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import javax.annotation.Nonnull;
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
 
   @Nonnull
-  Option<LLMModuleConfig> getLlmConfig();
+  Option<AiModel> getLlmConfig();
 
   @Nonnull
   Option<TemplatingModuleConfig> getTemplate();
@@ -29,7 +29,7 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   Option<ContentFilter> getOutputContentFilter();
 
   @Nonnull
-  T withLlmConfig(@Nonnull final LLMModuleConfig llm);
+  T withLlmConfig(@Nonnull final AiModel llm);
 
   @Nonnull
   T withTemplate(@Nonnull final TemplatingModuleConfig template);
