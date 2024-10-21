@@ -13,6 +13,7 @@ import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,7 +63,7 @@ class OrchestrationController {
 
   @GetMapping("/filter/{level}")
   @Nonnull
-  public CompletionPostResponse filter(@Nonnull Sensitivity level) {
+  public CompletionPostResponse filter(@Nonnull @PathVariable(name="level") Sensitivity level) {
     var filter = new AzureContentFilter().hate(level);
     var prompt =
         new OrchestrationPrompt(
@@ -77,11 +78,11 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse masking() {
     var masking =
-        DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL, DPIEntities.LOCATION);
+        DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
 
     var prompt =
         new OrchestrationPrompt(
-                "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai")
+                "Please draft an email containing 'Hello World!' to the email address 'foo.bar@baz.ai'")
             .withMaskingConfig(masking);
 
     return client.chatCompletion(prompt);
