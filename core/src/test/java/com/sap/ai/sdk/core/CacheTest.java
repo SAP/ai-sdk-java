@@ -17,8 +17,8 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import lombok.val;
 import javax.annotation.Nonnull;
+import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
