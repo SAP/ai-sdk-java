@@ -116,8 +116,7 @@ class SerializationTest {
             .message("Input to LLM is masked successfully.")
             .data(
                 Map.of(
-                    "masked_template",
-                    List.of(Map.of("role", "user", "content", "Hello there!"))));
+                    "masked_template", List.of(Map.of("role", "user", "content", "Hello there!"))));
     var expected =
         CompletionPostResponse.create()
             .requestId("26ea36b5-c196-4806-a9a6-a686f0c6ad91")

@@ -63,7 +63,7 @@ class OrchestrationController {
 
   @GetMapping("/filter/{level}")
   @Nonnull
-  public CompletionPostResponse filter(@Nonnull @PathVariable(name="level") Sensitivity level) {
+  public CompletionPostResponse filter(@Nonnull @PathVariable(name = "level") Sensitivity level) {
     var filter = new AzureContentFilter().hate(level);
     var prompt =
         new OrchestrationPrompt(
@@ -77,8 +77,7 @@ class OrchestrationController {
   @GetMapping("/masking")
   @Nonnull
   public CompletionPostResponse masking() {
-    var masking =
-        DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
+    var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
 
     var prompt =
         new OrchestrationPrompt(
