@@ -5,12 +5,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
+import com.sap.ai.sdk.core.client.model.AiDeployment;
+import com.sap.ai.sdk.core.client.model.AiDeploymentDetails;
+import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
+import com.sap.ai.sdk.core.client.model.AiResourcesDetails;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import lombok.val;
+import javax.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -57,10 +65,12 @@ class CacheTest extends WireMockTestServer {
     String resourceGroup = "default";
     stubGPT4(resourceGroup);
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
+
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -80,11 +90,13 @@ class CacheTest extends WireMockTestServer {
     cacheUnderTest.resetCache(client, resourceGroup);
     stubGPT4(resourceGroup);
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
+
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k");
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -95,7 +107,9 @@ class CacheTest extends WireMockTestServer {
     stubGPT4(resourceGroupA);
     stubGPT4(resourceGroupB);
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroupA, "gpt-4-32k");
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
+
+    cacheUnderTest.getDeploymentIdByModel(client, resourceGroupA, gpt4);
     wireMockServer.verify(
         1,
         getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
@@ -111,8 +125,9 @@ class CacheTest extends WireMockTestServer {
     String resourceGroup = "default";
     stubEmpty(resourceGroup);
 
-    assertThatThrownBy(
-            () -> cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, "gpt-4-32k"))
+    final AiModel gpt4 = createAiModel("gpt-4-32k", null);
+
+    assertThatThrownBy(() -> cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4))
         .isExactlyInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("No running deployment found for model: gpt-4-32k");
   }
@@ -127,5 +142,49 @@ class CacheTest extends WireMockTestServer {
     val destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
     new AiCoreService().withDestination(destination).reloadCachedDeployments(resourceGroup);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
+  }
+
+  @Test
+  public void isDeploymentOfModel() {
+    // Create a target model
+    final AiModel gpt4AnyVersion = createAiModel("gpt-4-32k", null);
+    final AiModel gpt4Version1 = createAiModel("gpt-4-32k", "1.0");
+    final AiModel gpt4VersionLatest = createAiModel("gpt-4-32k", "latest");
+
+    // Create a deployment with a different model by version
+    final var model = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
+    final var deployment =
+        AiDeployment.create()
+            .id("test-deployment")
+            .configurationId("test-configuration")
+            .status(AiDeploymentStatus.RUNNING)
+            .createdAt(OffsetDateTime.parse("2024-01-22T17:57:23+00:00"))
+            .modifiedAt(OffsetDateTime.parse("2024-02-08T08:41:23+00:00"));
+    deployment.setDetails(AiDeploymentDetails.create().resources(AiResourcesDetails.create()));
+    deployment.getDetails().getResources().setCustomField("backend_details", model);
+
+    // Check if the deployment is of the target model
+    assertThat(DeploymentCache.isDeploymentOfModel(gpt4AnyVersion, deployment)).isTrue();
+    assertThat(DeploymentCache.isDeploymentOfModel(gpt4Version1, deployment)).isFalse();
+    assertThat(DeploymentCache.isDeploymentOfModel(gpt4VersionLatest, deployment)).isTrue();
+  }
+
+  static AiModel createAiModel(String name, String version) {
+    return new AiModel() {
+      @Nonnull
+      @Override
+      public String name() {
+        return name;
+      }
+
+      @Override
+      public String version() {
+        return version;
+      }
+
+      public String toString() {
+        return name;
+      }
+    };
   }
 }

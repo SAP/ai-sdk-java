@@ -7,6 +7,7 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +23,7 @@ import lombok.val;
 class DeploymentCache {
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private final Map<String, Set<AiDeployment>> CACHE = new ConcurrentHashMap<>();
+  private final Map<String, Set<AiDeployment>> cache = new ConcurrentHashMap<>();
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
@@ -33,23 +34,23 @@ class DeploymentCache {
    * @param resourceGroup the resource group, usually "default".
    */
   void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
-    CACHE.remove(resourceGroup);
+    cache.remove(resourceGroup);
     try {
       val deployments =
           new HashSet<>(new DeploymentApi(client).query(resourceGroup).getResources());
-      CACHE.put(resourceGroup, deployments);
+      cache.put(resourceGroup, deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
     }
   }
 
   /**
-   * Get the deployment id from the foundation model name. If there are multiple deployments of the
-   * same model, the first one is returned.
+   * Get the deployment id from the foundation model object. If there are multiple deployments of
+   * the same model, the first one is returned.
    *
    * @param client the API client to maybe reset the cache if the deployment is not found.
    * @param resourceGroup the resource group, usually "default".
-   * @param modelName the name of the foundation model.
+   * @param model the foundation model.
    * @return the deployment id.
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
@@ -57,24 +58,24 @@ class DeploymentCache {
   String getDeploymentIdByModel(
       @Nonnull final ApiClient client,
       @Nonnull final String resourceGroup,
-      @Nonnull final String modelName)
+      @Nonnull final AiModel model)
       throws NoSuchElementException {
-    return getDeploymentIdByModel(resourceGroup, modelName)
+    return getDeploymentIdByModel(resourceGroup, model)
         .orElseGet(
             () -> {
               resetCache(client, resourceGroup);
-              return getDeploymentIdByModel(resourceGroup, modelName)
+              return getDeploymentIdByModel(resourceGroup, model)
                   .orElseThrow(
                       () ->
                           new NoSuchElementException(
-                              "No running deployment found for model: " + modelName));
+                              "No running deployment found for model: " + model));
             });
   }
 
   private Optional<String> getDeploymentIdByModel(
-      @Nonnull final String resourceGroup, @Nonnull final String modelName) {
-    return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
-        .filter(deployment -> isDeploymentOfModel(modelName, deployment))
+      @Nonnull final String resourceGroup, @Nonnull final AiModel model) {
+    return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
+        .filter(deployment -> isDeploymentOfModel(model, deployment))
         .findFirst()
         .map(AiDeployment::getId);
   }
@@ -109,7 +110,7 @@ class DeploymentCache {
 
   private Optional<String> getDeploymentIdByScenario(
       @Nonnull final String resourceGroup, @Nonnull final String scenarioId) {
-    return CACHE.getOrDefault(resourceGroup, new HashSet<>()).stream()
+    return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
         .findFirst()
         .map(AiDeployment::getId);
@@ -118,13 +119,13 @@ class DeploymentCache {
   /**
    * This exists because getBackendDetails() is broken
    *
-   * @param modelName The model name.
+   * @param targetModel The target model object.
    * @param deployment The deployment.
    * @return true if the deployment is of the model.
    */
-  private static boolean isDeploymentOfModel(
-      @Nonnull final String modelName, @Nonnull final AiDeployment deployment) {
-    val deploymentDetails = deployment.getDetails();
+  protected static boolean isDeploymentOfModel(
+      @Nonnull final AiModel targetModel, @Nonnull final AiDeployment deployment) {
+    final var deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
     // Remove this check when the specification is fixed.
     if (deploymentDetails == null) {
@@ -145,9 +146,14 @@ class DeploymentCache {
 
     if (detailsObject instanceof Map<?, ?> details
         && details.get("model") instanceof Map<?, ?> model
-        && model.get("name") instanceof String name) {
-      return modelName.equals(name);
+        && model.get("name") instanceof String name
+        && targetModel.name().equals(name)) {
+      // if target version is not specified (null), any version is accepted, otherwise they must
+      // match
+      return targetModel.version() == null
+          || Objects.equals(targetModel.version(), model.get("version"));
     }
+
     return false;
   }
 }
