@@ -125,7 +125,7 @@ class DeploymentCache {
    */
   protected static boolean isDeploymentOfModel(
       @Nonnull final AiModel targetModel, @Nonnull final AiDeployment deployment) {
-    final var deploymentDetails = deployment.getDetails();
+    val deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
     // Remove this check when the specification is fixed.
     if (deploymentDetails == null) {
