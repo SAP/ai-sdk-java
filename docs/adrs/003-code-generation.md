@@ -76,6 +76,10 @@ For the **foundation models** we choose alternative **2**, generating about 80-9
 - We improve API quality on a best effort basis.
 - We test most (75% or more) of the functionality
 
-For the **orchestration service** we choose alternative **2**
-- We generate all DTO classes
-- We test most (85% or more) of the functionality
+For the **orchestration service** we choose a mix of alternatives **2** and **3**.
+The main reason is that the desired API quality and stability can not be achieved with generated code alone.
+- We generate all DTO classes but mark them as beta and leave them in a dedicated `.dto` package.
+- We offer a hand-crafted convenience API on top that uses the DTO objects internally.
+- The convenience API is considered stable and is tested in full
+- The convenience API has the best API quality, but may not cover all edge cases and not allow for arbitrary customization
+- Users may transition to the low-level API, directly working with the DTOs, if the convenience API isn't flexible enough for their use case
