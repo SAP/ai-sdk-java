@@ -6,10 +6,10 @@ import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.OrchestrationResponse;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TemplateVariable;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -34,7 +34,7 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public CompletionPostResponse completion() {
+  public OrchestrationResponse completion() {
     var prompt = new OrchestrationPrompt("What is the capital of France?");
 
     return client.chatCompletion(prompt);
@@ -47,7 +47,7 @@ class OrchestrationController {
    */
   @GetMapping("/template")
   @Nonnull
-  public CompletionPostResponse template() {
+  public OrchestrationResponse template() {
     var templateVariable = TemplateVariable.of("language");
     var templateMessage =
         ChatMessage.create()
@@ -64,7 +64,7 @@ class OrchestrationController {
 
   @GetMapping("/filter/{level}")
   @Nonnull
-  public CompletionPostResponse filter(@Nonnull @PathVariable(name = "level") Sensitivity level) {
+  public OrchestrationResponse filter(@Nonnull @PathVariable(name = "level") Sensitivity level) {
     var filter = new AzureContentFilter().hate(level);
     var prompt =
         new OrchestrationPrompt(
@@ -77,12 +77,16 @@ class OrchestrationController {
 
   @GetMapping("/masking")
   @Nonnull
-  public CompletionPostResponse masking() {
+  public OrchestrationResponse masking() {
     var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
 
     var prompt =
         new OrchestrationPrompt(
-                "Please draft an email containing 'Hello World!' to the email address 'foo.bar@baz.ai'")
+                """
+            Please translate the following into German:
+
+            Hi, my name is Foo Bar and you can reach me under my email address 'foo.bar@baz.ai'.
+            """)
             .withMaskingConfig(masking);
 
     return client.chatCompletion(prompt);

@@ -14,7 +14,9 @@ import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.client.model.ModuleResults;
 import java.util.List;
+import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -62,16 +64,12 @@ class OrchestrationClientTest {
             .index(0)
             .message(ChatMessage.create().role("assistant").content("General Kenobi!"))
             .finishReason(finishReason);
-
+    var moduleResults = mock(ModuleResults.class);
+    when(moduleResults.getTemplating()).thenReturn(List.of());
+    when(response.getModuleResults()).thenReturn(moduleResults);
     when(orchestrationResult.getChoices()).thenReturn(List.of(llmChoice));
     when(response.getOrchestrationResult()).thenReturn(orchestrationResult);
 
-    doReturn(response).when(client).executeRequest(any());
-  }
-
-  @Test
-  void testDtoCustomization() {
-
-    stubResponse("stop");
+    doReturn(response).when(client).executeRequest(any(BasicClassicHttpRequest.class));
   }
 }

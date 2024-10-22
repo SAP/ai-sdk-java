@@ -27,7 +27,7 @@ public class OrchestrationChatModel implements ChatModel {
   public OrchestrationChatResponse call(@Nonnull final Prompt prompt) {
     var orchestrationPrompt = toOrchestrationPrompt(prompt);
     var response = client.chatCompletion(orchestrationPrompt);
-    return OrchestrationChatResponse.fromOrchestrationResponse(response);
+    return OrchestrationChatResponse.fromOrchestrationResponse(response.originalResponseDto());
   }
 
   @Nonnull

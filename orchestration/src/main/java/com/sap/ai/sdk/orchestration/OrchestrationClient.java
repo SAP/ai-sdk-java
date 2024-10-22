@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationResponse.FinishReason.CONTENT_FILTER;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -65,11 +67,10 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
       throws OrchestrationClientException {
     var response = chatCompletion(new OrchestrationPrompt(userPrompt));
 
-    var choice = response.getOrchestrationResult().getChoices().get(0);
-    if (choice.getFinishReason().equalsIgnoreCase("content_filter")) {
+    if (response.finishReason() == CONTENT_FILTER) {
       throw new OrchestrationClientException("Output content filter triggered");
     }
-    return choice.getMessage().getContent();
+    return response.assistantMessage().getContent();
   }
 
   /**
@@ -80,11 +81,12 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
    * @throws OrchestrationClientException if the request fails
    */
   @Nonnull
-  public CompletionPostResponse chatCompletion(@Nonnull final OrchestrationPrompt prompt)
+  public OrchestrationResponse chatCompletion(@Nonnull final OrchestrationPrompt prompt)
       throws OrchestrationClientException {
-    var dto = prompt.toCompletionPostRequestDTO(clientConfig);
+    final var dto = prompt.toCompletionPostRequestDTO(clientConfig);
 
-    return executeRequest(dto);
+    final var result = executeRequest(dto);
+    return OrchestrationResponse.fromCompletionPostResponseDTO(result);
   }
 
   @Nonnull
@@ -100,26 +102,26 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   }
 
   @Nonnull
-  protected String serializeRequest(@Nonnull final CompletionPostRequest request) {
+  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
+    final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
-      return JACKSON.writeValueAsString(request);
+      final var json = JACKSON.writeValueAsString(request);
+      postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
     } catch (final JsonProcessingException e) {
       throw new OrchestrationClientException("Failed to serialize request parameters", e);
     }
+
+    return executeRequest(postRequest);
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
-    final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
-    final var json = serializeRequest(request);
-    postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-
+  CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {
       final var destination = service.forDeploymentByScenario("orchestration").destination();
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
-          postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
+          request, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
     } catch (NoSuchElementException
         | DestinationAccessException
         | DestinationNotFoundException
