@@ -10,7 +10,12 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
+import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
+import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
+import io.vavr.NotImplementedError;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
@@ -85,32 +90,41 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OrchestrationClientException {
-    throw new RuntimeException("Not implemented");
+    throw new NotImplementedError();
   }
 
   @Nonnull
   public Stream<String> streamChatCompletionDelta(@Nonnull final OrchestrationPrompt prompt)
       throws OrchestrationClientException {
-    throw new RuntimeException("Not implemented");
+    throw new NotImplementedError();
+  }
+
+  @Nonnull
+  protected String serializeRequest(@Nonnull final CompletionPostRequest request) {
+    try {
+      return JACKSON.writeValueAsString(request);
+    } catch (final JsonProcessingException e) {
+      throw new OrchestrationClientException("Failed to serialize request parameters", e);
+    }
   }
 
   @SuppressWarnings("UnstableApiUsage")
   @Nonnull
-  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
-    final var destination = service.forDeploymentByScenario("orchestration").destination();
-    final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+  CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
     final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
-    try {
-      final var json = JACKSON.writeValueAsString(request);
-      postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-    } catch (final JsonProcessingException e) {
-      throw new OrchestrationClientException("Failed to serialize request parameters", e);
-    }
+    final var json = serializeRequest(request);
+    postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
 
     try {
+      final var destination = service.forDeploymentByScenario("orchestration").destination();
+      final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
           postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
-    } catch (IOException e) {
+    } catch (NoSuchElementException
+        | DestinationAccessException
+        | DestinationNotFoundException
+        | HttpClientInstantiationException
+        | IOException e) {
       throw new OrchestrationClientException("Failed to execute request", e);
     }
   }

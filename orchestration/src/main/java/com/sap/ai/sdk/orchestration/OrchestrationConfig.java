@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.AiModel;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import javax.annotation.Nonnull;
 
@@ -17,7 +16,7 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   Option<AiModel> getLlmConfig();
 
   @Nonnull
-  Option<TemplatingModuleConfig> getTemplate();
+  Option<TemplateConfig> getTemplate();
 
   @Nonnull
   Option<MaskingConfig> getMaskingConfig();
@@ -32,7 +31,7 @@ public interface OrchestrationConfig<T extends OrchestrationConfig<T>> {
   T withLlmConfig(@Nonnull final AiModel llm);
 
   @Nonnull
-  T withTemplate(@Nonnull final TemplatingModuleConfig template);
+  T withTemplate(@Nonnull final TemplateConfig templateConfig);
 
   @Nonnull
   T withMaskingConfig(@Nonnull final MaskingConfig maskingConfig);

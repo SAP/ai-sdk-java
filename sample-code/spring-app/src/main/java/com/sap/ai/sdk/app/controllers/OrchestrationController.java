@@ -6,10 +6,11 @@ import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TemplateVariable;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,15 +48,16 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   public CompletionPostResponse template() {
-    var template =
+    var templateVariable = TemplateVariable.of("language");
+    var templateMessage =
         ChatMessage.create()
             .role("user")
-            .content("Reply with 'The Orchestration Service is working!' in {{?language}}");
-    var inputParams = Map.of("language", "german");
+            .content("Reply with 'The Orchestration Service is working!' in " + templateVariable);
+    var inputParams = Map.ofEntries(templateVariable.apply("german"));
 
     var prompt =
         new OrchestrationPrompt(inputParams)
-            .withTemplate(TemplatingModuleConfig.create().template(template));
+            .withTemplate(TemplateConfig.fromMessages(templateMessage));
 
     return client.chatCompletion(prompt);
   }

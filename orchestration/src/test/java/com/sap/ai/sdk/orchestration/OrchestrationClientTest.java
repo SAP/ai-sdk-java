@@ -68,4 +68,10 @@ class OrchestrationClientTest {
 
     doReturn(response).when(client).executeRequest(any());
   }
+
+  @Test
+  void testDtoCustomization() {
+
+    stubResponse("stop");
+  }
 }

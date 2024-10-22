@@ -4,8 +4,8 @@ import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.DefaultOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -45,7 +45,7 @@ public class OrchestrationChatOptions
 
   @Nonnull
   public OrchestrationChatOptions withTemplate(@Nonnull final List<Message> template) {
-    delegate.withTemplate(TemplatingModuleConfig.create().template(toChatMessages(template)));
+    delegate.withTemplate(TemplateConfig.fromMessages(toChatMessages(template)));
     return this;
   }
 

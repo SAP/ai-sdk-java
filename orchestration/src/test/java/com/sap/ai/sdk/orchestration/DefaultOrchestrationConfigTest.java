@@ -10,7 +10,7 @@ class DefaultOrchestrationConfigTest {
   private static final OrchestrationConfig<?> DEFAULT_CONFIG =
       DefaultOrchestrationConfig.standalone()
           .withLlmConfig(mock(LlmConfig.class))
-          .withMaskingConfig(mock(MaskingConfig.class));
+          .withMaskingConfig(mock(DpiMaskingConfig.class));
 
   @Test
   void testStandalone() {

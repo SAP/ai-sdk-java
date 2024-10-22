@@ -13,10 +13,7 @@
         "template" : [ {
           "role" : "user",
           "content" : "{{?input}}"
-        } ],
-        "defaults" : {
-          "input" : "Hello World!"
-        }
+        } ]
       },
       "filtering_module_config" : {
         "input" : {

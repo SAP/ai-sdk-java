@@ -11,7 +11,7 @@ import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import io.vavr.NotImplementedError;
 import java.util.List;
 import java.util.Map;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -68,11 +68,25 @@ class ModuleConfigFactoryTest {
   void testMessagesAreMergedIntoTemplate() {
     var message1 = mock(ChatMessage.class);
     var message2 = mock(ChatMessage.class);
-    config.withTemplate(TemplatingModuleConfig.create().template(List.of(message1)));
+    config.withTemplate(TemplateConfig.fromMessages(message1));
 
     var result = toModuleConfigDTO(config, List.of(message2)).getTemplatingModuleConfig();
 
     assertThat(result.getTemplate()).containsExactly(message2, message1);
+  }
+
+  @Test
+  void testTemplateReference() {
+
+    config.withTemplate(TemplateConfig.referenceById("foo"));
+
+    assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
+        .isInstanceOf(NotImplementedError.class);
+
+    config.withTemplate(TemplateConfig.referenceByName("foo", "bar", "baz"));
+
+    assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
+        .isInstanceOf(NotImplementedError.class);
   }
 
   @Test

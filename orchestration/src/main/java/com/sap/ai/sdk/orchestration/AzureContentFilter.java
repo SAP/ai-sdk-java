@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(fluent = true)
-public class AzureContentFilter implements ContentFilter {
+public final class AzureContentFilter implements ContentFilter {
   @Nullable private Sensitivity hate;
   @Nullable private Sensitivity selfHarm;
   @Nullable private Sensitivity sexual;

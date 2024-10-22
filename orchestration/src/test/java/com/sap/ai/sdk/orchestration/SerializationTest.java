@@ -14,7 +14,6 @@ import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResultsOutputUnmaskingInner;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import java.io.IOException;
 import java.util.List;
@@ -27,9 +26,7 @@ class SerializationTest {
   void testSerialization() throws IOException {
     var llm = new LlmConfig("gpt-35-turbo-16k", Map.of("temperature", 0.5, "frequency_penalty", 1));
     var template =
-        TemplatingModuleConfig.create()
-            .template(List.of(ChatMessage.create().role("user").content("{{?input}}")))
-            .defaults(Map.of("input", "Hello World!"));
+        TemplateConfig.fromMessages(ChatMessage.create().role("user").content("{{?input}}"));
 
     var inputFilter = new AzureContentFilter().selfHarm(LOW);
     var outputFilter = new AzureContentFilter().hate(HIGH).selfHarm(MEDIUM).sexual(LOW);

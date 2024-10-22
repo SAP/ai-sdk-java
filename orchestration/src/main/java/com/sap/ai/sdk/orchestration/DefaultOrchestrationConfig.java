@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.AiModel;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -19,7 +18,7 @@ public class DefaultOrchestrationConfig<T extends OrchestrationConfig<T>>
     implements OrchestrationConfig<T> {
 
   @Nonnull private Option<AiModel> llmConfig = Option.none();
-  @Nonnull private Option<TemplatingModuleConfig> template = Option.none();
+  @Nonnull private Option<TemplateConfig> template = Option.none();
   @Nonnull private Option<MaskingConfig> maskingConfig = Option.none();
   @Nonnull private Option<ContentFilter> inputContentFilter = Option.none();
   @Nonnull private Option<ContentFilter> outputContentFilter = Option.none();
@@ -73,8 +72,8 @@ public class DefaultOrchestrationConfig<T extends OrchestrationConfig<T>>
 
   @Nonnull
   @Override
-  public T withTemplate(@Nonnull final TemplatingModuleConfig template) {
-    this.template = Option.some(template);
+  public T withTemplate(@Nonnull final TemplateConfig templateConfig) {
+    this.template = Option.some(templateConfig);
     return wrapper;
   }
 
