@@ -23,7 +23,7 @@ public final class AzureContentFilter implements ContentFilter {
     HIGH(0),
     MEDIUM(2),
     LOW(4);
-
+    // note: we leave out the value 6, as setting it is equivalent to not setting the filter at all
     private final int value;
   }
 

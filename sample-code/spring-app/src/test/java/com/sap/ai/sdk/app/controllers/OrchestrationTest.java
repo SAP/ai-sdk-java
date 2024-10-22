@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationResponse;
@@ -39,7 +40,7 @@ class OrchestrationTest {
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
-    assertThat(llm.getModel()).isEqualTo(OrchestrationController.MODEL);
+    assertThat(llm.getModel()).isEqualTo(OpenAiModel.GPT_35_TURBO.name());
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -52,7 +53,7 @@ class OrchestrationTest {
     assertThat(responseDto.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
     assertThat(responseDto.getOrchestrationResult().getCreated()).isGreaterThan(1);
     assertThat(responseDto.getOrchestrationResult().getModel())
-        .isEqualTo(OrchestrationController.MODEL);
+        .isEqualTo(OpenAiModel.GPT_35_TURBO.name());
     choices = responseDto.getOrchestrationResult().getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();

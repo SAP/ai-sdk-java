@@ -21,6 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -29,7 +30,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrchestrationClient implements OrchestrationConfig<OrchestrationClient> {
   static final ObjectMapper JACKSON;
 

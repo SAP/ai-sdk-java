@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity;
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
@@ -23,10 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  static final String MODEL = "gpt-35-turbo";
 
   private final OrchestrationClient client =
-      new OrchestrationClient().withLlmConfig(new LlmConfig(MODEL));
+      new OrchestrationClient().withLlmConfig(OpenAiModel.GPT_35_TURBO);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template

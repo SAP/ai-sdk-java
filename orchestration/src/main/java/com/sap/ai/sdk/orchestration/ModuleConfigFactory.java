@@ -20,12 +20,15 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
+/**
+ * Factory to create all DTOs from an orchestration configuration.
+ */
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ModuleConfigFactory {
   @Nonnull
   static ModuleConfigs toModuleConfigDTO(
       @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<Message> messages) {
-    val llm =
+    val llmDto =
         config
             .getLlmConfig()
             .map(ModuleConfigFactory::toLlmModuleConfigDTO)
@@ -34,7 +37,7 @@ final class ModuleConfigFactory {
     val template = config.getTemplate().getOrElse(() -> TemplateConfig.fromMessages(List.of()));
     val templateDto = toTemplateModuleConfigDTO(template, messages);
 
-    var dto = ModuleConfigs.create().llmModuleConfig(llm).templatingModuleConfig(templateDto);
+    var resultDto = ModuleConfigs.create().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
 
     config
         .getMaskingConfig()
@@ -42,7 +45,7 @@ final class ModuleConfigFactory {
         .map(DpiMaskingConfig.class::cast)
         .map(DpiMaskingConfig::toMaskingProviderDTO)
         .map(it -> MaskingModuleConfig.create().maskingProviders(it))
-        .forEach(dto::maskingModuleConfig);
+        .forEach(resultDto::maskingModuleConfig);
 
     val maybeInputFilter = config.getInputContentFilter();
     val maybeOutputFilter = config.getOutputContentFilter();
@@ -61,10 +64,10 @@ final class ModuleConfigFactory {
           .map(AzureContentFilter::toFilterConfigDTO)
           .map(it -> OutputFilteringConfig.create().filters(it))
           .forEach(filter::output);
-      dto = dto.filteringModuleConfig(filter);
+      resultDto = resultDto.filteringModuleConfig(filter);
     }
 
-    return dto;
+    return resultDto;
   }
 
   @Nonnull
@@ -72,11 +75,11 @@ final class ModuleConfigFactory {
     if (model instanceof LlmConfig llmConfig) {
       return llmConfig.toLLMModuleConfigDTO();
     }
-    val result = LLMModuleConfig.create().modelName(model.name()).modelParams(Map.of());
+    val dto = LLMModuleConfig.create().modelName(model.name()).modelParams(Map.of());
     if (model.version() != null) {
-      result.modelVersion(model.version());
+      dto.modelVersion(model.version());
     }
-    return result;
+    return dto;
   }
 
   @Nonnull
