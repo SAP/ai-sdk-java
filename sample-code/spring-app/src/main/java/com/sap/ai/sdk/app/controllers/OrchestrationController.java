@@ -4,7 +4,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity;
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
-import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.OrchestrationResponse;

@@ -20,9 +20,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-/**
- * Factory to create all DTOs from an orchestration configuration.
- */
+/** Factory to create all DTOs from an orchestration configuration. */
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ModuleConfigFactory {
   @Nonnull
@@ -37,7 +35,8 @@ final class ModuleConfigFactory {
     val template = config.getTemplate().getOrElse(() -> TemplateConfig.fromMessages(List.of()));
     val templateDto = toTemplateModuleConfigDTO(template, messages);
 
-    var resultDto = ModuleConfigs.create().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
+    var resultDto =
+        ModuleConfigs.create().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
 
     config
         .getMaskingConfig()
