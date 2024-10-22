@@ -1,0 +1,57 @@
+{
+  "orchestration_config" : {
+    "module_configurations" : {
+      "llm_module_config" : {
+        "model_name" : "gpt-35-turbo-16k",
+        "model_params" : {
+          "frequency_penalty" : 1,
+          "temperature" : 0.5
+        },
+        "model_version" : "latest"
+      },
+      "templating_module_config" : {
+        "template" : [ {
+          "role" : "user",
+          "content" : "{{?input}}"
+        } ]
+      },
+      "filtering_module_config" : {
+        "input" : {
+          "filters" : [ {
+            "type" : "azure_content_safety",
+            "config" : {
+              "SelfHarm" : 4
+            }
+          } ]
+        },
+        "output" : {
+          "filters" : [ {
+            "type" : "azure_content_safety",
+            "config" : {
+              "Hate" : 0,
+              "SelfHarm" : 2,
+              "Sexual": 4
+            }
+          } ]
+        }
+      },
+      "masking_module_config" : {
+        "masking_providers" : [ {
+          "type" : "sap_data_privacy_integration",
+          "method" : "anonymization",
+          "entities" : [ {
+            "type" : "profile-address"
+          }, {
+            "type" : "profile-iban"
+          }, {
+            "type" : "profile-location"
+          } ]
+        } ]
+      }
+    },
+    "stream" : false
+  },
+  "input_params" : {
+    "input" : "Reply with 'Orchestration Service is working!' in German"
+  }
+}
