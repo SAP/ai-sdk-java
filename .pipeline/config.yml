@@ -20,7 +20,7 @@ stages:
       class: 67
   codeCheck:
     checkstyle:
-      high: '3'# Open tasks (to do or fix me)
+      high: '0'
       normal: '0'
       low: '0'
     spotbugs:

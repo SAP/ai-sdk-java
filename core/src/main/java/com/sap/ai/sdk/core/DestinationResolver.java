@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 /** Utility class to resolve the destination pointing to the AI Core service. */
 @Slf4j
@@ -45,16 +46,16 @@ class DestinationResolver {
   @SuppressWarnings("UnstableApiUsage")
   static HttpDestination getDestination(@Nullable final String serviceKey) {
     final Predicate<Object> aiCore = Optional.of(ServiceIdentifier.AI_CORE)::equals;
-    final var serviceBindings = accessor.getServiceBindings();
-    final var aiCoreBinding = tryFind(serviceBindings, b -> aiCore.test(b.getServiceIdentifier()));
+    val serviceBindings = accessor.getServiceBindings();
+    val aiCoreBinding = tryFind(serviceBindings, b -> aiCore.test(b.getServiceIdentifier()));
 
-    final var serviceKeyPresent = serviceKey != null;
+    val serviceKeyPresent = serviceKey != null;
     if (!aiCoreBinding.isPresent() && serviceKeyPresent) {
       addServiceBinding(serviceKey);
     }
 
     // get a destination pointing to the AI Core service
-    final var opts =
+    val opts =
         (aiCoreBinding.isPresent()
                 ? forService(aiCoreBinding.get())
                 : forService(ServiceIdentifier.AI_CORE))
@@ -85,12 +86,12 @@ class DestinationResolver {
           "Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.", e);
     }
 
-    final var binding =
+    val binding =
         new DefaultServiceBindingBuilder()
             .withServiceIdentifier(ServiceIdentifier.AI_CORE)
             .withCredentials(credentials)
             .build();
-    final var newAccessor =
+    val newAccessor =
         new ServiceBindingMerger(
             List.of(accessor, () -> List.of(binding)), ServiceBindingMerger.KEEP_EVERYTHING);
     DefaultServiceBindingAccessor.setInstance(newAccessor);
