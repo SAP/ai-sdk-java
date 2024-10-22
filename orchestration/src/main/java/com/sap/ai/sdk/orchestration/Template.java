@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class Template {
 
-  record Messages(@Nonnull List<ChatMessage> messages) implements TemplateConfig {}
+  record Messages(@Nonnull List<Message> messages) implements TemplateConfig {}
 
   record IdReference(@Nonnull String templateId) implements TemplateConfig {}
 

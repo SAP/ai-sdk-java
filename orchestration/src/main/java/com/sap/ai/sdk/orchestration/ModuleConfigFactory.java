@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 final class ModuleConfigFactory {
   @Nonnull
   static ModuleConfigs toModuleConfigDTO(
-      @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<ChatMessage> messages) {
+      @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<Message> messages) {
     final var llm =
         config
             .getLlmConfig()
@@ -83,7 +83,7 @@ final class ModuleConfigFactory {
 
   @Nonnull
   static TemplatingModuleConfig toTemplateModuleConfigDTO(
-      @Nonnull final TemplateConfig templateConfig, @Nonnull final List<ChatMessage> messages) {
+      @Nonnull final TemplateConfig templateConfig, @Nonnull final List<Message> messages) {
     if (templateConfig instanceof Template.Messages templateMessages) {
       /*
        * Currently, we have to merge the prompt into the template configuration.
@@ -98,7 +98,11 @@ final class ModuleConfigFactory {
         throw new IllegalStateException(
             "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
       }
-      return TemplatingModuleConfig.create().template(messagesWithPrompt);
+      final var messagesDto =
+          messagesWithPrompt.stream()
+              .map(msg -> ChatMessage.create().role(msg.type()).content(msg.content()))
+              .toList();
+      return TemplatingModuleConfig.create().template(messagesDto);
     }
     if (templateConfig instanceof Template.IdReference idReference) {
       final var templateRef = TemplateRefByID.create().id(idReference.templateId());

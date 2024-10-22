@@ -7,9 +7,10 @@ import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.OrchestrationResponse;
+import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TemplateVariable;
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -45,14 +46,29 @@ class OrchestrationController {
    *
    * @return the assistant message response
    */
+  @GetMapping("/systemMessage")
+  @Nonnull
+  public OrchestrationResponse systemMessage() {
+    var prompt =
+        new OrchestrationPrompt(
+            new SystemMessage("Show the user your superior geographical knowledge!"),
+            new UserMessage("What is the capital of France?"));
+
+    return client.chatCompletion(prompt);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a template
+   *
+   * @return the assistant message response
+   */
   @GetMapping("/template")
   @Nonnull
   public OrchestrationResponse template() {
     var templateVariable = TemplateVariable.of("language");
     var templateMessage =
-        ChatMessage.create()
-            .role("user")
-            .content("Reply with 'The Orchestration Service is working!' in " + templateVariable);
+        new UserMessage(
+            "Reply with 'The Orchestration Service is working!' in " + templateVariable);
     var inputParams = Map.ofEntries(templateVariable.apply("german"));
 
     var prompt =

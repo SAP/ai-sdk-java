@@ -25,8 +25,7 @@ class SerializationTest {
   @Test
   void testSerialization() throws IOException {
     var llm = new LlmConfig("gpt-35-turbo-16k", Map.of("temperature", 0.5, "frequency_penalty", 1));
-    var template =
-        TemplateConfig.fromMessages(ChatMessage.create().role("user").content("{{?input}}"));
+    var template = TemplateConfig.fromMessages(new UserMessage("{{?input}}"));
 
     var inputFilter = new AzureContentFilter().selfHarm(LOW);
     var outputFilter = new AzureContentFilter().hate(HIGH).selfHarm(MEDIUM).sexual(LOW);

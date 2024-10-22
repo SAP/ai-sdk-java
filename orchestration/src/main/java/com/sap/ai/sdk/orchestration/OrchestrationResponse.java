@@ -22,7 +22,7 @@ public record OrchestrationResponse(
     STOP("stop"),
     MAX_TOKENS("max_tokens"),
     CONTENT_FILTER("content_filter"),
-    UNKNOWN("");
+    UNKNOWN("unknown");
 
     @Nonnull final String value;
 

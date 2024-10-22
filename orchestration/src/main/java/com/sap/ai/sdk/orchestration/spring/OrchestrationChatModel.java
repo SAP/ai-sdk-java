@@ -32,7 +32,7 @@ public class OrchestrationChatModel implements ChatModel {
 
   @Nonnull
   private static OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
-    var messages = OrchestrationChatOptions.toChatMessages(prompt.getInstructions());
+    var messages = OrchestrationChatOptions.toOrchestrationMessages(prompt.getInstructions());
 
     var opts = getChatOptions(prompt);
     var orchestrationPrompt = new OrchestrationPrompt(messages, opts.getTemplateParameters());

@@ -39,7 +39,7 @@ class OrchestrationClientTest {
     var result = client.chatCompletion("Hello there!");
     assertThat(result).isEqualTo("General Kenobi!");
 
-    var expected = ChatMessage.create().role("user").content("Hello there!");
+    var expected = new UserMessage("Hello there!");
     verify(client)
         .chatCompletion(
             ArgumentMatchers.<OrchestrationPrompt>argThat(

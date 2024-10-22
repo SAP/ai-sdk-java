@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
@@ -19,7 +18,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ModuleConfigFactoryTest {
-  private static final List<ChatMessage> messages = List.of(mock(ChatMessage.class));
+  private static final List<Message> messages =
+      List.of(new SystemMessage("foo"), new UserMessage("bar"), new AssistantMessage("baz"));
   private DefaultOrchestrationConfig<?> config;
 
   @BeforeEach
@@ -59,20 +59,35 @@ class ModuleConfigFactoryTest {
   @Test
   void testTemplateIsCreatedFromMessages() {
     var result = toModuleConfigDTO(config, messages).getTemplatingModuleConfig();
-
-    assertThat(result.getTemplate()).containsExactly(messages.get(0));
     assertThat(result.getDefaults()).isNull();
+
+    var template = result.getTemplate();
+
+    assertThat(template).hasSize(3);
+    assertThat(template.get(0).getRole()).isEqualTo(messages.get(0).type());
+    assertThat(template.get(0).getContent()).isEqualTo(messages.get(0).content());
+    assertThat(template.get(1).getRole()).isEqualTo(messages.get(1).type());
+    assertThat(template.get(1).getContent()).isEqualTo(messages.get(1).content());
+    assertThat(template.get(2).getRole()).isEqualTo(messages.get(2).type());
+    assertThat(template.get(2).getContent()).isEqualTo(messages.get(2).content());
   }
 
   @Test
   void testMessagesAreMergedIntoTemplate() {
-    var message1 = mock(ChatMessage.class);
-    var message2 = mock(ChatMessage.class);
-    config.withTemplate(TemplateConfig.fromMessages(message1));
+    config.withTemplate(TemplateConfig.fromMessages(messages.subList(0, 2)));
 
-    var result = toModuleConfigDTO(config, List.of(message2)).getTemplatingModuleConfig();
+    var result =
+        toModuleConfigDTO(config, List.of(messages.get(2)))
+            .getTemplatingModuleConfig()
+            .getTemplate();
 
-    assertThat(result.getTemplate()).containsExactly(message2, message1);
+    assertThat(result).hasSize(3);
+    assertThat(result.get(0).getRole()).isEqualTo(messages.get(2).type());
+    assertThat(result.get(0).getContent()).isEqualTo(messages.get(2).content());
+    assertThat(result.get(1).getRole()).isEqualTo(messages.get(0).type());
+    assertThat(result.get(1).getContent()).isEqualTo(messages.get(0).content());
+    assertThat(result.get(2).getRole()).isEqualTo(messages.get(1).type());
+    assertThat(result.get(2).getContent()).isEqualTo(messages.get(1).content());
   }
 
   @Test

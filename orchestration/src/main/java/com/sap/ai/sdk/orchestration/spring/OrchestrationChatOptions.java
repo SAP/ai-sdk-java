@@ -1,13 +1,16 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import com.sap.ai.sdk.core.AiModel;
+import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.DefaultOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.LlmConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -45,15 +48,8 @@ public class OrchestrationChatOptions
 
   @Nonnull
   public OrchestrationChatOptions withTemplate(@Nonnull final List<Message> template) {
-    delegate.withTemplate(TemplateConfig.fromMessages(toChatMessages(template)));
+    delegate.withTemplate(TemplateConfig.fromMessages(toOrchestrationMessages(template)));
     return this;
-  }
-
-  @Nonnull
-  static List<ChatMessage> toChatMessages(@Nonnull final List<Message> messages) {
-    return messages.stream()
-        .map(m -> ChatMessage.create().role(m.getMessageType().getValue()).content(m.getContent()))
-        .toList();
   }
 
   // region satisfy the ChatOptions interface, delegating to the LLM config
@@ -129,5 +125,32 @@ public class OrchestrationChatOptions
         .map(m -> (T) m.get(param))
         .getOrNull();
   }
+
   // endregion
+
+  @Nonnull
+  static List<com.sap.ai.sdk.orchestration.Message> toOrchestrationMessages(
+      @Nonnull final List<Message> messages) {
+    final Function<Message, com.sap.ai.sdk.orchestration.Message> mapper =
+        msg ->
+            switch (msg.getMessageType()) {
+              case SYSTEM:
+                yield new SystemMessage(msg.getContent());
+              case USER:
+                yield new UserMessage(msg.getContent());
+              case ASSISTANT:
+                yield new AssistantMessage(msg.getContent());
+              case TOOL:
+                yield new ToolMessage(msg.getContent());
+            };
+    return messages.stream().map(mapper).toList();
+  }
+
+  private record ToolMessage(String content) implements com.sap.ai.sdk.orchestration.Message {
+    @Nonnull
+    @Override
+    public String type() {
+      return "tool";
+    }
+  }
 }
