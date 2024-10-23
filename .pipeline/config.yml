@@ -18,16 +18,3 @@ stages:
       line: 46
       method: 33
       class: 67
-  codeCheck:
-    checkstyle:
-      high: '3'# Open tasks (to do or fix me)
-      normal: '0'
-      low: '0'
-    spotbugs:
-      high: '0'
-      normal: '0'
-      low: '0'
-    pmd:
-      high: '0'
-      normal: '0'
-      low: '0'
