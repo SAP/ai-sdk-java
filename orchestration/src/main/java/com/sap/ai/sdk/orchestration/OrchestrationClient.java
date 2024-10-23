@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
@@ -29,6 +30,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+@Slf4j
 @RequiredArgsConstructor
 public class OrchestrationClient implements OrchestrationConfig<OrchestrationClient> {
   static final ObjectMapper JACKSON;
@@ -52,6 +54,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
 
   private interface IDelegate extends OrchestrationConfig<OrchestrationClient> {}
 
+  /** Default constructor. */
   public OrchestrationClient() {
     service = new AiCoreService();
   }
@@ -69,6 +72,9 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
     val response = chatCompletion(new OrchestrationPrompt(userPrompt));
 
     if (response.finishReason() == CONTENT_FILTER) {
+      log.error(
+          "Output content filter triggered. Full response details: {}",
+          response.originalResponseDto());
       throw new OrchestrationClientException("Output content filter triggered");
     }
     return response.assistantMessage().getContent();
@@ -84,8 +90,16 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   public OrchestrationResponse chatCompletion(@Nonnull final OrchestrationPrompt prompt)
       throws OrchestrationClientException {
+    log.debug(
+        """
+            Performing request to orchestration service.
+            Prompt: {}
+            Defaults: {}
+            """,
+        prompt,
+        clientConfig);
     val dto = prompt.toCompletionPostRequestDTO(clientConfig);
-
+    log.debug("Assembled data transfer object for request: {}", dto);
     val result = executeRequest(dto);
     return OrchestrationResponse.fromCompletionPostResponseDTO(result);
   }
@@ -107,6 +121,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
     final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
       val json = JACKSON.writeValueAsString(request);
+      log.debug("Serialized request into JSON payload: {}", json);
       postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
     } catch (final JsonProcessingException e) {
       throw new OrchestrationClientException("Failed to serialize request parameters", e);
@@ -120,6 +135,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {
       val destination = service.forDeploymentByScenario("orchestration").destination();
+      log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
           request, new OrchestrationResponseHandler<>(CompletionPostResponse.class));

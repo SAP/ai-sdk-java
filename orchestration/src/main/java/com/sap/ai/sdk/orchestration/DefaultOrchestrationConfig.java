@@ -11,6 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Default implementation of the {@link OrchestrationConfig} interface. This class supports
+ * delegation from other classes by accepting a wrapper instance.
+ *
+ * @param <T> The type of the wrapper object that delegates to this object, if any.
+ */
 @Data
 @Setter(AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

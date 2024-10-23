@@ -36,7 +36,9 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
     }
-    return parseResponse(response);
+    val result = parseResponse(response);
+    log.debug("Received the following response from orchestration service: {}", result);
+    return result;
   }
 
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
@@ -49,6 +51,7 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
       throw new OrchestrationClientException("Response from Orchestration service was empty.");
     }
     val content = getContent(responseEntity);
+    log.debug("Parsing response from JSON response: {}", content);
     try {
       return JACKSON.readValue(content, responseType);
     } catch (final JsonProcessingException e) {

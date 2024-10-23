@@ -10,6 +10,16 @@ import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
+/**
+ * Represents the response from the orchestration service.
+ *
+ * @param assistantMessage The fully processed message from the language model.
+ * @param allMessages All input messages after processing and the assistant message.
+ * @param finishReason The reason why the assistant message finished.
+ * @param tokenUsage The token usage details.
+ * @param originalResponseDto The underlying response object, containing all orchestration module
+ *     result details.
+ */
 public record OrchestrationResponse(
     @Nonnull ChatMessage assistantMessage,
     @Nonnull List<ChatMessage> allMessages,

@@ -13,21 +13,37 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.val;
 
+/**
+ * Implementation of {@link MaskingConfig} for SAP Data Privacy Integration (DPI) service. Supports
+ * both anonymization and pseudonymization of personally identifiable information.
+ */
 @Value
+@Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DpiMaskingConfig implements MaskingConfig {
   @Nonnull MaskingProviderConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
 
+  /**
+   * Build a configuration applying anonymization.
+   *
+   * @return A builder configured for anonymization
+   */
   @Nonnull
   public static Builder anonymization() {
     return new DpiMaskingConfig.Builder(ANONYMIZATION);
   }
 
+  /**
+   * Build a configuration applying pseudonymization.
+   *
+   * @return A builder configured for pseudonymization
+   */
   @Nonnull
   public static Builder pseudonymization() {
     return new DpiMaskingConfig.Builder(PSEUDONYMIZATION);
@@ -42,10 +58,22 @@ public class DpiMaskingConfig implements MaskingConfig {
         .entities(entitiesDTO);
   }
 
+  /**
+   * Builder for creating DPI masking configurations. Allows specifying which entity types should be
+   * masked in the input text.
+   */
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class Builder {
     private final MaskingProviderConfig.MethodEnum maskingMethod;
 
+    /**
+     * Specifies which entities should be masked in the input text.
+     *
+     * @param entity An entity type to mask (required)
+     * @param entities Additional entity types to mask (optional)
+     * @return A configured {@link DpiMaskingConfig} instance
+     * @see DPIEntities
+     */
     @Nonnull
     public DpiMaskingConfig withEntities(
         @Nonnull final DPIEntities entity, @Nullable final DPIEntities... entities) {

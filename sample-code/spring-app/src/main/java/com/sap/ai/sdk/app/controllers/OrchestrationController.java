@@ -64,7 +64,7 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   OrchestrationResponse template() {
-    final var templateVariable = TemplateVariable.of("language");
+    final var templateVariable = new TemplateVariable("language");
     final var templateMessage =
         new UserMessage(
             "Reply with 'The Orchestration Service is working!' in " + templateVariable);
