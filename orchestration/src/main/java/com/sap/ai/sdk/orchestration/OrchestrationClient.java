@@ -30,6 +30,11 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+/**
+ * Client to execute requests to the orchestration service. Can be configured to hold a default
+ * {@link OrchestrationConfig} to be used for all requests. Configuration set on an {@link
+ * OrchestrationPrompt} will take precedence upon execution.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class OrchestrationClient implements OrchestrationConfig<OrchestrationClient> {
@@ -104,20 +109,53 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
     return OrchestrationResponse.fromCompletionPostResponseDTO(result);
   }
 
+  /**
+   * Stream a completion for the given user message.
+   *
+   * @param prompt The user message.
+   * @return A stream of message chunks.
+   * @throws OrchestrationClientException If the request fails.
+   */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OrchestrationClientException {
     throw new NotImplementedError();
   }
 
+  /**
+   * Stream a completion for the given prompt.
+   *
+   * @param prompt The prompt, including messages and other configuration.
+   * @return A stream of message chunks.
+   * @throws OrchestrationClientException If the request fails.
+   */
   @Nonnull
   public Stream<String> streamChatCompletionDelta(@Nonnull final OrchestrationPrompt prompt)
       throws OrchestrationClientException {
     throw new NotImplementedError();
   }
 
+  /**
+   * Serializes the given request, executes it and deserializes the response.
+   *
+   * <p>Override this method to customize the request execution. For example, to modify the request
+   * object before it is sent, use:
+   *
+   * <pre>{@code
+   * @Override
+   * protected CompletionPostResponse executeRequest(@Nonnull CompletionPostRequest request) {
+   *   request.setCustomField("myField", "myValue");
+   *   return super.executeRequest(request);
+   * }
+   * }</pre>
+   *
+   * @param request The request DTO to send to orchestration.
+   * @return The response DTO from orchestration.
+   * @throws OrchestrationClientException If the request fails.
+   */
   @Nonnull
-  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request) {
+  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
+      throws OrchestrationClientException {
     final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
       val json = JACKSON.writeValueAsString(request);

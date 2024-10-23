@@ -27,14 +27,20 @@ public record OrchestrationResponse(
     @Nonnull TokenUsage tokenUsage,
     @Nonnull CompletionPostResponse originalResponseDto) {
 
+  /** The reason why an assistant message finished. */
   @RequiredArgsConstructor
   public enum FinishReason {
+    /** The assistant message finished normally. */
     STOP("stop"),
+    /** The generated message is cut off because the maximum number of output tokens was reached. */
     MAX_TOKENS("max_tokens"),
+    /** The generated message was filtered out by an output content filter. */
     CONTENT_FILTER("content_filter"),
+    /** The assistant message finished with a non-standardized reason. */
     UNKNOWN("unknown");
 
-    @Nonnull final String value;
+    /** String representation of the finish reason. */
+    @Nonnull private final String value;
 
     @Nonnull
     static FinishReason fromValue(@Nonnull final String value) {

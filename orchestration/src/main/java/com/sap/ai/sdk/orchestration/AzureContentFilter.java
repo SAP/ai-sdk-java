@@ -10,20 +10,38 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.val;
 
+/**
+ * Represents a content filter based on Azure AI Content Safety. Filters content based on up to four
+ * categories: hate speech, self-harm, sexual content, and violence. Any category not set will not
+ * be filtered.
+ */
 @Data
 @Accessors(fluent = true)
 public final class AzureContentFilter implements ContentFilter {
+  /** The sensitivity level for hate speech, if any. */
   @Nullable private Sensitivity hate;
+
+  /** The sensitivity level for self-harm, if any. */
   @Nullable private Sensitivity selfHarm;
+
+  /** The sensitivity level for sexual content, if any. */
   @Nullable private Sensitivity sexual;
+
+  /** The sensitivity level for violence, if any. */
   @Nullable private Sensitivity violence;
 
+  /** The sensitivity level for the content filter categories. */
   @RequiredArgsConstructor
   public enum Sensitivity {
+    /** High filter sensitivity, filtering out more content. */
     HIGH(0),
+    /** Medium filter sensitivity, filtering out less content. */
     MEDIUM(2),
+    /** Low filter sensitivity, filtering out the least content. */
     LOW(4);
+
     // note: we leave out the value 6, as setting it is equivalent to not setting the filter at all
+    /** The integer value of the sensitivity level, will be applied as threshold. */
     private final int value;
   }
 
