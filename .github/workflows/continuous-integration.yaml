@@ -91,7 +91,7 @@ jobs:
         run: |
           git fetch origin main:main
           git diff --name-only origin/main...HEAD -- '*.java'
-          git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
+          git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'
           java_classes=($(git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
           if [ ${#java_classes[@]} -gt 0 ]; then
             echo "Detected changes for Java classes:" >> $GITHUB_STEP_SUMMARY
