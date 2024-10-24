@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
+import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LOW;
 import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDTO;
 import static com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -138,8 +139,8 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testInputAndOutputFilter() {
-    var inputFilter = new AzureContentFilter();
-    var outputFilter = new AzureContentFilter();
+    var inputFilter = new AzureContentFilter().hate(HIGH);
+    var outputFilter = new AzureContentFilter().violence(LOW);
     config.withInputContentFilter(inputFilter);
     config.withOutputContentFilter(outputFilter);
 
@@ -147,6 +148,15 @@ class ModuleConfigFactoryTest {
 
     assertThat(result.getInput().getFilters()).isNotEmpty();
     assertThat(result.getOutput().getFilters()).isNotEmpty();
+  }
+
+  @Test
+  void testEmptyFilter() {
+    var inputFilter = new AzureContentFilter();
+    assertThatThrownBy(inputFilter::toFilterConfigDTO)
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining(
+            "When configuring an azure content filter, at least one filter category must be set");
   }
 
   @Test
