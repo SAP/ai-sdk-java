@@ -90,6 +90,7 @@ jobs:
       - name: "Coverage Report"
         run: |
           git fetch origin main:main
+          git diff --name-only origin/main...HEAD -- '*.java'
           java_classes=($(git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
           if [ ${#java_classes[@]} -gt 0 ]; then
             echo "Detected changes for Java classes:" >> $GITHUB_STEP_SUMMARY
@@ -108,6 +109,9 @@ jobs:
                 echo "| $CHECK | $GROUP | $PACKAGE | $CLASS | ${INSTRUCTION_PCT}% | ${BRANCH_PCT}% | ${LINE_PCT}% | ${COMPLEXITY_PCT}% | ${METHOD_PCT}% |" >> $GITHUB_STEP_SUMMARY
               done
             done
+          else
+            echo "No Java classes changed." >> $GITHUB_STEP_SUMMARY 
+            printf " * %s\n" "${java_classes[@]}" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: "Slack Notification"
