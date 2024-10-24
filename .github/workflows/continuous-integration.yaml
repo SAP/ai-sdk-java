@@ -87,9 +87,6 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
           mvn $MVN_ARGS
 
-      - name: "Coverage Report"
-        run: python .pipeline/scripts/print-coverage.py --jacoco-report-pattern "**/target/site/jacoco/jacoco.csv"
-
       - name: "Slack Notification"
         if: ${{ github.ref == 'refs/heads/main' && failure() }}
         uses: slackapi/slack-github-action@v1.27.0
