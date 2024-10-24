@@ -36,32 +36,66 @@
   <dependencies>
     <!-- scope "compile" -->
     <dependency>
-      <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-core</artifactId>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-    </dependency>
+
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-apache-httpclient5</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents.core5</groupId>
+      <artifactId>httpcore5</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- TODO: only needed for JsonObjectMapperBuilder, maybe we can use Jackson natively to avoid this dependency -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <!-- scope "provided" -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
     </dependency>
     <!-- scope "test" -->
     <dependency>
@@ -75,18 +109,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.httpcomponents.core5</groupId>
-      <artifactId>httpcore5</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.sap.ai.sdk</groupId>
-      <artifactId>core</artifactId>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -94,34 +123,16 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${project.basedir}/src/main/java/com/sap/ai/sdk/orchestration/client</directory>
-              <includes>
-                <include>**/*</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-        <executions>
-          <execution>
-            <id>delete-orchestration-generated-client</id>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>com.sap.cloud.sdk.datamodel</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
         <configuration>
+          <skip>true</skip>
+          <!-- skip automatic generation until we can omit API classes from code generation -->
           <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-          <apiMaturity>released</apiMaturity>
+          <apiMaturity>beta</apiMaturity>
           <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
           <compileScope>COMPILE</compileScope>
-          <!-- Do not delete the output directory because it contains non-generated code -->
-          <!-- The generated client is instead deleted by the maven-clean-plugin here above -->
-          <deleteOutputDirectory>false</deleteOutputDirectory>
+          <deleteOutputDirectory>true</deleteOutputDirectory>
         </configuration>
         <executions>
           <execution>

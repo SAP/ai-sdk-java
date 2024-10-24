@@ -4,7 +4,7 @@
     "templating": [
       {
         "role": "user",
-        "content": "Reply with 'Orchestration Service is working!' in German"
+        "content": "Hello there!"
       }
     ],
     "llm": {
@@ -17,7 +17,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "Orchestration Service funktioniert!"
+            "content": "General Kenobi!"
           },
           "finish_reason": "stop"
         }
@@ -39,7 +39,7 @@
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "Orchestration Service funktioniert!"
+          "content": "General Kenobi!"
         },
         "finish_reason": "stop"
       }
