@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 /**
  * Cache for deployment IDs. This class is used to get the deployment id for the orchestration
@@ -35,7 +36,7 @@ class DeploymentCache {
   void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
     cache.remove(resourceGroup);
     try {
-      final var deployments =
+      val deployments =
           new HashSet<>(new DeploymentApi(client).query(resourceGroup).getResources());
       cache.put(resourceGroup, deployments);
     } catch (final OpenApiRequestException e) {
@@ -124,13 +125,13 @@ class DeploymentCache {
    */
   protected static boolean isDeploymentOfModel(
       @Nonnull final AiModel targetModel, @Nonnull final AiDeployment deployment) {
-    final var deploymentDetails = deployment.getDetails();
+    val deploymentDetails = deployment.getDetails();
     // The AI Core specification doesn't mention that this is nullable, but it can be.
     // Remove this check when the specification is fixed.
     if (deploymentDetails == null) {
       return false;
     }
-    final var resources = deploymentDetails.getResources();
+    val resources = deploymentDetails.getResources();
     if (resources == null) {
       return false;
     }
