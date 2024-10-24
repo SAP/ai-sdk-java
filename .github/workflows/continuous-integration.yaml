@@ -91,13 +91,17 @@ jobs:
         run: |
           git fetch origin main:main
           git diff --name-only origin/main...HEAD -- '*.java'
+          git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
           java_classes=($(git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
           if [ ${#java_classes[@]} -gt 0 ]; then
             echo "Detected changes for Java classes:" >> $GITHUB_STEP_SUMMARY
             printf " * %s\n" "${java_classes[@]}" >> $GITHUB_STEP_SUMMARY
-            echo "\n#Coverage report" >> $GITHUB_STEP_SUMMARY
-            echo "| | GROUP | PACKAGE | CLASS | INSTRUCTION % | BRANCH % | LINE % | COMPLEXITY % | METHOD % |\n" >> $GITHUB_STEP_SUMMARY
-            echo "|-|-------|---------|-------|----------------|-----------|---------|---------------|----------|\n" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "#Coverage report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| | GROUP | PACKAGE | CLASS | INSTRUCTION % | BRANCH % | LINE % | COMPLEXITY % | METHOD % |" >> $GITHUB_STEP_SUMMARY
+            echo "|-|-------|---------|-------|----------------|-----------|---------|---------------|----------|" >> $GITHUB_STEP_SUMMARY
             find . -path '*/target/site/jacoco/jacoco.csv' | while read -r file; do
               tail -n +2 "$file" | while IFS=, read -r GROUP PACKAGE CLASS INSTRUCTION_MISSED INSTRUCTION_COVERED BRANCH_MISSED BRANCH_COVERED LINE_MISSED LINE_COVERED COMPLEXITY_MISSED COMPLEXITY_COVERED METHOD_MISSED METHOD_COVERED; do
                 INSTRUCTION_PCT=$((INSTRUCTION_MISSED + INSTRUCTION_COVERED > 0 ? INSTRUCTION_COVERED * 100 / (INSTRUCTION_MISSED + INSTRUCTION_COVERED) : 0))
