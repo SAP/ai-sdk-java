@@ -89,6 +89,7 @@ jobs:
 
       - name: "Coverage Report"
         run: |
+          git fetch origin main:main
           java_classes=($(git diff --name-only main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
           if [ ${#java_classes[@]} -gt 0 ]; then
             echo "Detected changes for Java classes:" >> $GITHUB_STEP_SUMMARY
