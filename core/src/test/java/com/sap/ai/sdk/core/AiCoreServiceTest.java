@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import lombok.val;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ public class AiCoreServiceTest {
   @Test
   void testLazyEvaluation() {
     // setup
-    final var accessor = mock(ServiceBindingAccessor.class);
+    val accessor = mock(ServiceBindingAccessor.class);
     DestinationResolver.setAccessor(accessor);
 
     // execution without errors
@@ -58,14 +59,14 @@ public class AiCoreServiceTest {
   @Test
   void testDefaultCase() {
     // setup
-    final var accessor = mock(ServiceBindingAccessor.class);
+    val accessor = mock(ServiceBindingAccessor.class);
     DestinationResolver.setAccessor(accessor);
     doReturn(List.of(BINDING)).when(accessor).getServiceBindings();
 
     // execution without errors
-    final var core = new AiCoreService();
-    final var destination = core.destination();
-    final var client = core.client();
+    val core = new AiCoreService();
+    val destination = core.destination();
+    val client = core.client();
 
     // verification
     assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2/");
@@ -82,10 +83,10 @@ public class AiCoreServiceTest {
     DestinationResolver.setAccessor(Collections::emptyList);
 
     // execution without errors
-    final var customDestination = DefaultHttpDestination.builder("https://foo.bar").build();
-    final var core = new AiCoreService().withDestination(customDestination);
-    final var destination = core.destination();
-    final var client = core.client();
+    val customDestination = DefaultHttpDestination.builder("https://foo.bar").build();
+    val core = new AiCoreService().withDestination(customDestination);
+    val destination = core.destination();
+    val client = core.client();
 
     // verification
     assertThat(destination.get(DestinationProperty.URI)).contains("https://foo.bar/v2/");
@@ -97,7 +98,7 @@ public class AiCoreServiceTest {
 
   @Test
   void testCustomization() {
-    final var customService =
+    val customService =
         new AiCoreService() {
           @Nonnull
           @Override
@@ -112,16 +113,16 @@ public class AiCoreServiceTest {
           }
         };
 
-    final var customServiceForDeployment =
+    val customServiceForDeployment =
         customService.forDeployment("deployment").withResourceGroup("group");
 
-    final var client = customServiceForDeployment.client();
+    val client = customServiceForDeployment.client();
     assertThat(client.getBasePath()).isEqualTo("https://fizz.buzz");
 
-    final var destination = customServiceForDeployment.destination().asHttp();
+    val destination = customServiceForDeployment.destination().asHttp();
     assertThat(destination.getUri()).hasToString("https://ai/v2/inference/deployments/deployment/");
 
-    final var resourceGroup = customService.resourceGroup;
+    val resourceGroup = customService.resourceGroup;
     assertThat(resourceGroup).isEqualTo("group");
   }
 }

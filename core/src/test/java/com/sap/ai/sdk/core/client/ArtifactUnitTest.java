@@ -10,9 +10,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiArtifact;
-import com.sap.ai.sdk.core.client.model.AiArtifactCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiArtifactList;
 import com.sap.ai.sdk.core.client.model.AiArtifactPostData;
+import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -49,13 +48,13 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactList artifactList = new ArtifactApi(client).query("default");
+    val artifactList = new ArtifactApi(client).query("default");
 
     assertThat(artifactList).isNotNull();
     assertThat(artifactList.getCount()).isEqualTo(1);
     assertThat(artifactList.getResources()).hasSize(1);
 
-    final AiArtifact artifact = artifactList.getResources().get(0);
+    val artifact = artifactList.getResources().get(0);
 
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-05-22T07:40:30Z");
     assertThat(artifact.getDescription()).isEqualTo("dataset for aicore training");
@@ -85,7 +84,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactPostData artifactPostData =
+    val artifactPostData =
         AiArtifactPostData.create()
             .name("default")
             .kind(AiArtifactPostData.KindEnum.DATASET)
@@ -93,8 +92,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
             .scenarioId("foundation-models")
             .scenarioId("foundation-models")
             .description("dataset for aicore training");
-    final AiArtifactCreationResponse artifact =
-        new ArtifactApi(client).create("default", artifactPostData);
+    val artifact = new ArtifactApi(client).create("default", artifactPostData);
 
     assertThat(artifact).isNotNull();
     assertThat(artifact.getId()).isEqualTo("1a84bb38-4a84-4d12-a5aa-300ae7d33fb4");
@@ -140,8 +138,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                             }
                             """)));
 
-    final AiArtifact artifact =
-        new ArtifactApi(client).get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
+    val artifact = new ArtifactApi(client).get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
 
     assertThat(artifact).isNotNull();
     assertThat(artifact.getCreatedAt()).isEqualTo("2024-08-23T09:13:21Z");
@@ -168,7 +165,7 @@ public class ArtifactUnitTest extends WireMockTestServer {
                         4
                         """)));
 
-    final int count = new ArtifactApi(client).count("default");
+    val count = new ArtifactApi(client).count("default");
 
     assertThat(count).isEqualTo(4);
   }

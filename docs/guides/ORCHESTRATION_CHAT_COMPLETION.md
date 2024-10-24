@@ -92,8 +92,12 @@ var config =
         .inputParams(inputParams);
 
 var resourceGroupId = "default";
+var client = new AiCoreService().forDeploymentbyScenario("orchestration")
+    .withResourceGroup(resourceGroupId)
+    .client();
+
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
+    new OrchestrationCompletionApi(client)
         .orchestrationV1EndpointsCreate(config);
 
 String messageResult =
@@ -130,8 +134,12 @@ var config =
         .messagesHistory(messagesHistory);
 
 var resourceGroupId = "default";
+var client = new AiCoreService().forDeploymentbyScenario("orchestration")
+    .withResourceGroup(resourceGroupId)
+    .client();
+
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
+    new OrchestrationCompletionApi(client)
         .orchestrationV1EndpointsCreate(config);
 
 String messageResult =
@@ -196,8 +204,12 @@ var config =
         .inputParams(inputParams);
 
 var resourceGroupId = "default";
+var client = new AiCoreService().forDeploymentbyScenario("orchestration")
+    .withResourceGroup(resourceGroupId)
+    .client();
+
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
+    new OrchestrationCompletionApi(client)
         // this fails with Bad Request because the strict filter prohibits the input message
         .orchestrationV1EndpointsCreate(config);
 
@@ -238,8 +250,12 @@ CompletionPostRequest config =
         .inputParams(inputParams);
 
 var resourceGroupId = "default";
+var client = new AiCoreService().forDeploymentbyScenario("orchestration")
+    .withResourceGroup(resourceGroupId)
+    .client();
+
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(getOrchestrationClient(resourceGroupId))
+    new OrchestrationCompletionApi(client)
         .orchestrationV1EndpointsCreate(config);
 
 String messageResult =

@@ -16,19 +16,14 @@ import com.sap.ai.sdk.core.client.model.AiArtifact;
 import com.sap.ai.sdk.core.client.model.AiEnactmentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecution;
 import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiExecutionCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiExecutionDeletionResponse;
-import com.sap.ai.sdk.core.client.model.AiExecutionList;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequestWithIdentifier;
-import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponseListInner;
 import com.sap.ai.sdk.core.client.model.AiExecutionResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
 import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
 import java.util.Set;
+import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -82,13 +77,13 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionList executionList = new ExecutionApi(client).query("default");
+    val executionList = new ExecutionApi(client).query("default");
 
     assertThat(executionList).isNotNull();
     assertThat(executionList.getCount()).isEqualTo(1);
     assertThat(executionList.getResources().size()).isEqualTo(1);
 
-    final AiExecution execution = executionList.getResources().get(0);
+    val execution = executionList.getResources().get(0);
 
     assertThat(execution.getCompletionTime()).isEqualTo("2023-08-05T14:10:16Z");
     assertThat(execution.getConfigurationId()).isEqualTo("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
@@ -102,7 +97,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getTargetStatus()).isEqualTo(AiExecution.TargetStatusEnum.COMPLETED);
     assertThat(execution.getOutputArtifacts().size()).isEqualTo(1);
 
-    final AiArtifact aiArtifact = execution.getOutputArtifacts().get(0);
+    val aiArtifact = execution.getOutputArtifacts().get(0);
 
     assertThat(aiArtifact.getCreatedAt()).isEqualTo("2023-08-05T14:10:05Z");
     assertThat(aiArtifact.getDescription()).isEqualTo("");
@@ -134,10 +129,9 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiEnactmentCreationRequest enactmentCreationRequest =
+    val enactmentCreationRequest =
         AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
-    final AiExecutionCreationResponse execution =
-        new ExecutionApi(client).create("default", enactmentCreationRequest);
+    val execution = new ExecutionApi(client).create("default", enactmentCreationRequest);
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
@@ -196,8 +190,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionResponseWithDetails execution =
-        new ExecutionApi(client).get("default", "e529e8bd58740bc9");
+    val execution = new ExecutionApi(client).get("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getCompletionTime()).isEqualTo("2024-09-09T19:10:58Z");
@@ -215,7 +208,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo(AiExecutionResponseWithDetails.TargetStatusEnum.COMPLETED);
     assertThat(execution.getOutputArtifacts().size()).isEqualTo(1);
 
-    final AiArtifact aiArtifact = execution.getOutputArtifacts().get(0);
+    val aiArtifact = execution.getOutputArtifacts().get(0);
 
     assertThat(aiArtifact.getCreatedAt()).isEqualTo("2024-09-09T19:10:48Z");
     assertThat(aiArtifact.getDescription()).isEqualTo("");
@@ -247,8 +240,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final AiExecutionDeletionResponse execution =
-        new ExecutionApi(client).delete("default", "e529e8bd58740bc9");
+    val execution = new ExecutionApi(client).delete("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("e529e8bd58740bc9");
@@ -274,10 +266,10 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionModificationRequest aiExecutionModificationRequest =
+    val aiExecutionModificationRequest =
         AiExecutionModificationRequest.create()
             .targetStatus(AiExecutionModificationRequest.TargetStatusEnum.STOPPED);
-    final AiExecutionModificationResponse aiExecutionModificationResponse =
+    val aiExecutionModificationResponse =
         new ExecutionApi(client)
             .modify("default", "eec3c6ea18bac6da", aiExecutionModificationRequest);
 
@@ -305,7 +297,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         1
                         """)));
 
-    final int count = new ExecutionApi(client).count("default");
+    val count = new ExecutionApi(client).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -335,7 +327,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final RTALogCommonResponse logResponse =
+    val logResponse =
         new ExecutionApi(client.addDefaultHeader("AI-Resource-Group", "default"))
             .getLogs("ee467bea5af28adb");
 
@@ -375,7 +367,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final AiExecutionBulkModificationRequest executionBulkModificationRequest =
+    val executionBulkModificationRequest =
         AiExecutionBulkModificationRequest.create()
             .executions(
                 Set.of(
@@ -384,7 +376,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         .targetStatus(
                             AiExecutionModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
-    final AiExecutionBulkModificationResponse executionBulkModificationResponse =
+    val executionBulkModificationResponse =
         new ExecutionApi(client).batchModify("default", executionBulkModificationRequest);
 
     assertThat(executionBulkModificationResponse).isNotNull();
