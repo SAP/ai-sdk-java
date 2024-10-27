@@ -38,30 +38,6 @@ paths:
         default:
           $ref: "#/components/responses/CommonError"
 
-  /healthz:
-    get:
-      tags:
-        - OrchestrationHealthz
-      operationId: orchestration.v1.endpoints.healthz
-      responses:
-        "200":
-          description: "Service is up and running."
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "OK"
-        "503":
-          description: "Service is unavailable."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "Service Unavailable"
-
 components:
   schemas:
     CompletionPostRequest:
@@ -84,6 +60,11 @@ components:
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
     ChatMessages:
+      type: array
+      items:
+        $ref: "#/components/schemas/ChatMessage"
+
+    TemplatingChatMessage:
       type: array
       minItems: 1
       items:
@@ -186,7 +167,7 @@ components:
         grounding:
           $ref: "#/components/schemas/GenericModuleResult"
         templating:
-          $ref: "#/components/schemas/ChatMessages"
+          $ref: "#/components/schemas/TemplatingChatMessage"
         input_masking:
           $ref: "#/components/schemas/GenericModuleResult"
         input_filtering:
@@ -411,7 +392,7 @@ components:
       properties:
         template:
           allOf:
-            - $ref: "#/components/schemas/ChatMessages"
+            - $ref: "#/components/schemas/TemplatingChatMessage"
           description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
