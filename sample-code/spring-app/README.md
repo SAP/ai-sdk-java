@@ -13,7 +13,7 @@ Before you can run the sample app, you need to install the AI SDK into your loca
 
 > [!NOTE]  
 > The sample app uses the latest state of the SDK, so make sure to install the SDK after pulling a new version via Git.
-> Alternatively, you check out one of the release tags of the repository, e.g. `git checkout rel/0.1.0`. 
+> Alternatively, you check out one of the release tags of the repository, e.g. `git fetch --all --tags && git checkout rel/0.1.0`. 
 
 Next, you'll need to set up credentials for the AI Core service: 
 
