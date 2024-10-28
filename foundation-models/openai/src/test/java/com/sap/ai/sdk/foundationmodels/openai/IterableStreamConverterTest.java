@@ -94,7 +94,7 @@ public class IterableStreamConverterTest {
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
     final var sut = IterableStreamConverter.lines(entity);
-    assertThatCode(sut::count)
+    assertThatThrownBy(sut::count)
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("Iterator stopped unexpectedly.")
         .cause()
