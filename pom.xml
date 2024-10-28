@@ -73,10 +73,10 @@
     <!-- Test coverage -->
     <coverage.instruction>74%</coverage.instruction>
     <coverage.branch>68%</coverage.branch>
-    <coverage.complexity>60%</coverage.complexity>
+    <coverage.complexity>67%</coverage.complexity>
     <coverage.line>75%</coverage.line>
     <coverage.method>80%</coverage.method>
-    <coverage.class>70%</coverage.class>
+    <coverage.class>85%</coverage.class>
   </properties>
 
   <dependencyManagement>
