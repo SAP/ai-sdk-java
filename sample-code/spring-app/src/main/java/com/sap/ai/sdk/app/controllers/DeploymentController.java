@@ -1,15 +1,21 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.core.Core.getClient;
+import static com.sap.ai.sdk.app.Application.API_CLIENT;
 
+import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.DeploymentApi;
+import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
+import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentList;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
+import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/deployments")
 class DeploymentController {
 
-  private static final DeploymentApi API = new DeploymentApi(getClient());
+  private static final DeploymentApi API = new DeploymentApi(API_CLIENT);
 
   /**
    * Create and delete a deployment with the Java specific configuration ID
@@ -38,12 +44,11 @@ class DeploymentController {
   public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
-        API.deploymentCreate(
-            "default", AiDeploymentCreationRequest.create().configurationId(configId));
+        API.create("default", AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
-    return API.deploymentDelete("default", deployment.getId());
+    return API.delete("default", deployment.getId());
   }
 
   /**
@@ -66,7 +71,7 @@ class DeploymentController {
     return myDeployments.stream()
         .map(
             deployment ->
-                API.deploymentModify(
+                API.modify(
                     "default",
                     deployment.getId(),
                     AiDeploymentModificationRequest.create()
@@ -92,7 +97,7 @@ class DeploymentController {
 
     // DELETE my deployments
     return myDeployments.stream()
-        .map(deployment -> API.deploymentDelete("default", deployment.getId()))
+        .map(deployment -> API.delete("default", deployment.getId()))
         .toList();
   }
 
@@ -105,7 +110,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
-    final AiDeploymentList deploymentList = API.deploymentQuery("default");
+    final AiDeploymentList deploymentList = API.query("default");
 
     return deploymentList.getResources().stream()
         .filter(deployment -> configId.equals(deployment.getConfigurationId()))
@@ -120,6 +125,41 @@ class DeploymentController {
   @GetMapping("/getAll")
   @Nullable
   public AiDeploymentList getAll() {
-    return API.deploymentQuery("default");
+    return API.query("default");
+  }
+
+  /**
+   * Create a configuration, and deploy it.
+   *
+   * <p>This is to be invoked from a unit test.
+   *
+   * @param model The OpenAI model to deploy
+   * @return the deployment creation response
+   */
+  @Nonnull
+  @SuppressWarnings("unused") // debug method that doesn't need to be tested
+  public AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
+
+    // Create a configuration
+    final var modelNameParameter =
+        AiParameterArgumentBinding.create().key("model").value(model.name());
+    final var modelVersion =
+        AiParameterArgumentBinding.create().key("modelVersion").value("latest");
+    final var configurationBaseData =
+        AiConfigurationBaseData.create()
+            .name(model.name())
+            .executableId("azure-openai")
+            .scenarioId("foundation-models")
+            .addParameterBindingsItem(modelNameParameter)
+            .addParameterBindingsItem(modelVersion);
+
+    final AiConfigurationCreationResponse configuration =
+        new ConfigurationApi(API_CLIENT).create("default", configurationBaseData);
+
+    // Create a deployment from the configuration
+    final var deploymentCreationRequest =
+        AiDeploymentCreationRequest.create().configurationId(configuration.getId());
+
+    return API.create("default", deploymentCreationRequest);
   }
 }

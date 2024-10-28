@@ -7,15 +7,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiArtifactArgumentBinding;
 import com.sap.ai.sdk.core.client.model.AiConfiguration;
 import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
-import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiConfigurationList;
 import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +25,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void getConfigurations() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/configurations"))
+        get(urlPathEqualTo("/v2/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -60,8 +58,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiConfigurationList configurationList =
-        new ConfigurationApi(getClient(destination)).configurationQuery("default");
+    val configurationList = new ConfigurationApi(client).query("default");
 
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
@@ -82,7 +79,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void postConfiguration() {
     wireMockServer.stubFor(
-        post(urlPathEqualTo("/lm/configurations"))
+        post(urlPathEqualTo("/v2/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -96,26 +93,24 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiArtifactArgumentBinding inputArtifactBindingsItem =
+    val inputArtifactBindingsItem =
         AiArtifactArgumentBinding.create()
             .key("spam-data")
             .artifactId("744b0136-ed4b-49b1-bd10-08c236ed5ce7");
-    final AiConfigurationBaseData configurationBaseData =
+    val configurationBaseData =
         AiConfigurationBaseData.create()
             .name("i538344_exec_config")
             .executableId("aicore-nvidia")
             .scenarioId("foundation-models")
             .addInputArtifactBindingsItem(inputArtifactBindingsItem);
-    final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi(getClient(destination))
-            .configurationCreate("default", configurationBaseData);
+    val configuration = new ConfigurationApi(client).create("default", configurationBaseData);
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
     assertThat(configuration.getMessage()).isEqualTo("Configuration created");
 
     wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo("/lm/configurations"))
+        postRequestedFor(urlPathEqualTo("/v2/lm/configurations"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -138,7 +133,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void getConfigurationCount() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/configurations/$count"))
+        get(urlPathEqualTo("/v2/lm/configurations/$count"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -148,8 +143,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                         3
                         """)));
 
-    final int configurationCount =
-        new ConfigurationApi(getClient(destination)).configurationCount("default");
+    val configurationCount = new ConfigurationApi(client).count("default");
 
     assertThat(configurationCount).isEqualTo(3);
   }
@@ -157,7 +151,7 @@ public class ConfigurationUnitTest extends WireMockTestServer {
   @Test
   void getConfigurationById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/configurations/6ff6cb80-87db-45f0-b718-4e1d96e66332"))
+        get(urlPathEqualTo("/v2/lm/configurations/6ff6cb80-87db-45f0-b718-4e1d96e66332"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -186,9 +180,8 @@ public class ConfigurationUnitTest extends WireMockTestServer {
                           }
                         """)));
 
-    final AiConfiguration configuration =
-        new ConfigurationApi(getClient(destination))
-            .configurationGet("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
+    val configuration =
+        new ConfigurationApi(client).get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-09-11T09:14:31Z");

@@ -1,0 +1,94 @@
+name: "Workflow Succeeded"
+description: "Checks whether the latest run of a given workflow for a given commit SHA succeeded"
+
+inputs:
+  workflow:
+    description: "The name of the workflow to check"
+    required: true
+  sha:
+    description: "The commit SHA to check the workflow for"
+    required: true
+  repo:
+    description: "The repository of the workflow"
+    required: false
+    default: ${{ github.repository }}
+  token:
+    description: "The GitHub access token (with workflow read permissions) to access the workflow"
+    required: false
+    default: ${{ github.token }}
+  excluded-jobs:
+    description: "A JSON list of job names to ignore"
+    required: false
+    default: '[]'
+outputs:
+  run-id:
+    description: "The ID of the latest run of the workflow"
+    value: ${{ steps.find-run-id.outputs.RUN_ID }}
+  succeeded:
+    description: "Whether the latest run of the workflow succeeded"
+    value: ${{ steps.set-result.outputs.RESULT }}
+
+runs:
+  using: composite
+  steps:
+    - name: "Print Action Start"
+      run: echo ">>>>> Starting Workflow Succeeded Action; Not printing inputs, as they might contain sensitive information"
+      shell: bash
+
+    - name: "Determine Run Id"
+      id: find-run-id
+      run: |
+        RUN_JSON=$(gh run list --commit "${{ inputs.sha }}" --workflow "${{ inputs.workflow }}" --repo "${{ inputs.repo }}" --status completed --limit 1 --json databaseId,conclusion | jq '.[0]')
+        
+        if [[ "$(jq -r '.conclusion' <<< "$RUN_JSON")" != "success" ]]; then
+          exit 1
+        fi
+        
+        echo "RUN_ID=$(jq -r '.databaseId' <<< "$RUN_JSON")" >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+
+    - name: "Check Run Jobs"
+      id: check-run-jobs
+      run: |
+        JOBS_JSON=$(gh run view "${{ steps.find-run-id.outputs.RUN_ID }}" --json jobs)
+        NON_SUCCESSFUL_JOBS=$(jq -r '.jobs[] | select(.conclusion != "success" and .conclusion != "neutral")' <<< "$JOBS_JSON")
+        EXCLUDED_JOBS=$(jq -r '.[]' <<< "${{ inputs.excluded-jobs }}")
+        while IFS= read -r EXCLUDED_JOB; do
+          if [[ -z "$EXCLUDED_JOB" ]]; then
+            continue
+          fi
+          NON_SUCCESSFUL_JOBS=$(jq -r --arg name "$EXCLUDED_JOB" 'select(.name != $name)' <<< "$NON_SUCCESSFUL_JOBS")
+        done <<< "$EXCLUDED_JOBS"
+        
+        if [[ -n "$NON_SUCCESSFUL_JOBS" ]]; then
+          echo "The following jobs did not succeed:"
+          echo "$NON_SUCCESSFUL_JOBS"
+          exit 1
+        fi
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+
+    - name: "Set Result"
+      if: always()
+      id: set-result
+      run: |
+        if [[ "${{ steps.find-run-id.outcome }}" != "success" ]]; then
+          echo "RESULT=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        if [[ "${{ steps.check-run-jobs.outcome }}" != "success" ]]; then
+          echo "RESULT=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        echo "RESULT=true" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: "Print Action End"
+      if: always()
+      run: echo "<<<<< Finished Workflow Succeeded Action"
+      shell: bash

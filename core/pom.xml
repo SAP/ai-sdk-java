@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
   </parent>
   <artifactId>core</artifactId>
   <name>AI Core client</name>
@@ -28,6 +28,9 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
+  <properties>
+    <project.rootdir>${project.basedir}/../</project.rootdir>
+  </properties>
 
   <dependencies>
     <!-- scope "compile" -->
@@ -91,6 +94,10 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+    </dependency>
     <!-- scope "runtime" -->
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
@@ -124,13 +131,17 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.4.0</version>
         <configuration>
           <filesets>
             <fileset>
@@ -150,7 +161,6 @@
       <plugin>
         <groupId>com.sap.cloud.sdk.datamodel</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>${cloud-sdk.version}</version>
         <configuration>
           <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
           <apiMaturity>released</apiMaturity>
@@ -176,6 +186,9 @@
                 <pojoBuildMethodName/>
                 <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                 <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                <removeOperationIdPrefix>true</removeOperationIdPrefix>
+                <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
+                <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
               </additionalProperties>
             </configuration>
           </execution>

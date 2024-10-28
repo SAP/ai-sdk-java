@@ -10,26 +10,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.patchRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.model.AiArtifact;
 import com.sap.ai.sdk.core.client.model.AiEnactmentCreationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecution;
 import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiExecutionBulkModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiExecutionCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiExecutionDeletionResponse;
-import com.sap.ai.sdk.core.client.model.AiExecutionList;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequest;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationRequestWithIdentifier;
-import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponse;
 import com.sap.ai.sdk.core.client.model.AiExecutionModificationResponseListInner;
 import com.sap.ai.sdk.core.client.model.AiExecutionResponseWithDetails;
 import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
 import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
 import java.util.Set;
+import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +35,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutions() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions"))
+        get(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -83,14 +77,13 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionList executionList =
-        new ExecutionApi(getClient(destination)).executionQuery("default");
+    val executionList = new ExecutionApi(client).query("default");
 
     assertThat(executionList).isNotNull();
     assertThat(executionList.getCount()).isEqualTo(1);
     assertThat(executionList.getResources().size()).isEqualTo(1);
 
-    final AiExecution execution = executionList.getResources().get(0);
+    val execution = executionList.getResources().get(0);
 
     assertThat(execution.getCompletionTime()).isEqualTo("2023-08-05T14:10:16Z");
     assertThat(execution.getConfigurationId()).isEqualTo("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
@@ -104,7 +97,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getTargetStatus()).isEqualTo(AiExecution.TargetStatusEnum.COMPLETED);
     assertThat(execution.getOutputArtifacts().size()).isEqualTo(1);
 
-    final AiArtifact aiArtifact = execution.getOutputArtifacts().get(0);
+    val aiArtifact = execution.getOutputArtifacts().get(0);
 
     assertThat(aiArtifact.getCreatedAt()).isEqualTo("2023-08-05T14:10:05Z");
     assertThat(aiArtifact.getDescription()).isEqualTo("");
@@ -121,7 +114,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void postExecution() {
     wireMockServer.stubFor(
-        post(urlPathEqualTo("/lm/executions"))
+        post(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -136,11 +129,9 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiEnactmentCreationRequest enactmentCreationRequest =
+    val enactmentCreationRequest =
         AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
-    final AiExecutionCreationResponse execution =
-        new ExecutionApi(getClient(destination))
-            .executionCreate("default", enactmentCreationRequest);
+    val execution = new ExecutionApi(client).create("default", enactmentCreationRequest);
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
@@ -148,7 +139,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
 
     wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo("/lm/executions"))
+        postRequestedFor(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(
@@ -162,7 +153,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutionById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions/e529e8bd58740bc9"))
+        get(urlPathEqualTo("/v2/lm/executions/e529e8bd58740bc9"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -199,8 +190,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionResponseWithDetails execution =
-        new ExecutionApi(getClient(destination)).executionGet("default", "e529e8bd58740bc9");
+    val execution = new ExecutionApi(client).get("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getCompletionTime()).isEqualTo("2024-09-09T19:10:58Z");
@@ -218,7 +208,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo(AiExecutionResponseWithDetails.TargetStatusEnum.COMPLETED);
     assertThat(execution.getOutputArtifacts().size()).isEqualTo(1);
 
-    final AiArtifact aiArtifact = execution.getOutputArtifacts().get(0);
+    val aiArtifact = execution.getOutputArtifacts().get(0);
 
     assertThat(aiArtifact.getCreatedAt()).isEqualTo("2024-09-09T19:10:48Z");
     assertThat(aiArtifact.getDescription()).isEqualTo("");
@@ -235,7 +225,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void deleteExecution() {
     wireMockServer.stubFor(
-        delete(urlPathEqualTo("/lm/executions/e529e8bd58740bc9"))
+        delete(urlPathEqualTo("/v2/lm/executions/e529e8bd58740bc9"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -250,8 +240,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final AiExecutionDeletionResponse execution =
-        new ExecutionApi(getClient(destination)).executionDelete("default", "e529e8bd58740bc9");
+    val execution = new ExecutionApi(client).delete("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("e529e8bd58740bc9");
@@ -263,7 +252,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void patchExecution() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/executions/eec3c6ea18bac6da"))
+        patch(urlPathEqualTo("/v2/lm/executions/eec3c6ea18bac6da"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -277,12 +266,12 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiExecutionModificationRequest aiExecutionModificationRequest =
+    val aiExecutionModificationRequest =
         AiExecutionModificationRequest.create()
             .targetStatus(AiExecutionModificationRequest.TargetStatusEnum.STOPPED);
-    final AiExecutionModificationResponse aiExecutionModificationResponse =
-        new ExecutionApi(getClient(destination))
-            .executionModify("default", "eec3c6ea18bac6da", aiExecutionModificationRequest);
+    val aiExecutionModificationResponse =
+        new ExecutionApi(client)
+            .modify("default", "eec3c6ea18bac6da", aiExecutionModificationRequest);
 
     assertThat(aiExecutionModificationResponse).isNotNull();
     assertThat(aiExecutionModificationResponse.getId()).isEqualTo("eec3c6ea18bac6da");
@@ -290,7 +279,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo("Execution modification scheduled");
 
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/executions/eec3c6ea18bac6da"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/executions/eec3c6ea18bac6da"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(equalToJson("{\"targetStatus\":\"STOPPED\"}")));
   }
@@ -298,7 +287,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutionCount() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions/$count"))
+        get(urlPathEqualTo("/v2/lm/executions/$count"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -308,7 +297,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         1
                         """)));
 
-    final int count = new ExecutionApi(getClient(destination)).executionCount("default");
+    val count = new ExecutionApi(client).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -316,7 +305,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutionLogs() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/executions/ee467bea5af28adb/logs"))
+        get(urlPathEqualTo("/v2/lm/executions/ee467bea5af28adb/logs"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -338,9 +327,9 @@ public class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final RTALogCommonResponse logResponse =
-        new ExecutionApi(getClient(destination).addDefaultHeader("AI-Resource-Group", "default"))
-            .kubesubmitV4ExecutionsGetLogs("ee467bea5af28adb");
+    val logResponse =
+        new ExecutionApi(client.addDefaultHeader("AI-Resource-Group", "default"))
+            .getLogs("ee467bea5af28adb");
 
     assertThat(logResponse).isNotNull();
     assertThat(logResponse.getData().getResult().size()).isEqualTo(1);
@@ -360,7 +349,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void patchBulkExecutions() {
     wireMockServer.stubFor(
-        patch(urlPathEqualTo("/lm/executions"))
+        patch(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -378,7 +367,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    final AiExecutionBulkModificationRequest executionBulkModificationRequest =
+    val executionBulkModificationRequest =
         AiExecutionBulkModificationRequest.create()
             .executions(
                 Set.of(
@@ -387,9 +376,8 @@ public class ExecutionUnitTest extends WireMockTestServer {
                         .targetStatus(
                             AiExecutionModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
-    final AiExecutionBulkModificationResponse executionBulkModificationResponse =
-        new ExecutionApi(getClient(destination))
-            .executionBatchModify("default", executionBulkModificationRequest);
+    val executionBulkModificationResponse =
+        new ExecutionApi(client).batchModify("default", executionBulkModificationRequest);
 
     assertThat(executionBulkModificationResponse).isNotNull();
     assertThat(executionBulkModificationResponse.getExecutions().size()).isEqualTo(1);
@@ -402,7 +390,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo("Execution modification scheduled");
 
     wireMockServer.verify(
-        patchRequestedFor(urlPathEqualTo("/lm/executions"))
+        patchRequestedFor(urlPathEqualTo("/v2/lm/executions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .withRequestBody(
                 equalToJson(

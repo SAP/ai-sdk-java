@@ -10,17 +10,9 @@ steps:
     detectTools: ['DETECTOR', 'BINARY_SCAN']
 
 stages:
-  test:
-    coverageThresholds:
-      instruction: 14
-      branch: 3
-      complexity: 12
-      line: 46
-      method: 33
-      class: 67
   codeCheck:
     checkstyle:
-      high: '3'# Open tasks (to do or fix me)
+      high: '0'
       normal: '0'
       low: '0'
     spotbugs:

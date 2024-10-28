@@ -1,0 +1,50 @@
+name: "Dependabot Auto-Merge"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '00 04 * * Mon' # trigger every Monday at 04:00 a.m., as our dependabot is configured to raise PRs every Monday at 2:00 a.m.
+
+env:
+  DEPENDABOT_GROUPS: |
+    production-minor-patch group
+    plugins group
+    test group
+    github-actions group
+jobs:
+  review-prs:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Approve and Merge PRs
+        run: |
+          PRS=$(gh pr list --app "dependabot" --state "open" --json number,title)
+          PR_NUMBERS=
+          while IFS= read -r GROUP; do
+            if [[ -z "$GROUP" ]]; then
+              continue
+            fi
+          
+            MATCHES=$(jq -r --arg group "$GROUP" '.[] | select(.title | contains($group)) | .number' <<< "$PRS")
+            echo "[DEBUG] Found PRs for group '$GROUP': '$MATCHES'"
+          
+            PR_NUMBERS="$MATCHES"$'\n'"$PR_NUMBERS"
+          done <<< "${{ env.DEPENDABOT_GROUPS }}"
+          echo "[DEBUG] Approving and Merging following PRs: '$PR_NUMBERS'"
+          
+          while IFS= read -r PR_NUMBER; do
+            if [[ -z "$PR_NUMBER" ]]; then
+              continue
+            fi
+            
+            echo "[DEBUG] Approving and Merging PR #$PR_NUMBER"
+            gh pr merge "$PR_NUMBER" --auto --squash
+            gh pr review "$PR_NUMBER" --approve
+          done <<< "$PR_NUMBERS"
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}

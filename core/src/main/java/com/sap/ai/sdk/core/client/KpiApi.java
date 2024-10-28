@@ -21,7 +21,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.34.0.
+ * AI Core in version 2.35.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -70,7 +70,7 @@ public class KpiApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public KpiResultSet kpiGet(@Nullable final Set<KpiColumnName> $select)
+  public KpiResultSet get(@Nullable final Set<KpiColumnName> $select)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -129,7 +129,7 @@ public class KpiApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public KpiResultSet kpiGet() throws OpenApiRequestException {
-    return kpiGet(null);
+  public KpiResultSet get() throws OpenApiRequestException {
+    return get(null);
   }
 }
