@@ -32,7 +32,7 @@ final class ModuleConfigFactory {
             .map(ModuleConfigFactory::toLlmModuleConfigDTO)
             .getOrElseThrow(() -> new IllegalStateException("LLM module config is required"));
 
-    val template = config.getTemplate().getOrElse(() -> TemplateConfig.fromMessages(List.of()));
+    val template = config.getTemplate().getOrElse(TemplateConfig::fromMessages);
     val templateDto = toTemplateModuleConfigDTO(template, messages);
 
     var resultDto =

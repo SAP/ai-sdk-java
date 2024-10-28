@@ -75,7 +75,8 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testMessagesAreMergedIntoTemplate() {
-    config.withTemplate(TemplateConfig.fromMessages(messages.subList(0, 2)));
+    config.withTemplate(
+        TemplateConfig.fromMessages(messages.subList(0, 2).toArray(Message[]::new)));
 
     var result =
         toModuleConfigDTO(config, List.of(messages.get(2)))
