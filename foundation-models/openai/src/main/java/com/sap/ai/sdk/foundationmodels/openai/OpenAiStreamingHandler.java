@@ -18,25 +18,17 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
 
   @Nonnull private final Class<D> deltaType;
 
+  /**
+   * @param response The response to process
+   * @return A {@link Stream} of a model class instantiated from the response
+   */
+  @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
   Stream<D> handleResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
     }
-    return parseResponse(response);
-  }
-
-  /**
-   * @param response The response to process
-   * @return A {@link Stream} of a model class instantiated from the response
-   * @author stippi
-   */
-  // The stream is closed by the user of the Stream
-  @SuppressWarnings("PMD.CloseResource")
-  private Stream<D> parseResponse(@Nonnull final ClassicHttpResponse response)
-      throws OpenAiClientException {
-
     return IterableStreamConverter.lines(response.getEntity())
         // half of the lines are empty newlines, the last line is "data: [DONE]"
         .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
