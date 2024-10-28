@@ -33,7 +33,7 @@ import org.apache.hc.core5.http.HttpEntity;
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class IterableStreamConverter<T> implements Iterator<T> {
-  /** see {@link BufferedReader#DEFAULT_CHAR_BUFFER_SIZE} * */
+  /** see DEFAULT_CHAR_BUFFER_SIZE in {@link BufferedReader} * */
   static final int BUFFER_SIZE = 8192;
 
   /** Read next entry for Stream or {@code null} when no further entry can be read. */
