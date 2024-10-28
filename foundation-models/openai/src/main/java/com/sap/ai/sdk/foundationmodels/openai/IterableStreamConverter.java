@@ -88,7 +88,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
    * @return A sequential Stream object.
    * @throws OpenAiClientException if the provided HTTP entity object is {@code null} or empty.
    */
-  @SuppressWarnings("PMD.CloseResource")
+  @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
   static Stream<String> lines(@Nullable final HttpEntity entity) throws OpenAiClientException {
     if (entity == null) {
