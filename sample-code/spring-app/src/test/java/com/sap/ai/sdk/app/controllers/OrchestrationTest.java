@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
+import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationResponse;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
 import java.util.Map;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -27,8 +29,11 @@ class OrchestrationTest {
     final var response = controller.completion();
 
     assertThat(response.finishReason()).isEqualTo(OrchestrationResponse.FinishReason.STOP);
-    assertThat(response.assistantMessage().getContent()).isNotEmpty();
-    assertThat(response.assistantMessage().getRole()).isEqualTo("assistant");
+    assertThat(response.assistantMessage())
+        .isInstanceOf(AssistantMessage.class)
+        .extracting(AssistantMessage::content)
+        .asString()
+        .isNotEmpty();
     assertThat(response.tokenUsage().getPromptTokens()).isPositive();
     assertThat(response.tokenUsage().getCompletionTokens()).isPositive();
     assertThat(response.tokenUsage().getTotalTokens()).isPositive();
@@ -70,16 +75,16 @@ class OrchestrationTest {
     var result = controller.template();
 
     var templateResult = result.allMessages().get(0);
-    assertThat(templateResult.getContent())
+    assertThat(templateResult.content())
         .isEqualTo("Reply with 'The Orchestration Service is working!' in german");
-    assertThat(templateResult.getRole()).isEqualTo("user");
+    assertThat(templateResult).isInstanceOf(UserMessage.class);
   }
 
   @Test
   void testLenientContentFilter() {
     var result = controller.filter(AzureContentFilter.Sensitivity.LOW);
     assertThat(result.finishReason()).isEqualTo(OrchestrationResponse.FinishReason.STOP);
-    assertThat(result.assistantMessage().getContent()).isNotEmpty();
+    assertThat(result.assistantMessage().content()).isNotEmpty();
 
     var filterResult = result.originalResponseDto().getModuleResults().getInputFiltering();
     assertThat(filterResult.getMessage()).contains("passed");
@@ -98,7 +103,7 @@ class OrchestrationTest {
   void testMasking() {
     var result = controller.masking();
 
-    assertThat(result.assistantMessage().getContent()).contains("foo.bar@baz.ai");
+    assertThat(result.assistantMessage().content()).contains("foo.bar@baz.ai");
     var maskingResult = result.originalResponseDto().getModuleResults().getInputMasking();
     var data = (Map<String, Object>) maskingResult.getData();
     var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(0);

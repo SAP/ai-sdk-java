@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
@@ -21,8 +22,8 @@ import lombok.val;
  *     result details.
  */
 public record OrchestrationResponse(
-    @Nonnull ChatMessage assistantMessage,
-    @Nonnull List<ChatMessage> allMessages,
+    @Nonnull AssistantMessage assistantMessage,
+    @Nonnull List<Message> allMessages,
     @Nonnull FinishReason finishReason,
     @Nonnull TokenUsage tokenUsage,
     @Nonnull CompletionPostResponse originalResponseDto) {
@@ -55,11 +56,37 @@ public record OrchestrationResponse(
   static OrchestrationResponse fromCompletionPostResponseDTO(
       @Nonnull final CompletionPostResponse response) {
     val choice = response.getOrchestrationResult().getChoices().get(0);
-    val message = choice.getMessage();
+    val message = new AssistantMessage(choice.getMessage().getContent());
     val finishReason = FinishReason.fromValue(choice.getFinishReason());
     val tokenUsage = response.getOrchestrationResult().getUsage();
-    val allMessages = new ArrayList<>(response.getModuleResults().getTemplating());
+    val allMessages = new ArrayList<Message>();
+    response.getModuleResults().getTemplating().stream()
+        .map(OrchestrationResponse::fromChatMessage)
+        .forEach(allMessages::add);
     allMessages.add(message);
     return new OrchestrationResponse(message, allMessages, finishReason, tokenUsage, response);
+  }
+
+  @Nonnull
+  static Message fromChatMessage(@Nonnull final ChatMessage chatMessage) {
+    return switch (chatMessage.getRole()) {
+      case "system" -> new SystemMessage(chatMessage.getContent());
+      case "user" -> new UserMessage(chatMessage.getContent());
+      case "assistant" -> new AssistantMessage(chatMessage.getContent());
+      default ->
+          new Message() {
+            @Nonnull
+            @Override
+            public String type() {
+              return chatMessage.getRole();
+            }
+
+            @Nullable
+            @Override
+            public String content() {
+              return chatMessage.getContent();
+            }
+          };
+    };
   }
 }

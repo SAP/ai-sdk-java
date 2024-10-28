@@ -15,9 +15,9 @@ import org.junit.jupiter.api.Test;
 class OrchestrationResponseTest {
   @Test
   void testFromCompletionPostResponseDTO() {
-    var message1 = mock(ChatMessage.class);
-    var message2 = mock(ChatMessage.class);
-    var message3 = mock(ChatMessage.class);
+    var message1 = ChatMessage.create().role("system").content("foo");
+    var message2 = ChatMessage.create().role("user").content("bar");
+    var message3 = ChatMessage.create().role("assistant").content("baz");
     var moduleResults = ModuleResults.create().templating(List.of(message1, message2));
 
     var orchestrationResult =
@@ -37,8 +37,10 @@ class OrchestrationResponseTest {
 
     var result = OrchestrationResponse.fromCompletionPostResponseDTO(postResponse);
 
-    assertThat(result.assistantMessage()).isSameAs(message3);
-    assertThat(result.allMessages()).containsExactly(message1, message2, message3);
+    assertThat(result.assistantMessage()).isEqualTo(new AssistantMessage("baz"));
+    assertThat(result.allMessages())
+        .containsExactly(
+            new SystemMessage("foo"), new UserMessage("bar"), new AssistantMessage("baz"));
     assertThat(result.finishReason()).isEqualTo(OrchestrationResponse.FinishReason.STOP);
     assertThat(result.originalResponseDto()).isSameAs(postResponse);
   }

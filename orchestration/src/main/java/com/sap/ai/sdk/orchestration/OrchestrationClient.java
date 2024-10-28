@@ -82,7 +82,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
           response.originalResponseDto());
       throw new OrchestrationClientException("Output content filter triggered");
     }
-    return response.assistantMessage().getContent();
+    return response.assistantMessage().content();
   }
 
   /**
