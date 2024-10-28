@@ -33,7 +33,7 @@ public record OrchestrationResponse(
     /** The assistant message finished normally. */
     STOP("stop"),
     /** The generated message is cut off because the maximum number of output tokens was reached. */
-    MAX_TOKENS("max_tokens"),
+    LENGTH("length"),
     /** The generated message was filtered out by an output content filter. */
     CONTENT_FILTER("content_filter"),
     /** The assistant message finished with a non-standardized reason. */
