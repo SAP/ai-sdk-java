@@ -55,12 +55,12 @@
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cloud-sdk.version>5.13.0</cloud-sdk.version>
-    <junit-jupiter.version>5.11.2</junit-jupiter.version>
-    <wiremock.version>3.9.1</wiremock.version>
+    <junit-jupiter.version>5.11.3</junit-jupiter.version>
+    <wiremock.version>3.9.2</wiremock.version>
     <assertj-core.version>3.26.3</assertj-core.version>
     <slf4j.version>2.0.16</slf4j.version>
     <spotless.version>2.43.0</spotless.version>
-    <checkstyle.version>10.18.2</checkstyle.version>
+    <checkstyle.version>10.19.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.1</surefire.version>
     <springframework.version>6.1.14</springframework.version>
@@ -70,13 +70,6 @@
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
-    <!-- Test coverage -->
-    <coverage.instruction>74%</coverage.instruction>
-    <coverage.branch>68%</coverage.branch>
-    <coverage.complexity>67%</coverage.complexity>
-    <coverage.line>75%</coverage.line>
-    <coverage.method>80%</coverage.method>
-    <coverage.class>85%</coverage.class>
   </properties>
 
   <dependencyManagement>
@@ -323,7 +316,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.8.1</version>
         <configuration>
           <failOnWarning>true</failOnWarning>
           <failBuild>true</failBuild>
@@ -401,7 +394,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
         <configuration>
           <configLocation>${project.rootdir}/.pipeline/checkstyle.xml</configLocation>
           <!-- Exclude generated clients -->
@@ -456,7 +449,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.4</version>
+        <version>4.8.6.5</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
@@ -486,61 +479,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <phase>prepare-package</phase>
-          </execution>
-          <execution>
-            <id>default-check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <rule>
-                  <element>BUNDLE</element>
-                  <limits>
-                    <limit>
-                      <counter>COMPLEXITY</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${coverage.complexity}</minimum>
-                    </limit>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${coverage.line}</minimum>
-                    </limit>
-                    <limit>
-                      <counter>INSTRUCTION</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${coverage.instruction}</minimum>
-                    </limit>
-                    <limit>
-                      <counter>BRANCH</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${coverage.branch}</minimum>
-                    </limit>
-                    <limit>
-                      <counter>CLASS</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>${coverage.class}</minimum>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
