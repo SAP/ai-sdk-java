@@ -17,7 +17,7 @@ Before you can run the sample app, you need to install the AI SDK into your loca
 
 Next, you'll need to set up credentials for the AI Core service: 
 
-* Follow [there instructions](../../README.md#set-credentials-as-dedicated-environment-variable) to configure the credentials via environment variables.
+* Follow [these instructions](../../README.md#option-1-set-credentials-as-environment-variable) to configure the credentials via environment variables.
 
 Finally, you can start the sample app:
  
