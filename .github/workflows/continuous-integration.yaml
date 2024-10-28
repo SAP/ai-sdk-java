@@ -109,8 +109,8 @@ jobs:
                 LINE_PCT=$((LINE_MISSED + LINE_COVERED > 0 ? LINE_COVERED * 100 / (LINE_MISSED + LINE_COVERED) : 0))
                 COMPLEXITY_PCT=$((COMPLEXITY_MISSED + COMPLEXITY_COVERED > 0 ? COMPLEXITY_COVERED * 100 / (COMPLEXITY_MISSED + COMPLEXITY_COVERED) : 0))
                 METHOD_PCT=$((METHOD_MISSED + METHOD_COVERED > 0 ? METHOD_COVERED * 100 / (METHOD_MISSED + METHOD_COVERED) : 0))
-                CHECK=$([[ " ${java_classes[@]} " =~ " ${filename%%.*} " ]] && echo "☑" || echo "☐")
-                echo "| $CHECK | $GROUP | `$PACKAGE` | `$CLASS` | ${INSTRUCTION_PCT}% | ${BRANCH_PCT}% | ${LINE_PCT}% | ${COMPLEXITY_PCT}% | ${METHOD_PCT}% |" >> $GITHUB_STEP_SUMMARY
+                CHECK=$([[ " ${java_classes[@]} " =~ " ${CLASS%%.*} " ]] && echo "☑" || echo "☐")
+                echo "| $CHECK | $GROUP | `$PACKAGE` | `$CLASS` | ${INSTRUCTION_PCT}% | ${BRANCH_PCT} | ${LINE_PCT} | ${COMPLEXITY_PCT} | ${METHOD_PCT} |" >> $GITHUB_STEP_SUMMARY
               done
             done
             echo "</details>" >> $GITHUB_STEP_SUMMARY
