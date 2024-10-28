@@ -95,12 +95,12 @@ jobs:
             echo "Detected changes for Java classes:" >> $GITHUB_STEP_SUMMARY
             printf " * \`%s\`\n" "${java_classes[@]}" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "<details><summary>Click for coverage report</summary>" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "| | Group | Package | Class | Instruction % | Branch % | Line % | Complexity % | Method % |" >> $GITHUB_STEP_SUMMARY
-            echo "|-|-------|---------|-------|--------------:|---------:|-------:|-------------:|---------:|" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>Coverage report</summary>" >> $GITHUB_STEP_SUMMARY
             find . -path '*/target/site/jacoco/jacoco.csv' | while read -r file; do
+              echo "<details><summary>${file:0:-31}</summary>\n" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "| | Group | Package | Class | Instruction % | Branch % | Line % | Complexity % | Method % |" >> $GITHUB_STEP_SUMMARY
+              echo "|-|-------|---------|-------|--------------:|---------:|-------:|-------------:|---------:|" >> $GITHUB_STEP_SUMMARY
               tail -n +2 "$file" | while IFS=, read -r GROUP PACKAGE CLASS INSTRUCTION_MISSED INSTRUCTION_COVERED BRANCH_MISSED BRANCH_COVERED LINE_MISSED LINE_COVERED COMPLEXITY_MISSED COMPLEXITY_COVERED METHOD_MISSED METHOD_COVERED; do
                 INSTRUCTION_PCT=$((INSTRUCTION_MISSED + INSTRUCTION_COVERED > 0 ? INSTRUCTION_COVERED * 100 / (INSTRUCTION_MISSED + INSTRUCTION_COVERED) : 0))
                 BRANCH_PCT=$((BRANCH_MISSED + BRANCH_COVERED > 0 ? BRANCH_COVERED * 100 / (BRANCH_MISSED + BRANCH_COVERED) : 0))
@@ -110,6 +110,7 @@ jobs:
                 CHECK=$([[ " ${java_classes[@]} " =~ " ${CLASS%%.*} " ]] && echo ":heavy_check_mark:" || echo "")
                 echo "| $CHECK | $GROUP | \`$PACKAGE\` | \`$CLASS\` | ${INSTRUCTION_PCT} | ${BRANCH_PCT} | ${LINE_PCT} | ${COMPLEXITY_PCT} | ${METHOD_PCT} |" >> $GITHUB_STEP_SUMMARY
               done
+              echo "</details>" >> $GITHUB_STEP_SUMMARY
             done
             echo "</details>" >> $GITHUB_STEP_SUMMARY
             echo "Generated coverage report."
