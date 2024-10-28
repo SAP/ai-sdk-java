@@ -90,8 +90,6 @@ jobs:
       - name: "Coverage Report"
         run: |
           git fetch origin main:main
-          git diff --name-only origin/main...HEAD -- '*.java'
-          git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'
           java_classes=($(git diff --name-only origin/main...HEAD -- '*.java' | sed -E 's|.*/||; s|\.[^\.]+$||'))
           if [ ${#java_classes[@]} -gt 0 ]; then
             echo "Detected changes for Java classes:" >> $GITHUB_STEP_SUMMARY
@@ -110,12 +108,13 @@ jobs:
                 COMPLEXITY_PCT=$((COMPLEXITY_MISSED + COMPLEXITY_COVERED > 0 ? COMPLEXITY_COVERED * 100 / (COMPLEXITY_MISSED + COMPLEXITY_COVERED) : 0))
                 METHOD_PCT=$((METHOD_MISSED + METHOD_COVERED > 0 ? METHOD_COVERED * 100 / (METHOD_MISSED + METHOD_COVERED) : 0))
                 CHECK=$([[ " ${java_classes[@]} " =~ " ${CLASS%%.*} " ]] && echo ":heavy_check_mark:" || echo "")
-                echo "| $CHECK | $GROUP | \`$PACKAGE\` | \`$CLASS\` | ${INSTRUCTION_PCT}% | ${BRANCH_PCT} | ${LINE_PCT} | ${COMPLEXITY_PCT} | ${METHOD_PCT} |" >> $GITHUB_STEP_SUMMARY
+                echo "| $CHECK | $GROUP | \`$PACKAGE\` | \`$CLASS\` | ${INSTRUCTION_PCT} | ${BRANCH_PCT} | ${LINE_PCT} | ${COMPLEXITY_PCT} | ${METHOD_PCT} |" >> $GITHUB_STEP_SUMMARY
               done
             done
             echo "</details>" >> $GITHUB_STEP_SUMMARY
+            echo "Generated coverage report."
           else
-            echo "No Java classes changed." >> $GITHUB_STEP_SUMMARY 
+            echo "No Java classes changed." >> $GITHUB_STEP_SUMMARY
             printf " * %s\n" "${java_classes[@]}" >> $GITHUB_STEP_SUMMARY
           fi
 
