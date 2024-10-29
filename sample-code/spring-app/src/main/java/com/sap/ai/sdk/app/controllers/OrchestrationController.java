@@ -52,8 +52,7 @@ class OrchestrationController {
                       .moduleConfigurations(
                           ModuleConfigs.create()
                               .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)))
-              .inputParams(Map.of());
+                              .templatingModuleConfig(templatingModuleConfig)));
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
