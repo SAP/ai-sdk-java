@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
-import lombok.experimental.Delegate;
 import lombok.val;
 
 /**
@@ -23,25 +22,19 @@ import lombok.val;
 @Value
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
-public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPrompt> {
+public class OrchestrationPrompt {
   @Nonnull List<Message> messages;
   @Nonnull Map<String, String> templateParameters;
-
-  @Getter(AccessLevel.NONE)
-  @Delegate(types = IDelegate.class)
-  @Nonnull
-  DefaultOrchestrationConfig<OrchestrationPrompt> delegate =
-      DefaultOrchestrationConfig.asDelegateFor(this);
-
-  private interface IDelegate extends OrchestrationConfig<OrchestrationPrompt> {}
+  @Nonnull OrchestrationConfig config;
 
   /**
    * Initialize a prompt with the given user message.
    *
    * @param message A user message.
    */
-  public OrchestrationPrompt(@Nonnull final String message) {
-    this(List.of(new UserMessage(message)), Map.of());
+  public OrchestrationPrompt(
+      @Nonnull final String message, @Nonnull final OrchestrationConfig config) {
+    this(List.of(new UserMessage(message)), Map.of(), config);
   }
 
   /**
@@ -56,6 +49,7 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
     allMessages.addAll(Arrays.asList(messages));
     this.messages = allMessages;
     this.templateParameters = Map.of();
+    this.config = new OrchestrationConfig(); // TODO
   }
 
   /**
@@ -64,8 +58,9 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
    * @param messages messages
    * @see OrchestrationPrompt(Message, Message...)
    */
-  public OrchestrationPrompt(@Nonnull final List<Message> messages) {
-    this(messages, Map.of());
+  public OrchestrationPrompt(
+      @Nonnull final List<Message> messages, @Nonnull final OrchestrationConfig config) {
+    this(messages, Map.of(), config);
   }
 
   /**
@@ -80,15 +75,15 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
    *
    * @param inputParams The input parameters as entries of template variables and their contents.
    */
-  public OrchestrationPrompt(@Nonnull final Map<String, String> inputParams) {
-    this(List.of(), inputParams);
+  public OrchestrationPrompt(
+      @Nonnull final Map<String, String> inputParams, @Nonnull final OrchestrationConfig config) {
+    this(List.of(), inputParams, config);
   }
 
   @Nonnull
-  CompletionPostRequest toCompletionPostRequestDto(@Nonnull final OrchestrationConfig<?> defaults) {
+  CompletionPostRequest toCompletionPostRequestDto() {
     // duplicate the prompt config, then apply the defaults to the copy
     // that way this prompt remains unchanged and can be reused
-    val config = DefaultOrchestrationConfig.standalone().copyFrom(this).copyFrom(defaults);
     val moduleConfigDTO = ModuleConfigFactory.toModuleConfigDto(config, messages);
     return CompletionPostRequest.create()
         .orchestrationConfig(

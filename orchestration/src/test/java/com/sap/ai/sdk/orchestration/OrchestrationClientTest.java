@@ -24,12 +24,13 @@ import org.mockito.ArgumentMatchers;
 class OrchestrationClientTest {
   private OrchestrationClient client;
 
-  private static final LlmConfig LLM_CONFIG = new LlmConfig("gpt-35-turbo-16k");
+  private static final OrchestrationConfig config =
+      new OrchestrationConfig().withLlmConfig(new LlmConfig("gpt-35-turbo-16k"));
 
   @BeforeEach
   void setup() {
     var mock = mock(AiCoreDeployment.class);
-    client = spy(new OrchestrationClient(mock).withLlmConfig(LLM_CONFIG));
+    client = spy(new OrchestrationClient(mock));
   }
 
   @Test
@@ -37,7 +38,7 @@ class OrchestrationClientTest {
     stubResponse("stop");
 
     new OrchestrationPrompt(new UserMessage("Hello there!"));
-    var result = client.chatCompletion("Hello there!");
+    var result = client.chatCompletion("Hello there!", config);
     assertThat(result).isEqualTo("General Kenobi!");
 
     var expected = new UserMessage("Hello there!");
@@ -52,7 +53,7 @@ class OrchestrationClientTest {
 
     stubResponse("content_filter");
 
-    assertThatThrownBy(() -> client.chatCompletion("foo"))
+    assertThatThrownBy(() -> client.chatCompletion("foo", config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("content filter");
   }

@@ -22,7 +22,6 @@ import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import lombok.experimental.Delegate;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -37,7 +36,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  * OrchestrationPrompt} will take precedence upon execution.
  */
 @Slf4j
-public class OrchestrationClient implements OrchestrationConfig<OrchestrationClient> {
+public class OrchestrationClient {
   static final ObjectMapper JACKSON;
 
   static {
@@ -50,14 +49,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
             .build();
   }
 
-  @Delegate(types = IDelegate.class)
-  @Nonnull
-  private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
-      DefaultOrchestrationConfig.asDelegateFor(this);
-
   @Nonnull private final Supplier<AiCoreDeployment> deployment;
-
-  private interface IDelegate extends OrchestrationConfig<OrchestrationClient> {}
 
   /** Default constructor. */
   public OrchestrationClient() {
@@ -82,9 +74,10 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
    * @throws OrchestrationClientException if the request fails
    */
   @Nonnull
-  public String chatCompletion(@Nonnull final String userPrompt)
+  public String chatCompletion(
+      @Nonnull final String userPrompt, @Nonnull final OrchestrationConfig config)
       throws OrchestrationClientException {
-    val response = chatCompletion(new OrchestrationPrompt(userPrompt));
+    val response = chatCompletion(new OrchestrationPrompt(userPrompt, config));
 
     if (response.finishReason() == CONTENT_FILTER) {
       log.error(
@@ -105,15 +98,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   public OrchestrationResponse chatCompletion(@Nonnull final OrchestrationPrompt prompt)
       throws OrchestrationClientException {
-    log.debug(
-        """
-            Performing request to orchestration service.
-            Prompt: {}
-            Defaults: {}
-            """,
-        prompt,
-        clientConfig);
-    val dto = prompt.toCompletionPostRequestDto(clientConfig);
+    val dto = prompt.toCompletionPostRequestDto();
     log.debug("Assembled data transfer object for request: {}", dto);
     val result = executeRequest(dto);
     return OrchestrationResponse.fromCompletionPostResponseDto(result);

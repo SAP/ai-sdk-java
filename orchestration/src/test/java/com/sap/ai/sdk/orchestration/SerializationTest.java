@@ -35,14 +35,14 @@ class SerializationTest {
             .withEntities(DPIEntities.ADDRESS, DPIEntities.IBAN, DPIEntities.LOCATION);
     var inputParams = Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    var dto =
-        new OrchestrationPrompt(inputParams)
+    var config =
+        new OrchestrationConfig()
             .withLlmConfig(llm)
             .withTemplate(template)
             .withInputContentFilter(inputFilter)
             .withOutputContentFilter(outputFilter)
-            .withMaskingConfig(masking)
-            .toCompletionPostRequestDto(DefaultOrchestrationConfig.standalone());
+            .withMaskingConfig(masking);
+    var dto = new OrchestrationPrompt(inputParams, config).toCompletionPostRequestDto();
 
     var actual = OrchestrationClient.JACKSON.valueToTree(dto);
 
