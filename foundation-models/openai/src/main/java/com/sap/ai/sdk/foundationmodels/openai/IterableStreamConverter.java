@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Spliterators;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
@@ -42,6 +43,9 @@ class IterableStreamConverter<T> implements Iterator<T> {
   /** Close handler to be called when Stream terminated. */
   private final Runnable stopHandler;
 
+  /** Error handler to be called when Stream is interrupted. */
+  private final Function<Exception, RuntimeException> errorHandler;
+
   private boolean isDone = false;
   private boolean isNextFetched = false;
   private T next = null;
@@ -65,7 +69,8 @@ class IterableStreamConverter<T> implements Iterator<T> {
     } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      throw new IllegalStateException("Iterator stopped unexpectedly.", e);
+      log.debug("Error while reading next element.", e);
+      throw errorHandler.apply(e);
     }
     return !isDone;
   }
@@ -73,7 +78,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
   @Override
   public T next() {
     if (next == null && !hasNext()) {
-      throw new NoSuchElementException();
+      throw new NoSuchElementException(); // normally not reached with Stream API
     }
     isNextFetched = false;
     return next;
@@ -105,8 +110,10 @@ class IterableStreamConverter<T> implements Iterator<T> {
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
     final Runnable closeHandler =
         () -> Try.run(reader::close).onFailure(e -> log.error("Could not close input stream", e));
+    final Function<Exception, RuntimeException> errHandler =
+        e -> new OpenAiClientException("Parsing response content was interrupted.", e);
 
-    final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler);
+    final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler, errHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
     return StreamSupport.stream(spliterator, /* NOT PARALLEL */ false).onClose(closeHandler);
   }

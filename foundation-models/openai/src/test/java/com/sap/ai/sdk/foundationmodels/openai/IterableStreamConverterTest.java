@@ -95,8 +95,8 @@ public class IterableStreamConverterTest {
 
     final var sut = IterableStreamConverter.lines(entity);
     assertThatThrownBy(sut::count)
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessage("Iterator stopped unexpectedly.")
+        .isInstanceOf(OpenAiClientException.class)
+        .hasMessage("Parsing response content was interrupted.")
         .cause()
         .isInstanceOf(IOException.class)
         .hasMessage("Ups!");
