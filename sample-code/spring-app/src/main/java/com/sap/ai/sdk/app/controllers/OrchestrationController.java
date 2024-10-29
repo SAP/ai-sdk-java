@@ -98,9 +98,7 @@ class OrchestrationController {
     final var prompt =
         new OrchestrationPrompt(
                 """
-            Please translate the following into German:
-
-            Hi, my name is Foo Bar and you can reach me under my email address 'foo.bar@baz.ai'.
+            What is the domain name of this email address: 'foo.bar@baz.ai'.
             """)
             .withMaskingConfig(masking);
 
