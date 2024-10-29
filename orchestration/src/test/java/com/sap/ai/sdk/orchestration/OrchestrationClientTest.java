@@ -9,7 +9,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
@@ -28,7 +28,7 @@ class OrchestrationClientTest {
 
   @BeforeEach
   void setup() {
-    var mock = mock(AiCoreService.class);
+    var mock = mock(AiCoreDeployment.class);
     client = spy(new OrchestrationClient(mock).withLlmConfig(LLM_CONFIG));
   }
 

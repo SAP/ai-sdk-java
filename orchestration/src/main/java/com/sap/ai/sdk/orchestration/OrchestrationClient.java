@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
@@ -18,9 +19,9 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstanti
 import io.vavr.NotImplementedError;
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -36,7 +37,6 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  * OrchestrationPrompt} will take precedence upon execution.
  */
 @Slf4j
-@RequiredArgsConstructor
 public class OrchestrationClient implements OrchestrationConfig<OrchestrationClient> {
   static final ObjectMapper JACKSON;
 
@@ -55,13 +55,23 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   private final DefaultOrchestrationConfig<OrchestrationClient> clientConfig =
       DefaultOrchestrationConfig.asDelegateFor(this);
 
-  @Nonnull private final AiCoreService service;
+  @Nonnull private final Supplier<AiCoreDeployment> deployment;
 
   private interface IDelegate extends OrchestrationConfig<OrchestrationClient> {}
 
   /** Default constructor. */
   public OrchestrationClient() {
-    service = new AiCoreService();
+    deployment = () -> new AiCoreService().forDeploymentByScenario("orchestration");
+  }
+
+  /**
+   * Constructor with a custom deployment, allowing for a custom resource group or otherwise
+   * specific deployment ID.
+   *
+   * @param deployment The specific {@link AiCoreDeployment} to use.
+   */
+  public OrchestrationClient(@Nonnull final AiCoreDeployment deployment) {
+    this.deployment = () -> deployment;
   }
 
   /**
@@ -149,12 +159,14 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
    * }
    * }</pre>
    *
+   * <p>Alternatively, you can call this method directly with a fully custom request object.
+   *
    * @param request The request DTO to send to orchestration.
    * @return The response DTO from orchestration.
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
-  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
+  public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
     final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
@@ -172,7 +184,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
   @Nonnull
   CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {
-      val destination = service.forDeploymentByScenario("orchestration").destination();
+      val destination = deployment.get().destination();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
