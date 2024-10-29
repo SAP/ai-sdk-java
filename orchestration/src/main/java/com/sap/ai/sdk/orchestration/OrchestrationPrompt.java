@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,12 +50,10 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
    * @param message The first message.
    * @param messages Optionally, more messages.
    */
-  public OrchestrationPrompt(@Nonnull final Message message, @Nullable final Message... messages) {
+  public OrchestrationPrompt(@Nonnull final Message message, @Nonnull final Message... messages) {
     val allMessages = new ArrayList<Message>();
     allMessages.add(message);
-    if (messages != null) {
-      allMessages.addAll(Arrays.asList(messages));
-    }
+    allMessages.addAll(Arrays.asList(messages));
     this.messages = allMessages;
     this.templateParameters = Map.of();
   }
@@ -88,11 +85,11 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   }
 
   @Nonnull
-  CompletionPostRequest toCompletionPostRequestDTO(@Nonnull final OrchestrationConfig<?> defaults) {
+  CompletionPostRequest toCompletionPostRequestDto(@Nonnull final OrchestrationConfig<?> defaults) {
     // duplicate the prompt config, then apply the defaults to the copy
     // that way this prompt remains unchanged and can be reused
     val config = DefaultOrchestrationConfig.standalone().copyFrom(this).copyFrom(defaults);
-    val moduleConfigDTO = ModuleConfigFactory.toModuleConfigDTO(config, messages);
+    val moduleConfigDTO = ModuleConfigFactory.toModuleConfigDto(config, messages);
     return CompletionPostRequest.create()
         .orchestrationConfig(
             com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()

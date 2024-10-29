@@ -2,7 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LOW;
-import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDTO;
+import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDto;
 import static com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,12 +33,12 @@ class ModuleConfigFactoryTest {
   void testThrowsOnMissingConfig() {
     config = DefaultOrchestrationConfig.standalone();
 
-    assertThatThrownBy(() -> toModuleConfigDTO(config, messages))
+    assertThatThrownBy(() -> toModuleConfigDto(config, messages))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("LLM module config is required");
 
     config.withLlmConfig(mock(LlmConfig.class));
-    assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
+    assertThatThrownBy(() -> toModuleConfigDto(config, List.of()))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("prompt is required");
   }
@@ -49,7 +49,7 @@ class ModuleConfigFactoryTest {
 
     config.withLlmConfig(llmConfig);
 
-    var result = toModuleConfigDTO(config, messages).getLlmModuleConfig();
+    var result = toModuleConfigDto(config, messages).getLlmModuleConfig();
     assertThat(result.getModelName()).isEqualTo("foo");
     assertThat(result.getModelVersion()).isEqualTo("bar");
     assertThat(result.getModelParams())
@@ -59,7 +59,7 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testTemplateIsCreatedFromMessages() {
-    var result = toModuleConfigDTO(config, messages).getTemplatingModuleConfig();
+    var result = toModuleConfigDto(config, messages).getTemplatingModuleConfig();
     assertThat(result.getDefaults()).isNull();
 
     var template = result.getTemplate();
@@ -78,7 +78,7 @@ class ModuleConfigFactoryTest {
     config.withTemplate(TemplateConfig.fromMessages(messages.subList(0, 2)));
 
     var result =
-        toModuleConfigDTO(config, List.of(messages.get(2)))
+        toModuleConfigDto(config, List.of(messages.get(2)))
             .getTemplatingModuleConfig()
             .getTemplate();
 
@@ -96,12 +96,12 @@ class ModuleConfigFactoryTest {
 
     config.withTemplate(TemplateConfig.referenceById("foo"));
 
-    assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
+    assertThatThrownBy(() -> toModuleConfigDto(config, List.of()))
         .isInstanceOf(NotImplementedError.class);
 
     config.withTemplate(TemplateConfig.referenceByName("foo", "bar", "baz"));
 
-    assertThatThrownBy(() -> toModuleConfigDTO(config, List.of()))
+    assertThatThrownBy(() -> toModuleConfigDto(config, List.of()))
         .isInstanceOf(NotImplementedError.class);
   }
 
@@ -110,7 +110,7 @@ class ModuleConfigFactoryTest {
     var filter = new AzureContentFilter().hate(HIGH);
     config.withInputContentFilter(filter);
 
-    var result = toModuleConfigDTO(config, messages).getFilteringModuleConfig();
+    var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
     assertThat(result.getInput().getFilters()).isNotEmpty();
 
@@ -127,7 +127,7 @@ class ModuleConfigFactoryTest {
     var filter = new AzureContentFilter().hate(HIGH);
     config.withOutputContentFilter(filter);
 
-    var result = toModuleConfigDTO(config, messages).getFilteringModuleConfig();
+    var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
     assertThat(result.getOutput().getFilters()).isNotEmpty();
     var filterDto = result.getOutput().getFilters().get(0);
@@ -144,7 +144,7 @@ class ModuleConfigFactoryTest {
     config.withInputContentFilter(inputFilter);
     config.withOutputContentFilter(outputFilter);
 
-    var result = toModuleConfigDTO(config, messages).getFilteringModuleConfig();
+    var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
     assertThat(result.getInput().getFilters()).isNotEmpty();
     assertThat(result.getOutput().getFilters()).isNotEmpty();
@@ -153,7 +153,7 @@ class ModuleConfigFactoryTest {
   @Test
   void testEmptyFilter() {
     var inputFilter = new AzureContentFilter();
-    assertThatThrownBy(inputFilter::toFilterConfigDTO)
+    assertThatThrownBy(inputFilter::toFilterConfigDto)
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining(
             "When configuring an azure content filter, at least one filter category must be set");
@@ -164,7 +164,7 @@ class ModuleConfigFactoryTest {
     var maskingConfig = DpiMaskingConfig.anonymization().withEntities(DPIEntities.ADDRESS);
     config.withMaskingConfig(maskingConfig);
 
-    var result = toModuleConfigDTO(config, messages).getMaskingModuleConfig();
+    var result = toModuleConfigDto(config, messages).getMaskingModuleConfig();
 
     assertThat(result.getMaskingProviders())
         .isNotEmpty()

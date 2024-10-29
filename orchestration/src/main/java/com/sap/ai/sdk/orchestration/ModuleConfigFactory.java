@@ -24,16 +24,16 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ModuleConfigFactory {
   @Nonnull
-  static ModuleConfigs toModuleConfigDTO(
+  static ModuleConfigs toModuleConfigDto(
       @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<Message> messages) {
     val llmDto =
         config
             .getLlmConfig()
-            .map(ModuleConfigFactory::toLlmModuleConfigDTO)
+            .map(ModuleConfigFactory::toLlmModuleConfigDto)
             .getOrElseThrow(() -> new IllegalStateException("LLM module config is required"));
 
     val template = config.getTemplate().getOrElse(() -> TemplateConfig.fromMessages(List.of()));
-    val templateDto = toTemplateModuleConfigDTO(template, messages);
+    val templateDto = toTemplateModuleConfigDto(template, messages);
 
     var resultDto =
         ModuleConfigs.create().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
@@ -42,7 +42,7 @@ final class ModuleConfigFactory {
         .getMaskingConfig()
         .filter(DpiMaskingConfig.class::isInstance)
         .map(DpiMaskingConfig.class::cast)
-        .map(DpiMaskingConfig::toMaskingProviderDTO)
+        .map(DpiMaskingConfig::toMaskingProviderDto)
         .map(it -> MaskingModuleConfig.create().maskingProviders(it))
         .forEach(resultDto::maskingModuleConfig);
 
@@ -54,13 +54,13 @@ final class ModuleConfigFactory {
       maybeInputFilter
           .filter(AzureContentFilter.class::isInstance)
           .map(AzureContentFilter.class::cast)
-          .map(AzureContentFilter::toFilterConfigDTO)
+          .map(AzureContentFilter::toFilterConfigDto)
           .map(it -> InputFilteringConfig.create().filters(it))
           .forEach(filter::input);
       maybeOutputFilter
           .filter(AzureContentFilter.class::isInstance)
           .map(AzureContentFilter.class::cast)
-          .map(AzureContentFilter::toFilterConfigDTO)
+          .map(AzureContentFilter::toFilterConfigDto)
           .map(it -> OutputFilteringConfig.create().filters(it))
           .forEach(filter::output);
       resultDto = resultDto.filteringModuleConfig(filter);
@@ -70,9 +70,9 @@ final class ModuleConfigFactory {
   }
 
   @Nonnull
-  static LLMModuleConfig toLlmModuleConfigDTO(@Nonnull final AiModel model) {
+  static LLMModuleConfig toLlmModuleConfigDto(@Nonnull final AiModel model) {
     if (model instanceof LlmConfig llmConfig) {
-      return llmConfig.toLLMModuleConfigDTO();
+      return llmConfig.toLLMModuleConfigDto();
     }
     val dto = LLMModuleConfig.create().modelName(model.name()).modelParams(Map.of());
     if (model.version() != null) {
@@ -82,7 +82,7 @@ final class ModuleConfigFactory {
   }
 
   @Nonnull
-  static TemplatingModuleConfig toTemplateModuleConfigDTO(
+  static TemplatingModuleConfig toTemplateModuleConfigDto(
       @Nonnull final TemplateConfig templateConfig, @Nonnull final List<Message> messages) {
     if (templateConfig instanceof Template.Messages templateMessages) {
       /*

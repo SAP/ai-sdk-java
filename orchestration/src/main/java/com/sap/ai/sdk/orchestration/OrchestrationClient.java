@@ -103,10 +103,10 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
             """,
         prompt,
         clientConfig);
-    val dto = prompt.toCompletionPostRequestDTO(clientConfig);
+    val dto = prompt.toCompletionPostRequestDto(clientConfig);
     log.debug("Assembled data transfer object for request: {}", dto);
     val result = executeRequest(dto);
-    return OrchestrationResponse.fromCompletionPostResponseDTO(result);
+    return OrchestrationResponse.fromCompletionPostResponseDto(result);
   }
 
   /**

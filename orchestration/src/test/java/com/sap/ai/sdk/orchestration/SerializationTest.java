@@ -42,7 +42,7 @@ class SerializationTest {
             .withInputContentFilter(inputFilter)
             .withOutputContentFilter(outputFilter)
             .withMaskingConfig(masking)
-            .toCompletionPostRequestDTO(DefaultOrchestrationConfig.standalone());
+            .toCompletionPostRequestDto(DefaultOrchestrationConfig.standalone());
 
     var actual = OrchestrationClient.JACKSON.valueToTree(dto);
 

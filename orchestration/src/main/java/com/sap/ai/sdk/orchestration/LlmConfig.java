@@ -54,7 +54,7 @@ public record LlmConfig(
   }
 
   @Nonnull
-  LLMModuleConfig toLLMModuleConfigDTO() {
+  LLMModuleConfig toLLMModuleConfigDto() {
     final Map<String, Object> params = new TreeMap<>();
     if (parameters != null) {
       params.putAll(parameters);

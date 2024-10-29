@@ -46,7 +46,7 @@ public final class AzureContentFilter implements ContentFilter {
   }
 
   @Nonnull
-  com.sap.ai.sdk.orchestration.client.model.FilterConfig toFilterConfigDTO() {
+  com.sap.ai.sdk.orchestration.client.model.FilterConfig toFilterConfigDto() {
     val dto = AzureContentSafety.create();
     if (hate == null && selfHarm == null && sexual == null && violence == null) {
       throw new IllegalStateException(

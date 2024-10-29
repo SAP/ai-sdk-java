@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.val;
 
 /** A template configuration for orchestration requests. */
@@ -29,12 +28,10 @@ public sealed interface TemplateConfig permits Messages, IdReference, NameRefere
    */
   @Nonnull
   static TemplateConfig fromMessages(
-      @Nonnull final Message message, @Nullable final Message... messages) {
+      @Nonnull final Message message, @Nonnull final Message... messages) {
     val allMessages = new ArrayList<Message>();
     allMessages.add(message);
-    if (messages != null) {
-      allMessages.addAll(Arrays.asList(messages));
-    }
+    allMessages.addAll(Arrays.asList(messages));
 
     return new Messages(allMessages);
   }

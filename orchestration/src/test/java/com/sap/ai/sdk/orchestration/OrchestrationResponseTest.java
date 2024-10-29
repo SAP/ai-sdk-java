@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class OrchestrationResponseTest {
   @Test
-  void testFromCompletionPostResponseDTO() {
+  void testFromCompletionPostResponseDto() {
     var message1 = ChatMessage.create().role("system").content("foo");
     var message2 = ChatMessage.create().role("user").content("bar");
     var message3 = ChatMessage.create().role("assistant").content("baz");
@@ -35,7 +35,7 @@ class OrchestrationResponseTest {
             .moduleResults(moduleResults)
             .orchestrationResult(orchestrationResult);
 
-    var result = OrchestrationResponse.fromCompletionPostResponseDTO(postResponse);
+    var result = OrchestrationResponse.fromCompletionPostResponseDto(postResponse);
 
     assertThat(result.assistantMessage()).isEqualTo(new AssistantMessage("baz"));
     assertThat(result.allMessages())

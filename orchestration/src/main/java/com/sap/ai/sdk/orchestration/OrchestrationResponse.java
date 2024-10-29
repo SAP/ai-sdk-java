@@ -53,7 +53,7 @@ public record OrchestrationResponse(
   }
 
   @Nonnull
-  static OrchestrationResponse fromCompletionPostResponseDTO(
+  static OrchestrationResponse fromCompletionPostResponseDto(
       @Nonnull final CompletionPostResponse response) {
     val choice = response.getOrchestrationResult().getChoices().get(0);
     val message = new AssistantMessage(choice.getMessage().getContent());

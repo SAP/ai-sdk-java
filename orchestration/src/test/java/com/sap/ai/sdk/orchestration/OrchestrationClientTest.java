@@ -36,6 +36,7 @@ class OrchestrationClientTest {
   void testSimpleChatCompletion() {
     stubResponse("stop");
 
+    new OrchestrationPrompt(new UserMessage("Hello there!"));
     var result = client.chatCompletion("Hello there!");
     assertThat(result).isEqualTo("General Kenobi!");
 

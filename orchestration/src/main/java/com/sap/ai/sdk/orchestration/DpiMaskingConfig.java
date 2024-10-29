@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +49,7 @@ public class DpiMaskingConfig implements MaskingConfig {
   }
 
   @Nonnull
-  MaskingProviderConfig toMaskingProviderDTO() {
+  MaskingProviderConfig toMaskingProviderDto() {
     val entitiesDTO = entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
     return MaskingProviderConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
@@ -76,12 +75,10 @@ public class DpiMaskingConfig implements MaskingConfig {
      */
     @Nonnull
     public DpiMaskingConfig withEntities(
-        @Nonnull final DPIEntities entity, @Nullable final DPIEntities... entities) {
+        @Nonnull final DPIEntities entity, @Nonnull final DPIEntities... entities) {
       val entitiesList = new ArrayList<DPIEntities>();
       entitiesList.add(entity);
-      if (entities != null) {
-        entitiesList.addAll(Arrays.asList(entities));
-      }
+      entitiesList.addAll(Arrays.asList(entities));
       return new DpiMaskingConfig(maskingMethod, entitiesList);
     }
   }
