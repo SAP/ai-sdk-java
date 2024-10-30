@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
@@ -35,8 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
 
-  private static final OrchestrationClient CLIENT =
-      new OrchestrationClient(new AiCoreService().forDeploymentByScenario("orchestration"));
+  private static final OrchestrationClient CLIENT = new OrchestrationClient();
 
   static final String MODEL = "gpt-35-turbo";
 

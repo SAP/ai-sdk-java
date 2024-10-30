@@ -1,6 +1,8 @@
-package com.sap.ai.sdk.orchestration.client;
+package com.sap.ai.sdk.orchestration;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
+import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -8,6 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
@@ -16,12 +19,11 @@ import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
@@ -140,7 +142,7 @@ class OrchestrationUnitTest {
     assertThat(llm.getCreated()).isEqualTo(1721224505);
     assertThat(llm.getModel()).isEqualTo("gpt-35-turbo-16k");
     var choices = llm.getChoices();
-    assertThat(choices.get(0).getIndex()).isEqualTo(0);
+    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
@@ -155,7 +157,7 @@ class OrchestrationUnitTest {
     assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
     assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
     choices = result.getOrchestrationResult().getChoices();
-    assertThat(choices.get(0).getIndex()).isEqualTo(0);
+    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
@@ -376,5 +378,29 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
               .withRequestBody(equalToJson(request)));
     }
+  }
+
+  @Test
+  void testGenericErrorHandling() {
+    stubFor(post(anyUrl()).willReturn(serverError()));
+
+    assertThatThrownBy(() -> client.chatCompletion(mock(CompletionPostRequest.class)))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("500 Server Error");
+  }
+
+  @Test
+  void testOrchestrationErrorParsing() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                badRequest()
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("errorResponse.json")));
+
+    assertThatThrownBy(() -> client.chatCompletion(mock(CompletionPostRequest.class)))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400 Bad Request")
+        .hasMessageContaining("'orchestration_config' is a required property");
   }
 }
