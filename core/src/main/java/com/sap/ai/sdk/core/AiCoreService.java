@@ -161,7 +161,8 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected Destination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    val serviceKey = Dotenv.configure().ignoreIfMissing().load().get("AICORE_SERVICE_KEY");
+    Dotenv.configure().ignoreIfMissing().load();
+    val serviceKey = System.getenv("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
 
