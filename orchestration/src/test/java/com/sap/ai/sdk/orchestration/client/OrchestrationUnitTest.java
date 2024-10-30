@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
@@ -46,16 +48,15 @@ import java.util.Objects;
 import java.util.function.Function;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * Test that queries are on the right URL, with the right headers. Also check that the received
  * response is parsed correctly in the generated client.
  */
 @WireMockTest
-public class OrchestrationUnitTest {
-  private OrchestrationCompletionApi client;
-  private final Function<String, InputStream> TEST_FILE_LOADER =
+class OrchestrationUnitTest {
+  private OrchestrationClient client;
+  private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   private static final LLMModuleConfig LLM_CONFIG =
@@ -101,13 +102,12 @@ public class OrchestrationUnitTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
 
-    final var apiClient =
+    final var deployment =
         new AiCoreService()
             .withDestination(destination)
             .forDeploymentByScenario("orchestration")
-            .withResourceGroup("my-resource-group")
-            .client();
-    client = new OrchestrationCompletionApi(apiClient);
+            .withResourceGroup("my-resource-group");
+    client = new OrchestrationClient(deployment);
   }
 
   @Test
@@ -128,7 +128,7 @@ public class OrchestrationUnitTest {
             .apply(TemplatingModuleConfig.create().template(template))
             .inputParams(inputParams);
 
-    final var result = client.orchestrationV1EndpointsCreate(config);
+    final var result = client.chatCompletion(config);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -166,7 +166,7 @@ public class OrchestrationUnitTest {
     assertThat(usage.getTotalTokens()).isEqualTo(26);
 
     // verify that null fields are absent from the sent request
-    try (var requestInputStream = TEST_FILE_LOADER.apply("templatingRequest.json")) {
+    try (var requestInputStream = fileLoader.apply("templatingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
@@ -200,10 +200,10 @@ public class OrchestrationUnitTest {
             .apply(TemplatingModuleConfig.create().template(template))
             .inputParams(inputParams);
 
-    assertThatThrownBy(() -> client.orchestrationV1EndpointsCreate(config))
-        .isInstanceOf(HttpClientErrorException.class)
+    assertThatThrownBy(() -> client.chatCompletion(config))
+        .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "400 Bad Request: \"{<EOL>  \"request_id\": \"51043a32-01f5-429a-b0e7-3a99432e43a4\",<EOL>  \"code\": 400,<EOL>  \"message\": \"Missing required parameters: ['input']\",<EOL>  \"location\": \"Module: Templating\",<EOL>  \"module_results\": {}<EOL>}<EOL>\"");
+            "Request to orchestration service failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
   }
 
   /**
@@ -259,11 +259,11 @@ public class OrchestrationUnitTest {
 
     final var config = FILTERING_CONFIG.apply(NUMBER_4);
 
-    client.orchestrationV1EndpointsCreate(config);
+    client.chatCompletion(config);
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
-    try (var requestInputStream = TEST_FILE_LOADER.apply("filteringLooseRequest.json")) {
+    try (var requestInputStream = fileLoader.apply("filteringLooseRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
@@ -282,9 +282,10 @@ public class OrchestrationUnitTest {
 
     final var config = FILTERING_CONFIG.apply(NUMBER_0);
 
-    assertThatThrownBy(() -> client.orchestrationV1EndpointsCreate(config))
-        .isInstanceOf(HttpClientErrorException.class)
-        .hasMessage("400 Bad Request: \"" + response + "\"");
+    assertThatThrownBy(() -> client.chatCompletion(config))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessage(
+            "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
   }
 
   @Test
@@ -308,12 +309,12 @@ public class OrchestrationUnitTest {
             .apply(TemplatingModuleConfig.create().template(message))
             .messagesHistory(messagesHistory);
 
-    final var result = client.orchestrationV1EndpointsCreate(config);
+    final var result = client.chatCompletion(config);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
-    try (var requestInputStream = TEST_FILE_LOADER.apply("messagesHistoryRequest.json")) {
+    try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
@@ -357,7 +358,7 @@ public class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var result = client.orchestrationV1EndpointsCreate(MASKING_CONFIG);
+    final var result = client.chatCompletion(MASKING_CONFIG);
 
     assertThat(result).isNotNull();
     GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
@@ -369,7 +370,7 @@ public class OrchestrationUnitTest {
             "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
 
     // verify that the request is sent correctly
-    try (var requestInputStream = TEST_FILE_LOADER.apply("maskingRequest.json")) {
+    try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))

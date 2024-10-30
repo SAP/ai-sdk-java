@@ -97,8 +97,7 @@ var client = new AiCoreService().forDeploymentbyScenario("orchestration")
     .client();
 
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient(client).chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
@@ -139,8 +138,7 @@ var client = new AiCoreService().forDeploymentbyScenario("orchestration")
     .client();
 
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient(client).chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
@@ -208,10 +206,9 @@ var client = new AiCoreService().forDeploymentbyScenario("orchestration")
     .withResourceGroup(resourceGroupId)
     .client();
 
+// this fails with Bad Request because the strict filter prohibits the input message
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        // this fails with Bad Request because the strict filter prohibits the input message
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient(client).chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
@@ -255,8 +252,7 @@ var client = new AiCoreService().forDeploymentbyScenario("orchestration")
     .client();
 
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient(client).chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
