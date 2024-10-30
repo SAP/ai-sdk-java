@@ -52,6 +52,12 @@ public class OrchestrationClient {
    * Constructor with a custom deployment, allowing for a custom resource group or otherwise
    * specific deployment ID.
    *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * new OrchestrationClient(new AiCoreService().forDeploymentByScenario("orchestration"));
+   * }</pre>
+   *
    * @param deployment The specific {@link AiCoreDeployment} to use.
    */
   public OrchestrationClient(@Nonnull final AiCoreDeployment deployment) {
