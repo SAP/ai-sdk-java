@@ -51,7 +51,7 @@ import org.mockito.Mockito;
 @WireMockTest
 class OpenAiClientTest {
   private static OpenAiClient client;
-  private final Function<String, InputStream> TEST_FILE_LOADER =
+  private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   @BeforeEach
@@ -193,7 +193,7 @@ class OpenAiClientTest {
   @ParameterizedTest
   @MethodSource("chatCompletionCalls")
   void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionOutput> request) {
-    try (var inputStream = TEST_FILE_LOADER.apply("__files/chatCompletionResponse.json")) {
+    try (var inputStream = fileLoader.apply("__files/chatCompletionResponse.json")) {
 
       final String response = new String(inputStream.readAllBytes());
       stubFor(post("/chat/completions").willReturn(okJson(response)));
@@ -375,7 +375,7 @@ class OpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltasErrorHandling() throws IOException {
-    try (var inputStream = spy(TEST_FILE_LOADER.apply("streamChatCompletionError.txt"))) {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletionError.txt"))) {
 
       final var httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -408,7 +408,7 @@ class OpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltas() throws IOException {
-    try (var inputStream = spy(TEST_FILE_LOADER.apply("streamChatCompletion.txt"))) {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
 
       final var httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
