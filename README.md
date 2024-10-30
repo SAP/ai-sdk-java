@@ -64,7 +64,7 @@ There are multiple ways to provide these credentials:
 
 | Option | Description                                                                                              |
 |--------|----------------------------------------------------------------------------------------------------------|
-| **1**  | Set an `.env` file containing an `AICORE_SERVICE_KEY`                                                    |
+| **1**  | Set an `.env` file containing an `AICORE_SERVICE_KEY={...}`                                             |
 | **2**  | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
 | **3**  | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
 
