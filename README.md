@@ -64,7 +64,7 @@ There are multiple ways to provide these credentials:
 
 | Option | Description                                                                                              |
 |--------|----------------------------------------------------------------------------------------------------------|
-| **1**  | Set an environment variable explicitly: `AICORE_SERVICE_KEY`                                             |
+| **1**  | Set an `.env` file containing an `AICORE_SERVICE_KEY`                                                    |
 | **2**  | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
 | **3**  | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
 
@@ -87,9 +87,10 @@ Additional methods (not recommended for production):
 - Navigate to **Instances and Subscriptions** -> **Instances** -> **AI Core**
 - Click **View Credentials** and copy the JSON content
 
-**2. Set Environment Variable:**
+**2. Create `.env` file:**
 
-- In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
+- Create an `.env` file in the root directory of your application
+- Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
 
 Example:
 
