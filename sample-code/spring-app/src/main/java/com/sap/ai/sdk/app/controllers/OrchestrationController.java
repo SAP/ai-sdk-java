@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.client.OrchestrationCompletionApi;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
@@ -35,9 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
 
-  private static final OrchestrationCompletionApi API =
-      new OrchestrationCompletionApi(
-          new AiCoreService().forDeploymentByScenario("orchestration").client());
+  private static final OrchestrationClient CLIENT = new OrchestrationClient();
 
   static final String MODEL = "gpt-35-turbo";
 
@@ -201,7 +198,7 @@ class OrchestrationController {
             .apply(TemplatingModuleConfig.create().template(template))
             .inputParams(inputParams);
 
-    return API.orchestrationV1EndpointsCreate(config);
+    return CLIENT.chatCompletion(config);
   }
 
   /**
@@ -218,7 +215,7 @@ class OrchestrationController {
     final var config =
         FILTERING_CONFIG.apply(AzureThreshold.fromValue(Integer.parseInt(threshold)));
 
-    return API.orchestrationV1EndpointsCreate(config);
+    return CLIENT.chatCompletion(config);
   }
 
   /**
@@ -241,7 +238,7 @@ class OrchestrationController {
             .apply(TemplatingModuleConfig.create().template(message))
             .messagesHistory(messagesHistory);
 
-    return API.orchestrationV1EndpointsCreate(config);
+    return CLIENT.chatCompletion(config);
   }
 
   /**
@@ -254,7 +251,7 @@ class OrchestrationController {
   public CompletionPostResponse maskingAnonymization() {
     final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
 
-    return API.orchestrationV1EndpointsCreate(config);
+    return CLIENT.chatCompletion(config);
   }
 
   /**
@@ -268,6 +265,6 @@ class OrchestrationController {
   public CompletionPostResponse maskingPseudonymization() {
     final var config = MASKING_CONFIG.apply(MethodEnum.PSEUDONYMIZATION);
 
-    return API.orchestrationV1EndpointsCreate(config);
+    return CLIENT.chatCompletion(config);
   }
 }
