@@ -400,6 +400,9 @@
           <!-- Exclude generated clients -->
           <suppressionsLocation>${project.rootdir}/.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
           <linkXRef>false</linkXRef>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>info</violationSeverity>
+          <maxAllowedViolations>0</maxAllowedViolations>
         </configuration>
         <dependencies>
           <dependency>
