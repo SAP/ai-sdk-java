@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
  * Test that queries are on the right URL, with the right headers. Also check that the received
  * response is parsed correctly in the generated client.
  */
-public class DeploymentUnitTest extends WireMockTestServer {
+class DeploymentUnitTest extends WireMockTestServer {
   @Test
   void getDeployments() {
     wireMockServer.stubFor(
@@ -48,32 +48,43 @@ public class DeploymentUnitTest extends WireMockTestServer {
                           "count": 1,
                           "resources": [
                             {
+                              "id": "d889e3a61050c085",
+                              "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d889e3a61050c085",
                               "configurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
                               "configurationName": "gpt-4-32k",
-                              "createdAt": "2024-04-17T15:19:53Z",
-                              "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d19b998f347341aa",
+                              "executableId": null,
+                              "scenarioId": "foundation-models",
+                              "status": "RUNNING",
+                              "statusMessage": null,
+                              "targetStatus": "RUNNING",
+                              "lastOperation": "CREATE",
+                              "latestRunningConfigurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
+                              "ttl": null,
                               "details": {
+                                "scaling": {
+                                  "backendDetails": {},
+                                  "backend_details": {}
+                                },
                                 "resources": {
+                                  "backendDetails": {
+                                    "model": {
+                                      "name": "gpt-4-32k",
+                                      "version": "latest"
+                                    }
+                                  },
                                   "backend_details": {
                                     "model": {
                                       "name": "gpt-4-32k",
                                       "version": "latest"
                                     }
                                   }
-                                },
-                                "scaling": {
-                                  "backend_details": {}
                                 }
                               },
-                              "id": "d19b998f347341aa",
-                              "lastOperation": "CREATE",
-                              "latestRunningConfigurationId": "7652a231-ba9b-4fcc-b473-2c355cb21b61",
-                              "modifiedAt": "2024-05-07T13:05:45Z",
-                              "scenarioId": "foundation-models",
-                              "startTime": "2024-04-17T15:21:15Z",
-                              "status": "RUNNING",
-                              "submissionTime": "2024-04-17T15:20:11Z",
-                              "targetStatus": "RUNNING"
+                              "createdAt": "2024-09-20T11:31:24Z",
+                              "modifiedAt": "2024-10-30T13:36:38Z",
+                              "submissionTime": "2024-09-20T11:31:38Z",
+                              "startTime": "2024-09-20T11:32:42Z",
+                              "completionTime": null
                             }
                           ]
                         }
@@ -89,24 +100,22 @@ public class DeploymentUnitTest extends WireMockTestServer {
 
     assertThat(deployment.getConfigurationId()).isEqualTo("7652a231-ba9b-4fcc-b473-2c355cb21b61");
     assertThat(deployment.getConfigurationName()).isEqualTo("gpt-4-32k");
-    assertThat(deployment.getCreatedAt()).isEqualTo("2024-04-17T15:19:53Z");
+    assertThat(deployment.getCreatedAt()).isEqualTo("2024-09-20T11:31:24Z");
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
-            "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d19b998f347341aa");
+            "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d889e3a61050c085");
     // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
     val expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
-    assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
-        .isEqualTo(expected);
-    assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
-        .contains("backend_details");
-    assertThat(deployment.getId()).isEqualTo("d19b998f347341aa");
+    assertThat(deployment.getDetails().getResources().getBackendDetails()).isEqualTo(expected);
+    assertThat(deployment.getDetails().getScaling().getBackendDetails()).isEqualTo(Map.of());
+    assertThat(deployment.getId()).isEqualTo("d889e3a61050c085");
     assertThat(deployment.getLastOperation()).isEqualTo(AiDeployment.LastOperationEnum.CREATE);
     assertThat(deployment.getLatestRunningConfigurationId())
         .isEqualTo("7652a231-ba9b-4fcc-b473-2c355cb21b61");
-    assertThat(deployment.getModifiedAt()).isEqualTo("2024-05-07T13:05:45Z");
-    assertThat(deployment.getStartTime()).isEqualTo("2024-04-17T15:21:15Z");
+    assertThat(deployment.getModifiedAt()).isEqualTo("2024-10-30T13:36:38Z");
+    assertThat(deployment.getStartTime()).isEqualTo("2024-09-20T11:32:42Z");
     assertThat(deployment.getStatus()).isEqualTo(AiDeploymentStatus.RUNNING);
-    assertThat(deployment.getSubmissionTime()).isEqualTo("2024-04-17T15:20:11Z");
+    assertThat(deployment.getSubmissionTime()).isEqualTo("2024-09-20T11:31:38Z");
     assertThat(deployment.getTargetStatus()).isEqualTo(AiDeployment.TargetStatusEnum.RUNNING);
   }
 
@@ -234,10 +243,12 @@ public class DeploymentUnitTest extends WireMockTestServer {
                            "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467",
                            "details": {
                              "resources": {
-                               "backend_details": {}
+                               "backend_details": {},
+                               "backendDetails": {}
                              },
                              "scaling": {
-                               "backend_details": {}
+                               "backend_details": {},
+                               "backendDetails": {}
                              }
                            },
                            "id": "db1d64d9f06be467",
@@ -261,11 +272,8 @@ public class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
-    // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
-    assertThat(deployment.getDetails().getResources().getCustomFieldNames())
-        .contains("backend_details");
-    assertThat(deployment.getDetails().getScaling().getCustomFieldNames())
-        .contains("backend_details");
+    assertThat(deployment.getDetails().getResources().getBackendDetails()).isNotNull();
+    assertThat(deployment.getDetails().getScaling().getBackendDetails()).isNotNull();
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
         .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
