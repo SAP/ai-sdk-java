@@ -124,7 +124,6 @@ var config =
                     ModuleConfigs.create()
                         .llmModuleConfig(llmConfig)
                         .templatingModuleConfig(templatingConfig)))
-        .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
 CompletionPostResponse result =
