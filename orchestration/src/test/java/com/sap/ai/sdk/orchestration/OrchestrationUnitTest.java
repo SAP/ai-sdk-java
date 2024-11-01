@@ -79,8 +79,7 @@ class OrchestrationUnitTest {
                       .moduleConfigurations(
                           ModuleConfigs.create()
                               .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)))
-              .inputParams(Map.of());
+                              .templatingModuleConfig(templatingModuleConfig)));
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
