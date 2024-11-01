@@ -64,6 +64,7 @@
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.1</surefire.version>
     <springframework.version>6.1.14</springframework.version>
+    <dotenv-java.version>3.0.0</dotenv-java.version>
     <mockito.version>5.14.2</mockito.version>
     <!--  Quality assurance  -->
     <enforcer.skipBanLoggingFrameworks>false</enforcer.skipBanLoggingFrameworks>
@@ -91,6 +92,11 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${springframework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.cdimascio</groupId>
+        <artifactId>dotenv-java</artifactId>
+        <version>${dotenv-java.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>

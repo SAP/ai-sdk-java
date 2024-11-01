@@ -15,6 +15,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -104,7 +105,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-    baseDestinationHandler = (service) -> destination;
+    baseDestinationHandler = service -> destination;
     return this;
   }
 
@@ -160,7 +161,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected Destination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    val serviceKey = System.getenv("AICORE_SERVICE_KEY");
+    val serviceKey = Dotenv.configure().ignoreIfMissing().load().get("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
 
