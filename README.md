@@ -12,7 +12,7 @@
 - [Introduction](#introduction)
 - [General Requirements](#general-requirements)
 - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
-    - [Option 1: Set Credentials as Environment Variable](#option-1-create-env-file-containing-credentials)
+    - [Option 1: Set Credentials as Environment Variable](#option-1-set-ai-core-credentials)
     - [Option 2: Regular Service Binding in SAP BTP Cloud Foundry](#option-2-regular-service-binding-in-sap-btp-cloud-foundry)
     - [Option 3: Define and Use a Destination](#option-3-define-and-use-a-destination)
 - [Getting Started](#getting-started)
@@ -195,7 +195,7 @@ Before you begin, ensure you have:
 - Met the OpenAI Chat Completion module specific requirements
     - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
 - Set up the AI Core credentials
-  using [(1) Environment variable or env-file](#option-1-create-env-file-containing-credentials)
+  using [(1) Environment variable or env-file](#option-1-set-ai-core-credentials)
   or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 - Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
     - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
