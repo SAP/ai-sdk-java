@@ -75,7 +75,7 @@ Additional methods (not recommended for production):
 - Leverage a "user-provided" service binding
 - Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
 
-### Option 1: Create `.env` file containing Credentials
+### Option 1: Set AI Core Credentials
 
 <details>
 <summary>Click to view detailed steps</summary>
@@ -95,11 +95,11 @@ Additional methods (not recommended for production):
 <details>
 <summary>Set an environment variable instead of .env</summary>
 
-**2. Set an Environment Variable:**
+**2. Set an Environment Variable: (alternative)**
 
 - In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
 
-Example MacOS:
+Example Linux/MacOS:
 
 ```shell
 export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
@@ -195,7 +195,7 @@ Before you begin, ensure you have:
 - Met the OpenAI Chat Completion module specific requirements
     - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
 - Set up the AI Core credentials
-  using [(1) Environment Variable](#option-1-create-env-file-containing-credentials)
+  using [(1) Environment variable or env-file](#option-1-create-env-file-containing-credentials)
   or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 - Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
     - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
