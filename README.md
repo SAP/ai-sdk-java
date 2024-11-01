@@ -12,7 +12,7 @@
 - [Introduction](#introduction)
 - [General Requirements](#general-requirements)
 - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
-    - [Option 1: Set Credentials as Environment Variable](#option-1-set-credentials-as-environment-variable)
+    - [Option 1: Set Credentials as Environment Variable](#option-1-create-env-file-containing-credentials)
     - [Option 2: Regular Service Binding in SAP BTP Cloud Foundry](#option-2-regular-service-binding-in-sap-btp-cloud-foundry)
     - [Option 3: Define and Use a Destination](#option-3-define-and-use-a-destination)
 - [Getting Started](#getting-started)
@@ -64,7 +64,7 @@ There are multiple ways to provide these credentials:
 
 | Option | Description                                                                                              |
 |--------|----------------------------------------------------------------------------------------------------------|
-| **1**  | Set an `.env` file containing an `AICORE_SERVICE_KEY={...}`                                             |
+| **1**  | Create an `.env` file containing an `AICORE_SERVICE_KEY={...}`                                           |
 | **2**  | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
 | **3**  | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
 
@@ -75,7 +75,7 @@ Additional methods (not recommended for production):
 - Leverage a "user-provided" service binding
 - Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
 
-### Option 1: Set Credentials as Environment Variable
+### Option 1: Create `.env` file containing Credentials
 
 <details>
 <summary>Click to view detailed steps</summary>
@@ -92,12 +92,26 @@ Additional methods (not recommended for production):
 - Create an `.env` file in the root directory of your application
 - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
 
-Example:
+<details>
+<summary>Set an environment variable instead of .env</summary>
+
+**2. Set an Environment Variable:**
+
+- In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
+
+Example MacOS:
 
 ```shell
 export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
 ```
 
+Example Windows:
+
+```shell
+$env:AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
+```
+
+</details>
 </details>
 
 ### Option 2: Regular Service Binding in SAP BTP Cloud Foundry
@@ -181,7 +195,7 @@ Before you begin, ensure you have:
 - Met the OpenAI Chat Completion module specific requirements
     - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
 - Set up the AI Core credentials
-  using [(1) Environment Variable](#option-1-set-credentials-as-environment-variable)
+  using [(1) Environment Variable](#option-1-create-env-file-containing-credentials)
   or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 - Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
     - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
