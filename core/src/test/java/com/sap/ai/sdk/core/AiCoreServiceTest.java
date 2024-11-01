@@ -25,7 +25,7 @@ import lombok.val;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-public class AiCoreServiceTest {
+class AiCoreServiceTest {
 
   // setup
   private static final Map<String, Object> URLS = Map.of("AI_API_URL", "https://srv");
