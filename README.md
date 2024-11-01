@@ -99,6 +99,8 @@ Additional methods (not recommended for production):
 
 - In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
 
+  ℹ️ The environment variable has priority over the `.env` file.
+
 Example Linux/MacOS:
 
 ```shell
