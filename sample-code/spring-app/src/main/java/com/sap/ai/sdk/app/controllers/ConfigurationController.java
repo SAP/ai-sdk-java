@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigurationController {
 
-  private static final ConfigurationApi API = new ConfigurationApi(API_CLIENT);
+  private static final ConfigurationApi CLIENT = new ConfigurationApi(API_CLIENT);
 
   /**
    * Get the list of configurations.
@@ -21,6 +21,6 @@ public class ConfigurationController {
    */
   @GetMapping("/configurations")
   AiConfigurationList getConfigurations() {
-    return API.query("default");
+    return CLIENT.query("default");
   }
 }
