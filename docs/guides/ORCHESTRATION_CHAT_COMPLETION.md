@@ -91,14 +91,8 @@ var config =
                         .templatingModuleConfig(templatingConfig)))
         .inputParams(inputParams);
 
-var resourceGroupId = "default";
-var client = new AiCoreService().forDeploymentbyScenario("orchestration")
-    .withResourceGroup(resourceGroupId)
-    .client();
-
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient().chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
@@ -133,14 +127,8 @@ var config =
         .inputParams(Map.of())
         .messagesHistory(messagesHistory);
 
-var resourceGroupId = "default";
-var client = new AiCoreService().forDeploymentbyScenario("orchestration")
-    .withResourceGroup(resourceGroupId)
-    .client();
-
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient().chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
@@ -203,15 +191,9 @@ var config =
                         .filteringModuleConfig(filteringConfig)))
         .inputParams(inputParams);
 
-var resourceGroupId = "default";
-var client = new AiCoreService().forDeploymentbyScenario("orchestration")
-    .withResourceGroup(resourceGroupId)
-    .client();
-
+// this fails with Bad Request because the strict filter prohibits the input message
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        // this fails with Bad Request because the strict filter prohibits the input message
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient().chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
@@ -249,14 +231,8 @@ CompletionPostRequest config =
                         .maskingModuleConfig(maskingConfig)))
         .inputParams(inputParams);
 
-var resourceGroupId = "default";
-var client = new AiCoreService().forDeploymentbyScenario("orchestration")
-    .withResourceGroup(resourceGroupId)
-    .client();
-
 CompletionPostResponse result =
-    new OrchestrationCompletionApi(client)
-        .orchestrationV1EndpointsCreate(config);
+    new OrchestrationClient().chatCompletion(config);
 
 String messageResult =
     result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
