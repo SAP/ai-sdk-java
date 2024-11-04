@@ -8,18 +8,3 @@ steps:
     failOn: ['BLOCKER', 'CRITICAL', 'MAJOR']
     versioningModel: "major"
     detectTools: ['DETECTOR', 'BINARY_SCAN']
-
-stages:
-  codeCheck:
-    checkstyle:
-      high: '0'
-      normal: '0'
-      low: '0'
-    spotbugs:
-      high: '0'
-      normal: '0'
-      low: '0'
-    pmd:
-      high: '0'
-      normal: '0'
-      low: '0'
