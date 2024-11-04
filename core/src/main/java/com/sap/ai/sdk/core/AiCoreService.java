@@ -15,6 +15,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -40,6 +41,9 @@ public class AiCoreService implements AiCoreDestination {
   private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
 
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
+
+  /** loads the .env file from the root of the project */
+  public static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
 
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Nonnull String resourceGroup;
@@ -104,7 +108,7 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   public AiCoreService withDestination(@Nonnull final Destination destination) {
-    baseDestinationHandler = (service) -> destination;
+    baseDestinationHandler = service -> destination;
     return this;
   }
 
@@ -160,7 +164,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected Destination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    val serviceKey = System.getenv("AICORE_SERVICE_KEY");
+    val serviceKey = DOTENV.get("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
 
