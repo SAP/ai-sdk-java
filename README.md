@@ -90,7 +90,7 @@ Additional methods (not recommended for production):
 **2. Create `.env` file:**
 
 - Create an `.env` file in the root directory of your application
-- Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
+- Add a **one line** entry `AICORE_SERVICE_KEY={...}` with the copied JSON
 
 <details>
 <summary>Set an environment variable instead of .env</summary>
