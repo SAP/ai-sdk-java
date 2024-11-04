@@ -50,7 +50,7 @@ jobs:
 
       - name: "Build SDK"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -Dgenerate -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
       - name: "Verify Local Changes"

@@ -120,41 +120,52 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.sap.cloud.sdk.datamodel</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-          <!-- skip automatic generation until we can omit API classes from code generation -->
-          <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-          <apiMaturity>beta</apiMaturity>
-          <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
-          <compileScope>COMPILE</compileScope>
-          <deleteOutputDirectory>true</deleteOutputDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>orchestration</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <phase>generate-sources</phase>
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>generate</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
-              <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
-              <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
-              <additionalProperties>
-                <pojoBuilderMethodName>create</pojoBuilderMethodName>
-                <pojoBuildMethodName/>
-                <pojoConstructorVisibility>protected</pojoConstructorVisibility>
-                <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-              </additionalProperties>
+              <skip>true</skip>
+              <!-- skip automatic generation until we can omit API classes from code generation -->
+              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <apiMaturity>beta</apiMaturity>
+              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+              <compileScope>COMPILE</compileScope>
+              <deleteOutputDirectory>true</deleteOutputDirectory>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+            <executions>
+              <execution>
+                <id>orchestration</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
+                  <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
+                  <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+                  <additionalProperties>
+                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                    <pojoBuildMethodName/>
+                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                  </additionalProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
