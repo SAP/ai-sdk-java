@@ -45,7 +45,8 @@ class OrchestrationClientTest {
     verify(client)
         .chatCompletion(
             ArgumentMatchers.<OrchestrationPrompt>argThat(
-                prompt -> prompt.getMessages().contains(expected)));
+                prompt -> prompt.getMessages().contains(expected)),
+            any());
   }
 
   @Test

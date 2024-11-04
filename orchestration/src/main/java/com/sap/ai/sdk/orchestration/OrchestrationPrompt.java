@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,16 +24,14 @@ import lombok.val;
 public class OrchestrationPrompt {
   @Nonnull List<Message> messages;
   @Nonnull Map<String, String> templateParameters;
-  @Nonnull OrchestrationConfig config;
 
   /**
    * Initialize a prompt with the given user message.
    *
    * @param message A user message.
    */
-  public OrchestrationPrompt(
-      @Nonnull final String message, @Nonnull final OrchestrationConfig config) {
-    this(List.of(new UserMessage(message)), Map.of(), config);
+  public OrchestrationPrompt(@Nonnull final String message) {
+    this(List.of(new UserMessage(message)), Map.of());
   }
 
   /**
@@ -49,18 +46,6 @@ public class OrchestrationPrompt {
     allMessages.addAll(Arrays.asList(messages));
     this.messages = allMessages;
     this.templateParameters = Map.of();
-    this.config = new OrchestrationConfig(); // TODO
-  }
-
-  /**
-   * Convenience overload for {@link OrchestrationPrompt(Message, Message...)}
-   *
-   * @param messages messages
-   * @see OrchestrationPrompt(Message, Message...)
-   */
-  public OrchestrationPrompt(
-      @Nonnull final List<Message> messages, @Nonnull final OrchestrationConfig config) {
-    this(messages, Map.of(), config);
   }
 
   /**
@@ -75,20 +60,7 @@ public class OrchestrationPrompt {
    *
    * @param inputParams The input parameters as entries of template variables and their contents.
    */
-  public OrchestrationPrompt(
-      @Nonnull final Map<String, String> inputParams, @Nonnull final OrchestrationConfig config) {
-    this(List.of(), inputParams, config);
-  }
-
-  @Nonnull
-  CompletionPostRequest toCompletionPostRequestDto() {
-    // duplicate the prompt config, then apply the defaults to the copy
-    // that way this prompt remains unchanged and can be reused
-    val moduleConfigDTO = ModuleConfigFactory.toModuleConfigDto(config, messages);
-    return CompletionPostRequest.create()
-        .orchestrationConfig(
-            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
-                .moduleConfigurations(moduleConfigDTO))
-        .inputParams(templateParameters);
+  public OrchestrationPrompt(@Nonnull final Map<String, String> inputParams) {
+    this(List.of(), inputParams);
   }
 }

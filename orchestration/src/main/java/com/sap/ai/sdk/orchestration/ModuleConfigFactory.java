@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
@@ -24,6 +25,17 @@ import lombok.val;
 /** Factory to create all DTOs from an orchestration configuration. */
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ModuleConfigFactory {
+  @Nonnull
+  static CompletionPostRequest toCompletionPostRequestDto(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationConfig config) {
+    val moduleConfigDto = toModuleConfigDto(config, prompt.getMessages());
+    return CompletionPostRequest.create()
+        .orchestrationConfig(
+            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
+                .moduleConfigurations(moduleConfigDto))
+        .inputParams(prompt.getTemplateParameters());
+  }
+
   @Nonnull
   static ModuleConfigs toModuleConfigDto(
       @Nonnull final OrchestrationConfig config, @Nonnull final List<Message> messages) {

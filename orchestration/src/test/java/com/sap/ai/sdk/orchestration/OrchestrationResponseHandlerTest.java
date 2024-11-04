@@ -30,10 +30,9 @@ import org.junit.jupiter.api.Test;
 class OrchestrationResponseHandlerTest {
   private OrchestrationClient client;
 
-  private static final OrchestrationPrompt prompt =
-      new OrchestrationPrompt(
-          "Hello there!",
-          new OrchestrationConfig().withLlmConfig(new LlmConfig("gpt-35-turbo-16k")));
+  private static final OrchestrationConfig config =
+      new OrchestrationConfig().withLlmConfig(new LlmConfig("gpt-35-turbo-16k"));
+  private static final OrchestrationPrompt prompt = new OrchestrationPrompt("Hello there!");
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -56,7 +55,7 @@ class OrchestrationResponseHandlerTest {
         ok().withBodyFile("successResponse.json").withHeader("Content-Type", "application/json");
     stubFor(post(anyUrl()).willReturn(response));
 
-    var result = client.chatCompletion("Hello there!", prompt.getConfig());
+    var result = client.chatCompletion("Hello there!", config);
 
     assertThat(result).isEqualTo("General Kenobi!");
   }
@@ -65,7 +64,7 @@ class OrchestrationResponseHandlerTest {
   void testGenericErrorHandling() {
     stubFor(post(anyUrl()).willReturn(serverError()));
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt))
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("500 Server Error");
   }
@@ -79,7 +78,7 @@ class OrchestrationResponseHandlerTest {
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("errorResponse.json")));
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt))
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("'orchestration_config' is a required property");

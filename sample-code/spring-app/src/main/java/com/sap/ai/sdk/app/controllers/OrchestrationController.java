@@ -13,7 +13,6 @@ import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TemplateVariable;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +37,9 @@ class OrchestrationController {
   @GetMapping("/completion")
   @Nonnull
   OrchestrationResponse completion() {
-    final var prompt = new OrchestrationPrompt("What is the capital of France?", config);
+    final var prompt = new OrchestrationPrompt("What is the capital of France?");
 
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -53,12 +52,10 @@ class OrchestrationController {
   OrchestrationResponse systemMessage() {
     final var prompt =
         new OrchestrationPrompt(
-            List.of(
-                new SystemMessage("Show the user your superior geographical knowledge!"),
-                new UserMessage("What is the capital of France?")),
-            config);
+            new SystemMessage("Show the user your superior geographical knowledge!"),
+            new UserMessage("What is the capital of France?"));
 
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -75,40 +72,37 @@ class OrchestrationController {
             "Reply with 'The Orchestration Service is working!' in " + templateVariable);
     final var inputParams = Map.ofEntries(templateVariable.apply("german"));
 
-    final var prompt =
-        new OrchestrationPrompt(
-            inputParams, config.withTemplate(TemplateConfig.fromMessages(templateMessage)));
+    final var prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(
+        prompt, config.withTemplate(TemplateConfig.fromMessages(templateMessage)));
   }
 
   @GetMapping("/filter/{level}")
   @Nonnull
   OrchestrationResponse filter(@Nonnull @PathVariable(name = "level") final Sensitivity level) {
-    final var filter = new AzureContentFilter().hate(level);
     final var prompt =
         new OrchestrationPrompt(
-            "This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.",
-            config.withInputContentFilter(filter));
+            "This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.");
 
+    final var filter = new AzureContentFilter().hate(level);
     // if the level is strict, this will throw, if not it will return a result
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(prompt, config.withInputContentFilter(filter));
   }
 
   @GetMapping("/masking")
   @Nonnull
   OrchestrationResponse masking() {
-    final var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
-
     final var prompt =
         new OrchestrationPrompt(
             """
             Please translate the following into German:
 
             Hi, my name is Foo Bar and you can reach me under my email address 'foo.bar@baz.ai'.
-            """,
-            config.withMaskingConfig(masking));
+            """);
 
-    return client.chatCompletion(prompt);
+    final var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
+
+    return client.chatCompletion(prompt, config.withMaskingConfig(masking));
   }
 }

@@ -77,7 +77,7 @@ public class OrchestrationClient {
   public String chatCompletion(
       @Nonnull final String userPrompt, @Nonnull final OrchestrationConfig config)
       throws OrchestrationClientException {
-    val response = chatCompletion(new OrchestrationPrompt(userPrompt, config));
+    val response = chatCompletion(new OrchestrationPrompt(userPrompt), config);
 
     if (response.finishReason() == CONTENT_FILTER) {
       log.error(
@@ -96,9 +96,10 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException if the request fails
    */
   @Nonnull
-  public OrchestrationResponse chatCompletion(@Nonnull final OrchestrationPrompt prompt)
+  public OrchestrationResponse chatCompletion(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationConfig config)
       throws OrchestrationClientException {
-    val dto = prompt.toCompletionPostRequestDto();
+    val dto = ModuleConfigFactory.toCompletionPostRequestDto(prompt, config);
     log.debug("Assembled data transfer object for request: {}", dto);
     val result = executeRequest(dto);
     return OrchestrationResponse.fromCompletionPostResponseDto(result);

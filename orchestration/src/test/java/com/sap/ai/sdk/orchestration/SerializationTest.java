@@ -42,7 +42,8 @@ class SerializationTest {
             .withInputContentFilter(inputFilter)
             .withOutputContentFilter(outputFilter)
             .withMaskingConfig(masking);
-    var dto = new OrchestrationPrompt(inputParams, config).toCompletionPostRequestDto();
+    var prompt = new OrchestrationPrompt(inputParams);
+    var dto = ModuleConfigFactory.toCompletionPostRequestDto(prompt, config);
 
     var actual = OrchestrationClient.JACKSON.valueToTree(dto);
 
