@@ -3,10 +3,10 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException;
 
 class OrchestrationTest {
   @Test
@@ -53,7 +53,7 @@ class OrchestrationTest {
   @Test
   void strictFilter() {
     assertThatThrownBy(() -> new OrchestrationController().filter("0"))
-        .isInstanceOf(HttpClientErrorException.class)
+        .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request");
   }
 

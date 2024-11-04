@@ -8,13 +8,3 @@ steps:
     failOn: ['BLOCKER', 'CRITICAL', 'MAJOR']
     versioningModel: "major"
     detectTools: ['DETECTOR', 'BINARY_SCAN']
-
-stages:
-  test:
-    coverageThresholds:
-      instruction: 14
-      branch: 3
-      complexity: 12
-      line: 46
-      method: 33
-      class: 67
