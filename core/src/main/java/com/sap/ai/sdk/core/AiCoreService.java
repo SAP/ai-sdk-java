@@ -43,7 +43,7 @@ public class AiCoreService implements AiCoreDestination {
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   /** loads the .env file from the root of the project */
-  protected static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
+  private static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
 
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Nonnull String resourceGroup;
