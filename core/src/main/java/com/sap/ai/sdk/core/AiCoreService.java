@@ -42,6 +42,9 @@ public class AiCoreService implements AiCoreDestination {
 
   private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
+  /** loads the .env file from the root of the project */
+  public static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
+
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Nonnull String resourceGroup;
 
@@ -161,7 +164,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected Destination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    val serviceKey = Dotenv.configure().ignoreIfMissing().load().get("AICORE_SERVICE_KEY");
+    val serviceKey = DOTENV.get("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
 
