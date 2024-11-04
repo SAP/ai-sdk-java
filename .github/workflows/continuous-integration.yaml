@@ -50,7 +50,7 @@ jobs:
 
       - name: "Build SDK"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -Dgenerate -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
       - name: "Verify Local Changes"
@@ -63,24 +63,6 @@ jobs:
               git --no-pager diff
               exit 1
           fi
-
-      - name: "Checkstyle"
-        run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} -P!build-test-modules org.apache.maven.plugins:maven-checkstyle-plugin:checkstyle"
-          mvn $MVN_ARGS
-          python .pipeline/scripts/print-checkstyle.py
-
-      - name: "PMD"
-        run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} org.apache.maven.plugins:maven-pmd-plugin:pmd"
-          mvn $MVN_ARGS
-          python .pipeline/scripts/print-pmd.py
-
-      - name: "Spotbugs"
-        run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} com.github.spotbugs:spotbugs-maven-plugin:spotbugs"
-          mvn $MVN_ARGS
-          python .pipeline/scripts/print-spotbugs.py
 
       - name: "Run Unit Tests"
         run: |

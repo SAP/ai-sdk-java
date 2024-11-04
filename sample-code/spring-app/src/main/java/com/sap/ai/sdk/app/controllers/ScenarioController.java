@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("unused") // debug method that doesn't need to be tested
 public class ScenarioController {
 
-  private static final ScenarioApi API = new ScenarioApi(API_CLIENT);
+  private static final ScenarioApi CLIENT = new ScenarioApi(API_CLIENT);
 
   /**
    * Get the list of available scenarios
@@ -24,7 +24,7 @@ public class ScenarioController {
   @GetMapping("/scenarios")
   @Nonnull
   AiScenarioList getScenarios() {
-    return API.query("default");
+    return CLIENT.query("default");
   }
 
   /**
@@ -35,6 +35,6 @@ public class ScenarioController {
   @GetMapping("/models")
   @Nonnull
   public AiModelList getModels() {
-    return API.queryModels("foundation-models", "default");
+    return CLIENT.queryModels("foundation-models", "default");
   }
 }

@@ -3,7 +3,7 @@
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
 [![Fosstars security rating](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_report.md)
 
-# SAP Cloud SDK for AI (for Java)
+# <img src="https://sap.github.io/cloud-sdk/img/logo.svg" alt="SAP Cloud SDK" width="30"/> SAP Cloud SDK for AI (for Java)
 
 > ⚠️ **This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change.** ⚠️
 
@@ -12,7 +12,7 @@
 - [Introduction](#introduction)
 - [General Requirements](#general-requirements)
 - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
-    - [Option 1: Set Credentials as Environment Variable](#option-1-set-credentials-as-environment-variable)
+    - [Option 1: Set Credentials as Environment Variable](#option-1-set-ai-core-credentials)
     - [Option 2: Regular Service Binding in SAP BTP Cloud Foundry](#option-2-regular-service-binding-in-sap-btp-cloud-foundry)
     - [Option 3: Define and Use a Destination](#option-3-define-and-use-a-destination)
 - [Getting Started](#getting-started)
@@ -64,7 +64,7 @@ There are multiple ways to provide these credentials:
 
 | Option | Description                                                                                              |
 |--------|----------------------------------------------------------------------------------------------------------|
-| **1**  | Set an environment variable explicitly: `AICORE_SERVICE_KEY`                                             |
+| **1**  | Create an `.env` file containing an `AICORE_SERVICE_KEY={...}`                                           |
 | **2**  | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
 | **3**  | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
 
@@ -75,7 +75,7 @@ Additional methods (not recommended for production):
 - Leverage a "user-provided" service binding
 - Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
 
-### Option 1: Set Credentials as Environment Variable
+### Option 1: Set AI Core Credentials
 
 <details>
 <summary>Click to view detailed steps</summary>
@@ -87,16 +87,33 @@ Additional methods (not recommended for production):
 - Navigate to **Instances and Subscriptions** -> **Instances** -> **AI Core**
 - Click **View Credentials** and copy the JSON content
 
-**2. Set Environment Variable:**
+**2. Create `.env` file:**
+
+- Create an `.env` file in the root directory of your application
+- Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
+
+<details>
+<summary>Set an environment variable instead of .env</summary>
+
+**2. Set an Environment Variable: (alternative)**
 
 - In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
 
-Example:
+  ℹ️ The environment variable has priority over the `.env` file.
+
+Example Linux/MacOS:
 
 ```shell
 export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
 ```
 
+Example Windows:
+
+```shell
+$env:AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
+```
+
+</details>
 </details>
 
 ### Option 2: Regular Service Binding in SAP BTP Cloud Foundry
@@ -180,7 +197,7 @@ Before you begin, ensure you have:
 - Met the OpenAI Chat Completion module specific requirements
     - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
 - Set up the AI Core credentials
-  using [(1) Environment Variable](#option-1-set-credentials-as-environment-variable)
+  using [(1) Environment variable or env-file](#option-1-set-ai-core-credentials)
   or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
 - Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
     - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
