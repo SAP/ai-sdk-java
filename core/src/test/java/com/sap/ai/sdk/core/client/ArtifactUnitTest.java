@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
  * Test that queries are on the right URL, with the right headers. Also check that the received
  * response is parsed correctly in the generated client.
  */
-public class ArtifactUnitTest extends WireMockTestServer {
+class ArtifactUnitTest extends WireMockTestServer {
   @Test
   void getArtifacts() {
     wireMockServer.stubFor(
