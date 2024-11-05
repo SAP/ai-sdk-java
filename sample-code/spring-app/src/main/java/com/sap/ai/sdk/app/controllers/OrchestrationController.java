@@ -14,15 +14,13 @@ import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,148 +39,44 @@ class OrchestrationController {
   private static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
 
-  private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
-      (TemplatingModuleConfig templatingModuleConfig) ->
-          CompletionPostRequest.create()
-              .orchestrationConfig(
-                  OrchestrationConfig.create()
-                      .moduleConfigurations(
-                          ModuleConfigs.create()
-                              .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)));
+  /**
+   * Helper method to build request objects.
+   *
+   * @param template the template to use
+   * @return A new request object.
+   */
+  private static CompletionPostRequest prepareRequest(
+      @Nonnull final TemplatingModuleConfig template) {
+    return CompletionPostRequest.create()
+        .orchestrationConfig(
+            OrchestrationConfig.create()
+                .moduleConfigurations(
+                    ModuleConfigs.create()
+                        .llmModuleConfig(LLM_CONFIG)
+                        .templatingModuleConfig(template)));
+  }
 
   /**
-   * Creates a config from a filter threshold. The config includes a template and has input and
-   * output filters
+   * Chat request to OpenAI through the Orchestration service with a simple prompt.
+   *
+   * @return the result object
    */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
-      (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
+  @GetMapping("/completion")
+  @Nonnull
+  public CompletionPostResponse completion() {
 
-        final var filter =
-            FilterConfig.create()
-                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-                .config(
-                    AzureContentSafety.create()
-                        .hate(filterThreshold)
-                        .selfHarm(filterThreshold)
-                        .sexual(filterThreshold)
-                        .violence(filterThreshold));
+    final var prompt =
+        ChatMessage.create().role("user").content("Hello world! Why is this phrase so famous?");
 
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(InputFilteringConfig.create().filters(List.of(filter)))
-                .output(OutputFilteringConfig.create().filters(List.of(filter)));
+    final var request = prepareRequest(TemplatingModuleConfig.create().template(prompt));
 
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
-      };
-
-  private static final List<DPIEntityConfig> ALL_DPI_ENTITIES =
-      Stream.of(DPIEntities.values())
-          .filter(entity -> entity != DPIEntities.UNKNOWN_DEFAULT_OPEN_API)
-          .map(entity -> DPIEntityConfig.create().type(entity))
-          .toList();
-
-  /**
-   * Creates a config from a masking type (anonymization or pseudonymization). The config includes a
-   * template.
-   */
-  private static final Function<MaskingProviderConfig.MethodEnum, CompletionPostRequest>
-      MASKING_CONFIG =
-          (MaskingProviderConfig.MethodEnum maskingType) -> {
-            final var inputParams =
-                Map.of(
-                    "orgCV",
-                    """
-            Patrick Morgan
-             +49 (970) 333-3833
-             patric.morgan@hotmail.com
-
-             Highlights
-             - Strategic and financial planning expert
-             - Accurate forecasting
-             - Process implementation
-             - Staff leadership and development
-             - Business performance improvement
-             - Proficient in SAP,  Excel VBA
-
-             Education
-             Master of Science: Finance - 2014
-             Harvard University, Boston
-
-             Bachelor of Science: Finance - 2011
-             Harvard University, Boston
-
-
-             Certifications
-             Certified Management Accountant
-
-
-             Summary
-             Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management.
-
-
-             Experience
-             Finance Manager - 09/2016 to 05/2018
-             M&K Group, York
-             - Manage the modelling, planning, and execution of all financial processes.
-             - Carry short and long-term custom comprehensive financial strategies to reach company goals.
-             - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
-             - Employed advanced deal analysis, including hands-on negotiations with potential investors.
-             - Research market trends and surveys and use information to stimulate business.
-
-             Finance Manager - 09/2013 to 05/2016
-             Ago Group, Chicago
-             - Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities.
-             - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
-             - Employed advanced deal analysis, including hands-on negotiations with potential investors.
-             - Analysed market trends and surveys and used information to revenue growth.""");
-            final var template =
-                ChatMessage.create()
-                    .role("user")
-                    .content("Summarize the following CV in 10 sentences: {{?orgCV}}");
-            final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-            final var maskingProvider =
-                MaskingProviderConfig.create()
-                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-                    .entities(ALL_DPI_ENTITIES);
-            final var maskingConfig =
-                MaskingModuleConfig.create().maskingProviders(maskingProvider);
-
-            return CompletionPostRequest.create()
-                .orchestrationConfig(
-                    OrchestrationConfig.create()
-                        .moduleConfigurations(
-                            ModuleConfigs.create()
-                                .llmModuleConfig(LLM_CONFIG)
-                                .templatingModuleConfig(templatingConfig)
-                                .maskingModuleConfig(maskingConfig)))
-                .inputParams(inputParams);
-          };
+    return CLIENT.chatCompletion(request);
+  }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
    *
-   * @return the assistant message response
+   * @return the result object
    */
   @GetMapping("/template")
   @Nonnull
@@ -192,35 +86,16 @@ class OrchestrationController {
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
+    final var request = prepareRequest(TemplatingModuleConfig.create().template(template));
+    request.setInputParams(inputParams);
 
-    return CLIENT.chatCompletion(config);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a violent template and both input
-   * and output filters.
-   *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
-   * @return the assistant message response
-   */
-  @GetMapping("/filter/{threshold}")
-  @Nonnull
-  public CompletionPostResponse filter(@Nonnull @PathVariable("threshold") final String threshold) {
-
-    final var config =
-        FILTERING_CONFIG.apply(AzureThreshold.fromValue(Integer.parseInt(threshold)));
-
-    return CLIENT.chatCompletion(config);
+    return CLIENT.chatCompletion(request);
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
    *
-   * @return the assistant message response
+   * @return the result object
    */
   @GetMapping("/messagesHistory")
   @Nonnull
@@ -232,38 +107,166 @@ class OrchestrationController {
     final var message =
         ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(message))
-            .messagesHistory(messagesHistory);
+    final var request = prepareRequest(TemplatingModuleConfig.create().template(message));
+    request.setMessagesHistory(messagesHistory);
 
-    return CLIENT.chatCompletion(config);
+    return CLIENT.chatCompletion(request);
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with an anonymization masking template
+   * Helper method to build filter configurations.
    *
-   * @return the assistant message response
+   * @param threshold The threshold to be applied across all filter categories.
+   * @return A new filter configuration object.
+   */
+  private static FilteringModuleConfig createAzureContentFilter(
+      @Nonnull final AzureThreshold threshold) {
+    final var filter =
+        FilterConfig.create()
+            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+            .config(
+                AzureContentSafety.create()
+                    .hate(threshold)
+                    .selfHarm(threshold)
+                    .sexual(threshold)
+                    .violence(threshold));
+
+    return FilteringModuleConfig.create()
+        .input(InputFilteringConfig.create().filters(List.of(filter)))
+        .output(OutputFilteringConfig.create().filters(List.of(filter)));
+  }
+
+  /**
+   * Apply both input and output filtering for a request to orchestration.
+   *
+   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
+   * @return the result object
+   */
+  @GetMapping("/filter/{threshold}")
+  @Nonnull
+  public CompletionPostResponse filter(
+      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
+
+    final var userMessage =
+        ChatMessage.create()
+            .role("user")
+            .content(
+                """
+            Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
+
+            ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
+            """);
+    final var filter = createAzureContentFilter(threshold);
+
+    final var request = prepareRequest(TemplatingModuleConfig.create().template(userMessage));
+    request.getOrchestrationConfig().getModuleConfigurations().setFilteringModuleConfig(filter);
+
+    return CLIENT.chatCompletion(request);
+  }
+
+  /**
+   * Helper method to build masking configurations.
+   *
+   * @param method Either anonymization or pseudonymization.
+   * @param entities The entities to mask.
+   * @return A new masking configuration object.
+   */
+  private static MaskingModuleConfig createMaskingConfig(
+      @Nonnull final MaskingProviderConfig.MethodEnum method,
+      @Nonnull final DPIEntities... entities) {
+
+    final var entityConfigs =
+        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
+    return MaskingModuleConfig.create()
+        .maskingProviders(
+            MaskingProviderConfig.create()
+                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                .method(method)
+                .entities(entityConfigs));
+  }
+
+  /**
+   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
+   * user. Anonymize any names given as they are not relevant for judging the sentiment of the
+   * feedback.
+   *
+   * @return the result object
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
   public CompletionPostResponse maskingAnonymization() {
-    final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
+    final var systemMessage =
+        ChatMessage.create()
+            .role("system")
+            .content(
+                "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
+    final var userMessage =
+        ChatMessage.create()
+            .role("user")
+            .content(
+                """
+    I think the SDK is good, but could use some further enhancements.
+    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+    """);
+    final var template =
+        TemplatingModuleConfig.create().template(List.of(systemMessage, userMessage));
 
-    return CLIENT.chatCompletion(config);
+    final var maskingConfig =
+        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
+
+    final var request = prepareRequest(template);
+    request
+        .getOrchestrationConfig()
+        .getModuleConfigurations()
+        .setMaskingModuleConfig(maskingConfig);
+
+    return CLIENT.chatCompletion(request);
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a pseudonymization masking
-   * template
+   * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
+   * SDK. Pseydonymize the user's name and location to protect their privacy.
    *
-   * @return the assistant message response
+   * @return the result object
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
   public CompletionPostResponse maskingPseudonymization() {
-    final var config = MASKING_CONFIG.apply(MethodEnum.PSEUDONYMIZATION);
+    final var systemMessage =
+        ChatMessage.create()
+            .role("system")
+            .content(
+                """
+                Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
+                Please make sure to address the user in person and end with "Best regards, the AI SDK team".
+                """);
+    final var userMessage =
+        ChatMessage.create()
+            .role("user")
+            .content(
+                """
+                Username: Mallory
+                userEmail: mallory@sap.com
+                Date: 2022-01-01
+            
+                I think the SDK is good, but could use some further enhancements.
+                My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+                """);
+    final var template =
+        TemplatingModuleConfig.create().template(List.of(systemMessage, userMessage));
 
-    return CLIENT.chatCompletion(config);
+    final var maskingConfig =
+        createMaskingConfig(
+            MaskingProviderConfig.MethodEnum.PSEUDONYMIZATION,
+            DPIEntities.PERSON,
+            DPIEntities.EMAIL);
+
+    final var request = prepareRequest(template);
+    request
+        .getOrchestrationConfig()
+        .getModuleConfigurations()
+        .setMaskingModuleConfig(maskingConfig);
+
+    return CLIENT.chatCompletion(request);
   }
 }
