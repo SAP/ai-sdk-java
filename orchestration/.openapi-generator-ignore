@@ -1,0 +1,20 @@
+# OpenAPI Generator Ignore
+
+.github/
+gradle/
+.gitignore
+.travis.yml
+build.gradle
+build.sbt
+git_push.sh
+gradle.properties
+gradlew
+gradlew.bat
+pom.xml
+README.md
+settings.gradle
+src/main/AndroidManifest.xml
+.openapi-generator-ignore
+api/
+.openapi-generator/
+.openapi-generator
