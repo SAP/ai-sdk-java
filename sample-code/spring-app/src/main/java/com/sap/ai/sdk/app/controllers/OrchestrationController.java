@@ -248,7 +248,7 @@ class OrchestrationController {
                 Username: Mallory
                 userEmail: mallory@sap.com
                 Date: 2022-01-01
-            
+
                 I think the SDK is good, but could use some further enhancements.
                 My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                 """);
