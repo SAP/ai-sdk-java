@@ -23,12 +23,16 @@ Additionally, include the necessary Maven dependency in your project.
 Add the following dependency to your `pom.xml` file:
 
 ```xml
-<dependency>
-    <groupId>com.sap.ai.sdk</groupId>
-    <artifactId>core</artifactId>
-    <version>${ai-sdk.version}</version>
-</dependency>
+<dependencies>
+    <dependency>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>core</artifactId>
+        <version>${ai-sdk.version}</version>
+    </dependency>
+</dependencies>
 ```
+
+⚠️ Cloud SDK users should remove version tags from all Cloud SDK dependencies.
 
 See [an example pom in our Spring Boot application](../../sample-code/spring-app/pom.xml)
 

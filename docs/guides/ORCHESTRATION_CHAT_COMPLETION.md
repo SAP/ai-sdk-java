@@ -35,6 +35,8 @@ Add the following dependency to your `pom.xml` file:
 </dependencies>
 ```
 
+⚠️ Cloud SDK users should remove version tags from all Cloud SDK dependencies.
+
 See [an example `pom.xml` in our Spring Boot application](../../sample-code/spring-app/pom.xml).
 
 ## Usage
