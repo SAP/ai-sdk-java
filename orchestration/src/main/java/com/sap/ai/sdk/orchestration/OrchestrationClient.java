@@ -10,6 +10,8 @@ import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
@@ -67,6 +69,23 @@ public class OrchestrationClient {
   /**
    * Generate a completion for the given prompt.
    *
+   * @param prompt The {@link OrchestrationPrompt} to send to orchestration.
+   * @param config The {@link ModuleConfigs} configuration to use for the completion.
+   * @return the completion output
+   * @throws OrchestrationClientException if the request fails.
+   */
+  @Nonnull
+  public CompletionPostResponse chatCompletion(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final ModuleConfigs config)
+      throws OrchestrationClientException {
+
+    val request = toCompletionPostRequestDto(prompt, config);
+    return executeRequest(request);
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
    * @param request The request to send to orchestration.
    * @return the completion output
    * @throws OrchestrationClientException if the request fails
@@ -110,6 +129,20 @@ public class OrchestrationClient {
     }
 
     return executeRequest(postRequest);
+  }
+
+  /**
+   * Convert the given prompt and config into a low-level request DTO. The DTO allows for further
+   * customization before sending the request.
+   *
+   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
+   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
+   * @return The low-level request DTO to send to orchestration.
+   */
+  @Nonnull
+  public static CompletionPostRequest toCompletionPostRequestDto(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final ModuleConfigs config) {
+    return ModuleConfigFactory.toCompletionPostRequestDto(prompt, config);
   }
 
   @SuppressWarnings("UnstableApiUsage")

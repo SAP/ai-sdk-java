@@ -58,6 +58,7 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   private OrchestrationClient client;
+  private ModuleConfigs config;
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -70,16 +71,6 @@ class OrchestrationUnitTest {
                   "temperature", 0.1,
                   "frequency_penalty", 0,
                   "presence_penalty", 0));
-
-  private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
-      (TemplatingModuleConfig templatingModuleConfig) ->
-          CompletionPostRequest.create()
-              .orchestrationConfig(
-                  OrchestrationConfig.create()
-                      .moduleConfigurations(
-                          ModuleConfigs.create()
-                              .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)));
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -109,10 +100,30 @@ class OrchestrationUnitTest {
             .forDeploymentByScenario("orchestration")
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
+    config =
+        ModuleConfigs.create()
+            .llmModuleConfig(LLM_CONFIG)
+            .templatingModuleConfig(TemplatingModuleConfig.create().template());
   }
 
   @Test
-  void templating() throws IOException {
+  void testCompletion() {
+    stubFor(
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var result =
+        client.chatCompletion(new OrchestrationPrompt("What is the capital of France?"), config);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
+        .isNotEmpty();
+  }
+
+  @Test
+  void testTemplating() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
@@ -120,16 +131,12 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = List.of(ChatMessage.create().role("user").content("{{?input}}"));
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
-
-    final var result = client.chatCompletion(config);
+    final var result =
+        client.chatCompletion(new OrchestrationPrompt(template, inputParams), config);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -176,7 +183,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void templatingBadRequest() {
+  void testBadRequest() {
     stubFor(
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
@@ -191,17 +198,10 @@ class OrchestrationUnitTest {
                     }
                     """,
                     SC_BAD_REQUEST)));
+    var message = ChatMessage.create().role("user").content("What is the capital of {{?input}}?");
+    final var prompt = new OrchestrationPrompt(List.of(message), Map.of());
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
-    // input params are omitted on purpose to trigger an error
-    Map<String, String> inputParams = Map.of();
-
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
-
-    assertThatThrownBy(() -> client.chatCompletion(config))
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
@@ -305,21 +305,20 @@ class OrchestrationUnitTest {
     final var message =
         ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(message))
-            .messagesHistory(messagesHistory);
+    final var prompt = new OrchestrationPrompt(message);
+    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    request.setMessagesHistory(messagesHistory);
 
-    final var result = client.chatCompletion(config);
+    final var result = client.chatCompletion(request);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
     try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
+      final String requestBody = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
-              .withRequestBody(equalToJson(request)));
+              .withRequestBody(equalToJson(requestBody)));
     }
   }
 

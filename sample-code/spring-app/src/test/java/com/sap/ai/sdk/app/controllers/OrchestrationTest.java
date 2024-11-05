@@ -9,6 +9,16 @@ import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import org.junit.jupiter.api.Test;
 
 class OrchestrationTest {
+
+  @Test
+  void completion() {
+    final var result = new OrchestrationController().completion();
+
+    assertThat(result).isNotNull();
+    assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
+        .isNotEmpty();
+  }
+
   @Test
   void template() {
     final var result = new OrchestrationController().template();

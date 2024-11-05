@@ -1,10 +1,10 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
@@ -16,7 +16,6 @@ import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
@@ -33,41 +32,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
-
-  private static final OrchestrationClient CLIENT = new OrchestrationClient();
-
   static final String MODEL = "gpt-35-turbo";
 
   private static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
+  private static final ModuleConfigs config =
+      ModuleConfigs.create()
+          .llmModuleConfig(LLM_CONFIG)
+          .templatingModuleConfig(TemplatingModuleConfig.create().template());
 
-  private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
-      (TemplatingModuleConfig templatingModuleConfig) ->
-          CompletionPostRequest.create()
-              .orchestrationConfig(
-                  OrchestrationConfig.create()
-                      .moduleConfigurations(
-                          ModuleConfigs.create()
-                              .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)));
+  private static final OrchestrationClient CLIENT = new OrchestrationClient();
 
   /**
    * Creates a config from a filter threshold. The config includes a template and has input and
    * output filters
    */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
+  private static final Function<AzureThreshold, FilteringModuleConfig> FILTERING_CONFIG =
       (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
         final var filter =
             FilterConfig.create()
                 .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
@@ -78,20 +59,9 @@ class OrchestrationController {
                         .sexual(filterThreshold)
                         .violence(filterThreshold));
 
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(InputFilteringConfig.create().filters(List.of(filter)))
-                .output(OutputFilteringConfig.create().filters(List.of(filter)));
-
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
+        return FilteringModuleConfig.create()
+            .input(InputFilteringConfig.create().filters(List.of(filter)))
+            .output(OutputFilteringConfig.create().filters(List.of(filter)));
       };
 
   private static final List<DPIEntityConfig> ALL_DPI_ENTITIES =
@@ -100,84 +70,65 @@ class OrchestrationController {
           .map(entity -> DPIEntityConfig.create().type(entity))
           .toList();
 
+  private static final String MASKING_PROMPT =
+      """
+          Patrick Morgan
+           +49 (970) 333-3833
+           patric.morgan@hotmail.com
+
+           Highlights
+           - Strategic and financial planning expert
+           - Accurate forecasting
+           - Process implementation
+           - Staff leadership and development
+           - Business performance improvement
+           - Proficient in SAP,  Excel VBA
+
+           Education
+           Master of Science: Finance - 2014
+           Harvard University, Boston
+
+           Bachelor of Science: Finance - 2011
+           Harvard University, Boston
+
+
+           Certifications
+           Certified Management Accountant
+
+
+           Summary
+           Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management.
+
+
+           Experience
+           Finance Manager - 09/2016 to 05/2018
+           M&K Group, York
+           - Manage the modelling, planning, and execution of all financial processes.
+           - Carry short and long-term custom comprehensive financial strategies to reach company goals.
+           - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
+           - Employed advanced deal analysis, including hands-on negotiations with potential investors.
+           - Research market trends and surveys and use information to stimulate business.
+
+           Finance Manager - 09/2013 to 05/2016
+           Ago Group, Chicago
+           - Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities.
+           - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
+           - Employed advanced deal analysis, including hands-on negotiations with potential investors.
+           - Analysed market trends and surveys and used information to revenue growth.""";
+
   /**
-   * Creates a config from a masking type (anonymization or pseudonymization). The config includes a
-   * template.
+   * Chat request to OpenAI through the Orchestration service with a template
+   *
+   * @return the assistant message response
    */
-  private static final Function<MaskingProviderConfig.MethodEnum, CompletionPostRequest>
-      MASKING_CONFIG =
-          (MaskingProviderConfig.MethodEnum maskingType) -> {
-            final var inputParams =
-                Map.of(
-                    "orgCV",
-                    """
-            Patrick Morgan
-             +49 (970) 333-3833
-             patric.morgan@hotmail.com
+  @GetMapping("/completion")
+  @Nonnull
+  public CompletionPostResponse completion() {
 
-             Highlights
-             - Strategic and financial planning expert
-             - Accurate forecasting
-             - Process implementation
-             - Staff leadership and development
-             - Business performance improvement
-             - Proficient in SAP,  Excel VBA
+    final var prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
 
-             Education
-             Master of Science: Finance - 2014
-             Harvard University, Boston
-
-             Bachelor of Science: Finance - 2011
-             Harvard University, Boston
-
-
-             Certifications
-             Certified Management Accountant
-
-
-             Summary
-             Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management.
-
-
-             Experience
-             Finance Manager - 09/2016 to 05/2018
-             M&K Group, York
-             - Manage the modelling, planning, and execution of all financial processes.
-             - Carry short and long-term custom comprehensive financial strategies to reach company goals.
-             - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
-             - Employed advanced deal analysis, including hands-on negotiations with potential investors.
-             - Research market trends and surveys and use information to stimulate business.
-
-             Finance Manager - 09/2013 to 05/2016
-             Ago Group, Chicago
-             - Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities.
-             - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
-             - Employed advanced deal analysis, including hands-on negotiations with potential investors.
-             - Analysed market trends and surveys and used information to revenue growth.""");
-            final var template =
-                ChatMessage.create()
-                    .role("user")
-                    .content("Summarize the following CV in 10 sentences: {{?orgCV}}");
-            final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-            final var maskingProvider =
-                MaskingProviderConfig.create()
-                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-                    .entities(ALL_DPI_ENTITIES);
-            final var maskingConfig =
-                MaskingModuleConfig.create().maskingProviders(maskingProvider);
-
-            return CompletionPostRequest.create()
-                .orchestrationConfig(
-                    OrchestrationConfig.create()
-                        .moduleConfigurations(
-                            ModuleConfigs.create()
-                                .llmModuleConfig(LLM_CONFIG)
-                                .templatingModuleConfig(templatingConfig)
-                                .maskingModuleConfig(maskingConfig)))
-                .inputParams(inputParams);
-          };
+    return CLIENT.chatCompletion(prompt, config);
+  }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
@@ -188,16 +139,13 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse template() {
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = List.of(ChatMessage.create().role("user").content("{{?input}}"));
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
+    final var prompt = new OrchestrationPrompt(template, inputParams);
 
-    return CLIENT.chatCompletion(config);
+    return CLIENT.chatCompletion(prompt, config);
   }
 
   /**
@@ -210,11 +158,22 @@ class OrchestrationController {
   @GetMapping("/filter/{threshold}")
   @Nonnull
   public CompletionPostResponse filter(@Nonnull @PathVariable("threshold") final String threshold) {
+    final var userMessage =
+        """
+        Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
 
-    final var config =
+        ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
+        """;
+
+    final var prompt = new OrchestrationPrompt(userMessage);
+
+    final var filter =
         FILTERING_CONFIG.apply(AzureThreshold.fromValue(Integer.parseInt(threshold)));
 
-    return CLIENT.chatCompletion(config);
+    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    request.getOrchestrationConfig().getModuleConfigurations().setFilteringModuleConfig(filter);
+
+    return CLIENT.chatCompletion(request);
   }
 
   /**
@@ -229,15 +188,15 @@ class OrchestrationController {
         List.of(
             ChatMessage.create().role("user").content("What is the capital of France?"),
             ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+
     final var message =
         ChatMessage.create().role("user").content("What is the typical food there?");
+    final var prompt = new OrchestrationPrompt(message);
 
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(message))
-            .messagesHistory(messagesHistory);
+    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    request.setMessagesHistory(messagesHistory);
 
-    return CLIENT.chatCompletion(config);
+    return CLIENT.chatCompletion(request);
   }
 
   /**
@@ -248,9 +207,23 @@ class OrchestrationController {
   @GetMapping("/maskingAnonymization")
   @Nonnull
   public CompletionPostResponse maskingAnonymization() {
-    final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
+    final var prompt = new OrchestrationPrompt(MASKING_PROMPT);
 
-    return CLIENT.chatCompletion(config);
+    final var maskingConfig =
+        MaskingModuleConfig.create()
+            .maskingProviders(
+                MaskingProviderConfig.create()
+                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
+                    .entities(ALL_DPI_ENTITIES));
+
+    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    request
+        .getOrchestrationConfig()
+        .getModuleConfigurations()
+        .setMaskingModuleConfig(maskingConfig);
+
+    return CLIENT.chatCompletion(request);
   }
 
   /**
@@ -262,8 +235,22 @@ class OrchestrationController {
   @GetMapping("/maskingPseudonymization")
   @Nonnull
   public CompletionPostResponse maskingPseudonymization() {
-    final var config = MASKING_CONFIG.apply(MethodEnum.PSEUDONYMIZATION);
+    final var prompt = new OrchestrationPrompt(MASKING_PROMPT);
 
-    return CLIENT.chatCompletion(config);
+    final var maskingConfig =
+        MaskingModuleConfig.create()
+            .maskingProviders(
+                MaskingProviderConfig.create()
+                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(MethodEnum.PSEUDONYMIZATION)
+                    .entities(ALL_DPI_ENTITIES));
+
+    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    request
+        .getOrchestrationConfig()
+        .getModuleConfigurations()
+        .setMaskingModuleConfig(maskingConfig);
+
+    return CLIENT.chatCompletion(request);
   }
 }
