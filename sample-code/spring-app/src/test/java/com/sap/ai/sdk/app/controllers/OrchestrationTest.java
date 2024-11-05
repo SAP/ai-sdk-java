@@ -130,7 +130,7 @@ class OrchestrationTest {
     var unmaskingResult = result.getModuleResults().getOutputUnmasking();
     assertThat(unmaskingResult).isNotEmpty();
     assertThat(unmaskingResult.get(0).getMessage().getContent())
-            .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
+        .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
         .doesNotContain("MASKED_PERSON")
         .contains("Mallory");
   }
