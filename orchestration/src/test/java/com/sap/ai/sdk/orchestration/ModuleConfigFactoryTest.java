@@ -21,23 +21,22 @@ import org.junit.jupiter.api.Test;
 class ModuleConfigFactoryTest {
   private static final List<Message> messages =
       List.of(new SystemMessage("foo"), new UserMessage("bar"), new AssistantMessage("baz"));
-  private DefaultOrchestrationConfig<?> config;
+  private OrchestrationConfig config;
 
   @BeforeEach
   void setUp() {
-    config = DefaultOrchestrationConfig.standalone();
-    config.withLlmConfig(mock(LlmConfig.class));
+    config = new OrchestrationConfig().withLlmConfig(mock(LlmConfig.class));
   }
 
   @Test
   void testThrowsOnMissingConfig() {
-    config = DefaultOrchestrationConfig.standalone();
+    config = new OrchestrationConfig();
 
     assertThatThrownBy(() -> toModuleConfigDto(config, messages))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("LLM module config is required");
 
-    config.withLlmConfig(mock(LlmConfig.class));
+    config = config.withLlmConfig(mock(LlmConfig.class));
     assertThatThrownBy(() -> toModuleConfigDto(config, List.of()))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("prompt is required");
@@ -47,7 +46,7 @@ class ModuleConfigFactoryTest {
   void testLlmConfig() {
     var llmConfig = new LlmConfig("foo", "bar", Map.of("baz", "quack"));
 
-    config.withLlmConfig(llmConfig);
+    config = config.withLlmConfig(llmConfig);
 
     var result = toModuleConfigDto(config, messages).getLlmModuleConfig();
     assertThat(result.getModelName()).isEqualTo("foo");
@@ -75,7 +74,7 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testMessagesAreMergedIntoTemplate() {
-    config.withTemplate(TemplateConfig.fromMessages(messages.subList(0, 2)));
+    config = config.withTemplate(TemplateConfig.fromMessages(messages.subList(0, 2)));
 
     var result =
         toModuleConfigDto(config, List.of(messages.get(2)))
@@ -94,12 +93,12 @@ class ModuleConfigFactoryTest {
   @Test
   void testTemplateReference() {
 
-    config.withTemplate(TemplateConfig.referenceById("foo"));
+    config = config.withTemplate(TemplateConfig.referenceById("foo"));
 
     assertThatThrownBy(() -> toModuleConfigDto(config, List.of()))
         .isInstanceOf(NotImplementedError.class);
 
-    config.withTemplate(TemplateConfig.referenceByName("foo", "bar", "baz"));
+    config = config.withTemplate(TemplateConfig.referenceByName("foo", "bar", "baz"));
 
     assertThatThrownBy(() -> toModuleConfigDto(config, List.of()))
         .isInstanceOf(NotImplementedError.class);
@@ -108,7 +107,7 @@ class ModuleConfigFactoryTest {
   @Test
   void testInputFilter() {
     var filter = new AzureContentFilter().hate(HIGH);
-    config.withInputContentFilter(filter);
+    config = config.withInputContentFilter(filter);
 
     var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
@@ -125,7 +124,7 @@ class ModuleConfigFactoryTest {
   @Test
   void testOutputFilter() {
     var filter = new AzureContentFilter().hate(HIGH);
-    config.withOutputContentFilter(filter);
+    config = config.withOutputContentFilter(filter);
 
     var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
@@ -141,8 +140,8 @@ class ModuleConfigFactoryTest {
   void testInputAndOutputFilter() {
     var inputFilter = new AzureContentFilter().hate(HIGH);
     var outputFilter = new AzureContentFilter().violence(LOW);
-    config.withInputContentFilter(inputFilter);
-    config.withOutputContentFilter(outputFilter);
+    config = config.withInputContentFilter(inputFilter);
+    config = config.withOutputContentFilter(outputFilter);
 
     var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
@@ -162,7 +161,7 @@ class ModuleConfigFactoryTest {
   @Test
   void testMasking() {
     var maskingConfig = DpiMaskingConfig.anonymization().withEntities(DPIEntities.ADDRESS);
-    config.withMaskingConfig(maskingConfig);
+    config = config.withMaskingConfig(maskingConfig);
 
     var result = toModuleConfigDto(config, messages).getMaskingModuleConfig();
 

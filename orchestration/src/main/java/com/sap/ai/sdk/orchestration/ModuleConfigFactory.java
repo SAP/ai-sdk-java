@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
@@ -12,6 +13,7 @@ import com.sap.ai.sdk.orchestration.client.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.client.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.NotImplementedError;
+import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,30 +26,40 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ModuleConfigFactory {
   @Nonnull
+  static CompletionPostRequest toCompletionPostRequestDto(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationConfig config) {
+    val moduleConfigDto = toModuleConfigDto(config, prompt.getMessages());
+    return CompletionPostRequest.create()
+        .orchestrationConfig(
+            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
+                .moduleConfigurations(moduleConfigDto))
+        .inputParams(prompt.getTemplateParameters());
+  }
+
+  @Nonnull
   static ModuleConfigs toModuleConfigDto(
-      @Nonnull final OrchestrationConfig<?> config, @Nonnull final List<Message> messages) {
+      @Nonnull final OrchestrationConfig config, @Nonnull final List<Message> messages) {
     val llmDto =
-        config
-            .getLlmConfig()
+        Option.of(config.getLlmConfig())
             .map(ModuleConfigFactory::toLlmModuleConfigDto)
             .getOrElseThrow(() -> new IllegalStateException("LLM module config is required"));
 
-    val template = config.getTemplate().getOrElse(() -> TemplateConfig.fromMessages(List.of()));
+    val template =
+        Option.of(config.getTemplate()).getOrElse(() -> TemplateConfig.fromMessages(List.of()));
     val templateDto = toTemplateModuleConfigDto(template, messages);
 
     var resultDto =
         ModuleConfigs.create().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
 
-    config
-        .getMaskingConfig()
+    Option.of(config.getMaskingConfig())
         .filter(DpiMaskingConfig.class::isInstance)
         .map(DpiMaskingConfig.class::cast)
         .map(DpiMaskingConfig::toMaskingProviderDto)
         .map(it -> MaskingModuleConfig.create().maskingProviders(it))
         .forEach(resultDto::maskingModuleConfig);
 
-    val maybeInputFilter = config.getInputContentFilter();
-    val maybeOutputFilter = config.getOutputContentFilter();
+    val maybeInputFilter = Option.of(config.getInputContentFilter());
+    val maybeOutputFilter = Option.of(config.getOutputContentFilter());
 
     if (maybeInputFilter.isDefined() || maybeOutputFilter.isDefined()) {
       val filter = FilteringModuleConfig.create();

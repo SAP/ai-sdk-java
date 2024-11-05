@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
-import lombok.experimental.Delegate;
 import lombok.val;
 
 /**
@@ -23,17 +21,9 @@ import lombok.val;
 @Value
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
-public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPrompt> {
+public class OrchestrationPrompt {
   @Nonnull List<Message> messages;
   @Nonnull Map<String, String> templateParameters;
-
-  @Getter(AccessLevel.NONE)
-  @Delegate(types = IDelegate.class)
-  @Nonnull
-  DefaultOrchestrationConfig<OrchestrationPrompt> delegate =
-      DefaultOrchestrationConfig.asDelegateFor(this);
-
-  private interface IDelegate extends OrchestrationConfig<OrchestrationPrompt> {}
 
   /**
    * Initialize a prompt with the given user message.
@@ -59,16 +49,6 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
   }
 
   /**
-   * Convenience overload for {@link OrchestrationPrompt(Message, Message...)}
-   *
-   * @param messages messages
-   * @see OrchestrationPrompt(Message, Message...)
-   */
-  public OrchestrationPrompt(@Nonnull final List<Message> messages) {
-    this(messages, Map.of());
-  }
-
-  /**
    * Initialize a prompt based on template variables. Can be used together with {@link
    * TemplateVariable}:
    *
@@ -82,18 +62,5 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
    */
   public OrchestrationPrompt(@Nonnull final Map<String, String> inputParams) {
     this(List.of(), inputParams);
-  }
-
-  @Nonnull
-  CompletionPostRequest toCompletionPostRequestDto(@Nonnull final OrchestrationConfig<?> defaults) {
-    // duplicate the prompt config, then apply the defaults to the copy
-    // that way this prompt remains unchanged and can be reused
-    val config = DefaultOrchestrationConfig.standalone().copyFrom(this).copyFrom(defaults);
-    val moduleConfigDTO = ModuleConfigFactory.toModuleConfigDto(config, messages);
-    return CompletionPostRequest.create()
-        .orchestrationConfig(
-            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
-                .moduleConfigurations(moduleConfigDTO))
-        .inputParams(templateParameters);
   }
 }

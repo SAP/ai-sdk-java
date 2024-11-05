@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
  * Test that queries are on the right URL, with the right headers. Also check that the received
  * response is parsed correctly in the generated client.
  */
-public class ScenarioUnitTest extends WireMockTestServer {
+class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarios() {
     wireMockServer.stubFor(
@@ -186,7 +186,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
     AiModelVersion aiModelVersion = scenario.getVersions().get(0);
     assertThat(aiModelVersion.getName()).isEqualTo("202407");
     assertThat(aiModelVersion.isIsLatest()).isTrue();
-    assertThat(aiModelVersion.isDeprecated()).isEqualTo(false);
-    assertThat(aiModelVersion.getRetirementDate()).isEqualTo("");
+    assertThat(aiModelVersion.isDeprecated()).isFalse();
+    assertThat(aiModelVersion.getRetirementDate()).isEmpty();
   }
 }

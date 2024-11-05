@@ -5,6 +5,7 @@ import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity;
 import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.OrchestrationResponse;
 import com.sap.ai.sdk.orchestration.SystemMessage;
@@ -24,8 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
 
-  private final OrchestrationClient client =
-      new OrchestrationClient().withLlmConfig(OpenAiModel.GPT_35_TURBO);
+  private final OrchestrationClient client = new OrchestrationClient();
+  private final OrchestrationConfig config =
+      new OrchestrationConfig().withLlmConfig(OpenAiModel.GPT_35_TURBO);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a template
@@ -37,7 +39,7 @@ class OrchestrationController {
   OrchestrationResponse completion() {
     final var prompt = new OrchestrationPrompt("What is the capital of France?");
 
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -53,7 +55,7 @@ class OrchestrationController {
             new SystemMessage("Show the user your superior geographical knowledge!"),
             new UserMessage("What is the capital of France?"));
 
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -70,40 +72,37 @@ class OrchestrationController {
             "Reply with 'The Orchestration Service is working!' in " + templateVariable);
     final var inputParams = Map.ofEntries(templateVariable.apply("german"));
 
-    final var prompt =
-        new OrchestrationPrompt(inputParams)
-            .withTemplate(TemplateConfig.fromMessages(templateMessage));
+    final var prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(
+        prompt, config.withTemplate(TemplateConfig.fromMessages(templateMessage)));
   }
 
   @GetMapping("/filter/{level}")
   @Nonnull
   OrchestrationResponse filter(@Nonnull @PathVariable(name = "level") final Sensitivity level) {
-    final var filter = new AzureContentFilter().hate(level);
     final var prompt =
         new OrchestrationPrompt(
-                "This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.")
-            .withInputContentFilter(filter);
+            "This prompt demonstrates how to hit the fucking input filter. And hit it hard, like we mean it.");
 
+    final var filter = new AzureContentFilter().hate(level);
     // if the level is strict, this will throw, if not it will return a result
-    return client.chatCompletion(prompt);
+    return client.chatCompletion(prompt, config.withInputContentFilter(filter));
   }
 
   @GetMapping("/masking")
   @Nonnull
   OrchestrationResponse masking() {
-    final var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
-
     final var prompt =
         new OrchestrationPrompt(
-                """
+            """
             Please translate the following into German:
 
             Hi, my name is Foo Bar and you can reach me under my email address 'foo.bar@baz.ai'.
-            """)
-            .withMaskingConfig(masking);
+            """);
 
-    return client.chatCompletion(prompt);
+    final var masking = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.EMAIL);
+
+    return client.chatCompletion(prompt, config.withMaskingConfig(masking));
   }
 }

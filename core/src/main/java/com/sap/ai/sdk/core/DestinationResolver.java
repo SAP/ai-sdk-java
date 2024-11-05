@@ -22,11 +22,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Utility class to resolve the destination pointing to the AI Core service. */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // utility class should not be instantiated
 class DestinationResolver {
   static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
   static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
  * Test that queries are on the right URL, with the right headers. Also check that the received
  * response is parsed correctly in the generated client.
  */
-public class ExecutionUnitTest extends WireMockTestServer {
+class ExecutionUnitTest extends WireMockTestServer {
   @Test
   void getExecutions() {
     wireMockServer.stubFor(
@@ -100,7 +100,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     val aiArtifact = execution.getOutputArtifacts().get(0);
 
     assertThat(aiArtifact.getCreatedAt()).isEqualTo("2023-08-05T14:10:05Z");
-    assertThat(aiArtifact.getDescription()).isEqualTo("");
+    assertThat(aiArtifact.getDescription()).isEmpty();
     assertThat(aiArtifact.getExecutionId()).isEqualTo("eab289226fe981da");
     assertThat(aiArtifact.getId()).isEqualTo("be0d728f-1cb2-4ff4-97ad-45c54ac592f6");
     assertThat(aiArtifact.getKind()).isEqualTo(AiArtifact.KindEnum.MODEL);
@@ -211,7 +211,7 @@ public class ExecutionUnitTest extends WireMockTestServer {
     val aiArtifact = execution.getOutputArtifacts().get(0);
 
     assertThat(aiArtifact.getCreatedAt()).isEqualTo("2024-09-09T19:10:48Z");
-    assertThat(aiArtifact.getDescription()).isEqualTo("");
+    assertThat(aiArtifact.getDescription()).isEmpty();
     assertThat(aiArtifact.getExecutionId()).isEqualTo("e529e8bd58740bc9");
     assertThat(aiArtifact.getId()).isEqualTo("c4792df8-da67-44fe-ad99-b5ea74bbb248");
     assertThat(aiArtifact.getKind()).isEqualTo(AiArtifact.KindEnum.MODEL);
