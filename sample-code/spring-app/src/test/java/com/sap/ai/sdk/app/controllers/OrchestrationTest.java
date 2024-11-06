@@ -22,7 +22,7 @@ class OrchestrationTest {
 
   @Test
   void testCompletion() {
-    final var result = new OrchestrationController().completion();
+    final var result = controller.completion();
 
     assertThat(result).isNotNull();
     assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
@@ -31,7 +31,7 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
-    final var result = new OrchestrationController().template();
+    final var result = controller.template();
 
     assertThat(result.getRequestId()).isNotEmpty();
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -86,7 +86,7 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result = new OrchestrationController().messagesHistory();
+    CompletionPostResponse result = controller.messagesHistory();
     final var choices = result.getOrchestrationResult().getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
