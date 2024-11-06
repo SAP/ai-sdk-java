@@ -22,7 +22,7 @@ class OrchestrationTest {
 
   @Test
   void testCompletion() {
-    final var result = new OrchestrationController().completion();
+    final var result = controller.completion();
 
     assertThat(result).isNotNull();
     assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
@@ -31,7 +31,7 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
-    final var result = new OrchestrationController().template();
+    final var result = controller.template();
 
     assertThat(result.getRequestId()).isNotEmpty();
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -43,7 +43,7 @@ class OrchestrationTest {
     assertThat(llm.getCreated()).isGreaterThan(1);
     assertThat(llm.getModel()).isEqualTo(OrchestrationController.MODEL);
     var choices = llm.getChoices();
-    assertThat(choices.get(0).getIndex()).isEqualTo(0);
+    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
@@ -55,7 +55,7 @@ class OrchestrationTest {
     assertThat(result.getOrchestrationResult().getCreated()).isGreaterThan(1);
     assertThat(result.getOrchestrationResult().getModel()).isEqualTo(OrchestrationController.MODEL);
     choices = result.getOrchestrationResult().getChoices();
-    assertThat(choices.get(0).getIndex()).isEqualTo(0);
+    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
@@ -63,13 +63,6 @@ class OrchestrationTest {
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
-  }
-
-  @Test
-  void testMessagesHistory() {
-    CompletionPostResponse result = new OrchestrationController().messagesHistory();
-    final var choices = result.getOrchestrationResult().getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
@@ -85,10 +78,17 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> new OrchestrationController().filter(AzureThreshold.NUMBER_0))
+    assertThatThrownBy(() -> controller.filter(AzureThreshold.NUMBER_0))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");
+  }
+
+  @Test
+  void testMessagesHistory() {
+    CompletionPostResponse result = controller.messagesHistory();
+    final var choices = result.getOrchestrationResult().getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @SuppressWarnings("unchecked")
@@ -99,6 +99,7 @@ class OrchestrationTest {
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
 
     var maskingResult = result.getModuleResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
     var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(0);
     assertThat(maskedMessage.get("content"))
@@ -119,6 +120,7 @@ class OrchestrationTest {
         .contains("Mallory");
 
     var maskingResult = result.getModuleResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
     var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(1);
     assertThat(maskedMessage.get("content"))

@@ -40,23 +40,6 @@ class OrchestrationController {
       LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
 
   /**
-   * Helper method to build request objects.
-   *
-   * @param template the template to use
-   * @return A new request object.
-   */
-  private static CompletionPostRequest prepareRequest(
-      @Nonnull final TemplatingModuleConfig template) {
-    return CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(LLM_CONFIG)
-                        .templatingModuleConfig(template)));
-  }
-
-  /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
    *
    * @return the result object
@@ -65,10 +48,10 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse completion() {
 
-    final var prompt =
+    final var message =
         ChatMessage.create().role("user").content("Hello world! Why is this phrase so famous?");
 
-    final var request = prepareRequest(TemplatingModuleConfig.create().template(prompt));
+    final var request = prepareRequest(message);
 
     return CLIENT.chatCompletion(request);
   }
@@ -82,33 +65,40 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse template() {
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var message = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var request = prepareRequest(TemplatingModuleConfig.create().template(template));
+    final var request = prepareRequest(message);
     request.setInputParams(inputParams);
 
     return CLIENT.chatCompletion(request);
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Apply both input and output filtering for a request to orchestration.
    *
+   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
-  @GetMapping("/messagesHistory")
+  @GetMapping("/filter/{threshold}")
   @Nonnull
-  public CompletionPostResponse messagesHistory() {
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+  public CompletionPostResponse filter(
+      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
 
-    final var request = prepareRequest(TemplatingModuleConfig.create().template(message));
-    request.setMessagesHistory(messagesHistory);
+    final var userMessage =
+        ChatMessage.create()
+            .role("user")
+            .content(
+                """
+            Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
+
+            ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
+            """);
+    final var filter = createAzureContentFilter(threshold);
+
+    final var request = prepareRequest(userMessage);
+    request.getOrchestrationConfig().getModuleConfigurations().setFilteringModuleConfig(filter);
 
     return CLIENT.chatCompletion(request);
   }
@@ -137,52 +127,24 @@ class OrchestrationController {
   }
 
   /**
-   * Apply both input and output filtering for a request to orchestration.
+   * Chat request to OpenAI through the Orchestration service with a template
    *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
-  @GetMapping("/filter/{threshold}")
+  @GetMapping("/messagesHistory")
   @Nonnull
-  public CompletionPostResponse filter(
-      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
+  public CompletionPostResponse messagesHistory() {
+    final List<ChatMessage> messagesHistory =
+        List.of(
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var userMessage =
-        ChatMessage.create()
-            .role("user")
-            .content(
-                """
-            Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
-
-            ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
-            """);
-    final var filter = createAzureContentFilter(threshold);
-
-    final var request = prepareRequest(TemplatingModuleConfig.create().template(userMessage));
-    request.getOrchestrationConfig().getModuleConfigurations().setFilteringModuleConfig(filter);
+    final var request = prepareRequest(message);
+    request.setMessagesHistory(messagesHistory);
 
     return CLIENT.chatCompletion(request);
-  }
-
-  /**
-   * Helper method to build masking configurations.
-   *
-   * @param method Either anonymization or pseudonymization.
-   * @param entities The entities to mask.
-   * @return A new masking configuration object.
-   */
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final MaskingProviderConfig.MethodEnum method,
-      @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingModuleConfig.create()
-        .maskingProviders(
-            MaskingProviderConfig.create()
-                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                .method(method)
-                .entities(entityConfigs));
   }
 
   /**
@@ -208,13 +170,11 @@ class OrchestrationController {
     I think the SDK is good, but could use some further enhancements.
     My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
     """);
-    final var template =
-        TemplatingModuleConfig.create().template(List.of(systemMessage, userMessage));
 
     final var maskingConfig =
         createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
 
-    final var request = prepareRequest(template);
+    final var request = prepareRequest(systemMessage, userMessage);
     request
         .getOrchestrationConfig()
         .getModuleConfigurations()
@@ -252,8 +212,6 @@ class OrchestrationController {
                 I think the SDK is good, but could use some further enhancements.
                 My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                 """);
-    final var template =
-        TemplatingModuleConfig.create().template(List.of(systemMessage, userMessage));
 
     final var maskingConfig =
         createMaskingConfig(
@@ -261,12 +219,50 @@ class OrchestrationController {
             DPIEntities.PERSON,
             DPIEntities.EMAIL);
 
-    final var request = prepareRequest(template);
+    final var request = prepareRequest(systemMessage, userMessage);
     request
         .getOrchestrationConfig()
         .getModuleConfigurations()
         .setMaskingModuleConfig(maskingConfig);
 
     return CLIENT.chatCompletion(request);
+  }
+
+  /**
+   * Helper method to build masking configurations.
+   *
+   * @param method Either anonymization or pseudonymization.
+   * @param entities The entities to mask.
+   * @return A new masking configuration object.
+   */
+  private static MaskingModuleConfig createMaskingConfig(
+      @Nonnull final MaskingProviderConfig.MethodEnum method,
+      @Nonnull final DPIEntities... entities) {
+
+    final var entityConfigs =
+        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
+    return MaskingModuleConfig.create()
+        .maskingProviders(
+            MaskingProviderConfig.create()
+                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                .method(method)
+                .entities(entityConfigs));
+  }
+
+  /**
+   * Helper method to build request objects.
+   *
+   * @param message the chat message to be sent to the Orchestration service.
+   * @return A new request object.
+   */
+  private static CompletionPostRequest prepareRequest(@Nonnull final ChatMessage... message) {
+    return CompletionPostRequest.create()
+        .orchestrationConfig(
+            OrchestrationConfig.create()
+                .moduleConfigurations(
+                    ModuleConfigs.create()
+                        .llmModuleConfig(LLM_CONFIG)
+                        .templatingModuleConfig(
+                            TemplatingModuleConfig.create().template(message))));
   }
 }
