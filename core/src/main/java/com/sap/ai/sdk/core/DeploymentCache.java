@@ -135,7 +135,7 @@ class DeploymentCache {
     if (resources == null) {
       return false;
     }
-    Object detailsObject = resources.getBackendDetails();
+    final Object detailsObject = resources.getBackendDetails();
     if (detailsObject == null) {
       return false;
     }
