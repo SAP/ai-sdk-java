@@ -136,12 +136,8 @@ class DeploymentCache {
       return false;
     }
     Object detailsObject = resources.getBackendDetails();
-    // workaround for AIWDF-2124
     if (detailsObject == null) {
-      if (!resources.getCustomFieldNames().contains("backend_details")) {
-        return false;
-      }
-      detailsObject = resources.getCustomField("backend_details");
+      return false;
     }
 
     if (detailsObject instanceof Map<?, ?> details
