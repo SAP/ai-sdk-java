@@ -76,6 +76,27 @@ class OrchestrationController {
   }
 
   /**
+   * Chat request to OpenAI through the Orchestration service with a template
+   *
+   * @return the result object
+   */
+  @GetMapping("/messagesHistory")
+  @Nonnull
+  public CompletionPostResponse messagesHistory() {
+    final List<ChatMessage> messagesHistory =
+        List.of(
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
+
+    final var request = prepareRequest(message);
+    request.setMessagesHistory(messagesHistory);
+
+    return CLIENT.chatCompletion(request);
+  }
+
+  /**
    * Apply both input and output filtering for a request to orchestration.
    *
    * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
@@ -124,27 +145,6 @@ class OrchestrationController {
     return FilteringModuleConfig.create()
         .input(InputFilteringConfig.create().filters(List.of(filter)))
         .output(OutputFilteringConfig.create().filters(List.of(filter)));
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template
-   *
-   * @return the result object
-   */
-  @GetMapping("/messagesHistory")
-  @Nonnull
-  public CompletionPostResponse messagesHistory() {
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
-
-    final var request = prepareRequest(message);
-    request.setMessagesHistory(messagesHistory);
-
-    return CLIENT.chatCompletion(request);
   }
 
   /**
