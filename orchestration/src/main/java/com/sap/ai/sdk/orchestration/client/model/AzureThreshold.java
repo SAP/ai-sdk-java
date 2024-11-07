@@ -14,7 +14,6 @@ package com.sap.ai.sdk.orchestration.client.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.annotation.Nonnull;
 
 /** Gets or Sets AzureThreshold */
 public enum AzureThreshold {
@@ -28,38 +27,25 @@ public enum AzureThreshold {
 
   NUMBER_unknown_default_open_api(11184809);
 
-  private final Integer value;
+  private Integer value;
 
   AzureThreshold(Integer value) {
     this.value = value;
   }
 
-  /**
-   * @return The enum value.
-   */
   @JsonValue
   public Integer getValue() {
     return value;
   }
 
-  /**
-   * @return The String representation of the enum value.
-   */
   @Override
-  @Nonnull
   public String toString() {
     return String.valueOf(value);
   }
 
-  /**
-   * Converts the given value to its enum representation.
-   *
-   * @param value The input value.
-   * @return The enum representation of the given value.
-   */
   @JsonCreator
-  public static AzureThreshold fromValue(@Nonnull final Integer value) {
-    for (final AzureThreshold b : AzureThreshold.values()) {
+  public static AzureThreshold fromValue(Integer value) {
+    for (AzureThreshold b : AzureThreshold.values()) {
       if (b.value.equals(value)) {
         return b;
       }

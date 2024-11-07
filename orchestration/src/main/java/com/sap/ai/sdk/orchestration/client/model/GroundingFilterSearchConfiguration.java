@@ -12,45 +12,34 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.Arrays;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /** GroundingFilterSearchConfiguration */
-// CHECKSTYLE:OFF
-public class GroundingFilterSearchConfiguration
-// CHECKSTYLE:ON
-{
-  @JsonProperty("max_chunk_count")
-  private Integer maxChunkCount;
+@JsonPropertyOrder({
+  GroundingFilterSearchConfiguration.JSON_PROPERTY_MAX_CHUNK_COUNT,
+  GroundingFilterSearchConfiguration.JSON_PROPERTY_MAX_DOCUMENT_COUNT
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class GroundingFilterSearchConfiguration {
+  public static final String JSON_PROPERTY_MAX_CHUNK_COUNT = "max_chunk_count";
+  private JsonNullable<Integer> maxChunkCount = JsonNullable.<Integer>undefined();
 
-  @JsonProperty("max_document_count")
-  private Integer maxDocumentCount;
+  public static final String JSON_PROPERTY_MAX_DOCUMENT_COUNT = "max_document_count";
+  private JsonNullable<Integer> maxDocumentCount = JsonNullable.<Integer>undefined();
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public GroundingFilterSearchConfiguration() {}
 
-  protected GroundingFilterSearchConfiguration() {}
+  public GroundingFilterSearchConfiguration maxChunkCount(Integer maxChunkCount) {
+    this.maxChunkCount = JsonNullable.<Integer>of(maxChunkCount);
 
-  /**
-   * Set the maxChunkCount of this {@link GroundingFilterSearchConfiguration} instance and return
-   * the same instance.
-   *
-   * @param maxChunkCount Maximum number of chunks to be returned. Cannot be used with
-   *     &#39;maxDocumentCount&#39;. Minimum: 0
-   * @return The same instance of this {@link GroundingFilterSearchConfiguration} class
-   */
-  @Nonnull
-  public GroundingFilterSearchConfiguration maxChunkCount(@Nullable final Integer maxChunkCount) {
-    this.maxChunkCount = maxChunkCount;
     return this;
   }
 
@@ -58,37 +47,32 @@ public class GroundingFilterSearchConfiguration
    * Maximum number of chunks to be returned. Cannot be used with &#39;maxDocumentCount&#39;.
    * minimum: 0
    *
-   * @return maxChunkCount The maxChunkCount of this {@link GroundingFilterSearchConfiguration}
-   *     instance.
+   * @return maxChunkCount
    */
-  @Nullable
+  @javax.annotation.Nullable
+  @JsonIgnore
   public Integer getMaxChunkCount() {
+    return maxChunkCount.orElse(null);
+  }
+
+  @JsonProperty(JSON_PROPERTY_MAX_CHUNK_COUNT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public JsonNullable<Integer> getMaxChunkCount_JsonNullable() {
     return maxChunkCount;
   }
 
-  /**
-   * Set the maxChunkCount of this {@link GroundingFilterSearchConfiguration} instance.
-   *
-   * @param maxChunkCount Maximum number of chunks to be returned. Cannot be used with
-   *     &#39;maxDocumentCount&#39;. Minimum: 0
-   */
-  public void setMaxChunkCount(@Nullable final Integer maxChunkCount) {
+  @JsonProperty(JSON_PROPERTY_MAX_CHUNK_COUNT)
+  public void setMaxChunkCount_JsonNullable(JsonNullable<Integer> maxChunkCount) {
     this.maxChunkCount = maxChunkCount;
   }
 
-  /**
-   * Set the maxDocumentCount of this {@link GroundingFilterSearchConfiguration} instance and return
-   * the same instance.
-   *
-   * @param maxDocumentCount [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of
-   *     documents to be returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount
-   *     is given, then only one chunk per document is returned. Minimum: 0
-   * @return The same instance of this {@link GroundingFilterSearchConfiguration} class
-   */
-  @Nonnull
-  public GroundingFilterSearchConfiguration maxDocumentCount(
-      @Nullable final Integer maxDocumentCount) {
-    this.maxDocumentCount = maxDocumentCount;
+  public void setMaxChunkCount(Integer maxChunkCount) {
+    this.maxChunkCount = JsonNullable.<Integer>of(maxChunkCount);
+  }
+
+  public GroundingFilterSearchConfiguration maxDocumentCount(Integer maxDocumentCount) {
+    this.maxDocumentCount = JsonNullable.<Integer>of(maxDocumentCount);
+
     return this;
   }
 
@@ -97,99 +81,71 @@ public class GroundingFilterSearchConfiguration
    * returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount is given, then only
    * one chunk per document is returned. minimum: 0
    *
-   * @return maxDocumentCount The maxDocumentCount of this {@link
-   *     GroundingFilterSearchConfiguration} instance.
+   * @return maxDocumentCount
    */
-  @Nullable
+  @javax.annotation.Nullable
+  @JsonIgnore
   public Integer getMaxDocumentCount() {
+    return maxDocumentCount.orElse(null);
+  }
+
+  @JsonProperty(JSON_PROPERTY_MAX_DOCUMENT_COUNT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public JsonNullable<Integer> getMaxDocumentCount_JsonNullable() {
     return maxDocumentCount;
   }
 
-  /**
-   * Set the maxDocumentCount of this {@link GroundingFilterSearchConfiguration} instance.
-   *
-   * @param maxDocumentCount [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of
-   *     documents to be returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount
-   *     is given, then only one chunk per document is returned. Minimum: 0
-   */
-  public void setMaxDocumentCount(@Nullable final Integer maxDocumentCount) {
+  @JsonProperty(JSON_PROPERTY_MAX_DOCUMENT_COUNT)
+  public void setMaxDocumentCount_JsonNullable(JsonNullable<Integer> maxDocumentCount) {
     this.maxDocumentCount = maxDocumentCount;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link
-   * GroundingFilterSearchConfiguration}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link GroundingFilterSearchConfiguration}
-   * instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GroundingFilterSearchConfiguration has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link GroundingFilterSearchConfiguration} instance. If
-   * the map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  public void setMaxDocumentCount(Integer maxDocumentCount) {
+    this.maxDocumentCount = JsonNullable.<Integer>of(maxDocumentCount);
   }
 
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GroundingFilterSearchConfiguration groundingFilterSearchConfiguration =
+    GroundingFilterSearchConfiguration groundingFilterSearchConfiguration =
         (GroundingFilterSearchConfiguration) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, groundingFilterSearchConfiguration.cloudSdkCustomFields)
-        && Objects.equals(this.maxChunkCount, groundingFilterSearchConfiguration.maxChunkCount)
-        && Objects.equals(
+    return equalsNullable(this.maxChunkCount, groundingFilterSearchConfiguration.maxChunkCount)
+        && equalsNullable(
             this.maxDocumentCount, groundingFilterSearchConfiguration.maxDocumentCount);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b
+        || (a != null
+            && b != null
+            && a.isPresent()
+            && b.isPresent()
+            && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(maxChunkCount, maxDocumentCount, cloudSdkCustomFields);
+    return Objects.hash(hashCodeNullable(maxChunkCount), hashCodeNullable(maxDocumentCount));
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[] {a.get()}) : 31;
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class GroundingFilterSearchConfiguration {\n");
     sb.append("    maxChunkCount: ").append(toIndentedString(maxChunkCount)).append("\n");
     sb.append("    maxDocumentCount: ").append(toIndentedString(maxDocumentCount)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -197,17 +153,76 @@ public class GroundingFilterSearchConfiguration
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a new {@link GroundingFilterSearchConfiguration} instance. No arguments are required.
-   */
-  public static GroundingFilterSearchConfiguration create() {
-    return new GroundingFilterSearchConfiguration();
+  public static class Builder {
+
+    private GroundingFilterSearchConfiguration instance;
+
+    public Builder() {
+      this(new GroundingFilterSearchConfiguration());
+    }
+
+    protected Builder(GroundingFilterSearchConfiguration instance) {
+      this.instance = instance;
+    }
+
+    public GroundingFilterSearchConfiguration.Builder maxChunkCount(Integer maxChunkCount) {
+      this.instance.maxChunkCount = JsonNullable.<Integer>of(maxChunkCount);
+      return this;
+    }
+
+    public GroundingFilterSearchConfiguration.Builder maxChunkCount(
+        JsonNullable<Integer> maxChunkCount) {
+      this.instance.maxChunkCount = maxChunkCount;
+      return this;
+    }
+
+    public GroundingFilterSearchConfiguration.Builder maxDocumentCount(Integer maxDocumentCount) {
+      this.instance.maxDocumentCount = JsonNullable.<Integer>of(maxDocumentCount);
+      return this;
+    }
+
+    public GroundingFilterSearchConfiguration.Builder maxDocumentCount(
+        JsonNullable<Integer> maxDocumentCount) {
+      this.instance.maxDocumentCount = maxDocumentCount;
+      return this;
+    }
+
+    /**
+     * returns a built GroundingFilterSearchConfiguration instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public GroundingFilterSearchConfiguration build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static GroundingFilterSearchConfiguration.Builder builder() {
+    return new GroundingFilterSearchConfiguration.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public GroundingFilterSearchConfiguration.Builder toBuilder() {
+    return new GroundingFilterSearchConfiguration.Builder()
+        .maxChunkCount(getMaxChunkCount())
+        .maxDocumentCount(getMaxDocumentCount());
   }
 }

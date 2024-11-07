@@ -12,39 +12,24 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** TemplateRef */
-// CHECKSTYLE:OFF
-public class TemplateRef
-// CHECKSTYLE:ON
-{
-  @JsonProperty("template_ref")
+@JsonPropertyOrder({TemplateRef.JSON_PROPERTY_TEMPLATE_REF})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class TemplateRef implements TemplatingModuleConfig {
+  public static final String JSON_PROPERTY_TEMPLATE_REF = "template_ref";
   private TemplateRefTemplateRef templateRef;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public TemplateRef() {}
 
-  protected TemplateRef() {}
+  public TemplateRef templateRef(TemplateRefTemplateRef templateRef) {
 
-  /**
-   * Set the templateRef of this {@link TemplateRef} instance and return the same instance.
-   *
-   * @param templateRef The templateRef of this {@link TemplateRef}
-   * @return The same instance of this {@link TemplateRef} class
-   */
-  @Nonnull
-  public TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
     this.templateRef = templateRef;
     return this;
   }
@@ -52,87 +37,43 @@ public class TemplateRef
   /**
    * Get templateRef
    *
-   * @return templateRef The templateRef of this {@link TemplateRef} instance.
+   * @return templateRef
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_REF)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TemplateRefTemplateRef getTemplateRef() {
     return templateRef;
   }
 
-  /**
-   * Set the templateRef of this {@link TemplateRef} instance.
-   *
-   * @param templateRef The templateRef of this {@link TemplateRef}
-   */
-  public void setTemplateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_REF)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setTemplateRef(TemplateRefTemplateRef templateRef) {
     this.templateRef = templateRef;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link TemplateRef}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link TemplateRef} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TemplateRef has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link TemplateRef} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplateRef templateRef = (TemplateRef) o;
-    return Objects.equals(this.cloudSdkCustomFields, templateRef.cloudSdkCustomFields)
-        && Objects.equals(this.templateRef, templateRef.templateRef);
+    TemplateRef templateRef = (TemplateRef) o;
+    return Objects.equals(this.templateRef, templateRef.templateRef);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateRef, cloudSdkCustomFields);
+    return Objects.hash(templateRef);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class TemplateRef {\n");
     sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -140,29 +81,57 @@ public class TemplateRef
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRef} instance
-   * with all required arguments.
-   */
-  public static Builder create() {
-    return (templateRef) -> new TemplateRef().templateRef(templateRef);
+  public static class Builder {
+
+    private TemplateRef instance;
+
+    public Builder() {
+      this(new TemplateRef());
+    }
+
+    protected Builder(TemplateRef instance) {
+      this.instance = instance;
+    }
+
+    public TemplateRef.Builder templateRef(TemplateRefTemplateRef templateRef) {
+      this.instance.templateRef = templateRef;
+      return this;
+    }
+
+    /**
+     * returns a built TemplateRef instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public TemplateRef build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the templateRef of this {@link TemplateRef} instance.
-     *
-     * @param templateRef The templateRef of this {@link TemplateRef}
-     * @return The TemplateRef instance.
-     */
-    TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
+  /** Create a builder with no initialized field. */
+  public static TemplateRef.Builder builder() {
+    return new TemplateRef.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public TemplateRef.Builder toBuilder() {
+    return new TemplateRef.Builder().templateRef(getTemplateRef());
   }
 }

@@ -12,46 +12,34 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** CompletionPostResponseStreaming */
-// CHECKSTYLE:OFF
-public class CompletionPostResponseStreaming
-// CHECKSTYLE:ON
-{
-  @JsonProperty("request_id")
+@JsonPropertyOrder({
+  CompletionPostResponseStreaming.JSON_PROPERTY_REQUEST_ID,
+  CompletionPostResponseStreaming.JSON_PROPERTY_MODULE_RESULTS,
+  CompletionPostResponseStreaming.JSON_PROPERTY_ORCHESTRATION_RESULT
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class CompletionPostResponseStreaming {
+  public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
   private String requestId;
 
-  @JsonProperty("module_results")
+  public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
   private ModuleResults moduleResults;
 
-  @JsonProperty("orchestration_result")
+  public static final String JSON_PROPERTY_ORCHESTRATION_RESULT = "orchestration_result";
   private LLMModuleResultStreaming orchestrationResult;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public CompletionPostResponseStreaming() {}
 
-  protected CompletionPostResponseStreaming() {}
+  public CompletionPostResponseStreaming requestId(String requestId) {
 
-  /**
-   * Set the requestId of this {@link CompletionPostResponseStreaming} instance and return the same
-   * instance.
-   *
-   * @param requestId ID of the request
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
-   */
-  @Nonnull
-  public CompletionPostResponseStreaming requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -59,32 +47,23 @@ public class CompletionPostResponseStreaming
   /**
    * ID of the request
    *
-   * @return requestId The requestId of this {@link CompletionPostResponseStreaming} instance.
+   * @return requestId
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_REQUEST_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getRequestId() {
     return requestId;
   }
 
-  /**
-   * Set the requestId of this {@link CompletionPostResponseStreaming} instance.
-   *
-   * @param requestId ID of the request
-   */
-  public void setRequestId(@Nonnull final String requestId) {
+  @JsonProperty(JSON_PROPERTY_REQUEST_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setRequestId(String requestId) {
     this.requestId = requestId;
   }
 
-  /**
-   * Set the moduleResults of this {@link CompletionPostResponseStreaming} instance and return the
-   * same instance.
-   *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
-   */
-  @Nonnull
-  public CompletionPostResponseStreaming moduleResults(
-      @Nullable final ModuleResults moduleResults) {
+  public CompletionPostResponseStreaming moduleResults(ModuleResults moduleResults) {
+
     this.moduleResults = moduleResults;
     return this;
   }
@@ -92,34 +71,24 @@ public class CompletionPostResponseStreaming
   /**
    * Get moduleResults
    *
-   * @return moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
-   *     instance.
+   * @return moduleResults
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_MODULE_RESULTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ModuleResults getModuleResults() {
     return moduleResults;
   }
 
-  /**
-   * Set the moduleResults of this {@link CompletionPostResponseStreaming} instance.
-   *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
-   */
-  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
+  @JsonProperty(JSON_PROPERTY_MODULE_RESULTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setModuleResults(ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 
-  /**
-   * Set the orchestrationResult of this {@link CompletionPostResponseStreaming} instance and return
-   * the same instance.
-   *
-   * @param orchestrationResult The orchestrationResult of this {@link
-   *     CompletionPostResponseStreaming}
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
-   */
-  @Nonnull
   public CompletionPostResponseStreaming orchestrationResult(
-      @Nullable final LLMModuleResultStreaming orchestrationResult) {
+      LLMModuleResultStreaming orchestrationResult) {
+
     this.orchestrationResult = orchestrationResult;
     return this;
   }
@@ -127,78 +96,32 @@ public class CompletionPostResponseStreaming
   /**
    * Get orchestrationResult
    *
-   * @return orchestrationResult The orchestrationResult of this {@link
-   *     CompletionPostResponseStreaming} instance.
+   * @return orchestrationResult
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ORCHESTRATION_RESULT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public LLMModuleResultStreaming getOrchestrationResult() {
     return orchestrationResult;
   }
 
-  /**
-   * Set the orchestrationResult of this {@link CompletionPostResponseStreaming} instance.
-   *
-   * @param orchestrationResult The orchestrationResult of this {@link
-   *     CompletionPostResponseStreaming}
-   */
-  public void setOrchestrationResult(@Nullable final LLMModuleResultStreaming orchestrationResult) {
+  @JsonProperty(JSON_PROPERTY_ORCHESTRATION_RESULT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOrchestrationResult(LLMModuleResultStreaming orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link CompletionPostResponseStreaming}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link CompletionPostResponseStreaming}
-   * instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "CompletionPostResponseStreaming has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link CompletionPostResponseStreaming} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final CompletionPostResponseStreaming completionPostResponseStreaming =
+    CompletionPostResponseStreaming completionPostResponseStreaming =
         (CompletionPostResponseStreaming) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, completionPostResponseStreaming.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, completionPostResponseStreaming.requestId)
+    return Objects.equals(this.requestId, completionPostResponseStreaming.requestId)
         && Objects.equals(this.moduleResults, completionPostResponseStreaming.moduleResults)
         && Objects.equals(
             this.orchestrationResult, completionPostResponseStreaming.orchestrationResult);
@@ -206,22 +129,18 @@ public class CompletionPostResponseStreaming
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, moduleResults, orchestrationResult, cloudSdkCustomFields);
+    return Objects.hash(requestId, moduleResults, orchestrationResult);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class CompletionPostResponseStreaming {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
     sb.append("    orchestrationResult: ")
         .append(toIndentedString(orchestrationResult))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -229,29 +148,71 @@ public class CompletionPostResponseStreaming
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * CompletionPostResponseStreaming} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (requestId) -> new CompletionPostResponseStreaming().requestId(requestId);
+  public static class Builder {
+
+    private CompletionPostResponseStreaming instance;
+
+    public Builder() {
+      this(new CompletionPostResponseStreaming());
+    }
+
+    protected Builder(CompletionPostResponseStreaming instance) {
+      this.instance = instance;
+    }
+
+    public CompletionPostResponseStreaming.Builder requestId(String requestId) {
+      this.instance.requestId = requestId;
+      return this;
+    }
+
+    public CompletionPostResponseStreaming.Builder moduleResults(ModuleResults moduleResults) {
+      this.instance.moduleResults = moduleResults;
+      return this;
+    }
+
+    public CompletionPostResponseStreaming.Builder orchestrationResult(
+        LLMModuleResultStreaming orchestrationResult) {
+      this.instance.orchestrationResult = orchestrationResult;
+      return this;
+    }
+
+    /**
+     * returns a built CompletionPostResponseStreaming instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public CompletionPostResponseStreaming build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the requestId of this {@link CompletionPostResponseStreaming} instance.
-     *
-     * @param requestId ID of the request
-     * @return The CompletionPostResponseStreaming instance.
-     */
-    CompletionPostResponseStreaming requestId(@Nonnull final String requestId);
+  /** Create a builder with no initialized field. */
+  public static CompletionPostResponseStreaming.Builder builder() {
+    return new CompletionPostResponseStreaming.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public CompletionPostResponseStreaming.Builder toBuilder() {
+    return new CompletionPostResponseStreaming.Builder()
+        .requestId(getRequestId())
+        .moduleResults(getModuleResults())
+        .orchestrationResult(getOrchestrationResult());
   }
 }

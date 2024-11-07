@@ -14,7 +14,6 @@ package com.sap.ai.sdk.orchestration.client.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.annotation.Nonnull;
 
 /** Gets or Sets DataRepositoryType */
 public enum DataRepositoryType {
@@ -24,38 +23,25 @@ public enum DataRepositoryType {
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
-  private final String value;
+  private String value;
 
   DataRepositoryType(String value) {
     this.value = value;
   }
 
-  /**
-   * @return The enum value.
-   */
   @JsonValue
   public String getValue() {
     return value;
   }
 
-  /**
-   * @return The String representation of the enum value.
-   */
   @Override
-  @Nonnull
   public String toString() {
     return String.valueOf(value);
   }
 
-  /**
-   * Converts the given value to its enum representation.
-   *
-   * @param value The input value.
-   * @return The enum representation of the given value.
-   */
   @JsonCreator
-  public static DataRepositoryType fromValue(@Nonnull final String value) {
-    for (final DataRepositoryType b : DataRepositoryType.values()) {
+  public static DataRepositoryType fromValue(String value) {
+    for (DataRepositoryType b : DataRepositoryType.values()) {
       if (b.value.equals(value)) {
         return b;
       }

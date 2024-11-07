@@ -12,51 +12,42 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** ErrorResponse */
-// CHECKSTYLE:OFF
-public class ErrorResponse
-// CHECKSTYLE:ON
-{
-  @JsonProperty("request_id")
+@JsonPropertyOrder({
+  ErrorResponse.JSON_PROPERTY_REQUEST_ID,
+  ErrorResponse.JSON_PROPERTY_CODE,
+  ErrorResponse.JSON_PROPERTY_MESSAGE,
+  ErrorResponse.JSON_PROPERTY_LOCATION,
+  ErrorResponse.JSON_PROPERTY_MODULE_RESULTS
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class ErrorResponse {
+  public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
   private String requestId;
 
-  @JsonProperty("code")
+  public static final String JSON_PROPERTY_CODE = "code";
   private Integer code;
 
-  @JsonProperty("message")
+  public static final String JSON_PROPERTY_MESSAGE = "message";
   private String message;
 
-  @JsonProperty("location")
+  public static final String JSON_PROPERTY_LOCATION = "location";
   private String location;
 
-  @JsonProperty("module_results")
+  public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
   private ModuleResults moduleResults;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public ErrorResponse() {}
 
-  protected ErrorResponse() {}
+  public ErrorResponse requestId(String requestId) {
 
-  /**
-   * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param requestId The requestId of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
-  @Nonnull
-  public ErrorResponse requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -64,30 +55,23 @@ public class ErrorResponse
   /**
    * Get requestId
    *
-   * @return requestId The requestId of this {@link ErrorResponse} instance.
+   * @return requestId
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_REQUEST_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getRequestId() {
     return requestId;
   }
 
-  /**
-   * Set the requestId of this {@link ErrorResponse} instance.
-   *
-   * @param requestId The requestId of this {@link ErrorResponse}
-   */
-  public void setRequestId(@Nonnull final String requestId) {
+  @JsonProperty(JSON_PROPERTY_REQUEST_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setRequestId(String requestId) {
     this.requestId = requestId;
   }
 
-  /**
-   * Set the code of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param code The code of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
-  @Nonnull
-  public ErrorResponse code(@Nonnull final Integer code) {
+  public ErrorResponse code(Integer code) {
+
     this.code = code;
     return this;
   }
@@ -95,30 +79,23 @@ public class ErrorResponse
   /**
    * Get code
    *
-   * @return code The code of this {@link ErrorResponse} instance.
+   * @return code
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_CODE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getCode() {
     return code;
   }
 
-  /**
-   * Set the code of this {@link ErrorResponse} instance.
-   *
-   * @param code The code of this {@link ErrorResponse}
-   */
-  public void setCode(@Nonnull final Integer code) {
+  @JsonProperty(JSON_PROPERTY_CODE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setCode(Integer code) {
     this.code = code;
   }
 
-  /**
-   * Set the message of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param message The message of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
-  @Nonnull
-  public ErrorResponse message(@Nonnull final String message) {
+  public ErrorResponse message(String message) {
+
     this.message = message;
     return this;
   }
@@ -126,30 +103,23 @@ public class ErrorResponse
   /**
    * Get message
    *
-   * @return message The message of this {@link ErrorResponse} instance.
+   * @return message
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getMessage() {
     return message;
   }
 
-  /**
-   * Set the message of this {@link ErrorResponse} instance.
-   *
-   * @param message The message of this {@link ErrorResponse}
-   */
-  public void setMessage(@Nonnull final String message) {
+  @JsonProperty(JSON_PROPERTY_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setMessage(String message) {
     this.message = message;
   }
 
-  /**
-   * Set the location of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param location Where the error occurred
-   * @return The same instance of this {@link ErrorResponse} class
-   */
-  @Nonnull
-  public ErrorResponse location(@Nonnull final String location) {
+  public ErrorResponse location(String location) {
+
     this.location = location;
     return this;
   }
@@ -157,30 +127,23 @@ public class ErrorResponse
   /**
    * Where the error occurred
    *
-   * @return location The location of this {@link ErrorResponse} instance.
+   * @return location
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_LOCATION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getLocation() {
     return location;
   }
 
-  /**
-   * Set the location of this {@link ErrorResponse} instance.
-   *
-   * @param location Where the error occurred
-   */
-  public void setLocation(@Nonnull final String location) {
+  @JsonProperty(JSON_PROPERTY_LOCATION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLocation(String location) {
     this.location = location;
   }
 
-  /**
-   * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
-   *
-   * @param moduleResults The moduleResults of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
-   */
-  @Nonnull
-  public ErrorResponse moduleResults(@Nullable final ModuleResults moduleResults) {
+  public ErrorResponse moduleResults(ModuleResults moduleResults) {
+
     this.moduleResults = moduleResults;
     return this;
   }
@@ -188,71 +151,31 @@ public class ErrorResponse
   /**
    * Get moduleResults
    *
-   * @return moduleResults The moduleResults of this {@link ErrorResponse} instance.
+   * @return moduleResults
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_MODULE_RESULTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ModuleResults getModuleResults() {
     return moduleResults;
   }
 
-  /**
-   * Set the moduleResults of this {@link ErrorResponse} instance.
-   *
-   * @param moduleResults The moduleResults of this {@link ErrorResponse}
-   */
-  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
+  @JsonProperty(JSON_PROPERTY_MODULE_RESULTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setModuleResults(ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link ErrorResponse}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link ErrorResponse} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ErrorResponse has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link ErrorResponse} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorResponse errorResponse = (ErrorResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorResponse.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, errorResponse.requestId)
+    ErrorResponse errorResponse = (ErrorResponse) o;
+    return Objects.equals(this.requestId, errorResponse.requestId)
         && Objects.equals(this.code, errorResponse.code)
         && Objects.equals(this.message, errorResponse.message)
         && Objects.equals(this.location, errorResponse.location)
@@ -261,22 +184,18 @@ public class ErrorResponse
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, code, message, location, moduleResults, cloudSdkCustomFields);
+    return Objects.hash(requestId, code, message, location, moduleResults);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class ErrorResponse {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -284,70 +203,82 @@ public class ErrorResponse
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance
-   * with all required arguments.
-   */
-  public static Builder create() {
-    return (requestId) ->
-        (code) ->
-            (message) ->
-                (location) ->
-                    new ErrorResponse()
-                        .requestId(requestId)
-                        .code(code)
-                        .message(message)
-                        .location(location);
+  public static class Builder {
+
+    private ErrorResponse instance;
+
+    public Builder() {
+      this(new ErrorResponse());
+    }
+
+    protected Builder(ErrorResponse instance) {
+      this.instance = instance;
+    }
+
+    public ErrorResponse.Builder requestId(String requestId) {
+      this.instance.requestId = requestId;
+      return this;
+    }
+
+    public ErrorResponse.Builder code(Integer code) {
+      this.instance.code = code;
+      return this;
+    }
+
+    public ErrorResponse.Builder message(String message) {
+      this.instance.message = message;
+      return this;
+    }
+
+    public ErrorResponse.Builder location(String location) {
+      this.instance.location = location;
+      return this;
+    }
+
+    public ErrorResponse.Builder moduleResults(ModuleResults moduleResults) {
+      this.instance.moduleResults = moduleResults;
+      return this;
+    }
+
+    /**
+     * returns a built ErrorResponse instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public ErrorResponse build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the requestId of this {@link ErrorResponse} instance.
-     *
-     * @param requestId The requestId of this {@link ErrorResponse}
-     * @return The ErrorResponse builder.
-     */
-    Builder1 requestId(@Nonnull final String requestId);
+  /** Create a builder with no initialized field. */
+  public static ErrorResponse.Builder builder() {
+    return new ErrorResponse.Builder();
   }
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the code of this {@link ErrorResponse} instance.
-     *
-     * @param code The code of this {@link ErrorResponse}
-     * @return The ErrorResponse builder.
-     */
-    Builder2 code(@Nonnull final Integer code);
-  }
-
-  /** Builder helper class. */
-  public interface Builder2 {
-    /**
-     * Set the message of this {@link ErrorResponse} instance.
-     *
-     * @param message The message of this {@link ErrorResponse}
-     * @return The ErrorResponse builder.
-     */
-    Builder3 message(@Nonnull final String message);
-  }
-
-  /** Builder helper class. */
-  public interface Builder3 {
-    /**
-     * Set the location of this {@link ErrorResponse} instance.
-     *
-     * @param location Where the error occurred
-     * @return The ErrorResponse instance.
-     */
-    ErrorResponse location(@Nonnull final String location);
+  /** Create a builder with a shallow copy of this instance. */
+  public ErrorResponse.Builder toBuilder() {
+    return new ErrorResponse.Builder()
+        .requestId(getRequestId())
+        .code(getCode())
+        .message(getMessage())
+        .location(getLocation())
+        .moduleResults(getModuleResults());
   }
 }

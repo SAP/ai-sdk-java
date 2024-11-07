@@ -12,39 +12,24 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** DPIEntityConfig */
-// CHECKSTYLE:OFF
-public class DPIEntityConfig
-// CHECKSTYLE:ON
-{
-  @JsonProperty("type")
+@JsonPropertyOrder({DPIEntityConfig.JSON_PROPERTY_TYPE})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class DPIEntityConfig {
+  public static final String JSON_PROPERTY_TYPE = "type";
   private DPIEntities type;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public DPIEntityConfig() {}
 
-  protected DPIEntityConfig() {}
+  public DPIEntityConfig type(DPIEntities type) {
 
-  /**
-   * Set the type of this {@link DPIEntityConfig} instance and return the same instance.
-   *
-   * @param type Type of entity to be masked
-   * @return The same instance of this {@link DPIEntityConfig} class
-   */
-  @Nonnull
-  public DPIEntityConfig type(@Nonnull final DPIEntities type) {
     this.type = type;
     return this;
   }
@@ -52,87 +37,43 @@ public class DPIEntityConfig
   /**
    * Type of entity to be masked
    *
-   * @return type The type of this {@link DPIEntityConfig} instance.
+   * @return type
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public DPIEntities getType() {
     return type;
   }
 
-  /**
-   * Set the type of this {@link DPIEntityConfig} instance.
-   *
-   * @param type Type of entity to be masked
-   */
-  public void setType(@Nonnull final DPIEntities type) {
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setType(DPIEntities type) {
     this.type = type;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link DPIEntityConfig}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link DPIEntityConfig} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("DPIEntityConfig has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link DPIEntityConfig} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DPIEntityConfig dpIEntityConfig = (DPIEntityConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, dpIEntityConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, dpIEntityConfig.type);
+    DPIEntityConfig dpIEntityConfig = (DPIEntityConfig) o;
+    return Objects.equals(this.type, dpIEntityConfig.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(type);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class DPIEntityConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -140,29 +81,57 @@ public class DPIEntityConfig
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link DPIEntityConfig}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (type) -> new DPIEntityConfig().type(type);
+  public static class Builder {
+
+    private DPIEntityConfig instance;
+
+    public Builder() {
+      this(new DPIEntityConfig());
+    }
+
+    protected Builder(DPIEntityConfig instance) {
+      this.instance = instance;
+    }
+
+    public DPIEntityConfig.Builder type(DPIEntities type) {
+      this.instance.type = type;
+      return this;
+    }
+
+    /**
+     * returns a built DPIEntityConfig instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public DPIEntityConfig build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the type of this {@link DPIEntityConfig} instance.
-     *
-     * @param type Type of entity to be masked
-     * @return The DPIEntityConfig instance.
-     */
-    DPIEntityConfig type(@Nonnull final DPIEntities type);
+  /** Create a builder with no initialized field. */
+  public static DPIEntityConfig.Builder builder() {
+    return new DPIEntityConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public DPIEntityConfig.Builder toBuilder() {
+    return new DPIEntityConfig.Builder().type(getType());
   }
 }

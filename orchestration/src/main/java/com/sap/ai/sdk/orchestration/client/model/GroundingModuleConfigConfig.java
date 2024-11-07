@@ -12,63 +12,45 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** GroundingModuleConfigConfig */
-// CHECKSTYLE:OFF
-public class GroundingModuleConfigConfig
-// CHECKSTYLE:ON
-{
-  @JsonProperty("filters")
+@JsonPropertyOrder({
+  GroundingModuleConfigConfig.JSON_PROPERTY_FILTERS,
+  GroundingModuleConfigConfig.JSON_PROPERTY_INPUT_PARAMS,
+  GroundingModuleConfigConfig.JSON_PROPERTY_OUTPUT_PARAM
+})
+@JsonTypeName("GroundingModuleConfig_config")
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class GroundingModuleConfigConfig {
+  public static final String JSON_PROPERTY_FILTERS = "filters";
   private List<GroundingModuleConfigConfigFiltersInner> filters = new ArrayList<>();
 
-  @JsonProperty("input_params")
+  public static final String JSON_PROPERTY_INPUT_PARAMS = "input_params";
   private List<String> inputParams = new ArrayList<>();
 
-  @JsonProperty("output_param")
+  public static final String JSON_PROPERTY_OUTPUT_PARAM = "output_param";
   private String outputParam;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public GroundingModuleConfigConfig() {}
 
-  protected GroundingModuleConfigConfig() {}
-
-  /**
-   * Set the filters of this {@link GroundingModuleConfigConfig} instance and return the same
-   * instance.
-   *
-   * @param filters Document grounding service filters to be used
-   * @return The same instance of this {@link GroundingModuleConfigConfig} class
-   */
-  @Nonnull
   public GroundingModuleConfigConfig filters(
-      @Nullable final List<GroundingModuleConfigConfigFiltersInner> filters) {
+      List<GroundingModuleConfigConfigFiltersInner> filters) {
+
     this.filters = filters;
     return this;
   }
 
-  /**
-   * Add one filters instance to this {@link GroundingModuleConfigConfig}.
-   *
-   * @param filtersItem The filters that should be added
-   * @return The same instance of type {@link GroundingModuleConfigConfig}
-   */
-  @Nonnull
   public GroundingModuleConfigConfig addFiltersItem(
-      @Nonnull final GroundingModuleConfigConfigFiltersInner filtersItem) {
+      GroundingModuleConfigConfigFiltersInner filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -79,43 +61,28 @@ public class GroundingModuleConfigConfig
   /**
    * Document grounding service filters to be used
    *
-   * @return filters The filters of this {@link GroundingModuleConfigConfig} instance.
+   * @return filters
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_FILTERS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<GroundingModuleConfigConfigFiltersInner> getFilters() {
     return filters;
   }
 
-  /**
-   * Set the filters of this {@link GroundingModuleConfigConfig} instance.
-   *
-   * @param filters Document grounding service filters to be used
-   */
-  public void setFilters(@Nullable final List<GroundingModuleConfigConfigFiltersInner> filters) {
+  @JsonProperty(JSON_PROPERTY_FILTERS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFilters(List<GroundingModuleConfigConfigFiltersInner> filters) {
     this.filters = filters;
   }
 
-  /**
-   * Set the inputParams of this {@link GroundingModuleConfigConfig} instance and return the same
-   * instance.
-   *
-   * @param inputParams Contains the input parameters used for grounding input questions
-   * @return The same instance of this {@link GroundingModuleConfigConfig} class
-   */
-  @Nonnull
-  public GroundingModuleConfigConfig inputParams(@Nonnull final List<String> inputParams) {
+  public GroundingModuleConfigConfig inputParams(List<String> inputParams) {
+
     this.inputParams = inputParams;
     return this;
   }
 
-  /**
-   * Add one inputParams instance to this {@link GroundingModuleConfigConfig}.
-   *
-   * @param inputParamsItem The inputParams that should be added
-   * @return The same instance of type {@link GroundingModuleConfigConfig}
-   */
-  @Nonnull
-  public GroundingModuleConfigConfig addInputParamsItem(@Nonnull final String inputParamsItem) {
+  public GroundingModuleConfigConfig addInputParamsItem(String inputParamsItem) {
     if (this.inputParams == null) {
       this.inputParams = new ArrayList<>();
     }
@@ -126,31 +93,23 @@ public class GroundingModuleConfigConfig
   /**
    * Contains the input parameters used for grounding input questions
    *
-   * @return inputParams The inputParams of this {@link GroundingModuleConfigConfig} instance.
+   * @return inputParams
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_INPUT_PARAMS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<String> getInputParams() {
     return inputParams;
   }
 
-  /**
-   * Set the inputParams of this {@link GroundingModuleConfigConfig} instance.
-   *
-   * @param inputParams Contains the input parameters used for grounding input questions
-   */
-  public void setInputParams(@Nonnull final List<String> inputParams) {
+  @JsonProperty(JSON_PROPERTY_INPUT_PARAMS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setInputParams(List<String> inputParams) {
     this.inputParams = inputParams;
   }
 
-  /**
-   * Set the outputParam of this {@link GroundingModuleConfigConfig} instance and return the same
-   * instance.
-   *
-   * @param outputParam Parameter name used for grounding output
-   * @return The same instance of this {@link GroundingModuleConfigConfig} class
-   */
-  @Nonnull
-  public GroundingModuleConfigConfig outputParam(@Nonnull final String outputParam) {
+  public GroundingModuleConfigConfig outputParam(String outputParam) {
+
     this.outputParam = outputParam;
     return this;
   }
@@ -158,94 +117,47 @@ public class GroundingModuleConfigConfig
   /**
    * Parameter name used for grounding output
    *
-   * @return outputParam The outputParam of this {@link GroundingModuleConfigConfig} instance.
+   * @return outputParam
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_OUTPUT_PARAM)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getOutputParam() {
     return outputParam;
   }
 
-  /**
-   * Set the outputParam of this {@link GroundingModuleConfigConfig} instance.
-   *
-   * @param outputParam Parameter name used for grounding output
-   */
-  public void setOutputParam(@Nonnull final String outputParam) {
+  @JsonProperty(JSON_PROPERTY_OUTPUT_PARAM)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setOutputParam(String outputParam) {
     this.outputParam = outputParam;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link GroundingModuleConfigConfig}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link GroundingModuleConfigConfig}
-   * instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GroundingModuleConfigConfig has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link GroundingModuleConfigConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GroundingModuleConfigConfig groundingModuleConfigConfig = (GroundingModuleConfigConfig) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, groundingModuleConfigConfig.cloudSdkCustomFields)
-        && Objects.equals(this.filters, groundingModuleConfigConfig.filters)
+    GroundingModuleConfigConfig groundingModuleConfigConfig = (GroundingModuleConfigConfig) o;
+    return Objects.equals(this.filters, groundingModuleConfigConfig.filters)
         && Objects.equals(this.inputParams, groundingModuleConfigConfig.inputParams)
         && Objects.equals(this.outputParam, groundingModuleConfigConfig.outputParam);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filters, inputParams, outputParam, cloudSdkCustomFields);
+    return Objects.hash(filters, inputParams, outputParam);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class GroundingModuleConfigConfig {\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    inputParams: ").append(toIndentedString(inputParams)).append("\n");
     sb.append("    outputParam: ").append(toIndentedString(outputParam)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -253,52 +165,71 @@ public class GroundingModuleConfigConfig
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * GroundingModuleConfigConfig} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (inputParams) ->
-        (outputParam) ->
-            new GroundingModuleConfigConfig().inputParams(inputParams).outputParam(outputParam);
-  }
+  public static class Builder {
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the inputParams of this {@link GroundingModuleConfigConfig} instance.
-     *
-     * @param inputParams Contains the input parameters used for grounding input questions
-     * @return The GroundingModuleConfigConfig builder.
-     */
-    Builder1 inputParams(@Nonnull final List<String> inputParams);
+    private GroundingModuleConfigConfig instance;
+
+    public Builder() {
+      this(new GroundingModuleConfigConfig());
+    }
+
+    protected Builder(GroundingModuleConfigConfig instance) {
+      this.instance = instance;
+    }
+
+    public GroundingModuleConfigConfig.Builder filters(
+        List<GroundingModuleConfigConfigFiltersInner> filters) {
+      this.instance.filters = filters;
+      return this;
+    }
+
+    public GroundingModuleConfigConfig.Builder inputParams(List<String> inputParams) {
+      this.instance.inputParams = inputParams;
+      return this;
+    }
+
+    public GroundingModuleConfigConfig.Builder outputParam(String outputParam) {
+      this.instance.outputParam = outputParam;
+      return this;
+    }
 
     /**
-     * Set the inputParams of this {@link GroundingModuleConfigConfig} instance.
+     * returns a built GroundingModuleConfigConfig instance.
      *
-     * @param inputParams Contains the input parameters used for grounding input questions
-     * @return The GroundingModuleConfigConfig builder.
+     * <p>The builder is not reusable.
      */
-    default Builder1 inputParams(@Nonnull final String... inputParams) {
-      return inputParams(Arrays.asList(inputParams));
+    public GroundingModuleConfigConfig build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
     }
   }
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the outputParam of this {@link GroundingModuleConfigConfig} instance.
-     *
-     * @param outputParam Parameter name used for grounding output
-     * @return The GroundingModuleConfigConfig instance.
-     */
-    GroundingModuleConfigConfig outputParam(@Nonnull final String outputParam);
+  /** Create a builder with no initialized field. */
+  public static GroundingModuleConfigConfig.Builder builder() {
+    return new GroundingModuleConfigConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public GroundingModuleConfigConfig.Builder toBuilder() {
+    return new GroundingModuleConfigConfig.Builder()
+        .filters(getFilters())
+        .inputParams(getInputParams())
+        .outputParam(getOutputParam());
   }
 }

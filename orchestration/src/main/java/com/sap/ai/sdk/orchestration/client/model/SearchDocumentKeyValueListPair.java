@@ -12,49 +12,36 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** SearchDocumentKeyValueListPair */
-// CHECKSTYLE:OFF
-public class SearchDocumentKeyValueListPair
-// CHECKSTYLE:ON
-{
-  @JsonProperty("key")
+@JsonPropertyOrder({
+  SearchDocumentKeyValueListPair.JSON_PROPERTY_KEY,
+  SearchDocumentKeyValueListPair.JSON_PROPERTY_VALUE,
+  SearchDocumentKeyValueListPair.JSON_PROPERTY_SELECT_MODE
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class SearchDocumentKeyValueListPair {
+  public static final String JSON_PROPERTY_KEY = "key";
   private String key;
 
-  @JsonProperty("value")
+  public static final String JSON_PROPERTY_VALUE = "value";
   private List<String> value = new ArrayList<>();
 
-  @JsonProperty("select_mode")
+  public static final String JSON_PROPERTY_SELECT_MODE = "select_mode";
   private List<SearchSelectOptionEnum> selectMode = new ArrayList<>();
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public SearchDocumentKeyValueListPair() {}
 
-  protected SearchDocumentKeyValueListPair() {}
+  public SearchDocumentKeyValueListPair key(String key) {
 
-  /**
-   * Set the key of this {@link SearchDocumentKeyValueListPair} instance and return the same
-   * instance.
-   *
-   * @param key The key of this {@link SearchDocumentKeyValueListPair}
-   * @return The same instance of this {@link SearchDocumentKeyValueListPair} class
-   */
-  @Nonnull
-  public SearchDocumentKeyValueListPair key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -62,43 +49,28 @@ public class SearchDocumentKeyValueListPair
   /**
    * Get key
    *
-   * @return key The key of this {@link SearchDocumentKeyValueListPair} instance.
+   * @return key
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_KEY)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getKey() {
     return key;
   }
 
-  /**
-   * Set the key of this {@link SearchDocumentKeyValueListPair} instance.
-   *
-   * @param key The key of this {@link SearchDocumentKeyValueListPair}
-   */
-  public void setKey(@Nonnull final String key) {
+  @JsonProperty(JSON_PROPERTY_KEY)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setKey(String key) {
     this.key = key;
   }
 
-  /**
-   * Set the value of this {@link SearchDocumentKeyValueListPair} instance and return the same
-   * instance.
-   *
-   * @param value The value of this {@link SearchDocumentKeyValueListPair}
-   * @return The same instance of this {@link SearchDocumentKeyValueListPair} class
-   */
-  @Nonnull
-  public SearchDocumentKeyValueListPair value(@Nonnull final List<String> value) {
+  public SearchDocumentKeyValueListPair value(List<String> value) {
+
     this.value = value;
     return this;
   }
 
-  /**
-   * Add one value instance to this {@link SearchDocumentKeyValueListPair}.
-   *
-   * @param valueItem The value that should be added
-   * @return The same instance of type {@link SearchDocumentKeyValueListPair}
-   */
-  @Nonnull
-  public SearchDocumentKeyValueListPair addValueItem(@Nonnull final String valueItem) {
+  public SearchDocumentKeyValueListPair addValueItem(String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -109,45 +81,28 @@ public class SearchDocumentKeyValueListPair
   /**
    * Get value
    *
-   * @return value The value of this {@link SearchDocumentKeyValueListPair} instance.
+   * @return value
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<String> getValue() {
     return value;
   }
 
-  /**
-   * Set the value of this {@link SearchDocumentKeyValueListPair} instance.
-   *
-   * @param value The value of this {@link SearchDocumentKeyValueListPair}
-   */
-  public void setValue(@Nonnull final List<String> value) {
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setValue(List<String> value) {
     this.value = value;
   }
 
-  /**
-   * Set the selectMode of this {@link SearchDocumentKeyValueListPair} instance and return the same
-   * instance.
-   *
-   * @param selectMode Select mode for search filters
-   * @return The same instance of this {@link SearchDocumentKeyValueListPair} class
-   */
-  @Nonnull
-  public SearchDocumentKeyValueListPair selectMode(
-      @Nullable final List<SearchSelectOptionEnum> selectMode) {
+  public SearchDocumentKeyValueListPair selectMode(List<SearchSelectOptionEnum> selectMode) {
+
     this.selectMode = selectMode;
     return this;
   }
 
-  /**
-   * Add one selectMode instance to this {@link SearchDocumentKeyValueListPair}.
-   *
-   * @param selectModeItem The selectMode that should be added
-   * @return The same instance of type {@link SearchDocumentKeyValueListPair}
-   */
-  @Nonnull
-  public SearchDocumentKeyValueListPair addSelectModeItem(
-      @Nonnull final SearchSelectOptionEnum selectModeItem) {
+  public SearchDocumentKeyValueListPair addSelectModeItem(SearchSelectOptionEnum selectModeItem) {
     if (this.selectMode == null) {
       this.selectMode = new ArrayList<>();
     }
@@ -158,96 +113,48 @@ public class SearchDocumentKeyValueListPair
   /**
    * Select mode for search filters
    *
-   * @return selectMode The selectMode of this {@link SearchDocumentKeyValueListPair} instance.
+   * @return selectMode
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_SELECT_MODE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<SearchSelectOptionEnum> getSelectMode() {
     return selectMode;
   }
 
-  /**
-   * Set the selectMode of this {@link SearchDocumentKeyValueListPair} instance.
-   *
-   * @param selectMode Select mode for search filters
-   */
-  public void setSelectMode(@Nullable final List<SearchSelectOptionEnum> selectMode) {
+  @JsonProperty(JSON_PROPERTY_SELECT_MODE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSelectMode(List<SearchSelectOptionEnum> selectMode) {
     this.selectMode = selectMode;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link SearchDocumentKeyValueListPair}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link SearchDocumentKeyValueListPair}
-   * instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "SearchDocumentKeyValueListPair has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link SearchDocumentKeyValueListPair} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SearchDocumentKeyValueListPair searchDocumentKeyValueListPair =
+    SearchDocumentKeyValueListPair searchDocumentKeyValueListPair =
         (SearchDocumentKeyValueListPair) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, searchDocumentKeyValueListPair.cloudSdkCustomFields)
-        && Objects.equals(this.key, searchDocumentKeyValueListPair.key)
+    return Objects.equals(this.key, searchDocumentKeyValueListPair.key)
         && Objects.equals(this.value, searchDocumentKeyValueListPair.value)
         && Objects.equals(this.selectMode, searchDocumentKeyValueListPair.selectMode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(key, value, selectMode, cloudSdkCustomFields);
+    return Objects.hash(key, value, selectMode);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class SearchDocumentKeyValueListPair {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    selectMode: ").append(toIndentedString(selectMode)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -255,50 +162,71 @@ public class SearchDocumentKeyValueListPair
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * SearchDocumentKeyValueListPair} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (key) -> (value) -> new SearchDocumentKeyValueListPair().key(key).value(value);
-  }
+  public static class Builder {
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the key of this {@link SearchDocumentKeyValueListPair} instance.
-     *
-     * @param key The key of this {@link SearchDocumentKeyValueListPair}
-     * @return The SearchDocumentKeyValueListPair builder.
-     */
-    Builder1 key(@Nonnull final String key);
-  }
+    private SearchDocumentKeyValueListPair instance;
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the value of this {@link SearchDocumentKeyValueListPair} instance.
-     *
-     * @param value The value of this {@link SearchDocumentKeyValueListPair}
-     * @return The SearchDocumentKeyValueListPair instance.
-     */
-    SearchDocumentKeyValueListPair value(@Nonnull final List<String> value);
-
-    /**
-     * Set the value of this {@link SearchDocumentKeyValueListPair} instance.
-     *
-     * @param value The value of this {@link SearchDocumentKeyValueListPair}
-     * @return The SearchDocumentKeyValueListPair instance.
-     */
-    default SearchDocumentKeyValueListPair value(@Nonnull final String... value) {
-      return value(Arrays.asList(value));
+    public Builder() {
+      this(new SearchDocumentKeyValueListPair());
     }
+
+    protected Builder(SearchDocumentKeyValueListPair instance) {
+      this.instance = instance;
+    }
+
+    public SearchDocumentKeyValueListPair.Builder key(String key) {
+      this.instance.key = key;
+      return this;
+    }
+
+    public SearchDocumentKeyValueListPair.Builder value(List<String> value) {
+      this.instance.value = value;
+      return this;
+    }
+
+    public SearchDocumentKeyValueListPair.Builder selectMode(
+        List<SearchSelectOptionEnum> selectMode) {
+      this.instance.selectMode = selectMode;
+      return this;
+    }
+
+    /**
+     * returns a built SearchDocumentKeyValueListPair instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public SearchDocumentKeyValueListPair build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static SearchDocumentKeyValueListPair.Builder builder() {
+    return new SearchDocumentKeyValueListPair.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public SearchDocumentKeyValueListPair.Builder toBuilder() {
+    return new SearchDocumentKeyValueListPair.Builder()
+        .key(getKey())
+        .value(getValue())
+        .selectMode(getSelectMode());
   }
 }

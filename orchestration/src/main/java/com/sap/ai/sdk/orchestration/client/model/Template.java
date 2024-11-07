@@ -12,59 +12,34 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** Template */
-// CHECKSTYLE:OFF
-public class Template
-// CHECKSTYLE:ON
-{
-  @JsonProperty("template")
+@JsonPropertyOrder({Template.JSON_PROPERTY_TEMPLATE, Template.JSON_PROPERTY_DEFAULTS})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class Template implements TemplatingModuleConfig {
+  public static final String JSON_PROPERTY_TEMPLATE = "template";
   private List<ChatMessage> template;
 
-  @JsonProperty("defaults")
+  public static final String JSON_PROPERTY_DEFAULTS = "defaults";
   private Object defaults;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public Template() {}
 
-  protected Template() {}
+  public Template template(List<ChatMessage> template) {
 
-  /**
-   * Set the template of this {@link Template} instance and return the same instance.
-   *
-   * @param template A chat message array to be formatted with values from input_params. Both role
-   *     and content can be templated. If messages_history is provided, the templated messages will
-   *     be appended.
-   * @return The same instance of this {@link Template} class
-   */
-  @Nonnull
-  public Template template(@Nonnull final List<ChatMessage> template) {
     this.template = template;
     return this;
   }
 
-  /**
-   * Add one template instance to this {@link Template}.
-   *
-   * @param templateItem The template that should be added
-   * @return The same instance of type {@link Template}
-   */
-  @Nonnull
-  public Template addTemplateItem(@Nonnull final ChatMessage templateItem) {
+  public Template addTemplateItem(ChatMessage templateItem) {
     if (this.template == null) {
       this.template = new ArrayList<>();
     }
@@ -76,33 +51,23 @@ public class Template
    * A chat message array to be formatted with values from input_params. Both role and content can
    * be templated. If messages_history is provided, the templated messages will be appended.
    *
-   * @return template The template of this {@link Template} instance.
+   * @return template
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_TEMPLATE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<ChatMessage> getTemplate() {
     return template;
   }
 
-  /**
-   * Set the template of this {@link Template} instance.
-   *
-   * @param template A chat message array to be formatted with values from input_params. Both role
-   *     and content can be templated. If messages_history is provided, the templated messages will
-   *     be appended.
-   */
-  public void setTemplate(@Nonnull final List<ChatMessage> template) {
+  @JsonProperty(JSON_PROPERTY_TEMPLATE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setTemplate(List<ChatMessage> template) {
     this.template = template;
   }
 
-  /**
-   * Set the defaults of this {@link Template} instance and return the same instance.
-   *
-   * @param defaults Optional default values for the template. If a parameter has no default it is
-   *     required.
-   * @return The same instance of this {@link Template} class
-   */
-  @Nonnull
-  public Template defaults(@Nullable final Object defaults) {
+  public Template defaults(Object defaults) {
+
     this.defaults = defaults;
     return this;
   }
@@ -110,90 +75,45 @@ public class Template
   /**
    * Optional default values for the template. If a parameter has no default it is required.
    *
-   * @return defaults The defaults of this {@link Template} instance.
+   * @return defaults
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Object getDefaults() {
     return defaults;
   }
 
-  /**
-   * Set the defaults of this {@link Template} instance.
-   *
-   * @param defaults Optional default values for the template. If a parameter has no default it is
-   *     required.
-   */
-  public void setDefaults(@Nullable final Object defaults) {
+  @JsonProperty(JSON_PROPERTY_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDefaults(Object defaults) {
     this.defaults = defaults;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link Template}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link Template} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Template has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link Template} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Template template = (Template) o;
-    return Objects.equals(this.cloudSdkCustomFields, template.cloudSdkCustomFields)
-        && Objects.equals(this.template, template.template)
+    Template template = (Template) o;
+    return Objects.equals(this.template, template.template)
         && Objects.equals(this.defaults, template.defaults);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(template, defaults, cloudSdkCustomFields);
+    return Objects.hash(template, defaults);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class Template {\n");
     sb.append("    template: ").append(toIndentedString(template)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -201,43 +121,62 @@ public class Template
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Template} instance with
-   * all required arguments.
-   */
-  public static Builder create() {
-    return (template) -> new Template().template(template);
+  public static class Builder {
+
+    private Template instance;
+
+    public Builder() {
+      this(new Template());
+    }
+
+    protected Builder(Template instance) {
+      this.instance = instance;
+    }
+
+    public Template.Builder template(List<ChatMessage> template) {
+      this.instance.template = template;
+      return this;
+    }
+
+    public Template.Builder defaults(Object defaults) {
+      this.instance.defaults = defaults;
+      return this;
+    }
+
+    /**
+     * returns a built Template instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public Template build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the template of this {@link Template} instance.
-     *
-     * @param template A chat message array to be formatted with values from input_params. Both role
-     *     and content can be templated. If messages_history is provided, the templated messages
-     *     will be appended.
-     * @return The Template instance.
-     */
-    Template template(@Nonnull final List<ChatMessage> template);
+  /** Create a builder with no initialized field. */
+  public static Template.Builder builder() {
+    return new Template.Builder();
+  }
 
-    /**
-     * Set the template of this {@link Template} instance.
-     *
-     * @param template A chat message array to be formatted with values from input_params. Both role
-     *     and content can be templated. If messages_history is provided, the templated messages
-     *     will be appended.
-     * @return The Template instance.
-     */
-    default Template template(@Nonnull final ChatMessage... template) {
-      return template(Arrays.asList(template));
-    }
+  /** Create a builder with a shallow copy of this instance. */
+  public Template.Builder toBuilder() {
+    return new Template.Builder().template(getTemplate()).defaults(getDefaults());
   }
 }

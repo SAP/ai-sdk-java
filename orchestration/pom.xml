@@ -118,54 +118,69 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Additional dependencies for OSS code generator resttemplate  -->
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>generate</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>generate</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.sap.cloud.sdk.datamodel</groupId>
-            <artifactId>openapi-generator-maven-plugin</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>generate-sources</phase>
             <configuration>
-              <skip>true</skip>
-              <!-- skip automatic generation until we can omit API classes from code generation -->
-              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <apiMaturity>beta</apiMaturity>
-              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
-              <compileScope>COMPILE</compileScope>
-              <deleteOutputDirectory>true</deleteOutputDirectory>
+              <!-- Specify the input OpenAPI spec file -->
+              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
+              <output>${project.basedir}</output>
+              <!-- Specify the generator to use, e.g., java, spring, kotlin, etc. -->
+              <generatorName>java</generatorName>
+              <!-- Specify the package names for models, APIs, and invokers -->
+              <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+              <apiPackage>com.sap.ai.sdk.orchestration.client.api</apiPackage>
+              <invokerPackage>com.sap.ai.sdk.orchestration.client.invoker</invokerPackage>
+
+              <!-- Global properties level; can be unpacked with 'generate' prefix-->
+              <globalProperties>
+                <apiDocs>false</apiDocs>
+                <modelDocs>false</modelDocs>
+                <modelTests>false</modelTests>
+                <apiTests>false</apiTests>
+                <minimalUpdate>true</minimalUpdate>
+              </globalProperties>
+
+              <!-- Generator Specific properties level; some can be unpacked-->
+              <configOptions>
+                <generateBuilders>true</generateBuilders>
+                <failOnUnknownProperties>false</failOnUnknownProperties>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
+                <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                <useBeanValidation>false</useBeanValidation>
+                <useOneOfInterfaces>true</useOneOfInterfaces>
+                <!--<legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>-->
+              </configOptions>
+              <generateModels>true</generateModels>
+              <generateSupportingFiles>false</generateSupportingFiles>
+              <generateApis>false</generateApis>
+              <library>resttemplate</library>
+              <!--<configHelp>true</configHelp>-->
             </configuration>
-            <executions>
-              <execution>
-                <id>orchestration</id>
-                <goals>
-                  <goal>generate</goal>
-                </goals>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
-                  <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
-                  <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
-                  <additionalProperties>
-                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
-                    <pojoBuildMethodName/>
-                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
-                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                  </additionalProperties>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -12,31 +12,26 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** GroundingModuleConfig */
-// CHECKSTYLE:OFF
-public class GroundingModuleConfig
-// CHECKSTYLE:ON
-{
+@JsonPropertyOrder({
+  GroundingModuleConfig.JSON_PROPERTY_TYPE,
+  GroundingModuleConfig.JSON_PROPERTY_CONFIG
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class GroundingModuleConfig {
   /** Gets or Sets type */
   public enum TypeEnum {
-    /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
     DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingModuleConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -45,37 +40,18 @@ public class GroundingModuleConfig
       this.value = value;
     }
 
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
     @JsonValue
-    @Nonnull
     public String getValue() {
       return value;
     }
 
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
     @Override
-    @Nonnull
     public String toString() {
       return String.valueOf(value);
     }
 
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type GroundingModuleConfig
-     */
     @JsonCreator
-    @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
+    public static TypeEnum fromValue(String value) {
       for (TypeEnum b : TypeEnum.values()) {
         if (b.value.equals(value)) {
           return b;
@@ -85,25 +61,16 @@ public class GroundingModuleConfig
     }
   }
 
-  @JsonProperty("type")
+  public static final String JSON_PROPERTY_TYPE = "type";
   private TypeEnum type;
 
-  @JsonProperty("config")
+  public static final String JSON_PROPERTY_CONFIG = "config";
   private GroundingModuleConfigConfig config;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public GroundingModuleConfig() {}
 
-  protected GroundingModuleConfig() {}
+  public GroundingModuleConfig type(TypeEnum type) {
 
-  /**
-   * Set the type of this {@link GroundingModuleConfig} instance and return the same instance.
-   *
-   * @param type The type of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
-   */
-  @Nonnull
-  public GroundingModuleConfig type(@Nullable final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -111,30 +78,23 @@ public class GroundingModuleConfig
   /**
    * Get type
    *
-   * @return type The type of this {@link GroundingModuleConfig} instance.
+   * @return type
    */
-  @Nullable
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TypeEnum getType() {
     return type;
   }
 
-  /**
-   * Set the type of this {@link GroundingModuleConfig} instance.
-   *
-   * @param type The type of this {@link GroundingModuleConfig}
-   */
-  public void setType(@Nullable final TypeEnum type) {
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setType(TypeEnum type) {
     this.type = type;
   }
 
-  /**
-   * Set the config of this {@link GroundingModuleConfig} instance and return the same instance.
-   *
-   * @param config The config of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
-   */
-  @Nonnull
-  public GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config) {
+  public GroundingModuleConfig config(GroundingModuleConfigConfig config) {
+
     this.config = config;
     return this;
   }
@@ -142,90 +102,45 @@ public class GroundingModuleConfig
   /**
    * Get config
    *
-   * @return config The config of this {@link GroundingModuleConfig} instance.
+   * @return config
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_CONFIG)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public GroundingModuleConfigConfig getConfig() {
     return config;
   }
 
-  /**
-   * Set the config of this {@link GroundingModuleConfig} instance.
-   *
-   * @param config The config of this {@link GroundingModuleConfig}
-   */
-  public void setConfig(@Nonnull final GroundingModuleConfigConfig config) {
+  @JsonProperty(JSON_PROPERTY_CONFIG)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setConfig(GroundingModuleConfigConfig config) {
     this.config = config;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link GroundingModuleConfig}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link GroundingModuleConfig} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GroundingModuleConfig has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link GroundingModuleConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, groundingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, groundingModuleConfig.type)
+    GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
+    return Objects.equals(this.type, groundingModuleConfig.type)
         && Objects.equals(this.config, groundingModuleConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, config);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class GroundingModuleConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -233,40 +148,62 @@ public class GroundingModuleConfig
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfig}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (type) -> (config) -> new GroundingModuleConfig().type(type).config(config);
+  public static class Builder {
+
+    private GroundingModuleConfig instance;
+
+    public Builder() {
+      this(new GroundingModuleConfig());
+    }
+
+    protected Builder(GroundingModuleConfig instance) {
+      this.instance = instance;
+    }
+
+    public GroundingModuleConfig.Builder type(TypeEnum type) {
+      this.instance.type = type;
+      return this;
+    }
+
+    public GroundingModuleConfig.Builder config(GroundingModuleConfigConfig config) {
+      this.instance.config = config;
+      return this;
+    }
+
+    /**
+     * returns a built GroundingModuleConfig instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public GroundingModuleConfig build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the type of this {@link GroundingModuleConfig} instance.
-     *
-     * @param type The type of this {@link GroundingModuleConfig}
-     * @return The GroundingModuleConfig builder.
-     */
-    Builder1 type(@Nullable final TypeEnum type);
+  /** Create a builder with no initialized field. */
+  public static GroundingModuleConfig.Builder builder() {
+    return new GroundingModuleConfig.Builder();
   }
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the config of this {@link GroundingModuleConfig} instance.
-     *
-     * @param config The config of this {@link GroundingModuleConfig}
-     * @return The GroundingModuleConfig instance.
-     */
-    GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config);
+  /** Create a builder with a shallow copy of this instance. */
+  public GroundingModuleConfig.Builder toBuilder() {
+    return new GroundingModuleConfig.Builder().type(getType()).config(getConfig());
   }
 }

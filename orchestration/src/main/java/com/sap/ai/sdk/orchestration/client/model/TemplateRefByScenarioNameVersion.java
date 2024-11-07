@@ -12,46 +12,34 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** TemplateRefByScenarioNameVersion */
-// CHECKSTYLE:OFF
-public class TemplateRefByScenarioNameVersion
-// CHECKSTYLE:ON
-{
-  @JsonProperty("scenario")
+@JsonPropertyOrder({
+  TemplateRefByScenarioNameVersion.JSON_PROPERTY_SCENARIO,
+  TemplateRefByScenarioNameVersion.JSON_PROPERTY_NAME,
+  TemplateRefByScenarioNameVersion.JSON_PROPERTY_VERSION
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef {
+  public static final String JSON_PROPERTY_SCENARIO = "scenario";
   private String scenario;
 
-  @JsonProperty("name")
+  public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
-  @JsonProperty("version")
+  public static final String JSON_PROPERTY_VERSION = "version";
   private String version;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public TemplateRefByScenarioNameVersion() {}
 
-  protected TemplateRefByScenarioNameVersion() {}
+  public TemplateRefByScenarioNameVersion scenario(String scenario) {
 
-  /**
-   * Set the scenario of this {@link TemplateRefByScenarioNameVersion} instance and return the same
-   * instance.
-   *
-   * @param scenario Scenario name
-   * @return The same instance of this {@link TemplateRefByScenarioNameVersion} class
-   */
-  @Nonnull
-  public TemplateRefByScenarioNameVersion scenario(@Nonnull final String scenario) {
     this.scenario = scenario;
     return this;
   }
@@ -59,31 +47,23 @@ public class TemplateRefByScenarioNameVersion
   /**
    * Scenario name
    *
-   * @return scenario The scenario of this {@link TemplateRefByScenarioNameVersion} instance.
+   * @return scenario
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_SCENARIO)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getScenario() {
     return scenario;
   }
 
-  /**
-   * Set the scenario of this {@link TemplateRefByScenarioNameVersion} instance.
-   *
-   * @param scenario Scenario name
-   */
-  public void setScenario(@Nonnull final String scenario) {
+  @JsonProperty(JSON_PROPERTY_SCENARIO)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setScenario(String scenario) {
     this.scenario = scenario;
   }
 
-  /**
-   * Set the name of this {@link TemplateRefByScenarioNameVersion} instance and return the same
-   * instance.
-   *
-   * @param name Name of the template
-   * @return The same instance of this {@link TemplateRefByScenarioNameVersion} class
-   */
-  @Nonnull
-  public TemplateRefByScenarioNameVersion name(@Nonnull final String name) {
+  public TemplateRefByScenarioNameVersion name(String name) {
+
     this.name = name;
     return this;
   }
@@ -91,31 +71,23 @@ public class TemplateRefByScenarioNameVersion
   /**
    * Name of the template
    *
-   * @return name The name of this {@link TemplateRefByScenarioNameVersion} instance.
+   * @return name
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getName() {
     return name;
   }
 
-  /**
-   * Set the name of this {@link TemplateRefByScenarioNameVersion} instance.
-   *
-   * @param name Name of the template
-   */
-  public void setName(@Nonnull final String name) {
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setName(String name) {
     this.name = name;
   }
 
-  /**
-   * Set the version of this {@link TemplateRefByScenarioNameVersion} instance and return the same
-   * instance.
-   *
-   * @param version Version of the template
-   * @return The same instance of this {@link TemplateRefByScenarioNameVersion} class
-   */
-  @Nonnull
-  public TemplateRefByScenarioNameVersion version(@Nonnull final String version) {
+  public TemplateRefByScenarioNameVersion version(String version) {
+
     this.version = version;
     return this;
   }
@@ -123,96 +95,48 @@ public class TemplateRefByScenarioNameVersion
   /**
    * Version of the template
    *
-   * @return version The version of this {@link TemplateRefByScenarioNameVersion} instance.
+   * @return version
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getVersion() {
     return version;
   }
 
-  /**
-   * Set the version of this {@link TemplateRefByScenarioNameVersion} instance.
-   *
-   * @param version Version of the template
-   */
-  public void setVersion(@Nonnull final String version) {
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setVersion(String version) {
     this.version = version;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link TemplateRefByScenarioNameVersion}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link TemplateRefByScenarioNameVersion}
-   * instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "TemplateRefByScenarioNameVersion has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link TemplateRefByScenarioNameVersion} instance. If
-   * the map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplateRefByScenarioNameVersion templateRefByScenarioNameVersion =
+    TemplateRefByScenarioNameVersion templateRefByScenarioNameVersion =
         (TemplateRefByScenarioNameVersion) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, templateRefByScenarioNameVersion.cloudSdkCustomFields)
-        && Objects.equals(this.scenario, templateRefByScenarioNameVersion.scenario)
+    return Objects.equals(this.scenario, templateRefByScenarioNameVersion.scenario)
         && Objects.equals(this.name, templateRefByScenarioNameVersion.name)
         && Objects.equals(this.version, templateRefByScenarioNameVersion.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(scenario, name, version, cloudSdkCustomFields);
+    return Objects.hash(scenario, name, version);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class TemplateRefByScenarioNameVersion {\n");
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -220,57 +144,70 @@ public class TemplateRefByScenarioNameVersion
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * TemplateRefByScenarioNameVersion} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (scenario) ->
-        (name) ->
-            (version) ->
-                new TemplateRefByScenarioNameVersion()
-                    .scenario(scenario)
-                    .name(name)
-                    .version(version);
+  public static class Builder {
+
+    private TemplateRefByScenarioNameVersion instance;
+
+    public Builder() {
+      this(new TemplateRefByScenarioNameVersion());
+    }
+
+    protected Builder(TemplateRefByScenarioNameVersion instance) {
+      this.instance = instance;
+    }
+
+    public TemplateRefByScenarioNameVersion.Builder scenario(String scenario) {
+      this.instance.scenario = scenario;
+      return this;
+    }
+
+    public TemplateRefByScenarioNameVersion.Builder name(String name) {
+      this.instance.name = name;
+      return this;
+    }
+
+    public TemplateRefByScenarioNameVersion.Builder version(String version) {
+      this.instance.version = version;
+      return this;
+    }
+
+    /**
+     * returns a built TemplateRefByScenarioNameVersion instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public TemplateRefByScenarioNameVersion build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the scenario of this {@link TemplateRefByScenarioNameVersion} instance.
-     *
-     * @param scenario Scenario name
-     * @return The TemplateRefByScenarioNameVersion builder.
-     */
-    Builder1 scenario(@Nonnull final String scenario);
+  /** Create a builder with no initialized field. */
+  public static TemplateRefByScenarioNameVersion.Builder builder() {
+    return new TemplateRefByScenarioNameVersion.Builder();
   }
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the name of this {@link TemplateRefByScenarioNameVersion} instance.
-     *
-     * @param name Name of the template
-     * @return The TemplateRefByScenarioNameVersion builder.
-     */
-    Builder2 name(@Nonnull final String name);
-  }
-
-  /** Builder helper class. */
-  public interface Builder2 {
-    /**
-     * Set the version of this {@link TemplateRefByScenarioNameVersion} instance.
-     *
-     * @param version Version of the template
-     * @return The TemplateRefByScenarioNameVersion instance.
-     */
-    TemplateRefByScenarioNameVersion version(@Nonnull final String version);
+  /** Create a builder with a shallow copy of this instance. */
+  public TemplateRefByScenarioNameVersion.Builder toBuilder() {
+    return new TemplateRefByScenarioNameVersion.Builder()
+        .scenario(getScenario())
+        .name(getName())
+        .version(getVersion());
   }
 }
