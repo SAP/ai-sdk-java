@@ -143,7 +143,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <!-- Specify the input OpenAPI spec file -->
-              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
+              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration_discrim.yaml</inputSpec>
               <output>${project.basedir}</output>
               <!-- Specify the generator to use, e.g., java, spring, kotlin, etc. -->
               <generatorName>java</generatorName>
@@ -176,6 +176,14 @@
               <generateSupportingFiles>false</generateSupportingFiles>
               <generateApis>false</generateApis>
               <library>resttemplate</library>
+              <!--<importMappings>
+                <importMapping>com.sap.ai.sdk.orchestration.client.model.FilterConfig=com.sap.ai.sdk.orchestration.client
+                  .oneofs.FilterConfig</importMapping>
+                <importMapping>com.sap.ai.sdk.orchestration.client.model.GroundingModuleConfigConfigFiltersInner=com.sap
+                  .ai.sdk.orchestration.client.oneofs.GroundingModuleConfigConfigFiltersInner</importMapping>
+                <importMapping>com.sap.ai.sdk.orchestration.client.model.LLMModuleResult=com.sap.ai.sdk
+                  .orchestration.client.oneofs.LLMModuleResult</importMapping>
+              </importMappings>-->
               <!--<configHelp>true</configHelp>-->
             </configuration>
           </execution>

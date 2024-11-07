@@ -21,6 +21,7 @@ import java.util.Objects;
 
 /** Output of LLM module. Follows the OpenAI spec. */
 @JsonPropertyOrder({
+  LLMModuleResultStreaming.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
   LLMModuleResultStreaming.JSON_PROPERTY_ID,
   LLMModuleResultStreaming.JSON_PROPERTY_OBJECT,
   LLMModuleResultStreaming.JSON_PROPERTY_CREATED,
@@ -33,6 +34,9 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class LLMModuleResultStreaming implements LLMModuleResult {
+  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
+  private String xDiscriminatorValue;
+
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
@@ -55,6 +59,30 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
   private TokenUsage usage;
 
   public LLMModuleResultStreaming() {}
+
+  public LLMModuleResultStreaming xDiscriminatorValue(String xDiscriminatorValue) {
+
+    this.xDiscriminatorValue = xDiscriminatorValue;
+    return this;
+  }
+
+  /**
+   * Discriminator for the type of the object
+   *
+   * @return xDiscriminatorValue
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getxDiscriminatorValue() {
+    return xDiscriminatorValue;
+  }
+
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setxDiscriminatorValue(String xDiscriminatorValue) {
+    this.xDiscriminatorValue = xDiscriminatorValue;
+  }
 
   public LLMModuleResultStreaming id(String id) {
 
@@ -241,7 +269,8 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
       return false;
     }
     LLMModuleResultStreaming llMModuleResultStreaming = (LLMModuleResultStreaming) o;
-    return Objects.equals(this.id, llMModuleResultStreaming.id)
+    return Objects.equals(this.xDiscriminatorValue, llMModuleResultStreaming.xDiscriminatorValue)
+        && Objects.equals(this.id, llMModuleResultStreaming.id)
         && Objects.equals(this._object, llMModuleResultStreaming._object)
         && Objects.equals(this.created, llMModuleResultStreaming.created)
         && Objects.equals(this.model, llMModuleResultStreaming.model)
@@ -252,13 +281,17 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, _object, created, model, systemFingerprint, choices, usage);
+    return Objects.hash(
+        xDiscriminatorValue, id, _object, created, model, systemFingerprint, choices, usage);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LLMModuleResultStreaming {\n");
+    sb.append("    xDiscriminatorValue: ")
+        .append(toIndentedString(xDiscriminatorValue))
+        .append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    _object: ").append(toIndentedString(_object)).append("\n");
     sb.append("    created: ").append(toIndentedString(created)).append("\n");
@@ -290,6 +323,11 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
 
     protected Builder(LLMModuleResultStreaming instance) {
       this.instance = instance;
+    }
+
+    public LLMModuleResultStreaming.Builder xDiscriminatorValue(String xDiscriminatorValue) {
+      this.instance.xDiscriminatorValue = xDiscriminatorValue;
+      return this;
     }
 
     public LLMModuleResultStreaming.Builder id(String id) {
@@ -355,6 +393,7 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
   /** Create a builder with a shallow copy of this instance. */
   public LLMModuleResultStreaming.Builder toBuilder() {
     return new LLMModuleResultStreaming.Builder()
+        .xDiscriminatorValue(getxDiscriminatorValue())
         .id(getId())
         ._object(getObject())
         .created(getCreated())

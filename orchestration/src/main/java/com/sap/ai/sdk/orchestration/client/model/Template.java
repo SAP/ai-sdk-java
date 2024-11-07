@@ -20,11 +20,18 @@ import java.util.List;
 import java.util.Objects;
 
 /** Template */
-@JsonPropertyOrder({Template.JSON_PROPERTY_TEMPLATE, Template.JSON_PROPERTY_DEFAULTS})
+@JsonPropertyOrder({
+  Template.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
+  Template.JSON_PROPERTY_TEMPLATE,
+  Template.JSON_PROPERTY_DEFAULTS
+})
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class Template implements TemplatingModuleConfig {
+  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
+  private String xDiscriminatorValue;
+
   public static final String JSON_PROPERTY_TEMPLATE = "template";
   private List<ChatMessage> template;
 
@@ -32,6 +39,30 @@ public class Template implements TemplatingModuleConfig {
   private Object defaults;
 
   public Template() {}
+
+  public Template xDiscriminatorValue(String xDiscriminatorValue) {
+
+    this.xDiscriminatorValue = xDiscriminatorValue;
+    return this;
+  }
+
+  /**
+   * Discriminator for the type of the object
+   *
+   * @return xDiscriminatorValue
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getxDiscriminatorValue() {
+    return xDiscriminatorValue;
+  }
+
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setxDiscriminatorValue(String xDiscriminatorValue) {
+    this.xDiscriminatorValue = xDiscriminatorValue;
+  }
 
   public Template template(List<ChatMessage> template) {
 
@@ -99,19 +130,23 @@ public class Template implements TemplatingModuleConfig {
       return false;
     }
     Template template = (Template) o;
-    return Objects.equals(this.template, template.template)
+    return Objects.equals(this.xDiscriminatorValue, template.xDiscriminatorValue)
+        && Objects.equals(this.template, template.template)
         && Objects.equals(this.defaults, template.defaults);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(template, defaults);
+    return Objects.hash(xDiscriminatorValue, template, defaults);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Template {\n");
+    sb.append("    xDiscriminatorValue: ")
+        .append(toIndentedString(xDiscriminatorValue))
+        .append("\n");
     sb.append("    template: ").append(toIndentedString(template)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
     sb.append("}");
@@ -138,6 +173,11 @@ public class Template implements TemplatingModuleConfig {
 
     protected Builder(Template instance) {
       this.instance = instance;
+    }
+
+    public Template.Builder xDiscriminatorValue(String xDiscriminatorValue) {
+      this.instance.xDiscriminatorValue = xDiscriminatorValue;
+      return this;
     }
 
     public Template.Builder template(List<ChatMessage> template) {
@@ -177,6 +217,9 @@ public class Template implements TemplatingModuleConfig {
 
   /** Create a builder with a shallow copy of this instance. */
   public Template.Builder toBuilder() {
-    return new Template.Builder().template(getTemplate()).defaults(getDefaults());
+    return new Template.Builder()
+        .xDiscriminatorValue(getxDiscriminatorValue())
+        .template(getTemplate())
+        .defaults(getDefaults());
   }
 }

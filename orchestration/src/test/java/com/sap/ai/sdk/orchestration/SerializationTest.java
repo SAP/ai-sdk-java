@@ -60,6 +60,7 @@ class SerializationTest {
 
     var llmResult =
         new LLMModuleResultSynchronous()
+            .xDiscriminatorValue("LLMModuleResultSynchronous")
             .id("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj")
             ._object("chat.completion")
             .created(1721224505)
@@ -67,6 +68,7 @@ class SerializationTest {
             .choices(
                 List.of(
                     new LLMChoice()
+                        .xDiscriminatorValue("LLMChoice")
                         .index(0)
                         .message(new ChatMessage().role("assistant").content("General Kenobi!"))
                         .finishReason("stop")))
@@ -74,6 +76,7 @@ class SerializationTest {
 
     var orchestrationResult =
         new LLMModuleResultSynchronous()
+            .xDiscriminatorValue("LLMModuleResultSynchronous")
             .id("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj")
             ._object("chat.completion")
             .created(1721224505)
@@ -81,6 +84,7 @@ class SerializationTest {
             .choices(
                 List.of(
                     new LLMChoice()
+                        .xDiscriminatorValue("LLMChoice")
                         .index(0)
                         .message(new ChatMessage().role("assistant").content("General Kenobi!"))
                         .finishReason("stop")))
@@ -113,6 +117,7 @@ class SerializationTest {
     List<ModuleResultsOutputUnmaskingInner> outputMaskingResult =
         List.of(
             new LLMChoice()
+                .xDiscriminatorValue("LLMChoice")
                 .index(0)
                 .message(new ChatMessage().role("assistant").content("Hello there!"))
                 .finishReason("stop"));

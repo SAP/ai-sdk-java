@@ -23,6 +23,7 @@ import java.util.Objects;
 
 /** LLMChoiceStreaming */
 @JsonPropertyOrder({
+  LLMChoiceStreaming.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
   LLMChoiceStreaming.JSON_PROPERTY_INDEX,
   LLMChoiceStreaming.JSON_PROPERTY_DELTA,
   LLMChoiceStreaming.JSON_PROPERTY_LOGPROBS,
@@ -32,6 +33,9 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
+  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
+  private String xDiscriminatorValue;
+
   public static final String JSON_PROPERTY_INDEX = "index";
   private Integer index;
 
@@ -45,6 +49,30 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
   private String finishReason;
 
   public LLMChoiceStreaming() {}
+
+  public LLMChoiceStreaming xDiscriminatorValue(String xDiscriminatorValue) {
+
+    this.xDiscriminatorValue = xDiscriminatorValue;
+    return this;
+  }
+
+  /**
+   * Discriminator for the type of the object
+   *
+   * @return xDiscriminatorValue
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getxDiscriminatorValue() {
+    return xDiscriminatorValue;
+  }
+
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setxDiscriminatorValue(String xDiscriminatorValue) {
+    this.xDiscriminatorValue = xDiscriminatorValue;
+  }
 
   public LLMChoiceStreaming index(Integer index) {
 
@@ -159,7 +187,8 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
       return false;
     }
     LLMChoiceStreaming llMChoiceStreaming = (LLMChoiceStreaming) o;
-    return Objects.equals(this.index, llMChoiceStreaming.index)
+    return Objects.equals(this.xDiscriminatorValue, llMChoiceStreaming.xDiscriminatorValue)
+        && Objects.equals(this.index, llMChoiceStreaming.index)
         && Objects.equals(this.delta, llMChoiceStreaming.delta)
         && Objects.equals(this.logprobs, llMChoiceStreaming.logprobs)
         && Objects.equals(this.finishReason, llMChoiceStreaming.finishReason);
@@ -167,13 +196,16 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, delta, logprobs, finishReason);
+    return Objects.hash(xDiscriminatorValue, index, delta, logprobs, finishReason);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LLMChoiceStreaming {\n");
+    sb.append("    xDiscriminatorValue: ")
+        .append(toIndentedString(xDiscriminatorValue))
+        .append("\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     sb.append("    delta: ").append(toIndentedString(delta)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
@@ -202,6 +234,11 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
 
     protected Builder(LLMChoiceStreaming instance) {
       this.instance = instance;
+    }
+
+    public LLMChoiceStreaming.Builder xDiscriminatorValue(String xDiscriminatorValue) {
+      this.instance.xDiscriminatorValue = xDiscriminatorValue;
+      return this;
     }
 
     public LLMChoiceStreaming.Builder index(Integer index) {
@@ -252,6 +289,7 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
   /** Create a builder with a shallow copy of this instance. */
   public LLMChoiceStreaming.Builder toBuilder() {
     return new LLMChoiceStreaming.Builder()
+        .xDiscriminatorValue(getxDiscriminatorValue())
         .index(getIndex())
         .delta(getDelta())
         .logprobs(getLogprobs())

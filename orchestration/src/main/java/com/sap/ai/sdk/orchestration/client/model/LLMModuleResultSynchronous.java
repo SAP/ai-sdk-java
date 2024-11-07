@@ -21,6 +21,7 @@ import java.util.Objects;
 
 /** Output of LLM module. Follows the OpenAI spec. */
 @JsonPropertyOrder({
+  LLMModuleResultSynchronous.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
   LLMModuleResultSynchronous.JSON_PROPERTY_ID,
   LLMModuleResultSynchronous.JSON_PROPERTY_OBJECT,
   LLMModuleResultSynchronous.JSON_PROPERTY_CREATED,
@@ -33,6 +34,9 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class LLMModuleResultSynchronous implements LLMModuleResult {
+  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
+  private String xDiscriminatorValue;
+
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
@@ -55,6 +59,30 @@ public class LLMModuleResultSynchronous implements LLMModuleResult {
   private TokenUsage usage;
 
   public LLMModuleResultSynchronous() {}
+
+  public LLMModuleResultSynchronous xDiscriminatorValue(String xDiscriminatorValue) {
+
+    this.xDiscriminatorValue = xDiscriminatorValue;
+    return this;
+  }
+
+  /**
+   * Discriminator for the type of the object
+   *
+   * @return xDiscriminatorValue
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getxDiscriminatorValue() {
+    return xDiscriminatorValue;
+  }
+
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setxDiscriminatorValue(String xDiscriminatorValue) {
+    this.xDiscriminatorValue = xDiscriminatorValue;
+  }
 
   public LLMModuleResultSynchronous id(String id) {
 
@@ -241,7 +269,8 @@ public class LLMModuleResultSynchronous implements LLMModuleResult {
       return false;
     }
     LLMModuleResultSynchronous llMModuleResultSynchronous = (LLMModuleResultSynchronous) o;
-    return Objects.equals(this.id, llMModuleResultSynchronous.id)
+    return Objects.equals(this.xDiscriminatorValue, llMModuleResultSynchronous.xDiscriminatorValue)
+        && Objects.equals(this.id, llMModuleResultSynchronous.id)
         && Objects.equals(this._object, llMModuleResultSynchronous._object)
         && Objects.equals(this.created, llMModuleResultSynchronous.created)
         && Objects.equals(this.model, llMModuleResultSynchronous.model)
@@ -252,13 +281,17 @@ public class LLMModuleResultSynchronous implements LLMModuleResult {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, _object, created, model, systemFingerprint, choices, usage);
+    return Objects.hash(
+        xDiscriminatorValue, id, _object, created, model, systemFingerprint, choices, usage);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LLMModuleResultSynchronous {\n");
+    sb.append("    xDiscriminatorValue: ")
+        .append(toIndentedString(xDiscriminatorValue))
+        .append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    _object: ").append(toIndentedString(_object)).append("\n");
     sb.append("    created: ").append(toIndentedString(created)).append("\n");
@@ -290,6 +323,11 @@ public class LLMModuleResultSynchronous implements LLMModuleResult {
 
     protected Builder(LLMModuleResultSynchronous instance) {
       this.instance = instance;
+    }
+
+    public LLMModuleResultSynchronous.Builder xDiscriminatorValue(String xDiscriminatorValue) {
+      this.instance.xDiscriminatorValue = xDiscriminatorValue;
+      return this;
     }
 
     public LLMModuleResultSynchronous.Builder id(String id) {
@@ -355,6 +393,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult {
   /** Create a builder with a shallow copy of this instance. */
   public LLMModuleResultSynchronous.Builder toBuilder() {
     return new LLMModuleResultSynchronous.Builder()
+        .xDiscriminatorValue(getxDiscriminatorValue())
         .id(getId())
         ._object(getObject())
         .created(getCreated())

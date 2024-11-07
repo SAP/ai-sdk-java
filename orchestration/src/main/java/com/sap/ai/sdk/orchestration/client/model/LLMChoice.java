@@ -23,6 +23,7 @@ import java.util.Objects;
 
 /** LLMChoice */
 @JsonPropertyOrder({
+  LLMChoice.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
   LLMChoice.JSON_PROPERTY_INDEX,
   LLMChoice.JSON_PROPERTY_MESSAGE,
   LLMChoice.JSON_PROPERTY_LOGPROBS,
@@ -32,6 +33,9 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
+  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
+  private String xDiscriminatorValue;
+
   public static final String JSON_PROPERTY_INDEX = "index";
   private Integer index;
 
@@ -45,6 +49,30 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   private String finishReason;
 
   public LLMChoice() {}
+
+  public LLMChoice xDiscriminatorValue(String xDiscriminatorValue) {
+
+    this.xDiscriminatorValue = xDiscriminatorValue;
+    return this;
+  }
+
+  /**
+   * Discriminator for the type of the object
+   *
+   * @return xDiscriminatorValue
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getxDiscriminatorValue() {
+    return xDiscriminatorValue;
+  }
+
+  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setxDiscriminatorValue(String xDiscriminatorValue) {
+    this.xDiscriminatorValue = xDiscriminatorValue;
+  }
 
   public LLMChoice index(Integer index) {
 
@@ -162,7 +190,8 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
       return false;
     }
     LLMChoice llMChoice = (LLMChoice) o;
-    return Objects.equals(this.index, llMChoice.index)
+    return Objects.equals(this.xDiscriminatorValue, llMChoice.xDiscriminatorValue)
+        && Objects.equals(this.index, llMChoice.index)
         && Objects.equals(this.message, llMChoice.message)
         && Objects.equals(this.logprobs, llMChoice.logprobs)
         && Objects.equals(this.finishReason, llMChoice.finishReason);
@@ -170,13 +199,16 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, message, logprobs, finishReason);
+    return Objects.hash(xDiscriminatorValue, index, message, logprobs, finishReason);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LLMChoice {\n");
+    sb.append("    xDiscriminatorValue: ")
+        .append(toIndentedString(xDiscriminatorValue))
+        .append("\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
@@ -205,6 +237,11 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
 
     protected Builder(LLMChoice instance) {
       this.instance = instance;
+    }
+
+    public LLMChoice.Builder xDiscriminatorValue(String xDiscriminatorValue) {
+      this.instance.xDiscriminatorValue = xDiscriminatorValue;
+      return this;
     }
 
     public LLMChoice.Builder index(Integer index) {
@@ -255,6 +292,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   /** Create a builder with a shallow copy of this instance. */
   public LLMChoice.Builder toBuilder() {
     return new LLMChoice.Builder()
+        .xDiscriminatorValue(getxDiscriminatorValue())
         .index(getIndex())
         .message(getMessage())
         .logprobs(getLogprobs())
