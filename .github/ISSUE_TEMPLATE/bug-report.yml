@@ -8,7 +8,7 @@ body:
       value: |
         This repository is for Java related issues only. Please open [JavaScript / TypeScript issues here](https://github.com/SAP/ai-sdk-js/issues/new/choose)
         For any issue with the AI Core client, use the [Slack Support Channel for AI Core](https://sap-ml.slack.com/archives/C01DZC6EGB0) then simply type `/support-request`
-        **Missing information here may result in delayed response**
+        **Missing information may result in delayed response**
   - type: textarea
     attributes:
       label: "Describe the Bug"
