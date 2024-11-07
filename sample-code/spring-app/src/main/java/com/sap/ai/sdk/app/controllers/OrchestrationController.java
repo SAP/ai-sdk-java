@@ -84,8 +84,7 @@ class OrchestrationController {
     final var message =
         ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var prompt = new OrchestrationPrompt(message);
-    prompt.setMessageHistory(messagesHistory);
+    final var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
     return CLIENT.chatCompletion(prompt, CONFIG);
   }

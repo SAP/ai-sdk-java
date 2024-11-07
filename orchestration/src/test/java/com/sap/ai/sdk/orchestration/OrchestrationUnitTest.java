@@ -275,8 +275,7 @@ class OrchestrationUnitTest {
     final var message =
         ChatMessage.create().role("user").content("What is the typical food there?");
 
-    prompt = new OrchestrationPrompt(message);
-    prompt.setMessageHistory(messagesHistory);
+    prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
     final var result = client.chatCompletion(prompt, config);
 

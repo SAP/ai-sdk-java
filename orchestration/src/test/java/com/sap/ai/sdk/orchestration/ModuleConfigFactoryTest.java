@@ -68,8 +68,7 @@ class ModuleConfigFactoryTest {
   void testMessagesHistory() {
     var systemMessage = ChatMessage.create().role("system").content("foo");
 
-    var prompt = new OrchestrationPrompt("bar");
-    prompt.setMessageHistory(List.of(systemMessage));
+    var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(systemMessage));
     var actual =
         ModuleConfigFactory.toCompletionPostRequestDto(
             prompt, new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG));
