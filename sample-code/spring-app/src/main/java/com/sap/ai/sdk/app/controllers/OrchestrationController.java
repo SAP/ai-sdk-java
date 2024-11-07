@@ -6,7 +6,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
@@ -16,10 +15,7 @@ import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -105,8 +101,9 @@ class OrchestrationController {
   public CompletionPostResponse filter(
       @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
 
-    final var prompt = new OrchestrationPrompt(
-                """
+    final var prompt =
+        new OrchestrationPrompt(
+            """
             Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
 
             ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
@@ -135,8 +132,8 @@ class OrchestrationController {
                     .violence(threshold));
 
     return FilteringModuleConfig.create()
-            .input(InputFilteringConfig.create().filters(filter))
-            .output(OutputFilteringConfig.create().filters(filter));
+        .input(InputFilteringConfig.create().filters(filter))
+        .output(OutputFilteringConfig.create().filters(filter));
   }
 
   /**
