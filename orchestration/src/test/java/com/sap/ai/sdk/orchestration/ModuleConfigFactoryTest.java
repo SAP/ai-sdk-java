@@ -1,15 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.LLM_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +14,10 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testThrowsOnMissingLlmConfig() {
-    assertThatThrownBy(() -> ModuleConfigFactory.toModuleConfigsDto(new OrchestrationModuleConfig()))
+    assertThatThrownBy(
+            () -> ModuleConfigFactory.toModuleConfigsDto(new OrchestrationModuleConfig()))
         .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("A prompt is required");
+        .hasMessageContaining("LLM config is required");
   }
 
   @Test
@@ -64,5 +62,18 @@ class ModuleConfigFactoryTest {
     var actual = ModuleConfigFactory.toTemplateModuleConfigDto(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void testMessagesHistory() {
+    var systemMessage = ChatMessage.create().role("system").content("foo");
+
+    var prompt = new OrchestrationPrompt("bar");
+    prompt.setMessageHistory(List.of(systemMessage));
+    var actual =
+        ModuleConfigFactory.toCompletionPostRequestDto(
+            prompt, new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG));
+
+    assertThat(actual.getMessagesHistory()).containsExactly(systemMessage);
   }
 }

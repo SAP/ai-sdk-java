@@ -1,16 +1,13 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import io.vavr.control.Option;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
@@ -23,14 +20,16 @@ final class ModuleConfigFactory {
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
     val template = toTemplateModuleConfigDto(prompt, config.getTemplate());
     // note that the config is immutable and implicitly copied here
-    // copying is required here, to not alter the original config object, which might be reused for subsequent requests
+    // copying is required here, to not alter the original config object, which might be reused for
+    // subsequent requests
     val configCopy = config.withTemplate(template);
 
     return CompletionPostRequest.create()
         .orchestrationConfig(
             com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
                 .moduleConfigurations(toModuleConfigsDto(configCopy)))
-        .inputParams(prompt.getTemplateParameters());
+        .inputParams(prompt.getTemplateParameters())
+        .messagesHistory(prompt.getMessagesHistory());
   }
 
   @Nonnull
@@ -56,7 +55,8 @@ final class ModuleConfigFactory {
   @Nonnull
   static ModuleConfigs toModuleConfigsDto(@Nonnull final OrchestrationModuleConfig config) {
     val llmConfig =
-        Option.of(config.getLlmConfig()).getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
+        Option.of(config.getLlmConfig())
+            .getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
 
     //noinspection DataFlowIssue the template is always non-null here
     val moduleConfig =
@@ -64,14 +64,7 @@ final class ModuleConfigFactory {
             .llmModuleConfig(llmConfig)
             .templatingModuleConfig(config.getTemplate());
 
-    val maybeInputFilter = Option.of(config.getInputContentFilter());
-    val maybeOutputFilter = Option.of(config.getOutputContentFilter());
-
-    if (maybeInputFilter.isDefined() || maybeOutputFilter.isDefined()) {
-      val filter = FilteringModuleConfig.create();
-      maybeInputFilter.forEach(filter::input);
-      maybeOutputFilter.forEach(filter::output);
-    }
+    Option.of(config.getFilteringConfig()).forEach(moduleConfig::filteringModuleConfig);
     Option.of(config.getMaskingConfig()).forEach(moduleConfig::maskingModuleConfig);
 
     return moduleConfig;

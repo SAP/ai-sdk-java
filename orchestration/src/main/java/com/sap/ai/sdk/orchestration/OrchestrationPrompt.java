@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
-import lombok.val;
 
 /**
  * Represents a request that can be sent to the orchestration service, containing messages and
@@ -22,10 +21,10 @@ import lombok.val;
  */
 @Value
 @Getter(AccessLevel.PACKAGE)
-@AllArgsConstructor
 public class OrchestrationPrompt {
-  @Nonnull List<ChatMessage> messages;
-  @Nonnull Map<String, String> templateParameters;
+  @Nonnull List<ChatMessage> messages = new ArrayList<>();
+  @Nonnull Map<String, String> templateParameters = new TreeMap<>();
+  @Nonnull List<ChatMessage> messagesHistory = new ArrayList<>();
 
   /**
    * Initialize a prompt with the given user message.
@@ -33,7 +32,7 @@ public class OrchestrationPrompt {
    * @param message A user message.
    */
   public OrchestrationPrompt(@Nonnull final String message) {
-    this(List.of(ChatMessage.create().role("user").content(message)), Map.of());
+    messages.add(ChatMessage.create().role("user").content(message));
   }
 
   /**
@@ -44,11 +43,8 @@ public class OrchestrationPrompt {
    */
   public OrchestrationPrompt(
       @Nonnull final ChatMessage message, @Nonnull final ChatMessage... messages) {
-    val allMessages = new ArrayList<ChatMessage>();
-    allMessages.add(message);
-    allMessages.addAll(Arrays.asList(messages));
-    this.messages = allMessages;
-    this.templateParameters = Map.of();
+    this.messages.add(message);
+    this.messages.addAll(Arrays.asList(messages));
   }
 
   /**
@@ -56,7 +52,19 @@ public class OrchestrationPrompt {
    *
    * @param inputParams The input parameters as entries of template variables and their contents.
    */
-  public OrchestrationPrompt(@Nonnull final Map<String, String> inputParams) {
-    this(List.of(), inputParams);
+  public OrchestrationPrompt(
+      @Nonnull final Map<String, String> inputParams, @Nonnull final ChatMessage... messages) {
+    this.templateParameters.putAll(inputParams);
+    this.messages.addAll(Arrays.asList(messages));
+  }
+
+  /**
+   * Add a chat history to this prompt.
+   *
+   * @param messagesHistory The chat history to add.
+   */
+  public void setMessageHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+    this.messagesHistory.clear();
+    this.messagesHistory.addAll(messagesHistory);
   }
 }

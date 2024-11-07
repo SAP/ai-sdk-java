@@ -37,17 +37,16 @@ import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import javax.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -57,12 +56,7 @@ import org.junit.jupiter.api.Test;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  private OrchestrationClient client;
-  private OrchestrationModuleConfig config;
-  private final Function<String, InputStream> fileLoader =
-      filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
-
-  private static final LLMModuleConfig LLM_CONFIG =
+  static final LLMModuleConfig LLM_CONFIG =
       LLMModuleConfig.create()
           .modelName("gpt-35-turbo-16k")
           .modelParams(
@@ -71,6 +65,12 @@ class OrchestrationUnitTest {
                   "temperature", 0.1,
                   "frequency_penalty", 0,
                   "presence_penalty", 0));
+  private final Function<String, InputStream> fileLoader =
+      filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
+
+  private OrchestrationClient client;
+  private OrchestrationModuleConfig config;
+  private OrchestrationPrompt prompt;
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -101,6 +101,7 @@ class OrchestrationUnitTest {
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
     config = new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+    prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
   }
 
   @Test
@@ -111,8 +112,7 @@ class OrchestrationUnitTest {
                 aResponse()
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    final var result =
-        client.chatCompletion(new OrchestrationPrompt("What is the capital of France?"), config);
+    final var result = client.chatCompletion(prompt, config);
 
     assertThat(result).isNotNull();
     assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
@@ -128,12 +128,12 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = List.of(ChatMessage.create().role("user").content("{{?input}}"));
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
     final var result =
-        client.chatCompletion(new OrchestrationPrompt(template, inputParams), config);
+        client.chatCompletion(new OrchestrationPrompt(inputParams, template), config);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -195,56 +195,12 @@ class OrchestrationUnitTest {
                     }
                     """,
                     SC_BAD_REQUEST)));
-    var message = ChatMessage.create().role("user").content("What is the capital of {{?input}}?");
-    final var prompt = new OrchestrationPrompt(List.of(message), Map.of());
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
   }
-
-  /**
-   * Creates a config from a filter threshold. The config includes a template and has input and
-   * output filters
-   */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
-      (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-        final var filter =
-            FilterConfig.create()
-                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-                .config(
-                    AzureContentSafety.create()
-                        .hate(filterThreshold)
-                        .selfHarm(filterThreshold)
-                        .sexual(filterThreshold)
-                        .violence(filterThreshold));
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(InputFilteringConfig.create().filters(filter))
-                .output(OutputFilteringConfig.create().filters(filter));
-
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
-      };
 
   @Test
   void filteringLoose() throws IOException {
@@ -255,9 +211,9 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var config = FILTERING_CONFIG.apply(NUMBER_4);
+    final var filter = createAzureContentFilter(NUMBER_4);
 
-    client.chatCompletion(config);
+    client.chatCompletion(prompt, config.withFilteringConfig(filter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -278,12 +234,29 @@ class OrchestrationUnitTest {
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
-    final var config = FILTERING_CONFIG.apply(NUMBER_0);
+    final var filter = createAzureContentFilter(NUMBER_0);
 
-    assertThatThrownBy(() -> client.chatCompletion(config))
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config.withFilteringConfig(filter)))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
+  }
+
+  private static FilteringModuleConfig createAzureContentFilter(
+      @Nonnull final AzureThreshold threshold) {
+    final var filter =
+        FilterConfig.create()
+            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+            .config(
+                AzureContentSafety.create()
+                    .hate(threshold)
+                    .selfHarm(threshold)
+                    .sexual(threshold)
+                    .violence(threshold));
+
+    return FilteringModuleConfig.create()
+        .input(InputFilteringConfig.create().filters(filter))
+        .output(OutputFilteringConfig.create().filters(filter));
   }
 
   @Test
@@ -302,11 +275,10 @@ class OrchestrationUnitTest {
     final var message =
         ChatMessage.create().role("user").content("What is the typical food there?");
 
-    final var prompt = new OrchestrationPrompt(message);
-    final var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
-    request.setMessagesHistory(messagesHistory);
+    prompt = new OrchestrationPrompt(message);
+    prompt.setMessageHistory(messagesHistory);
 
-    final var result = client.chatCompletion(request);
+    final var result = client.chatCompletion(prompt, config);
 
     assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
@@ -319,33 +291,6 @@ class OrchestrationUnitTest {
     }
   }
 
-  private static final CompletionPostRequest MASKING_CONFIG;
-
-  static {
-    final var inputParams = Map.of("orgCV", "Patrick Morgan +49 (970) 333-3833");
-    final var template =
-        ChatMessage.create().role("user").content("What is the nationality of {{?orgCV}}");
-    final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-    final var maskingProvider =
-        MaskingProviderConfig.create()
-            .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-            .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-            .entities(DPIEntityConfig.create().type(DPIEntities.PHONE));
-    final var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
-
-    MASKING_CONFIG =
-        CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .maskingModuleConfig(maskingConfig)))
-            .inputParams(inputParams);
-  }
-
   @Test
   void maskingAnonymization() throws IOException {
     stubFor(
@@ -355,7 +300,10 @@ class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var result = client.chatCompletion(MASKING_CONFIG);
+    final var maskingConfig =
+        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+
+    final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
 
     assertThat(result).isNotNull();
     GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
@@ -373,6 +321,20 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
               .withRequestBody(equalToJson(request)));
     }
+  }
+
+  private static MaskingModuleConfig createMaskingConfig(
+      @Nonnull final MaskingProviderConfig.MethodEnum method,
+      @Nonnull final DPIEntities... entities) {
+
+    final var entityConfigs =
+        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
+    return MaskingModuleConfig.create()
+        .maskingProviders(
+            MaskingProviderConfig.create()
+                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                .method(method)
+                .entities(entityConfigs));
   }
 
   @Test
