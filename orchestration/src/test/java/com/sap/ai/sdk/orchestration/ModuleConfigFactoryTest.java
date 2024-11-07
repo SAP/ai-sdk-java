@@ -16,11 +16,17 @@ import org.junit.jupiter.api.Test;
 class ModuleConfigFactoryTest {
 
   @Test
+  void testThrowsOnMissingLlmConfig() {
+    assertThatThrownBy(() -> ModuleConfigFactory.toModuleConfigsDto(new OrchestrationModuleConfig()))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("A prompt is required");
+  }
+
+  @Test
   void testThrowsOnMissingMessages() {
     var prompt = new OrchestrationPrompt(Map.of());
-    var templateConfig = TemplatingModuleConfig.create().template();
 
-    assertThatThrownBy(() -> ModuleConfigFactory.toTemplateModuleConfigDto(prompt, templateConfig))
+    assertThatThrownBy(() -> ModuleConfigFactory.toTemplateModuleConfigDto(prompt, null))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("A prompt is required");
   }
@@ -58,18 +64,5 @@ class ModuleConfigFactoryTest {
     var actual = ModuleConfigFactory.toTemplateModuleConfigDto(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
-  }
-
-  @Test
-  void testCopy() {
-    var moduleConfigs =
-        ModuleConfigs.create()
-            .llmModuleConfig(mock(LLMModuleConfig.class))
-            .templatingModuleConfig(mock(TemplatingModuleConfig.class))
-            .filteringModuleConfig(mock(FilteringModuleConfig.class))
-            .maskingModuleConfig(mock(MaskingModuleConfig.class));
-    assertThat(ModuleConfigFactory.copyModuleConfigs(moduleConfigs))
-        .isEqualTo(moduleConfigs)
-        .isNotSameAs(moduleConfigs);
   }
 }

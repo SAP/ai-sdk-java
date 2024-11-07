@@ -170,7 +170,7 @@ class OrchestrationController {
     final var filter =
         FILTERING_CONFIG.apply(AzureThreshold.fromValue(Integer.parseInt(threshold)));
 
-    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    final var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
     request.getOrchestrationConfig().getModuleConfigurations().setFilteringModuleConfig(filter);
 
     return CLIENT.chatCompletion(request);
@@ -193,7 +193,7 @@ class OrchestrationController {
         ChatMessage.create().role("user").content("What is the typical food there?");
     final var prompt = new OrchestrationPrompt(message);
 
-    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    final var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
     request.setMessagesHistory(messagesHistory);
 
     return CLIENT.chatCompletion(request);
@@ -217,7 +217,7 @@ class OrchestrationController {
                     .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
                     .entities(ALL_DPI_ENTITIES));
 
-    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    final var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
     request
         .getOrchestrationConfig()
         .getModuleConfigurations()
@@ -245,7 +245,7 @@ class OrchestrationController {
                     .method(MethodEnum.PSEUDONYMIZATION)
                     .entities(ALL_DPI_ENTITIES));
 
-    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    final var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
     request
         .getOrchestrationConfig()
         .getModuleConfigurations()

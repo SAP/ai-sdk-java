@@ -1,10 +1,16 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import io.vavr.control.Option;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
@@ -14,31 +20,31 @@ import lombok.val;
 final class ModuleConfigFactory {
   @Nonnull
   static CompletionPostRequest toCompletionPostRequestDto(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final ModuleConfigs config) {
-    // copying is required because we have to merge the prompt into the template config
-    // also, users may modify the object before request execution
-    val configCopy = copyModuleConfigs(config);
-    configCopy.setTemplatingModuleConfig(
-        toTemplateModuleConfigDto(prompt, config.getTemplatingModuleConfig()));
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
+    val template = toTemplateModuleConfigDto(prompt, config.getTemplate());
+    // note that the config is immutable and implicitly copied here
+    // copying is required here, to not alter the original config object, which might be reused for subsequent requests
+    val configCopy = config.withTemplate(template);
 
     return CompletionPostRequest.create()
         .orchestrationConfig(
             com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
-                .moduleConfigurations(configCopy))
+                .moduleConfigurations(toModuleConfigsDto(configCopy)))
         .inputParams(prompt.getTemplateParameters());
   }
 
   @Nonnull
   static TemplatingModuleConfig toTemplateModuleConfigDto(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final TemplatingModuleConfig template) {
+      @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig template) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
-     * This works around the limitation that the template config isn't optional.
+     * This works around the limitation that the template config is required.
      * This comes at the risk that the prompt unintentionally contains the templating pattern "{{? .. }}".
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messagesWithPrompt = new ArrayList<>(template.getTemplate());
+    val messages = Option.of(template).map(TemplatingModuleConfig::getTemplate).getOrElse(List::of);
+    val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(prompt.getMessages());
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
@@ -47,11 +53,27 @@ final class ModuleConfigFactory {
     return TemplatingModuleConfig.create().template(messagesWithPrompt);
   }
 
-  static ModuleConfigs copyModuleConfigs(@Nonnull final ModuleConfigs configs) {
-    return ModuleConfigs.create()
-        .llmModuleConfig(configs.getLlmModuleConfig())
-        .templatingModuleConfig(configs.getTemplatingModuleConfig())
-        .maskingModuleConfig(configs.getMaskingModuleConfig())
-        .filteringModuleConfig(configs.getFilteringModuleConfig());
+  @Nonnull
+  static ModuleConfigs toModuleConfigsDto(@Nonnull final OrchestrationModuleConfig config) {
+    val llmConfig =
+        Option.of(config.getLlmConfig()).getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
+
+    //noinspection DataFlowIssue the template is always non-null here
+    val moduleConfig =
+        ModuleConfigs.create()
+            .llmModuleConfig(llmConfig)
+            .templatingModuleConfig(config.getTemplate());
+
+    val maybeInputFilter = Option.of(config.getInputContentFilter());
+    val maybeOutputFilter = Option.of(config.getOutputContentFilter());
+
+    if (maybeInputFilter.isDefined() || maybeOutputFilter.isDefined()) {
+      val filter = FilteringModuleConfig.create();
+      maybeInputFilter.forEach(filter::input);
+      maybeOutputFilter.forEach(filter::output);
+    }
+    Option.of(config.getMaskingConfig()).forEach(moduleConfig::maskingModuleConfig);
+
+    return moduleConfig;
   }
 }

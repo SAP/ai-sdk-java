@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   private OrchestrationClient client;
-  private ModuleConfigs config;
+  private OrchestrationModuleConfig config;
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -100,10 +100,7 @@ class OrchestrationUnitTest {
             .forDeploymentByScenario("orchestration")
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
-    config =
-        ModuleConfigs.create()
-            .llmModuleConfig(LLM_CONFIG)
-            .templatingModuleConfig(TemplatingModuleConfig.create().template());
+    config = new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
   }
 
   @Test
@@ -306,7 +303,7 @@ class OrchestrationUnitTest {
         ChatMessage.create().role("user").content("What is the typical food there?");
 
     final var prompt = new OrchestrationPrompt(message);
-    final var request = OrchestrationClient.toCompletionPostRequestDto(prompt, config);
+    final var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
     request.setMessagesHistory(messagesHistory);
 
     final var result = client.chatCompletion(request);
@@ -382,7 +379,7 @@ class OrchestrationUnitTest {
   void testGenericErrorHandling() {
     stubFor(post(anyUrl()).willReturn(serverError()));
 
-    assertThatThrownBy(() -> client.chatCompletion(mock(CompletionPostRequest.class)))
+    assertThatThrownBy(() -> client.executeRequest(mock(CompletionPostRequest.class)))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("500 Server Error");
   }
@@ -396,7 +393,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("errorResponse.json")));
 
-    assertThatThrownBy(() -> client.chatCompletion(mock(CompletionPostRequest.class)))
+    assertThatThrownBy(() -> client.executeRequest(mock(CompletionPostRequest.class)))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("'orchestration_config' is a required property");

@@ -76,23 +76,10 @@ public class OrchestrationClient {
    */
   @Nonnull
   public CompletionPostResponse chatCompletion(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final ModuleConfigs config)
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
       throws OrchestrationClientException {
 
-    val request = toCompletionPostRequestDto(prompt, config);
-    return executeRequest(request);
-  }
-
-  /**
-   * Generate a completion for the given prompt.
-   *
-   * @param request The request to send to orchestration.
-   * @return the completion output
-   * @throws OrchestrationClientException if the request fails
-   */
-  @Nonnull
-  public CompletionPostResponse chatCompletion(@Nonnull final CompletionPostRequest request)
-      throws OrchestrationClientException {
+    val request = toCompletionPostRequest(prompt, config);
     return executeRequest(request);
   }
 
@@ -140,8 +127,8 @@ public class OrchestrationClient {
    * @return The low-level request DTO to send to orchestration.
    */
   @Nonnull
-  public static CompletionPostRequest toCompletionPostRequestDto(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final ModuleConfigs config) {
+  public static CompletionPostRequest toCompletionPostRequest(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
     return ModuleConfigFactory.toCompletionPostRequestDto(prompt, config);
   }
 
