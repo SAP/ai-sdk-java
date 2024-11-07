@@ -3,14 +3,15 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.HIGH;
 import static com.sap.ai.sdk.orchestration.AzureContentFilter.Sensitivity.LOW;
 import static com.sap.ai.sdk.orchestration.ModuleConfigFactory.toModuleConfigDto;
-import static com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
+import static com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
+import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
+import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import io.vavr.NotImplementedError;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,9 @@ class ModuleConfigFactoryTest {
 
   @Test
   void testTemplateIsCreatedFromMessages() {
-    var result = toModuleConfigDto(config, messages).getTemplatingModuleConfig();
+    var result =
+        (com.sap.ai.sdk.orchestration.client.model.Template)
+            toModuleConfigDto(config, messages).getTemplatingModuleConfig();
     assertThat(result.getDefaults()).isNull();
 
     var template = result.getTemplate();
@@ -78,8 +81,8 @@ class ModuleConfigFactoryTest {
     config.withTemplate(TemplateConfig.fromMessages(messages.subList(0, 2)));
 
     var result =
-        toModuleConfigDto(config, List.of(messages.get(2)))
-            .getTemplatingModuleConfig()
+        ((com.sap.ai.sdk.orchestration.client.model.Template)
+                toModuleConfigDto(config, List.of(messages.get(2))).getTemplatingModuleConfig())
             .getTemplate();
 
     assertThat(result).hasSize(3);
@@ -114,7 +117,7 @@ class ModuleConfigFactoryTest {
 
     assertThat(result.getInput().getFilters()).isNotEmpty();
 
-    var filterDto = result.getInput().getFilters().get(0);
+    var filterDto = (AzureContentSafetyFilterConfig) (result.getInput().getFilters()).get(0);
     assertThat(filterDto.getType()).isEqualTo(AZURE_CONTENT_SAFETY);
     assertThat(filterDto.getConfig().getHate().getValue()).isZero();
     assertThat(filterDto.getConfig().getViolence()).isNull();
@@ -130,7 +133,7 @@ class ModuleConfigFactoryTest {
     var result = toModuleConfigDto(config, messages).getFilteringModuleConfig();
 
     assertThat(result.getOutput().getFilters()).isNotEmpty();
-    var filterDto = result.getOutput().getFilters().get(0);
+    var filterDto = (AzureContentSafetyFilterConfig) result.getOutput().getFilters().get(0);
     assertThat(filterDto.getType()).isEqualTo(AZURE_CONTENT_SAFETY);
     assertThat(filterDto.getConfig().getHate().getValue()).isZero();
     assertThat(filterDto.getConfig().getViolence()).isNull();
@@ -164,11 +167,11 @@ class ModuleConfigFactoryTest {
     var maskingConfig = DpiMaskingConfig.anonymization().withEntities(DPIEntities.ADDRESS);
     config.withMaskingConfig(maskingConfig);
 
-    var result = toModuleConfigDto(config, messages).getMaskingModuleConfig();
+    var result = toModuleConfigDto(config, messages).getMaskingModuleConfig().getMaskingProviders();
 
-    assertThat(result.getMaskingProviders())
+    assertThat(result)
         .isNotEmpty()
-        .extracting(MaskingProviderConfig::getEntities)
+        .extracting(item -> ((DPIConfig) item).getEntities())
         .extracting(it -> it.get(0))
         .extracting(DPIEntityConfig::getType)
         .containsOnly(DPIEntities.ADDRESS);

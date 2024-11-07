@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import java.util.List;
@@ -15,22 +15,22 @@ import org.junit.jupiter.api.Test;
 class OrchestrationResponseTest {
   @Test
   void testFromCompletionPostResponseDto() {
-    var message1 = ChatMessage.create().role("system").content("foo");
-    var message2 = ChatMessage.create().role("user").content("bar");
-    var message3 = ChatMessage.create().role("assistant").content("baz");
-    var moduleResults = ModuleResults.create().templating(List.of(message1, message2));
+    var message1 = new ChatMessage().role("system").content("foo");
+    var message2 = new ChatMessage().role("user").content("bar");
+    var message3 = new ChatMessage().role("assistant").content("baz");
+    var moduleResults = new ModuleResults().templating(List.of(message1, message2));
 
     var orchestrationResult =
-        LLMModuleResult.create()
+        new LLMModuleResultSynchronous()
             .id("bar")
             ._object("baz")
             .created(1234)
             .model("quack")
-            .choices(LLMChoice.create().index(0).message(message3).finishReason("stop"))
+            .choices(List.of(new LLMChoice().index(0).message(message3).finishReason("stop")))
             .usage(mock(TokenUsage.class));
 
     var postResponse =
-        CompletionPostResponse.create()
+        new CompletionPostResponse()
             .requestId("foo")
             .moduleResults(moduleResults)
             .orchestrationResult(orchestrationResult);

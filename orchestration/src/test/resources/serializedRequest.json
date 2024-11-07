@@ -10,6 +10,7 @@
         "model_version" : "latest"
       },
       "templating_module_config" : {
+        "x-discriminator-value": "Template",
         "template" : [ {
           "role" : "user",
           "content" : "{{?input}}"
@@ -18,6 +19,7 @@
       "filtering_module_config" : {
         "input" : {
           "filters" : [ {
+            "x-discriminator-value": "AzureContentSafetyFilterConfig",
             "type" : "azure_content_safety",
             "config" : {
               "SelfHarm" : 4
@@ -26,6 +28,7 @@
         },
         "output" : {
           "filters" : [ {
+            "x-discriminator-value": "AzureContentSafetyFilterConfig",
             "type" : "azure_content_safety",
             "config" : {
               "Hate" : 0,
@@ -37,6 +40,7 @@
       },
       "masking_module_config" : {
         "masking_providers" : [ {
+          "x-discriminator-value": "DPIConfig",
           "type" : "sap_data_privacy_integration",
           "method" : "anonymization",
           "entities" : [ {

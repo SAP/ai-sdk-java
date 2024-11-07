@@ -8,12 +8,14 @@
       }
     ],
     "llm": {
+      "x-discriminator-value": "LLMModuleResultSynchronous",
       "id": "chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj",
       "object": "chat.completion",
       "created": 1721224505,
       "model": "gpt-35-turbo-16k",
       "choices": [
         {
+          "x-discriminator-value": "LLMChoice",
           "index": 0,
           "message": {
             "role": "assistant",
@@ -30,12 +32,14 @@
     }
   },
   "orchestration_result": {
+    "x-discriminator-value": "LLMModuleResultSynchronous",
     "id": "chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj",
     "object": "chat.completion",
     "created": 1721224505,
     "model": "gpt-35-turbo-16k",
     "choices": [
       {
+        "x-discriminator-value": "LLMChoice",
         "index": 0,
         "message": {
           "role": "assistant",

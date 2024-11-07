@@ -119,59 +119,22 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Additional dependencies for OSS code generator    -->
+    <!-- Additional dependencies for OSS code generator resttemplate  -->
     <dependency>
       <groupId>org.openapitools</groupId>
       <artifactId>jackson-databind-nullable</artifactId>
-      <version>0.2.6</version>
     </dependency>
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
-      <version>1.2</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!--  <plugin>
-              <groupId>com.sap.cloud.sdk.datamodel</groupId>
-              <artifactId>openapi-generator-maven-plugin</artifactId>
-              <configuration>
-                <skip>true</skip>
-                &lt;!&ndash; skip automatic generation until we can omit API classes from code generation &ndash;&gt;
-                <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                <apiMaturity>beta</apiMaturity>
-                <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
-                <compileScope>COMPILE</compileScope>
-                <deleteOutputDirectory>true</deleteOutputDirectory>
-              </configuration>
-              <executions>
-                <execution>
-                  <id>orchestration</id>
-                  <goals>
-                    <goal>generate</goal>
-                  </goals>
-                  <phase>generate-sources</phase>
-                  <configuration>
-                    <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
-                    <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
-                    <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
-                    <additionalProperties>
-                      <pojoBuilderMethodName>create</pojoBuilderMethodName>
-                      <pojoBuildMethodName/>
-                      <pojoConstructorVisibility>protected</pojoConstructorVisibility>
-                      <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                    </additionalProperties>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>-->
-
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>7.9.0</version>
         <executions>
           <execution>
             <goals>
@@ -206,7 +169,8 @@
                 <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
                 <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                 <useBeanValidation>false</useBeanValidation>
-                <modelAnnotations/>
+                <useOneOfInterfaces>true</useOneOfInterfaces>
+                <!--<legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>-->
               </configOptions>
               <generateModels>true</generateModels>
               <generateSupportingFiles>false</generateSupportingFiles>

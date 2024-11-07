@@ -35,33 +35,32 @@ final class ModuleConfigFactory {
     val template = config.getTemplate().getOrElse(() -> TemplateConfig.fromMessages(List.of()));
     val templateDto = toTemplateModuleConfigDto(template, messages);
 
-    var resultDto =
-        ModuleConfigs.create().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
+    var resultDto = new ModuleConfigs().llmModuleConfig(llmDto).templatingModuleConfig(templateDto);
 
     config
         .getMaskingConfig()
         .filter(DpiMaskingConfig.class::isInstance)
         .map(DpiMaskingConfig.class::cast)
         .map(DpiMaskingConfig::toMaskingProviderDto)
-        .map(it -> MaskingModuleConfig.create().maskingProviders(it))
+        .map(it -> new MaskingModuleConfig().maskingProviders(List.of(it)))
         .forEach(resultDto::maskingModuleConfig);
 
     val maybeInputFilter = config.getInputContentFilter();
     val maybeOutputFilter = config.getOutputContentFilter();
 
     if (maybeInputFilter.isDefined() || maybeOutputFilter.isDefined()) {
-      val filter = FilteringModuleConfig.create();
+      val filter = new FilteringModuleConfig();
       maybeInputFilter
           .filter(AzureContentFilter.class::isInstance)
           .map(AzureContentFilter.class::cast)
           .map(AzureContentFilter::toFilterConfigDto)
-          .map(it -> InputFilteringConfig.create().filters(it))
+          .map(it -> new InputFilteringConfig().filters(List.of(it)))
           .forEach(filter::input);
       maybeOutputFilter
           .filter(AzureContentFilter.class::isInstance)
           .map(AzureContentFilter.class::cast)
           .map(AzureContentFilter::toFilterConfigDto)
-          .map(it -> OutputFilteringConfig.create().filters(it))
+          .map(it -> new OutputFilteringConfig().filters(List.of(it)))
           .forEach(filter::output);
       resultDto = resultDto.filteringModuleConfig(filter);
     }
@@ -74,7 +73,7 @@ final class ModuleConfigFactory {
     if (model instanceof LlmConfig llmConfig) {
       return llmConfig.toLLMModuleConfigDto();
     }
-    val dto = LLMModuleConfig.create().modelName(model.name()).modelParams(Map.of());
+    val dto = new LLMModuleConfig().modelName(model.name()).modelParams(Map.of());
     if (model.version() != null) {
       dto.modelVersion(model.version());
     }
@@ -100,19 +99,19 @@ final class ModuleConfigFactory {
       }
       val messagesDto =
           messagesWithPrompt.stream()
-              .map(msg -> ChatMessage.create().role(msg.type()).content(msg.content()))
+              .map(msg -> new ChatMessage().role(msg.type()).content(msg.content()))
               .toList();
-      return TemplatingModuleConfig.create().template(messagesDto);
+      return new com.sap.ai.sdk.orchestration.client.model.Template().template(messagesDto);
     }
     if (templateConfig instanceof Template.IdReference idReference) {
-      val templateRef = TemplateRefByID.create().id(idReference.templateId());
+      val templateRef = new TemplateRefByID().id(idReference.templateId());
       throw new NotImplementedError(
           "Template reference by ID is not yet implemented. Can't create DTO for object: "
               + templateRef);
     }
     if (templateConfig instanceof Template.NameReference nameReference) {
       val templateRef =
-          TemplateRefByScenarioNameVersion.create()
+          new TemplateRefByScenarioNameVersion()
               .scenario(nameReference.scenario())
               .name(nameReference.name())
               .version(nameReference.version());

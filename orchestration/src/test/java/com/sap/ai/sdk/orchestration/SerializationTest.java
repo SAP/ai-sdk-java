@@ -11,7 +11,7 @@ import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
@@ -59,35 +59,35 @@ class SerializationTest {
   void testDeserialization() throws IOException {
 
     var llmResult =
-        LLMModuleResult.create()
+        new LLMModuleResultSynchronous()
             .id("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj")
             ._object("chat.completion")
             .created(1721224505)
             .model("gpt-35-turbo-16k")
             .choices(
                 List.of(
-                    LLMChoice.create()
+                    new LLMChoice()
                         .index(0)
-                        .message(ChatMessage.create().role("assistant").content("General Kenobi!"))
+                        .message(new ChatMessage().role("assistant").content("General Kenobi!"))
                         .finishReason("stop")))
-            .usage(TokenUsage.create().completionTokens(7).promptTokens(19).totalTokens(26));
+            .usage(new TokenUsage().completionTokens(7).promptTokens(19).totalTokens(26));
 
     var orchestrationResult =
-        LLMModuleResult.create()
+        new LLMModuleResultSynchronous()
             .id("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj")
             ._object("chat.completion")
             .created(1721224505)
             .model("gpt-35-turbo-16k")
             .choices(
                 List.of(
-                    LLMChoice.create()
+                    new LLMChoice()
                         .index(0)
-                        .message(ChatMessage.create().role("assistant").content("General Kenobi!"))
+                        .message(new ChatMessage().role("assistant").content("General Kenobi!"))
                         .finishReason("stop")))
-            .usage(TokenUsage.create().completionTokens(7).promptTokens(19).totalTokens(26));
+            .usage(new TokenUsage().completionTokens(7).promptTokens(19).totalTokens(26));
 
     var inputFilterResult =
-        GenericModuleResult.create()
+        new GenericModuleResult()
             .message("Input filter passed successfully.")
             .data(
                 Map.of(
@@ -96,7 +96,7 @@ class SerializationTest {
                     "checked_text",
                     "Hello there!"));
     var outputFilterResult =
-        GenericModuleResult.create()
+        new GenericModuleResult()
             .message("Output filter passed successfully.")
             .data(
                 Map.of(
@@ -105,23 +105,23 @@ class SerializationTest {
                     "checked_text",
                     "General Kenobi!"));
     var inputMaskingResult =
-        GenericModuleResult.create()
+        new GenericModuleResult()
             .message("Input to LLM is masked successfully.")
             .data(
                 Map.of(
                     "masked_template", List.of(Map.of("role", "user", "content", "Hello there!"))));
-    var outputMaskingResult =
+    List<ModuleResultsOutputUnmaskingInner> outputMaskingResult =
         List.of(
-            ModuleResultsOutputUnmaskingInner.create()
+            new LLMChoice()
                 .index(0)
-                .message(ChatMessage.create().role("assistant").content("Hello there!"))
+                .message(new ChatMessage().role("assistant").content("Hello there!"))
                 .finishReason("stop"));
     var expected =
-        CompletionPostResponse.create()
+        new CompletionPostResponse()
             .requestId("26ea36b5-c196-4806-a9a6-a686f0c6ad91")
             .moduleResults(
-                ModuleResults.create()
-                    .templating(List.of(ChatMessage.create().role("user").content("Hello there!")))
+                new ModuleResults()
+                    .templating(List.of(new ChatMessage().role("user").content("Hello there!")))
                     .llm(llmResult)
                     .inputFiltering(inputFilterResult)
                     .outputFiltering(outputFilterResult)

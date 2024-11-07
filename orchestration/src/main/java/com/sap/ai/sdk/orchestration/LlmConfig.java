@@ -59,7 +59,7 @@ public record LlmConfig(
     if (parameters != null) {
       params.putAll(parameters);
     }
-    val result = LLMModuleConfig.create().modelName(name).modelParams(params);
+    val result = new LLMModuleConfig().modelName(name).modelParams(params);
     if (version != null) {
       result.modelVersion(version);
     }

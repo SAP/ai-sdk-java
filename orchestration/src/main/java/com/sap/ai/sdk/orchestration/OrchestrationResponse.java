@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,10 +56,11 @@ public record OrchestrationResponse(
   @Nonnull
   static OrchestrationResponse fromCompletionPostResponseDto(
       @Nonnull final CompletionPostResponse response) {
-    val choice = response.getOrchestrationResult().getChoices().get(0);
+    val choice =
+        ((LLMModuleResultSynchronous) response.getOrchestrationResult()).getChoices().get(0);
     val message = new AssistantMessage(choice.getMessage().getContent());
     val finishReason = FinishReason.fromValue(choice.getFinishReason());
-    val tokenUsage = response.getOrchestrationResult().getUsage();
+    val tokenUsage = ((LLMModuleResultSynchronous) response.getOrchestrationResult()).getUsage();
     val allMessages = new ArrayList<Message>();
     response.getModuleResults().getTemplating().stream()
         .map(OrchestrationResponse::fromChatMessage)

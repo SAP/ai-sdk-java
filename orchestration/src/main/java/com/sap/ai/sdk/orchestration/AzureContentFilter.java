@@ -47,7 +47,7 @@ public final class AzureContentFilter implements ContentFilter {
 
   @Nonnull
   com.sap.ai.sdk.orchestration.client.model.FilterConfig toFilterConfigDto() {
-    val dto = AzureContentSafety.create();
+    val dto = new AzureContentSafety();
     if (hate == null && selfHarm == null && sexual == null && violence == null) {
       throw new IllegalStateException(
           "When configuring an azure content filter, at least one filter category must be set");
@@ -66,8 +66,10 @@ public final class AzureContentFilter implements ContentFilter {
       dto.violence(fromValue(violence.value));
     }
 
-    return com.sap.ai.sdk.orchestration.client.model.FilterConfig.create()
-        .type(com.sap.ai.sdk.orchestration.client.model.FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+    return new com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig()
+        .type(
+            com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig.TypeEnum
+                .AZURE_CONTENT_SAFETY)
         .config(dto);
   }
 }

@@ -12,60 +12,56 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /** DocumentGroundingFilter */
-// CHECKSTYLE:OFF
-public class DocumentGroundingFilter
-// CHECKSTYLE:ON
-{
-  @JsonProperty("id")
+@JsonPropertyOrder({
+  DocumentGroundingFilter.JSON_PROPERTY_ID,
+  DocumentGroundingFilter.JSON_PROPERTY_SEARCH_CONFIG,
+  DocumentGroundingFilter.JSON_PROPERTY_DATA_REPOSITORIES,
+  DocumentGroundingFilter.JSON_PROPERTY_DATA_REPOSITORY_TYPE,
+  DocumentGroundingFilter.JSON_PROPERTY_DATA_REPOSITORY_METADATA,
+  DocumentGroundingFilter.JSON_PROPERTY_DOCUMENT_METADATA,
+  DocumentGroundingFilter.JSON_PROPERTY_CHUNK_METADATA
+})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class DocumentGroundingFilter implements GroundingModuleConfigConfigFiltersInner {
+  public static final String JSON_PROPERTY_ID = "id";
   private Object id = null;
 
-  @JsonProperty("search_config")
-  private GroundingFilterSearchConfiguration searchConfig;
+  public static final String JSON_PROPERTY_SEARCH_CONFIG = "search_config";
+  private JsonNullable<GroundingFilterSearchConfiguration> searchConfig =
+      JsonNullable.<GroundingFilterSearchConfiguration>undefined();
 
-  @JsonProperty("data_repositories")
+  public static final String JSON_PROPERTY_DATA_REPOSITORIES = "data_repositories";
   private List<String> dataRepositories = new ArrayList<>(Arrays.asList("*"));
 
-  @JsonProperty("data_repository_type")
+  public static final String JSON_PROPERTY_DATA_REPOSITORY_TYPE = "data_repository_type";
   private DataRepositoryType dataRepositoryType;
 
-  @JsonProperty("data_repository_metadata")
+  public static final String JSON_PROPERTY_DATA_REPOSITORY_METADATA = "data_repository_metadata";
   private List<KeyValueListPair> dataRepositoryMetadata = new ArrayList<>();
 
-  @JsonProperty("document_metadata")
+  public static final String JSON_PROPERTY_DOCUMENT_METADATA = "document_metadata";
   private List<SearchDocumentKeyValueListPair> documentMetadata = new ArrayList<>();
 
-  @JsonProperty("chunk_metadata")
+  public static final String JSON_PROPERTY_CHUNK_METADATA = "chunk_metadata";
   private List<KeyValueListPair> chunkMetadata = new ArrayList<>();
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public DocumentGroundingFilter() {}
 
-  protected DocumentGroundingFilter() {}
+  public DocumentGroundingFilter id(Object id) {
 
-  /**
-   * Set the id of this {@link DocumentGroundingFilter} instance and return the same instance.
-   *
-   * @param id Identifier of this SearchFilter - unique per request.
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
-  public DocumentGroundingFilter id(@Nullable final Object id) {
     this.id = id;
     return this;
   }
@@ -73,78 +69,61 @@ public class DocumentGroundingFilter
   /**
    * Identifier of this SearchFilter - unique per request.
    *
-   * @return id The id of this {@link DocumentGroundingFilter} instance.
+   * @return id
    */
-  @Nullable
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Object getId() {
     return id;
   }
 
-  /**
-   * Set the id of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param id Identifier of this SearchFilter - unique per request.
-   */
-  public void setId(@Nullable final Object id) {
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setId(Object id) {
     this.id = id;
   }
 
-  /**
-   * Set the searchConfig of this {@link DocumentGroundingFilter} instance and return the same
-   * instance.
-   *
-   * @param searchConfig The searchConfig of this {@link DocumentGroundingFilter}
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
-  public DocumentGroundingFilter searchConfig(
-      @Nullable final GroundingFilterSearchConfiguration searchConfig) {
-    this.searchConfig = searchConfig;
+  public DocumentGroundingFilter searchConfig(GroundingFilterSearchConfiguration searchConfig) {
+    this.searchConfig = JsonNullable.<GroundingFilterSearchConfiguration>of(searchConfig);
+
     return this;
   }
 
   /**
    * Get searchConfig
    *
-   * @return searchConfig The searchConfig of this {@link DocumentGroundingFilter} instance.
+   * @return searchConfig
    */
-  @Nullable
+  @javax.annotation.Nullable
+  @JsonIgnore
   public GroundingFilterSearchConfiguration getSearchConfig() {
+    return searchConfig.orElse(null);
+  }
+
+  @JsonProperty(JSON_PROPERTY_SEARCH_CONFIG)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public JsonNullable<GroundingFilterSearchConfiguration> getSearchConfig_JsonNullable() {
     return searchConfig;
   }
 
-  /**
-   * Set the searchConfig of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param searchConfig The searchConfig of this {@link DocumentGroundingFilter}
-   */
-  public void setSearchConfig(@Nullable final GroundingFilterSearchConfiguration searchConfig) {
+  @JsonProperty(JSON_PROPERTY_SEARCH_CONFIG)
+  public void setSearchConfig_JsonNullable(
+      JsonNullable<GroundingFilterSearchConfiguration> searchConfig) {
     this.searchConfig = searchConfig;
   }
 
-  /**
-   * Set the dataRepositories of this {@link DocumentGroundingFilter} instance and return the same
-   * instance.
-   *
-   * @param dataRepositories Specify [&#39;*&#39;] to search across all DataRepositories or give a
-   *     specific list of DataRepository ids.
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
-  public DocumentGroundingFilter dataRepositories(@Nullable final List<String> dataRepositories) {
+  public void setSearchConfig(GroundingFilterSearchConfiguration searchConfig) {
+    this.searchConfig = JsonNullable.<GroundingFilterSearchConfiguration>of(searchConfig);
+  }
+
+  public DocumentGroundingFilter dataRepositories(List<String> dataRepositories) {
+
     this.dataRepositories = dataRepositories;
     return this;
   }
 
-  /**
-   * Add one dataRepositories instance to this {@link DocumentGroundingFilter}.
-   *
-   * @param dataRepositoriesItem The dataRepositories that should be added
-   * @return The same instance of type {@link DocumentGroundingFilter}
-   */
-  @Nonnull
-  public DocumentGroundingFilter addDataRepositoriesItem(
-      @Nonnull final String dataRepositoriesItem) {
+  public DocumentGroundingFilter addDataRepositoriesItem(String dataRepositoriesItem) {
     if (this.dataRepositories == null) {
       this.dataRepositories = new ArrayList<>(Arrays.asList("*"));
     }
@@ -156,33 +135,23 @@ public class DocumentGroundingFilter
    * Specify [&#39;*&#39;] to search across all DataRepositories or give a specific list of
    * DataRepository ids.
    *
-   * @return dataRepositories The dataRepositories of this {@link DocumentGroundingFilter} instance.
+   * @return dataRepositories
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DATA_REPOSITORIES)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<String> getDataRepositories() {
     return dataRepositories;
   }
 
-  /**
-   * Set the dataRepositories of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param dataRepositories Specify [&#39;*&#39;] to search across all DataRepositories or give a
-   *     specific list of DataRepository ids.
-   */
-  public void setDataRepositories(@Nullable final List<String> dataRepositories) {
+  @JsonProperty(JSON_PROPERTY_DATA_REPOSITORIES)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDataRepositories(List<String> dataRepositories) {
     this.dataRepositories = dataRepositories;
   }
 
-  /**
-   * Set the dataRepositoryType of this {@link DocumentGroundingFilter} instance and return the same
-   * instance.
-   *
-   * @param dataRepositoryType The dataRepositoryType of this {@link DocumentGroundingFilter}
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
-  public DocumentGroundingFilter dataRepositoryType(
-      @Nullable final DataRepositoryType dataRepositoryType) {
+  public DocumentGroundingFilter dataRepositoryType(DataRepositoryType dataRepositoryType) {
+
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
@@ -190,48 +159,30 @@ public class DocumentGroundingFilter
   /**
    * Get dataRepositoryType
    *
-   * @return dataRepositoryType The dataRepositoryType of this {@link DocumentGroundingFilter}
-   *     instance.
+   * @return dataRepositoryType
    */
-  @Nullable
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DATA_REPOSITORY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public DataRepositoryType getDataRepositoryType() {
     return dataRepositoryType;
   }
 
-  /**
-   * Set the dataRepositoryType of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param dataRepositoryType The dataRepositoryType of this {@link DocumentGroundingFilter}
-   */
-  public void setDataRepositoryType(@Nullable final DataRepositoryType dataRepositoryType) {
+  @JsonProperty(JSON_PROPERTY_DATA_REPOSITORY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setDataRepositoryType(DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
   }
 
-  /**
-   * Set the dataRepositoryMetadata of this {@link DocumentGroundingFilter} instance and return the
-   * same instance.
-   *
-   * @param dataRepositoryMetadata Restrict DataRepositories considered during search to those
-   *     annotated with the given metadata. Useful when combined with
-   *     dataRepositories&#x3D;[&#39;*&#39;]
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
   public DocumentGroundingFilter dataRepositoryMetadata(
-      @Nullable final List<KeyValueListPair> dataRepositoryMetadata) {
+      List<KeyValueListPair> dataRepositoryMetadata) {
+
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
 
-  /**
-   * Add one dataRepositoryMetadata instance to this {@link DocumentGroundingFilter}.
-   *
-   * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
-   * @return The same instance of type {@link DocumentGroundingFilter}
-   */
-  @Nonnull
   public DocumentGroundingFilter addDataRepositoryMetadataItem(
-      @Nonnull final KeyValueListPair dataRepositoryMetadataItem) {
+      KeyValueListPair dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -243,50 +194,30 @@ public class DocumentGroundingFilter
    * Restrict DataRepositories considered during search to those annotated with the given metadata.
    * Useful when combined with dataRepositories&#x3D;[&#39;*&#39;]
    *
-   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link
-   *     DocumentGroundingFilter} instance.
+   * @return dataRepositoryMetadata
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DATA_REPOSITORY_METADATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<KeyValueListPair> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
-  /**
-   * Set the dataRepositoryMetadata of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param dataRepositoryMetadata Restrict DataRepositories considered during search to those
-   *     annotated with the given metadata. Useful when combined with
-   *     dataRepositories&#x3D;[&#39;*&#39;]
-   */
-  public void setDataRepositoryMetadata(
-      @Nullable final List<KeyValueListPair> dataRepositoryMetadata) {
+  @JsonProperty(JSON_PROPERTY_DATA_REPOSITORY_METADATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDataRepositoryMetadata(List<KeyValueListPair> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
-  /**
-   * Set the documentMetadata of this {@link DocumentGroundingFilter} instance and return the same
-   * instance.
-   *
-   * @param documentMetadata Restrict documents considered during search to those annotated with the
-   *     given metadata.
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
   public DocumentGroundingFilter documentMetadata(
-      @Nullable final List<SearchDocumentKeyValueListPair> documentMetadata) {
+      List<SearchDocumentKeyValueListPair> documentMetadata) {
+
     this.documentMetadata = documentMetadata;
     return this;
   }
 
-  /**
-   * Add one documentMetadata instance to this {@link DocumentGroundingFilter}.
-   *
-   * @param documentMetadataItem The documentMetadata that should be added
-   * @return The same instance of type {@link DocumentGroundingFilter}
-   */
-  @Nonnull
   public DocumentGroundingFilter addDocumentMetadataItem(
-      @Nonnull final SearchDocumentKeyValueListPair documentMetadataItem) {
+      SearchDocumentKeyValueListPair documentMetadataItem) {
     if (this.documentMetadata == null) {
       this.documentMetadata = new ArrayList<>();
     }
@@ -297,47 +228,28 @@ public class DocumentGroundingFilter
   /**
    * Restrict documents considered during search to those annotated with the given metadata.
    *
-   * @return documentMetadata The documentMetadata of this {@link DocumentGroundingFilter} instance.
+   * @return documentMetadata
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DOCUMENT_METADATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<SearchDocumentKeyValueListPair> getDocumentMetadata() {
     return documentMetadata;
   }
 
-  /**
-   * Set the documentMetadata of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param documentMetadata Restrict documents considered during search to those annotated with the
-   *     given metadata.
-   */
-  public void setDocumentMetadata(
-      @Nullable final List<SearchDocumentKeyValueListPair> documentMetadata) {
+  @JsonProperty(JSON_PROPERTY_DOCUMENT_METADATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDocumentMetadata(List<SearchDocumentKeyValueListPair> documentMetadata) {
     this.documentMetadata = documentMetadata;
   }
 
-  /**
-   * Set the chunkMetadata of this {@link DocumentGroundingFilter} instance and return the same
-   * instance.
-   *
-   * @param chunkMetadata Restrict chunks considered during search to those with the given metadata.
-   * @return The same instance of this {@link DocumentGroundingFilter} class
-   */
-  @Nonnull
-  public DocumentGroundingFilter chunkMetadata(
-      @Nullable final List<KeyValueListPair> chunkMetadata) {
+  public DocumentGroundingFilter chunkMetadata(List<KeyValueListPair> chunkMetadata) {
+
     this.chunkMetadata = chunkMetadata;
     return this;
   }
 
-  /**
-   * Add one chunkMetadata instance to this {@link DocumentGroundingFilter}.
-   *
-   * @param chunkMetadataItem The chunkMetadata that should be added
-   * @return The same instance of type {@link DocumentGroundingFilter}
-   */
-  @Nonnull
-  public DocumentGroundingFilter addChunkMetadataItem(
-      @Nonnull final KeyValueListPair chunkMetadataItem) {
+  public DocumentGroundingFilter addChunkMetadataItem(KeyValueListPair chunkMetadataItem) {
     if (this.chunkMetadata == null) {
       this.chunkMetadata = new ArrayList<>();
     }
@@ -348,73 +260,32 @@ public class DocumentGroundingFilter
   /**
    * Restrict chunks considered during search to those with the given metadata.
    *
-   * @return chunkMetadata The chunkMetadata of this {@link DocumentGroundingFilter} instance.
+   * @return chunkMetadata
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_CHUNK_METADATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<KeyValueListPair> getChunkMetadata() {
     return chunkMetadata;
   }
 
-  /**
-   * Set the chunkMetadata of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param chunkMetadata Restrict chunks considered during search to those with the given metadata.
-   */
-  public void setChunkMetadata(@Nullable final List<KeyValueListPair> chunkMetadata) {
+  @JsonProperty(JSON_PROPERTY_CHUNK_METADATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setChunkMetadata(List<KeyValueListPair> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link DocumentGroundingFilter}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link DocumentGroundingFilter} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DocumentGroundingFilter has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link DocumentGroundingFilter} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DocumentGroundingFilter documentGroundingFilter = (DocumentGroundingFilter) o;
-    return Objects.equals(this.cloudSdkCustomFields, documentGroundingFilter.cloudSdkCustomFields)
-        && Objects.equals(this.id, documentGroundingFilter.id)
-        && Objects.equals(this.searchConfig, documentGroundingFilter.searchConfig)
+    DocumentGroundingFilter documentGroundingFilter = (DocumentGroundingFilter) o;
+    return Objects.equals(this.id, documentGroundingFilter.id)
+        && equalsNullable(this.searchConfig, documentGroundingFilter.searchConfig)
         && Objects.equals(this.dataRepositories, documentGroundingFilter.dataRepositories)
         && Objects.equals(this.dataRepositoryType, documentGroundingFilter.dataRepositoryType)
         && Objects.equals(
@@ -423,23 +294,37 @@ public class DocumentGroundingFilter
         && Objects.equals(this.chunkMetadata, documentGroundingFilter.chunkMetadata);
   }
 
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b
+        || (a != null
+            && b != null
+            && a.isPresent()
+            && b.isPresent()
+            && Objects.deepEquals(a.get(), b.get()));
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(
         id,
-        searchConfig,
+        hashCodeNullable(searchConfig),
         dataRepositories,
         dataRepositoryType,
         dataRepositoryMetadata,
         documentMetadata,
-        chunkMetadata,
-        cloudSdkCustomFields);
+        chunkMetadata);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[] {a.get()}) : 31;
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class DocumentGroundingFilter {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    searchConfig: ").append(toIndentedString(searchConfig)).append("\n");
@@ -450,9 +335,6 @@ public class DocumentGroundingFilter
         .append("\n");
     sb.append("    documentMetadata: ").append(toIndentedString(documentMetadata)).append("\n");
     sb.append("    chunkMetadata: ").append(toIndentedString(chunkMetadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -460,43 +342,105 @@ public class DocumentGroundingFilter
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * DocumentGroundingFilter} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (id) ->
-        (dataRepositoryType) ->
-            new DocumentGroundingFilter().id(id).dataRepositoryType(dataRepositoryType);
+  public static class Builder {
+
+    private DocumentGroundingFilter instance;
+
+    public Builder() {
+      this(new DocumentGroundingFilter());
+    }
+
+    protected Builder(DocumentGroundingFilter instance) {
+      this.instance = instance;
+    }
+
+    public DocumentGroundingFilter.Builder id(Object id) {
+      this.instance.id = id;
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder searchConfig(
+        GroundingFilterSearchConfiguration searchConfig) {
+      this.instance.searchConfig =
+          JsonNullable.<GroundingFilterSearchConfiguration>of(searchConfig);
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder searchConfig(
+        JsonNullable<GroundingFilterSearchConfiguration> searchConfig) {
+      this.instance.searchConfig = searchConfig;
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder dataRepositories(List<String> dataRepositories) {
+      this.instance.dataRepositories = dataRepositories;
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder dataRepositoryType(
+        DataRepositoryType dataRepositoryType) {
+      this.instance.dataRepositoryType = dataRepositoryType;
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder dataRepositoryMetadata(
+        List<KeyValueListPair> dataRepositoryMetadata) {
+      this.instance.dataRepositoryMetadata = dataRepositoryMetadata;
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder documentMetadata(
+        List<SearchDocumentKeyValueListPair> documentMetadata) {
+      this.instance.documentMetadata = documentMetadata;
+      return this;
+    }
+
+    public DocumentGroundingFilter.Builder chunkMetadata(List<KeyValueListPair> chunkMetadata) {
+      this.instance.chunkMetadata = chunkMetadata;
+      return this;
+    }
+
+    /**
+     * returns a built DocumentGroundingFilter instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public DocumentGroundingFilter build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the id of this {@link DocumentGroundingFilter} instance.
-     *
-     * @param id Identifier of this SearchFilter - unique per request.
-     * @return The DocumentGroundingFilter builder.
-     */
-    Builder1 id(@Nullable final Object id);
+  /** Create a builder with no initialized field. */
+  public static DocumentGroundingFilter.Builder builder() {
+    return new DocumentGroundingFilter.Builder();
   }
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the dataRepositoryType of this {@link DocumentGroundingFilter} instance.
-     *
-     * @param dataRepositoryType The dataRepositoryType of this {@link DocumentGroundingFilter}
-     * @return The DocumentGroundingFilter instance.
-     */
-    DocumentGroundingFilter dataRepositoryType(
-        @Nullable final DataRepositoryType dataRepositoryType);
+  /** Create a builder with a shallow copy of this instance. */
+  public DocumentGroundingFilter.Builder toBuilder() {
+    return new DocumentGroundingFilter.Builder()
+        .id(getId())
+        .searchConfig(getSearchConfig())
+        .dataRepositories(getDataRepositories())
+        .dataRepositoryType(getDataRepositoryType())
+        .dataRepositoryMetadata(getDataRepositoryMetadata())
+        .documentMetadata(getDocumentMetadata())
+        .chunkMetadata(getChunkMetadata());
   }
 }

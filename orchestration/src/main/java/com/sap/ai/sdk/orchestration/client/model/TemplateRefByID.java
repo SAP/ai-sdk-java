@@ -12,39 +12,24 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** TemplateRefByID */
-// CHECKSTYLE:OFF
-public class TemplateRefByID
-// CHECKSTYLE:ON
-{
-  @JsonProperty("id")
+@JsonPropertyOrder({TemplateRefByID.JSON_PROPERTY_ID})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class TemplateRefByID implements TemplateRefTemplateRef {
+  public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public TemplateRefByID() {}
 
-  protected TemplateRefByID() {}
+  public TemplateRefByID id(String id) {
 
-  /**
-   * Set the id of this {@link TemplateRefByID} instance and return the same instance.
-   *
-   * @param id ID of the template in prompt registry
-   * @return The same instance of this {@link TemplateRefByID} class
-   */
-  @Nonnull
-  public TemplateRefByID id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
@@ -52,87 +37,43 @@ public class TemplateRefByID
   /**
    * ID of the template in prompt registry
    *
-   * @return id The id of this {@link TemplateRefByID} instance.
+   * @return id
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getId() {
     return id;
   }
 
-  /**
-   * Set the id of this {@link TemplateRefByID} instance.
-   *
-   * @param id ID of the template in prompt registry
-   */
-  public void setId(@Nonnull final String id) {
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setId(String id) {
     this.id = id;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link TemplateRefByID}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link TemplateRefByID} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TemplateRefByID has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link TemplateRefByID} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplateRefByID templateRefByID = (TemplateRefByID) o;
-    return Objects.equals(this.cloudSdkCustomFields, templateRefByID.cloudSdkCustomFields)
-        && Objects.equals(this.id, templateRefByID.id);
+    TemplateRefByID templateRefByID = (TemplateRefByID) o;
+    return Objects.equals(this.id, templateRefByID.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, cloudSdkCustomFields);
+    return Objects.hash(id);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class TemplateRefByID {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -140,29 +81,57 @@ public class TemplateRefByID
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRefByID}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (id) -> new TemplateRefByID().id(id);
+  public static class Builder {
+
+    private TemplateRefByID instance;
+
+    public Builder() {
+      this(new TemplateRefByID());
+    }
+
+    protected Builder(TemplateRefByID instance) {
+      this.instance = instance;
+    }
+
+    public TemplateRefByID.Builder id(String id) {
+      this.instance.id = id;
+      return this;
+    }
+
+    /**
+     * returns a built TemplateRefByID instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public TemplateRefByID build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the id of this {@link TemplateRefByID} instance.
-     *
-     * @param id ID of the template in prompt registry
-     * @return The TemplateRefByID instance.
-     */
-    TemplateRefByID id(@Nonnull final String id);
+  /** Create a builder with no initialized field. */
+  public static TemplateRefByID.Builder builder() {
+    return new TemplateRefByID.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public TemplateRefByID.Builder toBuilder() {
+    return new TemplateRefByID.Builder().id(getId());
   }
 }

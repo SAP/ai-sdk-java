@@ -12,45 +12,29 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** KeyValueListPair */
-// CHECKSTYLE:OFF
-public class KeyValueListPair
-// CHECKSTYLE:ON
-{
-  @JsonProperty("key")
+@JsonPropertyOrder({KeyValueListPair.JSON_PROPERTY_KEY, KeyValueListPair.JSON_PROPERTY_VALUE})
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class KeyValueListPair {
+  public static final String JSON_PROPERTY_KEY = "key";
   private String key;
 
-  @JsonProperty("value")
+  public static final String JSON_PROPERTY_VALUE = "value";
   private List<String> value = new ArrayList<>();
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public KeyValueListPair() {}
 
-  protected KeyValueListPair() {}
+  public KeyValueListPair key(String key) {
 
-  /**
-   * Set the key of this {@link KeyValueListPair} instance and return the same instance.
-   *
-   * @param key The key of this {@link KeyValueListPair}
-   * @return The same instance of this {@link KeyValueListPair} class
-   */
-  @Nonnull
-  public KeyValueListPair key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -58,42 +42,28 @@ public class KeyValueListPair
   /**
    * Get key
    *
-   * @return key The key of this {@link KeyValueListPair} instance.
+   * @return key
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_KEY)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getKey() {
     return key;
   }
 
-  /**
-   * Set the key of this {@link KeyValueListPair} instance.
-   *
-   * @param key The key of this {@link KeyValueListPair}
-   */
-  public void setKey(@Nonnull final String key) {
+  @JsonProperty(JSON_PROPERTY_KEY)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setKey(String key) {
     this.key = key;
   }
 
-  /**
-   * Set the value of this {@link KeyValueListPair} instance and return the same instance.
-   *
-   * @param value The value of this {@link KeyValueListPair}
-   * @return The same instance of this {@link KeyValueListPair} class
-   */
-  @Nonnull
-  public KeyValueListPair value(@Nonnull final List<String> value) {
+  public KeyValueListPair value(List<String> value) {
+
     this.value = value;
     return this;
   }
 
-  /**
-   * Add one value instance to this {@link KeyValueListPair}.
-   *
-   * @param valueItem The value that should be added
-   * @return The same instance of type {@link KeyValueListPair}
-   */
-  @Nonnull
-  public KeyValueListPair addValueItem(@Nonnull final String valueItem) {
+  public KeyValueListPair addValueItem(String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -104,89 +74,45 @@ public class KeyValueListPair
   /**
    * Get value
    *
-   * @return value The value of this {@link KeyValueListPair} instance.
+   * @return value
    */
-  @Nonnull
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<String> getValue() {
     return value;
   }
 
-  /**
-   * Set the value of this {@link KeyValueListPair} instance.
-   *
-   * @param value The value of this {@link KeyValueListPair}
-   */
-  public void setValue(@Nonnull final List<String> value) {
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setValue(List<String> value) {
     this.value = value;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link KeyValueListPair}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link KeyValueListPair} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("KeyValueListPair has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link KeyValueListPair} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final KeyValueListPair keyValueListPair = (KeyValueListPair) o;
-    return Objects.equals(this.cloudSdkCustomFields, keyValueListPair.cloudSdkCustomFields)
-        && Objects.equals(this.key, keyValueListPair.key)
+    KeyValueListPair keyValueListPair = (KeyValueListPair) o;
+    return Objects.equals(this.key, keyValueListPair.key)
         && Objects.equals(this.value, keyValueListPair.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(key, value, cloudSdkCustomFields);
+    return Objects.hash(key, value);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class KeyValueListPair {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -194,50 +120,62 @@ public class KeyValueListPair
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link KeyValueListPair}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (key) -> (value) -> new KeyValueListPair().key(key).value(value);
-  }
+  public static class Builder {
 
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the key of this {@link KeyValueListPair} instance.
-     *
-     * @param key The key of this {@link KeyValueListPair}
-     * @return The KeyValueListPair builder.
-     */
-    Builder1 key(@Nonnull final String key);
-  }
+    private KeyValueListPair instance;
 
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the value of this {@link KeyValueListPair} instance.
-     *
-     * @param value The value of this {@link KeyValueListPair}
-     * @return The KeyValueListPair instance.
-     */
-    KeyValueListPair value(@Nonnull final List<String> value);
-
-    /**
-     * Set the value of this {@link KeyValueListPair} instance.
-     *
-     * @param value The value of this {@link KeyValueListPair}
-     * @return The KeyValueListPair instance.
-     */
-    default KeyValueListPair value(@Nonnull final String... value) {
-      return value(Arrays.asList(value));
+    public Builder() {
+      this(new KeyValueListPair());
     }
+
+    protected Builder(KeyValueListPair instance) {
+      this.instance = instance;
+    }
+
+    public KeyValueListPair.Builder key(String key) {
+      this.instance.key = key;
+      return this;
+    }
+
+    public KeyValueListPair.Builder value(List<String> value) {
+      this.instance.value = value;
+      return this;
+    }
+
+    /**
+     * returns a built KeyValueListPair instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public KeyValueListPair build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static KeyValueListPair.Builder builder() {
+    return new KeyValueListPair.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public KeyValueListPair.Builder toBuilder() {
+    return new KeyValueListPair.Builder().key(getKey()).value(getValue());
   }
 }

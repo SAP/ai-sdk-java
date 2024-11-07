@@ -13,7 +13,7 @@ import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.ModuleResults;
 import java.util.List;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
@@ -59,11 +59,11 @@ class OrchestrationClientTest {
 
   private void stubResponse(String finishReason) {
     var response = mock(CompletionPostResponse.class);
-    var orchestrationResult = mock(LLMModuleResult.class);
+    var orchestrationResult = mock(LLMModuleResultSynchronous.class);
     var llmChoice =
-        LLMChoice.create()
+        new LLMChoice()
             .index(0)
-            .message(ChatMessage.create().role("assistant").content("General Kenobi!"))
+            .message(new ChatMessage().role("assistant").content("General Kenobi!"))
             .finishReason(finishReason);
     var moduleResults = mock(ModuleResults.class);
     when(moduleResults.getTemplating()).thenReturn(List.of());

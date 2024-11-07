@@ -90,9 +90,9 @@ public class OrchestrationPrompt implements OrchestrationConfig<OrchestrationPro
     // that way this prompt remains unchanged and can be reused
     val config = DefaultOrchestrationConfig.standalone().copyFrom(this).copyFrom(defaults);
     val moduleConfigDTO = ModuleConfigFactory.toModuleConfigDto(config, messages);
-    return CompletionPostRequest.create()
+    return new CompletionPostRequest()
         .orchestrationConfig(
-            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
+            new com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig()
                 .moduleConfigurations(moduleConfigDTO))
         .inputParams(templateParameters);
   }

@@ -180,6 +180,11 @@ components:
         output_unmasking:
           type: array
           items:
+            discriminator:
+              propertyName: x-discriminator-value
+              mapping:
+                LLMChoice: '#/components/schemas/LLMChoice'
+                LLMChoiceStreaming: '#/components/schemas/LLMChoiceStreaming'
             oneOf:
               - $ref: '#/components/schemas/LLMChoice'
               - $ref: '#/components/schemas/LLMChoiceStreaming'
@@ -232,6 +237,11 @@ components:
           description: Additional data object from the module
     LLMModuleResult:
       description: Output of LLM module. Follows the OpenAI spec.
+      discriminator:
+        propertyName: x-discriminator-value
+        mapping:
+          LLMModuleResultSynchronous: '#/components/schemas/LLMModuleResultSynchronous'
+          LLMModuleResultStreaming: '#/components/schemas/LLMModuleResultStreaming'
       oneOf:
         - $ref: '#/components/schemas/LLMModuleResultSynchronous'
         - $ref: '#/components/schemas/LLMModuleResultStreaming'
@@ -246,6 +256,10 @@ components:
         - choices
         - usage
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: LLMModuleResultSynchronous
         id:
           type: string
           description: ID of the response
@@ -283,6 +297,10 @@ components:
         - model
         - choices
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: LLMModuleResultStreaming
         id:
           type: string
           description: ID of the response
@@ -312,6 +330,10 @@ components:
         - message
         - finish_reason
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: LLMChoice
         index:
           type: integer
           description: Index of the choice
@@ -335,6 +357,10 @@ components:
         - index
         - delta
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: LLMChoiceStreaming
         index:
           type: integer
           description: Index of the choice
@@ -371,6 +397,8 @@ components:
           description: Total number of tokens used
           example: 50
     TemplatingModuleConfig:
+      discriminator:
+        propertyName: x-discriminator-value
       oneOf:
         - $ref: '#/components/schemas/Template'
     Template:
@@ -378,6 +406,10 @@ components:
       required:
         - template
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: Template
         template:
           allOf:
             - $ref: '#/components/schemas/ChatMessages'
@@ -441,6 +473,8 @@ components:
           minimum: 0
           maximum: 10000
     FilterConfig:
+      discriminator:
+        propertyName: x-discriminator-value
       oneOf:
         - $ref: '#/components/schemas/AzureContentSafetyFilterConfig'
     AzureContentSafetyFilterConfig:
@@ -448,6 +482,10 @@ components:
       required:
         - type
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: AzureContentSafetyFilterConfig
         type:
           description: String represents name of the filter provider
           type: string
@@ -491,6 +529,8 @@ components:
           description: List of masking service providers
       additionalProperties: false
     MaskingProviderConfig:
+      discriminator:
+        propertyName: x-discriminator-value
       oneOf:
         - $ref: '#/components/schemas/DPIConfig'
     DPIConfig:
@@ -500,6 +540,10 @@ components:
         - method
         - entities
       properties:
+        x-discriminator-value:
+          type: string
+          description: Discriminator for the type of the object
+          example: DPIConfig
         type:
           description: Type of masking service provider
           type: string

@@ -12,40 +12,26 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Objects;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** OrchestrationV1EndpointsHealthz503Response */
-// CHECKSTYLE:OFF
-public class OrchestrationV1EndpointsHealthz503Response
-// CHECKSTYLE:ON
-{
-  @JsonProperty("status")
+@JsonPropertyOrder({OrchestrationV1EndpointsHealthz503Response.JSON_PROPERTY_STATUS})
+@JsonTypeName("orchestration_v1_endpoints_healthz_503_response")
+@javax.annotation.Generated(
+    value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    comments = "Generator version: 7.9.0")
+public class OrchestrationV1EndpointsHealthz503Response {
+  public static final String JSON_PROPERTY_STATUS = "status";
   private String status;
 
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  public OrchestrationV1EndpointsHealthz503Response() {}
 
-  protected OrchestrationV1EndpointsHealthz503Response() {}
+  public OrchestrationV1EndpointsHealthz503Response status(String status) {
 
-  /**
-   * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance and return
-   * the same instance.
-   *
-   * @param status The status of this {@link OrchestrationV1EndpointsHealthz503Response}
-   * @return The same instance of this {@link OrchestrationV1EndpointsHealthz503Response} class
-   */
-  @Nonnull
-  public OrchestrationV1EndpointsHealthz503Response status(@Nullable final String status) {
     this.status = status;
     return this;
   }
@@ -53,94 +39,44 @@ public class OrchestrationV1EndpointsHealthz503Response
   /**
    * Get status
    *
-   * @return status The status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
+   * @return status
    */
-  @Nonnull
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getStatus() {
     return status;
   }
 
-  /**
-   * Set the status of this {@link OrchestrationV1EndpointsHealthz503Response} instance.
-   *
-   * @param status The status of this {@link OrchestrationV1EndpointsHealthz503Response}
-   */
-  public void setStatus(@Nullable final String status) {
+  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setStatus(String status) {
     this.status = status;
   }
 
-  /**
-   * Get the names of the unrecognizable properties of the {@link
-   * OrchestrationV1EndpointsHealthz503Response}.
-   *
-   * @return The set of properties names
-   */
-  @JsonIgnore
-  @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link
-   * OrchestrationV1EndpointsHealthz503Response} instance.
-   *
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "OrchestrationV1EndpointsHealthz503Response has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link OrchestrationV1EndpointsHealthz503Response}
-   * instance. If the map previously contained a mapping for the key, the old value is replaced by
-   * the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OrchestrationV1EndpointsHealthz503Response orchestrationV1EndpointsHealthz503Response =
+    OrchestrationV1EndpointsHealthz503Response orchestrationV1EndpointsHealthz503Response =
         (OrchestrationV1EndpointsHealthz503Response) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields,
-            orchestrationV1EndpointsHealthz503Response.cloudSdkCustomFields)
-        && Objects.equals(this.status, orchestrationV1EndpointsHealthz503Response.status);
+    return Objects.equals(this.status, orchestrationV1EndpointsHealthz503Response.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, cloudSdkCustomFields);
+    return Objects.hash(status);
   }
 
   @Override
-  @Nonnull
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append("class OrchestrationV1EndpointsHealthz503Response {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -148,18 +84,57 @@ public class OrchestrationV1EndpointsHealthz503Response
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a new {@link OrchestrationV1EndpointsHealthz503Response} instance. No arguments are
-   * required.
-   */
-  public static OrchestrationV1EndpointsHealthz503Response create() {
-    return new OrchestrationV1EndpointsHealthz503Response();
+  public static class Builder {
+
+    private OrchestrationV1EndpointsHealthz503Response instance;
+
+    public Builder() {
+      this(new OrchestrationV1EndpointsHealthz503Response());
+    }
+
+    protected Builder(OrchestrationV1EndpointsHealthz503Response instance) {
+      this.instance = instance;
+    }
+
+    public OrchestrationV1EndpointsHealthz503Response.Builder status(String status) {
+      this.instance.status = status;
+      return this;
+    }
+
+    /**
+     * returns a built OrchestrationV1EndpointsHealthz503Response instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public OrchestrationV1EndpointsHealthz503Response build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static OrchestrationV1EndpointsHealthz503Response.Builder builder() {
+    return new OrchestrationV1EndpointsHealthz503Response.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public OrchestrationV1EndpointsHealthz503Response.Builder toBuilder() {
+    return new OrchestrationV1EndpointsHealthz503Response.Builder().status(getStatus());
   }
 }

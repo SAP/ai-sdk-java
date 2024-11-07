@@ -1,9 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum.ANONYMIZATION;
-import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum.PSEUDONYMIZATION;
-import static com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
+import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.MethodEnum.ANONYMIZATION;
+import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.MethodEnum.PSEUDONYMIZATION;
+import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
 
+import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
@@ -25,7 +26,7 @@ import lombok.val;
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DpiMaskingConfig implements MaskingConfig {
-  @Nonnull MaskingProviderConfig.MethodEnum maskingMethod;
+  @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
 
   /**
@@ -50,8 +51,8 @@ public class DpiMaskingConfig implements MaskingConfig {
 
   @Nonnull
   MaskingProviderConfig toMaskingProviderDto() {
-    val entitiesDTO = entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingProviderConfig.create()
+    val entitiesDTO = entities.stream().map(it -> new DPIEntityConfig().type(it)).toList();
+    return new DPIConfig()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
         .entities(entitiesDTO);
@@ -63,7 +64,7 @@ public class DpiMaskingConfig implements MaskingConfig {
    */
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class Builder {
-    private final MaskingProviderConfig.MethodEnum maskingMethod;
+    private final DPIConfig.MethodEnum maskingMethod;
 
     /**
      * Specifies which entities should be masked in the input text.
