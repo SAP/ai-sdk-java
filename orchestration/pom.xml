@@ -165,12 +165,11 @@
               <configOptions>
                 <generateBuilders>true</generateBuilders>
                 <failOnUnknownProperties>false</failOnUnknownProperties>
-                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                <hideGenerationTimestamp>false</hideGenerationTimestamp>
                 <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
                 <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                 <useBeanValidation>false</useBeanValidation>
                 <useOneOfInterfaces>true</useOneOfInterfaces>
-                <!--<legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>-->
               </configOptions>
               <generateModels>true</generateModels>
               <generateSupportingFiles>false</generateSupportingFiles>

@@ -22,7 +22,7 @@ import java.util.Objects;
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
-public class TemplateRef implements TemplatingModuleConfig {
+public class TemplateRef {
   public static final String JSON_PROPERTY_TEMPLATE_REF = "template_ref";
   private TemplateRefTemplateRef templateRef;
 

@@ -1,0 +1,26 @@
+# OpenAPI Generator Ignore
+
+.github/
+gradle/
+.gitignore
+.travis.yml
+build.gradle
+build.sbt
+git_push.sh
+gradle.properties
+gradlew
+gradlew.bat
+pom.xml
+README.md
+settings.gradle
+src/main/AndroidManifest.xml
+api/
+.openapi-generator/
+
+src/main/java/com/sap/ai/sdk/orchestration/client/model/FilterConfig.java
+src/main/java/com/sap/ai/sdk/orchestration/client/model/GroundingModuleConfigConfigFiltersInner.java
+src/main/java/com/sap/ai/sdk/orchestration/client/model/LLMModuleResult.java
+src/main/java/com/sap/ai/sdk/orchestration/client/model/MaskingProviderConfig.java
+src/main/java/com/sap/ai/sdk/orchestration/client/model/ModuleResultsOutputUnmaskingInner.java
+src/main/java/com/sap/ai/sdk/orchestration/client/model/TemplateRefTemplateRef.java
+src/main/java/com/sap/ai/sdk/orchestration/client/model/TemplatingModuleConfig.java
