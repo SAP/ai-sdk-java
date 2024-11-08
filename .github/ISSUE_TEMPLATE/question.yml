@@ -1,5 +1,5 @@
 name: Question
-description: Ask a question about the SAP Cloud SDK for AI  (Java).
+description: Ask a question about the SAP Cloud SDK for AI (Java).
 labels:
   - question
 body:
@@ -9,7 +9,7 @@ body:
         This repository is for Java related issues only. Please open [JavaScript / TypeScript issues here](https://github.com/SAP/ai-sdk-js/issues/new/choose)
   - type: textarea
     attributes:
-      label: "Describe the Question"
-      description: A clear and concise description of your question.
+      label: "Ask the Question"
+      description: Give  a clear and concise description.
     validations:
       required: true
