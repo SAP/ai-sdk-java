@@ -236,7 +236,9 @@ class OrchestrationUnitTest {
 
     final var filter = createAzureContentFilter(NUMBER_0);
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, config.withFilteringConfig(filter)))
+    final var configWithFilter = config.withFilteringConfig(filter);
+
+    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
