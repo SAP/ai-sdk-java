@@ -73,7 +73,7 @@
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
     <!-- Test coverage -->
     <coverage.instruction>74%</coverage.instruction>
-    <coverage.branch>60%</coverage.branch>
+    <coverage.branch>62%</coverage.branch>
     <coverage.complexity>67%</coverage.complexity>
     <coverage.line>75%</coverage.line>
     <coverage.method>80%</coverage.method>

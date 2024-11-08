@@ -7,16 +7,26 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ConfigToRequestTransformerTest {
 
   @Test
   void testThrowsOnMissingLlmConfig() {
-    assertThatThrownBy(
-            () -> ConfigToRequestTransformer.toModuleConfigs(new OrchestrationModuleConfig()))
+    var config = new OrchestrationModuleConfig();
+    assertThatThrownBy(() -> ConfigToRequestTransformer.toModuleConfigs(config))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("LLM config is required");
+  }
+
+  @Test
+  void testThrowsOnMissingMessages() {
+    var prompt = new OrchestrationPrompt(Map.of());
+
+    assertThatThrownBy(() -> ConfigToRequestTransformer.toTemplateModuleConfig(prompt, null))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("A prompt is required");
   }
 
   @Test
