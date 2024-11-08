@@ -62,8 +62,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                               "ttl": null,
                               "details": {
                                 "scaling": {
-                                  "backendDetails": {},
-                                  "backend_details": {}
+                                  "backendDetails": {}
                                 },
                                 "resources": {
                                   "backendDetails": {
@@ -104,7 +103,6 @@ class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d889e3a61050c085");
-    // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
     val expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
     assertThat(deployment.getDetails().getResources().getBackendDetails()).isEqualTo(expected);
     assertThat(deployment.getDetails().getScaling().getBackendDetails()).isEqualTo(Map.of());
@@ -243,12 +241,12 @@ class DeploymentUnitTest extends WireMockTestServer {
                            "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467",
                            "details": {
                              "resources": {
-                               "backend_details": {},
-                               "backendDetails": {}
+                               "backendDetails": {},
+                               "backend_details": {}
                              },
                              "scaling": {
-                               "backend_details": {},
-                               "backendDetails": {}
+                               "backendDetails": {},
+                               "backend_details": {}
                              }
                            },
                            "id": "db1d64d9f06be467",
@@ -272,8 +270,12 @@ class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
-    assertThat(deployment.getDetails().getResources().getBackendDetails()).isNotNull();
-    assertThat(deployment.getDetails().getScaling().getBackendDetails()).isNotNull();
+    assertThat(deployment.getDetails().getResources().getBackendDetails()).isEqualTo(Map.of());
+    assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
+        .isEqualTo(Map.of());
+    assertThat(deployment.getDetails().getScaling().getBackendDetails()).isEqualTo(Map.of());
+    assertThat(deployment.getDetails().getScaling().getCustomField("backend_details"))
+        .isEqualTo(Map.of());
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
         .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);

@@ -24,5 +24,6 @@
   },
   "input_params": {
     "input": "Reply with 'Orchestration Service is working!' in German"
-  }
+  },
+  "messages_history" : [ ]
 }
