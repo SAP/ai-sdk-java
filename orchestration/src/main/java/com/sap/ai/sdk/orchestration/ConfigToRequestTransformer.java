@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
@@ -12,13 +13,13 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-/** Factory to create all DTOs from an orchestration configuration. */
+/** Factory to create all data objects from an orchestration configuration. */
 @NoArgsConstructor(access = AccessLevel.NONE)
-final class ModuleConfigFactory {
+final class ConfigToRequestTransformer {
   @Nonnull
-  static CompletionPostRequest toCompletionPostRequestDto(
+  static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    val template = toTemplateModuleConfigDto(prompt, config.getTemplate());
+    val template = toTemplateModuleConfig(prompt, config.getTemplate());
     // note that the config is immutable and implicitly copied here
     // copying is required here, to not alter the original config object, which might be reused for
     // subsequent requests
@@ -26,14 +27,13 @@ final class ModuleConfigFactory {
 
     return CompletionPostRequest.create()
         .orchestrationConfig(
-            com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig.create()
-                .moduleConfigurations(toModuleConfigsDto(configCopy)))
+            OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
         .messagesHistory(prompt.getMessagesHistory());
   }
 
   @Nonnull
-  static TemplatingModuleConfig toTemplateModuleConfigDto(
+  static TemplatingModuleConfig toTemplateModuleConfig(
       @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig template) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
@@ -53,7 +53,7 @@ final class ModuleConfigFactory {
   }
 
   @Nonnull
-  static ModuleConfigs toModuleConfigsDto(@Nonnull final OrchestrationModuleConfig config) {
+  static ModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
     val llmConfig =
         Option.of(config.getLlmConfig())
             .getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
