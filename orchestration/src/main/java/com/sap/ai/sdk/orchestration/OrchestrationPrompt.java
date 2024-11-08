@@ -59,7 +59,7 @@ public class OrchestrationPrompt {
   }
 
   /**
-   * Add a chat history to this prompt.
+   * Set the chat history of this prompt.
    *
    * @param messagesHistory The chat history to add.
    */
