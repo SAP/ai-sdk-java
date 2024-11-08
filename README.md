@@ -251,7 +251,7 @@ For more detailed information and advanced usage, please refer to the following:
 
 ## FAQs
 
-### How to add a custom header to AI Core requests?
+### _"How to add a custom header to AI Core requests?"_
 
 To add a header to AI Core requests, use the following code:
 
@@ -262,7 +262,15 @@ DeploymentApi api = new DeploymentApi(client);
 
 For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
 
-### More Examples
+
+### _"There's a vulnerability warning `CVE-2021-41251`?"_
+
+This is a known false-positive finding.
+Depending on the tooling any product called "SAP Cloud SDK" or similar with a low version number may be marked as vulnerable, incorrectly.
+Please consider suppressing the warning, [as we do](https://github.com/SAP/ai-sdk-java/blob/main/.pipeline/dependency-check-suppression.xml).
+
+
+### _"Are there any example projects?"_
 
 Explore example applications and code snippets:
 
