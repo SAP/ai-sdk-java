@@ -103,7 +103,10 @@ The LLM response is available as the first choice under the `result.getOrchestra
 Use a prepared template and execute requests with by passing only the input parameters:
 
 ```java
-var template = ChatMessage.create().role("user").content("Reply with 'Orchestration Service is working!' in {{?language}}");
+var template =
+    ChatMessage.create()
+        .role("user")
+        .content("Reply with 'Orchestration Service is working!' in {{?language}}");
 var templatingConfig = TemplatingModuleConfig.create().template(template);
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
