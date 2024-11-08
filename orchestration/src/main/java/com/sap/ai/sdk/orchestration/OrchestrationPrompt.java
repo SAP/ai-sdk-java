@@ -63,6 +63,7 @@ public class OrchestrationPrompt {
    *
    * @param messagesHistory The chat history to add.
    */
+  @Nonnull
   public OrchestrationPrompt messageHistory(@Nonnull final List<ChatMessage> messagesHistory) {
     this.messagesHistory.clear();
     this.messagesHistory.addAll(messagesHistory);
