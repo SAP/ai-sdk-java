@@ -58,14 +58,14 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   public CompletionPostResponse template() {
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = ChatMessage.create().role("user").content("Reply with 'Orchestration Service is working!' in {{?language}}");
     final var templatingConfig = TemplatingModuleConfig.create().template(template);
+    final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
-    final var inputParams =
-        Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-
+    final var inputParams = Map.of("language", "German");
     final var prompt = new OrchestrationPrompt(inputParams);
-    return client.chatCompletion(prompt, config.withTemplateConfig(templatingConfig));
+
+    return client.chatCompletion(prompt, configWithTemplate);
   }
 
   /**
@@ -106,8 +106,9 @@ class OrchestrationController {
             ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
             """);
     final var filterConfig = createAzureContentFilter(threshold);
+    final var configWithFilter = config.withFilteringConfig(filterConfig);
 
-    return client.chatCompletion(prompt, config.withFilteringConfig(filterConfig));
+    return client.chatCompletion(prompt, configWithFilter);
   }
 
   /**
@@ -160,8 +161,9 @@ class OrchestrationController {
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig =
         createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
+    final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    return client.chatCompletion(prompt, configWithMasking);
   }
 
   /**
@@ -200,8 +202,9 @@ class OrchestrationController {
             MaskingProviderConfig.MethodEnum.PSEUDONYMIZATION,
             DPIEntities.PERSON,
             DPIEntities.EMAIL);
+    final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    return client.chatCompletion(prompt, configWithMasking);
   }
 
   /**

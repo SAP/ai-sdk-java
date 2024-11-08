@@ -103,15 +103,17 @@ The LLM response is available as the first choice under the `result.getOrchestra
 Use a prepared template and execute requests with by passing only the input parameters:
 
 ```java
-var template = ChatMessage.create().role("user").content("{{?input}}");
+var template = ChatMessage.create().role("user").content("Reply with 'Orchestration Service is working!' in {{?language}}");
 var templatingConfig = TemplatingModuleConfig.create().template(template);
+var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
-var inputParams =
-    Map.of("input", "Reply with 'Orchestration Service is working!' in German");
+var inputParams = Map.of("language", "German");
 var prompt = new OrchestrationPrompt(inputParams);
 
-var result = client.chatCompletion(prompt, config.withTemplateConfig(templatingConfig));
+var result = client.chatCompletion(prompt, configWithTemplate);
 ```
+
+In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
 ### Message history
 
@@ -168,9 +170,11 @@ var filteringConfig =
         .input(InputFilteringConfig.create().filters(filterStrict))
         .output(OutputFilteringConfig.create().filters(filterStrict));
 
+var configWithFilter = config.withFilteringConfig(filteringConfig);
+
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
-    new OrchestrationClient().chatCompletion(prompt, config.withFilteringConfig(filteringConfig));
+    new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ```
 
 ### Data masking
@@ -186,6 +190,7 @@ var maskingProvider =
             DPIEntityConfig.create().type(DPIEntities.PHONE),
             DPIEntityConfig.create().type(DPIEntities.PERSON));
 var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = ChatMessage.create()
         .role("system")
@@ -200,7 +205,7 @@ var userMessage = ChatMessage.create()
 var prompt = new OrchestrationPrompt(systemMessage, userMessage);
 
 var result =
-    new OrchestrationClient().chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    new OrchestrationClient().chatCompletion(prompt, configWithMasking);
 ```
 
 In this example, the input will be masked before the call to the LLM. Note that data cannot be unmasked in the LLM output.
