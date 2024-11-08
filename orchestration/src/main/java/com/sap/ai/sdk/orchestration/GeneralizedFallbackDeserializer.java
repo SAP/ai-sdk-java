@@ -6,15 +6,41 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 
+/**
+ * A deserializer that attempts to deserialize a JSON object into one of the subtypes of a base
+ * type.
+ *
+ * <p>This deserializer is useful when the exact subtype of an object is not known in advance, but
+ * the possible subtypes are known and annotated with {@link JsonSubTypes}.
+ *
+ * <p>When deserializing, this deserializer will attempt to deserialize the JSON object into each of
+ * the possible subtypes in turn. The first successful deserialization will be returned. If none of
+ * the deserializations are successful, a {@link JsonMappingException} will be thrown.
+ *
+ * @param <T> The base type to deserialize into.
+ */
 public class GeneralizedFallbackDeserializer<T> extends StdDeserializer<T> {
 
   private final Class<T> baseType;
 
+  /**
+   * Create a new deserializer for the given base type.
+   *
+   * @param baseClass The base type to deserialize into.
+   */
   public GeneralizedFallbackDeserializer(Class<T> baseClass) {
     super(baseClass);
     this.baseType = baseClass;
   }
 
+  /**
+   * Deserialize the JSON object into one of the subtypes of the base type.
+   *
+   * @param p The JSON parser.
+   * @param ctxt The deserialization context.
+   * @return The deserialized object.
+   * @throws IOException If an I/O error occurs.
+   */
   @Override
   public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
     ObjectMapper mapper = (ObjectMapper) p.getCodec();

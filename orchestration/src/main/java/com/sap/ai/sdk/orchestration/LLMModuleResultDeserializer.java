@@ -8,12 +8,24 @@ import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultStreaming;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import java.io.IOException;
 
+/**
+ * A deserializer for {@link LLMModuleResult} that determines the concrete implementation based on
+ * the structure of the JSON object.
+ */
 public class LLMModuleResultDeserializer extends StdDeserializer<LLMModuleResult> {
 
   public LLMModuleResultDeserializer() {
     super(LLMModuleResult.class);
   }
 
+  /**
+   * Deserialize the JSON object into one of the subtypes of the base type.
+   *
+   * @param p The JSON parser.
+   * @param ctxt The deserialization context.
+   * @return The deserialized object.
+   * @throws IOException If an I/O error occurs.
+   */
   @Override
   public LLMModuleResult deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 

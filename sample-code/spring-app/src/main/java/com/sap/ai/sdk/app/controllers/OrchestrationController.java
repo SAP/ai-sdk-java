@@ -15,7 +15,6 @@ import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.Template;
 import java.util.Arrays;
@@ -32,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
   static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+      new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
 
   private final OrchestrationClient client = new OrchestrationClient();
   private final OrchestrationModuleConfig config =
@@ -60,10 +59,10 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse template() {
     final var template =
-        ChatMessage.create()
+        new ChatMessage()
             .role("user")
             .content("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = TemplatingModuleConfig.create().template(template);
+    final var templatingConfig = new Template().template(List.of(template));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     final var inputParams = Map.of("language", "German");
@@ -133,8 +132,8 @@ class OrchestrationController {
                     .violence(threshold));
 
     return new FilteringModuleConfig()
-        .input(new InputFilteringConfig().filters(filter))
-        .output(new OutputFilteringConfig().filters(filter));
+        .input(new InputFilteringConfig().filters(List.of(filter)))
+        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   /**
