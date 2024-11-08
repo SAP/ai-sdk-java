@@ -41,7 +41,7 @@ public class OrchestrationModuleConfig {
    * A template to be populated with input parameters. Upon request execution, this template will be
    * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
    */
-  @Nullable TemplatingModuleConfig template;
+  @Nullable TemplatingModuleConfig templateConfig;
 
   /** A masking configuration to pseudonymous or anonymize sensitive data in the input. */
   @Nullable MaskingModuleConfig maskingConfig;

@@ -16,6 +16,7 @@ import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
+import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
+  static final LLMModuleConfig LLM_CONFIG =
+      LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
 
-  private static final OrchestrationClient CLIENT = new OrchestrationClient();
-
-  static final String MODEL = "gpt-35-turbo";
-
-  private static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
-  private static final OrchestrationModuleConfig CONFIG =
+  private final OrchestrationClient client = new OrchestrationClient();
+  private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
 
   /**
@@ -47,10 +45,9 @@ class OrchestrationController {
   @GetMapping("/completion")
   @Nonnull
   public CompletionPostResponse completion() {
-
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
-    return CLIENT.chatCompletion(prompt, CONFIG);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -61,12 +58,14 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   public CompletionPostResponse template() {
-    final var message = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var templatingConfig = TemplatingModuleConfig.create().template(template);
+
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
-    final var prompt = new OrchestrationPrompt(inputParams, message);
-    return CLIENT.chatCompletion(prompt, CONFIG);
+    final var prompt = new OrchestrationPrompt(inputParams);
+    return client.chatCompletion(prompt, config.withTemplateConfig(templatingConfig));
   }
 
   /**
@@ -86,7 +85,7 @@ class OrchestrationController {
 
     final var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
-    return CLIENT.chatCompletion(prompt, CONFIG);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -99,7 +98,6 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse filter(
       @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
-
     final var prompt =
         new OrchestrationPrompt(
             """
@@ -109,7 +107,7 @@ class OrchestrationController {
             """);
     final var filterConfig = createAzureContentFilter(threshold);
 
-    return CLIENT.chatCompletion(prompt, CONFIG.withFilteringConfig(filterConfig));
+    return client.chatCompletion(prompt, config.withFilteringConfig(filterConfig));
   }
 
   /**
@@ -163,7 +161,7 @@ class OrchestrationController {
     final var maskingConfig =
         createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
 
-    return CLIENT.chatCompletion(prompt, CONFIG.withMaskingConfig(maskingConfig));
+    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
   }
 
   /**
@@ -203,7 +201,7 @@ class OrchestrationController {
             DPIEntities.PERSON,
             DPIEntities.EMAIL);
 
-    return CLIENT.chatCompletion(prompt, CONFIG.withMaskingConfig(maskingConfig));
+    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
   }
 
   /**

@@ -19,11 +19,11 @@ final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    val template = toTemplateModuleConfig(prompt, config.getTemplate());
+    val template = toTemplateModuleConfig(prompt, config.getTemplateConfig());
     // note that the config is immutable and implicitly copied here
     // copying is required here, to not alter the original config object, which might be reused for
     // subsequent requests
-    val configCopy = config.withTemplate(template);
+    val configCopy = config.withTemplateConfig(template);
 
     return CompletionPostRequest.create()
         .orchestrationConfig(
@@ -62,7 +62,7 @@ final class ConfigToRequestTransformer {
     val moduleConfig =
         ModuleConfigs.create()
             .llmModuleConfig(llmConfig)
-            .templatingModuleConfig(config.getTemplate());
+            .templatingModuleConfig(config.getTemplateConfig());
 
     Option.of(config.getFilteringConfig()).forEach(moduleConfig::filteringModuleConfig);
     Option.of(config.getMaskingConfig()).forEach(moduleConfig::maskingModuleConfig);
