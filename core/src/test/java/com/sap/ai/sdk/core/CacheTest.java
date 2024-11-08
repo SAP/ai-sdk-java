@@ -161,7 +161,7 @@ class CacheTest extends WireMockTestServer {
             .createdAt(OffsetDateTime.parse("2024-01-22T17:57:23+00:00"))
             .modifiedAt(OffsetDateTime.parse("2024-02-08T08:41:23+00:00"));
     deployment.setDetails(AiDeploymentDetails.create().resources(AiResourcesDetails.create()));
-    deployment.getDetails().getResources().setCustomField("backend_details", model);
+    deployment.getDetails().getResources().setBackendDetails(model);
 
     // Check if the deployment is of the target model
     assertThat(DeploymentCache.isDeploymentOfModel(gpt4AnyVersion, deployment)).isTrue();
