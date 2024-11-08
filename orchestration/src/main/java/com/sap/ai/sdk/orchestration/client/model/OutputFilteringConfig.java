@@ -30,12 +30,16 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class OutputFilteringConfig {
   public static final String JSON_PROPERTY_FILTERS = "filters";
-  private List<FilterConfig> filters = new ArrayList<>();
-
   public static final String JSON_PROPERTY_STREAM_OPTIONS = "stream_options";
+  private List<FilterConfig> filters = new ArrayList<>();
   private FilteringStreamOptions streamOptions;
 
   public OutputFilteringConfig() {}
+
+  /** Create a builder with no initialized field. */
+  public static OutputFilteringConfig.Builder builder() {
+    return new OutputFilteringConfig.Builder();
+  }
 
   public OutputFilteringConfig filters(List<FilterConfig> filters) {
 
@@ -132,6 +136,13 @@ public class OutputFilteringConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public OutputFilteringConfig.Builder toBuilder() {
+    return new OutputFilteringConfig.Builder()
+        .filters(getFilters())
+        .streamOptions(getStreamOptions());
+  }
+
   public static class Builder {
 
     private OutputFilteringConfig instance;
@@ -172,17 +183,5 @@ public class OutputFilteringConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static OutputFilteringConfig.Builder builder() {
-    return new OutputFilteringConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public OutputFilteringConfig.Builder toBuilder() {
-    return new OutputFilteringConfig.Builder()
-        .filters(getFilters())
-        .streamOptions(getStreamOptions());
   }
 }

@@ -31,21 +31,22 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class ErrorResponse {
   public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
-  private String requestId;
-
   public static final String JSON_PROPERTY_CODE = "code";
-  private Integer code;
-
   public static final String JSON_PROPERTY_MESSAGE = "message";
-  private String message;
-
   public static final String JSON_PROPERTY_LOCATION = "location";
-  private String location;
-
   public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
+  private String requestId;
+  private Integer code;
+  private String message;
+  private String location;
   private ModuleResults moduleResults;
 
   public ErrorResponse() {}
+
+  /** Create a builder with no initialized field. */
+  public static ErrorResponse.Builder builder() {
+    return new ErrorResponse.Builder();
+  }
 
   public ErrorResponse requestId(String requestId) {
 
@@ -211,6 +212,16 @@ public class ErrorResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public ErrorResponse.Builder toBuilder() {
+    return new ErrorResponse.Builder()
+        .requestId(getRequestId())
+        .code(getCode())
+        .message(getMessage())
+        .location(getLocation())
+        .moduleResults(getModuleResults());
+  }
+
   public static class Builder {
 
     private ErrorResponse instance;
@@ -266,20 +277,5 @@ public class ErrorResponse {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ErrorResponse.Builder builder() {
-    return new ErrorResponse.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ErrorResponse.Builder toBuilder() {
-    return new ErrorResponse.Builder()
-        .requestId(getRequestId())
-        .code(getCode())
-        .message(getMessage())
-        .location(getLocation())
-        .moduleResults(getModuleResults());
   }
 }

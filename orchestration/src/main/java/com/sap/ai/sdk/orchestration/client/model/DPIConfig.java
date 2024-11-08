@@ -32,84 +32,19 @@ import java.util.Objects;
     date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class DPIConfig implements MaskingProviderConfig {
-  /** Type of masking service provider */
-  public enum TypeEnum {
-    SAP_DATA_PRIVACY_INTEGRATION("sap_data_privacy_integration"),
-
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static TypeEnum fromValue(String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-  }
-
   public static final String JSON_PROPERTY_TYPE = "type";
-  private TypeEnum type;
-
-  /** Type of masking method to be used */
-  public enum MethodEnum {
-    ANONYMIZATION("anonymization"),
-
-    PSEUDONYMIZATION("pseudonymization"),
-
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    MethodEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static MethodEnum fromValue(String value) {
-      for (MethodEnum b : MethodEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-  }
-
   public static final String JSON_PROPERTY_METHOD = "method";
-  private MethodEnum method;
-
   public static final String JSON_PROPERTY_ENTITIES = "entities";
+  private TypeEnum type;
+  private MethodEnum method;
   private List<DPIEntityConfig> entities = new ArrayList<>();
 
   public DPIConfig() {}
+
+  /** Create a builder with no initialized field. */
+  public static DPIConfig.Builder builder() {
+    return new DPIConfig.Builder();
+  }
 
   public DPIConfig type(TypeEnum type) {
 
@@ -231,6 +166,79 @@ public class DPIConfig implements MaskingProviderConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public DPIConfig.Builder toBuilder() {
+    return new DPIConfig.Builder().type(getType()).method(getMethod()).entities(getEntities());
+  }
+
+  /** Type of masking service provider */
+  public enum TypeEnum {
+    SAP_DATA_PRIVACY_INTEGRATION("sap_data_privacy_integration"),
+
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonCreator
+    public static TypeEnum fromValue(String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+  }
+
+  /** Type of masking method to be used */
+  public enum MethodEnum {
+    ANONYMIZATION("anonymization"),
+
+    PSEUDONYMIZATION("pseudonymization"),
+
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    MethodEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonCreator
+    public static MethodEnum fromValue(String value) {
+      for (MethodEnum b : MethodEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+  }
+
   public static class Builder {
 
     private DPIConfig instance;
@@ -276,15 +284,5 @@ public class DPIConfig implements MaskingProviderConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static DPIConfig.Builder builder() {
-    return new DPIConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public DPIConfig.Builder toBuilder() {
-    return new DPIConfig.Builder().type(getType()).method(getMethod()).entities(getEntities());
   }
 }

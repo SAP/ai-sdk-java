@@ -29,6 +29,11 @@ public class DPIEntityConfig {
 
   public DPIEntityConfig() {}
 
+  /** Create a builder with no initialized field. */
+  public static DPIEntityConfig.Builder builder() {
+    return new DPIEntityConfig.Builder();
+  }
+
   public DPIEntityConfig type(DPIEntities type) {
 
     this.type = type;
@@ -89,6 +94,11 @@ public class DPIEntityConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public DPIEntityConfig.Builder toBuilder() {
+    return new DPIEntityConfig.Builder().type(getType());
+  }
+
   public static class Builder {
 
     private DPIEntityConfig instance;
@@ -124,15 +134,5 @@ public class DPIEntityConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static DPIEntityConfig.Builder builder() {
-    return new DPIEntityConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public DPIEntityConfig.Builder toBuilder() {
-    return new DPIEntityConfig.Builder().type(getType());
   }
 }

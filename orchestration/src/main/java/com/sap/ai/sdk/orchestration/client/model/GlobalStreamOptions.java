@@ -29,6 +29,11 @@ public class GlobalStreamOptions {
 
   public GlobalStreamOptions() {}
 
+  /** Create a builder with no initialized field. */
+  public static GlobalStreamOptions.Builder builder() {
+    return new GlobalStreamOptions.Builder();
+  }
+
   public GlobalStreamOptions chunkSize(Integer chunkSize) {
 
     this.chunkSize = chunkSize;
@@ -89,6 +94,11 @@ public class GlobalStreamOptions {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public GlobalStreamOptions.Builder toBuilder() {
+    return new GlobalStreamOptions.Builder().chunkSize(getChunkSize());
+  }
+
   public static class Builder {
 
     private GlobalStreamOptions instance;
@@ -124,15 +134,5 @@ public class GlobalStreamOptions {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static GlobalStreamOptions.Builder builder() {
-    return new GlobalStreamOptions.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public GlobalStreamOptions.Builder toBuilder() {
-    return new GlobalStreamOptions.Builder().chunkSize(getChunkSize());
   }
 }

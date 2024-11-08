@@ -29,15 +29,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class CompletionPostResponseStreaming {
   public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
-  private String requestId;
-
   public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
-  private ModuleResults moduleResults;
-
   public static final String JSON_PROPERTY_ORCHESTRATION_RESULT = "orchestration_result";
+  private String requestId;
+  private ModuleResults moduleResults;
   private LLMModuleResultStreaming orchestrationResult;
 
   public CompletionPostResponseStreaming() {}
+
+  /** Create a builder with no initialized field. */
+  public static CompletionPostResponseStreaming.Builder builder() {
+    return new CompletionPostResponseStreaming.Builder();
+  }
 
   public CompletionPostResponseStreaming requestId(String requestId) {
 
@@ -156,6 +159,14 @@ public class CompletionPostResponseStreaming {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public CompletionPostResponseStreaming.Builder toBuilder() {
+    return new CompletionPostResponseStreaming.Builder()
+        .requestId(getRequestId())
+        .moduleResults(getModuleResults())
+        .orchestrationResult(getOrchestrationResult());
+  }
+
   public static class Builder {
 
     private CompletionPostResponseStreaming instance;
@@ -202,18 +213,5 @@ public class CompletionPostResponseStreaming {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static CompletionPostResponseStreaming.Builder builder() {
-    return new CompletionPostResponseStreaming.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public CompletionPostResponseStreaming.Builder toBuilder() {
-    return new CompletionPostResponseStreaming.Builder()
-        .requestId(getRequestId())
-        .moduleResults(getModuleResults())
-        .orchestrationResult(getOrchestrationResult());
   }
 }

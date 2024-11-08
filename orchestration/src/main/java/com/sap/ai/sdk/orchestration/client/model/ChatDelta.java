@@ -25,12 +25,16 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class ChatDelta {
   public static final String JSON_PROPERTY_ROLE = "role";
-  private String role;
-
   public static final String JSON_PROPERTY_CONTENT = "content";
+  private String role;
   private String content = "";
 
   public ChatDelta() {}
+
+  /** Create a builder with no initialized field. */
+  public static ChatDelta.Builder builder() {
+    return new ChatDelta.Builder();
+  }
 
   public ChatDelta role(String role) {
 
@@ -118,6 +122,11 @@ public class ChatDelta {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public ChatDelta.Builder toBuilder() {
+    return new ChatDelta.Builder().role(getRole()).content(getContent());
+  }
+
   public static class Builder {
 
     private ChatDelta instance;
@@ -158,15 +167,5 @@ public class ChatDelta {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ChatDelta.Builder builder() {
-    return new ChatDelta.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ChatDelta.Builder toBuilder() {
-    return new ChatDelta.Builder().role(getRole()).content(getContent());
   }
 }

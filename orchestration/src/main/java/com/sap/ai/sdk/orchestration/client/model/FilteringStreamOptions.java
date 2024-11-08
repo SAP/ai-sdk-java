@@ -29,6 +29,11 @@ public class FilteringStreamOptions {
 
   public FilteringStreamOptions() {}
 
+  /** Create a builder with no initialized field. */
+  public static FilteringStreamOptions.Builder builder() {
+    return new FilteringStreamOptions.Builder();
+  }
+
   public FilteringStreamOptions overlap(Integer overlap) {
 
     this.overlap = overlap;
@@ -90,6 +95,11 @@ public class FilteringStreamOptions {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public FilteringStreamOptions.Builder toBuilder() {
+    return new FilteringStreamOptions.Builder().overlap(getOverlap());
+  }
+
   public static class Builder {
 
     private FilteringStreamOptions instance;
@@ -125,15 +135,5 @@ public class FilteringStreamOptions {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static FilteringStreamOptions.Builder builder() {
-    return new FilteringStreamOptions.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public FilteringStreamOptions.Builder toBuilder() {
-    return new FilteringStreamOptions.Builder().overlap(getOverlap());
   }
 }

@@ -36,16 +36,6 @@ public enum AzureThreshold {
     this.value = value;
   }
 
-  @JsonValue
-  public Integer getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
   @JsonCreator
   public static AzureThreshold fromValue(Integer value) {
     for (AzureThreshold b : AzureThreshold.values()) {
@@ -54,5 +44,15 @@ public enum AzureThreshold {
       }
     }
     return NUMBER_unknown_default_open_api;
+  }
+
+  @JsonValue
+  public Integer getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }

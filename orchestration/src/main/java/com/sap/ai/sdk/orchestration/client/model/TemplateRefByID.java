@@ -28,6 +28,11 @@ public class TemplateRefByID implements TemplateRefTemplateRef {
 
   public TemplateRefByID() {}
 
+  /** Create a builder with no initialized field. */
+  public static TemplateRefByID.Builder builder() {
+    return new TemplateRefByID.Builder();
+  }
+
   public TemplateRefByID id(String id) {
 
     this.id = id;
@@ -88,6 +93,11 @@ public class TemplateRefByID implements TemplateRefTemplateRef {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public TemplateRefByID.Builder toBuilder() {
+    return new TemplateRefByID.Builder().id(getId());
+  }
+
   public static class Builder {
 
     private TemplateRefByID instance;
@@ -123,15 +133,5 @@ public class TemplateRefByID implements TemplateRefTemplateRef {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static TemplateRefByID.Builder builder() {
-    return new TemplateRefByID.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public TemplateRefByID.Builder toBuilder() {
-    return new TemplateRefByID.Builder().id(getId());
   }
 }

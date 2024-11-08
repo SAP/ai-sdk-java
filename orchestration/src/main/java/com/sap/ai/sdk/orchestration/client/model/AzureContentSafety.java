@@ -30,18 +30,20 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class AzureContentSafety {
   public static final String JSON_PROPERTY_HATE = "Hate";
-  private AzureThreshold hate;
-
   public static final String JSON_PROPERTY_SELF_HARM = "SelfHarm";
-  private AzureThreshold selfHarm;
-
   public static final String JSON_PROPERTY_SEXUAL = "Sexual";
-  private AzureThreshold sexual;
-
   public static final String JSON_PROPERTY_VIOLENCE = "Violence";
+  private AzureThreshold hate;
+  private AzureThreshold selfHarm;
+  private AzureThreshold sexual;
   private AzureThreshold violence;
 
   public AzureContentSafety() {}
+
+  /** Create a builder with no initialized field. */
+  public static AzureContentSafety.Builder builder() {
+    return new AzureContentSafety.Builder();
+  }
 
   public AzureContentSafety hate(AzureThreshold hate) {
 
@@ -181,6 +183,15 @@ public class AzureContentSafety {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public AzureContentSafety.Builder toBuilder() {
+    return new AzureContentSafety.Builder()
+        .hate(getHate())
+        .selfHarm(getSelfHarm())
+        .sexual(getSexual())
+        .violence(getViolence());
+  }
+
   public static class Builder {
 
     private AzureContentSafety instance;
@@ -231,19 +242,5 @@ public class AzureContentSafety {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static AzureContentSafety.Builder builder() {
-    return new AzureContentSafety.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public AzureContentSafety.Builder toBuilder() {
-    return new AzureContentSafety.Builder()
-        .hate(getHate())
-        .selfHarm(getSelfHarm())
-        .sexual(getSexual())
-        .violence(getViolence());
   }
 }

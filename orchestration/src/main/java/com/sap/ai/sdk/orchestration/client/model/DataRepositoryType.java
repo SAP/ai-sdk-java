@@ -29,16 +29,6 @@ public enum DataRepositoryType {
     this.value = value;
   }
 
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
   @JsonCreator
   public static DataRepositoryType fromValue(String value) {
     for (DataRepositoryType b : DataRepositoryType.values()) {
@@ -47,5 +37,15 @@ public enum DataRepositoryType {
       }
     }
     return null;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }

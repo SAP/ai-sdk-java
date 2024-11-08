@@ -30,18 +30,20 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class ModuleConfigs {
   public static final String JSON_PROPERTY_LLM_MODULE_CONFIG = "llm_module_config";
-  private LLMModuleConfig llmModuleConfig;
-
   public static final String JSON_PROPERTY_TEMPLATING_MODULE_CONFIG = "templating_module_config";
-  private TemplatingModuleConfig templatingModuleConfig;
-
   public static final String JSON_PROPERTY_FILTERING_MODULE_CONFIG = "filtering_module_config";
-  private FilteringModuleConfig filteringModuleConfig;
-
   public static final String JSON_PROPERTY_MASKING_MODULE_CONFIG = "masking_module_config";
+  private LLMModuleConfig llmModuleConfig;
+  private TemplatingModuleConfig templatingModuleConfig;
+  private FilteringModuleConfig filteringModuleConfig;
   private MaskingModuleConfig maskingModuleConfig;
 
   public ModuleConfigs() {}
+
+  /** Create a builder with no initialized field. */
+  public static ModuleConfigs.Builder builder() {
+    return new ModuleConfigs.Builder();
+  }
 
   public ModuleConfigs llmModuleConfig(LLMModuleConfig llmModuleConfig) {
 
@@ -188,6 +190,15 @@ public class ModuleConfigs {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public ModuleConfigs.Builder toBuilder() {
+    return new ModuleConfigs.Builder()
+        .llmModuleConfig(getLlmModuleConfig())
+        .templatingModuleConfig(getTemplatingModuleConfig())
+        .filteringModuleConfig(getFilteringModuleConfig())
+        .maskingModuleConfig(getMaskingModuleConfig());
+  }
+
   public static class Builder {
 
     private ModuleConfigs instance;
@@ -240,19 +251,5 @@ public class ModuleConfigs {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ModuleConfigs.Builder builder() {
-    return new ModuleConfigs.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ModuleConfigs.Builder toBuilder() {
-    return new ModuleConfigs.Builder()
-        .llmModuleConfig(getLlmModuleConfig())
-        .templatingModuleConfig(getTemplatingModuleConfig())
-        .filteringModuleConfig(getFilteringModuleConfig())
-        .maskingModuleConfig(getMaskingModuleConfig());
   }
 }

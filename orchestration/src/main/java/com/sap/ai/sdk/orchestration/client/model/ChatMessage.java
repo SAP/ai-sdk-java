@@ -25,12 +25,16 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class ChatMessage {
   public static final String JSON_PROPERTY_ROLE = "role";
-  private String role;
-
   public static final String JSON_PROPERTY_CONTENT = "content";
+  private String role;
   private String content;
 
   public ChatMessage() {}
+
+  /** Create a builder with no initialized field. */
+  public static ChatMessage.Builder builder() {
+    return new ChatMessage.Builder();
+  }
 
   public ChatMessage role(String role) {
 
@@ -118,6 +122,11 @@ public class ChatMessage {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public ChatMessage.Builder toBuilder() {
+    return new ChatMessage.Builder().role(getRole()).content(getContent());
+  }
+
   public static class Builder {
 
     private ChatMessage instance;
@@ -158,15 +167,5 @@ public class ChatMessage {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ChatMessage.Builder builder() {
-    return new ChatMessage.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ChatMessage.Builder toBuilder() {
-    return new ChatMessage.Builder().role(getRole()).content(getContent());
   }
 }

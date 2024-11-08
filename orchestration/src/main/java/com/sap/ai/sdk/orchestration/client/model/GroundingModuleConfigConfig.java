@@ -32,15 +32,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class GroundingModuleConfigConfig {
   public static final String JSON_PROPERTY_FILTERS = "filters";
-  private List<GroundingModuleConfigConfigFiltersInner> filters = new ArrayList<>();
-
   public static final String JSON_PROPERTY_INPUT_PARAMS = "input_params";
-  private List<String> inputParams = new ArrayList<>();
-
   public static final String JSON_PROPERTY_OUTPUT_PARAM = "output_param";
+  private List<GroundingModuleConfigConfigFiltersInner> filters = new ArrayList<>();
+  private List<String> inputParams = new ArrayList<>();
   private String outputParam;
 
   public GroundingModuleConfigConfig() {}
+
+  /** Create a builder with no initialized field. */
+  public static GroundingModuleConfigConfig.Builder builder() {
+    return new GroundingModuleConfigConfig.Builder();
+  }
 
   public GroundingModuleConfigConfig filters(
       List<GroundingModuleConfigConfigFiltersInner> filters) {
@@ -172,6 +175,14 @@ public class GroundingModuleConfigConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public GroundingModuleConfigConfig.Builder toBuilder() {
+    return new GroundingModuleConfigConfig.Builder()
+        .filters(getFilters())
+        .inputParams(getInputParams())
+        .outputParam(getOutputParam());
+  }
+
   public static class Builder {
 
     private GroundingModuleConfigConfig instance;
@@ -218,18 +229,5 @@ public class GroundingModuleConfigConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static GroundingModuleConfigConfig.Builder builder() {
-    return new GroundingModuleConfigConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public GroundingModuleConfigConfig.Builder toBuilder() {
-    return new GroundingModuleConfigConfig.Builder()
-        .filters(getFilters())
-        .inputParams(getInputParams())
-        .outputParam(getOutputParam());
   }
 }

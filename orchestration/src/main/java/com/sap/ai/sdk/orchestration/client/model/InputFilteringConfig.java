@@ -31,6 +31,11 @@ public class InputFilteringConfig {
 
   public InputFilteringConfig() {}
 
+  /** Create a builder with no initialized field. */
+  public static InputFilteringConfig.Builder builder() {
+    return new InputFilteringConfig.Builder();
+  }
+
   public InputFilteringConfig filters(List<FilterConfig> filters) {
 
     this.filters = filters;
@@ -100,6 +105,11 @@ public class InputFilteringConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public InputFilteringConfig.Builder toBuilder() {
+    return new InputFilteringConfig.Builder().filters(getFilters());
+  }
+
   public static class Builder {
 
     private InputFilteringConfig instance;
@@ -135,15 +145,5 @@ public class InputFilteringConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static InputFilteringConfig.Builder builder() {
-    return new InputFilteringConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public InputFilteringConfig.Builder toBuilder() {
-    return new InputFilteringConfig.Builder().filters(getFilters());
   }
 }

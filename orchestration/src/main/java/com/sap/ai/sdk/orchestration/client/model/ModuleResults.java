@@ -34,24 +34,24 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class ModuleResults {
   public static final String JSON_PROPERTY_TEMPLATING = "templating";
-  private List<ChatMessage> templating = new ArrayList<>();
-
   public static final String JSON_PROPERTY_INPUT_MASKING = "input_masking";
-  private GenericModuleResult inputMasking;
-
   public static final String JSON_PROPERTY_INPUT_FILTERING = "input_filtering";
-  private GenericModuleResult inputFiltering;
-
   public static final String JSON_PROPERTY_LLM = "llm";
-  private LLMModuleResult llm;
-
   public static final String JSON_PROPERTY_OUTPUT_FILTERING = "output_filtering";
-  private GenericModuleResult outputFiltering;
-
   public static final String JSON_PROPERTY_OUTPUT_UNMASKING = "output_unmasking";
+  private List<ChatMessage> templating = new ArrayList<>();
+  private GenericModuleResult inputMasking;
+  private GenericModuleResult inputFiltering;
+  private LLMModuleResult llm;
+  private GenericModuleResult outputFiltering;
   private List<ModuleResultsOutputUnmaskingInner> outputUnmasking = new ArrayList<>();
 
   public ModuleResults() {}
+
+  /** Create a builder with no initialized field. */
+  public static ModuleResults.Builder builder() {
+    return new ModuleResults.Builder();
+  }
 
   public ModuleResults templating(List<ChatMessage> templating) {
 
@@ -261,6 +261,17 @@ public class ModuleResults {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public ModuleResults.Builder toBuilder() {
+    return new ModuleResults.Builder()
+        .templating(getTemplating())
+        .inputMasking(getInputMasking())
+        .inputFiltering(getInputFiltering())
+        .llm(getLlm())
+        .outputFiltering(getOutputFiltering())
+        .outputUnmasking(getOutputUnmasking());
+  }
+
   public static class Builder {
 
     private ModuleResults instance;
@@ -322,21 +333,5 @@ public class ModuleResults {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ModuleResults.Builder builder() {
-    return new ModuleResults.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ModuleResults.Builder toBuilder() {
-    return new ModuleResults.Builder()
-        .templating(getTemplating())
-        .inputMasking(getInputMasking())
-        .inputFiltering(getInputFiltering())
-        .llm(getLlm())
-        .outputFiltering(getOutputFiltering())
-        .outputUnmasking(getOutputUnmasking());
   }
 }

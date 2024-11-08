@@ -30,12 +30,32 @@ import org.openapitools.jackson.nullable.JsonNullable;
     comments = "Generator version: 7.9.0")
 public class GroundingFilterSearchConfiguration {
   public static final String JSON_PROPERTY_MAX_CHUNK_COUNT = "max_chunk_count";
-  private JsonNullable<Integer> maxChunkCount = JsonNullable.<Integer>undefined();
-
   public static final String JSON_PROPERTY_MAX_DOCUMENT_COUNT = "max_document_count";
+  private JsonNullable<Integer> maxChunkCount = JsonNullable.<Integer>undefined();
   private JsonNullable<Integer> maxDocumentCount = JsonNullable.<Integer>undefined();
 
   public GroundingFilterSearchConfiguration() {}
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b
+        || (a != null
+            && b != null
+            && a.isPresent()
+            && b.isPresent()
+            && Objects.deepEquals(a.get(), b.get()));
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[] {a.get()}) : 31;
+  }
+
+  /** Create a builder with no initialized field. */
+  public static GroundingFilterSearchConfiguration.Builder builder() {
+    return new GroundingFilterSearchConfiguration.Builder();
+  }
 
   public GroundingFilterSearchConfiguration maxChunkCount(Integer maxChunkCount) {
     this.maxChunkCount = JsonNullable.<Integer>of(maxChunkCount);
@@ -55,6 +75,10 @@ public class GroundingFilterSearchConfiguration {
     return maxChunkCount.orElse(null);
   }
 
+  public void setMaxChunkCount(Integer maxChunkCount) {
+    this.maxChunkCount = JsonNullable.<Integer>of(maxChunkCount);
+  }
+
   @JsonProperty(JSON_PROPERTY_MAX_CHUNK_COUNT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public JsonNullable<Integer> getMaxChunkCount_JsonNullable() {
@@ -64,10 +88,6 @@ public class GroundingFilterSearchConfiguration {
   @JsonProperty(JSON_PROPERTY_MAX_CHUNK_COUNT)
   public void setMaxChunkCount_JsonNullable(JsonNullable<Integer> maxChunkCount) {
     this.maxChunkCount = maxChunkCount;
-  }
-
-  public void setMaxChunkCount(Integer maxChunkCount) {
-    this.maxChunkCount = JsonNullable.<Integer>of(maxChunkCount);
   }
 
   public GroundingFilterSearchConfiguration maxDocumentCount(Integer maxDocumentCount) {
@@ -89,6 +109,10 @@ public class GroundingFilterSearchConfiguration {
     return maxDocumentCount.orElse(null);
   }
 
+  public void setMaxDocumentCount(Integer maxDocumentCount) {
+    this.maxDocumentCount = JsonNullable.<Integer>of(maxDocumentCount);
+  }
+
   @JsonProperty(JSON_PROPERTY_MAX_DOCUMENT_COUNT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public JsonNullable<Integer> getMaxDocumentCount_JsonNullable() {
@@ -98,10 +122,6 @@ public class GroundingFilterSearchConfiguration {
   @JsonProperty(JSON_PROPERTY_MAX_DOCUMENT_COUNT)
   public void setMaxDocumentCount_JsonNullable(JsonNullable<Integer> maxDocumentCount) {
     this.maxDocumentCount = maxDocumentCount;
-  }
-
-  public void setMaxDocumentCount(Integer maxDocumentCount) {
-    this.maxDocumentCount = JsonNullable.<Integer>of(maxDocumentCount);
   }
 
   @Override
@@ -119,25 +139,9 @@ public class GroundingFilterSearchConfiguration {
             this.maxDocumentCount, groundingFilterSearchConfiguration.maxDocumentCount);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b
-        || (a != null
-            && b != null
-            && a.isPresent()
-            && b.isPresent()
-            && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(hashCodeNullable(maxChunkCount), hashCodeNullable(maxDocumentCount));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[] {a.get()}) : 31;
   }
 
   @Override
@@ -158,6 +162,13 @@ public class GroundingFilterSearchConfiguration {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public GroundingFilterSearchConfiguration.Builder toBuilder() {
+    return new GroundingFilterSearchConfiguration.Builder()
+        .maxChunkCount(getMaxChunkCount())
+        .maxDocumentCount(getMaxDocumentCount());
   }
 
   public static class Builder {
@@ -212,17 +223,5 @@ public class GroundingFilterSearchConfiguration {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static GroundingFilterSearchConfiguration.Builder builder() {
-    return new GroundingFilterSearchConfiguration.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public GroundingFilterSearchConfiguration.Builder toBuilder() {
-    return new GroundingFilterSearchConfiguration.Builder()
-        .maxChunkCount(getMaxChunkCount())
-        .maxDocumentCount(getMaxDocumentCount());
   }
 }

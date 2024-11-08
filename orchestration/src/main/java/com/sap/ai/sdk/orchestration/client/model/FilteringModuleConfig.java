@@ -28,12 +28,16 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class FilteringModuleConfig {
   public static final String JSON_PROPERTY_INPUT = "input";
-  private InputFilteringConfig input;
-
   public static final String JSON_PROPERTY_OUTPUT = "output";
+  private InputFilteringConfig input;
   private OutputFilteringConfig output;
 
   public FilteringModuleConfig() {}
+
+  /** Create a builder with no initialized field. */
+  public static FilteringModuleConfig.Builder builder() {
+    return new FilteringModuleConfig.Builder();
+  }
 
   public FilteringModuleConfig input(InputFilteringConfig input) {
 
@@ -121,6 +125,11 @@ public class FilteringModuleConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public FilteringModuleConfig.Builder toBuilder() {
+    return new FilteringModuleConfig.Builder().input(getInput()).output(getOutput());
+  }
+
   public static class Builder {
 
     private FilteringModuleConfig instance;
@@ -161,15 +170,5 @@ public class FilteringModuleConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static FilteringModuleConfig.Builder builder() {
-    return new FilteringModuleConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public FilteringModuleConfig.Builder toBuilder() {
-    return new FilteringModuleConfig.Builder().input(getInput()).output(getOutput());
   }
 }

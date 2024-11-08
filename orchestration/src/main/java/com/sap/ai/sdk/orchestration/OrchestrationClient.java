@@ -70,6 +70,20 @@ public class OrchestrationClient {
   }
 
   /**
+   * Convert the given prompt and config into a low-level request data object. The data object
+   * allows for further customization before sending the request.
+   *
+   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
+   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
+   * @return The low-level request data object to send to orchestration.
+   */
+  @Nonnull
+  public static CompletionPostRequest toCompletionPostRequest(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
+  }
+
+  /**
    * Generate a completion for the given prompt.
    *
    * @param prompt The {@link OrchestrationPrompt} to send to orchestration.
@@ -119,20 +133,6 @@ public class OrchestrationClient {
     }
 
     return executeRequest(postRequest);
-  }
-
-  /**
-   * Convert the given prompt and config into a low-level request data object. The data object
-   * allows for further customization before sending the request.
-   *
-   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
-   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
-   * @return The low-level request data object to send to orchestration.
-   */
-  @Nonnull
-  public static CompletionPostRequest toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
 
   @SuppressWarnings("UnstableApiUsage")

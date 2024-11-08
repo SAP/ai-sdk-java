@@ -29,15 +29,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class CompletionPostResponse {
   public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
-  private String requestId;
-
   public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
-  private ModuleResults moduleResults;
-
   public static final String JSON_PROPERTY_ORCHESTRATION_RESULT = "orchestration_result";
+  private String requestId;
+  private ModuleResults moduleResults;
   private LLMModuleResult orchestrationResult;
 
   public CompletionPostResponse() {}
+
+  /** Create a builder with no initialized field. */
+  public static CompletionPostResponse.Builder builder() {
+    return new CompletionPostResponse.Builder();
+  }
 
   public CompletionPostResponse requestId(String requestId) {
 
@@ -153,6 +156,14 @@ public class CompletionPostResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public CompletionPostResponse.Builder toBuilder() {
+    return new CompletionPostResponse.Builder()
+        .requestId(getRequestId())
+        .moduleResults(getModuleResults())
+        .orchestrationResult(getOrchestrationResult());
+  }
+
   public static class Builder {
 
     private CompletionPostResponse instance;
@@ -198,18 +209,5 @@ public class CompletionPostResponse {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static CompletionPostResponse.Builder builder() {
-    return new CompletionPostResponse.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public CompletionPostResponse.Builder toBuilder() {
-    return new CompletionPostResponse.Builder()
-        .requestId(getRequestId())
-        .moduleResults(getModuleResults())
-        .orchestrationResult(getOrchestrationResult());
   }
 }

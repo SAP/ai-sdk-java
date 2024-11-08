@@ -34,18 +34,20 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
   public static final String JSON_PROPERTY_INDEX = "index";
-  private Integer index;
-
   public static final String JSON_PROPERTY_DELTA = "delta";
-  private ChatDelta delta;
-
   public static final String JSON_PROPERTY_LOGPROBS = "logprobs";
-  private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
-
   public static final String JSON_PROPERTY_FINISH_REASON = "finish_reason";
+  private Integer index;
+  private ChatDelta delta;
+  private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
   private String finishReason;
 
   public LLMChoiceStreaming() {}
+
+  /** Create a builder with no initialized field. */
+  public static LLMChoiceStreaming.Builder builder() {
+    return new LLMChoiceStreaming.Builder();
+  }
 
   public LLMChoiceStreaming index(Integer index) {
 
@@ -193,6 +195,15 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public LLMChoiceStreaming.Builder toBuilder() {
+    return new LLMChoiceStreaming.Builder()
+        .index(getIndex())
+        .delta(getDelta())
+        .logprobs(getLogprobs())
+        .finishReason(getFinishReason());
+  }
+
   public static class Builder {
 
     private LLMChoiceStreaming instance;
@@ -243,19 +254,5 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static LLMChoiceStreaming.Builder builder() {
-    return new LLMChoiceStreaming.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMChoiceStreaming.Builder toBuilder() {
-    return new LLMChoiceStreaming.Builder()
-        .index(getIndex())
-        .delta(getDelta())
-        .logprobs(getLogprobs())
-        .finishReason(getFinishReason());
   }
 }

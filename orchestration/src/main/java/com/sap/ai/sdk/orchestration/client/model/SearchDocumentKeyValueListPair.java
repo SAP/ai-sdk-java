@@ -30,15 +30,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class SearchDocumentKeyValueListPair {
   public static final String JSON_PROPERTY_KEY = "key";
-  private String key;
-
   public static final String JSON_PROPERTY_VALUE = "value";
-  private List<String> value = new ArrayList<>();
-
   public static final String JSON_PROPERTY_SELECT_MODE = "select_mode";
+  private String key;
+  private List<String> value = new ArrayList<>();
   private List<SearchSelectOptionEnum> selectMode = new ArrayList<>();
 
   public SearchDocumentKeyValueListPair() {}
+
+  /** Create a builder with no initialized field. */
+  public static SearchDocumentKeyValueListPair.Builder builder() {
+    return new SearchDocumentKeyValueListPair.Builder();
+  }
 
   public SearchDocumentKeyValueListPair key(String key) {
 
@@ -169,6 +172,14 @@ public class SearchDocumentKeyValueListPair {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public SearchDocumentKeyValueListPair.Builder toBuilder() {
+    return new SearchDocumentKeyValueListPair.Builder()
+        .key(getKey())
+        .value(getValue())
+        .selectMode(getSelectMode());
+  }
+
   public static class Builder {
 
     private SearchDocumentKeyValueListPair instance;
@@ -215,18 +226,5 @@ public class SearchDocumentKeyValueListPair {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static SearchDocumentKeyValueListPair.Builder builder() {
-    return new SearchDocumentKeyValueListPair.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public SearchDocumentKeyValueListPair.Builder toBuilder() {
-    return new SearchDocumentKeyValueListPair.Builder()
-        .key(getKey())
-        .value(getValue())
-        .selectMode(getSelectMode());
   }
 }

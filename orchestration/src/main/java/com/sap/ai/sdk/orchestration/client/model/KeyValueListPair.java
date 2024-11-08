@@ -26,12 +26,16 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class KeyValueListPair {
   public static final String JSON_PROPERTY_KEY = "key";
-  private String key;
-
   public static final String JSON_PROPERTY_VALUE = "value";
+  private String key;
   private List<String> value = new ArrayList<>();
 
   public KeyValueListPair() {}
+
+  /** Create a builder with no initialized field. */
+  public static KeyValueListPair.Builder builder() {
+    return new KeyValueListPair.Builder();
+  }
 
   public KeyValueListPair key(String key) {
 
@@ -127,6 +131,11 @@ public class KeyValueListPair {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public KeyValueListPair.Builder toBuilder() {
+    return new KeyValueListPair.Builder().key(getKey()).value(getValue());
+  }
+
   public static class Builder {
 
     private KeyValueListPair instance;
@@ -167,15 +176,5 @@ public class KeyValueListPair {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static KeyValueListPair.Builder builder() {
-    return new KeyValueListPair.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public KeyValueListPair.Builder toBuilder() {
-    return new KeyValueListPair.Builder().key(getKey()).value(getValue());
   }
 }

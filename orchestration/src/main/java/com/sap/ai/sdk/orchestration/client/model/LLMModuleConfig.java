@@ -29,15 +29,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class LLMModuleConfig {
   public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
-  private String modelName;
-
   public static final String JSON_PROPERTY_MODEL_PARAMS = "model_params";
-  private Object modelParams;
-
   public static final String JSON_PROPERTY_MODEL_VERSION = "model_version";
+  private String modelName;
+  private Object modelParams;
   private String modelVersion = "latest";
 
   public LLMModuleConfig() {}
+
+  /** Create a builder with no initialized field. */
+  public static LLMModuleConfig.Builder builder() {
+    return new LLMModuleConfig.Builder();
+  }
 
   public LLMModuleConfig modelName(String modelName) {
 
@@ -151,6 +154,14 @@ public class LLMModuleConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public LLMModuleConfig.Builder toBuilder() {
+    return new LLMModuleConfig.Builder()
+        .modelName(getModelName())
+        .modelParams(getModelParams())
+        .modelVersion(getModelVersion());
+  }
+
   public static class Builder {
 
     private LLMModuleConfig instance;
@@ -196,18 +207,5 @@ public class LLMModuleConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static LLMModuleConfig.Builder builder() {
-    return new LLMModuleConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMModuleConfig.Builder toBuilder() {
-    return new LLMModuleConfig.Builder()
-        .modelName(getModelName())
-        .modelParams(getModelParams())
-        .modelVersion(getModelVersion());
   }
 }

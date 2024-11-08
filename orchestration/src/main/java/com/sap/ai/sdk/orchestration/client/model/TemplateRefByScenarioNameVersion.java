@@ -28,15 +28,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class TemplateRefByScenarioNameVersion {
   public static final String JSON_PROPERTY_SCENARIO = "scenario";
-  private String scenario;
-
   public static final String JSON_PROPERTY_NAME = "name";
-  private String name;
-
   public static final String JSON_PROPERTY_VERSION = "version";
+  private String scenario;
+  private String name;
   private String version;
 
   public TemplateRefByScenarioNameVersion() {}
+
+  /** Create a builder with no initialized field. */
+  public static TemplateRefByScenarioNameVersion.Builder builder() {
+    return new TemplateRefByScenarioNameVersion.Builder();
+  }
 
   public TemplateRefByScenarioNameVersion scenario(String scenario) {
 
@@ -151,6 +154,14 @@ public class TemplateRefByScenarioNameVersion {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public TemplateRefByScenarioNameVersion.Builder toBuilder() {
+    return new TemplateRefByScenarioNameVersion.Builder()
+        .scenario(getScenario())
+        .name(getName())
+        .version(getVersion());
+  }
+
   public static class Builder {
 
     private TemplateRefByScenarioNameVersion instance;
@@ -196,18 +207,5 @@ public class TemplateRefByScenarioNameVersion {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static TemplateRefByScenarioNameVersion.Builder builder() {
-    return new TemplateRefByScenarioNameVersion.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public TemplateRefByScenarioNameVersion.Builder toBuilder() {
-    return new TemplateRefByScenarioNameVersion.Builder()
-        .scenario(getScenario())
-        .name(getName())
-        .version(getVersion());
   }
 }

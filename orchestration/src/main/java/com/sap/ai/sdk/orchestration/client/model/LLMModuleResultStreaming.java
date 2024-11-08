@@ -35,27 +35,26 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class LLMModuleResultStreaming implements LLMModuleResult {
   public static final String JSON_PROPERTY_ID = "id";
-  private String id;
-
   public static final String JSON_PROPERTY_OBJECT = "object";
-  private String _object;
-
   public static final String JSON_PROPERTY_CREATED = "created";
-  private Integer created;
-
   public static final String JSON_PROPERTY_MODEL = "model";
-  private String model;
-
   public static final String JSON_PROPERTY_SYSTEM_FINGERPRINT = "system_fingerprint";
-  private String systemFingerprint;
-
   public static final String JSON_PROPERTY_CHOICES = "choices";
-  private List<LLMChoiceStreaming> choices = new ArrayList<>();
-
   public static final String JSON_PROPERTY_USAGE = "usage";
+  private String id;
+  private String _object;
+  private Integer created;
+  private String model;
+  private String systemFingerprint;
+  private List<LLMChoiceStreaming> choices = new ArrayList<>();
   private TokenUsage usage;
 
   public LLMModuleResultStreaming() {}
+
+  /** Create a builder with no initialized field. */
+  public static LLMModuleResultStreaming.Builder builder() {
+    return new LLMModuleResultStreaming.Builder();
+  }
 
   public LLMModuleResultStreaming id(String id) {
 
@@ -281,6 +280,18 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public LLMModuleResultStreaming.Builder toBuilder() {
+    return new LLMModuleResultStreaming.Builder()
+        .id(getId())
+        ._object(getObject())
+        .created(getCreated())
+        .model(getModel())
+        .systemFingerprint(getSystemFingerprint())
+        .choices(getChoices())
+        .usage(getUsage());
+  }
+
   public static class Builder {
 
     private LLMModuleResultStreaming instance;
@@ -346,22 +357,5 @@ public class LLMModuleResultStreaming implements LLMModuleResult {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static LLMModuleResultStreaming.Builder builder() {
-    return new LLMModuleResultStreaming.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMModuleResultStreaming.Builder toBuilder() {
-    return new LLMModuleResultStreaming.Builder()
-        .id(getId())
-        ._object(getObject())
-        .created(getCreated())
-        .model(getModel())
-        .systemFingerprint(getSystemFingerprint())
-        .choices(getChoices())
-        .usage(getUsage());
   }
 }

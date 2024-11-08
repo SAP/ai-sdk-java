@@ -27,16 +27,6 @@ public enum SearchSelectOptionEnum {
     this.value = value;
   }
 
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
   @JsonCreator
   public static SearchSelectOptionEnum fromValue(String value) {
     for (SearchSelectOptionEnum b : SearchSelectOptionEnum.values()) {
@@ -45,5 +35,15 @@ public enum SearchSelectOptionEnum {
       }
     }
     return null;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }

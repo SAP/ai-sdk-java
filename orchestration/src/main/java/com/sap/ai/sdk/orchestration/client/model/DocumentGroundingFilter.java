@@ -37,28 +37,43 @@ import org.openapitools.jackson.nullable.JsonNullable;
     comments = "Generator version: 7.9.0")
 public class DocumentGroundingFilter implements GroundingModuleConfigConfigFiltersInner {
   public static final String JSON_PROPERTY_ID = "id";
-  private Object id = null;
-
   public static final String JSON_PROPERTY_SEARCH_CONFIG = "search_config";
+  public static final String JSON_PROPERTY_DATA_REPOSITORIES = "data_repositories";
+  public static final String JSON_PROPERTY_DATA_REPOSITORY_TYPE = "data_repository_type";
+  public static final String JSON_PROPERTY_DATA_REPOSITORY_METADATA = "data_repository_metadata";
+  public static final String JSON_PROPERTY_DOCUMENT_METADATA = "document_metadata";
+  public static final String JSON_PROPERTY_CHUNK_METADATA = "chunk_metadata";
+  private Object id = null;
   private JsonNullable<GroundingFilterSearchConfiguration> searchConfig =
       JsonNullable.<GroundingFilterSearchConfiguration>undefined();
-
-  public static final String JSON_PROPERTY_DATA_REPOSITORIES = "data_repositories";
   private List<String> dataRepositories = new ArrayList<>(Arrays.asList("*"));
-
-  public static final String JSON_PROPERTY_DATA_REPOSITORY_TYPE = "data_repository_type";
   private DataRepositoryType dataRepositoryType;
-
-  public static final String JSON_PROPERTY_DATA_REPOSITORY_METADATA = "data_repository_metadata";
   private List<KeyValueListPair> dataRepositoryMetadata = new ArrayList<>();
-
-  public static final String JSON_PROPERTY_DOCUMENT_METADATA = "document_metadata";
   private List<SearchDocumentKeyValueListPair> documentMetadata = new ArrayList<>();
-
-  public static final String JSON_PROPERTY_CHUNK_METADATA = "chunk_metadata";
   private List<KeyValueListPair> chunkMetadata = new ArrayList<>();
 
   public DocumentGroundingFilter() {}
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b
+        || (a != null
+            && b != null
+            && a.isPresent()
+            && b.isPresent()
+            && Objects.deepEquals(a.get(), b.get()));
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[] {a.get()}) : 31;
+  }
+
+  /** Create a builder with no initialized field. */
+  public static DocumentGroundingFilter.Builder builder() {
+    return new DocumentGroundingFilter.Builder();
+  }
 
   public DocumentGroundingFilter id(Object id) {
 
@@ -101,6 +116,10 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
     return searchConfig.orElse(null);
   }
 
+  public void setSearchConfig(GroundingFilterSearchConfiguration searchConfig) {
+    this.searchConfig = JsonNullable.<GroundingFilterSearchConfiguration>of(searchConfig);
+  }
+
   @JsonProperty(JSON_PROPERTY_SEARCH_CONFIG)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public JsonNullable<GroundingFilterSearchConfiguration> getSearchConfig_JsonNullable() {
@@ -111,10 +130,6 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
   public void setSearchConfig_JsonNullable(
       JsonNullable<GroundingFilterSearchConfiguration> searchConfig) {
     this.searchConfig = searchConfig;
-  }
-
-  public void setSearchConfig(GroundingFilterSearchConfiguration searchConfig) {
-    this.searchConfig = JsonNullable.<GroundingFilterSearchConfiguration>of(searchConfig);
   }
 
   public DocumentGroundingFilter dataRepositories(List<String> dataRepositories) {
@@ -294,15 +309,6 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
         && Objects.equals(this.chunkMetadata, documentGroundingFilter.chunkMetadata);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b
-        || (a != null
-            && b != null
-            && a.isPresent()
-            && b.isPresent()
-            && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(
@@ -313,13 +319,6 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
         dataRepositoryMetadata,
         documentMetadata,
         chunkMetadata);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[] {a.get()}) : 31;
   }
 
   @Override
@@ -347,6 +346,18 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public DocumentGroundingFilter.Builder toBuilder() {
+    return new DocumentGroundingFilter.Builder()
+        .id(getId())
+        .searchConfig(getSearchConfig())
+        .dataRepositories(getDataRepositories())
+        .dataRepositoryType(getDataRepositoryType())
+        .dataRepositoryMetadata(getDataRepositoryMetadata())
+        .documentMetadata(getDocumentMetadata())
+        .chunkMetadata(getChunkMetadata());
   }
 
   public static class Builder {
@@ -425,22 +436,5 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static DocumentGroundingFilter.Builder builder() {
-    return new DocumentGroundingFilter.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public DocumentGroundingFilter.Builder toBuilder() {
-    return new DocumentGroundingFilter.Builder()
-        .id(getId())
-        .searchConfig(getSearchConfig())
-        .dataRepositories(getDataRepositories())
-        .dataRepositoryType(getDataRepositoryType())
-        .dataRepositoryMetadata(getDataRepositoryMetadata())
-        .documentMetadata(getDocumentMetadata())
-        .chunkMetadata(getChunkMetadata());
   }
 }

@@ -34,18 +34,20 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   public static final String JSON_PROPERTY_INDEX = "index";
-  private Integer index;
-
   public static final String JSON_PROPERTY_MESSAGE = "message";
-  private ChatMessage message;
-
   public static final String JSON_PROPERTY_LOGPROBS = "logprobs";
-  private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
-
   public static final String JSON_PROPERTY_FINISH_REASON = "finish_reason";
+  private Integer index;
+  private ChatMessage message;
+  private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
   private String finishReason;
 
   public LLMChoice() {}
+
+  /** Create a builder with no initialized field. */
+  public static LLMChoice.Builder builder() {
+    return new LLMChoice.Builder();
+  }
 
   public LLMChoice index(Integer index) {
 
@@ -196,6 +198,15 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public LLMChoice.Builder toBuilder() {
+    return new LLMChoice.Builder()
+        .index(getIndex())
+        .message(getMessage())
+        .logprobs(getLogprobs())
+        .finishReason(getFinishReason());
+  }
+
   public static class Builder {
 
     private LLMChoice instance;
@@ -246,19 +257,5 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static LLMChoice.Builder builder() {
-    return new LLMChoice.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMChoice.Builder toBuilder() {
-    return new LLMChoice.Builder()
-        .index(getIndex())
-        .message(getMessage())
-        .logprobs(getLogprobs())
-        .finishReason(getFinishReason());
   }
 }

@@ -28,46 +28,16 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class GroundingModuleConfig {
-  /** Gets or Sets type */
-  public enum TypeEnum {
-    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
-
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static TypeEnum fromValue(String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
   public static final String JSON_PROPERTY_TYPE = "type";
-  private TypeEnum type;
-
   public static final String JSON_PROPERTY_CONFIG = "config";
+  private TypeEnum type;
   private GroundingModuleConfigConfig config;
-
   public GroundingModuleConfig() {}
+
+  /** Create a builder with no initialized field. */
+  public static GroundingModuleConfig.Builder builder() {
+    return new GroundingModuleConfig.Builder();
+  }
 
   public GroundingModuleConfig type(TypeEnum type) {
 
@@ -155,6 +125,44 @@ public class GroundingModuleConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public GroundingModuleConfig.Builder toBuilder() {
+    return new GroundingModuleConfig.Builder().type(getType()).config(getConfig());
+  }
+
+  /** Gets or Sets type */
+  public enum TypeEnum {
+    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
+
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonCreator
+    public static TypeEnum fromValue(String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+  }
+
   public static class Builder {
 
     private GroundingModuleConfig instance;
@@ -195,15 +203,5 @@ public class GroundingModuleConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static GroundingModuleConfig.Builder builder() {
-    return new GroundingModuleConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public GroundingModuleConfig.Builder toBuilder() {
-    return new GroundingModuleConfig.Builder().type(getType()).config(getConfig());
   }
 }

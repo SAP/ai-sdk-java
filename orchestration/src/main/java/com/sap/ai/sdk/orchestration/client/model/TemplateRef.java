@@ -28,6 +28,11 @@ public class TemplateRef {
 
   public TemplateRef() {}
 
+  /** Create a builder with no initialized field. */
+  public static TemplateRef.Builder builder() {
+    return new TemplateRef.Builder();
+  }
+
   public TemplateRef templateRef(TemplateRefTemplateRef templateRef) {
 
     this.templateRef = templateRef;
@@ -88,6 +93,11 @@ public class TemplateRef {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public TemplateRef.Builder toBuilder() {
+    return new TemplateRef.Builder().templateRef(getTemplateRef());
+  }
+
   public static class Builder {
 
     private TemplateRef instance;
@@ -123,15 +133,5 @@ public class TemplateRef {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static TemplateRef.Builder builder() {
-    return new TemplateRef.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public TemplateRef.Builder toBuilder() {
-    return new TemplateRef.Builder().templateRef(getTemplateRef());
   }
 }

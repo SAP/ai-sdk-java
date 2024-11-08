@@ -31,6 +31,11 @@ public class MaskingModuleConfig {
 
   public MaskingModuleConfig() {}
 
+  /** Create a builder with no initialized field. */
+  public static MaskingModuleConfig.Builder builder() {
+    return new MaskingModuleConfig.Builder();
+  }
+
   public MaskingModuleConfig maskingProviders(List<MaskingProviderConfig> maskingProviders) {
 
     this.maskingProviders = maskingProviders;
@@ -99,6 +104,11 @@ public class MaskingModuleConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public MaskingModuleConfig.Builder toBuilder() {
+    return new MaskingModuleConfig.Builder().maskingProviders(getMaskingProviders());
+  }
+
   public static class Builder {
 
     private MaskingModuleConfig instance;
@@ -135,15 +145,5 @@ public class MaskingModuleConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static MaskingModuleConfig.Builder builder() {
-    return new MaskingModuleConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public MaskingModuleConfig.Builder toBuilder() {
-    return new MaskingModuleConfig.Builder().maskingProviders(getMaskingProviders());
   }
 }

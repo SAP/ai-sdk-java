@@ -33,15 +33,18 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class CompletionPostRequest {
   public static final String JSON_PROPERTY_ORCHESTRATION_CONFIG = "orchestration_config";
-  private OrchestrationConfig orchestrationConfig;
-
   public static final String JSON_PROPERTY_INPUT_PARAMS = "input_params";
-  private Map<String, String> inputParams = new HashMap<>();
-
   public static final String JSON_PROPERTY_MESSAGES_HISTORY = "messages_history";
+  private OrchestrationConfig orchestrationConfig;
+  private Map<String, String> inputParams = new HashMap<>();
   private List<ChatMessage> messagesHistory;
 
   public CompletionPostRequest() {}
+
+  /** Create a builder with no initialized field. */
+  public static CompletionPostRequest.Builder builder() {
+    return new CompletionPostRequest.Builder();
+  }
 
   public CompletionPostRequest orchestrationConfig(OrchestrationConfig orchestrationConfig) {
 
@@ -174,6 +177,14 @@ public class CompletionPostRequest {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public CompletionPostRequest.Builder toBuilder() {
+    return new CompletionPostRequest.Builder()
+        .orchestrationConfig(getOrchestrationConfig())
+        .inputParams(getInputParams())
+        .messagesHistory(getMessagesHistory());
+  }
+
   public static class Builder {
 
     private CompletionPostRequest instance;
@@ -220,18 +231,5 @@ public class CompletionPostRequest {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static CompletionPostRequest.Builder builder() {
-    return new CompletionPostRequest.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public CompletionPostRequest.Builder toBuilder() {
-    return new CompletionPostRequest.Builder()
-        .orchestrationConfig(getOrchestrationConfig())
-        .inputParams(getInputParams())
-        .messagesHistory(getMessagesHistory());
   }
 }

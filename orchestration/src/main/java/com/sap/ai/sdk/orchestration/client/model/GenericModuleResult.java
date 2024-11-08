@@ -28,12 +28,16 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class GenericModuleResult {
   public static final String JSON_PROPERTY_MESSAGE = "message";
-  private String message;
-
   public static final String JSON_PROPERTY_DATA = "data";
+  private String message;
   private Object data;
 
   public GenericModuleResult() {}
+
+  /** Create a builder with no initialized field. */
+  public static GenericModuleResult.Builder builder() {
+    return new GenericModuleResult.Builder();
+  }
 
   public GenericModuleResult message(String message) {
 
@@ -121,6 +125,11 @@ public class GenericModuleResult {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /** Create a builder with a shallow copy of this instance. */
+  public GenericModuleResult.Builder toBuilder() {
+    return new GenericModuleResult.Builder().message(getMessage()).data(getData());
+  }
+
   public static class Builder {
 
     private GenericModuleResult instance;
@@ -161,15 +170,5 @@ public class GenericModuleResult {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static GenericModuleResult.Builder builder() {
-    return new GenericModuleResult.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public GenericModuleResult.Builder toBuilder() {
-    return new GenericModuleResult.Builder().message(getMessage()).data(getData());
   }
 }
