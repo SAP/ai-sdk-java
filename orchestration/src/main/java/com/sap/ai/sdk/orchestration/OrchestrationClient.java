@@ -10,6 +10,8 @@ import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
@@ -67,13 +69,17 @@ public class OrchestrationClient {
   /**
    * Generate a completion for the given prompt.
    *
-   * @param request The request to send to orchestration.
+   * @param prompt The {@link OrchestrationPrompt} to send to orchestration.
+   * @param config The {@link ModuleConfigs} configuration to use for the completion.
    * @return the completion output
-   * @throws OrchestrationClientException if the request fails
+   * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
-  public CompletionPostResponse chatCompletion(@Nonnull final CompletionPostRequest request)
+  public CompletionPostResponse chatCompletion(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
       throws OrchestrationClientException {
+
+    val request = toCompletionPostRequest(prompt, config);
     return executeRequest(request);
   }
 
@@ -93,8 +99,8 @@ public class OrchestrationClient {
    *
    * <p>Alternatively, you can call this method directly with a fully custom request object.
    *
-   * @param request The request DTO to send to orchestration.
-   * @return The response DTO from orchestration.
+   * @param request The request data object to send to orchestration.
+   * @return The response data object from orchestration.
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
@@ -110,6 +116,20 @@ public class OrchestrationClient {
     }
 
     return executeRequest(postRequest);
+  }
+
+  /**
+   * Convert the given prompt and config into a low-level request data object. The data object
+   * allows for further customization before sending the request.
+   *
+   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
+   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
+   * @return The low-level request data object to send to orchestration.
+   */
+  @Nonnull
+  public static CompletionPostRequest toCompletionPostRequest(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
 
   @SuppressWarnings("UnstableApiUsage")
