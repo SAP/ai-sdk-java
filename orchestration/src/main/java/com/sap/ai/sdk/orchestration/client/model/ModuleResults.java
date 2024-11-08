@@ -30,7 +30,7 @@ import java.util.Objects;
 })
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T17:17:51.177015+01:00[Europe/Berlin]",
+    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class ModuleResults {
   public static final String JSON_PROPERTY_TEMPLATING = "templating";

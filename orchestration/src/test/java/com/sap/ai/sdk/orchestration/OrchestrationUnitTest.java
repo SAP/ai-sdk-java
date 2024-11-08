@@ -38,12 +38,7 @@ import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.Template;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
@@ -121,8 +116,8 @@ class OrchestrationUnitTest {
     final var result = client.chatCompletion(prompt, config);
 
     assertThat(result).isNotNull();
-    assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
-        .isNotEmpty();
+    var orchestrationResult = (LLMModuleResultSynchronous) result.getOrchestrationResult();
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
@@ -253,18 +248,18 @@ class OrchestrationUnitTest {
   private static FilteringModuleConfig createAzureContentFilter(
       @Nonnull final AzureThreshold threshold) {
     final var filter =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+        new AzureContentSafetyFilterConfig()
+            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
             .config(
-                AzureContentSafety.create()
+                new AzureContentSafety()
                     .hate(threshold)
                     .selfHarm(threshold)
                     .sexual(threshold)
                     .violence(threshold));
 
-    return FilteringModuleConfig.create()
-        .input(InputFilteringConfig.create().filters(filter))
-        .output(OutputFilteringConfig.create().filters(filter));
+    return new FilteringModuleConfig()
+        .input(new InputFilteringConfig().filters(List.of(filter)))
+        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   @Test
@@ -307,7 +302,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var maskingConfig =
-        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
 
@@ -330,17 +325,17 @@ class OrchestrationUnitTest {
   }
 
   private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final MaskingProviderConfig.MethodEnum method,
-      @Nonnull final DPIEntities... entities) {
+      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
 
     final var entityConfigs =
-        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingModuleConfig.create()
+        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
+    return new MaskingModuleConfig()
         .maskingProviders(
-            MaskingProviderConfig.create()
-                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                .method(method)
-                .entities(entityConfigs));
+            List.of(
+                new DPIConfig()
+                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(method)
+                    .entities(entityConfigs)));
   }
 
   @Test

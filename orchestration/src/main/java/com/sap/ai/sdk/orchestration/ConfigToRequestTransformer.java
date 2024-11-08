@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.client.model.Template;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ final class ConfigToRequestTransformer {
     // subsequent requests
     val configCopy = config.withTemplateConfig(template);
 
-    return CompletionPostRequest.create()
+    return new CompletionPostRequest()
         .orchestrationConfig(
-            OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
+            new OrchestrationConfig().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
         .messagesHistory(prompt.getMessagesHistory());
   }
@@ -42,14 +43,14 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages = Option.of(template).map(TemplatingModuleConfig::getTemplate).getOrElse(List::of);
+    val messages = Option.of(template).map(t -> ((Template) t).getTemplate()).getOrElse(List::of);
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(prompt.getMessages());
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return TemplatingModuleConfig.create().template(messagesWithPrompt);
+    return new Template().template(messagesWithPrompt);
   }
 
   @Nonnull
@@ -60,7 +61,7 @@ final class ConfigToRequestTransformer {
 
     //noinspection DataFlowIssue the template is always non-null here
     val moduleConfig =
-        ModuleConfigs.create()
+        new ModuleConfigs()
             .llmModuleConfig(llmConfig)
             .templatingModuleConfig(config.getTemplateConfig());
 
