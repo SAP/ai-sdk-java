@@ -65,12 +65,10 @@ In addition to the prerequisites above, we assume you have already set up the fo
         "ttl": null,
         "details": {
           "scaling": {
-            "backendDetails": null,
-            "backend_details": {}
+            "backendDetails": {}
           },
           "resources": {
-            "backendDetails": null,
-            "backend_details": {
+            "backendDetails": {
               "model": {
                 "name": "gpt-35-turbo",
                 "version": "latest"

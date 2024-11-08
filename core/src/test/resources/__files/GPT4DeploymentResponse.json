@@ -8,7 +8,7 @@
       "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d19b998f347341aa",
       "details": {
         "resources": {
-          "backend_details": {
+          "backendDetails": {
             "model": {
               "name": "gpt-4-32k",
               "version": "latest"
@@ -16,7 +16,7 @@
           }
         },
         "scaling": {
-          "backend_details": {}
+          "backendDetails": {}
         }
       },
       "id": "d19b998f347341aa",
