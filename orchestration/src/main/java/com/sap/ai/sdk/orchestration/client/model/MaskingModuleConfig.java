@@ -23,7 +23,7 @@ import java.util.Objects;
 @JsonPropertyOrder({MaskingModuleConfig.JSON_PROPERTY_MASKING_PROVIDERS})
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T14:16:03.918111+01:00[Europe/Berlin]",
+    date = "2024-11-08T15:36:05.863594+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class MaskingModuleConfig {
   public static final String JSON_PROPERTY_MASKING_PROVIDERS = "masking_providers";

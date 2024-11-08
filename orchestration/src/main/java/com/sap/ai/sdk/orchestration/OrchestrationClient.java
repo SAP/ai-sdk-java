@@ -48,7 +48,8 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .deserializerByType(LLMModuleResult.class, new LLMModuleResultDeserializer())
+            .deserializerByType(
+                LLMModuleResult.class, new GeneralizedFallbackDeserializer<>(LLMModuleResult.class))
             .build();
   }
 

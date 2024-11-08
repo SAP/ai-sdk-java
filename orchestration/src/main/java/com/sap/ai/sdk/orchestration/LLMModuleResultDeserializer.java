@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
@@ -16,8 +15,7 @@ public class LLMModuleResultDeserializer extends StdDeserializer<LLMModuleResult
   }
 
   @Override
-  public LLMModuleResult deserialize(JsonParser p, DeserializationContext ctxt)
-      throws IOException, JsonProcessingException {
+  public LLMModuleResult deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 
     // Check if the target type is a concrete class
     JavaType targetType = ctxt.getContextualType();

@@ -14,10 +14,8 @@ pom.xml
 README.md
 settings.gradle
 src/main/AndroidManifest.xml
-.openapi-generator-ignore
 api/
 .openapi-generator/
-.openapi-generator
 
 src/main/java/com/sap/ai/sdk/orchestration/client/model/FilterConfig.java
 src/main/java/com/sap/ai/sdk/orchestration/client/model/GroundingModuleConfigConfigFiltersInner.java
