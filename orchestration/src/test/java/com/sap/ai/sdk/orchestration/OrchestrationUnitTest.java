@@ -73,37 +73,6 @@ class OrchestrationUnitTest {
   private OrchestrationModuleConfig config;
   private OrchestrationPrompt prompt;
 
-  private static FilteringModuleConfig createAzureContentFilter(
-      @Nonnull final AzureThreshold threshold) {
-    final var filter =
-        new AzureContentSafetyFilterConfig()
-            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                new AzureContentSafety()
-                    .hate(threshold)
-                    .selfHarm(threshold)
-                    .sexual(threshold)
-                    .violence(threshold));
-
-    return new FilteringModuleConfig()
-        .input(new InputFilteringConfig().filters(List.of(filter)))
-        .output(new OutputFilteringConfig().filters(List.of(filter)));
-  }
-
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
-    return new MaskingModuleConfig()
-        .maskingProviders(
-            List.of(
-                new DPIConfig()
-                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(method)
-                    .entities(entityConfigs)));
-  }
-
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
     stubFor(
@@ -276,6 +245,23 @@ class OrchestrationUnitTest {
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
   }
 
+  private static FilteringModuleConfig createAzureContentFilter(
+      @Nonnull final AzureThreshold threshold) {
+    final var filter =
+        new AzureContentSafetyFilterConfig()
+            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+            .config(
+                new AzureContentSafety()
+                    .hate(threshold)
+                    .selfHarm(threshold)
+                    .sexual(threshold)
+                    .violence(threshold));
+
+    return new FilteringModuleConfig()
+        .input(new InputFilteringConfig().filters(List.of(filter)))
+        .output(new OutputFilteringConfig().filters(List.of(filter)));
+  }
+
   @Test
   void messagesHistory() throws IOException {
     stubFor(
@@ -336,6 +322,20 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
               .withRequestBody(equalToJson(request)));
     }
+  }
+
+  private static MaskingModuleConfig createMaskingConfig(
+      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
+
+    final var entityConfigs =
+        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
+    return new MaskingModuleConfig()
+        .maskingProviders(
+            List.of(
+                new DPIConfig()
+                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(method)
+                    .entities(entityConfigs)));
   }
 
   @Test
