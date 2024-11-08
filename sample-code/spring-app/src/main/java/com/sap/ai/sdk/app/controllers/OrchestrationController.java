@@ -58,7 +58,10 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   public CompletionPostResponse template() {
-    final var template = ChatMessage.create().role("user").content("Reply with 'Orchestration Service is working!' in {{?language}}");
+    final var template =
+        ChatMessage.create()
+            .role("user")
+            .content("Reply with 'Orchestration Service is working!' in {{?language}}");
     final var templatingConfig = TemplatingModuleConfig.create().template(template);
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
