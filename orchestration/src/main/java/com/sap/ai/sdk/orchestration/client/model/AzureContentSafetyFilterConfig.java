@@ -33,6 +33,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
   public static final String JSON_PROPERTY_CONFIG = "config";
   private TypeEnum type;
   private AzureContentSafety config;
+
   public AzureContentSafetyFilterConfig() {}
 
   /** Create a builder with no initialized field. */

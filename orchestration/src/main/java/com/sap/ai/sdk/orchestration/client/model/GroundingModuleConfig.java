@@ -32,6 +32,7 @@ public class GroundingModuleConfig {
   public static final String JSON_PROPERTY_CONFIG = "config";
   private TypeEnum type;
   private GroundingModuleConfigConfig config;
+
   public GroundingModuleConfig() {}
 
   /** Create a builder with no initialized field. */
