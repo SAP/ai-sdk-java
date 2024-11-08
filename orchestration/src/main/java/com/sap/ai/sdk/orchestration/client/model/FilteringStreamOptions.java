@@ -21,6 +21,7 @@ import java.util.Objects;
 @JsonPropertyOrder({FilteringStreamOptions.JSON_PROPERTY_OVERLAP})
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    date = "2024-11-08T14:16:03.918111+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class FilteringStreamOptions {
   public static final String JSON_PROPERTY_OVERLAP = "overlap";

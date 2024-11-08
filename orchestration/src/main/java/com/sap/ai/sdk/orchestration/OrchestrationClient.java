@@ -12,6 +12,7 @@ import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
@@ -47,6 +48,7 @@ public class OrchestrationClient implements OrchestrationConfig<OrchestrationCli
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
+            .deserializerByType(LLMModuleResult.class, new LLMModuleResultDeserializer())
             .build();
   }
 

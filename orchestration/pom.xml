@@ -143,7 +143,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <!-- Specify the input OpenAPI spec file -->
-              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration_discrim.yaml</inputSpec>
+              <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
               <output>${project.basedir}</output>
               <!-- Specify the generator to use, e.g., java, spring, kotlin, etc. -->
               <generatorName>java</generatorName>
@@ -165,7 +165,7 @@
               <configOptions>
                 <generateBuilders>true</generateBuilders>
                 <failOnUnknownProperties>false</failOnUnknownProperties>
-                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                <hideGenerationTimestamp>false</hideGenerationTimestamp>
                 <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
                 <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                 <useBeanValidation>false</useBeanValidation>
@@ -177,13 +177,16 @@
               <generateApis>false</generateApis>
               <library>resttemplate</library>
               <!--<importMappings>
-                <importMapping>com.sap.ai.sdk.orchestration.client.model.FilterConfig=com.sap.ai.sdk.orchestration.client
-                  .oneofs.FilterConfig</importMapping>
-                <importMapping>com.sap.ai.sdk.orchestration.client.model.GroundingModuleConfigConfigFiltersInner=com.sap
-                  .ai.sdk.orchestration.client.oneofs.GroundingModuleConfigConfigFiltersInner</importMapping>
-                <importMapping>com.sap.ai.sdk.orchestration.client.model.LLMModuleResult=com.sap.ai.sdk
-                  .orchestration.client.oneofs.LLMModuleResult</importMapping>
-              </importMappings>-->
+                <importMapping>FilterConfig=com.sap.ai.sdk.orchestration.client.oneofs.FilterConfig</importMapping>
+                <importMapping>GroundingModuleConfigConfigFiltersInner=com.sap.ai.sdk.orchestration.client.oneofs.GroundingModuleConfigConfigFiltersInner</importMapping>
+                <importMapping>LLMModuleResult=com.sap.ai.sdk.orchestration.client.oneofs.LLMModuleResult</importMapping>
+                <importMapping>MaskingProviderConfig=com.sap.ai.sdk.orchestration.client.oneofs.MaskingProviderConfig</importMapping>
+                <importMapping>ModuleResultsOutputUnmaskingInner=com.sap.ai.sdk.orchestration.client.oneofs.ModuleResultsOutputUnmaskingInner</importMapping>
+                <importMapping>TemplateRefTemplateRef=com.sap.ai.sdk.orchestration.client.oneofs.TemplateRefTemplateRef</importMapping>
+                <importMapping>TemplatingModuleConfig=com.sap.ai.sdk.orchestration.client.oneofs.TemplatingModuleConfig</importMapping>
+              </importMappings>
+              <typeMappings>com.sap.ai.sdk.orchestration.client.model.FilterConfig=com.sap.ai.sdk.orchestration.client.oneofs.FilterConfig,
+                GroundingModuleConfigConfigFiltersInner=com.sap.ai.sdk.orchestration.client.oneofs.GroundingModuleConfigConfigFiltersInner,LLMModuleResult=com.sap.ai.sdk.orchestration.client.oneofs.LLMModuleResult,MaskingProviderConfig=com.sap.ai.sdk.orchestration.client.oneofs.MaskingProviderConfig,ModuleResultsOutputUnmaskingInner=com.sap.ai.sdk.orchestration.client.oneofs.ModuleResultsOutputUnmaskingInner,TemplateRefTemplateRef=com.sap.ai.sdk.orchestration.client.oneofs.TemplateRefTemplateRef,TemplatingModuleConfig=com.sap.ai.sdk.orchestration.client.oneofs.TemplatingModuleConfig</typeMappings>-->
               <!--<configHelp>true</configHelp>-->
             </configuration>
           </execution>

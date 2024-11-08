@@ -21,17 +21,14 @@ import java.util.Objects;
 
 /** AzureContentSafetyFilterConfig */
 @JsonPropertyOrder({
-  AzureContentSafetyFilterConfig.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
   AzureContentSafetyFilterConfig.JSON_PROPERTY_TYPE,
   AzureContentSafetyFilterConfig.JSON_PROPERTY_CONFIG
 })
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    date = "2024-11-08T14:16:03.918111+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class AzureContentSafetyFilterConfig implements FilterConfig {
-  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
-  private String xDiscriminatorValue;
-
   /** String represents name of the filter provider */
   public enum TypeEnum {
     AZURE_CONTENT_SAFETY("azure_content_safety"),
@@ -72,30 +69,6 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
   private AzureContentSafety config;
 
   public AzureContentSafetyFilterConfig() {}
-
-  public AzureContentSafetyFilterConfig xDiscriminatorValue(String xDiscriminatorValue) {
-
-    this.xDiscriminatorValue = xDiscriminatorValue;
-    return this;
-  }
-
-  /**
-   * Discriminator for the type of the object
-   *
-   * @return xDiscriminatorValue
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public String getxDiscriminatorValue() {
-    return xDiscriminatorValue;
-  }
-
-  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setxDiscriminatorValue(String xDiscriminatorValue) {
-    this.xDiscriminatorValue = xDiscriminatorValue;
-  }
 
   public AzureContentSafetyFilterConfig type(TypeEnum type) {
 
@@ -155,24 +128,19 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
     }
     AzureContentSafetyFilterConfig azureContentSafetyFilterConfig =
         (AzureContentSafetyFilterConfig) o;
-    return Objects.equals(
-            this.xDiscriminatorValue, azureContentSafetyFilterConfig.xDiscriminatorValue)
-        && Objects.equals(this.type, azureContentSafetyFilterConfig.type)
+    return Objects.equals(this.type, azureContentSafetyFilterConfig.type)
         && Objects.equals(this.config, azureContentSafetyFilterConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(xDiscriminatorValue, type, config);
+    return Objects.hash(type, config);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AzureContentSafetyFilterConfig {\n");
-    sb.append("    xDiscriminatorValue: ")
-        .append(toIndentedString(xDiscriminatorValue))
-        .append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("}");
@@ -199,11 +167,6 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
 
     protected Builder(AzureContentSafetyFilterConfig instance) {
       this.instance = instance;
-    }
-
-    public AzureContentSafetyFilterConfig.Builder xDiscriminatorValue(String xDiscriminatorValue) {
-      this.instance.xDiscriminatorValue = xDiscriminatorValue;
-      return this;
     }
 
     public AzureContentSafetyFilterConfig.Builder type(TypeEnum type) {
@@ -243,9 +206,6 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
 
   /** Create a builder with a shallow copy of this instance. */
   public AzureContentSafetyFilterConfig.Builder toBuilder() {
-    return new AzureContentSafetyFilterConfig.Builder()
-        .xDiscriminatorValue(getxDiscriminatorValue())
-        .type(getType())
-        .config(getConfig());
+    return new AzureContentSafetyFilterConfig.Builder().type(getType()).config(getConfig());
   }
 }

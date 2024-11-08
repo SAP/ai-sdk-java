@@ -23,9 +23,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     // serialization
     allowSetters = true // allows the  to be set during deserialization
     )
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "",
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 public interface TemplateRefTemplateRef {}

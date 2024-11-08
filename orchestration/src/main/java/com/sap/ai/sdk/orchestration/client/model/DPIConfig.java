@@ -23,18 +23,15 @@ import java.util.Objects;
 
 /** DPIConfig */
 @JsonPropertyOrder({
-  DPIConfig.JSON_PROPERTY_X_DISCRIMINATOR_VALUE,
   DPIConfig.JSON_PROPERTY_TYPE,
   DPIConfig.JSON_PROPERTY_METHOD,
   DPIConfig.JSON_PROPERTY_ENTITIES
 })
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
+    date = "2024-11-08T14:16:03.918111+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class DPIConfig implements MaskingProviderConfig {
-  public static final String JSON_PROPERTY_X_DISCRIMINATOR_VALUE = "x-discriminator-value";
-  private String xDiscriminatorValue;
-
   /** Type of masking service provider */
   public enum TypeEnum {
     SAP_DATA_PRIVACY_INTEGRATION("sap_data_privacy_integration"),
@@ -113,30 +110,6 @@ public class DPIConfig implements MaskingProviderConfig {
   private List<DPIEntityConfig> entities = new ArrayList<>();
 
   public DPIConfig() {}
-
-  public DPIConfig xDiscriminatorValue(String xDiscriminatorValue) {
-
-    this.xDiscriminatorValue = xDiscriminatorValue;
-    return this;
-  }
-
-  /**
-   * Discriminator for the type of the object
-   *
-   * @return xDiscriminatorValue
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public String getxDiscriminatorValue() {
-    return xDiscriminatorValue;
-  }
-
-  @JsonProperty(JSON_PROPERTY_X_DISCRIMINATOR_VALUE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setxDiscriminatorValue(String xDiscriminatorValue) {
-    this.xDiscriminatorValue = xDiscriminatorValue;
-  }
 
   public DPIConfig type(TypeEnum type) {
 
@@ -227,24 +200,20 @@ public class DPIConfig implements MaskingProviderConfig {
       return false;
     }
     DPIConfig dpIConfig = (DPIConfig) o;
-    return Objects.equals(this.xDiscriminatorValue, dpIConfig.xDiscriminatorValue)
-        && Objects.equals(this.type, dpIConfig.type)
+    return Objects.equals(this.type, dpIConfig.type)
         && Objects.equals(this.method, dpIConfig.method)
         && Objects.equals(this.entities, dpIConfig.entities);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(xDiscriminatorValue, type, method, entities);
+    return Objects.hash(type, method, entities);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class DPIConfig {\n");
-    sb.append("    xDiscriminatorValue: ")
-        .append(toIndentedString(xDiscriminatorValue))
-        .append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
     sb.append("    entities: ").append(toIndentedString(entities)).append("\n");
@@ -272,11 +241,6 @@ public class DPIConfig implements MaskingProviderConfig {
 
     protected Builder(DPIConfig instance) {
       this.instance = instance;
-    }
-
-    public DPIConfig.Builder xDiscriminatorValue(String xDiscriminatorValue) {
-      this.instance.xDiscriminatorValue = xDiscriminatorValue;
-      return this;
     }
 
     public DPIConfig.Builder type(TypeEnum type) {
@@ -321,10 +285,6 @@ public class DPIConfig implements MaskingProviderConfig {
 
   /** Create a builder with a shallow copy of this instance. */
   public DPIConfig.Builder toBuilder() {
-    return new DPIConfig.Builder()
-        .xDiscriminatorValue(getxDiscriminatorValue())
-        .type(getType())
-        .method(getMethod())
-        .entities(getEntities());
+    return new DPIConfig.Builder().type(getType()).method(getMethod()).entities(getEntities());
   }
 }
