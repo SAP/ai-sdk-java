@@ -99,8 +99,8 @@ public class OrchestrationClient {
    *
    * <p>Alternatively, you can call this method directly with a fully custom request object.
    *
-   * @param request The request DTO to send to orchestration.
-   * @return The response DTO from orchestration.
+   * @param request The request data object to send to orchestration.
+   * @return The response data object from orchestration.
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
@@ -119,17 +119,17 @@ public class OrchestrationClient {
   }
 
   /**
-   * Convert the given prompt and config into a low-level request DTO. The DTO allows for further
-   * customization before sending the request.
+   * Convert the given prompt and config into a low-level request data object. The data object
+   * allows for further customization before sending the request.
    *
    * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
    * @param config The {@link OrchestrationConfig } configuration to use for the completion.
-   * @return The low-level request DTO to send to orchestration.
+   * @return The low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    return ModuleConfigFactory.toCompletionPostRequestDto(prompt, config);
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
 
   @SuppressWarnings("UnstableApiUsage")

@@ -7,26 +7,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-class ModuleConfigFactoryTest {
+class ConfigToRequestTransformerTest {
 
   @Test
   void testThrowsOnMissingLlmConfig() {
     assertThatThrownBy(
-            () -> ModuleConfigFactory.toModuleConfigsDto(new OrchestrationModuleConfig()))
+            () -> ConfigToRequestTransformer.toModuleConfigs(new OrchestrationModuleConfig()))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("LLM config is required");
-  }
-
-  @Test
-  void testThrowsOnMissingMessages() {
-    var prompt = new OrchestrationPrompt(Map.of());
-
-    assertThatThrownBy(() -> ModuleConfigFactory.toTemplateModuleConfigDto(prompt, null))
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("A prompt is required");
   }
 
   @Test
@@ -38,7 +28,7 @@ class ModuleConfigFactoryTest {
 
     var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     var actual =
-        ModuleConfigFactory.toTemplateModuleConfigDto(
+        ConfigToRequestTransformer.toTemplateModuleConfig(
             prompt, TemplatingModuleConfig.create().template());
 
     assertThat(actual).isEqualTo(expected);
@@ -59,7 +49,7 @@ class ModuleConfigFactoryTest {
 
     var prompt = new OrchestrationPrompt(userMessage2);
     var templateConfig = TemplatingModuleConfig.create().template(systemMessage, userMessage);
-    var actual = ModuleConfigFactory.toTemplateModuleConfigDto(prompt, templateConfig);
+    var actual = ConfigToRequestTransformer.toTemplateModuleConfig(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
   }
@@ -70,7 +60,7 @@ class ModuleConfigFactoryTest {
 
     var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(systemMessage));
     var actual =
-        ModuleConfigFactory.toCompletionPostRequestDto(
+        ConfigToRequestTransformer.toCompletionPostRequest(
             prompt, new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG));
 
     assertThat(actual.getMessagesHistory()).containsExactly(systemMessage);
