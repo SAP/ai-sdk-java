@@ -2,22 +2,22 @@ package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
+import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.Template;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ class OrchestrationController {
   static final String MODEL = "gpt-35-turbo";
 
   private static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
+      new LLMModuleConfig().modelName(MODEL).modelParams(Map.of());
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -49,7 +49,7 @@ class OrchestrationController {
   public CompletionPostResponse completion() {
 
     final var message =
-        ChatMessage.create().role("user").content("Hello world! Why is this phrase so famous?");
+        new ChatMessage().role("user").content("Hello world! Why is this phrase so famous?");
 
     final var request = prepareRequest(message);
 
@@ -65,7 +65,7 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse template() {
 
-    final var message = ChatMessage.create().role("user").content("{{?input}}");
+    final var message = new ChatMessage().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
@@ -85,10 +85,9 @@ class OrchestrationController {
   public CompletionPostResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+            new ChatMessage().role("user").content("What is the capital of France?"),
+            new ChatMessage().role("assistant").content("The capital of France is Paris."));
+    final var message = new ChatMessage().role("user").content("What is the typical food there?");
 
     final var request = prepareRequest(message);
     request.setMessagesHistory(messagesHistory);
@@ -108,7 +107,7 @@ class OrchestrationController {
       @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
 
     final var userMessage =
-        ChatMessage.create()
+        new ChatMessage()
             .role("user")
             .content(
                 """
@@ -133,18 +132,18 @@ class OrchestrationController {
   private static FilteringModuleConfig createAzureContentFilter(
       @Nonnull final AzureThreshold threshold) {
     final var filter =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+        new AzureContentSafetyFilterConfig()
+            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
             .config(
-                AzureContentSafety.create()
+                new AzureContentSafety()
                     .hate(threshold)
                     .selfHarm(threshold)
                     .sexual(threshold)
                     .violence(threshold));
 
-    return FilteringModuleConfig.create()
-        .input(InputFilteringConfig.create().filters(List.of(filter)))
-        .output(OutputFilteringConfig.create().filters(List.of(filter)));
+    return new FilteringModuleConfig()
+        .input(new InputFilteringConfig().filters(List.of(filter)))
+        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   /**
@@ -158,12 +157,12 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse maskingAnonymization() {
     final var systemMessage =
-        ChatMessage.create()
+        new ChatMessage()
             .role("system")
             .content(
                 "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
-        ChatMessage.create()
+        new ChatMessage()
             .role("user")
             .content(
                 """
@@ -172,7 +171,7 @@ class OrchestrationController {
     """);
 
     final var maskingConfig =
-        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
+        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
 
     final var request = prepareRequest(systemMessage, userMessage);
     request
@@ -193,7 +192,7 @@ class OrchestrationController {
   @Nonnull
   public CompletionPostResponse maskingPseudonymization() {
     final var systemMessage =
-        ChatMessage.create()
+        new ChatMessage()
             .role("system")
             .content(
                 """
@@ -201,7 +200,7 @@ class OrchestrationController {
                 Please make sure to address the user in person and end with "Best regards, the AI SDK team".
                 """);
     final var userMessage =
-        ChatMessage.create()
+        new ChatMessage()
             .role("user")
             .content(
                 """
@@ -215,9 +214,7 @@ class OrchestrationController {
 
     final var maskingConfig =
         createMaskingConfig(
-            MaskingProviderConfig.MethodEnum.PSEUDONYMIZATION,
-            DPIEntities.PERSON,
-            DPIEntities.EMAIL);
+            DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PERSON, DPIEntities.EMAIL);
 
     final var request = prepareRequest(systemMessage, userMessage);
     request
@@ -236,17 +233,17 @@ class OrchestrationController {
    * @return A new masking configuration object.
    */
   private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final MaskingProviderConfig.MethodEnum method,
-      @Nonnull final DPIEntities... entities) {
+      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
 
     final var entityConfigs =
-        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingModuleConfig.create()
+        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
+    return new MaskingModuleConfig()
         .maskingProviders(
-            MaskingProviderConfig.create()
-                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                .method(method)
-                .entities(entityConfigs));
+            List.of(
+                new DPIConfig()
+                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(method)
+                    .entities(entityConfigs)));
   }
 
   /**
@@ -256,13 +253,12 @@ class OrchestrationController {
    * @return A new request object.
    */
   private static CompletionPostRequest prepareRequest(@Nonnull final ChatMessage... message) {
-    return CompletionPostRequest.create()
+    return new CompletionPostRequest()
         .orchestrationConfig(
-            OrchestrationConfig.create()
+            new OrchestrationConfig()
                 .moduleConfigurations(
-                    ModuleConfigs.create()
+                    new ModuleConfigs()
                         .llmModuleConfig(LLM_CONFIG)
-                        .templatingModuleConfig(
-                            TemplatingModuleConfig.create().template(message))));
+                        .templatingModuleConfig(new Template().template(List.of(message)))));
   }
 }
