@@ -1,13 +1,13 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.core.AiCoreDestination;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.model.BckndResourceGroup;
 import com.sap.ai.sdk.core.client.model.BckndResourceGroupBase;
 import com.sap.ai.sdk.core.client.model.BckndResourceGroupDeletionResponse;
 import com.sap.ai.sdk.core.client.model.BckndResourceGroupList;
 import com.sap.ai.sdk.core.client.model.BckndResourceGroupPatchRequest;
 import com.sap.ai.sdk.core.client.model.BckndResourceGroupsPostRequest;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -37,24 +37,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class ResourceGroupApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public ResourceGroupApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public ResourceGroupApi() {
+    super(new AiCoreService().client());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreDestination The configured connectivity instance to AI Core
    */
-  @Beta
-  public ResourceGroupApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public ResourceGroupApi(@Nonnull final AiCoreDestination aiCoreDestination) {
+    super(aiCoreDestination.client());
   }
 
   /**

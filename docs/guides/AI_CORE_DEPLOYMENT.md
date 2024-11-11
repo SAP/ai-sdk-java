@@ -67,7 +67,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 Use the following code snippet to create a deployment in SAP AI Core:
 
 ```java
-var api = new DeploymentApi(new AiCoreService().client());
+var api = new DeploymentApi();
 var resourceGroupId = "default";
 
 AiDeploymentCreationRequest request =
@@ -86,7 +86,7 @@ Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/j
 AiDeploymentCreationResponse deployment; // provided
 String deploymentId = deployment.getId();
   
-var api = new DeploymentApi(new AiCoreService().client());
+var api = new DeploymentApi();
 var resourceGroupId = "default";
   
 if (deployment.getStatus() == AiExecutionStatus.RUNNING) {

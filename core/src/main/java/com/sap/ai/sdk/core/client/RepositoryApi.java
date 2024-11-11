@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.core.AiCoreDestination;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCreationResponse;
 import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCredentials;
 import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryData;
@@ -8,8 +9,6 @@ import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDataResponse;
 import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDeletionResponse;
 import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDetails;
 import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryModificationResponse;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashMap;
@@ -36,24 +35,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class RepositoryApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public RepositoryApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public RepositoryApi() {
+    super(new AiCoreService().client());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreDestination The configured connectivity instance to AI Core
    */
-  @Beta
-  public RepositoryApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public RepositoryApi(@Nonnull final AiCoreDestination aiCoreDestination) {
+    super(aiCoreDestination.client());
   }
 
   /**

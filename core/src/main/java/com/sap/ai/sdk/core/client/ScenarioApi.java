@@ -1,11 +1,11 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.core.AiCoreDestination;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.model.AiModelList;
 import com.sap.ai.sdk.core.client.model.AiScenario;
 import com.sap.ai.sdk.core.client.model.AiScenarioList;
 import com.sap.ai.sdk.core.client.model.AiVersionList;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -34,24 +34,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class ScenarioApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public ScenarioApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public ScenarioApi() {
+    super(new AiCoreService().client());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreDestination The configured connectivity instance to AI Core
    */
-  @Beta
-  public ScenarioApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public ScenarioApi(@Nonnull final AiCoreDestination aiCoreDestination) {
+    super(aiCoreDestination.client());
   }
 
   /**

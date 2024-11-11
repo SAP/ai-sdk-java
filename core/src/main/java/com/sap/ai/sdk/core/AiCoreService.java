@@ -135,7 +135,7 @@ public class AiCoreService implements AiCoreDestination {
   public AiCoreDeployment forDeploymentByModel(@Nonnull final AiModel model)
       throws NoSuchElementException {
     return new AiCoreDeployment(
-        this, () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this.client(), resourceGroup, model));
+        this, () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this, resourceGroup, model));
   }
 
   /**
@@ -150,8 +150,7 @@ public class AiCoreService implements AiCoreDestination {
   public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId)
       throws NoSuchElementException {
     return new AiCoreDeployment(
-        this,
-        () -> DEPLOYMENT_CACHE.getDeploymentIdByScenario(client(), resourceGroup, scenarioId));
+        this, () -> DEPLOYMENT_CACHE.getDeploymentIdByScenario(this, resourceGroup, scenarioId));
   }
 
   /**
@@ -193,7 +192,6 @@ public class AiCoreService implements AiCoreDestination {
    * @throws DestinationAccessException If the destination cannot be accessed.
    * @throws DestinationNotFoundException If the destination cannot be found.
    */
-  @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   protected ApiClient getApiClient(@Nonnull final Destination destination) {
     val objectMapper =
@@ -223,6 +221,6 @@ public class AiCoreService implements AiCoreDestination {
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
-    DEPLOYMENT_CACHE.resetCache(client(), resourceGroup);
+    DEPLOYMENT_CACHE.resetCache(this, resourceGroup);
   }
 }

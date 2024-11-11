@@ -48,7 +48,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val scenarioList = new ScenarioApi(client).query("default");
+    val scenarioList = new ScenarioApi(aiCoreService).query("default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
@@ -87,7 +87,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val versionList = new ScenarioApi(client).queryVersions("default", "foundation-models");
+    val versionList = new ScenarioApi(aiCoreService).queryVersions("default", "foundation-models");
 
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
@@ -127,7 +127,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val scenario = new ScenarioApi(client).get("default", "foundation-models");
+    val scenario = new ScenarioApi(aiCoreService).get("default", "foundation-models");
 
     assertThat(scenario).isNotNull();
     assertThat(scenario.getCreatedAt()).isEqualTo("2023-11-03T14:02:46+00:00");
@@ -172,7 +172,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                             }
                             """)));
 
-    val scenarioList = new ScenarioApi(client).queryModels("foundation-models", "default");
+    val scenarioList = new ScenarioApi(aiCoreService).queryModels("foundation-models", "default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);

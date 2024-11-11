@@ -35,6 +35,7 @@ public class KpiGet400Response
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for KpiGet400Response. */
   protected KpiGet400Response() {}
 
   /**
