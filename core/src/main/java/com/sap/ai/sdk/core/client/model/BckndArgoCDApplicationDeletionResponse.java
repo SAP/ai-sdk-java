@@ -38,6 +38,7 @@ public class BckndArgoCDApplicationDeletionResponse
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndArgoCDApplicationDeletionResponse. */
   protected BckndArgoCDApplicationDeletionResponse() {}
 
   /**

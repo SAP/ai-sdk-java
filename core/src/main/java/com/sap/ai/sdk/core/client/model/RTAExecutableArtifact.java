@@ -46,6 +46,7 @@ public class RTAExecutableArtifact
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for RTAExecutableArtifact. */
   protected RTAExecutableArtifact() {}
 
   /**

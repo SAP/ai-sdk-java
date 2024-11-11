@@ -48,6 +48,7 @@ public class DSetError
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for DSetError. */
   protected DSetError() {}
 
   /**

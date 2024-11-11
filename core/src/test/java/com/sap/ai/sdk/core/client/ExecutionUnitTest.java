@@ -77,7 +77,7 @@ class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val executionList = new ExecutionApi(client).query("default");
+    val executionList = new ExecutionApi(aiCoreService).query("default");
 
     assertThat(executionList).isNotNull();
     assertThat(executionList.getCount()).isEqualTo(1);
@@ -131,7 +131,7 @@ class ExecutionUnitTest extends WireMockTestServer {
 
     val enactmentCreationRequest =
         AiEnactmentCreationRequest.create().configurationId("e0a9eb2e-9ea1-43bf-aff5-7660db166676");
-    val execution = new ExecutionApi(client).create("default", enactmentCreationRequest);
+    val execution = new ExecutionApi(aiCoreService).create("default", enactmentCreationRequest);
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
@@ -190,7 +190,7 @@ class ExecutionUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val execution = new ExecutionApi(client).get("default", "e529e8bd58740bc9");
+    val execution = new ExecutionApi(aiCoreService).get("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getCompletionTime()).isEqualTo("2024-09-09T19:10:58Z");
@@ -240,7 +240,7 @@ class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    val execution = new ExecutionApi(client).delete("default", "e529e8bd58740bc9");
+    val execution = new ExecutionApi(aiCoreService).delete("default", "e529e8bd58740bc9");
 
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("e529e8bd58740bc9");
@@ -270,7 +270,7 @@ class ExecutionUnitTest extends WireMockTestServer {
         AiExecutionModificationRequest.create()
             .targetStatus(AiExecutionModificationRequest.TargetStatusEnum.STOPPED);
     val aiExecutionModificationResponse =
-        new ExecutionApi(client)
+        new ExecutionApi(aiCoreService)
             .modify("default", "eec3c6ea18bac6da", aiExecutionModificationRequest);
 
     assertThat(aiExecutionModificationResponse).isNotNull();
@@ -293,11 +293,9 @@ class ExecutionUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        1
-                        """)));
+                    .withBody("1")));
 
-    val count = new ExecutionApi(client).count("default");
+    val count = new ExecutionApi(aiCoreService).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -306,7 +304,8 @@ class ExecutionUnitTest extends WireMockTestServer {
   void getExecutionLogs() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/v2/lm/executions/ee467bea5af28adb/logs"))
-            .withHeader("AI-Resource-Group", equalTo("default"))
+            // TODO: The spec does not define the header
+            // .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
@@ -327,9 +326,7 @@ class ExecutionUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    val logResponse =
-        new ExecutionApi(client.addDefaultHeader("AI-Resource-Group", "default"))
-            .getLogs("ee467bea5af28adb");
+    val logResponse = new ExecutionApi(aiCoreService).getLogs("ee467bea5af28adb");
 
     assertThat(logResponse).isNotNull();
     assertThat(logResponse.getData().getResult().size()).isEqualTo(1);
@@ -377,7 +374,7 @@ class ExecutionUnitTest extends WireMockTestServer {
                             AiExecutionModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
     val executionBulkModificationResponse =
-        new ExecutionApi(client).batchModify("default", executionBulkModificationRequest);
+        new ExecutionApi(aiCoreService).batchModify("default", executionBulkModificationRequest);
 
     assertThat(executionBulkModificationResponse).isNotNull();
     assertThat(executionBulkModificationResponse.getExecutions().size()).isEqualTo(1);

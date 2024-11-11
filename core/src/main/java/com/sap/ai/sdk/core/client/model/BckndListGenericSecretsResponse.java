@@ -44,6 +44,7 @@ public class BckndListGenericSecretsResponse
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndListGenericSecretsResponse. */
   protected BckndListGenericSecretsResponse() {}
 
   /**
