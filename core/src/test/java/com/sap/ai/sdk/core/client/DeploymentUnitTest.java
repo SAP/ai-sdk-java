@@ -337,8 +337,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody(
-                        """
+                    .withBody("""
                         1
                         """)));
 
