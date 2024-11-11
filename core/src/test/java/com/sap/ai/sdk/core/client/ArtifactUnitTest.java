@@ -162,9 +162,7 @@ class ArtifactUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        4
-                        """)));
+                    .withBody("4")));
 
     val count = new ArtifactApi(aiCoreService).count("default");
 

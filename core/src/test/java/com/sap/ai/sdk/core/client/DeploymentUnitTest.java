@@ -337,9 +337,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        1
-                        """)));
+                    .withBody("1")));
 
     val count = new DeploymentApi(aiCoreService).count("default");
 

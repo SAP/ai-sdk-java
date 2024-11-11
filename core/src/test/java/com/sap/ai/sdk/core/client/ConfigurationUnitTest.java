@@ -140,9 +140,7 @@ class ConfigurationUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        3
-                        """)));
+                    .withBody("3")));
 
     val configurationCount = new ConfigurationApi(aiCoreService).count("default");
 

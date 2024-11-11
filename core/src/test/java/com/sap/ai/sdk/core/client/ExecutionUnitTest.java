@@ -293,9 +293,7 @@ class ExecutionUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        1
-                        """)));
+                    .withBody("1")));
 
     val count = new ExecutionApi(aiCoreService).count("default");
 
