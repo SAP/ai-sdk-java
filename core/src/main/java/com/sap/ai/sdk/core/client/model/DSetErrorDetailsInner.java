@@ -38,6 +38,7 @@ public class DSetErrorDetailsInner
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for DSetErrorDetailsInner. */
   protected DSetErrorDetailsInner() {}
 
   /**

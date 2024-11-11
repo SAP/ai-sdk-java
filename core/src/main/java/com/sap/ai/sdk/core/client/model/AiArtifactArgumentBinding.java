@@ -38,6 +38,7 @@ public class AiArtifactArgumentBinding
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for AiArtifactArgumentBinding. */
   protected AiArtifactArgumentBinding() {}
 
   /**

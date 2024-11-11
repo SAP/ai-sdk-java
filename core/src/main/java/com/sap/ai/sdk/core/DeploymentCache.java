@@ -2,7 +2,6 @@ package com.sap.ai.sdk.core;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,14 +29,15 @@ class DeploymentCache {
    *
    * <p><b>Call this whenever a deployment is deleted.</b>
    *
-   * @param client the API client to query deployments.
+   * @param aiCoreDestination the configured connection to the AI Core service.
    * @param resourceGroup the resource group, usually "default".
    */
-  void resetCache(@Nonnull final ApiClient client, @Nonnull final String resourceGroup) {
+  void resetCache(
+      @Nonnull final AiCoreDestination aiCoreDestination, @Nonnull final String resourceGroup) {
     cache.remove(resourceGroup);
     try {
       val deployments =
-          new HashSet<>(new DeploymentApi(client).query(resourceGroup).getResources());
+          new HashSet<>(new DeploymentApi(aiCoreDestination).query(resourceGroup).getResources());
       cache.put(resourceGroup, deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
@@ -48,7 +48,7 @@ class DeploymentCache {
    * Get the deployment id from the foundation model object. If there are multiple deployments of
    * the same model, the first one is returned.
    *
-   * @param client the API client to maybe reset the cache if the deployment is not found.
+   * @param aiCoreDestination the configured connection to the AI Core service.
    * @param resourceGroup the resource group, usually "default".
    * @param model the foundation model.
    * @return the deployment id.
@@ -56,14 +56,14 @@ class DeploymentCache {
    */
   @Nonnull
   String getDeploymentIdByModel(
-      @Nonnull final ApiClient client,
+      @Nonnull final AiCoreDestination aiCoreDestination,
       @Nonnull final String resourceGroup,
       @Nonnull final AiModel model)
       throws NoSuchElementException {
     return getDeploymentIdByModel(resourceGroup, model)
         .orElseGet(
             () -> {
-              resetCache(client, resourceGroup);
+              resetCache(aiCoreDestination, resourceGroup);
               return getDeploymentIdByModel(resourceGroup, model)
                   .orElseThrow(
                       () ->
@@ -84,7 +84,7 @@ class DeploymentCache {
    * Get the deployment id from the scenario id. If there are multiple deployments of the * same
    * model, the first one is returned.
    *
-   * @param client the API client to maybe reset the cache if the deployment is not found.
+   * @param aiCoreDestination the configured connection to the AI Core service.
    * @param resourceGroup the resource group, usually "default".
    * @param scenarioId the scenario id, can be "orchestration".
    * @return the deployment id.
@@ -92,14 +92,14 @@ class DeploymentCache {
    */
   @Nonnull
   String getDeploymentIdByScenario(
-      @Nonnull final ApiClient client,
+      @Nonnull final AiCoreDestination aiCoreDestination,
       @Nonnull final String resourceGroup,
       @Nonnull final String scenarioId)
       throws NoSuchElementException {
     return getDeploymentIdByScenario(resourceGroup, scenarioId)
         .orElseGet(
             () -> {
-              resetCache(client, resourceGroup);
+              resetCache(aiCoreDestination, resourceGroup);
               return getDeploymentIdByScenario(resourceGroup, scenarioId)
                   .orElseThrow(
                       () ->
@@ -135,13 +135,9 @@ class DeploymentCache {
     if (resources == null) {
       return false;
     }
-    Object detailsObject = resources.getBackendDetails();
-    // workaround for AIWDF-2124
+    final Object detailsObject = resources.getBackendDetails();
     if (detailsObject == null) {
-      if (!resources.getCustomFieldNames().contains("backend_details")) {
-        return false;
-      }
-      detailsObject = resources.getCustomField("backend_details");
+      return false;
     }
 
     if (detailsObject instanceof Map<?, ?> details
