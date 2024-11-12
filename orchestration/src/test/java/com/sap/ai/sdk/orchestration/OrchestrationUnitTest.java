@@ -57,14 +57,12 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create()
-          .modelName("gpt-35-turbo-16k")
-          .modelParams(
-              Map.of(
-                  "max_tokens", 50,
-                  "temperature", 0.1,
-                  "frequency_penalty", 0,
-                  "presence_penalty", 0));
+      OrchestrationAiModel.GPT_35_TURBO_16K.modelParams(
+          Map.of(
+              "max_tokens", 50,
+              "temperature", 0.1,
+              "frequency_penalty", 0,
+              "presence_penalty", 0));
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 

@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
@@ -30,12 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+  LLMModuleConfig llmConfig = GPT_35_TURBO;
 
   private final OrchestrationClient client = new OrchestrationClient();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+      new OrchestrationModuleConfig().withLlmConfig(llmConfig);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -171,7 +172,7 @@ class OrchestrationController {
 
   /**
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
-   * SDK. Pseydonymize the user's name and location to protect their privacy.
+   * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
    * @return the result object
    */

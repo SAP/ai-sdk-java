@@ -3,15 +3,22 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 class OrchestrationTest {
   OrchestrationController controller;
 
@@ -41,7 +48,7 @@ class OrchestrationTest {
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
-    assertThat(llm.getModel()).isEqualTo(OrchestrationController.LLM_CONFIG.getModelName());
+    assertThat(llm.getModel()).isEqualTo(controller.llmConfig.getModelName());
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -54,7 +61,7 @@ class OrchestrationTest {
     assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
     assertThat(result.getOrchestrationResult().getCreated()).isGreaterThan(1);
     assertThat(result.getOrchestrationResult().getModel())
-        .isEqualTo(OrchestrationController.LLM_CONFIG.getModelName());
+        .isEqualTo(controller.llmConfig.getModelName());
     choices = result.getOrchestrationResult().getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -136,5 +143,30 @@ class OrchestrationTest {
         .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
         .doesNotContain("MASKED_PERSON")
         .contains("Mallory");
+  }
+
+  @Test
+  @DisplayName("Declared OrchestrationAiModels must match Orchestration's list of available models")
+  @SneakyThrows
+  void orchestrationModelAvailability() {
+    // TODO: Change this test to be like ScenarioTest.openAiModelAvailability() once the
+    //  Orchestration service has made the "available models endpoint".
+    //  Right now this test cannot tell if we are lacking models.
+
+    // Gather our declared Orchestration models
+    List<OrchestrationAiModel> declaredOrchestrationModelList = new ArrayList<>();
+    for (Field field : OrchestrationAiModel.class.getFields()) {
+      if (field.getType().equals(OrchestrationAiModel.class)) {
+        declaredOrchestrationModelList.add(((OrchestrationAiModel) field.get(null)));
+      }
+    }
+
+    declaredOrchestrationModelList.parallelStream()
+        .forEach(
+            model -> {
+              controller.llmConfig = model;
+              log.info("Testing completion for model: {}", model.getModelName());
+              assertThat(controller.completion()).isNotNull();
+            });
   }
 }

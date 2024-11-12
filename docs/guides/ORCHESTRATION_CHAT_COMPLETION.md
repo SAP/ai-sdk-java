@@ -77,7 +77,7 @@ To use the Orchestration service, create a client and a configuration object:
 var client = new OrchestrationClient();
 
 var config = new OrchestrationModuleConfig()
-        .withLlmConfig(LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of()));
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
 ```
 
 Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
@@ -218,13 +218,11 @@ In this example, the input will be masked before the call to the LLM. Note that 
 Change your LLM module configuration to add model parameters:
 
 ```java
-var llmConfig =
-    LLMModuleConfig.create()
-        .modelName("gpt-35-turbo")
-        .modelParams(
-            Map.of(
-                "max_tokens", 50,
-                "temperature", 0.1,
-                "frequency_penalty", 0,
-                "presence_penalty", 0));
+LLMModuleConfig llmConfig =
+    OrchestrationAiModel.GPT_4O.modelParams(
+        Map.of(
+            "max_tokens", 50,
+            "temperature", 0.1,
+            "frequency_penalty", 0,
+            "presence_penalty", 0));
 ```
