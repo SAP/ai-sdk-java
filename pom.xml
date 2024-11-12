@@ -53,6 +53,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cloud-sdk.version>5.13.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.3</junit-jupiter.version>
