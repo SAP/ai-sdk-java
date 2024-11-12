@@ -1,11 +1,11 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.core.AiCoreDestination;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.model.AiConfiguration;
 import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
 import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.client.model.AiConfigurationList;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -34,24 +34,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class ConfigurationApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public ConfigurationApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public ConfigurationApi() {
+    super(new AiCoreService().client());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreDestination The configured connectivity instance to AI Core
    */
-  @Beta
-  public ConfigurationApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public ConfigurationApi(@Nonnull final AiCoreDestination aiCoreDestination) {
+    super(aiCoreDestination.client());
   }
 
   /**

@@ -37,6 +37,7 @@ public class AiDeploymentBulkModificationResponse
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for AiDeploymentBulkModificationResponse. */
   protected AiDeploymentBulkModificationResponse() {}
 
   /**

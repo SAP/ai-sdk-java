@@ -35,6 +35,7 @@ public class BcknddockerRegistrySecretCreationResponse
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BcknddockerRegistrySecretCreationResponse. */
   protected BcknddockerRegistrySecretCreationResponse() {}
 
   /**

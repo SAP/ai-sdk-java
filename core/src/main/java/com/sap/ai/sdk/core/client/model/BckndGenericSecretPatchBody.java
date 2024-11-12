@@ -36,6 +36,7 @@ public class BckndGenericSecretPatchBody
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndGenericSecretPatchBody. */
   protected BckndGenericSecretPatchBody() {}
 
   /**

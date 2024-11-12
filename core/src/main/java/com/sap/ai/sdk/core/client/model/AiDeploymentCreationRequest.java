@@ -38,6 +38,7 @@ public class AiDeploymentCreationRequest
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for AiDeploymentCreationRequest. */
   protected AiDeploymentCreationRequest() {}
 
   /**

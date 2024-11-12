@@ -47,6 +47,7 @@ public class KubesubmitV4ApplicationsCreateRequest
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for KubesubmitV4ApplicationsCreateRequest. */
   protected KubesubmitV4ApplicationsCreateRequest() {}
 
   /**
