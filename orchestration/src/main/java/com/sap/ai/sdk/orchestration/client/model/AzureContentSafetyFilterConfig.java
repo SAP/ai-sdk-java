@@ -24,21 +24,24 @@ import java.util.Objects;
   AzureContentSafetyFilterConfig.JSON_PROPERTY_TYPE,
   AzureContentSafetyFilterConfig.JSON_PROPERTY_CONFIG
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class AzureContentSafetyFilterConfig implements FilterConfig {
-  public static final String JSON_PROPERTY_TYPE = "type";
-  public static final String JSON_PROPERTY_CONFIG = "config";
   private TypeEnum type;
-  private AzureContentSafety config;
-  public AzureContentSafetyFilterConfig() {}
+
+  public static final String JSON_PROPERTY_TYPE = "type";
 
   /** Create a builder with no initialized field. */
   public static AzureContentSafetyFilterConfig.Builder builder() {
     return new AzureContentSafetyFilterConfig.Builder();
   }
+
+  public static final String JSON_PROPERTY_CONFIG = "config";
+  private AzureContentSafety config;
+
+  public AzureContentSafetyFilterConfig() {}
 
   public AzureContentSafetyFilterConfig type(TypeEnum type) {
 
@@ -127,44 +130,6 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public AzureContentSafetyFilterConfig.Builder toBuilder() {
-    return new AzureContentSafetyFilterConfig.Builder().type(getType()).config(getConfig());
-  }
-
-  /** String represents name of the filter provider */
-  public enum TypeEnum {
-    AZURE_CONTENT_SAFETY("azure_content_safety"),
-
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonCreator
-    public static TypeEnum fromValue(String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-  }
-
   public static class Builder {
 
     private AzureContentSafetyFilterConfig instance;
@@ -204,6 +169,44 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
     @Override
     public String toString() {
       return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public AzureContentSafetyFilterConfig.Builder toBuilder() {
+    return new AzureContentSafetyFilterConfig.Builder().type(getType()).config(getConfig());
+  }
+
+  /** String represents name of the filter provider */
+  public enum TypeEnum {
+    AZURE_CONTENT_SAFETY("azure_content_safety"),
+
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonCreator
+    public static TypeEnum fromValue(String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
     }
   }
 }

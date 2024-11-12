@@ -27,24 +27,20 @@ import java.util.Objects;
   CompletionPostRequest.JSON_PROPERTY_INPUT_PARAMS,
   CompletionPostRequest.JSON_PROPERTY_MESSAGES_HISTORY
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class CompletionPostRequest {
   public static final String JSON_PROPERTY_ORCHESTRATION_CONFIG = "orchestration_config";
-  public static final String JSON_PROPERTY_INPUT_PARAMS = "input_params";
   public static final String JSON_PROPERTY_MESSAGES_HISTORY = "messages_history";
-  private OrchestrationConfig orchestrationConfig;
+
+  public static final String JSON_PROPERTY_INPUT_PARAMS = "input_params";
   private Map<String, String> inputParams = new HashMap<>();
+  private OrchestrationConfig orchestrationConfig;
   private List<ChatMessage> messagesHistory;
 
   public CompletionPostRequest() {}
-
-  /** Create a builder with no initialized field. */
-  public static CompletionPostRequest.Builder builder() {
-    return new CompletionPostRequest.Builder();
-  }
 
   public CompletionPostRequest orchestrationConfig(OrchestrationConfig orchestrationConfig) {
 
@@ -177,14 +173,6 @@ public class CompletionPostRequest {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public CompletionPostRequest.Builder toBuilder() {
-    return new CompletionPostRequest.Builder()
-        .orchestrationConfig(getOrchestrationConfig())
-        .inputParams(getInputParams())
-        .messagesHistory(getMessagesHistory());
-  }
-
   public static class Builder {
 
     private CompletionPostRequest instance;
@@ -231,5 +219,18 @@ public class CompletionPostRequest {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static CompletionPostRequest.Builder builder() {
+    return new CompletionPostRequest.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public CompletionPostRequest.Builder toBuilder() {
+    return new CompletionPostRequest.Builder()
+        .orchestrationConfig(getOrchestrationConfig())
+        .inputParams(getInputParams())
+        .messagesHistory(getMessagesHistory());
   }
 }

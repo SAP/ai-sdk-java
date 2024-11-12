@@ -21,29 +21,30 @@ public class LLMModuleResultDeserializer extends StdDeserializer<LLMModuleResult
   /**
    * Deserialize the JSON object into one of the subtypes of the base type.
    *
-   * @param p The JSON parser.
-   * @param ctxt The deserialization context.
+   * @param parser The JSON parser.
+   * @param context The deserialization context.
    * @return The deserialized object.
    * @throws IOException If an I/O error occurs.
    */
   @Override
-  public LLMModuleResult deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+  public LLMModuleResult deserialize(JsonParser parser, DeserializationContext context)
+      throws IOException {
 
     // Check if the target type is a concrete class
-    JavaType targetType = ctxt.getContextualType();
+    JavaType targetType = context.getContextualType();
 
     if (targetType != null && !LLMModuleResult.class.equals(targetType.getRawClass())) {
       // If we're deserializing a concrete class, delegate to the default deserializer
-      JsonDeserializer<Object> defaultDeserializer = ctxt.findRootValueDeserializer(targetType);
-      return (LLMModuleResult) defaultDeserializer.deserialize(p, ctxt);
+      JsonDeserializer<Object> defaultDeserializer = context.findRootValueDeserializer(targetType);
+      return (LLMModuleResult) defaultDeserializer.deserialize(parser, context);
     }
 
     // Custom deserialization logic for LLMModuleResult interface
-    ObjectMapper mapper = (ObjectMapper) p.getCodec();
-    JsonNode root = mapper.readTree(p);
+    ObjectMapper mapper = (ObjectMapper) parser.getCodec();
+    JsonNode rootNode = mapper.readTree(parser);
 
     // Inspect the "choices" field
-    JsonNode choicesNode = root.get("choices");
+    JsonNode choicesNode = rootNode.get("choices");
 
     if (choicesNode != null && choicesNode.isArray()) {
       JsonNode firstChoice = choicesNode.get(0);
@@ -58,20 +59,20 @@ public class LLMModuleResultDeserializer extends StdDeserializer<LLMModuleResult
         if (concreteClass != null) {
           // Deserialize into the determined concrete class
           // Create a new parser for the root node
-          JsonParser rootParser = root.traverse(mapper);
+          JsonParser rootParser = rootNode.traverse(mapper);
           rootParser.nextToken(); // Advance to the first token
 
           // Use the default deserializer for the concrete class
           JsonDeserializer<?> deserializer =
-              ctxt.findRootValueDeserializer(ctxt.constructType(concreteClass));
+              context.findRootValueDeserializer(context.constructType(concreteClass));
 
-          return (LLMModuleResult) deserializer.deserialize(rootParser, ctxt);
+          return (LLMModuleResult) deserializer.deserialize(rootParser, context);
         }
       }
     }
 
     // If unable to determine, throw an exception or handle default case
     throw new JsonMappingException(
-        p, "Unable to determine the concrete implementation of LLMModuleResult");
+        parser, "Unable to determine the concrete implementation of LLMModuleResult");
   }
 }

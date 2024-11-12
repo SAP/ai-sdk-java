@@ -19,22 +19,18 @@ import java.util.Objects;
 
 /** ChatDelta */
 @JsonPropertyOrder({ChatDelta.JSON_PROPERTY_ROLE, ChatDelta.JSON_PROPERTY_CONTENT})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class ChatDelta {
   public static final String JSON_PROPERTY_ROLE = "role";
-  public static final String JSON_PROPERTY_CONTENT = "content";
   private String role;
+
+  public static final String JSON_PROPERTY_CONTENT = "content";
   private String content = "";
 
   public ChatDelta() {}
-
-  /** Create a builder with no initialized field. */
-  public static ChatDelta.Builder builder() {
-    return new ChatDelta.Builder();
-  }
 
   public ChatDelta role(String role) {
 
@@ -122,11 +118,6 @@ public class ChatDelta {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public ChatDelta.Builder toBuilder() {
-    return new ChatDelta.Builder().role(getRole()).content(getContent());
-  }
-
   public static class Builder {
 
     private ChatDelta instance;
@@ -167,5 +158,15 @@ public class ChatDelta {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static ChatDelta.Builder builder() {
+    return new ChatDelta.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public ChatDelta.Builder toBuilder() {
+    return new ChatDelta.Builder().role(getRole()).content(getContent());
   }
 }

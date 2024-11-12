@@ -24,22 +24,18 @@ import java.util.Objects;
   OutputFilteringConfig.JSON_PROPERTY_FILTERS,
   OutputFilteringConfig.JSON_PROPERTY_STREAM_OPTIONS
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class OutputFilteringConfig {
   public static final String JSON_PROPERTY_FILTERS = "filters";
-  public static final String JSON_PROPERTY_STREAM_OPTIONS = "stream_options";
   private List<FilterConfig> filters = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_STREAM_OPTIONS = "stream_options";
   private FilteringStreamOptions streamOptions;
 
   public OutputFilteringConfig() {}
-
-  /** Create a builder with no initialized field. */
-  public static OutputFilteringConfig.Builder builder() {
-    return new OutputFilteringConfig.Builder();
-  }
 
   public OutputFilteringConfig filters(List<FilterConfig> filters) {
 
@@ -136,13 +132,6 @@ public class OutputFilteringConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public OutputFilteringConfig.Builder toBuilder() {
-    return new OutputFilteringConfig.Builder()
-        .filters(getFilters())
-        .streamOptions(getStreamOptions());
-  }
-
   public static class Builder {
 
     private OutputFilteringConfig instance;
@@ -183,5 +172,17 @@ public class OutputFilteringConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static OutputFilteringConfig.Builder builder() {
+    return new OutputFilteringConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public OutputFilteringConfig.Builder toBuilder() {
+    return new OutputFilteringConfig.Builder()
+        .filters(getFilters())
+        .streamOptions(getStreamOptions());
   }
 }

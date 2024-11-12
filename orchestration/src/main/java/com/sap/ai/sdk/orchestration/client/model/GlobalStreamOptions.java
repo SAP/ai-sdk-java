@@ -19,20 +19,15 @@ import java.util.Objects;
 
 /** Options for streaming. Will be ignored if stream is false. */
 @JsonPropertyOrder({GlobalStreamOptions.JSON_PROPERTY_CHUNK_SIZE})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class GlobalStreamOptions {
   public static final String JSON_PROPERTY_CHUNK_SIZE = "chunk_size";
   private Integer chunkSize = 100;
 
   public GlobalStreamOptions() {}
-
-  /** Create a builder with no initialized field. */
-  public static GlobalStreamOptions.Builder builder() {
-    return new GlobalStreamOptions.Builder();
-  }
 
   public GlobalStreamOptions chunkSize(Integer chunkSize) {
 
@@ -94,11 +89,6 @@ public class GlobalStreamOptions {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public GlobalStreamOptions.Builder toBuilder() {
-    return new GlobalStreamOptions.Builder().chunkSize(getChunkSize());
-  }
-
   public static class Builder {
 
     private GlobalStreamOptions instance;
@@ -134,5 +124,15 @@ public class GlobalStreamOptions {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static GlobalStreamOptions.Builder builder() {
+    return new GlobalStreamOptions.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public GlobalStreamOptions.Builder toBuilder() {
+    return new GlobalStreamOptions.Builder().chunkSize(getChunkSize());
   }
 }

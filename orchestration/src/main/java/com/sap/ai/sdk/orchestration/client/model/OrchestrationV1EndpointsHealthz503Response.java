@@ -31,6 +31,7 @@ public class OrchestrationV1EndpointsHealthz503Response
 {
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+
   @JsonProperty("status")
   private String status;
 

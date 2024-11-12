@@ -23,24 +23,20 @@ import java.util.Objects;
   TokenUsage.JSON_PROPERTY_PROMPT_TOKENS,
   TokenUsage.JSON_PROPERTY_TOTAL_TOKENS
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class TokenUsage {
   public static final String JSON_PROPERTY_COMPLETION_TOKENS = "completion_tokens";
-  public static final String JSON_PROPERTY_PROMPT_TOKENS = "prompt_tokens";
   public static final String JSON_PROPERTY_TOTAL_TOKENS = "total_tokens";
-  private Integer completionTokens;
+
+  public static final String JSON_PROPERTY_PROMPT_TOKENS = "prompt_tokens";
   private Integer promptTokens;
+  private Integer completionTokens;
   private Integer totalTokens;
 
   public TokenUsage() {}
-
-  /** Create a builder with no initialized field. */
-  public static TokenUsage.Builder builder() {
-    return new TokenUsage.Builder();
-  }
 
   public TokenUsage completionTokens(Integer completionTokens) {
 
@@ -154,14 +150,6 @@ public class TokenUsage {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public TokenUsage.Builder toBuilder() {
-    return new TokenUsage.Builder()
-        .completionTokens(getCompletionTokens())
-        .promptTokens(getPromptTokens())
-        .totalTokens(getTotalTokens());
-  }
-
   public static class Builder {
 
     private TokenUsage instance;
@@ -207,5 +195,18 @@ public class TokenUsage {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static TokenUsage.Builder builder() {
+    return new TokenUsage.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public TokenUsage.Builder toBuilder() {
+    return new TokenUsage.Builder()
+        .completionTokens(getCompletionTokens())
+        .promptTokens(getPromptTokens())
+        .totalTokens(getTotalTokens());
   }
 }

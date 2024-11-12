@@ -21,20 +21,15 @@ import java.util.Objects;
 
 /** MaskingModuleConfig */
 @JsonPropertyOrder({MaskingModuleConfig.JSON_PROPERTY_MASKING_PROVIDERS})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class MaskingModuleConfig {
   public static final String JSON_PROPERTY_MASKING_PROVIDERS = "masking_providers";
   private List<MaskingProviderConfig> maskingProviders = new ArrayList<>();
 
   public MaskingModuleConfig() {}
-
-  /** Create a builder with no initialized field. */
-  public static MaskingModuleConfig.Builder builder() {
-    return new MaskingModuleConfig.Builder();
-  }
 
   public MaskingModuleConfig maskingProviders(List<MaskingProviderConfig> maskingProviders) {
 
@@ -104,11 +99,6 @@ public class MaskingModuleConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public MaskingModuleConfig.Builder toBuilder() {
-    return new MaskingModuleConfig.Builder().maskingProviders(getMaskingProviders());
-  }
-
   public static class Builder {
 
     private MaskingModuleConfig instance;
@@ -145,5 +135,15 @@ public class MaskingModuleConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static MaskingModuleConfig.Builder builder() {
+    return new MaskingModuleConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public MaskingModuleConfig.Builder toBuilder() {
+    return new MaskingModuleConfig.Builder().maskingProviders(getMaskingProviders());
   }
 }

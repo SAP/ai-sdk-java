@@ -19,20 +19,15 @@ import java.util.Objects;
 
 /** Stream options for output filtering. Will be ignored if stream is false. */
 @JsonPropertyOrder({FilteringStreamOptions.JSON_PROPERTY_OVERLAP})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class FilteringStreamOptions {
   public static final String JSON_PROPERTY_OVERLAP = "overlap";
   private Integer overlap = 0;
 
   public FilteringStreamOptions() {}
-
-  /** Create a builder with no initialized field. */
-  public static FilteringStreamOptions.Builder builder() {
-    return new FilteringStreamOptions.Builder();
-  }
 
   public FilteringStreamOptions overlap(Integer overlap) {
 
@@ -95,11 +90,6 @@ public class FilteringStreamOptions {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public FilteringStreamOptions.Builder toBuilder() {
-    return new FilteringStreamOptions.Builder().overlap(getOverlap());
-  }
-
   public static class Builder {
 
     private FilteringStreamOptions instance;
@@ -135,5 +125,15 @@ public class FilteringStreamOptions {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static FilteringStreamOptions.Builder builder() {
+    return new FilteringStreamOptions.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public FilteringStreamOptions.Builder toBuilder() {
+    return new FilteringStreamOptions.Builder().overlap(getOverlap());
   }
 }

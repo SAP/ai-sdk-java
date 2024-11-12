@@ -27,24 +27,32 @@ import java.util.Objects;
   DPIConfig.JSON_PROPERTY_METHOD,
   DPIConfig.JSON_PROPERTY_ENTITIES
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class DPIConfig implements MaskingProviderConfig {
-  public static final String JSON_PROPERTY_TYPE = "type";
-  public static final String JSON_PROPERTY_METHOD = "method";
-  public static final String JSON_PROPERTY_ENTITIES = "entities";
   private TypeEnum type;
-  private MethodEnum method;
-  private List<DPIEntityConfig> entities = new ArrayList<>();
 
-  public DPIConfig() {}
+  public static final String JSON_PROPERTY_TYPE = "type";
+  private MethodEnum method;
 
   /** Create a builder with no initialized field. */
   public static DPIConfig.Builder builder() {
     return new DPIConfig.Builder();
   }
+
+  public static final String JSON_PROPERTY_METHOD = "method";
+
+  /** Create a builder with a shallow copy of this instance. */
+  public DPIConfig.Builder toBuilder() {
+    return new DPIConfig.Builder().type(getType()).method(getMethod()).entities(getEntities());
+  }
+
+  public static final String JSON_PROPERTY_ENTITIES = "entities";
+  private List<DPIEntityConfig> entities = new ArrayList<>();
+
+  public DPIConfig() {}
 
   public DPIConfig type(TypeEnum type) {
 
@@ -166,9 +174,51 @@ public class DPIConfig implements MaskingProviderConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public DPIConfig.Builder toBuilder() {
-    return new DPIConfig.Builder().type(getType()).method(getMethod()).entities(getEntities());
+  public static class Builder {
+
+    private DPIConfig instance;
+
+    public Builder() {
+      this(new DPIConfig());
+    }
+
+    protected Builder(DPIConfig instance) {
+      this.instance = instance;
+    }
+
+    public DPIConfig.Builder type(TypeEnum type) {
+      this.instance.type = type;
+      return this;
+    }
+
+    public DPIConfig.Builder method(MethodEnum method) {
+      this.instance.method = method;
+      return this;
+    }
+
+    public DPIConfig.Builder entities(List<DPIEntityConfig> entities) {
+      this.instance.entities = entities;
+      return this;
+    }
+
+    /**
+     * returns a built DPIConfig instance.
+     *
+     * <p>The builder is not reusable.
+     */
+    public DPIConfig build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
   }
 
   /** Type of masking service provider */
@@ -236,53 +286,6 @@ public class DPIConfig implements MaskingProviderConfig {
     @Override
     public String toString() {
       return String.valueOf(value);
-    }
-  }
-
-  public static class Builder {
-
-    private DPIConfig instance;
-
-    public Builder() {
-      this(new DPIConfig());
-    }
-
-    protected Builder(DPIConfig instance) {
-      this.instance = instance;
-    }
-
-    public DPIConfig.Builder type(TypeEnum type) {
-      this.instance.type = type;
-      return this;
-    }
-
-    public DPIConfig.Builder method(MethodEnum method) {
-      this.instance.method = method;
-      return this;
-    }
-
-    public DPIConfig.Builder entities(List<DPIEntityConfig> entities) {
-      this.instance.entities = entities;
-      return this;
-    }
-
-    /**
-     * returns a built DPIConfig instance.
-     *
-     * <p>The builder is not reusable.
-     */
-    public DPIConfig build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
     }
   }
 }

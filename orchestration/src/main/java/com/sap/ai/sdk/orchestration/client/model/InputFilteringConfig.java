@@ -21,20 +21,15 @@ import java.util.Objects;
 
 /** InputFilteringConfig */
 @JsonPropertyOrder({InputFilteringConfig.JSON_PROPERTY_FILTERS})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class InputFilteringConfig {
   public static final String JSON_PROPERTY_FILTERS = "filters";
   private List<FilterConfig> filters = new ArrayList<>();
 
   public InputFilteringConfig() {}
-
-  /** Create a builder with no initialized field. */
-  public static InputFilteringConfig.Builder builder() {
-    return new InputFilteringConfig.Builder();
-  }
 
   public InputFilteringConfig filters(List<FilterConfig> filters) {
 
@@ -105,11 +100,6 @@ public class InputFilteringConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public InputFilteringConfig.Builder toBuilder() {
-    return new InputFilteringConfig.Builder().filters(getFilters());
-  }
-
   public static class Builder {
 
     private InputFilteringConfig instance;
@@ -145,5 +135,15 @@ public class InputFilteringConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static InputFilteringConfig.Builder builder() {
+    return new InputFilteringConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public InputFilteringConfig.Builder toBuilder() {
+    return new InputFilteringConfig.Builder().filters(getFilters());
   }
 }

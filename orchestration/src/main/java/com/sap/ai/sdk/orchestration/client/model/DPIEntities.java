@@ -75,16 +75,6 @@ public enum DPIEntities {
     this.value = value;
   }
 
-  @JsonCreator
-  public static DPIEntities fromValue(String value) {
-    for (DPIEntities b : DPIEntities.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
-    }
-    return UNKNOWN_DEFAULT_OPEN_API;
-  }
-
   @JsonValue
   public String getValue() {
     return value;
@@ -93,5 +83,15 @@ public enum DPIEntities {
   @Override
   public String toString() {
     return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static DPIEntities fromValue(String value) {
+    for (DPIEntities b : DPIEntities.values()) {
+      if (b.value.equals(value)) {
+        return b;
+      }
+    }
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }

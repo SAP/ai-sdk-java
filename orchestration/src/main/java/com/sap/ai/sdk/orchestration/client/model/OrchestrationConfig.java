@@ -23,24 +23,21 @@ import java.util.Objects;
   OrchestrationConfig.JSON_PROPERTY_STREAM,
   OrchestrationConfig.JSON_PROPERTY_STREAM_OPTIONS
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class OrchestrationConfig {
   public static final String JSON_PROPERTY_MODULE_CONFIGURATIONS = "module_configurations";
-  public static final String JSON_PROPERTY_STREAM = "stream";
-  public static final String JSON_PROPERTY_STREAM_OPTIONS = "stream_options";
   private ModuleConfigs moduleConfigurations;
+
+  public static final String JSON_PROPERTY_STREAM = "stream";
   private Boolean stream = false;
+
+  public static final String JSON_PROPERTY_STREAM_OPTIONS = "stream_options";
   private GlobalStreamOptions streamOptions;
 
   public OrchestrationConfig() {}
-
-  /** Create a builder with no initialized field. */
-  public static OrchestrationConfig.Builder builder() {
-    return new OrchestrationConfig.Builder();
-  }
 
   public OrchestrationConfig moduleConfigurations(ModuleConfigs moduleConfigurations) {
 
@@ -156,13 +153,6 @@ public class OrchestrationConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public OrchestrationConfig.Builder toBuilder() {
-    return new OrchestrationConfig.Builder()
-        .moduleConfigurations(getModuleConfigurations()).stream(getStream())
-            .streamOptions(getStreamOptions());
-  }
-
   public static class Builder {
 
     private OrchestrationConfig instance;
@@ -208,5 +198,17 @@ public class OrchestrationConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static OrchestrationConfig.Builder builder() {
+    return new OrchestrationConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public OrchestrationConfig.Builder toBuilder() {
+    return new OrchestrationConfig.Builder()
+        .moduleConfigurations(getModuleConfigurations()).stream(getStream())
+            .streamOptions(getStreamOptions());
   }
 }

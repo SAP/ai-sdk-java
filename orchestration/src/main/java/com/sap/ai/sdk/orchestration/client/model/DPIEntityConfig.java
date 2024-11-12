@@ -19,20 +19,15 @@ import java.util.Objects;
 
 /** DPIEntityConfig */
 @JsonPropertyOrder({DPIEntityConfig.JSON_PROPERTY_TYPE})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class DPIEntityConfig {
   public static final String JSON_PROPERTY_TYPE = "type";
   private DPIEntities type;
 
   public DPIEntityConfig() {}
-
-  /** Create a builder with no initialized field. */
-  public static DPIEntityConfig.Builder builder() {
-    return new DPIEntityConfig.Builder();
-  }
 
   public DPIEntityConfig type(DPIEntities type) {
 
@@ -94,11 +89,6 @@ public class DPIEntityConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public DPIEntityConfig.Builder toBuilder() {
-    return new DPIEntityConfig.Builder().type(getType());
-  }
-
   public static class Builder {
 
     private DPIEntityConfig instance;
@@ -134,5 +124,15 @@ public class DPIEntityConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static DPIEntityConfig.Builder builder() {
+    return new DPIEntityConfig.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public DPIEntityConfig.Builder toBuilder() {
+    return new DPIEntityConfig.Builder().type(getType());
   }
 }

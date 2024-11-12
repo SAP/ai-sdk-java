@@ -129,6 +129,10 @@
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -166,11 +170,12 @@
               <configOptions>
                 <generateBuilders>true</generateBuilders>
                 <failOnUnknownProperties>false</failOnUnknownProperties>
-                <hideGenerationTimestamp>false</hideGenerationTimestamp>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
                 <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
                 <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                 <useBeanValidation>false</useBeanValidation>
                 <useOneOfInterfaces>true</useOneOfInterfaces>
+                <additionalModelTypeAnnotations>@com.google.common.annotations.Beta</additionalModelTypeAnnotations>
               </configOptions>
               <generateModels>true</generateModels>
               <generateSupportingFiles>false</generateSupportingFiles>

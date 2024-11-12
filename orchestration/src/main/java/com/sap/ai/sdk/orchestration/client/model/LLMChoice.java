@@ -28,26 +28,24 @@ import java.util.Objects;
   LLMChoice.JSON_PROPERTY_LOGPROBS,
   LLMChoice.JSON_PROPERTY_FINISH_REASON
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   public static final String JSON_PROPERTY_INDEX = "index";
-  public static final String JSON_PROPERTY_MESSAGE = "message";
-  public static final String JSON_PROPERTY_LOGPROBS = "logprobs";
-  public static final String JSON_PROPERTY_FINISH_REASON = "finish_reason";
   private Integer index;
+
+  public static final String JSON_PROPERTY_MESSAGE = "message";
   private ChatMessage message;
+
+  public static final String JSON_PROPERTY_LOGPROBS = "logprobs";
   private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
+
+  public static final String JSON_PROPERTY_FINISH_REASON = "finish_reason";
   private String finishReason;
 
   public LLMChoice() {}
-
-  /** Create a builder with no initialized field. */
-  public static LLMChoice.Builder builder() {
-    return new LLMChoice.Builder();
-  }
 
   public LLMChoice index(Integer index) {
 
@@ -198,15 +196,6 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMChoice.Builder toBuilder() {
-    return new LLMChoice.Builder()
-        .index(getIndex())
-        .message(getMessage())
-        .logprobs(getLogprobs())
-        .finishReason(getFinishReason());
-  }
-
   public static class Builder {
 
     private LLMChoice instance;
@@ -257,5 +246,19 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static LLMChoice.Builder builder() {
+    return new LLMChoice.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public LLMChoice.Builder toBuilder() {
+    return new LLMChoice.Builder()
+        .index(getIndex())
+        .message(getMessage())
+        .logprobs(getLogprobs())
+        .finishReason(getFinishReason());
   }
 }

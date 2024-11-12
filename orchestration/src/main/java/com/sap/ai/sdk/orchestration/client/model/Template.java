@@ -21,22 +21,18 @@ import java.util.Objects;
 
 /** Template */
 @JsonPropertyOrder({Template.JSON_PROPERTY_TEMPLATE, Template.JSON_PROPERTY_DEFAULTS})
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class Template implements TemplatingModuleConfig {
   public static final String JSON_PROPERTY_TEMPLATE = "template";
-  public static final String JSON_PROPERTY_DEFAULTS = "defaults";
   private List<ChatMessage> template;
+
+  public static final String JSON_PROPERTY_DEFAULTS = "defaults";
   private Object defaults;
 
   public Template() {}
-
-  /** Create a builder with no initialized field. */
-  public static Template.Builder builder() {
-    return new Template.Builder();
-  }
 
   public Template template(List<ChatMessage> template) {
 
@@ -133,11 +129,6 @@ public class Template implements TemplatingModuleConfig {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public Template.Builder toBuilder() {
-    return new Template.Builder().template(getTemplate()).defaults(getDefaults());
-  }
-
   public static class Builder {
 
     private Template instance;
@@ -178,5 +169,15 @@ public class Template implements TemplatingModuleConfig {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static Template.Builder builder() {
+    return new Template.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public Template.Builder toBuilder() {
+    return new Template.Builder().template(getTemplate()).defaults(getDefaults());
   }
 }

@@ -23,24 +23,20 @@ import java.util.Objects;
   CompletionPostResponseStreaming.JSON_PROPERTY_MODULE_RESULTS,
   CompletionPostResponseStreaming.JSON_PROPERTY_ORCHESTRATION_RESULT
 })
+@com.google.common.annotations.Beta
 @javax.annotation.Generated(
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    date = "2024-11-08T18:02:22.585601+01:00[Europe/Berlin]",
     comments = "Generator version: 7.9.0")
 public class CompletionPostResponseStreaming {
   public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
-  public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
   public static final String JSON_PROPERTY_ORCHESTRATION_RESULT = "orchestration_result";
-  private String requestId;
+
+  public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
   private ModuleResults moduleResults;
+  private String requestId;
   private LLMModuleResultStreaming orchestrationResult;
 
   public CompletionPostResponseStreaming() {}
-
-  /** Create a builder with no initialized field. */
-  public static CompletionPostResponseStreaming.Builder builder() {
-    return new CompletionPostResponseStreaming.Builder();
-  }
 
   public CompletionPostResponseStreaming requestId(String requestId) {
 
@@ -159,14 +155,6 @@ public class CompletionPostResponseStreaming {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public CompletionPostResponseStreaming.Builder toBuilder() {
-    return new CompletionPostResponseStreaming.Builder()
-        .requestId(getRequestId())
-        .moduleResults(getModuleResults())
-        .orchestrationResult(getOrchestrationResult());
-  }
-
   public static class Builder {
 
     private CompletionPostResponseStreaming instance;
@@ -213,5 +201,18 @@ public class CompletionPostResponseStreaming {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
+  }
+
+  /** Create a builder with no initialized field. */
+  public static CompletionPostResponseStreaming.Builder builder() {
+    return new CompletionPostResponseStreaming.Builder();
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public CompletionPostResponseStreaming.Builder toBuilder() {
+    return new CompletionPostResponseStreaming.Builder()
+        .requestId(getRequestId())
+        .moduleResults(getModuleResults())
+        .orchestrationResult(getOrchestrationResult());
   }
 }
