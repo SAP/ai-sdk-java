@@ -172,11 +172,6 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
     }
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public AzureContentSafetyFilterConfig.Builder toBuilder() {
-    return new AzureContentSafetyFilterConfig.Builder().type(getType()).config(getConfig());
-  }
-
   /** String represents name of the filter provider */
   public enum TypeEnum {
     AZURE_CONTENT_SAFETY("azure_content_safety"),
@@ -208,5 +203,10 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
     public String toString() {
       return String.valueOf(value);
     }
+  }
+
+  /** Create a builder with a shallow copy of this instance. */
+  public AzureContentSafetyFilterConfig.Builder toBuilder() {
+    return new AzureContentSafetyFilterConfig.Builder().type(getType()).config(getConfig());
   }
 }

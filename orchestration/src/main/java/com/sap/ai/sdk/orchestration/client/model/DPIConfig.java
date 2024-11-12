@@ -32,10 +32,9 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class DPIConfig implements MaskingProviderConfig {
-  private TypeEnum type;
-
   public static final String JSON_PROPERTY_TYPE = "type";
   private MethodEnum method;
+  private TypeEnum type;
 
   /** Create a builder with no initialized field. */
   public static DPIConfig.Builder builder() {
