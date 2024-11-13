@@ -4,7 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultStreaming;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -47,44 +46,6 @@ class LLMModuleResultDeserializerTest {
         """;
 
     var json = String.format(jsonTemplate, choices);
-
-    // Deserialize JSON content
-    LLMModuleResult result = objectMapper.readValue(json, LLMModuleResult.class);
-
-    // Assert
-    assertThat(result).isExactlyInstanceOf(LLMModuleResultSynchronous.class);
-  }
-
-  @SneakyThrows
-  @Test
-  void testSubtypeResolutionStreaming() {
-    var choices =
-        """
-          [
-             {
-               "index": 0,
-               "delta": {
-                 "content": "Sample response content."
-               }
-             }
-           ]
-        """;
-
-    var json = String.format(jsonTemplate, choices);
-
-    // Deserialize JSON content
-    LLMModuleResult result = objectMapper.readValue(json, LLMModuleResult.class);
-
-    // Assert
-    assertThat(result).isExactlyInstanceOf(LLMModuleResultStreaming.class);
-  }
-
-  @SneakyThrows
-  @Test
-  void testSubtypeResolutionEmptyChoices() {
-
-    String choice = "[]";
-    var json = String.format(jsonTemplate, choice);
 
     // Deserialize JSON content
     LLMModuleResult result = objectMapper.readValue(json, LLMModuleResult.class);
