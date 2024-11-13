@@ -29,11 +29,12 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class TokenUsage {
   public static final String JSON_PROPERTY_COMPLETION_TOKENS = "completion_tokens";
-  public static final String JSON_PROPERTY_TOTAL_TOKENS = "total_tokens";
+  private Integer completionTokens;
 
   public static final String JSON_PROPERTY_PROMPT_TOKENS = "prompt_tokens";
   private Integer promptTokens;
-  private Integer completionTokens;
+
+  public static final String JSON_PROPERTY_TOTAL_TOKENS = "total_tokens";
   private Integer totalTokens;
 
   public TokenUsage() {}

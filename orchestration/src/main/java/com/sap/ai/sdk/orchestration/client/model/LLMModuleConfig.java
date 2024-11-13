@@ -29,11 +29,12 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class LLMModuleConfig {
   public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
-  public static final String JSON_PROPERTY_MODEL_VERSION = "model_version";
+  private String modelName;
 
   public static final String JSON_PROPERTY_MODEL_PARAMS = "model_params";
   private Object modelParams;
-  private String modelName;
+
+  public static final String JSON_PROPERTY_MODEL_VERSION = "model_version";
   private String modelVersion = "latest";
 
   public LLMModuleConfig() {}

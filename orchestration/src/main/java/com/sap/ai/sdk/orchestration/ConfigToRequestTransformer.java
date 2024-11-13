@@ -43,7 +43,12 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages = Option.of(template).map(t -> ((Template) t).getTemplate()).getOrElse(List::of);
+    val messages =
+        Option.of(template)
+            .filter(Template.class::isInstance)
+            .map(Template.class::cast)
+            .map(Template::getTemplate)
+            .getOrElse(List::of);
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(prompt.getMessages());
     if (messagesWithPrompt.isEmpty()) {

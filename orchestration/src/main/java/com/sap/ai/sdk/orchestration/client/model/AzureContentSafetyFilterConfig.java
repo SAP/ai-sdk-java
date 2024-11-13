@@ -29,14 +29,41 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.JavaClientCodegen",
     comments = "Generator version: 7.9.0")
 public class AzureContentSafetyFilterConfig implements FilterConfig {
-  private TypeEnum type;
+  /** String represents name of the filter provider */
+  public enum TypeEnum {
+    AZURE_CONTENT_SAFETY("azure_content_safety"),
+
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static TypeEnum fromValue(String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
 
   public static final String JSON_PROPERTY_TYPE = "type";
-
-  /** Create a builder with no initialized field. */
-  public static AzureContentSafetyFilterConfig.Builder builder() {
-    return new AzureContentSafetyFilterConfig.Builder();
-  }
+  private TypeEnum type;
 
   public static final String JSON_PROPERTY_CONFIG = "config";
   private AzureContentSafety config;
@@ -172,37 +199,9 @@ public class AzureContentSafetyFilterConfig implements FilterConfig {
     }
   }
 
-  /** String represents name of the filter provider */
-  public enum TypeEnum {
-    AZURE_CONTENT_SAFETY("azure_content_safety"),
-
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonCreator
-    public static TypeEnum fromValue(String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
+  /** Create a builder with no initialized field. */
+  public static AzureContentSafetyFilterConfig.Builder builder() {
+    return new AzureContentSafetyFilterConfig.Builder();
   }
 
   /** Create a builder with a shallow copy of this instance. */
