@@ -4,7 +4,7 @@ SAP Managed Tags: Artificial Intelligence, JavaScript, SAP AI Core, SAP AI Launc
 
 ---
 
-We’re thrilled to present the initial release of the [SAP Cloud SDK for AI](https://github.com/SAP/ai-sdk-java#readme) for Java!
+We’re excited to announce the initial release of the [SAP Cloud SDK for AI](https://github.com/SAP/ai-sdk-java#readme) for Java!
 This SDK enables integration of generative AI capabilities within your SAP Business Technology Platform (BTP) applications and allows you to utilize the [Generative AI Hub](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generative-ai-hub-in-sap-ai-core) in [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core).
 
 For SAP BTP developers, the SAP Cloud SDK for AI is crafted to simplify AI integration and enhance application impact. With features that optimize deployment, improve content safety, and facilitate model orchestration, this SDK lets you bring advanced AI functionality to your applications swiftly and with minimal setup. Whether you need adaptable workflows, secure data handling, or smooth generative model integration, this SDK equips you with robust tools to embed AI-powered features in your SAP BTP solutions.
