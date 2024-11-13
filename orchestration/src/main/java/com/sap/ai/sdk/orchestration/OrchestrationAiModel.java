@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 /** Large language models available in Orchestration. */
 // https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/models-and-scenarios-in-generative-ai-hub
-@SuppressWarnings("unused") // tested in OrchestrationTest.orchestrationModelAvailability()
 public class OrchestrationAiModel extends LLMModuleConfig {
 
   /** IBM Granite 13B chat completions model */

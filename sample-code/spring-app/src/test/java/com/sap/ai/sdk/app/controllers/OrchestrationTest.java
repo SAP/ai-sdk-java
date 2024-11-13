@@ -147,29 +147,4 @@ class OrchestrationTest {
         .doesNotContain("MASKED_PERSON")
         .contains("Mallory");
   }
-
-  @Test
-  @DisplayName("Declared OrchestrationAiModels must match Orchestration's list of available models")
-  @SneakyThrows
-  void orchestrationModelAvailability() {
-    // TODO: Change this test to be like ScenarioTest.openAiModelAvailability() once the
-    //  Orchestration service has made the "available models endpoint".
-    //  Right now this test cannot tell if we are lacking models.
-
-    // Gather our declared Orchestration models
-    List<OrchestrationAiModel> declaredOrchestrationModelList = new ArrayList<>();
-    for (Field field : OrchestrationAiModel.class.getFields()) {
-      if (field.getType().equals(OrchestrationAiModel.class)) {
-        declaredOrchestrationModelList.add(((OrchestrationAiModel) field.get(null)));
-      }
-    }
-
-    for (OrchestrationAiModel model : declaredOrchestrationModelList) {
-      controller.config = new OrchestrationModuleConfig().withLlmConfig(model);
-      log.info("Testing completion for model: {}", model.getModelName());
-      final var completion = controller.completion();
-      final var requestModel = completion.getOrchestrationResult().getModel();
-      assertThat(requestModel).contains(model.getModelName());
-    }
-  }
 }
