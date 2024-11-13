@@ -67,10 +67,10 @@ class CacheTest extends WireMockTestServer {
 
     val gpt4 = createAiModel("gpt-4-32k", null);
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
+    cacheUnderTest.getDeploymentIdByModel(aiCoreService, resourceGroup, gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
+    cacheUnderTest.getDeploymentIdByModel(aiCoreService, resourceGroup, gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -87,16 +87,16 @@ class CacheTest extends WireMockTestServer {
   void newDeploymentAfterReset() {
     val resourceGroup = "default";
     stubEmpty(resourceGroup);
-    cacheUnderTest.resetCache(client, resourceGroup);
+    cacheUnderTest.resetCache(aiCoreService, resourceGroup);
     stubGPT4(resourceGroup);
 
     val gpt4 = createAiModel("gpt-4-32k", null);
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
+    cacheUnderTest.getDeploymentIdByModel(aiCoreService, resourceGroup, gpt4);
     // 1 reset empty and 1 cache miss
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4);
+    cacheUnderTest.getDeploymentIdByModel(aiCoreService, resourceGroup, gpt4);
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -109,7 +109,7 @@ class CacheTest extends WireMockTestServer {
 
     val gpt4 = createAiModel("gpt-4-32k", null);
 
-    cacheUnderTest.getDeploymentIdByModel(client, resourceGroupA, gpt4);
+    cacheUnderTest.getDeploymentIdByModel(aiCoreService, resourceGroupA, gpt4);
     wireMockServer.verify(
         1,
         getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
@@ -127,7 +127,8 @@ class CacheTest extends WireMockTestServer {
 
     val gpt4 = createAiModel("gpt-4-32k", null);
 
-    assertThatThrownBy(() -> cacheUnderTest.getDeploymentIdByModel(client, resourceGroup, gpt4))
+    assertThatThrownBy(
+            () -> cacheUnderTest.getDeploymentIdByModel(aiCoreService, resourceGroup, gpt4))
         .isExactlyInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("No running deployment found for model: gpt-4-32k");
   }
@@ -136,7 +137,7 @@ class CacheTest extends WireMockTestServer {
   void resetCache() {
     val resourceGroup = "default";
     stubGPT4(resourceGroup);
-    cacheUnderTest.resetCache(client, resourceGroup);
+    cacheUnderTest.resetCache(aiCoreService, resourceGroup);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
     val destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
@@ -145,7 +146,7 @@ class CacheTest extends WireMockTestServer {
   }
 
   @Test
-  public void isDeploymentOfModel() {
+  void isDeploymentOfModel() {
     // Create a target model
     val gpt4AnyVersion = createAiModel("gpt-4-32k", null);
     val gpt4Version1 = createAiModel("gpt-4-32k", "1.0");

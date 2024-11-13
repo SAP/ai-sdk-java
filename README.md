@@ -84,7 +84,7 @@ Additional methods (not recommended for production):
 **1. Obtain Service Credentials:**
 
 - Log into the **SAP BTP Cockpit**
-- Navigate to **Instances and Subscriptions** -> **Instances** -> **AI Core**
+- Navigate to **Services** -> **Instances and Subscriptions** -> **Instances** -> **AI Core**
 - Click **View Credentials** and copy the JSON content
 
 **2. Create `.env` file:**
@@ -177,7 +177,8 @@ After restarting your application, you should see an "aicore" entry in the `VCAP
 
 ```java
 Destination destination = DestinationAccessor.getDestination("my-aicore");
-AiCoreService client = new AiCoreService().withDestination(destination);
+AiCoreService aiCoreService = new AiCoreService().withDestination(destination);
+DeploymentApi client = new DeploymentApi(aiCoreService);
 ```
 
 </details>
@@ -253,14 +254,7 @@ For more detailed information and advanced usage, please refer to the following:
 
 ### _"How to add a custom header to AI Core requests?"_
 
-To add a header to AI Core requests, use the following code:
-
-```java
-ApiClient client = new AiCoreService().client().addDefaultHeader("header-key", "header-value");
-DeploymentApi api = new DeploymentApi(client);
-```
-
-For more customization, creating a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders) is also possible.
+Create a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders).
 
 
 ### _"There's a vulnerability warning `CVE-2021-41251`?"_

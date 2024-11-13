@@ -35,6 +35,7 @@ public class FileDownload400Response
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for FileDownload400Response. */
   protected FileDownload400Response() {}
 
   /**

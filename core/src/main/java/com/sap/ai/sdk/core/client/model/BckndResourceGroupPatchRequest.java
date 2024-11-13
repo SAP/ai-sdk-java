@@ -37,6 +37,7 @@ public class BckndResourceGroupPatchRequest
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndResourceGroupPatchRequest. */
   protected BckndResourceGroupPatchRequest() {}
 
   /**

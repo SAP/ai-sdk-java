@@ -35,6 +35,7 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BcknddockerRegistrySecretWithSensitiveDataRequestData. */
   protected BcknddockerRegistrySecretWithSensitiveDataRequestData() {}
 
   /**
