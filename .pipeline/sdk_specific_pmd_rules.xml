@@ -131,7 +131,7 @@
             <property name="xpath">
                 <value>
                     <![CDATA[
-                        //MethodDeclaration[@EffectiveVisibility='public' and @Void=false() and ClassType and not(
+                        //MethodDeclaration[(@EffectiveVisibility='public' or @EffectiveVisibility='protected') and @Void=false() and ClassType and not(
                             ./ModifierList/Annotation[@SimpleName='Nullable'] or
                             ./ModifierList/Annotation[@SimpleName='Nonnull']
                         )]
@@ -185,7 +185,7 @@
                 <value>
                     <![CDATA[
                         //ClassBody
-                        /*[@EffectiveVisibility='public']
+                        /*[(@EffectiveVisibility='public' or @EffectiveVisibility='protected')]
                         /FormalParameters
                         /FormalParameter[
                             ClassType and
