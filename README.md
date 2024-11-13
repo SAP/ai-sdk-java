@@ -84,7 +84,7 @@ Additional methods (not recommended for production):
 **1. Obtain Service Credentials:**
 
 - Log into the **SAP BTP Cockpit**
-- Navigate to **Instances and Subscriptions** -> **Instances** -> **AI Core**
+- Navigate to **Services** -> **Instances and Subscriptions** -> **Instances** -> **AI Core**
 - Click **View Credentials** and copy the JSON content
 
 **2. Create `.env` file:**
