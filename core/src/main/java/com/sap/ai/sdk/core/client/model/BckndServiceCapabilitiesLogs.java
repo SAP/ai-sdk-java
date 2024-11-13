@@ -38,6 +38,7 @@ public class BckndServiceCapabilitiesLogs
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndServiceCapabilitiesLogs. */
   protected BckndServiceCapabilitiesLogs() {}
 
   /**

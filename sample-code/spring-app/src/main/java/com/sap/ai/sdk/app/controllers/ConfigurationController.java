@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.app.Application.API_CLIENT;
-
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.model.AiConfigurationList;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigurationController {
 
-  private static final ConfigurationApi CLIENT = new ConfigurationApi(API_CLIENT);
+  private static final ConfigurationApi CLIENT = new ConfigurationApi();
 
   /**
    * Get the list of configurations.

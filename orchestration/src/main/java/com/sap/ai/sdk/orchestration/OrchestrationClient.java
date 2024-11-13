@@ -143,7 +143,6 @@ public class OrchestrationClient {
     return executeRequest(postRequest);
   }
 
-  @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {

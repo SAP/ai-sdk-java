@@ -167,6 +167,7 @@ public class BckndEvent
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndEvent. */
   protected BckndEvent() {}
 
   /**

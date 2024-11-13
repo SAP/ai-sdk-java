@@ -35,6 +35,7 @@ public class MetaGet404Response
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for MetaGet404Response. */
   protected MetaGet404Response() {}
 
   /**

@@ -38,6 +38,7 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for KubesubmitV4DockerRegistrySecretsCreateRequest. */
   protected KubesubmitV4DockerRegistrySecretsCreateRequest() {}
 
   /**

@@ -47,6 +47,7 @@ public class BckndError
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndError. */
   protected BckndError() {}
 
   /**

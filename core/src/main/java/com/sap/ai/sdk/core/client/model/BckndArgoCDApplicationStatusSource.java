@@ -41,6 +41,7 @@ public class BckndArgoCDApplicationStatusSource
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for BckndArgoCDApplicationStatusSource. */
   protected BckndArgoCDApplicationStatusSource() {}
 
   /**
