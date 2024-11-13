@@ -25,8 +25,7 @@ class OrchestrationTest {
     final var result = controller.completion();
 
     assertThat(result).isNotNull();
-    assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
-        .isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
   }
 
   @Test

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -75,7 +74,7 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
-  public CompletionPostResponse chatCompletion(
+  public OrchestrationResponse chatCompletion(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
       throws OrchestrationClientException {
 
@@ -104,7 +103,7 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
-  public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
+  public OrchestrationResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
     final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
@@ -133,13 +132,13 @@ public class OrchestrationClient {
   }
 
   @Nonnull
-  CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
+  OrchestrationResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {
       val destination = deployment.get().destination();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
-          request, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
+          request, new OrchestrationResponseHandler<>(OrchestrationResponse.class));
     } catch (NoSuchElementException
         | DestinationAccessException
         | DestinationNotFoundException
