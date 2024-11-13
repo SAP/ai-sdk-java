@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import java.lang.reflect.Field;
@@ -38,6 +39,9 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
+    assertThat(controller.config.getLlmConfig()).isNotNull();
+    final var model = controller.config.getLlmConfig().getModelName();
+
     final var result = controller.template();
 
     assertThat(result.getRequestId()).isNotEmpty();
@@ -48,7 +52,7 @@ class OrchestrationTest {
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
-    assertThat(llm.getModel()).isEqualTo(controller.llmConfig.getModelName());
+    assertThat(llm.getModel()).isEqualTo(model);
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -60,8 +64,7 @@ class OrchestrationTest {
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
     assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
     assertThat(result.getOrchestrationResult().getCreated()).isGreaterThan(1);
-    assertThat(result.getOrchestrationResult().getModel())
-        .isEqualTo(controller.llmConfig.getModelName());
+    assertThat(result.getOrchestrationResult().getModel()).isEqualTo(model);
     choices = result.getOrchestrationResult().getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -161,12 +164,12 @@ class OrchestrationTest {
       }
     }
 
-    declaredOrchestrationModelList.parallelStream()
-        .forEach(
-            model -> {
-              controller.llmConfig = model;
-              log.info("Testing completion for model: {}", model.getModelName());
-              assertThat(controller.completion()).isNotNull();
-            });
+    for (OrchestrationAiModel model : declaredOrchestrationModelList) {
+      controller.config = new OrchestrationModuleConfig().withLlmConfig(model);
+      log.info("Testing completion for model: {}", model.getModelName());
+      final var completion = controller.completion();
+      final var requestModel = completion.getOrchestrationResult().getModel();
+      assertThat(requestModel).contains(model.getModelName());
+    }
   }
 }

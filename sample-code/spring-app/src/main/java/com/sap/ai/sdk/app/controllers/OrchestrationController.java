@@ -14,7 +14,6 @@ import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
@@ -32,11 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  LLMModuleConfig llmConfig = GPT_35_TURBO;
 
   private final OrchestrationClient client = new OrchestrationClient();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(llmConfig);
+  OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
