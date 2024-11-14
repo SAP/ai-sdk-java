@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
@@ -43,12 +44,7 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages =
-        Option.of(template)
-            .filter(Template.class::isInstance)
-            .map(Template.class::cast)
-            .map(Template::getTemplate)
-            .getOrElse(List::of);
+    val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(prompt.getMessages());
     if (messagesWithPrompt.isEmpty()) {
