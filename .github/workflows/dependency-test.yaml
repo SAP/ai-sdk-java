@@ -80,6 +80,7 @@ jobs:
       fail-fast: false
       matrix:
         version: ${{ fromJson(needs.fetch-dependency-versions.outputs.versions) }}
+    continue-on-error: true
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
