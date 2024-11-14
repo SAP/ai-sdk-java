@@ -9,8 +9,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
@@ -39,6 +45,11 @@ public class OrchestrationClient {
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
+            .mixIn(LLMModuleResult.class, LLMModuleResultMixIn.class)
+            .mixIn(ModuleResultsOutputUnmaskingInner.class, NoTypeInfoMixin.class)
+            .mixIn(FilterConfig.class, NoTypeInfoMixin.class)
+            .mixIn(MaskingProviderConfig.class, NoTypeInfoMixin.class)
+            .mixIn(TemplatingModuleConfig.class, NoTypeInfoMixin.class)
             .build();
   }
 
@@ -63,6 +74,20 @@ public class OrchestrationClient {
    */
   public OrchestrationClient(@Nonnull final AiCoreDeployment deployment) {
     this.deployment = () -> deployment;
+  }
+
+  /**
+   * Convert the given prompt and config into a low-level request data object. The data object
+   * allows for further customization before sending the request.
+   *
+   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
+   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
+   * @return The low-level request data object to send to orchestration.
+   */
+  @Nonnull
+  public static CompletionPostRequest toCompletionPostRequest(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
 
   /**
@@ -115,20 +140,6 @@ public class OrchestrationClient {
     }
 
     return executeRequest(postRequest);
-  }
-
-  /**
-   * Convert the given prompt and config into a low-level request data object. The data object
-   * allows for further customization before sending the request.
-   *
-   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
-   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
-   * @return The low-level request data object to send to orchestration.
-   */
-  @Nonnull
-  public static CompletionPostRequest toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
 
   @Nonnull
