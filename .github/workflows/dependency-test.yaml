@@ -21,7 +21,7 @@ jobs:
   fetch-dependency-versions:
     runs-on: ubuntu-latest
     outputs:
-      versions: ${{ steps.set-versions.outputs.versions }}
+      versions: ${{ steps.fetch-versions.outputs.versions }}
 
     steps:
 
