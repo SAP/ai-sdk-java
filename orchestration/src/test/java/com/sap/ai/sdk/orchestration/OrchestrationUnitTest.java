@@ -7,7 +7,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
@@ -21,8 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
@@ -48,6 +52,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -339,26 +344,74 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGenericErrorHandling() {
-    stubFor(post(anyUrl()).willReturn(serverError()));
-
-    assertThatThrownBy(() -> client.executeRequest(mock(CompletionPostRequest.class)))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("500 Server Error");
-  }
-
-  @Test
-  void testOrchestrationErrorParsing() {
+  void testErrorHandling() {
     stubFor(
         post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs(Scenario.STARTED)
+            .willReturn(serverError())
+            .willSetStateTo("1"));
+    stubFor(
+        post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs("1")
             .willReturn(
                 badRequest()
                     .withHeader("Content-Type", "application/json")
-                    .withBodyFile("errorResponse.json")));
+                    .withBodyFile("errorResponse.json"))
+            .willSetStateTo("2"));
+    stubFor(
+        post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs("2")
+            .willReturn(
+                badRequest()
+                    .withBody("{ broken json")
+                    .withHeader("Content-type", "application/json"))
+            .willSetStateTo("3"));
+    stubFor(
+        post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs("3")
+            .willReturn(okXml("<xml></xml>"))
+            .willSetStateTo("4"));
+    stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
 
-    assertThatThrownBy(() -> client.executeRequest(mock(CompletionPostRequest.class)))
+    final var softly = new SoftAssertions();
+    final Runnable request = () -> client.executeRequest(mock(CompletionPostRequest.class));
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Server errors should be handled")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("400 Bad Request")
+        .hasMessageContaining("500");
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Error objects from Orchestration should be interpreted")
+        .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("'orchestration_config' is a required property");
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Failures while parsing error message should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400")
+        .extracting(e -> e.getSuppressed()[0])
+        .isInstanceOf(JsonParseException.class);
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Non-JSON responses should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Failed to parse");
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Empty responses should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("was empty");
+
+    softly.assertAll();
   }
 }
