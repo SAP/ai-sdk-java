@@ -2,16 +2,13 @@ package com.sap.ai.sdk.orchestration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 class LLMModuleResultDeserializerTest {
-
-  private final ObjectMapper objectMapper = OrchestrationClient.JACKSON;
-  private final String jsonTemplate =
+  private static final String JSON =
       """
       {
         "object": "chat.completion",
@@ -30,7 +27,6 @@ class LLMModuleResultDeserializerTest {
   @SneakyThrows
   @Test
   void testSubtypeResolutionSynchronous() {
-
     var choices =
         """
         [
@@ -45,12 +41,8 @@ class LLMModuleResultDeserializerTest {
         ]
         """;
 
-    var json = String.format(jsonTemplate, choices);
-
-    // Deserialize JSON content
-    LLMModuleResult result = objectMapper.readValue(json, LLMModuleResult.class);
-
-    // Assert
+    var json = String.format(JSON, choices);
+    var result = OrchestrationClient.JACKSON.readValue(json, LLMModuleResult.class);
     assertThat(result).isExactlyInstanceOf(LLMModuleResultSynchronous.class);
   }
 }
