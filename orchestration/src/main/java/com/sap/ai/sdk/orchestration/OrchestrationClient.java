@@ -11,12 +11,11 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.GroundingModuleConfigConfigFiltersInner;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.client.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplateRefTemplateRef;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -47,10 +46,10 @@ public class OrchestrationClient {
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
             .deserializerByType(LLMModuleResult.class, new LLMModuleResultDeserializer())
+            .mixIn(LLMModuleResult.class, NoTypeInfoMixin.class)
+            .mixIn(ModuleResultsOutputUnmaskingInner.class, NoTypeInfoMixin.class)
             .mixIn(FilterConfig.class, NoTypeInfoMixin.class)
-            .mixIn(GroundingModuleConfigConfigFiltersInner.class, NoTypeInfoMixin.class)
             .mixIn(MaskingProviderConfig.class, NoTypeInfoMixin.class)
-            .mixIn(TemplateRefTemplateRef.class, NoTypeInfoMixin.class)
             .mixIn(TemplatingModuleConfig.class, NoTypeInfoMixin.class)
             .build();
   }

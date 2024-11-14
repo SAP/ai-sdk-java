@@ -33,11 +33,12 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class CompletionPostRequest {
   public static final String JSON_PROPERTY_ORCHESTRATION_CONFIG = "orchestration_config";
-  public static final String JSON_PROPERTY_MESSAGES_HISTORY = "messages_history";
+  private OrchestrationConfig orchestrationConfig;
 
   public static final String JSON_PROPERTY_INPUT_PARAMS = "input_params";
   private Map<String, String> inputParams = new HashMap<>();
-  private OrchestrationConfig orchestrationConfig;
+
+  public static final String JSON_PROPERTY_MESSAGES_HISTORY = "messages_history";
   private List<ChatMessage> messagesHistory;
 
   public CompletionPostRequest() {}

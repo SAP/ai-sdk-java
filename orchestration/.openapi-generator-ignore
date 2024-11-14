@@ -16,7 +16,3 @@ settings.gradle
 src/main/AndroidManifest.xml
 api/
 .openapi-generator/
-
-
-src/main/java/com/sap/ai/sdk/orchestration/client/model/LLMModuleResult.java
-src/main/java/com/sap/ai/sdk/orchestration/client/model/ModuleResultsOutputUnmaskingInner.java

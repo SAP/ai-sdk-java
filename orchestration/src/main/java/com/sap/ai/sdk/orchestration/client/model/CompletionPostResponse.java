@@ -29,11 +29,12 @@ import java.util.Objects;
     comments = "Generator version: 7.9.0")
 public class CompletionPostResponse {
   public static final String JSON_PROPERTY_REQUEST_ID = "request_id";
-  public static final String JSON_PROPERTY_ORCHESTRATION_RESULT = "orchestration_result";
+  private String requestId;
 
   public static final String JSON_PROPERTY_MODULE_RESULTS = "module_results";
   private ModuleResults moduleResults;
-  private String requestId;
+
+  public static final String JSON_PROPERTY_ORCHESTRATION_RESULT = "orchestration_result";
   private LLMModuleResult orchestrationResult;
 
   public CompletionPostResponse() {}
