@@ -29,8 +29,8 @@ jobs:
         id: fetch-versions
         run: |
           # Specify the dependency coordinates
-          GROUP_ID="com.example"
-          ARTIFACT_ID="my-dependency"
+          GROUP_ID="com.sap.cloud.sdk"
+          ARTIFACT_ID="sdk-bom"
 
           # Fetch available versions from Maven Central API
           response=$(curl -s "https://search.maven.org/solrsearch/select?q=g:%22${GROUP_ID}%22+AND+a:%22${ARTIFACT_ID}%22&rows=15&core=gav&wt=json")
