@@ -45,12 +45,10 @@ jobs:
           # Output the versions as a string that can be used in the matrix
           echo "VERSIONS=${json_versions}" >> $GITHUB_OUTPUT
 
-  test-dependency-versions:
-    needs: fetch-dependency-versions
+  setup-environment:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: ${{ fromJson(needs.fetch-dependency-versions.outputs.versions) }}
+    outputs:
+      cache-key: ${{ steps.cache-build.outputs.cache-hit }}
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -66,6 +64,31 @@ jobs:
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
+
+      - name: "Cache build"
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+  test-dependency-versions:
+    needs: [ fetch-dependency-versions, setup-environment ]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ${{ fromJson(needs.fetch-dependency-versions.outputs.versions) }}
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Restore build cache"
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ needs.setup-environment.outputs.cache-key }}
 
       - name: "Run tests with explicit version"
         run: |
