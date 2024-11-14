@@ -29,18 +29,19 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
+import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
@@ -62,7 +63,7 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create()
+      new LLMModuleConfig()
           .modelName("gpt-35-turbo-16k")
           .modelParams(
               Map.of(
@@ -120,8 +121,8 @@ class OrchestrationUnitTest {
     final var result = client.chatCompletion(prompt, config);
 
     assertThat(result).isNotNull();
-    assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
-        .isNotEmpty();
+    var orchestrationResult = (LLMModuleResultSynchronous) result.getOrchestrationResult();
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
@@ -133,7 +134,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = new ChatMessage().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
@@ -144,7 +145,7 @@ class OrchestrationUnitTest {
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = result.getModuleResults().getLlm();
+    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isEqualTo(1721224505);
@@ -159,18 +160,18 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    assertThat(result.getOrchestrationResult().getId())
-        .isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
-    assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
-    assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
-    assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
-    choices = result.getOrchestrationResult().getChoices();
+    var orchestrationResult = (LLMModuleResultSynchronous) result.getOrchestrationResult();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-35-turbo-16k");
+    choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = result.getOrchestrationResult().getUsage();
+    usage = orchestrationResult.getUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -252,18 +253,18 @@ class OrchestrationUnitTest {
   private static FilteringModuleConfig createAzureContentFilter(
       @Nonnull final AzureThreshold threshold) {
     final var filter =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+        new AzureContentSafetyFilterConfig()
+            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
             .config(
-                AzureContentSafety.create()
+                new AzureContentSafety()
                     .hate(threshold)
                     .selfHarm(threshold)
                     .sexual(threshold)
                     .violence(threshold));
 
-    return FilteringModuleConfig.create()
-        .input(InputFilteringConfig.create().filters(filter))
-        .output(OutputFilteringConfig.create().filters(filter));
+    return new FilteringModuleConfig()
+        .input(new InputFilteringConfig().filters(List.of(filter)))
+        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   @Test
@@ -277,10 +278,9 @@ class OrchestrationUnitTest {
 
     final List<ChatMessage> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+            new ChatMessage().role("user").content("What is the capital of France?"),
+            new ChatMessage().role("assistant").content("The capital of France is Paris."));
+    final var message = new ChatMessage().role("user").content("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -307,7 +307,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var maskingConfig =
-        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
 
@@ -315,7 +315,7 @@ class OrchestrationUnitTest {
     GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
-    final var choices = result.getOrchestrationResult().getChoices();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo(
             "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
@@ -330,17 +330,17 @@ class OrchestrationUnitTest {
   }
 
   private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final MaskingProviderConfig.MethodEnum method,
-      @Nonnull final DPIEntities... entities) {
+      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
 
     final var entityConfigs =
-        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingModuleConfig.create()
+        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
+    return new MaskingModuleConfig()
         .maskingProviders(
-            MaskingProviderConfig.create()
-                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                .method(method)
-                .entities(entityConfigs));
+            List.of(
+                new DPIConfig()
+                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+                    .method(method)
+                    .entities(entityConfigs)));
   }
 
   @Test
