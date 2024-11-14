@@ -7,11 +7,6 @@ on:
   push:
     branches:
       - "workflow/compatibility-version"
-  pull_request:
-    branches:
-      - "main"
-    paths:
-      - ".github/workflows/dependency-test.yaml"
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -73,7 +68,7 @@ jobs:
 
       - name: "Build SDK"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting -Dspotless.skip=true"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
   test-dependency-versions:
@@ -98,7 +93,7 @@ jobs:
 
       - name: "Run tests with explicit version"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean package -pl :spring-app -DskipTests=false -DskipFormatting -Dcloud-sdk.version=${{ matrix.version }} -Denforcer.skip=true"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean package -pl :spring-app -DskipTests=false -DskipFormatting -Dcloud-sdk.version=${{ matrix.version }} -Denforcer.skip=true -Dspotless.skip=true"
           mvn $MVN_ARGS
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
