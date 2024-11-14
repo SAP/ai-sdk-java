@@ -68,6 +68,7 @@
     <dotenv-java.version>3.0.2</dotenv-java.version>
     <mockito.version>5.14.2</mockito.version>
     <!--  Quality assurance  -->
+    <enforcer.skip>false</enforcer.skip>
     <enforcer.skipBanLoggingFrameworks>false</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
@@ -213,6 +214,7 @@
         <version>3.5.0</version>
         <configuration>
           <fail>true</fail>
+          <skip>${enforcer.skip}</skip>
         </configuration>
         <executions>
           <execution>
