@@ -104,7 +104,7 @@ public class OrchestrationClient {
       throws OrchestrationClientException {
 
     val request = toCompletionPostRequest(prompt, config);
-    return executeRequest(request);
+    return new OrchestrationResponse(executeRequest(request));
   }
 
   /**
@@ -128,7 +128,7 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
-  public OrchestrationResponse executeRequest(@Nonnull final CompletionPostRequest request)
+  public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
     final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
     try {
@@ -143,13 +143,13 @@ public class OrchestrationClient {
   }
 
   @Nonnull
-  OrchestrationResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
+  CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {
       val destination = deployment.get().destination();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
-          request, new OrchestrationResponseHandler<>(OrchestrationResponse.class));
+          request, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
     } catch (NoSuchElementException
         | DestinationAccessException
         | DestinationNotFoundException

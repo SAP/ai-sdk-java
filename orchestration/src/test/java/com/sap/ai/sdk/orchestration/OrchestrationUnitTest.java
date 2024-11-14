@@ -140,11 +140,12 @@ class OrchestrationUnitTest {
     final var result =
         client.chatCompletion(new OrchestrationPrompt(inputParams, template), config);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    final var response = result.getData();
+    assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(response.getModuleResults().getTemplating().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(response.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isEqualTo(1721224505);
@@ -159,7 +160,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = (LLMModuleResultSynchronous) result.getOrchestrationResult();
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -285,7 +286,7 @@ class OrchestrationUnitTest {
 
     final var result = client.chatCompletion(prompt, config);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getData().getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
     try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
@@ -309,13 +310,13 @@ class OrchestrationUnitTest {
         createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    final var response = result.getData();
 
-    assertThat(result).isNotNull();
-    GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(response).isNotNull();
+    GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
-    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent())
+    assertThat(result.getContent())
         .isEqualTo(
             "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
 

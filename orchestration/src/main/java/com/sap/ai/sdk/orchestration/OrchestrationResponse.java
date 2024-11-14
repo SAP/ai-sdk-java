@@ -1,10 +1,17 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import javax.annotation.Nonnull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /** Orchestration chat completion output. */
-public class OrchestrationResponse extends CompletionPostResponse {
+@RequiredArgsConstructor
+@Getter
+public class OrchestrationResponse {
+  private final CompletionPostResponse data;
+
   /**
    * Get the message content from the output.
    *
@@ -15,12 +22,12 @@ public class OrchestrationResponse extends CompletionPostResponse {
    */
   @Nonnull
   public String getContent() throws OrchestrationClientException {
-    if (getOrchestrationResult().getChoices().isEmpty()) {
-      return "";
-    }
-    if ("content_filter".equals(getOrchestrationResult().getChoices().get(0).getFinishReason())) {
+    final var choice =
+        ((LLMModuleResultSynchronous) data.getOrchestrationResult()).getChoices().get(0);
+
+    if ("content_filter".equals(choice.getFinishReason())) {
       throw new OrchestrationClientException("Content filter filtered the output.");
     }
-    return getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+    return choice.getMessage().getContent();
   }
 }
