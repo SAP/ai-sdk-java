@@ -41,6 +41,7 @@ public class MetaExtensionsDatasetCapabilities
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for MetaExtensionsDatasetCapabilities. */
   protected MetaExtensionsDatasetCapabilities() {}
 
   /**

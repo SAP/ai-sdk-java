@@ -35,6 +35,7 @@ public class MetricsFind400Response
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for MetricsFind400Response. */
   protected MetricsFind400Response() {}
 
   /**

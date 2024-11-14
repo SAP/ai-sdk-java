@@ -100,6 +100,7 @@ public class RTAExecutableParameter
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for RTAExecutableParameter. */
   protected RTAExecutableParameter() {}
 
   /**

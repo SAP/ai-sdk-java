@@ -37,6 +37,7 @@ public class AiLogCommonData
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for AiLogCommonData. */
   protected AiLogCommonData() {}
 
   /**

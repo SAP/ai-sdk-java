@@ -243,7 +243,6 @@ public final class OpenAiClient {
   private <T> T executeRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
     try {
-      @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(request, new OpenAiResponseHandler<>(responseType));
     } catch (final IOException e) {
@@ -255,7 +254,6 @@ public final class OpenAiClient {
   private <D extends StreamedDelta> Stream<D> streamRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
-      @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return new OpenAiStreamingHandler<>(deltaType)
           .handleResponse(client.executeOpen(null, request, null));

@@ -132,7 +132,6 @@ public class OrchestrationClient {
     return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
 
-  @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
     try {

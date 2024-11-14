@@ -1,0 +1,57 @@
+name: Feature Request
+description: Request a new feature to help your project using the SAP Cloud SDK for AI (Java).
+labels:
+  - feature request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is for Java related issues only. Please open [JavaScript / TypeScript issues here](https://github.com/SAP/ai-sdk-js/issues/new/choose)
+  - type: textarea
+    attributes:
+      label: "Describe the Problem"
+      description: "A clear and concise description of what the missing feature is"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Propose a Solution"
+      description: "A clear and concise description of what you want to happen."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Describe Alternatives"
+      description: "A clear and concise description of any alternative solutions or features you've considered."
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: "Affected Development Phase"
+      description: "Choose the development phase affected by this issue."
+      multiple: false
+      options:
+        - Getting Started
+        - Development
+        - Release
+        - Production
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: "Impact"
+      description: "Choose the impact severity."
+      multiple: false
+      options:
+        - No Impact
+        - Inconvenience
+        - Impaired
+        - Blocked
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Timeline"
+      description: "Please briefly state your timeline, e.g., Go-Live in 12 weeks."
+    validations:
+      required: false
