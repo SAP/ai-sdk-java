@@ -21,10 +21,9 @@ jobs:
   fetch-dependency-versions:
     runs-on: ubuntu-latest
     outputs:
-      versions: ${{ steps.fetch-versions.outputs.versions }}
+      versions: ${{ steps.fetch-versions.outputs.VERSIONS }}
 
     steps:
-
       - name: Fetch versions from Maven Central
         id: fetch-versions
         run: |
@@ -39,12 +38,12 @@ jobs:
           versions=$(echo "$response" | jq -r '.response.docs[].v' | grep -v -E 'SNAPSHOT|alpha|beta' | sort -V)
           
           # Convert the versions to a JSON array
-          json_versions=$(echo "$versions" | jq -R . | jq -s .)
+          json_versions=$(echo "$versions" | jq -R . | jq -s . | tr -d '\n')
           
           echo "JSON Versions: $json_versions"
           
           # Output the versions as a string that can be used in the matrix
-          echo "::set-output name=versions::${json_versions}"
+          echo "VERSIONS=${json_versions}" >> $GITHUB_OUTPUT
 
   test-dependency-versions:
     needs: fetch-dependency-versions
