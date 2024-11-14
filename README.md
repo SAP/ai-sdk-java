@@ -165,7 +165,7 @@ After restarting your application, you should see an "aicore" entry in the `VCAP
 
     - **Name**: `my-aicore`
     - **Type**: `HTTP`
-    - **URL**: `[serviceurls.AI_API_URL]/v2` (append `/v2` to the URL)
+    - **URL**: `[serviceurls.AI_API_URL]`
     - **Proxy Type**: `Internet`
     - **Authentication**: `OAuth2ClientCredentials`
     - **Client ID**: `[clientid]`
