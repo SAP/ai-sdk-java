@@ -41,6 +41,8 @@ jobs:
           # Convert the versions to a JSON array
           json_versions=$(echo "$versions" | jq -R . | jq -s .)
           
+          echo "JSON Versions: $json_versions"
+          
           # Output the versions as a string that can be used in the matrix
           echo "::set-output name=versions::${json_versions}"
 
