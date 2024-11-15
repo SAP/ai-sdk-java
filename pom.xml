@@ -53,6 +53,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cloud-sdk.version>5.14.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.3</junit-jupiter.version>
@@ -73,7 +74,7 @@
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
     <!-- Test coverage -->
     <coverage.instruction>74%</coverage.instruction>
-    <coverage.branch>62%</coverage.branch>
+    <coverage.branch>67%</coverage.branch>
     <coverage.complexity>67%</coverage.complexity>
     <coverage.line>75%</coverage.line>
     <coverage.method>80%</coverage.method>
@@ -99,6 +100,12 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${springframework.version}</version>
+      </dependency>
+      <!-- Additional dependencies for OSS code generator resttemplate  -->
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>1.2</version>
       </dependency>
       <dependency>
         <groupId>io.github.cdimascio</groupId>
@@ -191,6 +198,11 @@
           <groupId>com.sap.cloud.sdk.datamodel</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>${cloud-sdk.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>7.9.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -355,6 +367,11 @@
               <goal>analyze-only</goal>
             </goals>
             <phase>process-test-classes</phase>
+            <configuration>
+              <ignoredDependencies>
+                <ignoredDependency>javax.annotation:javax.annotation-api</ignoredDependency>
+              </ignoredDependencies>
+            </configuration>
           </execution>
           <execution>
             <id>analyze-dep-mgt</id>

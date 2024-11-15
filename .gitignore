@@ -27,3 +27,5 @@
 
 ### Environment ###
 *.env
+
+.openapi-generator

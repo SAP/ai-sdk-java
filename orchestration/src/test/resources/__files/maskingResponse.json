@@ -34,7 +34,6 @@
             "content": "I'm sorry, I cannot provide information about specific individuals, including their nationality."
           },
           "logprobs": {
-
           },
           "finish_reason": "stop"
         }
@@ -62,7 +61,6 @@
           "content": "I'm sorry, I cannot provide information about specific individuals, including their nationality."
         },
         "logprobs": {
-
         },
         "finish_reason": "stop"
       }
