@@ -3,10 +3,12 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import lombok.Getter;
 
 /** Large language models available in Orchestration. */
 // https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/models-and-scenarios-in-generative-ai-hub
-public class OrchestrationAiModel extends LLMModuleConfig {
+public class OrchestrationAiModel {
+  @Getter private final LLMModuleConfig config;
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
@@ -114,7 +116,15 @@ public class OrchestrationAiModel extends LLMModuleConfig {
       new OrchestrationAiModel("gemini-1.5-flash");
 
   OrchestrationAiModel(@Nonnull final String modelName) {
-    setModelName(modelName);
-    setModelParams(Map.of());
+    config = LLMModuleConfig.create().modelName(modelName).modelParams(Map.of());
+  }
+
+  private OrchestrationAiModel(
+      @Nonnull final String modelName, Map<String, ? extends Number> modelParams) {
+    config = LLMModuleConfig.create().modelName(modelName).modelParams(modelParams);
+  }
+
+  public OrchestrationAiModel modelParams(Map<String, ? extends Number> modelParams) {
+    return new OrchestrationAiModel(config.getModelName(), modelParams);
   }
 }
