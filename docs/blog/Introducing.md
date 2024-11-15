@@ -1,6 +1,6 @@
 # Introducing the SAP Cloud SDK for AI (Java) 🎉
 
-SAP Managed Tags: Artificial Intelligence, JavaScript, SAP AI Core, SAP AI Launchpad, SAP Cloud SDK, SAP Business Technology Platform
+SAP Managed Tags: Artificial Intelligence, Java, SAP AI Core, SAP AI Launchpad, SAP Cloud SDK, SAP Business Technology Platform
 
 ---
 
