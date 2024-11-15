@@ -85,6 +85,14 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
 
     <!-- TODO: only needed for JsonObjectMapperBuilder, maybe we can use Jackson natively to avoid this dependency -->
     <dependency>
@@ -132,35 +140,69 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <groupId>org.openapitools</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-              <!-- skip automatic generation until we can omit API classes from code generation -->
-              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <apiMaturity>beta</apiMaturity>
-              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
-              <compileScope>COMPILE</compileScope>
-              <deleteOutputDirectory>true</deleteOutputDirectory>
-            </configuration>
             <executions>
               <execution>
-                <id>orchestration</id>
                 <goals>
                   <goal>generate</goal>
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
+                  <!-- Specify the input OpenAPI spec file -->
                   <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
-                  <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
+                  <output>${project.basedir}</output>
+                  <!-- Specify the generator to use, e.g., java, spring, kotlin, etc. -->
+                  <generatorName>java</generatorName>
+                  <!-- Specify the package names for models, APIs, and invokers -->
                   <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
-                  <additionalProperties>
-                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
-                    <pojoBuildMethodName/>
-                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+                  <apiPackage>com.sap.ai.sdk.orchestration.client.api</apiPackage>
+                  <invokerPackage>com.sap.ai.sdk.orchestration.client.invoker</invokerPackage>
+
+                  <!-- Global properties level; can be unpacked with 'generate' prefix-->
+                  <globalProperties>
+                    <apiDocs>false</apiDocs>
+                    <modelDocs>false</modelDocs>
+                    <modelTests>false</modelTests>
+                    <apiTests>false</apiTests>
+                    <minimalUpdate>true</minimalUpdate>
+                  </globalProperties>
+
+                  <!-- Generator Specific properties level; some can be unpacked-->
+                  <configOptions>
+                    <generateBuilders>true</generateBuilders>
+                    <failOnUnknownProperties>false</failOnUnknownProperties>
+                    <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                    <disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                  </additionalProperties>
+                    <useBeanValidation>false</useBeanValidation>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <additionalModelTypeAnnotations>@com.google.common.annotations.Beta</additionalModelTypeAnnotations>
+                  </configOptions>
+                  <generateModels>true</generateModels>
+                  <generateSupportingFiles>false</generateSupportingFiles>
+                  <generateApis>false</generateApis>
+                  <library>resttemplate</library>
+                  <!--<configHelp>true</configHelp>-->
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>${project.basedir}/src/main/java/com/sap/ai/sdk/orchestration/client</directory>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </fileset>
+              </filesets>
+            </configuration>
+            <executions>
+              <execution>
+                <id>delete-orchestration-generated-client</id>
               </execution>
             </executions>
           </plugin>

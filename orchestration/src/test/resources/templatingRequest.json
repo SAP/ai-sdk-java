@@ -20,10 +20,10 @@
         "model_version": "latest"
       }
     },
-    "stream" : false
+    "stream": false
   },
   "input_params": {
     "input": "Reply with 'Orchestration Service is working!' in German"
   },
-  "messages_history" : [ ]
+  "messages_history": []
 }
