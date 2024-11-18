@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.OrchestrationResponse;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
@@ -44,7 +44,7 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public OrchestrationResponse completion() {
+  public OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
     return client.chatCompletion(prompt, config);
@@ -57,7 +57,7 @@ class OrchestrationController {
    */
   @GetMapping("/template")
   @Nonnull
-  public OrchestrationResponse template() {
+  public OrchestrationChatResponse template() {
     final var template =
         new ChatMessage()
             .role("user")
@@ -78,7 +78,7 @@ class OrchestrationController {
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public OrchestrationResponse messagesHistory() {
+  public OrchestrationChatResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
             new ChatMessage().role("user").content("What is the capital of France?"),
@@ -98,7 +98,7 @@ class OrchestrationController {
    */
   @GetMapping("/filter/{threshold}")
   @Nonnull
-  public OrchestrationResponse filter(
+  public OrchestrationChatResponse filter(
       @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
     final var prompt =
         new OrchestrationPrompt(
@@ -145,7 +145,7 @@ class OrchestrationController {
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public OrchestrationResponse maskingAnonymization() {
+  public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
         new ChatMessage()
             .role("system")
@@ -176,7 +176,7 @@ class OrchestrationController {
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public OrchestrationResponse maskingPseudonymization() {
+  public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
         new ChatMessage()
             .role("system")

@@ -140,7 +140,7 @@ class OrchestrationUnitTest {
     final var result =
         client.chatCompletion(new OrchestrationPrompt(inputParams, template), config);
 
-    final var response = result.getData();
+    final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     assertThat(response.getModuleResults().getTemplating().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
@@ -286,7 +286,8 @@ class OrchestrationUnitTest {
 
     final var result = client.chatCompletion(prompt, config);
 
-    assertThat(result.getData().getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getOriginalResponse().getRequestId())
+        .isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
     try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
@@ -310,7 +311,7 @@ class OrchestrationUnitTest {
         createMaskingConfig(DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
-    final var response = result.getData();
+    final var response = result.getOriginalResponse();
 
     assertThat(response).isNotNull();
     GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
@@ -411,5 +412,18 @@ class OrchestrationUnitTest {
         .hasMessageContaining("was empty");
 
     softly.assertAll();
+  }
+
+  @Test
+  void testEmptyChoicesResponse() {
+    stubFor(
+        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("emptyChoicesResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var result = client.chatCompletion(prompt, config);
+
+    assertThat(result.getContent()).isEmpty();
   }
 }

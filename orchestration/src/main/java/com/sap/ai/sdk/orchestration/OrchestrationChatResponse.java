@@ -11,8 +11,8 @@ import lombok.Value;
 /** Orchestration chat completion output. */
 @Value
 @RequiredArgsConstructor(access = PACKAGE)
-public class OrchestrationResponse {
-  CompletionPostResponse data;
+public class OrchestrationChatResponse {
+  CompletionPostResponse originalResponse;
 
   /**
    * Get the message content from the output.
@@ -24,8 +24,14 @@ public class OrchestrationResponse {
    */
   @Nonnull
   public String getContent() throws OrchestrationClientException {
-    final var choice =
-        ((LLMModuleResultSynchronous) data.getOrchestrationResult()).getChoices().get(0);
+    final var choices =
+        ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult()).getChoices();
+
+    if (choices.isEmpty()) {
+      return "";
+    }
+
+    final var choice = choices.get(0);
 
     if ("content_filter".equals(choice.getFinishReason())) {
       throw new OrchestrationClientException("Content filter filtered the output.");

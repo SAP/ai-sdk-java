@@ -33,7 +33,7 @@ class OrchestrationTest {
   @Test
   void testTemplate() {
     final var response = controller.template();
-    final var result = response.getData();
+    final var result = response.getOriginalResponse();
 
     assertThat(result.getRequestId()).isNotEmpty();
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -73,7 +73,7 @@ class OrchestrationTest {
   @Test
   void testLenientContentFilter() {
     var response = controller.filter(AzureThreshold.NUMBER_4);
-    var result = response.getData();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
@@ -93,7 +93,7 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result = controller.messagesHistory().getData();
+    CompletionPostResponse result = controller.messagesHistory().getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
@@ -102,7 +102,7 @@ class OrchestrationTest {
   @Test
   void testMaskingAnonymization() {
     var response = controller.maskingAnonymization();
-    var result = response.getData();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
@@ -122,7 +122,7 @@ class OrchestrationTest {
   @Test
   void testMaskingPseudonymization() {
     var response = controller.maskingPseudonymization();
-    var result = response.getData();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
