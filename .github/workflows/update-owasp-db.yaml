@@ -1,0 +1,48 @@
+name: Update Vulnerability Database
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *' # use a somewhat random time to avoid producing load spikes on the GH actions infrastructure
+
+env:
+  CVE_CACHE_REF: refs/heads/main
+  CVE_CACHE_KEY: cve-db
+  CVE_CACHE_DIR: ~/.m2/repository/org/owasp/dependency-check-data
+
+jobs:
+  update-vulnerability-database:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CVE_CACHE_REF }}
+      - name: Restore Existing Cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CVE_CACHE_DIR }}
+          key: ${{ env.CVE_CACHE_KEY }}
+
+      - name: Run Maven Plugin
+        run: |
+          mvn org.owasp:dependency-check-maven:10.0.4:update-only -DnvdMaxRetryCount=10 -DnvdApiDelay=15000 -DconnectionTimeout=60000
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+      - name: Delete Cache
+        run: |
+          CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --ref "${{ env.CVE_CACHE_REF }}" --json id | jq -r '.[] | .id')
+          for CACHE_ID in $CACHE_IDS; do
+              echo "Deleting cache with ID: $CACHE_ID"
+              gh cache delete "${CACHE_ID}"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.CLOUD_SDK_AT_SAP_ALL_ACCESS_PAT }}
+
+      - name: Cache CVE Database
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CVE_CACHE_DIR }}
+          key: ${{ env.CVE_CACHE_KEY }}
