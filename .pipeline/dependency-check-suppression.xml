@@ -4,4 +4,8 @@
     <notes><![CDATA[This is a JS dependency.]]></notes>
     <cve>CVE-2021-41251</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[This incorrectly flags Spring 6, although only Spring 5 is affected]]></notes>
+    <cve>CVE-2024-38828</cve>
+  </suppress>
 </suppressions>
