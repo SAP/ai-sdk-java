@@ -6,11 +6,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /** Large language models available in Orchestration. */
 // https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/models-and-scenarios-in-generative-ai-hub
 @Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrchestrationAiModel {
   private final LLMModuleConfig config;
 
@@ -123,10 +126,6 @@ public class OrchestrationAiModel {
     config = new LLMModuleConfig().modelName(modelName).modelParams(Map.of());
   }
 
-  private OrchestrationAiModel(@Nonnull final LLMModuleConfig config) {
-    this.config = config;
-  }
-
   /**
    * Set model version on this model.
    *
@@ -139,7 +138,10 @@ public class OrchestrationAiModel {
    */
   @Nonnull
   public OrchestrationAiModel modelVersion(@Nonnull final String version) {
-    return new OrchestrationAiModel(config.modelVersion((version)));
+    return new OrchestrationAiModel(new LLMModuleConfig()
+            .modelVersion(version)
+            .modelParams(config.getModelParams())
+            .modelName(config.getModelName()));
   }
 
   /**
@@ -157,9 +159,13 @@ public class OrchestrationAiModel {
    * @param modelParams Map of parameters.
    * @return New instance of this class.
    */
-    @Nonnull
-    public OrchestrationAiModel modelParams(
-            @Nonnull final Map<String, ? extends Number> modelParams) {
-      return new OrchestrationAiModel(config.modelParams(modelParams));
-    }
+  @Nonnull
+  public OrchestrationAiModel modelParams(
+      @Nonnull final Map<String, ? extends Number> modelParams) {
+    return new OrchestrationAiModel(
+        new LLMModuleConfig()
+            .modelVersion(config.getModelVersion())
+            .modelParams(modelParams)
+            .modelName(config.getModelName()));
+  }
 }
