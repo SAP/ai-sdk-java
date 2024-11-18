@@ -1,16 +1,18 @@
 package com.sap.ai.sdk.orchestration;
 
+import static lombok.AccessLevel.PACKAGE;
+
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import javax.annotation.Nonnull;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 /** Orchestration chat completion output. */
-@RequiredArgsConstructor
-@Getter
+@Value
+@RequiredArgsConstructor(access = PACKAGE)
 public class OrchestrationResponse {
-  private final CompletionPostResponse data;
+  CompletionPostResponse data;
 
   /**
    * Get the message content from the output.
