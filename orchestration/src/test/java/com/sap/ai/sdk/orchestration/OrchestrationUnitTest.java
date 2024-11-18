@@ -298,7 +298,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void maskingAnonymization() throws IOException {
+  void maskingPseudonymization() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
@@ -307,7 +307,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var maskingConfig =
-        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+        createMaskingConfig(DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
 
@@ -316,9 +316,7 @@ class OrchestrationUnitTest {
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo(
-            "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
+    assertThat(choices.get(0).getMessage().getContent()).contains("Hi Mallory");
 
     // verify that the request is sent correctly
     try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
