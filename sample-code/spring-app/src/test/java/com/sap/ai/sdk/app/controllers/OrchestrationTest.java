@@ -67,7 +67,8 @@ class OrchestrationTest {
     var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
-    assertThat(result.getOrchestrationResult().getModel()).isEqualTo(model);
+    assertThat(((LLMModuleResultSynchronous) result.getOrchestrationResult()).getModel())
+        .isEqualTo(model);
     choices = ((LLMModuleResultSynchronous) orchestrationResult).getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();

@@ -3,12 +3,14 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 
 /** Large language models available in Orchestration. */
 // https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/models-and-scenarios-in-generative-ai-hub
+@Getter
 public class OrchestrationAiModel {
-  @Getter private final LLMModuleConfig config;
+  private final LLMModuleConfig config;
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
@@ -116,15 +118,64 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gemini-1.5-flash");
 
   OrchestrationAiModel(@Nonnull final String modelName) {
-    config = LLMModuleConfig.create().modelName(modelName).modelParams(Map.of());
+    config = new LLMModuleConfig().modelName(modelName).modelParams(Map.of());
   }
 
-  private OrchestrationAiModel(
-      @Nonnull final String modelName, Map<String, ? extends Number> modelParams) {
-    config = LLMModuleConfig.create().modelName(modelName).modelParams(modelParams);
+  //  private OrchestrationAiModel(
+  //      @Nonnull final String modelName, @Nonnull final Map<String, ? extends Number> modelParams)
+  // {
+  //    config = new LLMModuleConfig().modelName(modelName).modelParams(modelParams);
+  //  }
+
+  private OrchestrationAiModel(@Nonnull final String modelName, @Nonnull final Object modelParams) {
+    config = new LLMModuleConfig().modelName(modelName).modelParams(modelParams);
   }
 
-  public OrchestrationAiModel modelParams(Map<String, ? extends Number> modelParams) {
-    return new OrchestrationAiModel(config.getModelName(), modelParams);
+  /**
+   * Set model version on this model.
+   *
+   * <pre>{@code
+   * .modelVersion("latest)
+   * }</pre>
+   *
+   * @param version The new version.
+   * @return New instance of this class with new version.
+   */
+  @Nonnull
+  public OrchestrationAiModel modelVersion(@Nullable final String version) {
+    //    Question: I need a map but only got an object as modelParams. How are modelParams
+    // structured?
+    final var model = new OrchestrationAiModel(config.getModelName(), config.getModelParams());
+    model.config.setModelVersion(version);
+    //    Question: Is modelVersion not lost as soon as we call modelParams?
+    //              Do we need to propagate this in that function as well?
+    return model;
   }
+
+  /**
+   * Set model parameters on this model.
+   *
+   * <pre>{@code
+   * .modelParams(
+   *    Map.of(
+   *        "max_tokens", 50,
+   *        "temperature", 0.1,
+   *        "frequency_penalty", 0,
+   *        "presence_penalty", 0));
+   * }</pre>
+   *
+   * @param modelParams Map of parameters.
+   * @return New instance of this class.
+   */
+  @Nonnull
+  public OrchestrationAiModel modelParams(@Nonnull final Object modelParams) {
+    return new OrchestrationAiModel(config.getModelName(), modelParams)
+        .modelVersion(config.getModelVersion());
+  }
+
+  //  @Nonnull
+  //  public OrchestrationAiModel modelParams(
+  //          @Nonnull final Map<String, ? extends Number> modelParams) {
+  //    return new OrchestrationAiModel(config.getModelName(), modelParams);
+  //  }
 }

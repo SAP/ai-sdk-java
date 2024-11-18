@@ -70,6 +70,7 @@ class OrchestrationUnitTest {
                   "temperature", 0.1,
                   "frequency_penalty", 0,
                   "presence_penalty", 0))
+          .modelVersion("latest")
           .getConfig();
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
@@ -146,6 +147,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isEqualTo(1721224505);
@@ -313,6 +315,7 @@ class OrchestrationUnitTest {
 
     assertThat(result).isNotNull();
     GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(inputMasking).isNotNull();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
