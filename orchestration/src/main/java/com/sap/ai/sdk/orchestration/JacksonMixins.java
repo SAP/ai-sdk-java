@@ -17,7 +17,7 @@ final class JacksonMixins {
   /** Mixin to enforce a specific subtype to be deserialized always. */
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
   @JsonDeserialize(as = LLMChoice.class)
-  interface ModuleResultsOutputUnmaskingInnerMixIn { }
+  interface ModuleResultsOutputUnmaskingInnerMixIn {}
 
   /** Mixin to suppress @JsonTypeInfo for oneOf interfaces. */
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
