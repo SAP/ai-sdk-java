@@ -29,13 +29,7 @@ class OrchestrationTest {
     final var result = controller.completion();
 
     assertThat(result).isNotNull();
-    assertThat(
-            ((LLMModuleResultSynchronous) result.getOrchestrationResult())
-                .getChoices()
-                .get(0)
-                .getMessage()
-                .getContent())
-        .isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
   }
 
   @Test
@@ -43,7 +37,8 @@ class OrchestrationTest {
     assertThat(controller.config.getLlmConfig()).isNotNull();
     final var model = controller.config.getLlmConfig().getModelName();
 
-    final var result = controller.template();
+      final var response = controller.template();
+      final var result = response.getOriginalResponse();
 
     assertThat(result.getRequestId()).isNotEmpty();
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
@@ -67,14 +62,14 @@ class OrchestrationTest {
     var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
-    assertThat(((LLMModuleResultSynchronous) result.getOrchestrationResult()).getModel())
+    assertThat(orchestrationResult.getModel())
         .isEqualTo(model);
-    choices = ((LLMModuleResultSynchronous) orchestrationResult).getChoices();
+    choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = ((LLMModuleResultSynchronous) orchestrationResult).getUsage();
+    usage = orchestrationResult.getUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
@@ -82,7 +77,8 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var result = controller.filter(AzureThreshold.NUMBER_4);
+    var response = controller.filter(AzureThreshold.NUMBER_4);
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
@@ -102,7 +98,7 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result = controller.messagesHistory();
+    CompletionPostResponse result = controller.messagesHistory().getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
@@ -110,7 +106,8 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingAnonymization() {
-    var result = controller.maskingAnonymization();
+    var response = controller.maskingAnonymization();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
@@ -129,7 +126,8 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingPseudonymization() {
-    var result = controller.maskingPseudonymization();
+    var response = controller.maskingPseudonymization();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");

@@ -91,8 +91,7 @@ var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?
 
 var result = client.chatCompletion(prompt, config);
 
-String messageResult =
-        result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+String messageResult = result.getContent();
 ```
 
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
