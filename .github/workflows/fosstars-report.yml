@@ -22,12 +22,6 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
-      - name: Restore CVE Database
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: cve-db
-          fail-on-cache-miss: true
       - name: "Build SDK"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
