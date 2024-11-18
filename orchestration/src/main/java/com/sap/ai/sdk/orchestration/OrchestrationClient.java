@@ -46,7 +46,9 @@ public class OrchestrationClient {
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
             .mixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class)
-            .mixIn(ModuleResultsOutputUnmaskingInner.class, JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class)
+            .mixIn(
+                ModuleResultsOutputUnmaskingInner.class,
+                JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class)
             .mixIn(FilterConfig.class, JacksonMixins.NoTypeInfoMixin.class)
             .mixIn(MaskingProviderConfig.class, JacksonMixins.NoTypeInfoMixin.class)
             .mixIn(TemplatingModuleConfig.class, JacksonMixins.NoTypeInfoMixin.class)
