@@ -4,6 +4,8 @@ import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import lombok.Getter;
 
 /** Large language models available in Orchestration. */
@@ -121,35 +123,23 @@ public class OrchestrationAiModel {
     config = new LLMModuleConfig().modelName(modelName).modelParams(Map.of());
   }
 
-  //  private OrchestrationAiModel(
-  //      @Nonnull final String modelName, @Nonnull final Map<String, ? extends Number> modelParams)
-  // {
-  //    config = new LLMModuleConfig().modelName(modelName).modelParams(modelParams);
-  //  }
-
-  private OrchestrationAiModel(@Nonnull final String modelName, @Nonnull final Object modelParams) {
-    config = new LLMModuleConfig().modelName(modelName).modelParams(modelParams);
+  private OrchestrationAiModel(@Nonnull final LLMModuleConfig config) {
+    this.config = config;
   }
 
   /**
    * Set model version on this model.
    *
    * <pre>{@code
-   * .modelVersion("latest)
+   * .modelVersion("latest")
    * }</pre>
    *
    * @param version The new version.
    * @return New instance of this class with new version.
    */
   @Nonnull
-  public OrchestrationAiModel modelVersion(@Nullable final String version) {
-    //    Question: I need a map but only got an object as modelParams. How are modelParams
-    // structured?
-    final var model = new OrchestrationAiModel(config.getModelName(), config.getModelParams());
-    model.config.setModelVersion(version);
-    //    Question: Is modelVersion not lost as soon as we call modelParams?
-    //              Do we need to propagate this in that function as well?
-    return model;
+  public OrchestrationAiModel modelVersion(@Nonnull final String version) {
+    return new OrchestrationAiModel(config.modelVersion((version)));
   }
 
   /**
@@ -167,15 +157,9 @@ public class OrchestrationAiModel {
    * @param modelParams Map of parameters.
    * @return New instance of this class.
    */
-  @Nonnull
-  public OrchestrationAiModel modelParams(@Nonnull final Object modelParams) {
-    return new OrchestrationAiModel(config.getModelName(), modelParams)
-        .modelVersion(config.getModelVersion());
-  }
-
-  //  @Nonnull
-  //  public OrchestrationAiModel modelParams(
-  //          @Nonnull final Map<String, ? extends Number> modelParams) {
-  //    return new OrchestrationAiModel(config.getModelName(), modelParams);
-  //  }
+    @Nonnull
+    public OrchestrationAiModel modelParams(
+            @Nonnull final Map<String, ? extends Number> modelParams) {
+      return new OrchestrationAiModel(config.modelParams(modelParams));
+    }
 }
