@@ -3,9 +3,6 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -138,7 +135,8 @@ public class OrchestrationAiModel {
    */
   @Nonnull
   public OrchestrationAiModel modelVersion(@Nonnull final String version) {
-    return new OrchestrationAiModel(new LLMModuleConfig()
+    return new OrchestrationAiModel(
+        new LLMModuleConfig()
             .modelVersion(version)
             .modelParams(config.getModelParams())
             .modelName(config.getModelName()));
