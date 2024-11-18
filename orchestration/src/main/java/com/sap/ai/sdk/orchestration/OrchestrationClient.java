@@ -45,11 +45,11 @@ public class OrchestrationClient {
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .mixIn(LLMModuleResult.class, LLMModuleResultMixIn.class)
-            .mixIn(ModuleResultsOutputUnmaskingInner.class, NoTypeInfoMixin.class)
-            .mixIn(FilterConfig.class, NoTypeInfoMixin.class)
-            .mixIn(MaskingProviderConfig.class, NoTypeInfoMixin.class)
-            .mixIn(TemplatingModuleConfig.class, NoTypeInfoMixin.class)
+            .mixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class)
+            .mixIn(ModuleResultsOutputUnmaskingInner.class, JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class)
+            .mixIn(FilterConfig.class, JacksonMixins.NoTypeInfoMixin.class)
+            .mixIn(MaskingProviderConfig.class, JacksonMixins.NoTypeInfoMixin.class)
+            .mixIn(TemplatingModuleConfig.class, JacksonMixins.NoTypeInfoMixin.class)
             .build();
   }
 
