@@ -307,7 +307,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var maskingConfig =
-        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+        createMaskingConfig(DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
 
