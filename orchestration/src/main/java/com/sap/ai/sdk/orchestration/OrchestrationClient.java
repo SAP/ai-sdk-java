@@ -101,12 +101,12 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
-  public CompletionPostResponse chatCompletion(
+  public OrchestrationChatResponse chatCompletion(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
       throws OrchestrationClientException {
 
     val request = toCompletionPostRequest(prompt, config);
-    return executeRequest(request);
+    return new OrchestrationChatResponse(executeRequest(request));
   }
 
   /**
