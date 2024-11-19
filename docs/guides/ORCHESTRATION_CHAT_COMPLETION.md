@@ -146,33 +146,20 @@ var prompt = new OrchestrationPrompt(
         ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
         """);
 
-var filterStrict = 
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
+var filterStrict = new AzureContentSafety()
                 .hate(NUMBER_0)
                 .selfHarm(NUMBER_0)
                 .sexual(NUMBER_0)
-                .violence(NUMBER_0));
+    .violence(NUMBER_0);
 
-var filterLoose =
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
+var filterLoose = new AzureContentSafety()
                 .hate(NUMBER_4)
                 .selfHarm(NUMBER_4)
                 .sexual(NUMBER_4)
-                .violence(NUMBER_4));
+    .violence(NUMBER_4);
 
-var filteringConfig =
-    FilteringModuleConfig.create()
-        // changing the input to filterLoose will allow the message to pass
-        .input(InputFilteringConfig.create().filters(filterStrict))
-        .output(OutputFilteringConfig.create().filters(filterStrict));
-
-var configWithFilter = config.withFilteringConfig(filteringConfig);
+// changing the input to filterLoose will allow the message to pass
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
