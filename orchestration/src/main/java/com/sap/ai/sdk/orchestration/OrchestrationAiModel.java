@@ -16,9 +16,6 @@ public class OrchestrationAiModel implements AiModel {
   /** The name of the model */
   private String modelName;
 
-  /** The version of the model, defaults to "latest". */
-  private String modelVersion = "latest";
-
   /**
    * Optional parameters on this model.
    *
@@ -31,6 +28,9 @@ public class OrchestrationAiModel implements AiModel {
    * }</pre>
    */
   private Map<String, Object> modelParams;
+
+  /** The version of the model, defaults to "latest". */
+  private String modelVersion = "latest";
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
