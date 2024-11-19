@@ -3,7 +3,7 @@ name: Update Vulnerability Database
 on:
   workflow_dispatch:
   schedule:
-    - cron: '46 20 * * 2' # use a somewhat random time to avoid producing load spikes on the GH actions infrastructure
+    - cron: '46 20 * * 2' # At 08:46 PM, only on Tuesday, random time to avoid producing load spikes on the GH actions infrastructure
 
 env:
   CVE_CACHE_KEY: cve-db
