@@ -58,6 +58,6 @@ public class OrchestrationModuleConfig {
    */
   @Nonnull
   public OrchestrationModuleConfig withLlmConfig(@Nonnull final OrchestrationAiModel aiModel) {
-    WithLlmConfig(aiModel.createConfig(), templateConfig, maskingConfig, filteringConfig);
+    return withLlmConfig(aiModel.createConfig());
   }
 }
