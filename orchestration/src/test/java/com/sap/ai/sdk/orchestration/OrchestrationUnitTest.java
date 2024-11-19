@@ -34,19 +34,15 @@ import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -306,10 +302,9 @@ class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var maskingConfig =
-        createMaskingConfig(DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PHONE);
+    final var maskingConfig = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.PHONE);
 
-    final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    final var result = client.chatCompletion(prompt, config.withDpiMaskingConfig(maskingConfig));
     final var response = result.getOriginalResponse();
 
     assertThat(response).isNotNull();
@@ -326,20 +321,6 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
               .withRequestBody(equalToJson(request)));
     }
-  }
-
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
-    return new MaskingModuleConfig()
-        .maskingProviders(
-            List.of(
-                new DPIConfig()
-                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(method)
-                    .entities(entityConfigs)));
   }
 
   @Test

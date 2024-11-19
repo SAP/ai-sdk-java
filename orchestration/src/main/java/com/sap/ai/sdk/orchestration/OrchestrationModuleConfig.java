@@ -62,4 +62,17 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withLlmConfig(@Nonnull final OrchestrationAiModel aiModel) {
     return withLlmConfig(aiModel.createConfig());
   }
+
+  /**
+   * Creates a new configuration with the given Data Masking configuration.
+   *
+   * @param dpiMasking The Data Masking configuration to use.
+   * @return A new configuration with the given Data Masking configuration.
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withDpiMaskingConfig(
+      @Nonnull final DpiMaskingConfig dpiMasking) {
+    return withMaskingConfig(dpiMasking.createConfig());
+  }
 }
