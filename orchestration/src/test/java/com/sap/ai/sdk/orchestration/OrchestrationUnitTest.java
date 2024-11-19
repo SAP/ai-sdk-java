@@ -63,13 +63,12 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   static final OrchestrationAiModel CUSTOM_GPT_35 =
-      GPT_35_TURBO_16K
-          .withModelParams(
-              Map.of(
-                  "max_tokens", 50,
-                  "temperature", 0.1,
-                  "frequency_penalty", 0,
-                  "presence_penalty", 0));
+      GPT_35_TURBO_16K.withModelParams(
+          Map.of(
+              "max_tokens", 50,
+              "temperature", 0.1,
+              "frequency_penalty", 0,
+              "presence_penalty", 0));
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
