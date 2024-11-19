@@ -16,6 +16,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -39,7 +40,6 @@ import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
@@ -62,16 +62,15 @@ import org.junit.jupiter.api.Test;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  static final LLMModuleConfig LLM_CONFIG =
-      OrchestrationAiModel.GPT_35_TURBO_16K
-          .modelParams(
+  static final OrchestrationAiModel CUSTOM_GPT_35 =
+      GPT_35_TURBO_16K
+          .withModelParams(
               Map.of(
                   "max_tokens", 50,
                   "temperature", 0.1,
                   "frequency_penalty", 0,
                   "presence_penalty", 0))
-          .modelVersion("latest")
-          .getConfig();
+          .withModelVersion("latest");
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -107,7 +106,7 @@ class OrchestrationUnitTest {
             .forDeploymentByScenario("orchestration")
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
-    config = new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
   }
 

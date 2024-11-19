@@ -214,14 +214,16 @@ In this example, the input will be masked before the call to the LLM. Note that 
 
 ### Set model parameters
 
-Change your LLM module configuration to add model parameters:
+Change your LLM configuration to add model parameters:
 
 ```java
-LLMModuleConfig llmConfig =
-    OrchestrationAiModel.GPT_4O.modelParams(
-        Map.of(
-            "max_tokens", 50,
-            "temperature", 0.1,
-            "frequency_penalty", 0,
-            "presence_penalty", 0));
+OrchestrationAiModel customGPT4O =
+    OrchestrationAiModel.GPT_4O
+        .withModelParams(
+            Map.of(
+                "max_tokens", 50,
+                "temperature", 0.1,
+                "frequency_penalty", 0,
+                "presence_penalty", 0))
+        .withModelVersion("2024-05-13");
 ```

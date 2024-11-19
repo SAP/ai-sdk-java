@@ -1,18 +1,36 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.With;
 
 /** Large language models available in Orchestration. */
-// https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/models-and-scenarios-in-generative-ai-hub
-@Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrchestrationAiModel {
-  private final LLMModuleConfig config;
+@With
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class OrchestrationAiModel implements AiModel {
+  /** The name of the model */
+  private String modelName;
+
+  /** The version of the model, defaults to "latest". */
+  private String modelVersion = "latest";
+
+  /**
+   * Optional parameters on this model.
+   *
+   * <pre>{@code
+   * Map.of(
+   *     "max_tokens", 50,
+   *     "temperature", 0.1,
+   *     "frequency_penalty", 0,
+   *     "presence_penalty", 0)
+   * }</pre>
+   */
+  private Map<String, Object> modelParams;
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
@@ -50,10 +68,6 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.5-sonnet");
 
-  /** Amazon Titan Embed Text model */
-  public static final OrchestrationAiModel TITAN_EMBED_TEXT =
-      new OrchestrationAiModel("amazon--titan-embed-text");
-
   /** Amazon Titan Text Lite model */
   public static final OrchestrationAiModel TITAN_TEXT_LITE =
       new OrchestrationAiModel("amazon--titan-text-lite");
@@ -75,37 +89,11 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-4-32k chat completions model */
   public static final OrchestrationAiModel GPT_4_32K = new OrchestrationAiModel("gpt-4-32k");
 
-  /** Azure OpenAI Text Embedding Ada 002 model */
-  public static final OrchestrationAiModel TEXT_EMBEDDING_ADA_002 =
-      new OrchestrationAiModel("text-embedding-ada-002");
-
-  /** Azure OpenAI Text Embedding 3 Small model */
-  public static final OrchestrationAiModel TEXT_EMBEDDING_3_SMALL =
-      new OrchestrationAiModel("text-embedding-3-small");
-
-  /** Azure OpenAI Text Embedding 3 Large model */
-  public static final OrchestrationAiModel TEXT_EMBEDDING_3_LARGE =
-      new OrchestrationAiModel("text-embedding-3-large");
-
   /** Azure OpenAI GPT-4o chat completions model */
   public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
   /** Azure OpenAI GPT-4o-mini chat completions model */
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
-
-  /** Google Cloud Platform Text Bison model */
-  public static final OrchestrationAiModel TEXT_BISON = new OrchestrationAiModel("text-bison");
-
-  /** Google Cloud Platform Chat Bison model */
-  public static final OrchestrationAiModel CHAT_BISON = new OrchestrationAiModel("chat-bison");
-
-  /** Google Cloud Platform Text Embedding Gecko model */
-  public static final OrchestrationAiModel TEXT_EMBEDDING_GECKO =
-      new OrchestrationAiModel("textembedding-gecko");
-
-  /** Google Cloud Platform Text Embedding Gecko Multilingual model */
-  public static final OrchestrationAiModel TEXT_EMBEDDING_GECKO_MULTILINGUAL =
-      new OrchestrationAiModel("textembedding-gecko-multilingual");
 
   /** Google Cloud Platform Gemini 1.0 Pro model */
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
@@ -120,50 +108,28 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gemini-1.5-flash");
 
   OrchestrationAiModel(@Nonnull final String modelName) {
-    config = new LLMModuleConfig().modelName(modelName).modelParams(Map.of());
+    this.modelName = modelName;
   }
 
-  /**
-   * Set model version on this model.
-   *
-   * <pre>{@code
-   * .modelVersion("latest")
-   * }</pre>
-   *
-   * @param version The new version.
-   * @return New instance of this class with new version.
-   */
   @Nonnull
-  public OrchestrationAiModel modelVersion(@Nonnull final String version) {
-    return new OrchestrationAiModel(
-        new LLMModuleConfig()
-            .modelVersion(version)
-            .modelParams(config.getModelParams())
-            .modelName(config.getModelName()));
+  LLMModuleConfig createConfig() {
+    return new LLMModuleConfig()
+        .modelName(modelName)
+        .modelParams(modelParams)
+        .modelVersion(modelVersion);
   }
 
-  /**
-   * Set model parameters on this model.
-   *
-   * <pre>{@code
-   * .modelParams(
-   *    Map.of(
-   *        "max_tokens", 50,
-   *        "temperature", 0.1,
-   *        "frequency_penalty", 0,
-   *        "presence_penalty", 0));
-   * }</pre>
-   *
-   * @param modelParams Map of parameters.
-   * @return New instance of this class.
-   */
+  /** {@inheritDoc} */
   @Nonnull
-  public OrchestrationAiModel modelParams(
-      @Nonnull final Map<String, ? extends Number> modelParams) {
-    return new OrchestrationAiModel(
-        new LLMModuleConfig()
-            .modelVersion(config.getModelVersion())
-            .modelParams(modelParams)
-            .modelName(config.getModelName()));
+  @Override
+  public String name() {
+    return modelName;
+  }
+
+  /** {@inheritDoc} */
+  @Nullable
+  @Override
+  public String version() {
+    return modelVersion;
   }
 }
