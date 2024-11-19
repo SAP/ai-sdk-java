@@ -2,11 +2,6 @@ name: Test SAP Cloud SDK Versions
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 22 * * *
-  push:
-    branches:
-      - "workflow/compatibility-version"
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -75,6 +70,7 @@ jobs:
     needs: [ fetch-dependency-versions, setup-environment ]
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       fail-fast: false
       matrix:
         version: ${{ fromJson(needs.fetch-dependency-versions.outputs.versions) }}
