@@ -112,9 +112,6 @@ public class OrchestrationAiModel {
 
   @Nonnull
   LLMModuleConfig createConfig() {
-    return new LLMModuleConfig()
-        .modelName(name)
-        .modelParams(params)
-        .modelVersion(version);
+    return new LLMModuleConfig().modelName(name).modelParams(params).modelVersion(version);
   }
 }
