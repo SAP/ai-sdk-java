@@ -1,14 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-import java.util.List;
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -34,36 +32,43 @@ import lombok.With;
  * </ul>
  */
 @Value
+@With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true)
 public class OrchestrationModuleConfig {
   /**
    * The configured language model settings. This configuration is required when executing requests.
    */
-  @With @Nullable LLMModuleConfig llmConfig;
+  @Nullable LLMModuleConfig llmConfig;
 
   /**
    * A template to be populated with input parameters. Upon request execution, this template will be
    * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
    */
-  @With @Nullable TemplatingModuleConfig templateConfig;
+  @Nullable TemplatingModuleConfig templateConfig;
 
   /** A masking configuration to pseudonymous or anonymize sensitive data in the input. */
-  @With @Nullable MaskingModuleConfig maskingConfig;
+  @Nullable MaskingModuleConfig maskingConfig;
 
   /** A content filter to filter the prompt. */
-  @With(AccessLevel.PRIVATE)
-  @Nullable
-  FilteringModuleConfig filteringConfig;
+  @Nullable FilteringModuleConfig filteringConfig;
 
+  /**
+   * Adds input content filters to the orchestration configuration.
+   *
+   * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding input filters.
+   *
+   * @param contentFilters one or more content filters to apply to the input.
+   * @return a new {@code OrchestrationModuleConfig} instance with the specified input filters
+   *     added.
+   */
   @Nonnull
   public OrchestrationModuleConfig withInputFiltering(
-      @Nonnull final AzureContentSafety contentFilter) {
-    var azureFilter =
-        new AzureContentSafetyFilterConfig()
-            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(contentFilter);
-    var inputFilter = new InputFilteringConfig().filters(List.of(azureFilter));
+      @Nonnull final ContentFilter... contentFilters) {
+
+    var filterConfigs = Arrays.stream(contentFilters).map(ContentFilter::toSerializable).toList();
+
+    var inputFilter = new InputFilteringConfig().filters(filterConfigs);
 
     var newFilteringConfig =
         new FilteringModuleConfig()
@@ -73,14 +78,22 @@ public class OrchestrationModuleConfig {
     return this.withFilteringConfig(newFilteringConfig);
   }
 
+  /**
+   * Adds output content filters to the orchestration configuration.
+   *
+   * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding output
+   * filters.
+   *
+   * @param contentFilters one or more content filters to apply to the output.
+   * @return a new {@code OrchestrationModuleConfig} instance with the specified output filters
+   *     added.
+   */
   @Nonnull
   public OrchestrationModuleConfig withOutputFiltering(
-      @Nonnull final AzureContentSafety contentFilter) {
-    var azureFilter =
-        new AzureContentSafetyFilterConfig()
-            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(contentFilter);
-    var outputFilter = new OutputFilteringConfig().filters(List.of(azureFilter));
+      @Nonnull final ContentFilter... contentFilters) {
+
+    var filterConfigs = Arrays.stream(contentFilters).map(ContentFilter::toSerializable).toList();
+    var outputFilter = new OutputFilteringConfig().filters(filterConfigs);
 
     var newFilteringConfig =
         new FilteringModuleConfig()

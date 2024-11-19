@@ -1,11 +1,11 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureModerationPolicy;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
@@ -89,13 +89,13 @@ class OrchestrationController {
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
+   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
-  @GetMapping("/filter/{threshold}")
+  @GetMapping("/filter/{policy}")
   @Nonnull
   public OrchestrationChatResponse filter(
-      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
+      @Nonnull @PathVariable("policy") final AzureModerationPolicy policy) {
     final var prompt =
         new OrchestrationPrompt(
             """
@@ -104,11 +104,8 @@ class OrchestrationController {
             ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
             """);
     final var filterConfig =
-        new AzureContentSafety()
-            .hate(threshold)
-            .selfHarm(threshold)
-            .sexual(threshold)
-            .violence(threshold);
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+
     final var configWithFilter =
         config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
 

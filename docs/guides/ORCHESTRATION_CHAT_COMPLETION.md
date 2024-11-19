@@ -146,17 +146,17 @@ var prompt = new OrchestrationPrompt(
         ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
         """);
 
-var filterStrict = new AzureContentSafety()
-                .hate(NUMBER_0)
-                .selfHarm(NUMBER_0)
-                .sexual(NUMBER_0)
-    .violence(NUMBER_0);
+var filterStrict = new AzureContentFilter()
+                .hate(ALLOW_SAFE)
+                .selfHarm(ALLOW_SAFE)
+                .sexual(ALLOW_SAFE)
+    .violence(ALLOW_SAFE);
 
-var filterLoose = new AzureContentSafety()
-                .hate(NUMBER_4)
-                .selfHarm(NUMBER_4)
-                .sexual(NUMBER_4)
-    .violence(NUMBER_4);
+var filterLoose = new AzureContentFilter()
+                .hate(ALLOW_SAFE_LOW_MEDIUM)
+                .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+                .sexual(ALLOW_SAFE_LOW_MEDIUM)
+    .violence(ALLOW_SAFE_LOW_MEDIUM);
 
 // changing the input to filterLoose will allow the message to pass
 var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);

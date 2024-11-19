@@ -16,8 +16,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
+import static com.sap.ai.sdk.orchestration.AzureModerationPolicy.ALLOW_SAFE;
+import static com.sap.ai.sdk.orchestration.AzureModerationPolicy.ALLOW_SAFE_LOW_MEDIUM;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,7 +28,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
@@ -213,11 +212,11 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var filter =
-        new AzureContentSafety()
-            .hate(NUMBER_4)
-            .selfHarm(NUMBER_4)
-            .sexual(NUMBER_4)
-            .violence(NUMBER_4);
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM);
 
     client.chatCompletion(prompt, config.withInputFiltering(filter).withOutputFiltering(filter));
     // the result is asserted in the verify step below
@@ -241,11 +240,11 @@ class OrchestrationUnitTest {
             .willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
     final var filter =
-        new AzureContentSafety()
-            .hate(NUMBER_0)
-            .selfHarm(NUMBER_0)
-            .sexual(NUMBER_0)
-            .violence(NUMBER_0);
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
 
     final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
 
