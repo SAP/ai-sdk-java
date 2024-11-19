@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
+import lombok.experimental.Tolerate;
 
 /**
  * Represents the configuration for the orchestration service. Allows for configuring the different
@@ -52,6 +53,18 @@ public class OrchestrationModuleConfig {
 
   /** A content filter to filter the prompt. */
   @Nullable FilteringModuleConfig filteringConfig;
+
+  /**
+   * Creates a new configuration with the given LLM configuration.
+   *
+   * @param aiModel The LLM configuration to use.
+   * @return A new configuration with the given LLM configuration.
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withLlmConfig(@Nonnull final OrchestrationAiModel aiModel) {
+    return withLlmConfig(aiModel.createConfig());
+  }
 
   /**
    * Adds input content filters to the orchestration configuration.

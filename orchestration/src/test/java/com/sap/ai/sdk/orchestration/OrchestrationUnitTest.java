@@ -16,6 +16,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
 import static com.sap.ai.sdk.orchestration.AzureModerationPolicy.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureModerationPolicy.ALLOW_SAFE_LOW_MEDIUM;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -34,7 +35,6 @@ import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -56,15 +56,13 @@ import org.junit.jupiter.api.Test;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  static final LLMModuleConfig LLM_CONFIG =
-      new LLMModuleConfig()
-          .modelName("gpt-35-turbo-16k")
-          .modelParams(
-              Map.of(
-                  "max_tokens", 50,
-                  "temperature", 0.1,
-                  "frequency_penalty", 0,
-                  "presence_penalty", 0));
+  static final OrchestrationAiModel CUSTOM_GPT_35 =
+      GPT_35_TURBO_16K.withModelParams(
+          Map.of(
+              "max_tokens", 50,
+              "temperature", 0.1,
+              "frequency_penalty", 0,
+              "presence_penalty", 0));
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -100,7 +98,7 @@ class OrchestrationUnitTest {
             .forDeploymentByScenario("orchestration")
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
-    config = new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
   }
 
@@ -140,6 +138,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(response.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isEqualTo(1721224505);
@@ -302,6 +301,7 @@ class OrchestrationUnitTest {
 
     assertThat(response).isNotNull();
     GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
+    assertThat(inputMasking).isNotNull();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
     assertThat(result.getContent()).contains("Hi Mallory");
