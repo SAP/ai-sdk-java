@@ -32,14 +32,14 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
-    final var response = controller.template();
-    final var result = response.getOriginalResponse();
+    final var result = controller.template();
+    final var response = result.getOriginalResponse();
 
-    assertThat(result.getRequestId()).isNotEmpty();
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(response.getRequestId()).isNotEmpty();
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
@@ -49,12 +49,12 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = response.getTokenUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
+    var orchestrationResult = ((LLMModuleResultSynchronous) response.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
     assertThat(orchestrationResult.getModel())
@@ -64,7 +64,7 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = response.getTokenUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);

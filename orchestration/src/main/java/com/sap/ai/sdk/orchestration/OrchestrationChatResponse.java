@@ -2,10 +2,13 @@ package com.sap.ai.sdk.orchestration;
 
 import static lombok.AccessLevel.PACKAGE;
 
+import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
+import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -48,5 +51,15 @@ public class OrchestrationChatResponse {
   @Nonnull
   public TokenUsage getTokenUsage() {
     return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult()).getUsage();
+  }
+
+  /**
+   * Get all messages.
+   *
+   * @return A list of all messages.
+   */
+  @Nullable
+  public List<ChatMessage> getAllMessages() {
+    return originalResponse.getModuleResults().getTemplating();
   }
 }
