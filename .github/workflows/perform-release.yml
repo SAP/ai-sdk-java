@@ -88,9 +88,6 @@ jobs:
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
-          server-id: ossrh
-          server-username: MAVEN_CENTRAL_USER # env variable for username in deploy
-          server-password: MAVEN_CENTRAL_PASSWORD # env variable for token in deploy
 
       - name: "Download Release Asset"
         id: download-asset
@@ -113,8 +110,8 @@ jobs:
 
       - name: "Deploy"
         run: |
-          MVN_ARGS="${{ env.MVN_CLI_ARGS }} deploy -Drelease -s settings.xml"
-          mvn $MVN_ARGS
+          MVN_ARGS="${{ env.MVN_CLI_ARGS }} -Drelease -s settings.xml"
+          mvn deploy $MVN_ARGS
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 

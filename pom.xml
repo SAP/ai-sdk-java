@@ -63,7 +63,7 @@
     <checkstyle.version>10.20.1</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.2</surefire.version>
-    <springframework.version>6.1.14</springframework.version>
+    <springframework.version>6.2.0</springframework.version>
     <dotenv-java.version>3.0.2</dotenv-java.version>
     <mockito.version>5.14.2</mockito.version>
     <!-- Formatting -->
@@ -108,7 +108,7 @@
       <dependency>
         <groupId>javax.annotation</groupId>
         <artifactId>javax.annotation-api</artifactId>
-        <version>1.2</version>
+        <version>1.3.2</version>
       </dependency>
       <dependency>
         <groupId>io.github.cdimascio</groupId>
@@ -487,7 +487,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.5</version>
+        <version>4.8.6.6</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
@@ -634,7 +634,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                 <dependency>
                   <groupId>org.projectlombok</groupId>
                   <artifactId>lombok</artifactId>
-                  <version>1.18.34</version>
+                  <version>1.18.36</version>
                 </dependency>
               </dependencies>
               <executions>
@@ -729,6 +729,28 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           </plugins>
         </pluginManagement>
         <plugins>
+          <!-- The release artifacts don't contain our custom config files for these plugins -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>

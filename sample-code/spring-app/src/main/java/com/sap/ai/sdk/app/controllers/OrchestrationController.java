@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
@@ -7,7 +8,6 @@ import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
@@ -44,7 +44,7 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public CompletionPostResponse completion() {
+  public OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
     return client.chatCompletion(prompt, config);
@@ -57,7 +57,7 @@ class OrchestrationController {
    */
   @GetMapping("/template")
   @Nonnull
-  public CompletionPostResponse template() {
+  public OrchestrationChatResponse template() {
     final var template =
         new ChatMessage()
             .role("user")
@@ -78,7 +78,7 @@ class OrchestrationController {
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public CompletionPostResponse messagesHistory() {
+  public OrchestrationChatResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
             new ChatMessage().role("user").content("What is the capital of France?"),
@@ -98,7 +98,7 @@ class OrchestrationController {
    */
   @GetMapping("/filter/{threshold}")
   @Nonnull
-  public CompletionPostResponse filter(
+  public OrchestrationChatResponse filter(
       @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
     final var prompt =
         new OrchestrationPrompt(
@@ -145,7 +145,7 @@ class OrchestrationController {
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public CompletionPostResponse maskingAnonymization() {
+  public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
         new ChatMessage()
             .role("system")
@@ -176,7 +176,7 @@ class OrchestrationController {
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public CompletionPostResponse maskingPseudonymization() {
+  public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
         new ChatMessage()
             .role("system")
