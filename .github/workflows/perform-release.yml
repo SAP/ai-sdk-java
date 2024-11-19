@@ -88,9 +88,6 @@ jobs:
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
-          server-id: ossrh
-          server-username: MAVEN_CENTRAL_USER # env variable for username in deploy
-          server-password: MAVEN_CENTRAL_PASSWORD # env variable for token in deploy
 
       - name: "Download Release Asset"
         id: download-asset
