@@ -8,7 +8,6 @@ import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -58,8 +57,13 @@ public class OrchestrationChatResponse {
    *
    * @return A list of all messages.
    */
-  @Nullable
+  @Nonnull
   public List<ChatMessage> getAllMessages() {
-    return originalResponse.getModuleResults().getTemplating();
+    final var allMessages = originalResponse.getModuleResults().getTemplating();
+
+    if (allMessages == null) {
+      return List.of();
+    }
+    return allMessages;
   }
 }
