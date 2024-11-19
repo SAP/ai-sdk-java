@@ -114,7 +114,6 @@ class OrchestrationController {
 
     return client.chatCompletion(prompt, configWithFilter);
   }
-  
 
   /**
    * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
