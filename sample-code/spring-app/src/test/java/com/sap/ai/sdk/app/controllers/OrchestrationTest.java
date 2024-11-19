@@ -10,10 +10,12 @@ import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 class OrchestrationTest {
   OrchestrationController controller;
 
@@ -32,6 +34,9 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
+    assertThat(controller.config.getLlmConfig()).isNotNull();
+    final var modelName = controller.config.getLlmConfig().getModelName();
+
     final var result = controller.template();
     final var response = result.getOriginalResponse();
 
@@ -43,7 +48,7 @@ class OrchestrationTest {
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
-    assertThat(llm.getModel()).isEqualTo(OrchestrationController.LLM_CONFIG.getModelName());
+    assertThat(llm.getModel()).isEqualTo(modelName);
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -57,8 +62,7 @@ class OrchestrationTest {
     var orchestrationResult = ((LLMModuleResultSynchronous) response.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
-    assertThat(orchestrationResult.getModel())
-        .isEqualTo(OrchestrationController.LLM_CONFIG.getModelName());
+    assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
