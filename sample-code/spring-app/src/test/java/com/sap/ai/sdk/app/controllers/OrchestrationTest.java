@@ -49,7 +49,7 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = response.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
@@ -64,7 +64,7 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = response.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);

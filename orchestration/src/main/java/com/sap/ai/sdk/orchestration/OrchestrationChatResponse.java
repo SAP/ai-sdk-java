@@ -4,6 +4,7 @@ import static lombok.AccessLevel.PACKAGE;
 
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -37,5 +38,15 @@ public class OrchestrationChatResponse {
       throw new OrchestrationClientException("Content filter filtered the output.");
     }
     return choice.getMessage().getContent();
+  }
+
+  /**
+   * Get the token usage.
+   *
+   * @return The token usage.
+   */
+  @Nonnull
+  public TokenUsage getTokenUsage() {
+    return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult()).getUsage();
   }
 }

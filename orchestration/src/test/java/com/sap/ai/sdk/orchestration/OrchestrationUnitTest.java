@@ -156,7 +156,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -171,7 +171,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
