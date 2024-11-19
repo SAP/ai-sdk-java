@@ -1,20 +1,19 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Value;
 import lombok.With;
 
 /** Large language models available in Orchestration. */
+@Value
 @With
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrchestrationAiModel implements AiModel {
+@AllArgsConstructor
+public class OrchestrationAiModel {
   /** The name of the model */
-  private String modelName;
+  String modelName;
 
   /**
    * Optional parameters on this model.
@@ -27,10 +26,10 @@ public class OrchestrationAiModel implements AiModel {
    *     "presence_penalty", 0)
    * }</pre>
    */
-  private Map<String, Object> modelParams;
+  Map<String, Object> modelParams;
 
   /** The version of the model, defaults to "latest". */
-  private String modelVersion = "latest";
+  String modelVersion;
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
@@ -108,7 +107,7 @@ public class OrchestrationAiModel implements AiModel {
       new OrchestrationAiModel("gemini-1.5-flash");
 
   OrchestrationAiModel(@Nonnull final String modelName) {
-    this.modelName = modelName;
+    this(modelName, Map.of(), "latest");
   }
 
   @Nonnull
@@ -117,19 +116,5 @@ public class OrchestrationAiModel implements AiModel {
         .modelName(modelName)
         .modelParams(modelParams)
         .modelVersion(modelVersion);
-  }
-
-  /** {@inheritDoc} */
-  @Nonnull
-  @Override
-  public String name() {
-    return modelName;
-  }
-
-  /** {@inheritDoc} */
-  @Nullable
-  @Override
-  public String version() {
-    return modelVersion;
   }
 }

@@ -29,6 +29,7 @@ import lombok.With;
  * </ul>
  */
 @Value
+@With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true)
 public class OrchestrationModuleConfig {
@@ -41,13 +42,13 @@ public class OrchestrationModuleConfig {
    * A template to be populated with input parameters. Upon request execution, this template will be
    * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
    */
-  @With @Nullable TemplatingModuleConfig templateConfig;
+  @Nullable TemplatingModuleConfig templateConfig;
 
   /** A masking configuration to pseudonymous or anonymize sensitive data in the input. */
-  @With @Nullable MaskingModuleConfig maskingConfig;
+  @Nullable MaskingModuleConfig maskingConfig;
 
   /** A content filter to filter the prompt. */
-  @With @Nullable FilteringModuleConfig filteringConfig;
+  @Nullable FilteringModuleConfig filteringConfig;
 
   /**
    * Creates a new configuration with the given LLM configuration.
