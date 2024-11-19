@@ -57,32 +57,34 @@ public class OrchestrationModuleConfig {
   FilteringModuleConfig filteringConfig;
 
   @Nonnull
-  public OrchestrationModuleConfig withInputFiltering(AzureContentSafety contentFilter) {
+  public OrchestrationModuleConfig withInputFiltering(
+      @Nonnull final AzureContentSafety contentFilter) {
     var azureFilter =
         new AzureContentSafetyFilterConfig()
             .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
             .config(contentFilter);
-    var inputFilters = new InputFilteringConfig().filters(List.of(azureFilter));
+    var inputFilter = new InputFilteringConfig().filters(List.of(azureFilter));
 
     var newFilteringConfig =
         new FilteringModuleConfig()
-            .input(inputFilters)
+            .input(inputFilter)
             .output(this.filteringConfig != null ? this.filteringConfig.getOutput() : null);
 
     return this.withFilteringConfig(newFilteringConfig);
   }
 
   @Nonnull
-  public OrchestrationModuleConfig withOutputFiltering(AzureContentSafety safety) {
-    var filter =
+  public OrchestrationModuleConfig withOutputFiltering(
+      @Nonnull final AzureContentSafety contentFilter) {
+    var azureFilter =
         new AzureContentSafetyFilterConfig()
             .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(safety);
-    var outputFilteringConfig = new OutputFilteringConfig().filters(List.of(filter));
+            .config(contentFilter);
+    var outputFilter = new OutputFilteringConfig().filters(List.of(azureFilter));
 
     var newFilteringConfig =
         new FilteringModuleConfig()
-            .output(outputFilteringConfig)
+            .output(outputFilter)
             .input(this.filteringConfig != null ? this.filteringConfig.getInput() : null);
 
     return this.withFilteringConfig(newFilteringConfig);
