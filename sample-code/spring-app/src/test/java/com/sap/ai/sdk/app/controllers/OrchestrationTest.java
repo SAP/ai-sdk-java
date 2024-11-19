@@ -35,7 +35,7 @@ class OrchestrationTest {
   @Test
   void testTemplate() {
     assertThat(controller.config.getLlmConfig()).isNotNull();
-    final var model = controller.config.getLlmConfig().getModelName();
+    final var modelName = controller.config.getLlmConfig().getModelName();
 
     final var response = controller.template();
     final var result = response.getOriginalResponse();
@@ -48,7 +48,7 @@ class OrchestrationTest {
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
-    assertThat(llm.getModel()).isEqualTo(model);
+    assertThat(llm.getModel()).isEqualTo(modelName);
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -62,7 +62,7 @@ class OrchestrationTest {
     var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
-    assertThat(orchestrationResult.getModel()).isEqualTo(model);
+    assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();

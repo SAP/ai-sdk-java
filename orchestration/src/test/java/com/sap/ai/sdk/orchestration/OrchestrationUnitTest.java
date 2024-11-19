@@ -69,8 +69,7 @@ class OrchestrationUnitTest {
                   "max_tokens", 50,
                   "temperature", 0.1,
                   "frequency_penalty", 0,
-                  "presence_penalty", 0))
-          .withModelVersion("latest");
+                  "presence_penalty", 0));
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
