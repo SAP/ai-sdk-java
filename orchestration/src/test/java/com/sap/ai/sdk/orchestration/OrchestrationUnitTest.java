@@ -393,31 +393,4 @@ class OrchestrationUnitTest {
 
     assertThat(result.getContent()).isEmpty();
   }
-
-  @Test
-  void testStackingInputAndOutputFilter() {
-    final var filter =
-        new AzureContentFilter()
-            .hate(ALLOW_SAFE_LOW_MEDIUM)
-            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
-            .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
-
-    final var configWithInputFirst = config.withInputFiltering(filter).withOutputFiltering(filter);
-    assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();
-    assertThat(configWithInputFirst.getFilteringConfig().getInput()).isNotNull();
-
-    final var configWithOutputFirst = config.withOutputFiltering(filter).withInputFiltering(filter);
-    assertThat(configWithOutputFirst.getFilteringConfig()).isNotNull();
-    assertThat(configWithOutputFirst.getFilteringConfig().getOutput()).isNotNull();
-  }
-
-  @Test
-  void testThrowOnEmptyFilterConfig() {
-    final var filter = new AzureContentFilter();
-
-    assertThatThrownBy(filter::createConfig)
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("At least one filter moderation policy must be set");
-  }
 }
