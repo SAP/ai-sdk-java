@@ -26,9 +26,17 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(fluent = true)
 public class AzureContentFilter implements ContentFilter {
+
+  /* The moderation policy for hate content. */
   @Nullable AzureModerationPolicy hate;
+
+  /* The moderation policy for self-harm content. */
   @Nullable AzureModerationPolicy selfHarm;
+
+  /* The moderation policy for sexual content. */
   @Nullable AzureModerationPolicy sexual;
+
+  /* The moderation policy for violence content. */
   @Nullable AzureModerationPolicy violence;
 
   /**
