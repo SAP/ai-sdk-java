@@ -4,6 +4,7 @@ import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Tolerate;
+import lombok.val;
 
 /**
  * Represents the configuration for the orchestration service. Allows for configuring the different
@@ -66,13 +68,20 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given Data Masking configuration.
    *
-   * @param dpiMasking The Data Masking configuration to use.
+   * @param maskingProvider The Data Masking configuration to use.
+   * @param maskingProviders Additional Data Masking configurations to use.
    * @return A new configuration with the given Data Masking configuration.
    */
   @Tolerate
   @Nonnull
-  public OrchestrationModuleConfig withDpiMaskingConfig(
-      @Nonnull final DpiMaskingConfig dpiMasking) {
-    return withMaskingConfig(dpiMasking.createConfig());
+  public OrchestrationModuleConfig withMaskingConfig(
+      @Nonnull final MaskingProvider maskingProvider,
+      @Nonnull final MaskingProvider... maskingProviders) {
+    val newMaskingConfig =
+        new MaskingModuleConfig().addMaskingProvidersItem(maskingProvider.createConfig());
+    Arrays.stream(maskingProviders)
+        .forEach(it -> newMaskingConfig.addMaskingProvidersItem(it.createConfig()));
+
+    return withMaskingConfig(newMaskingConfig);
   }
 }

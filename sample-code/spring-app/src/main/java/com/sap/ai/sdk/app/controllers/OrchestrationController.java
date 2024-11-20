@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 
-import com.sap.ai.sdk.orchestration.DpiMaskingConfig;
+import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
@@ -155,8 +155,8 @@ class OrchestrationController {
     """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig = DpiMaskingConfig.anonymization().withEntities(DPIEntities.PERSON);
-    final var configWithMasking = config.withDpiMaskingConfig(maskingConfig);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
+    final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
   }
@@ -193,8 +193,8 @@ class OrchestrationController {
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig =
-        DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
-    final var configWithMasking = config.withDpiMaskingConfig(maskingConfig);
+        DpiMasking.pseudonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
+    final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
   }

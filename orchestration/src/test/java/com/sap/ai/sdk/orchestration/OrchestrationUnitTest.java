@@ -302,9 +302,9 @@ class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var maskingConfig = DpiMaskingConfig.pseudonymization().withEntities(DPIEntities.PHONE);
+    final var maskingConfig = DpiMasking.pseudonymization().withEntities(DPIEntities.PHONE);
 
-    final var result = client.chatCompletion(prompt, config.withDpiMaskingConfig(maskingConfig));
+    final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
     final var response = result.getOriginalResponse();
 
     assertThat(response).isNotNull();

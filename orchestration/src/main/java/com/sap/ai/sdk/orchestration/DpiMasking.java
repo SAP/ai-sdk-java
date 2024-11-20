@@ -7,7 +7,7 @@ import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.TypeEnum.SAP_D
 import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +25,7 @@ import lombok.val;
 @Value
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class DpiMaskingConfig {
+public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
 
@@ -36,7 +36,7 @@ public class DpiMaskingConfig {
    */
   @Nonnull
   public static Builder anonymization() {
-    return new DpiMaskingConfig.Builder(ANONYMIZATION);
+    return new DpiMasking.Builder(ANONYMIZATION);
   }
 
   /**
@@ -46,18 +46,7 @@ public class DpiMaskingConfig {
    */
   @Nonnull
   public static Builder pseudonymization() {
-    return new DpiMaskingConfig.Builder(PSEUDONYMIZATION);
-  }
-
-  @Nonnull
-  MaskingModuleConfig createConfig() {
-    val entitiesDTO = entities.stream().map(it -> new DPIEntityConfig().type(it)).toList();
-    return new MaskingModuleConfig()
-        .addMaskingProvidersItem(
-            new DPIConfig()
-                .type(SAP_DATA_PRIVACY_INTEGRATION)
-                .method(maskingMethod)
-                .entities(entitiesDTO));
+    return new DpiMasking.Builder(PSEUDONYMIZATION);
   }
 
   /**
@@ -73,16 +62,26 @@ public class DpiMaskingConfig {
      *
      * @param entity An entity type to mask (required)
      * @param entities Additional entity types to mask (optional)
-     * @return A configured {@link DpiMaskingConfig} instance
+     * @return A configured {@link DpiMasking} instance
      * @see DPIEntities
      */
     @Nonnull
-    public DpiMaskingConfig withEntities(
+    public DpiMasking withEntities(
         @Nonnull final DPIEntities entity, @Nonnull final DPIEntities... entities) {
       val entitiesList = new ArrayList<DPIEntities>();
       entitiesList.add(entity);
       entitiesList.addAll(Arrays.asList(entities));
-      return new DpiMaskingConfig(maskingMethod, entitiesList);
+      return new DpiMasking(maskingMethod, entitiesList);
     }
+  }
+
+  /** {@inheritDoc} */
+  @Nonnull
+  public MaskingProviderConfig createConfig() {
+    val entitiesDTO = entities.stream().map(it -> new DPIEntityConfig().type(it)).toList();
+    return new DPIConfig()
+        .type(SAP_DATA_PRIVACY_INTEGRATION)
+        .method(maskingMethod)
+        .entities(entitiesDTO);
   }
 }
