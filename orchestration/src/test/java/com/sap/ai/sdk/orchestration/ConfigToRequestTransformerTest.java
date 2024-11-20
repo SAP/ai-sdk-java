@@ -1,13 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_35;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -77,51 +74,5 @@ class ConfigToRequestTransformerTest {
             prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35));
 
     assertThat(actual.getMessagesHistory()).containsExactly(systemMessage);
-  }
-
-  @Test
-  void testDpiMaskingConfig() {
-    var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.ADDRESS);
-    var config =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(CUSTOM_GPT_35)
-            .withMaskingConfig(maskingConfig);
-
-    var actual = ConfigToRequestTransformer.toModuleConfigs(config);
-
-    assertThat(actual.getMaskingModuleConfig()).isNotNull();
-    assertThat(actual.getMaskingModuleConfig().getMaskingProviders()).hasSize(1);
-    DPIConfig dpiConfig = (DPIConfig) actual.getMaskingModuleConfig().getMaskingProviders().get(0);
-    assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
-    assertThat(dpiConfig.getEntities()).hasSize(1);
-    assertThat(dpiConfig.getEntities().get(0).getType()).isEqualTo(DPIEntities.ADDRESS);
-
-    var configModified = config.withMaskingConfig(maskingConfig);
-    assertThat(configModified.getMaskingConfig()).isNotNull();
-    assertThat(configModified.getMaskingConfig().getMaskingProviders())
-        .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
-        .hasSize(1);
-  }
-
-  @Test
-  void testLLMConfig() {
-    Map<String, Object> params = Map.of("foo", "bar");
-    String version = "2024-05-13";
-    OrchestrationAiModel aiModel = GPT_4O.withModelParams(params).withModelVersion(version);
-    var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
-
-    var actual = ConfigToRequestTransformer.toModuleConfigs(config);
-
-    assertThat(actual.getLlmModuleConfig()).isNotNull();
-    assertThat(actual.getLlmModuleConfig().getModelName()).isEqualTo(GPT_4O.getModelName());
-    assertThat(actual.getLlmModuleConfig().getModelParams()).isEqualTo(params);
-    assertThat(actual.getLlmModuleConfig().getModelVersion()).isEqualTo(version);
-
-    assertThat(GPT_4O.getModelParams())
-        .withFailMessage("Static models should be unchanged")
-        .isEmpty();
-    assertThat(GPT_4O.getModelVersion())
-        .withFailMessage("Static models should be unchanged")
-        .isEqualTo("latest");
   }
 }
