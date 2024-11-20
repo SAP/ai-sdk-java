@@ -2,6 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 
+import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
@@ -10,15 +11,11 @@ import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
 import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
 import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.Template;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -158,8 +155,7 @@ class OrchestrationController {
     """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig =
-        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -197,31 +193,9 @@ class OrchestrationController {
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig =
-        createMaskingConfig(
-            DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PERSON, DPIEntities.EMAIL);
+        DpiMasking.pseudonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
-  }
-
-  /**
-   * Helper method to build masking configurations.
-   *
-   * @param method Either anonymization or pseudonymization.
-   * @param entities The entities to mask.
-   * @return A new masking configuration object.
-   */
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
-    return new MaskingModuleConfig()
-        .maskingProviders(
-            List.of(
-                new DPIConfig()
-                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(method)
-                    .entities(entityConfigs)));
   }
 }
