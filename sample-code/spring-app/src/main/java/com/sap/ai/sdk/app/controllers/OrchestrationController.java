@@ -3,7 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
-import com.sap.ai.sdk.orchestration.AzureModerationPolicy;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
@@ -89,7 +89,7 @@ class OrchestrationController {
   @GetMapping("/filter/{policy}")
   @Nonnull
   public OrchestrationChatResponse filter(
-      @Nonnull @PathVariable("policy") final AzureModerationPolicy policy) {
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
             """

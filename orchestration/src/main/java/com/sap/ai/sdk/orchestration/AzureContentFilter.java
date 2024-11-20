@@ -28,16 +28,16 @@ import lombok.experimental.Accessors;
 public class AzureContentFilter implements ContentFilter {
 
   /* The moderation policy for hate content. */
-  @Nullable AzureModerationPolicy hate;
+  @Nullable AzureFilterThreshold hate;
 
   /* The moderation policy for self-harm content. */
-  @Nullable AzureModerationPolicy selfHarm;
+  @Nullable AzureFilterThreshold selfHarm;
 
   /* The moderation policy for sexual content. */
-  @Nullable AzureModerationPolicy sexual;
+  @Nullable AzureFilterThreshold sexual;
 
   /* The moderation policy for violence content. */
-  @Nullable AzureModerationPolicy violence;
+  @Nullable AzureFilterThreshold violence;
 
   /**
    * Converts {@code AzureContentFilter} to its serializable counterpart {@link

@@ -8,7 +8,7 @@ import lombok.Getter;
 /** An Enum wrapping Azure thresholds with readable names. */
 @Getter
 @AllArgsConstructor
-public enum AzureModerationPolicy {
+public enum AzureFilterThreshold {
   /** Strict moderation policy. Only safe content is allowed. */
   ALLOW_SAFE(AzureThreshold.NUMBER_0),
 
