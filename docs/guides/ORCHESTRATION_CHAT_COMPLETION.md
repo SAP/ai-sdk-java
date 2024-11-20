@@ -204,7 +204,7 @@ var result =
     new OrchestrationClient().chatCompletion(prompt, configWithMasking);
 ```
 
-In this example, the input will be masked before the call to the LLM and unmasked in the output.
+In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
 ### Set model parameters
 
