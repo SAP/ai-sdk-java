@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_35;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -100,5 +101,27 @@ class ConfigToRequestTransformerTest {
     assertThat(configModified.getMaskingConfig().getMaskingProviders())
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
+  }
+
+  @Test
+  void testLLMConfig() {
+    Map<String, Object> params = Map.of("foo", "bar");
+    String version = "2024-05-13";
+    OrchestrationAiModel aiModel = GPT_4O.withModelParams(params).withModelVersion(version);
+    var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
+
+    var actual = ConfigToRequestTransformer.toModuleConfigs(config);
+
+    assertThat(actual.getLlmModuleConfig()).isNotNull();
+    assertThat(actual.getLlmModuleConfig().getModelName()).isEqualTo(GPT_4O.getModelName());
+    assertThat(actual.getLlmModuleConfig().getModelParams()).isEqualTo(params);
+    assertThat(actual.getLlmModuleConfig().getModelVersion()).isEqualTo(version);
+
+    assertThat(GPT_4O.getModelParams())
+        .withFailMessage("Static models should be unchanged")
+        .isEmpty();
+    assertThat(GPT_4O.getModelVersion())
+        .withFailMessage("Static models should be unchanged")
+        .isEqualTo("latest");
   }
 }
