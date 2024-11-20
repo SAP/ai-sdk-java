@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
+import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.client.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -74,5 +76,29 @@ class ConfigToRequestTransformerTest {
             prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35));
 
     assertThat(actual.getMessagesHistory()).containsExactly(systemMessage);
+  }
+
+  @Test
+  void testDpiMaskingConfig() {
+    var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.ADDRESS);
+    var config =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(CUSTOM_GPT_35)
+            .withMaskingConfig(maskingConfig);
+
+    var actual = ConfigToRequestTransformer.toModuleConfigs(config);
+
+    assertThat(actual.getMaskingModuleConfig()).isNotNull();
+    assertThat(actual.getMaskingModuleConfig().getMaskingProviders()).hasSize(1);
+    DPIConfig dpiConfig = (DPIConfig) actual.getMaskingModuleConfig().getMaskingProviders().get(0);
+    assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
+    assertThat(dpiConfig.getEntities()).hasSize(1);
+    assertThat(dpiConfig.getEntities().get(0).getType()).isEqualTo(DPIEntities.ADDRESS);
+
+    var configModified = config.withMaskingConfig(maskingConfig);
+    assertThat(configModified.getMaskingConfig()).isNotNull();
+    assertThat(configModified.getMaskingConfig().getMaskingProviders())
+        .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
+        .hasSize(1);
   }
 }
