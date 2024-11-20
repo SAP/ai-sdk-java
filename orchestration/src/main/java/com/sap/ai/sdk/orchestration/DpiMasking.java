@@ -75,7 +75,6 @@ public class DpiMasking implements MaskingProvider {
     }
   }
 
-  /** {@inheritDoc} */
   @Nonnull
   public MaskingProviderConfig createConfig() {
     val entitiesDTO = entities.stream().map(it -> new DPIEntityConfig().type(it)).toList();
