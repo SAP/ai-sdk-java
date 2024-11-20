@@ -14,5 +14,5 @@ public interface ContentFilter {
    *
    * @return the corresponding {@code FilterConfig} object.
    */
-  FilterConfig toSerializable();
+  FilterConfig createConfig();
 }

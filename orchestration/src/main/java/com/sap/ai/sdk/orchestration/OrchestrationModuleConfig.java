@@ -79,7 +79,7 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withInputFiltering(
       @Nonnull final ContentFilter... contentFilters) {
 
-    var filterConfigs = Arrays.stream(contentFilters).map(ContentFilter::toSerializable).toList();
+    var filterConfigs = Arrays.stream(contentFilters).map(ContentFilter::createConfig).toList();
 
     var inputFilter = new InputFilteringConfig().filters(filterConfigs);
 
@@ -105,7 +105,7 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withOutputFiltering(
       @Nonnull final ContentFilter... contentFilters) {
 
-    var filterConfigs = Arrays.stream(contentFilters).map(ContentFilter::toSerializable).toList();
+    var filterConfigs = Arrays.stream(contentFilters).map(ContentFilter::createConfig).toList();
     var outputFilter = new OutputFilteringConfig().filters(filterConfigs);
 
     var newFilteringConfig =

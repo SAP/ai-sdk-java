@@ -40,7 +40,7 @@ public class AzureContentFilter implements ContentFilter {
    */
   @Override
   @Nonnull
-  public AzureContentSafetyFilterConfig toSerializable() {
+  public AzureContentSafetyFilterConfig createConfig() {
     if (hate == null && selfHarm == null && sexual == null && violence == null) {
       throw new IllegalArgumentException("At least one filter moderation policy must be set");
     }
