@@ -11,15 +11,15 @@ import lombok.experimental.Accessors;
 /**
  * A content filter wrapping Azure Content Safety.
  *
- * <p>This class allows setting moderation policies for different content categories such as hate,
+ * <p>This class allows setting filtration thresholds for different content categories such as hate,
  * self-harm, sexual, and violence.
  *
  * <p>Example usage:
  *
  * <pre>{@code
  * AzureContentFilter filter = new AzureContentFilter()
- *     .hate(AzureModerationPolicy.ALLOW_SAFE)
- *     .selfHarm(AzureModerationPolicy.ALLOW_SAFE_LOW);
+ *     .hate(AzureFilterThreshold.ALLOW_SAFE)
+ *     .selfHarm(AzureFilterThreshold.ALLOW_SAFE_LOW);
  * }</pre>
  */
 @Setter
@@ -27,16 +27,16 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class AzureContentFilter implements ContentFilter {
 
-  /* The moderation policy for hate content. */
+  /* The filter category for hate content. */
   @Nullable AzureFilterThreshold hate;
 
-  /* The moderation policy for self-harm content. */
+  /* The filter category for self-harm content. */
   @Nullable AzureFilterThreshold selfHarm;
 
-  /* The moderation policy for sexual content. */
+  /* The filter category for sexual content. */
   @Nullable AzureFilterThreshold sexual;
 
-  /* The moderation policy for violence content. */
+  /* The filter category for violence content. */
   @Nullable AzureFilterThreshold violence;
 
   /**
@@ -50,7 +50,7 @@ public class AzureContentFilter implements ContentFilter {
   @Nonnull
   public AzureContentSafetyFilterConfig createConfig() {
     if (hate == null && selfHarm == null && sexual == null && violence == null) {
-      throw new IllegalArgumentException("At least one filter moderation policy must be set");
+      throw new IllegalArgumentException("At least one filter category must be set");
     }
 
     return new AzureContentSafetyFilterConfig()

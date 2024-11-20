@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Interface representing convenience wrappers of serializable content filter that defines
- * moderation policies for different content categories.
+ * thresholds for different content categories.
  */
 public interface ContentFilter {
 

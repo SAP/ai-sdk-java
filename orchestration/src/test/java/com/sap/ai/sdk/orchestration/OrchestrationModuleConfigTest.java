@@ -39,10 +39,10 @@ class OrchestrationModuleConfigTest {
 
     assertThatThrownBy(() -> config.withInputFiltering(new AzureContentFilter()))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("At least one filter moderation policy must be set");
+        .hasMessage("At least one filter category must be set");
     assertThatThrownBy(() -> config.withOutputFiltering(new AzureContentFilter()))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("At least one filter moderation policy must be set");
+        .hasMessage("At least one filter category must be set");
   }
 
   @Test
