@@ -184,14 +184,8 @@ var result =
 Use the data masking module to anonymize personal information in the input:
 
 ```java
-var maskingProvider =
-    MaskingProviderConfig.create()
-        .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-        .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-        .entities(
-            DPIEntityConfig.create().type(DPIEntities.PHONE),
-            DPIEntityConfig.create().type(DPIEntities.PERSON));
-var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+var maskingConfig =
+    DpiMasking.anonymization().withEntities(DPIEntities.PHONE, DPIEntities.PERSON);
 var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = ChatMessage.create()
@@ -210,7 +204,7 @@ var result =
     new OrchestrationClient().chatCompletion(prompt, configWithMasking);
 ```
 
-In this example, the input will be masked before the call to the LLM. Note that data cannot be unmasked in the LLM output.
+In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
 ### Set model parameters
 
