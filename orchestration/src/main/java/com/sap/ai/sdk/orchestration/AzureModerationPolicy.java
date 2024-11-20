@@ -9,9 +9,16 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AzureModerationPolicy {
+  /** Strict moderation policy. Only safe content is allowed. */
   ALLOW_SAFE(AzureThreshold.NUMBER_0),
+
+  /** Moderate moderation policy. Safe and low-risk content is allowed. */
   ALLOW_SAFE_LOW(AzureThreshold.NUMBER_2),
+
+  /** Relaxed moderation policy. Safe, low-risk, and medium-risk content is allowed. */
   ALLOW_SAFE_LOW_MEDIUM(AzureThreshold.NUMBER_4),
+
+  /** No moderation policy. All content is allowed. */
   ALLOW_ALL(AzureThreshold.NUMBER_6);
 
   @Nonnull final AzureThreshold azureThreshold;

@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
+import javax.annotation.Nonnull;
 
 /**
  * Interface representing convenience wrappers of serializable content filter that defines
@@ -14,5 +15,6 @@ public interface ContentFilter {
    *
    * @return the corresponding {@code FilterConfig} object.
    */
+  @Nonnull
   FilterConfig createConfig();
 }
