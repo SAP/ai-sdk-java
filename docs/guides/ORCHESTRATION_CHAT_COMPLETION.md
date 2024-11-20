@@ -185,7 +185,7 @@ Use the data masking module to anonymize personal information in the input:
 
 ```java
 var maskingConfig =
-    DpiMasking.anonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
+    DpiMasking.anonymization().withEntities(DPIEntities.PHONE, DPIEntities.PERSON);
 var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = ChatMessage.create()
