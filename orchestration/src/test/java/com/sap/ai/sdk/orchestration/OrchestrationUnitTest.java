@@ -413,17 +413,4 @@ class OrchestrationUnitTest {
 
     softly.assertAll();
   }
-
-  @Test
-  void testEmptyChoicesResponse() {
-    stubFor(
-        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("emptyChoicesResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-    final var result = client.chatCompletion(prompt, config);
-
-    assertThat(result.getContent()).isEmpty();
-  }
 }

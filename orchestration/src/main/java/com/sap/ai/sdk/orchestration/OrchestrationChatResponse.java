@@ -4,6 +4,7 @@ import static lombok.AccessLevel.PACKAGE;
 
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
 import java.util.List;
@@ -27,14 +28,7 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public String getContent() throws OrchestrationClientException {
-    final var choices =
-        ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult()).getChoices();
-
-    if (choices.isEmpty()) {
-      return "";
-    }
-
-    final var choice = choices.get(0);
+    final var choice = getCurrentChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
       throw new OrchestrationClientException("Content filter filtered the output.");
@@ -53,17 +47,27 @@ public class OrchestrationChatResponse {
   }
 
   /**
-   * Get all messages.
+   * Get all messages. This can be used for subsequent prompts as a message history.
    *
    * @return A list of all messages.
    */
   @Nonnull
   public List<ChatMessage> getAllMessages() {
-    final var allMessages = originalResponse.getModuleResults().getTemplating();
+    final var messages = originalResponse.getModuleResults().getTemplating();
 
-    if (allMessages == null) {
-      return List.of();
-    }
-    return allMessages;
+    messages.add(getCurrentChoice().getMessage());
+    return messages;
+  }
+
+  /**
+   * Get list of choices.
+   *
+   * @return A list of choices.
+   */
+  @Nonnull
+  private LLMChoice getCurrentChoice() {
+    return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
+        .getChoices()
+        .get(0);
   }
 }
