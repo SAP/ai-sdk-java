@@ -68,8 +68,8 @@ class OpenAiTest {
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
-    assertThat(message.getTool_calls()).isNotNull();
-    assertThat(message.getTool_calls().get(0).getFunction().getName()).isEqualTo("fibonacci");
+    assertThat(message.getToolCalls()).isNotNull();
+    assertThat(message.getToolCalls().get(0).getFunction().getName()).isEqualTo("fibonacci");
   }
 
   @Test
