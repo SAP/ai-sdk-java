@@ -453,8 +453,7 @@ class OrchestrationUnitTest {
         .hasMessageContaining("messages");
 
     prompt = new OrchestrationPrompt(Map.of());
-    assertThatThrownBy(
-            () -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("not valid JSON");
   }

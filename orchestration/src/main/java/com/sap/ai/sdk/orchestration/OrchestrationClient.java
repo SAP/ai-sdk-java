@@ -180,8 +180,7 @@ public class OrchestrationClient {
     try {
       moduleConfigJson = JACKSON.readTree(moduleConfig);
     } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(
-          "The provided module configuration is not valid JSON", e);
+      throw new IllegalArgumentException("The provided module configuration is not valid JSON", e);
     }
     requestJson.set("orchestration_config", moduleConfigJson);
 
