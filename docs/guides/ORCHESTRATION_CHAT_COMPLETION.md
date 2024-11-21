@@ -200,13 +200,13 @@ Change your LLM configuration to add model parameters:
 ```java
 OrchestrationAiModel customGPT4O =
     OrchestrationAiModel.GPT_4O
-        .withModelParams(
+        .withParams(
             Map.of(
                 "max_tokens", 50,
                 "temperature", 0.1,
                 "frequency_penalty", 0,
                 "presence_penalty", 0))
-        .withModelVersion("2024-05-13");
+        .withVersion("2024-05-13");
 ```
 
 ### Using a Configuration from AI Launchpad
