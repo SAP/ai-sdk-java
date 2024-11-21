@@ -3,8 +3,8 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
@@ -76,7 +76,7 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var response = controller.filter(AzureThreshold.NUMBER_4);
+    var response = controller.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -89,7 +89,7 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> controller.filter(AzureThreshold.NUMBER_0))
+    assertThatThrownBy(() -> controller.filter(AzureFilterThreshold.ALLOW_SAFE))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");
