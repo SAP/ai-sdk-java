@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
-import lombok.SneakyThrows;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 

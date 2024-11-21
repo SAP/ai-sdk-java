@@ -16,12 +16,11 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvBuilder;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-
-import io.github.cdimascio.dotenv.DotenvBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -43,7 +42,6 @@ public class AiCoreService implements AiCoreDestination {
   Function<AiCoreService, Destination> baseDestinationHandler;
   final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
   final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
-
 
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Nonnull String resourceGroup;
