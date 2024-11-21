@@ -7,7 +7,9 @@ import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -53,19 +55,20 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public List<ChatMessage> getAllMessages() {
-    final var messages = originalResponse.getModuleResults().getTemplating();
-
+    final var items = Objects.requireNonNull(originalResponse.getModuleResults().getTemplating());
+    final var messages = new ArrayList<>(items);
     messages.add(getCurrentChoice().getMessage());
     return messages;
   }
 
   /**
-   * Get list of choices.
+   * Get current choice.
    *
-   * @return A list of choices.
+   * @return The current choice.
    */
   @Nonnull
   private LLMChoice getCurrentChoice() {
+    //    We expect choices to be defined and never empty.
     return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
         .getChoices()
         .get(0);
