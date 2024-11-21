@@ -201,10 +201,6 @@ Change your LLM configuration to add model parameters:
 OrchestrationAiModel customGPT4O =
     OrchestrationAiModel.GPT_4O
         .withParams(
-            Map.of(
-                "max_tokens", 50,
-                "temperature", 0.1,
-                "frequency_penalty", 0,
-                "presence_penalty", 0))
+            params().maxTokens(50).temperature(0.1).frequencyPenalty(0).presencePenalty(0))
         .withVersion("2024-05-13");
 ```
