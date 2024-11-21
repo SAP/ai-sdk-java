@@ -52,7 +52,7 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   static final OrchestrationAiModel CUSTOM_GPT_35 =
-      GPT_35_TURBO_16K.withModelParams(
+      GPT_35_TURBO_16K.withParams(
           Map.of(
               "max_tokens", 50,
               "temperature", 0.1,
