@@ -2,19 +2,15 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -87,13 +83,13 @@ class OrchestrationController {
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
+   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
-  @GetMapping("/filter/{threshold}")
+  @GetMapping("/filter/{policy}")
   @Nonnull
   public OrchestrationChatResponse filter(
-      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
             """
@@ -101,33 +97,13 @@ class OrchestrationController {
 
             ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
             """);
-    final var filterConfig = createAzureContentFilter(threshold);
-    final var configWithFilter = config.withFilteringConfig(filterConfig);
+    final var filterConfig =
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+
+    final var configWithFilter =
+        config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
 
     return client.chatCompletion(prompt, configWithFilter);
-  }
-
-  /**
-   * Helper method to build filter configurations.
-   *
-   * @param threshold The threshold to be applied across all filter categories.
-   * @return A new filter configuration object.
-   */
-  private static FilteringModuleConfig createAzureContentFilter(
-      @Nonnull final AzureThreshold threshold) {
-    final var filter =
-        new AzureContentSafetyFilterConfig()
-            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                new AzureContentSafety()
-                    .hate(threshold)
-                    .selfHarm(threshold)
-                    .sexual(threshold)
-                    .violence(threshold));
-
-    return new FilteringModuleConfig()
-        .input(new InputFilteringConfig().filters(List.of(filter)))
-        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   /**
