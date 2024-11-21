@@ -40,9 +40,7 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    */
   @Nonnull
   public String getContent() throws OpenAiClientException {
-    if (getChoices().isEmpty()) {
-      return "";
-    }
+    //    We expect choices to be defined and never empty.
     if ("content_filter".equals(getChoices().get(0).getFinishReason())) {
       throw new OpenAiClientException("Content filter filtered the output.");
     }
