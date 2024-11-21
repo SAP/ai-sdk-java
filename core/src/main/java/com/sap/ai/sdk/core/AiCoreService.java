@@ -20,6 +20,8 @@ import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+
+import io.github.cdimascio.dotenv.DotenvBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -34,16 +36,14 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AiCoreService implements AiCoreDestination {
 
+  private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
+  private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
+  private static final DotenvBuilder DOT_ENV = Dotenv.configure().ignoreIfMissing();
+
   Function<AiCoreService, Destination> baseDestinationHandler;
   final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
   final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
 
-  private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
-
-  private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
-
-  /** loads the .env file from the root of the project */
-  private static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
 
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Nonnull String resourceGroup;
@@ -163,7 +163,7 @@ public class AiCoreService implements AiCoreDestination {
   @Nonnull
   protected Destination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    val serviceKey = DOTENV.get("AICORE_SERVICE_KEY");
+    val serviceKey = DOT_ENV.load().get("AICORE_SERVICE_KEY");
     return DestinationResolver.getDestination(serviceKey);
   }
 

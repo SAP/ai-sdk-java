@@ -8,10 +8,9 @@ import lombok.SneakyThrows;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
-public class DestinationResolverTest {
+class DestinationResolverTest {
 
   @Test
-  @SneakyThrows
   void getDestinationWithoutEnvVarFailsLocally() {
     assertThatThrownBy(() -> DestinationResolver.getDestination(null))
         .isExactlyInstanceOf(DestinationAccessException.class)
@@ -19,7 +18,6 @@ public class DestinationResolverTest {
   }
 
   @Test
-  @SneakyThrows
   void getDestinationWithBrokenEnvVarFailsLocally() {
     assertThatThrownBy(() -> DestinationResolver.getDestination(""))
         .isExactlyInstanceOf(DestinationResolver.AiCoreCredentialsInvalidException.class)
@@ -28,9 +26,8 @@ public class DestinationResolverTest {
   }
 
   @Test
-  @SneakyThrows
   void getDestinationWithEnvVarSucceedsLocally() {
-    val AICORE_SERVICE_KEY =
+    val serviceKey =
         """
         {
           "clientid": "",
@@ -44,7 +41,7 @@ public class DestinationResolverTest {
           }
         }
         """;
-    var result = DestinationResolver.getDestination(AICORE_SERVICE_KEY).asHttp();
+    var result = DestinationResolver.getDestination(serviceKey).asHttp();
     assertThat(result.getUri()).hasToString("https://api.ai.core");
   }
 }
