@@ -427,7 +427,8 @@ class OrchestrationUnitTest {
         }
         """;
 
-    client.executeRequestFromJsonModuleConfig(prompt, configJson);
+    var result = client.executeRequestFromJsonModuleConfig(prompt, configJson);
+    assertThat(result).isNotNull();
 
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedJson)));
   }
