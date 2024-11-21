@@ -19,6 +19,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModelParameters.GPT.params;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -53,11 +54,8 @@ import org.junit.jupiter.api.Test;
 class OrchestrationUnitTest {
   static final OrchestrationAiModel CUSTOM_GPT_35 =
       GPT_35_TURBO_16K.withParams(
-          Map.of(
-              "max_tokens", 50,
-              "temperature", 0.1,
-              "frequency_penalty", 0,
-              "presence_penalty", 0));
+          params().maxTokens(50).temperature(0.1).frequencyPenalty(0).presencePenalty(0));
+
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
