@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
@@ -142,6 +145,55 @@ public class OrchestrationClient {
     }
 
     return executeRequest(postRequest);
+  }
+
+  /**
+   * Perform a request to the orchestration service using a module configuration provided as JSON
+   * string. This can be useful when building a configuration in the AI Launchpad UI and exporting
+   * it as JSON. Furthermore, this allows for using features that are not yet supported natively by
+   * the API.
+   *
+   * <p><b>NOTE:</b> This method does not support streaming.
+   *
+   * @param prompt The input parameters and optionally message history to use for prompt execution.
+   * @param moduleConfig The module configuration in JSON format.
+   * @return The completion response.
+   * @throws OrchestrationClientException If the request fails.
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationChatResponse executeRequestFromJsonModuleConfig(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final String moduleConfig)
+      throws OrchestrationClientException {
+    if (!prompt.getMessages().isEmpty()) {
+      throw new IllegalArgumentException(
+          "Prompt must not contain any messages when using a JSON module configuration, as the template is already defined in the JSON.");
+    }
+
+    final var request =
+        new CompletionPostRequest()
+            .messagesHistory(prompt.getMessagesHistory())
+            .inputParams(prompt.getTemplateParameters());
+
+    final ObjectNode requestJson = JACKSON.valueToTree(request);
+    final JsonNode moduleConfigJson;
+    try {
+      moduleConfigJson = JACKSON.readTree(moduleConfig);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException(
+          "The provided module configuration is not valid JSON", e);
+    }
+    requestJson.set("orchestration_config", moduleConfigJson);
+
+    val postRequest = new HttpPost("/completion");
+    final String body;
+    try {
+      body = JACKSON.writeValueAsString(requestJson);
+    } catch (JsonProcessingException e) {
+      throw new OrchestrationClientException("Failed to serialize request to JSON", e);
+    }
+    postRequest.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+    return new OrchestrationChatResponse(executeRequest(postRequest));
   }
 
   @Nonnull
