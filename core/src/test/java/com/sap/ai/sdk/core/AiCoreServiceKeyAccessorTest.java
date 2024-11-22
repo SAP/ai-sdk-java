@@ -23,11 +23,9 @@ class AiCoreServiceKeyAccessorTest {
         .containsEntry("serviceurls", Map.of("AI_API_URL", "https://api.ai.sap"));
   }
 
-  @Disabled(
-      "Doesn't work on GitHub action runner for unknown reasons. Probably a bug in the dotenv library related to the OS or JDK version.")
   @Test
   void testMissingClientIdDotenv() {
-    var dotenv = Dotenv.configure().filename("missingClientId.testenv");
+    var dotenv = Dotenv.configure().filename("missingclientid.testenv");
     var accessor = new AiCoreServiceKeyAccessor(dotenv);
     assertThatThrownBy(accessor::getServiceBindings)
         .isInstanceOf(ServiceBindingAccessException.class)
