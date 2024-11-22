@@ -2,45 +2,51 @@ package com.sap.ai.sdk.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
-import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
+import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
+import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
+import java.util.List;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
 class DestinationResolverTest {
 
   @Test
-  void getDestinationWithoutEnvVarFailsLocally() {
-    assertThatThrownBy(() -> DestinationResolver.getDestination(null))
-        .isExactlyInstanceOf(DestinationAccessException.class)
-        .hasMessage("Could not find any matching service bindings for service identifier 'aicore'");
-  }
-
-  @Test
-  void getDestinationWithBrokenEnvVarFailsLocally() {
-    assertThatThrownBy(() -> DestinationResolver.getDestination(""))
-        .isExactlyInstanceOf(DestinationResolver.AiCoreCredentialsInvalidException.class)
-        .hasMessage(
-            "Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.");
-  }
-
-  @Test
-  void getDestinationWithEnvVarSucceedsLocally() {
+  void testGetDestinationFromBinding() {
     val serviceKey =
         """
         {
           "clientid": "",
           "clientsecret": "",
           "url": "",
-          "identityzone": "",
-          "identityzoneid": "",
-          "appname": "",
           "serviceurls": {
             "AI_API_URL": "https://api.ai.core"
           }
         }
         """;
-    var result = DestinationResolver.getDestination(serviceKey).asHttp();
+    var binding = AiCoreServiceKeyAccessor.createServiceBinding(serviceKey);
+    var resolver = new DestinationResolver(() -> List.of(binding));
+    var result = resolver.getDestination();
     assertThat(result.getUri()).hasToString("https://api.ai.core");
+  }
+
+  @Test
+  void testNoServiceBindingFound() {
+    var resolver = new DestinationResolver();
+    assertThatThrownBy(resolver::getDestination)
+        .isExactlyInstanceOf(ServiceBindingAccessException.class)
+        .hasMessageContaining("Could not find any matching service bindings");
+  }
+
+  @Test
+  void testNoServiceBindingLoadingThrows() {
+    var mock = mock(ServiceBindingAccessor.class);
+    var exception = new ServiceBindingAccessException("Invalid AI Core service key");
+    doThrow(exception).when(mock).getServiceBindings();
+
+    var resolver = new DestinationResolver(mock);
+    assertThatThrownBy(resolver::getDestination).isSameAs(exception);
   }
 }
