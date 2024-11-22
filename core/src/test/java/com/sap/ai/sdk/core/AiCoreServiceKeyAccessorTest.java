@@ -24,7 +24,7 @@ class AiCoreServiceKeyAccessorTest {
   }
 
   @Disabled(
-      "Doesn't work on GitHub action runner for unknown reasons. Probably a bug in the dotenv library related to OS or JDK version.")
+      "Doesn't work on GitHub action runner for unknown reasons. Probably a bug in the dotenv library related to the OS or JDK version.")
   @Test
   void testMissingClientIdDotenv() {
     var dotenv = Dotenv.configure().filename("missingClientId.testenv");
