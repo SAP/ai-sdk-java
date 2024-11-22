@@ -25,7 +25,7 @@ class AiCoreServiceKeyAccessorTest {
   @Test
   void testMissingClientIdDotenv() {
     var dotenv =
-        Dotenv.configure().directory("./src/test/resources").filename("missingClientId.testenv");
+        Dotenv.configure().directory("src/test/resources").filename("missingClientId.testenv");
     var accessor = new AiCoreServiceKeyAccessor(dotenv);
     assertThatThrownBy(accessor::getServiceBindings)
         .isInstanceOf(ServiceBindingAccessException.class)
@@ -42,7 +42,7 @@ class AiCoreServiceKeyAccessorTest {
 
   @Test
   void testMalformedDotenv() {
-    var dotenv = Dotenv.configure().directory("./src/test/resources").filename("malformed.testenv");
+    var dotenv = Dotenv.configure().directory("src/test/resources").filename("malformed.testenv");
 
     // Dotenv should be loaded lazily and not throw before actually loading the file
     var accessor = new AiCoreServiceKeyAccessor(dotenv);
