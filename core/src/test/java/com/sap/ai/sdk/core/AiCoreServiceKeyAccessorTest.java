@@ -24,7 +24,7 @@ class AiCoreServiceKeyAccessorTest {
 
   @Test
   void testMissingClientIdDotenv() {
-    var dotenv = Dotenv.configure().filename("missingclientid.testenv");
+    var dotenv = Dotenv.configure().filename("missingClientid.testenv");
     var accessor = new AiCoreServiceKeyAccessor(dotenv);
     assertThatThrownBy(accessor::getServiceBindings)
         .isInstanceOf(ServiceBindingAccessException.class)
