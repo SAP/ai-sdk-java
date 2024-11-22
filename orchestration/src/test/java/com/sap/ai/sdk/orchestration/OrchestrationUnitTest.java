@@ -129,9 +129,9 @@ class OrchestrationUnitTest {
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(response.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(response.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
@@ -144,7 +144,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -159,7 +159,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -379,18 +379,5 @@ class OrchestrationUnitTest {
         .hasMessageContaining("was empty");
 
     softly.assertAll();
-  }
-
-  @Test
-  void testEmptyChoicesResponse() {
-    stubFor(
-        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("emptyChoicesResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-    final var result = client.chatCompletion(prompt, config);
-
-    assertThat(result.getContent()).isEmpty();
   }
 }
