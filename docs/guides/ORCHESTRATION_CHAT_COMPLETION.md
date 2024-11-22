@@ -217,6 +217,8 @@ In case you have created a configuration in AI Launchpad, you can copy or downlo
 var configJson = """
     ... paste your configuration JSON in here ...
     """;
+// or load your config from a file, e.g.
+// configJson = Files.readString(Paths.get("path/to/my/orchestration-config.json"));
 
 var prompt = new OrchestrationPrompt(Map.of("your-input-parameter", "your-param-value"));
 
