@@ -69,18 +69,16 @@ class OrchestrationModuleConfigTest {
   void testLLMConfig() {
     Map<String, Object> params = Map.of("foo", "bar");
     String version = "2024-05-13";
-    OrchestrationAiModel aiModel = GPT_4O.withModelParams(params).withModelVersion(version);
+    OrchestrationAiModel aiModel = GPT_4O.withParams(params).withVersion(version);
     var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
 
     assertThat(config.getLlmConfig()).isNotNull();
-    assertThat(config.getLlmConfig().getModelName()).isEqualTo(GPT_4O.getModelName());
+    assertThat(config.getLlmConfig().getModelName()).isEqualTo(GPT_4O.getName());
     assertThat(config.getLlmConfig().getModelParams()).isEqualTo(params);
     assertThat(config.getLlmConfig().getModelVersion()).isEqualTo(version);
 
-    assertThat(GPT_4O.getModelParams())
-        .withFailMessage("Static models should be unchanged")
-        .isEmpty();
-    assertThat(GPT_4O.getModelVersion())
+    assertThat(GPT_4O.getParams()).withFailMessage("Static models should be unchanged").isEmpty();
+    assertThat(GPT_4O.getVersion())
         .withFailMessage("Static models should be unchanged")
         .isEqualTo("latest");
   }
