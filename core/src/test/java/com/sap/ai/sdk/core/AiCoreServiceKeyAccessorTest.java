@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Map;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class AiCoreServiceKeyAccessorTest {
