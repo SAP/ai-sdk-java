@@ -24,9 +24,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Required for execution Result of activation */
+/** BckndGenericSecretLabel */
 // CHECKSTYLE:OFF
-public class AiParameterArgumentBinding
+public class BckndGenericSecretLabel
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -38,17 +38,17 @@ public class AiParameterArgumentBinding
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AiParameterArgumentBinding. */
-  protected AiParameterArgumentBinding() {}
+  /** Default constructor for BckndGenericSecretLabel. */
+  protected BckndGenericSecretLabel() {}
 
   /**
-   * Set the key of this {@link AiParameterArgumentBinding} instance and return the same instance.
+   * Set the key of this {@link BckndGenericSecretLabel} instance and return the same instance.
    *
-   * @param key The key of this {@link AiParameterArgumentBinding}
-   * @return The same instance of this {@link AiParameterArgumentBinding} class
+   * @param key The key of this {@link BckndGenericSecretLabel}
+   * @return The same instance of this {@link BckndGenericSecretLabel} class
    */
   @Nonnull
-  public AiParameterArgumentBinding key(@Nonnull final String key) {
+  public BckndGenericSecretLabel key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -56,7 +56,7 @@ public class AiParameterArgumentBinding
   /**
    * Get key
    *
-   * @return key The key of this {@link AiParameterArgumentBinding} instance.
+   * @return key The key of this {@link BckndGenericSecretLabel} instance.
    */
   @Nonnull
   public String getKey() {
@@ -64,22 +64,22 @@ public class AiParameterArgumentBinding
   }
 
   /**
-   * Set the key of this {@link AiParameterArgumentBinding} instance.
+   * Set the key of this {@link BckndGenericSecretLabel} instance.
    *
-   * @param key The key of this {@link AiParameterArgumentBinding}
+   * @param key The key of this {@link BckndGenericSecretLabel}
    */
   public void setKey(@Nonnull final String key) {
     this.key = key;
   }
 
   /**
-   * Set the value of this {@link AiParameterArgumentBinding} instance and return the same instance.
+   * Set the value of this {@link BckndGenericSecretLabel} instance and return the same instance.
    *
-   * @param value The value of this {@link AiParameterArgumentBinding}
-   * @return The same instance of this {@link AiParameterArgumentBinding} class
+   * @param value The value of this {@link BckndGenericSecretLabel}
+   * @return The same instance of this {@link BckndGenericSecretLabel} class
    */
   @Nonnull
-  public AiParameterArgumentBinding value(@Nonnull final String value) {
+  public BckndGenericSecretLabel value(@Nonnull final String value) {
     this.value = value;
     return this;
   }
@@ -87,7 +87,7 @@ public class AiParameterArgumentBinding
   /**
    * Get value
    *
-   * @return value The value of this {@link AiParameterArgumentBinding} instance.
+   * @return value The value of this {@link BckndGenericSecretLabel} instance.
    */
   @Nonnull
   public String getValue() {
@@ -95,16 +95,16 @@ public class AiParameterArgumentBinding
   }
 
   /**
-   * Set the value of this {@link AiParameterArgumentBinding} instance.
+   * Set the value of this {@link BckndGenericSecretLabel} instance.
    *
-   * @param value The value of this {@link AiParameterArgumentBinding}
+   * @param value The value of this {@link BckndGenericSecretLabel}
    */
   public void setValue(@Nonnull final String value) {
     this.value = value;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AiParameterArgumentBinding}.
+   * Get the names of the unrecognizable properties of the {@link BckndGenericSecretLabel}.
    *
    * @return The set of properties names
    */
@@ -115,8 +115,7 @@ public class AiParameterArgumentBinding
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AiParameterArgumentBinding}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link BckndGenericSecretLabel} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -126,13 +125,13 @@ public class AiParameterArgumentBinding
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AiParameterArgumentBinding has no field with name '" + name + "'.");
+          "BckndGenericSecretLabel has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link AiParameterArgumentBinding} instance. If the map
+   * Set an unrecognizable property of this {@link BckndGenericSecretLabel} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -151,11 +150,10 @@ public class AiParameterArgumentBinding
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AiParameterArgumentBinding aiParameterArgumentBinding = (AiParameterArgumentBinding) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, aiParameterArgumentBinding.cloudSdkCustomFields)
-        && Objects.equals(this.key, aiParameterArgumentBinding.key)
-        && Objects.equals(this.value, aiParameterArgumentBinding.value);
+    final BckndGenericSecretLabel bckndGenericSecretLabel = (BckndGenericSecretLabel) o;
+    return Objects.equals(this.cloudSdkCustomFields, bckndGenericSecretLabel.cloudSdkCustomFields)
+        && Objects.equals(this.key, bckndGenericSecretLabel.key)
+        && Objects.equals(this.value, bckndGenericSecretLabel.value);
   }
 
   @Override
@@ -167,7 +165,7 @@ public class AiParameterArgumentBinding
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AiParameterArgumentBinding {\n");
+    sb.append("class BckndGenericSecretLabel {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -189,19 +187,19 @@ public class AiParameterArgumentBinding
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * AiParameterArgumentBinding} instance with all required arguments.
+   * BckndGenericSecretLabel} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new AiParameterArgumentBinding().key(key).value(value);
+    return (key) -> (value) -> new BckndGenericSecretLabel().key(key).value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the key of this {@link AiParameterArgumentBinding} instance.
+     * Set the key of this {@link BckndGenericSecretLabel} instance.
      *
-     * @param key The key of this {@link AiParameterArgumentBinding}
-     * @return The AiParameterArgumentBinding builder.
+     * @param key The key of this {@link BckndGenericSecretLabel}
+     * @return The BckndGenericSecretLabel builder.
      */
     Builder1 key(@Nonnull final String key);
   }
@@ -209,11 +207,11 @@ public class AiParameterArgumentBinding
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the value of this {@link AiParameterArgumentBinding} instance.
+     * Set the value of this {@link BckndGenericSecretLabel} instance.
      *
-     * @param value The value of this {@link AiParameterArgumentBinding}
-     * @return The AiParameterArgumentBinding instance.
+     * @param value The value of this {@link BckndGenericSecretLabel}
+     * @return The BckndGenericSecretLabel instance.
      */
-    AiParameterArgumentBinding value(@Nonnull final String value);
+    BckndGenericSecretLabel value(@Nonnull final String value);
   }
 }
