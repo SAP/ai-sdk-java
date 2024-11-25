@@ -31,12 +31,11 @@ The orchestration service streamlines AI interactions while ensuring adherence t
 **Example:** Chat completion. ([more](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md))
 ```java
 var client = new OrchestrationClient();
-var config = new OrchestrationModuleConfig().withLlmConfig(LLMModuleConfig.create().modelName("gpt-35-turbo"));
+var config = new OrchestrationModuleConfig().withLlmConfig(OrchestrationAiModel.GPT_4O);
 var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 var result = client.chatCompletion(prompt, config);
 
-String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+String messageResult = result.getContent();
 ```
 
 ## AI Management
