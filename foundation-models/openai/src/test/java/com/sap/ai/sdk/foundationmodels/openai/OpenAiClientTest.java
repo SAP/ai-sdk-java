@@ -241,7 +241,7 @@ class OpenAiClientTest {
           .isEqualTo(
               "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
       assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
-      assertThat(choice.getMessage().getTool_calls()).isNull();
+      assertThat(choice.getMessage().getToolCalls()).isNull();
 
       OpenAiContentFilterPromptResults contentFilterResults = choice.getContentFilterResults();
       assertThat(contentFilterResults).isNotNull();
@@ -492,7 +492,7 @@ class OpenAiClientTest {
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(choices2.getMessage().getRole()).isEqualTo("assistant");
         assertThat(choices2.getMessage().getContent()).isEqualTo("Sure");
-        assertThat(choices2.getMessage().getTool_calls()).isNull();
+        assertThat(choices2.getMessage().getToolCalls()).isNull();
         final var filter2 = choices2.getContentFilterResults();
         assertFilter(filter2);
 
@@ -505,7 +505,7 @@ class OpenAiClientTest {
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(delta4Choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(delta4Choice.getMessage().getContent()).isNull();
-        assertThat(delta4Choice.getMessage().getTool_calls()).isNull();
+        assertThat(delta4Choice.getMessage().getToolCalls()).isNull();
         assertThat(totalOutput.getChoices()).hasSize(1);
         final var choice = totalOutput.getChoices().get(0);
         assertThat(choice.getFinishReason()).isEqualTo("stop");
@@ -514,7 +514,7 @@ class OpenAiClientTest {
         assertThat(choice.getMessage()).isNotNull();
         assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(choice.getMessage().getContent()).isEqualTo("Sure!");
-        assertThat(choice.getMessage().getTool_calls()).isNull();
+        assertThat(choice.getMessage().getToolCalls()).isNull();
         assertThat(totalOutput.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(totalOutput.getCreated()).isEqualTo(1724825677);
         assertThat(totalOutput.getModel()).isEqualTo("gpt-35-turbo");

@@ -16,8 +16,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
+import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
+import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,30 +29,18 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
-import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import javax.annotation.Nonnull;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,15 +51,13 @@ import org.junit.jupiter.api.Test;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  static final LLMModuleConfig LLM_CONFIG =
-      new LLMModuleConfig()
-          .modelName("gpt-35-turbo-16k")
-          .modelParams(
-              Map.of(
-                  "max_tokens", 50,
-                  "temperature", 0.1,
-                  "frequency_penalty", 0,
-                  "presence_penalty", 0));
+  static final OrchestrationAiModel CUSTOM_GPT_35 =
+      GPT_35_TURBO_16K.withParams(
+          Map.of(
+              "max_tokens", 50,
+              "temperature", 0.1,
+              "frequency_penalty", 0,
+              "presence_penalty", 0));
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -106,7 +93,7 @@ class OrchestrationUnitTest {
             .forDeploymentByScenario("orchestration")
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
-    config = new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
   }
 
@@ -121,8 +108,7 @@ class OrchestrationUnitTest {
     final var result = client.chatCompletion(prompt, config);
 
     assertThat(result).isNotNull();
-    var orchestrationResult = (LLMModuleResultSynchronous) result.getOrchestrationResult();
-    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
   }
 
   @Test
@@ -141,11 +127,13 @@ class OrchestrationUnitTest {
     final var result =
         client.chatCompletion(new OrchestrationPrompt(inputParams, template), config);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    final var response = result.getOriginalResponse();
+    assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isEqualTo(1721224505);
@@ -156,11 +144,11 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = (LLMModuleResultSynchronous) result.getOrchestrationResult();
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -171,7 +159,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -217,9 +205,14 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var filter = createAzureContentFilter(NUMBER_4);
+    final var filter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-    client.chatCompletion(prompt, config.withFilteringConfig(filter));
+    client.chatCompletion(prompt, config.withInputFiltering(filter).withOutputFiltering(filter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -240,31 +233,19 @@ class OrchestrationUnitTest {
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
-    final var filter = createAzureContentFilter(NUMBER_0);
+    final var filter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withFilteringConfig(filter);
+    final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
-  }
-
-  private static FilteringModuleConfig createAzureContentFilter(
-      @Nonnull final AzureThreshold threshold) {
-    final var filter =
-        new AzureContentSafetyFilterConfig()
-            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                new AzureContentSafety()
-                    .hate(threshold)
-                    .selfHarm(threshold)
-                    .sexual(threshold)
-                    .violence(threshold));
-
-    return new FilteringModuleConfig()
-        .input(new InputFilteringConfig().filters(List.of(filter)))
-        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   @Test
@@ -286,7 +267,8 @@ class OrchestrationUnitTest {
 
     final var result = client.chatCompletion(prompt, config);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getOriginalResponse().getRequestId())
+        .isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
     try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
@@ -298,7 +280,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void maskingAnonymization() throws IOException {
+  void maskingPseudonymization() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
@@ -306,19 +288,17 @@ class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var maskingConfig =
-        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+    final var maskingConfig = DpiMasking.pseudonymization().withEntities(DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    final var response = result.getOriginalResponse();
 
-    assertThat(result).isNotNull();
-    GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(response).isNotNull();
+    GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
+    assertThat(inputMasking).isNotNull();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
-    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo(
-            "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
+    assertThat(result.getContent()).contains("Hi Mallory");
 
     // verify that the request is sent correctly
     try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
@@ -327,20 +307,6 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
               .withRequestBody(equalToJson(request)));
     }
-  }
-
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
-    return new MaskingModuleConfig()
-        .maskingProviders(
-            List.of(
-                new DPIConfig()
-                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(method)
-                    .entities(entityConfigs)));
   }
 
   @Test

@@ -11,12 +11,12 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ScenarioTest {
+class ScenarioTest {
 
   @Test
   @DisplayName("Declared OpenAI models must match AI Core's available OpenAI models")
   @SneakyThrows
-  public void openAiModelAvailability() {
+  void openAiModelAvailability() {
 
     // Gather AI Core's list of available OpenAI models
     final var aiModelList = new ScenarioController().getModels().getResources();

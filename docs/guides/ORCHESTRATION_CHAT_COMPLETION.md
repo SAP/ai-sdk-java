@@ -77,7 +77,7 @@ To use the Orchestration service, create a client and a configuration object:
 var client = new OrchestrationClient();
 
 var config = new OrchestrationModuleConfig()
-        .withLlmConfig(LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of()));
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
 ```
 
 Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
@@ -91,8 +91,7 @@ var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?
 
 var result = client.chatCompletion(prompt, config);
 
-String messageResult =
-        result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+String messageResult = result.getContent();
 ```
 
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
@@ -147,33 +146,20 @@ var prompt = new OrchestrationPrompt(
         ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
         """);
 
-var filterStrict = 
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_0)
-                .selfHarm(NUMBER_0)
-                .sexual(NUMBER_0)
-                .violence(NUMBER_0));
+var filterStrict = new AzureContentFilter()
+                .hate(ALLOW_SAFE)
+                .selfHarm(ALLOW_SAFE)
+                .sexual(ALLOW_SAFE)
+    .violence(ALLOW_SAFE);
 
-var filterLoose =
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_4)
-                .selfHarm(NUMBER_4)
-                .sexual(NUMBER_4)
-                .violence(NUMBER_4));
+var filterLoose = new AzureContentFilter()
+                .hate(ALLOW_SAFE_LOW_MEDIUM)
+                .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+                .sexual(ALLOW_SAFE_LOW_MEDIUM)
+    .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-var filteringConfig =
-    FilteringModuleConfig.create()
-        // changing the input to filterLoose will allow the message to pass
-        .input(InputFilteringConfig.create().filters(filterStrict))
-        .output(OutputFilteringConfig.create().filters(filterStrict));
-
-var configWithFilter = config.withFilteringConfig(filteringConfig);
+// changing the input to filterLoose will allow the message to pass
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
@@ -185,14 +171,8 @@ var result =
 Use the data masking module to anonymize personal information in the input:
 
 ```java
-var maskingProvider =
-    MaskingProviderConfig.create()
-        .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-        .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-        .entities(
-            DPIEntityConfig.create().type(DPIEntities.PHONE),
-            DPIEntityConfig.create().type(DPIEntities.PERSON));
-var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+var maskingConfig =
+    DpiMasking.anonymization().withEntities(DPIEntities.PHONE, DPIEntities.PERSON);
 var configWithMasking = config.withMaskingConfig(maskingConfig);
 
 var systemMessage = ChatMessage.create()
@@ -211,20 +191,20 @@ var result =
     new OrchestrationClient().chatCompletion(prompt, configWithMasking);
 ```
 
-In this example, the input will be masked before the call to the LLM. Note that data cannot be unmasked in the LLM output.
+In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
 ### Set model parameters
 
-Change your LLM module configuration to add model parameters:
+Change your LLM configuration to add model parameters:
 
 ```java
-var llmConfig =
-    LLMModuleConfig.create()
-        .modelName("gpt-35-turbo")
-        .modelParams(
+OrchestrationAiModel customGPT4O =
+    OrchestrationAiModel.GPT_4O
+        .withParams(
             Map.of(
                 "max_tokens", 50,
                 "temperature", 0.1,
                 "frequency_penalty", 0,
-                "presence_penalty", 0));
+                "presence_penalty", 0))
+        .withVersion("2024-05-13");
 ```

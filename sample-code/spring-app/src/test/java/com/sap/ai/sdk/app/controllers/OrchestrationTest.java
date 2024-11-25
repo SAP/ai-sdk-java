@@ -3,17 +3,19 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 class OrchestrationTest {
   OrchestrationController controller;
 
@@ -27,49 +29,46 @@ class OrchestrationTest {
     final var result = controller.completion();
 
     assertThat(result).isNotNull();
-    assertThat(
-            ((LLMModuleResultSynchronous) result.getOrchestrationResult())
-                .getChoices()
-                .get(0)
-                .getMessage()
-                .getContent())
-        .isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
   }
 
   @Test
   void testTemplate() {
-    final var result = controller.template();
+    assertThat(controller.config.getLlmConfig()).isNotNull();
+    final var modelName = controller.config.getLlmConfig().getModelName();
 
-    assertThat(result.getRequestId()).isNotEmpty();
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    final var result = controller.template();
+    final var response = result.getOriginalResponse();
+
+    assertThat(response.getRequestId()).isNotEmpty();
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
-    assertThat(llm.getModel()).isEqualTo(OrchestrationController.LLM_CONFIG.getModelName());
+    assertThat(llm.getModel()).isEqualTo(modelName);
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
+    var orchestrationResult = ((LLMModuleResultSynchronous) response.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
-    assertThat(orchestrationResult.getModel())
-        .isEqualTo(OrchestrationController.LLM_CONFIG.getModelName());
-    choices = ((LLMModuleResultSynchronous) orchestrationResult).getChoices();
+    assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
+    choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = ((LLMModuleResultSynchronous) orchestrationResult).getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
@@ -77,7 +76,8 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var result = controller.filter(AzureThreshold.NUMBER_4);
+    var response = controller.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
@@ -89,7 +89,7 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> controller.filter(AzureThreshold.NUMBER_0))
+    assertThatThrownBy(() -> controller.filter(AzureFilterThreshold.ALLOW_SAFE))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");
@@ -97,7 +97,7 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result = controller.messagesHistory();
+    CompletionPostResponse result = controller.messagesHistory().getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
@@ -105,7 +105,8 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingAnonymization() {
-    var result = controller.maskingAnonymization();
+    var response = controller.maskingAnonymization();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
@@ -124,7 +125,8 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingPseudonymization() {
-    var result = controller.maskingPseudonymization();
+    var response = controller.maskingPseudonymization();
+    var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");

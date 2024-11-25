@@ -1,23 +1,17 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.Template;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -30,12 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  static final LLMModuleConfig LLM_CONFIG =
-      new LLMModuleConfig().modelName("gpt-35-turbo").modelParams(Map.of());
-
   private final OrchestrationClient client = new OrchestrationClient();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+  OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -44,7 +34,7 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public CompletionPostResponse completion() {
+  public OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
     return client.chatCompletion(prompt, config);
@@ -57,7 +47,7 @@ class OrchestrationController {
    */
   @GetMapping("/template")
   @Nonnull
-  public CompletionPostResponse template() {
+  public OrchestrationChatResponse template() {
     final var template =
         new ChatMessage()
             .role("user")
@@ -78,7 +68,7 @@ class OrchestrationController {
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public CompletionPostResponse messagesHistory() {
+  public OrchestrationChatResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
             new ChatMessage().role("user").content("What is the capital of France?"),
@@ -93,13 +83,13 @@ class OrchestrationController {
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
+   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
-  @GetMapping("/filter/{threshold}")
+  @GetMapping("/filter/{policy}")
   @Nonnull
-  public CompletionPostResponse filter(
-      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
+  public OrchestrationChatResponse filter(
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
             """
@@ -107,33 +97,13 @@ class OrchestrationController {
 
             ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
             """);
-    final var filterConfig = createAzureContentFilter(threshold);
-    final var configWithFilter = config.withFilteringConfig(filterConfig);
+    final var filterConfig =
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+
+    final var configWithFilter =
+        config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
 
     return client.chatCompletion(prompt, configWithFilter);
-  }
-
-  /**
-   * Helper method to build filter configurations.
-   *
-   * @param threshold The threshold to be applied across all filter categories.
-   * @return A new filter configuration object.
-   */
-  private static FilteringModuleConfig createAzureContentFilter(
-      @Nonnull final AzureThreshold threshold) {
-    final var filter =
-        new AzureContentSafetyFilterConfig()
-            .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                new AzureContentSafety()
-                    .hate(threshold)
-                    .selfHarm(threshold)
-                    .sexual(threshold)
-                    .violence(threshold));
-
-    return new FilteringModuleConfig()
-        .input(new InputFilteringConfig().filters(List.of(filter)))
-        .output(new OutputFilteringConfig().filters(List.of(filter)));
   }
 
   /**
@@ -145,7 +115,7 @@ class OrchestrationController {
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public CompletionPostResponse maskingAnonymization() {
+  public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
         new ChatMessage()
             .role("system")
@@ -161,8 +131,7 @@ class OrchestrationController {
     """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig =
-        createMaskingConfig(DPIConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -170,13 +139,13 @@ class OrchestrationController {
 
   /**
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
-   * SDK. Pseydonymize the user's name and location to protect their privacy.
+   * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
    * @return the result object
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public CompletionPostResponse maskingPseudonymization() {
+  public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
         new ChatMessage()
             .role("system")
@@ -200,31 +169,9 @@ class OrchestrationController {
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig =
-        createMaskingConfig(
-            DPIConfig.MethodEnum.PSEUDONYMIZATION, DPIEntities.PERSON, DPIEntities.EMAIL);
+        DpiMasking.pseudonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
-  }
-
-  /**
-   * Helper method to build masking configurations.
-   *
-   * @param method Either anonymization or pseudonymization.
-   * @param entities The entities to mask.
-   * @return A new masking configuration object.
-   */
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final DPIConfig.MethodEnum method, @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> new DPIEntityConfig().type(it)).toList();
-    return new MaskingModuleConfig()
-        .maskingProviders(
-            List.of(
-                new DPIConfig()
-                    .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(method)
-                    .entities(entityConfigs)));
   }
 }
