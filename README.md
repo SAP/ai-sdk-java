@@ -49,9 +49,9 @@ The following table lists the required versions, based on the latest release:
 | Dependency | Minimum Version | Recommended Version |
 | --- | --- | --- |
 | JDK | 17 (LTS) | 21 (LTS) |
-| Maven | 3.9 | latest |
-| Spring Boot | 3.0 | latest |
 | SAP Cloud SDK | 5.6.0 | latest |
+| (optional) CAP Java | 3.0.0 | latest |
+| (optional) Spring Boot | 3.0 | latest |
 
 See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
 
