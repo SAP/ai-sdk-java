@@ -35,7 +35,7 @@ jobs:
           mvn $MVN_ARGS
 
       - name: "OWASP Dependency check"
-        run: mvn org.owasp:dependency-check-maven:10.0.4:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=.pipeline/dependency-check-suppression.xml
+        run: mvn org.owasp:dependency-check-maven:11.1.0:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=.pipeline/dependency-check-suppression.xml -DautoUpdate=false
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
 
