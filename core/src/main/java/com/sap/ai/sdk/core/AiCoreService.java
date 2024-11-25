@@ -1,8 +1,5 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -12,16 +9,14 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import io.github.cdimascio.dotenv.Dotenv;
-import io.github.cdimascio.dotenv.DotenvBuilder;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
@@ -32,16 +27,21 @@ import org.springframework.web.client.RestTemplate;
 
 /** Connectivity convenience methods for AI Core. */
 @Slf4j
-@RequiredArgsConstructor
 public class AiCoreService implements AiCoreDestination {
+  static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
+  static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
+  static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
-  private static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
   private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
-  private static final DotenvBuilder DOT_ENV = Dotenv.configure().ignoreIfMissing();
 
-  Function<AiCoreService, Destination> baseDestinationHandler;
-  final BiFunction<AiCoreService, Destination, ApiClient> clientHandler;
-  final BiFunction<AiCoreService, Destination, DefaultHttpDestination.Builder> builderHandler;
+  @Nonnull private final DestinationResolver destinationResolver;
+
+  @Nonnull private Function<AiCoreService, HttpDestination> baseDestinationHandler;
+  @Nonnull private final BiFunction<AiCoreService, HttpDestination, ApiClient> clientHandler;
+
+  @Nonnull
+  private final BiFunction<AiCoreService, HttpDestination, DefaultHttpDestination.Builder>
+      builderHandler;
 
   /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
   @Nonnull String resourceGroup;
@@ -51,8 +51,16 @@ public class AiCoreService implements AiCoreDestination {
 
   /** The default constructor. */
   public AiCoreService() {
-    this(AiCoreService::getApiClient, AiCoreService::getDestinationBuilder, "default", "");
+    this(new DestinationResolver());
+  }
+
+  AiCoreService(@Nonnull final DestinationResolver destinationResolver) {
+    this.destinationResolver = destinationResolver;
     baseDestinationHandler = AiCoreService::getBaseDestination;
+    clientHandler = AiCoreService::buildApiClient;
+    builderHandler = AiCoreService::getDestinationBuilder;
+    resourceGroup = "default";
+    deploymentId = "";
   }
 
   @Nonnull
@@ -64,7 +72,7 @@ public class AiCoreService implements AiCoreDestination {
 
   @Nonnull
   @Override
-  public Destination destination() {
+  public HttpDestination destination() {
     val dest = baseDestinationHandler.apply(this);
     val builder = builderHandler.apply(this, dest);
     if (!deploymentId.isEmpty()) {
@@ -105,7 +113,7 @@ public class AiCoreService implements AiCoreDestination {
    * @return The AI Core Service based on the provided destination.
    */
   @Nonnull
-  public AiCoreService withDestination(@Nonnull final Destination destination) {
+  public AiCoreService withDestination(@Nonnull final HttpDestination destination) {
     baseDestinationHandler = service -> destination;
     return this;
   }
@@ -159,10 +167,9 @@ public class AiCoreService implements AiCoreDestination {
    * @throws DestinationNotFoundException If the destination cannot be found.
    */
   @Nonnull
-  protected Destination getBaseDestination()
+  protected HttpDestination getBaseDestination()
       throws DestinationAccessException, DestinationNotFoundException {
-    val serviceKey = DOT_ENV.load().get("AICORE_SERVICE_KEY");
-    return DestinationResolver.getDestination(serviceKey);
+    return destinationResolver.getDestination();
   }
 
   /**
@@ -184,14 +191,13 @@ public class AiCoreService implements AiCoreDestination {
   }
 
   /**
-   * Get a destination using the default service binding loading logic.
+   * Build an {@link ApiClient} that can be used for executing plain REST HTTP calls.
    *
-   * @return The destination.
-   * @throws DestinationAccessException If the destination cannot be accessed.
-   * @throws DestinationNotFoundException If the destination cannot be found.
+   * @param destination The destination to use as basis for the client.
+   * @return The new API client.
    */
   @Nonnull
-  protected ApiClient getApiClient(@Nonnull final Destination destination) {
+  protected ApiClient buildApiClient(@Nonnull final Destination destination) {
     val objectMapper =
         new Jackson2ObjectMapperBuilder()
             .modules(new JavaTimeModule())

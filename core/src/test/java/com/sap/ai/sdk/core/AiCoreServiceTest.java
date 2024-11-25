@@ -1,99 +1,86 @@
 package com.sap.ai.sdk.core;
 
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_KEY;
-import static com.sap.ai.sdk.core.DestinationResolver.AI_CLIENT_TYPE_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.STRING;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.sap.cloud.environment.servicebinding.api.DefaultServiceBinding;
-import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
-import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.val;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AiCoreServiceTest {
+  private static final HttpDestination serviceBindingDestination =
+      DefaultHttpDestination.builder("https://api.ai.com").build();
 
-  // setup
-  private static final Map<String, Object> URLS = Map.of("AI_API_URL", "https://srv");
-  private static final Map<String, Object> CREDENTIALS =
-      Map.of("clientid", "id", "clientsecret", "pw", "url", "https://auth", "serviceurls", URLS);
-  private static final DefaultServiceBinding BINDING =
-      DefaultServiceBinding.builder()
-          .copy(Map.of())
-          .withServiceIdentifier(ServiceIdentifier.AI_CORE)
-          .withCredentials(CREDENTIALS)
-          .build();
+  private DestinationResolver resolver;
+  private AiCoreService service;
 
-  @AfterEach
-  void tearDown() {
-    DestinationResolver.setAccessor(null);
+  @BeforeEach
+  void setUp() {
+    resolver = mock(DestinationResolver.class);
+    doReturn(serviceBindingDestination).when(resolver).getDestination();
+
+    service = new AiCoreService(resolver);
   }
 
   @Test
-  void testLazyEvaluation() {
-    // setup
-    val accessor = mock(ServiceBindingAccessor.class);
-    DestinationResolver.setAccessor(accessor);
+  void testLazyDestinationLoading() {
+    doThrow(new DestinationAccessException()).when(resolver).getDestination();
 
-    // execution without errors
-    new AiCoreService();
+    assertThatCode(() -> new AiCoreService(resolver))
+        .describedAs("This must not perform any destination loading upon initialization")
+        .doesNotThrowAnyException();
 
-    // verification
-    verify(accessor, never()).getServiceBindings();
-  }
-
-  @Test
-  void testDefaultCase() {
-    // setup
-    val accessor = mock(ServiceBindingAccessor.class);
-    DestinationResolver.setAccessor(accessor);
-    doReturn(List.of(BINDING)).when(accessor).getServiceBindings();
-
-    // execution without errors
-    val core = new AiCoreService();
-    val destination = core.destination();
-    val client = core.client();
-
-    // verification
-    assertThat(destination.get(DestinationProperty.URI)).contains("https://srv/v2/");
-    assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
-    assertThat(destination.get(DestinationProperty.NAME)).singleElement(STRING).contains("aicore");
-    assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
-    assertThat(client.getBasePath()).isEqualTo("https://srv/v2/");
-    verify(accessor, times(2)).getServiceBindings();
+    verify(resolver, never()).getDestination();
   }
 
   @Test
   void testBaseDestination() {
-    // setup
-    DestinationResolver.setAccessor(Collections::emptyList);
+    assertThat(service.getBaseDestination()).isEqualTo(serviceBindingDestination);
+  }
 
-    // execution without errors
-    val customDestination = DefaultHttpDestination.builder("https://foo.bar").build();
-    val core = new AiCoreService().withDestination(customDestination);
-    val destination = core.destination();
-    val client = core.client();
+  @Test
+  void testGetDestination() {
+    var destination = service.destination();
+    assertThat(destination).isNotEqualTo(serviceBindingDestination);
+    assertThat(destination.getUri()).hasHost("api.ai.com").hasPath("/v2/");
+    assertThat(destination.getHeaders())
+        .containsExactly(new Header("AI-Client-Type", "AI SDK Java"));
+  }
 
-    // verification
-    assertThat(destination.get(DestinationProperty.URI)).contains("https://foo.bar/v2/");
-    assertThat(destination.get(DestinationProperty.AUTH_TYPE)).isEmpty();
-    assertThat(destination.get(DestinationProperty.NAME)).isEmpty();
-    assertThat(destination.get(AI_CLIENT_TYPE_KEY)).contains(AI_CLIENT_TYPE_VALUE);
-    assertThat(client.getBasePath()).isEqualTo("https://foo.bar/v2/");
+  @Test
+  void testDeploymentDestination() {
+    var destination = service.forDeployment("123").withResourceGroup("foo").destination();
+
+    assertThat(destination.getUri())
+        .hasHost("api.ai.com")
+        .hasPath("/v2/inference/deployments/123/");
+    assertThat(destination.getHeaders())
+        .containsExactly(
+            new Header("AI-Client-Type", "AI SDK Java"), new Header("AI-Resource-Group", "foo"));
+
+    verify(resolver, times(1)).getDestination();
+  }
+
+  @Test
+  void testBuildApiClient() {
+    var apiClient = service.client();
+
+    assertThat(apiClient.getBasePath()).hasToString("https://api.ai.com/v2/");
+
+    verify(resolver, times(1)).getDestination();
   }
 
   @Test
@@ -102,13 +89,13 @@ class AiCoreServiceTest {
         new AiCoreService() {
           @Nonnull
           @Override
-          protected Destination getBaseDestination() {
+          protected HttpDestination getBaseDestination() {
             return DefaultHttpDestination.builder("https://ai").build();
           }
 
           @Nonnull
           @Override
-          protected ApiClient getApiClient(@Nonnull Destination destination) {
+          protected ApiClient buildApiClient(@Nonnull Destination destination) {
             return new ApiClient().setBasePath("https://fizz.buzz").setUserAgent("SAP");
           }
         };
@@ -124,5 +111,6 @@ class AiCoreServiceTest {
 
     val resourceGroup = customService.resourceGroup;
     assertThat(resourceGroup).isEqualTo("group");
+    assertThat(destination.getHeaders()).contains(new Header("AI-Resource-Group", "group"));
   }
 }
