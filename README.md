@@ -37,15 +37,21 @@ The SDK simplifies the setup and interaction with SAP AI Core, allowing you to f
 
 ## General Requirements
 
-To use the SAP AI SDK for Java, the following general prerequisites must be met:
+To use the SDK in a Java application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
 
-- **Java Development Kit (JDK) 17** or higher installed.
-- **Apache Maven 3.9** or higher installed.
 - **SAP AI Core Service** enabled in your SAP BTP account.
     - [How to enable the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
 - **SAP AI Core Credentials** to access the AI Core service.
     - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
-- **(Optional) Spring Boot** version 3 or higher if you are using Spring Boot.
+
+The following table lists the required versions, based on the latest release:
+
+| Dependency | Minimum Version | Recommended Version |
+| --- | --- | --- |
+| JDK | 17 (LTS) | 21 (LTS) |
+| SAP Cloud SDK | 5.6.0 | latest |
+| (optional) CAP Java | 3.0.0 | latest |
+| (optional) Spring Boot | 3.0 | latest |
 
 See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
 
