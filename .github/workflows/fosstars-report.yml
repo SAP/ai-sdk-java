@@ -22,6 +22,12 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
+      - name: Restore CVE Database
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CVE_CACHE_DIR }}
+          key: ${{ env.CVE_CACHE_KEY }}
+          fail-on-cache-miss: true
 
       - name: "Build SDK"
         run: |
