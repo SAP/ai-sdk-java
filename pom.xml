@@ -592,9 +592,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <version>2.4.0</version>
         <configuration>
           <licenseName>apache_v2</licenseName>
-          <failOnBlacklist>false</failOnBlacklist>
+          <failOnBlacklist>true</failOnBlacklist>
           <!-- Fail the build if at least one dependency was detected without a license. -->
-          <failOnMissing>false</failOnMissing>
+          <failOnMissing>true</failOnMissing>
           <includedLicenses>
             <includedLicense>The MIT License</includedLicense>
             <includedLicense>Apache Software License - Version 2.0</includedLicense>
