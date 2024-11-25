@@ -93,10 +93,10 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      - name: "Build SDK"
-        run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests"
-          mvn $MVN_ARGS
+      # - name: "Build SDK"
+      #   run: |
+      #     MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests"
+      #     mvn $MVN_ARGS
 
 #      - name: "Create Release"
 #        id: create-release
