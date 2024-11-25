@@ -13,7 +13,7 @@ import lombok.With;
 @AllArgsConstructor
 public class OrchestrationAiModel {
   /** The name of the model */
-  String modelName;
+  String name;
 
   /**
    * Optional parameters on this model.
@@ -26,10 +26,10 @@ public class OrchestrationAiModel {
    *     "presence_penalty", 0)
    * }</pre>
    */
-  Map<String, Object> modelParams;
+  Map<String, Object> params;
 
   /** The version of the model, defaults to "latest". */
-  String modelVersion;
+  String version;
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
@@ -106,15 +106,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_1_5_FLASH =
       new OrchestrationAiModel("gemini-1.5-flash");
 
-  OrchestrationAiModel(@Nonnull final String modelName) {
-    this(modelName, Map.of(), "latest");
+  OrchestrationAiModel(@Nonnull final String name) {
+    this(name, Map.of(), "latest");
   }
 
   @Nonnull
   LLMModuleConfig createConfig() {
-    return new LLMModuleConfig()
-        .modelName(modelName)
-        .modelParams(modelParams)
-        .modelVersion(modelVersion);
+    return new LLMModuleConfig().modelName(name).modelParams(params).modelVersion(version);
   }
 }

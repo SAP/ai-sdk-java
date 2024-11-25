@@ -1,10 +1,14 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -83,5 +87,66 @@ public class OrchestrationModuleConfig {
         .forEach(it -> newMaskingConfig.addMaskingProvidersItem(it.createConfig()));
 
     return withMaskingConfig(newMaskingConfig);
+  }
+
+  /**
+   * Adds input content filters to the orchestration configuration.
+   *
+   * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding input filters.
+   *
+   * @param contentFilters one or more content filters to apply to the input.
+   * @return a new {@code OrchestrationModuleConfig} instance with the specified input filters
+   *     added.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withInputFiltering(
+      @Nonnull final ContentFilter contentFilter, @Nonnull final ContentFilter... contentFilters) {
+
+    final var allFilters = new ArrayList<ContentFilter>();
+    allFilters.add(contentFilter);
+    allFilters.addAll(Arrays.asList(contentFilters));
+
+    final var filterConfigs =
+        allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createConfig).toList();
+
+    final var inputFilter = new InputFilteringConfig().filters(filterConfigs);
+
+    final var newFilteringConfig =
+        new FilteringModuleConfig()
+            .input(inputFilter)
+            .output(this.filteringConfig != null ? this.filteringConfig.getOutput() : null);
+
+    return this.withFilteringConfig(newFilteringConfig);
+  }
+
+  /**
+   * Adds output content filters to the orchestration configuration.
+   *
+   * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding output
+   * filters.
+   *
+   * @param contentFilters one or more content filters to apply to the output.
+   * @return a new {@code OrchestrationModuleConfig} instance with the specified output filters
+   *     added.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withOutputFiltering(
+      @Nonnull final ContentFilter contentFilter, @Nonnull final ContentFilter... contentFilters) {
+
+    final var allFilters = new ArrayList<ContentFilter>();
+    allFilters.add(contentFilter);
+    allFilters.addAll(Arrays.asList(contentFilters));
+
+    final var filterConfigs =
+        allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createConfig).toList();
+
+    final var outputFilter = new OutputFilteringConfig().filters(filterConfigs);
+
+    final var newFilteringConfig =
+        new FilteringModuleConfig()
+            .output(outputFilter)
+            .input(this.filteringConfig != null ? this.filteringConfig.getInput() : null);
+
+    return this.withFilteringConfig(newFilteringConfig);
   }
 }

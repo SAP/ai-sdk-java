@@ -146,33 +146,20 @@ var prompt = new OrchestrationPrompt(
         ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
         """);
 
-var filterStrict = 
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_0)
-                .selfHarm(NUMBER_0)
-                .sexual(NUMBER_0)
-                .violence(NUMBER_0));
+var filterStrict = new AzureContentFilter()
+                .hate(ALLOW_SAFE)
+                .selfHarm(ALLOW_SAFE)
+                .sexual(ALLOW_SAFE)
+    .violence(ALLOW_SAFE);
 
-var filterLoose =
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_4)
-                .selfHarm(NUMBER_4)
-                .sexual(NUMBER_4)
-                .violence(NUMBER_4));
+var filterLoose = new AzureContentFilter()
+                .hate(ALLOW_SAFE_LOW_MEDIUM)
+                .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+                .sexual(ALLOW_SAFE_LOW_MEDIUM)
+    .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-var filteringConfig =
-    FilteringModuleConfig.create()
-        // changing the input to filterLoose will allow the message to pass
-        .input(InputFilteringConfig.create().filters(filterStrict))
-        .output(OutputFilteringConfig.create().filters(filterStrict));
-
-var configWithFilter = config.withFilteringConfig(filteringConfig);
+// changing the input to filterLoose will allow the message to pass
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
@@ -213,11 +200,29 @@ Change your LLM configuration to add model parameters:
 ```java
 OrchestrationAiModel customGPT4O =
     OrchestrationAiModel.GPT_4O
-        .withModelParams(
+        .withParams(
             Map.of(
                 "max_tokens", 50,
                 "temperature", 0.1,
                 "frequency_penalty", 0,
                 "presence_penalty", 0))
-        .withModelVersion("2024-05-13");
+        .withVersion("2024-05-13");
 ```
+
+### Using a Configuration from AI Launchpad
+
+In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
+
+```java
+var configJson = """
+    ... paste your configuration JSON in here ...
+    """;
+// or load your config from a file, e.g.
+// configJson = Files.readString(Paths.get("path/to/my/orchestration-config.json"));
+
+var prompt = new OrchestrationPrompt(Map.of("your-input-parameter", "your-param-value"));
+
+new OrchestrationClient().executeRequestFromJsonModuleConfig(prompt, configJson);
+```
+
+While this is not recommended for long term use, it can be useful for creating demos and PoCs.

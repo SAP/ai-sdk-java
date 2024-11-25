@@ -3,8 +3,8 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
@@ -37,14 +37,14 @@ class OrchestrationTest {
     assertThat(controller.config.getLlmConfig()).isNotNull();
     final var modelName = controller.config.getLlmConfig().getModelName();
 
-    final var response = controller.template();
-    final var result = response.getOriginalResponse();
+    final var result = controller.template();
+    final var response = result.getOriginalResponse();
 
-    assertThat(result.getRequestId()).isNotEmpty();
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(response.getRequestId()).isNotEmpty();
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
@@ -54,12 +54,12 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
+    var orchestrationResult = ((LLMModuleResultSynchronous) response.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
     assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
@@ -68,7 +68,7 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
@@ -76,7 +76,7 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var response = controller.filter(AzureThreshold.NUMBER_4);
+    var response = controller.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -89,7 +89,7 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> controller.filter(AzureThreshold.NUMBER_0))
+    assertThatThrownBy(() -> controller.filter(AzureFilterThreshold.ALLOW_SAFE))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");
