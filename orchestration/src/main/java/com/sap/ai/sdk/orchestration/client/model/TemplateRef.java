@@ -24,55 +24,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Options for streaming. Will be ignored if stream is false. */
+/** TemplateRef */
 // CHECKSTYLE:OFF
-public class GlobalStreamOptions
+public class TemplateRef implements TemplatingModuleConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("chunk_size")
-  private Integer chunkSize = 100;
+  @JsonProperty("template_ref")
+  private TemplateRefTemplateRef templateRef;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GlobalStreamOptions. */
-  protected GlobalStreamOptions() {}
+  /** Default constructor for TemplateRef. */
+  protected TemplateRef() {}
 
   /**
-   * Set the chunkSize of this {@link GlobalStreamOptions} instance and return the same instance.
+   * Set the templateRef of this {@link TemplateRef} instance and return the same instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
-   * @return The same instance of this {@link GlobalStreamOptions} class
+   * @param templateRef The templateRef of this {@link TemplateRef}
+   * @return The same instance of this {@link TemplateRef} class
    */
   @Nonnull
-  public GlobalStreamOptions chunkSize(@Nullable final Integer chunkSize) {
-    this.chunkSize = chunkSize;
+  public TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
+    this.templateRef = templateRef;
     return this;
   }
 
   /**
-   * Number of characters per chunk that post-LLM modules operate on. minimum: 1 maximum: 10000
+   * Get templateRef
    *
-   * @return chunkSize The chunkSize of this {@link GlobalStreamOptions} instance.
+   * @return templateRef The templateRef of this {@link TemplateRef} instance.
    */
   @Nonnull
-  public Integer getChunkSize() {
-    return chunkSize;
+  public TemplateRefTemplateRef getTemplateRef() {
+    return templateRef;
   }
 
   /**
-   * Set the chunkSize of this {@link GlobalStreamOptions} instance.
+   * Set the templateRef of this {@link TemplateRef} instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
+   * @param templateRef The templateRef of this {@link TemplateRef}
    */
-  public void setChunkSize(@Nullable final Integer chunkSize) {
-    this.chunkSize = chunkSize;
+  public void setTemplateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
+    this.templateRef = templateRef;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GlobalStreamOptions}.
+   * Get the names of the unrecognizable properties of the {@link TemplateRef}.
    *
    * @return The set of properties names
    */
@@ -83,7 +81,7 @@ public class GlobalStreamOptions
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GlobalStreamOptions} instance.
+   * Get the value of an unrecognizable property of this {@link TemplateRef} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -92,15 +90,14 @@ public class GlobalStreamOptions
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GlobalStreamOptions has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TemplateRef has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link GlobalStreamOptions} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TemplateRef} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -118,22 +115,22 @@ public class GlobalStreamOptions
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GlobalStreamOptions globalStreamOptions = (GlobalStreamOptions) o;
-    return Objects.equals(this.cloudSdkCustomFields, globalStreamOptions.cloudSdkCustomFields)
-        && Objects.equals(this.chunkSize, globalStreamOptions.chunkSize);
+    final TemplateRef templateRef = (TemplateRef) o;
+    return Objects.equals(this.cloudSdkCustomFields, templateRef.cloudSdkCustomFields)
+        && Objects.equals(this.templateRef, templateRef.templateRef);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chunkSize, cloudSdkCustomFields);
+    return Objects.hash(templateRef, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GlobalStreamOptions {\n");
-    sb.append("    chunkSize: ").append(toIndentedString(chunkSize)).append("\n");
+    sb.append("class TemplateRef {\n");
+    sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -151,8 +148,22 @@ public class GlobalStreamOptions
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link GlobalStreamOptions} instance. No arguments are required. */
-  public static GlobalStreamOptions create() {
-    return new GlobalStreamOptions();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRef} instance
+   * with all required arguments.
+   */
+  public static Builder create() {
+    return (templateRef) -> new TemplateRef().templateRef(templateRef);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the templateRef of this {@link TemplateRef} instance.
+     *
+     * @param templateRef The templateRef of this {@link TemplateRef}
+     * @return The TemplateRef instance.
+     */
+    TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
   }
 }

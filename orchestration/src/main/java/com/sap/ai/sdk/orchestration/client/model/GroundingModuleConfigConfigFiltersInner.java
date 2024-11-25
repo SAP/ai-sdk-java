@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.client.model;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** MaskingProviderConfig */
+/** GroundingModuleConfigConfigFiltersInner */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "",
     visible = true)
-public interface MaskingProviderConfig {}
+public interface GroundingModuleConfigConfigFiltersInner {}

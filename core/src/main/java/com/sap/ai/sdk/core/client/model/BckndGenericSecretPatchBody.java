@@ -61,7 +61,6 @@ public class BckndGenericSecretPatchBody
   @Nonnull
   public BckndGenericSecretPatchBody putdataItem(
       @Nonnull final String key, @Nonnull final String dataItem) {
-    this.data = new HashMap<>();
     this.data.put(key, dataItem);
     return this;
   }

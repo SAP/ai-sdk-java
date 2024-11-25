@@ -120,7 +120,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = new ChatMessage().role("user").content("{{?input}}");
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
@@ -259,9 +259,10 @@ class OrchestrationUnitTest {
 
     final List<ChatMessage> messagesHistory =
         List.of(
-            new ChatMessage().role("user").content("What is the capital of France?"),
-            new ChatMessage().role("assistant").content("The capital of France is Paris."));
-    final var message = new ChatMessage().role("user").content("What is the typical food there?");
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 

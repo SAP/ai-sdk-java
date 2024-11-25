@@ -16,21 +16,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets AzureThreshold */
-public enum AzureThreshold {
-  NUMBER_0(0),
+/** Gets or Sets SearchSelectOptionEnum */
+public enum SearchSelectOptionEnum {
+  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
 
-  NUMBER_2(2),
+  UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
-  NUMBER_4(4),
+  private final String value;
 
-  NUMBER_6(6),
-
-  NUMBER_unknown_default_open_api(11184809);
-
-  private final Integer value;
-
-  AzureThreshold(Integer value) {
+  SearchSelectOptionEnum(String value) {
     this.value = value;
   }
 
@@ -38,7 +32,7 @@ public enum AzureThreshold {
    * @return The enum value.
    */
   @JsonValue
-  public Integer getValue() {
+  public String getValue() {
     return value;
   }
 
@@ -58,12 +52,12 @@ public enum AzureThreshold {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static AzureThreshold fromValue(@Nonnull final Integer value) {
-    for (final AzureThreshold b : AzureThreshold.values()) {
+  public static SearchSelectOptionEnum fromValue(@Nonnull final String value) {
+    for (final SearchSelectOptionEnum b : SearchSelectOptionEnum.values()) {
       if (b.value.equals(value)) {
         return b;
       }
     }
-    return NUMBER_unknown_default_open_api;
+    return null;
   }
 }

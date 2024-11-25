@@ -24,55 +24,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Options for streaming. Will be ignored if stream is false. */
+/** TemplateRefByID */
 // CHECKSTYLE:OFF
-public class GlobalStreamOptions
+public class TemplateRefByID implements TemplateRefTemplateRef
 // CHECKSTYLE:ON
 {
-  @JsonProperty("chunk_size")
-  private Integer chunkSize = 100;
+  @JsonProperty("id")
+  private String id;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GlobalStreamOptions. */
-  protected GlobalStreamOptions() {}
+  /** Default constructor for TemplateRefByID. */
+  protected TemplateRefByID() {}
 
   /**
-   * Set the chunkSize of this {@link GlobalStreamOptions} instance and return the same instance.
+   * Set the id of this {@link TemplateRefByID} instance and return the same instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
-   * @return The same instance of this {@link GlobalStreamOptions} class
+   * @param id ID of the template in prompt registry
+   * @return The same instance of this {@link TemplateRefByID} class
    */
   @Nonnull
-  public GlobalStreamOptions chunkSize(@Nullable final Integer chunkSize) {
-    this.chunkSize = chunkSize;
+  public TemplateRefByID id(@Nonnull final String id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Number of characters per chunk that post-LLM modules operate on. minimum: 1 maximum: 10000
+   * ID of the template in prompt registry
    *
-   * @return chunkSize The chunkSize of this {@link GlobalStreamOptions} instance.
+   * @return id The id of this {@link TemplateRefByID} instance.
    */
   @Nonnull
-  public Integer getChunkSize() {
-    return chunkSize;
+  public String getId() {
+    return id;
   }
 
   /**
-   * Set the chunkSize of this {@link GlobalStreamOptions} instance.
+   * Set the id of this {@link TemplateRefByID} instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
+   * @param id ID of the template in prompt registry
    */
-  public void setChunkSize(@Nullable final Integer chunkSize) {
-    this.chunkSize = chunkSize;
+  public void setId(@Nonnull final String id) {
+    this.id = id;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GlobalStreamOptions}.
+   * Get the names of the unrecognizable properties of the {@link TemplateRefByID}.
    *
    * @return The set of properties names
    */
@@ -83,7 +81,7 @@ public class GlobalStreamOptions
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GlobalStreamOptions} instance.
+   * Get the value of an unrecognizable property of this {@link TemplateRefByID} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -92,15 +90,14 @@ public class GlobalStreamOptions
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GlobalStreamOptions has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TemplateRefByID has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link GlobalStreamOptions} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TemplateRefByID} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -118,22 +115,22 @@ public class GlobalStreamOptions
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GlobalStreamOptions globalStreamOptions = (GlobalStreamOptions) o;
-    return Objects.equals(this.cloudSdkCustomFields, globalStreamOptions.cloudSdkCustomFields)
-        && Objects.equals(this.chunkSize, globalStreamOptions.chunkSize);
+    final TemplateRefByID templateRefByID = (TemplateRefByID) o;
+    return Objects.equals(this.cloudSdkCustomFields, templateRefByID.cloudSdkCustomFields)
+        && Objects.equals(this.id, templateRefByID.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chunkSize, cloudSdkCustomFields);
+    return Objects.hash(id, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GlobalStreamOptions {\n");
-    sb.append("    chunkSize: ").append(toIndentedString(chunkSize)).append("\n");
+    sb.append("class TemplateRefByID {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -151,8 +148,22 @@ public class GlobalStreamOptions
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link GlobalStreamOptions} instance. No arguments are required. */
-  public static GlobalStreamOptions create() {
-    return new GlobalStreamOptions();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRefByID}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (id) -> new TemplateRefByID().id(id);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the id of this {@link TemplateRefByID} instance.
+     *
+     * @param id ID of the template in prompt registry
+     * @return The TemplateRefByID instance.
+     */
+    TemplateRefByID id(@Nonnull final String id);
   }
 }

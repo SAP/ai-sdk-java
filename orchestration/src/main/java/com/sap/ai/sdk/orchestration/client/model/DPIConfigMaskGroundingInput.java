@@ -24,55 +24,57 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Options for streaming. Will be ignored if stream is false. */
+/** DPIConfigMaskGroundingInput */
 // CHECKSTYLE:OFF
-public class GlobalStreamOptions
+public class DPIConfigMaskGroundingInput
 // CHECKSTYLE:ON
 {
-  @JsonProperty("chunk_size")
-  private Integer chunkSize = 100;
+  @JsonProperty("enabled")
+  private Boolean enabled = false;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GlobalStreamOptions. */
-  protected GlobalStreamOptions() {}
+  /** Default constructor for DPIConfigMaskGroundingInput. */
+  protected DPIConfigMaskGroundingInput() {}
 
   /**
-   * Set the chunkSize of this {@link GlobalStreamOptions} instance and return the same instance.
+   * Set the enabled of this {@link DPIConfigMaskGroundingInput} instance and return the same
+   * instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
-   * @return The same instance of this {@link GlobalStreamOptions} class
+   * @param enabled controls whether the input to the grounding module will be masked with the
+   *     configuration supplied in the masking module
+   * @return The same instance of this {@link DPIConfigMaskGroundingInput} class
    */
   @Nonnull
-  public GlobalStreamOptions chunkSize(@Nullable final Integer chunkSize) {
-    this.chunkSize = chunkSize;
+  public DPIConfigMaskGroundingInput enabled(@Nullable final Boolean enabled) {
+    this.enabled = enabled;
     return this;
   }
 
   /**
-   * Number of characters per chunk that post-LLM modules operate on. minimum: 1 maximum: 10000
+   * controls whether the input to the grounding module will be masked with the configuration
+   * supplied in the masking module
    *
-   * @return chunkSize The chunkSize of this {@link GlobalStreamOptions} instance.
+   * @return enabled The enabled of this {@link DPIConfigMaskGroundingInput} instance.
    */
   @Nonnull
-  public Integer getChunkSize() {
-    return chunkSize;
+  public Boolean isEnabled() {
+    return enabled;
   }
 
   /**
-   * Set the chunkSize of this {@link GlobalStreamOptions} instance.
+   * Set the enabled of this {@link DPIConfigMaskGroundingInput} instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
+   * @param enabled controls whether the input to the grounding module will be masked with the
+   *     configuration supplied in the masking module
    */
-  public void setChunkSize(@Nullable final Integer chunkSize) {
-    this.chunkSize = chunkSize;
+  public void setEnabled(@Nullable final Boolean enabled) {
+    this.enabled = enabled;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GlobalStreamOptions}.
+   * Get the names of the unrecognizable properties of the {@link DPIConfigMaskGroundingInput}.
    *
    * @return The set of properties names
    */
@@ -83,7 +85,8 @@ public class GlobalStreamOptions
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GlobalStreamOptions} instance.
+   * Get the value of an unrecognizable property of this {@link DPIConfigMaskGroundingInput}
+   * instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -93,13 +96,13 @@ public class GlobalStreamOptions
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "GlobalStreamOptions has no field with name '" + name + "'.");
+          "DPIConfigMaskGroundingInput has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link GlobalStreamOptions} instance. If the map
+   * Set an unrecognizable property of this {@link DPIConfigMaskGroundingInput} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -118,22 +121,23 @@ public class GlobalStreamOptions
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GlobalStreamOptions globalStreamOptions = (GlobalStreamOptions) o;
-    return Objects.equals(this.cloudSdkCustomFields, globalStreamOptions.cloudSdkCustomFields)
-        && Objects.equals(this.chunkSize, globalStreamOptions.chunkSize);
+    final DPIConfigMaskGroundingInput dpIConfigMaskGroundingInput = (DPIConfigMaskGroundingInput) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, dpIConfigMaskGroundingInput.cloudSdkCustomFields)
+        && Objects.equals(this.enabled, dpIConfigMaskGroundingInput.enabled);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chunkSize, cloudSdkCustomFields);
+    return Objects.hash(enabled, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GlobalStreamOptions {\n");
-    sb.append("    chunkSize: ").append(toIndentedString(chunkSize)).append("\n");
+    sb.append("class DPIConfigMaskGroundingInput {\n");
+    sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -151,8 +155,8 @@ public class GlobalStreamOptions
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link GlobalStreamOptions} instance. No arguments are required. */
-  public static GlobalStreamOptions create() {
-    return new GlobalStreamOptions();
+  /** Create a new {@link DPIConfigMaskGroundingInput} instance. No arguments are required. */
+  public static DPIConfigMaskGroundingInput create() {
+    return new DPIConfigMaskGroundingInput();
   }
 }
