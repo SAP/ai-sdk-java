@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * <p>SAP AI Core - Orchestration Service API
  */
+@Beta
 public class OrchestrationCompletionApi extends AbstractOpenApiService {
   /**
    * Instantiates this API class to invoke operations on the Internal Orchestration Service API.

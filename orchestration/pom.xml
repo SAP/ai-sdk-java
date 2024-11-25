@@ -150,7 +150,7 @@
               <skip>true</skip>
               <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <apiMaturity>released</apiMaturity>
+              <apiMaturity>beta</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
               <compileScope>COMPILE</compileScope>
               <deleteOutputDirectory>true</deleteOutputDirectory>
