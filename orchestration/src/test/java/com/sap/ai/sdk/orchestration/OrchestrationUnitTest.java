@@ -380,4 +380,55 @@ class OrchestrationUnitTest {
 
     softly.assertAll();
   }
+
+  @Test
+  void testExecuteRequestFromJson() {
+    stubFor(post(anyUrl()).willReturn(okJson("{}")));
+
+    prompt = new OrchestrationPrompt(Map.of());
+    final var configJson =
+        """
+        {
+          "module_configurations": {
+            "llm_module_config": {
+              "model_name": "mistralai--mistral-large-instruct",
+              "model_params": {}
+            }
+          }
+        }
+        """;
+
+    final var expectedJson =
+        """
+        {
+          "messages_history": [],
+          "input_params": {},
+          "orchestration_config": {
+            "module_configurations": {
+              "llm_module_config": {
+                "model_name": "mistralai--mistral-large-instruct",
+                "model_params": {}
+              }
+            }
+          }
+        }
+        """;
+
+    var result = client.executeRequestFromJsonModuleConfig(prompt, configJson);
+    assertThat(result).isNotNull();
+
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedJson)));
+  }
+
+  @Test
+  void testExecuteRequestFromJsonThrows() {
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{}"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("messages");
+
+    prompt = new OrchestrationPrompt(Map.of());
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("not valid JSON");
+  }
 }
