@@ -2,6 +2,9 @@ package com.sap.ai.sdk.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -12,7 +15,8 @@ class AiCoreServiceKeyAccessorTest {
 
   @Test
   void testValidDotenv() {
-    var dotenv = Dotenv.configure().filename("valid.testenv");
+    var dotenv = spy(Dotenv.configure().filename("valid.testenv"));
+
     var accessor = new AiCoreServiceKeyAccessor(dotenv);
     assertThat(accessor.getServiceBindings()).isNotEmpty().hasSize(1);
     assertThat(accessor.getServiceBindings().get(0).getCredentials())
@@ -20,6 +24,8 @@ class AiCoreServiceKeyAccessorTest {
         .containsEntry("clientsecret", "csecret")
         .containsEntry("url", "https://authenticationsap")
         .containsEntry("serviceurls", Map.of("AI_API_URL", "https://api.ai.sap"));
+
+    verify(dotenv, times(1)).load();
   }
 
   @Test
