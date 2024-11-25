@@ -98,7 +98,7 @@ To explore these packages further, check out [our sample project](https://github
 
 ## Support and Feedback
 
-We’d love your feedback on this first release! For support or to share your ideas, feel free to open an issue on [GitHub](https://github.com/SAP/ai-sdk-java/pulls).
+We’d love your feedback on this first release! For support or to share your ideas, feel free to open an issue on [GitHub](https://github.com/SAP/ai-sdk-java/issues/new/choose).
 
 ## Latest News
 * [SAP Cloud SDK for AI for JavaScript](https://community.sap.com/t5/technology-blogs-by-sap/introducing-the-sap-cloud-sdk-for-ai-javascript-typescript/ba-p/13892856) released in October 2024.
