@@ -158,9 +158,6 @@ public class DPIConfig implements MaskingProviderConfig
   @JsonProperty("allowlist")
   private List<String> allowlist = new ArrayList<>();
 
-  @JsonProperty("mask_grounding_input")
-  private DPIConfigMaskGroundingInput maskGroundingInput;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -322,39 +319,6 @@ public class DPIConfig implements MaskingProviderConfig
   }
 
   /**
-   * Set the maskGroundingInput of this {@link DPIConfig} instance and return the same instance.
-   *
-   * @param maskGroundingInput The maskGroundingInput of this {@link DPIConfig}
-   * @return The same instance of this {@link DPIConfig} class
-   */
-  @Nonnull
-  public DPIConfig maskGroundingInput(
-      @Nullable final DPIConfigMaskGroundingInput maskGroundingInput) {
-    this.maskGroundingInput = maskGroundingInput;
-    return this;
-  }
-
-  /**
-   * Get maskGroundingInput
-   *
-   * @return maskGroundingInput The maskGroundingInput of this {@link DPIConfig} instance.
-   */
-  @Nonnull
-  public DPIConfigMaskGroundingInput getMaskGroundingInput() {
-    return maskGroundingInput;
-  }
-
-  /**
-   * Set the maskGroundingInput of this {@link DPIConfig} instance.
-   *
-   * @param maskGroundingInput The maskGroundingInput of this {@link DPIConfig}
-   */
-  public void setMaskGroundingInput(
-      @Nullable final DPIConfigMaskGroundingInput maskGroundingInput) {
-    this.maskGroundingInput = maskGroundingInput;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link DPIConfig}.
    *
    * @return The set of properties names
@@ -405,14 +369,12 @@ public class DPIConfig implements MaskingProviderConfig
         && Objects.equals(this.type, dpIConfig.type)
         && Objects.equals(this.method, dpIConfig.method)
         && Objects.equals(this.entities, dpIConfig.entities)
-        && Objects.equals(this.allowlist, dpIConfig.allowlist)
-        && Objects.equals(this.maskGroundingInput, dpIConfig.maskGroundingInput);
+        && Objects.equals(this.allowlist, dpIConfig.allowlist);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        type, method, entities, allowlist, maskGroundingInput, cloudSdkCustomFields);
+    return Objects.hash(type, method, entities, allowlist, cloudSdkCustomFields);
   }
 
   @Override
@@ -424,7 +386,6 @@ public class DPIConfig implements MaskingProviderConfig
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
     sb.append("    entities: ").append(toIndentedString(entities)).append("\n");
     sb.append("    allowlist: ").append(toIndentedString(allowlist)).append("\n");
-    sb.append("    maskGroundingInput: ").append(toIndentedString(maskGroundingInput)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

@@ -44,7 +44,6 @@ components:
       type: object
       required:
         - orchestration_config
-      additionalProperties: false
       properties:
         orchestration_config:
           $ref: "#/components/schemas/OrchestrationConfig"
@@ -76,7 +75,6 @@ components:
       required:
         - role
         - content
-      additionalProperties: false
       properties:
         role:
           type: string
@@ -134,7 +132,6 @@ components:
       type: object
       required:
         - module_configurations
-      additionalProperties: false
       properties:
         module_configurations:
           $ref: "#/components/schemas/ModuleConfigs"
@@ -150,7 +147,6 @@ components:
       required:
         - llm_module_config
         - templating_module_config
-      additionalProperties: false
       properties:
         llm_module_config:
           $ref: "#/components/schemas/LLMModuleConfig"
@@ -205,7 +201,6 @@ components:
       required:
         - model_name
         - model_params
-      additionalProperties: false
       properties:
         model_name:
           description: Model name as in LLM Access configuration
@@ -397,7 +392,6 @@ components:
       type: object
       required:
         - template
-      additionalProperties: false
       properties:
         template:
           allOf:
@@ -418,7 +412,6 @@ components:
       type: object
       required:
         - template_ref
-      additionalProperties: false
       properties:
         template_ref:
           type: object
@@ -431,7 +424,6 @@ components:
       type: object
       required:
         - id
-      additionalProperties: false
       properties:
         id:
           type: string
@@ -444,7 +436,6 @@ components:
         - scenario
         - name
         - version
-      additionalProperties: false
       properties:
         scenario:
           type: string
@@ -462,7 +453,6 @@ components:
     # --- Filtering Module ---
     FilteringModuleConfig:
       type: object
-      additionalProperties: false
       properties:
         input:
           allOf:
@@ -472,7 +462,7 @@ components:
           allOf:
             - $ref: "#/components/schemas/OutputFilteringConfig"
           description: List of provider type and filters
-      minProperties: 1
+      additionalProperties: false
 
     InputFilteringConfig:
       type: object
@@ -522,7 +512,6 @@ components:
       type: object
       required:
         - type
-      additionalProperties: false
       properties:
         type:
           description: String represents name of the filter provider
@@ -562,7 +551,6 @@ components:
       type: object
       required:
         - masking_providers
-      additionalProperties: false
       properties:
         masking_providers:
           type: array
@@ -570,6 +558,7 @@ components:
           items:
             $ref: "#/components/schemas/MaskingProviderConfig"
           description: List of masking service providers
+      additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
@@ -581,7 +570,6 @@ components:
         - type
         - method
         - entities
-      additionalProperties: false
       properties:
         type:
           description: Type of masking service provider
@@ -603,22 +591,14 @@ components:
         allowlist:
           description: List of strings that should not be masked
           type: array
-          example: ["SAP", "Joule"]
           items:
             type: string
-        mask_grounding_input:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-              default: false
-              description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
+            example: "David Smith"
 
     DPIEntityConfig:
       type: object
       required:
         - type
-      additionalProperties: false
       properties:
         type:
           description: Type of entity to be masked
@@ -661,7 +641,6 @@ components:
       required:
         - type
         - config
-      additionalProperties: false
       properties:
         type:
           type: string
@@ -675,7 +654,6 @@ components:
           required:
             - input_params
             - output_param
-          additionalProperties: false
           properties:
             filters:
               type: array
@@ -685,7 +663,6 @@ components:
               description: Document grounding service filters to be used
             input_params:
               type: array
-              minItems: 1
               items:
                 type: string
                 example: groundingInput
@@ -694,13 +671,11 @@ components:
               type: string
               description: Parameter name used for grounding output
               example: groundingOutput
-
     DocumentGroundingFilter:
       type: object
       required:
         - id
         - data_repository_type
-      additionalProperties: false
       properties:
         id:
           $ref: "#/components/schemas/GroundingFilterId"
@@ -737,13 +712,11 @@ components:
           title: Chunkmetadata
           description: Restrict chunks considered during search to those with the given metadata.
       minProperties: 1
-
     GroundingFilterId:
       title: Id
       description: Identifier of this SearchFilter - unique per request.
     GroundingFilterSearchConfiguration:
       nullable: true
-      additionalProperties: false
       properties:
         max_chunk_count:
           nullable: true
@@ -762,7 +735,6 @@ components:
       title: SearchConfiguration
       minProperties: 0
       maxProperties: 1
-
     DataRepositoryType:
       type: string
       anyOf:
@@ -772,7 +744,6 @@ components:
         - {}
       title: DataRepositoryType
     KeyValueListPair:
-      additionalProperties: false
       properties:
         key:
           type: string
@@ -789,9 +760,7 @@ components:
         - key
         - value
       title: KeyValueListPair
-
     SearchDocumentKeyValueListPair:
-      additionalProperties: false
       properties:
         key:
           type: string
