@@ -10,6 +10,7 @@ This SDK enables integration of generative AI capabilities within your SAP Busin
 For SAP BTP developers, the AI SDK is crafted to simplify AI integration and enhance application impact. With features that optimize deployment, improve content safety, and facilitate model orchestration, the SDK lets you bring advanced AI functionality to your applications swiftly and with minimal setup. Whether you need adaptable workflows, secure data handling, or smooth generative model integration, the SDK equips you with robust tools to embed AI-powered features in your SAP BTP solutions.
 
 This post introduces the main artifacts and their features.
+
 ## AI Orchestration
 
 ```xml
@@ -28,7 +29,8 @@ The orchestration service streamlines AI interactions while ensuring adherence t
 * Data Masking: Anonymize and pseudonymize sensitive data.
 * Grounding:  Add external data sources for contextually relevant information (planned for Q1 2025).
 
-**Example:** Chat completion. ([more](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md))
+**Example:** Write a simple chat completion.
+
 ```java
 var client = new OrchestrationClient();
 var config = new OrchestrationModuleConfig().withLlmConfig(OrchestrationAiModel.GPT_4O);
@@ -37,6 +39,8 @@ var result = client.chatCompletion(prompt, config);
 
 String messageResult = result.getContent();
 ```
+
+You can learn more about the orchestration service capabilities [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
 
 ## AI Management
 
@@ -54,7 +58,8 @@ The `core` module provides tools for workflow and scenario management within SAP
 * Configuration Management: Set up configurations for various models and use cases.
 * Deployment Management: Deploy AI models and manage their lifecycle within SAP AI Core.
 
-**Example:** Create a deployment in SAP AI Core. ([more](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/AI_CORE_DEPLOYMENT.md))
+**Example:** Create a deployment in SAP AI Core.
+
 ```java
 var api = new DeploymentApi();
 var resourceGroupId = "default";
@@ -65,6 +70,8 @@ AiDeploymentCreationResponse deployment = api.create(resourceGroupId, request);
 String id = deployment.getId();
 AiExecutionStatus status = deployment.getStatus();
 ```
+
+You can learn more about the SAP AI Core capabilities [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/AI_CORE_DEPLOYMENT.md).
 
 ## Generative AI with Foundation Models and OpenAI
 
@@ -79,7 +86,8 @@ AiExecutionStatus status = deployment.getStatus();
 The `openai` module, along with other artifacts in the `com.sap.ai.sdk.foundationmodels` group, enables streamlined access to specific generative AI models available through the Generative AI Hub.
 The module provides a simplified interface focused on direct model interactions, ideal for developers who require direct access to foundation models for inference and embedding requests without additional orchestration features.
 
-**Example:** Simple chat completion. ([more](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/OPENAI_CHAT_COMPLETION.md))
+**Example:** Write a simple chat completion.
+
 ```java
 var result = 
   OpenAiClient.forModel(GPT_35_TURBO)
@@ -88,6 +96,8 @@ var result =
 
 String resultMessage = result.getContent();
 ```
+
+You can learn more about the foundation models and OpenAI specific capabilities [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/OPENAI_CHAT_COMPLETION.md).
 
 ## Getting Started
 
