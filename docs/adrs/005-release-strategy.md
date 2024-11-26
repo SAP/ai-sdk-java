@@ -76,9 +76,12 @@ The following depicts a development flow where the AI SDK development steps are 
 
 1. A new AI Core feature is being developed.
 2. A PR is raised on the AI SDK with a corresponding implementation, but so far not E2E-tested.
-   - Potentially aided by unit tests based on test data manually copied from Bruno 
+   - Potentially aided by unit tests based on test data manually copied from e.g. Bruno.
+   - Generated code is created from a development version of the relevant spec file.
 3. (+2 weeks later) The feature is released to EU12 canary landscape.
-4. The AI SDK PR is enhanced with an E2E test against canary.
+4. The AI SDK PR is enhanced:
+   - With an updated spec file.
+   - With an E2E test against canary.
 5. The AI SDK PR is merged.
 6. (+1 week later) The feature is released to EU10 production landscape.
 7. The E2E test is updated to now also run against production.
