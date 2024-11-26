@@ -45,6 +45,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "CVE Scan"
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
           mvn -T1 --no-transfer-progress dependency-check:check dependency-check:aggregate
 
