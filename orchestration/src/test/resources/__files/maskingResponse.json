@@ -14,16 +14,7 @@
     "input_masking": {
       "message": "Input to LLM is masked successfully.",
       "data": {
-        "masked_template": [
-          {
-            "role": "system",
-            "content": "Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.\nPlease make sure to address the user in person and end with \"Best regards, the AI SDK team\".\n"
-          },
-          {
-            "role": "user",
-            "content": "Username: MASKED_PERSON_2\nuserEmail: MASKED_PERSON_3MASKED_EMAIL_1\nDate: 2022-01-01\n\nI think the SDK is good, but could use some further enhancements.\nMy architect MASKED_PERSON_1 and manager MASKED_PERSON_4 pointed out that we need the grounding capabilities, which aren't supported yet.\n"
-          }
-        ]
+        "masked_template": "[{\"role\": \"system\", \"content\": \"Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.\\nPlease make sure to address the user in person and end with \\\"Best regards, the AI SDK team\\\".\\n\"}, {\"role\": \"user\", \"content\": \"Username: MASKED_PERSON_2\\nuserEmail: MASKED_PERSON_1MASKED_EMAIL_1\\nDate: 2022-01-01\\n\\nI think the SDK is good, but could use some further enhancements.\\nMy architect MASKED_PERSON_4 and manager MASKED_PERSON_3 pointed out that we need the grounding capabilities, which aren't supported yet.\\n\"}]"
       }
     },
     "llm": {
