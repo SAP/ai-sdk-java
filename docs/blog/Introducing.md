@@ -113,6 +113,6 @@ We’d love your feedback on this first release! For support or to share your id
 * [SAP Cloud SDK for AI for JavaScript](https://community.sap.com/t5/technology-blogs-by-sap/introducing-the-sap-cloud-sdk-for-ai-javascript-typescript/ba-p/13892856) released in October 2024.
 * Visit [sap.com/ai](https://www.sap.com/products/artificial-intelligence.html) and explore our portfolio
 * Explore the available AI capabilities on [SAP Discovery Center](https://discovery-center.cloud.sap/serviceCatalog/sap-ai-core/?region=all).
-* Discover the latest announcements in the [SAP TechEd Press Release](https://news.sap.com/?p=228310) and the [SAP TechEd News Guide](https://www.sap.com/events/teched/news-guide.html%22%20/t%20%22_blank).
-* Review the [SAP Road Map Explorer](https://roadmaps.sap.com/board?range=FIRST-LAST&PRODUCT=73554900100800003641&PRODUCT=73555000100800003283%22%20\l%20%22Q3%202024%22%20\t%20%22_blank) for a detailed view of upcoming product innovations.
-* Join the [SAP Community](https://pages.community.sap.com/topics/ai-core-artificial-intelligence%22%20/t%20%22_blank) page to connect with experts and share knowledge.
+* Discover the latest announcements in the [SAP TechEd Press Release](https://news.sap.com/?p=228310) and the [SAP TechEd News Guide](https://www.sap.com/events/teched/news-guide.html).
+* Review the [SAP Road Map Explorer](https://roadmaps.sap.com/board?PRODUCT=73554900100800003641&PRODUCT=73555000100800003283&range=FIRST-LAST) for a detailed view of upcoming product innovations.
+* Join the [SAP Community](https://pages.community.sap.com/topics/ai-core-artificial-intelligence) page to connect with experts and share knowledge.
