@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -75,7 +76,7 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var response = controller.filter(AzureFilterThreshold.ALLOW_ALL);
+    var response = controller.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -113,8 +114,8 @@ class OrchestrationTest {
     var maskingResult = result.getModuleResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
-    var maskedMessage = (String) data.get("masked_template");
-    assertThat(maskedMessage)
+    var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(0);
+    assertThat(maskedMessage.get("content"))
         .asInstanceOf(InstanceOfAssertFactories.STRING)
         .doesNotContain("Alice", "Bob");
 
@@ -136,8 +137,8 @@ class OrchestrationTest {
     var maskingResult = result.getModuleResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
-    var maskedMessage = (String) data.get("masked_template");
-    assertThat(maskedMessage)
+    var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(1);
+    assertThat(maskedMessage.get("content"))
         .asInstanceOf(InstanceOfAssertFactories.STRING)
         .describedAs("The masked input should not contain any user names but only pseudonyms")
         .doesNotContain("Mallory", "Alice", "Bob")
