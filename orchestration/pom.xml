@@ -86,14 +86,6 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
@@ -147,7 +139,6 @@
             <groupId>com.sap.cloud.sdk.datamodel</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
-              <skip>true</skip>
               <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>beta</apiMaturity>
@@ -165,6 +156,7 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
+                  <generateApis>false</generateApis>
                   <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
