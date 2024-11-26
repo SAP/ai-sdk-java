@@ -137,9 +137,8 @@ class OrchestrationTest {
     var maskingResult = result.getModuleResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
-    var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(1);
-    assertThat(maskedMessage.get("content"))
-        .asInstanceOf(InstanceOfAssertFactories.STRING)
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
         .describedAs("The masked input should not contain any user names but only pseudonyms")
         .doesNotContain("Mallory", "Alice", "Bob")
         .contains("MASKED_PERSON");
