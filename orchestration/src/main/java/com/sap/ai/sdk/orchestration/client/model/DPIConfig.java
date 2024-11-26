@@ -155,9 +155,6 @@ public class DPIConfig implements MaskingProviderConfig
   @JsonProperty("entities")
   private List<DPIEntityConfig> entities = new ArrayList<>();
 
-  @JsonProperty("allowlist")
-  private List<String> allowlist = new ArrayList<>();
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -273,52 +270,6 @@ public class DPIConfig implements MaskingProviderConfig
   }
 
   /**
-   * Set the allowlist of this {@link DPIConfig} instance and return the same instance.
-   *
-   * @param allowlist List of strings that should not be masked
-   * @return The same instance of this {@link DPIConfig} class
-   */
-  @Nonnull
-  public DPIConfig allowlist(@Nullable final List<String> allowlist) {
-    this.allowlist = allowlist;
-    return this;
-  }
-
-  /**
-   * Add one allowlist instance to this {@link DPIConfig}.
-   *
-   * @param allowlistItem The allowlist that should be added
-   * @return The same instance of type {@link DPIConfig}
-   */
-  @Nonnull
-  public DPIConfig addAllowlistItem(@Nonnull final String allowlistItem) {
-    if (this.allowlist == null) {
-      this.allowlist = new ArrayList<>();
-    }
-    this.allowlist.add(allowlistItem);
-    return this;
-  }
-
-  /**
-   * List of strings that should not be masked
-   *
-   * @return allowlist The allowlist of this {@link DPIConfig} instance.
-   */
-  @Nonnull
-  public List<String> getAllowlist() {
-    return allowlist;
-  }
-
-  /**
-   * Set the allowlist of this {@link DPIConfig} instance.
-   *
-   * @param allowlist List of strings that should not be masked
-   */
-  public void setAllowlist(@Nullable final List<String> allowlist) {
-    this.allowlist = allowlist;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link DPIConfig}.
    *
    * @return The set of properties names
@@ -368,13 +319,12 @@ public class DPIConfig implements MaskingProviderConfig
     return Objects.equals(this.cloudSdkCustomFields, dpIConfig.cloudSdkCustomFields)
         && Objects.equals(this.type, dpIConfig.type)
         && Objects.equals(this.method, dpIConfig.method)
-        && Objects.equals(this.entities, dpIConfig.entities)
-        && Objects.equals(this.allowlist, dpIConfig.allowlist);
+        && Objects.equals(this.entities, dpIConfig.entities);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, method, entities, allowlist, cloudSdkCustomFields);
+    return Objects.hash(type, method, entities, cloudSdkCustomFields);
   }
 
   @Override
@@ -385,7 +335,6 @@ public class DPIConfig implements MaskingProviderConfig
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
     sb.append("    entities: ").append(toIndentedString(entities)).append("\n");
-    sb.append("    allowlist: ").append(toIndentedString(allowlist)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

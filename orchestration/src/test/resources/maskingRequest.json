@@ -28,8 +28,7 @@
               {
                 "type": "profile-phone"
               }
-            ],
-            "allowlist" : [ ]
+            ]
           }
         ]
       }

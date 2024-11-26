@@ -38,6 +38,30 @@ paths:
         default:
           $ref: "#/components/responses/CommonError"
 
+  /healthz:
+    get:
+      tags:
+        - OrchestrationHealthz
+      operationId: orchestration.v1.endpoints.healthz
+      responses:
+        "200":
+          description: "Service is up and running."
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        "503":
+          description: "Service is unavailable."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Service Unavailable"
+
 components:
   schemas:
     CompletionPostRequest:
@@ -61,12 +85,6 @@ components:
 
     ChatMessages:
       type: array
-      items:
-        $ref: "#/components/schemas/ChatMessage"
-
-    TemplatingChatMessage:
-      type: array
-      minItems: 1
       items:
         $ref: "#/components/schemas/ChatMessage"
 
@@ -167,7 +185,7 @@ components:
         grounding:
           $ref: "#/components/schemas/GenericModuleResult"
         templating:
-          $ref: "#/components/schemas/TemplatingChatMessage"
+          $ref: "#/components/schemas/ChatMessages"
         input_masking:
           $ref: "#/components/schemas/GenericModuleResult"
         input_filtering:
@@ -395,7 +413,7 @@ components:
       properties:
         template:
           allOf:
-            - $ref: "#/components/schemas/TemplatingChatMessage"
+            - $ref: "#/components/schemas/ChatMessages"
           description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
@@ -449,6 +467,7 @@ components:
           type: string
           description: Version of the template
           example: "some version, can be `latest`"
+
 
     # --- Filtering Module ---
     FilteringModuleConfig:
@@ -588,12 +607,6 @@ components:
           minItems: 1
           items:
             $ref: "#/components/schemas/DPIEntityConfig"
-        allowlist:
-          description: List of strings that should not be masked
-          type: array
-          items:
-            type: string
-            example: "David Smith"
 
     DPIEntityConfig:
       type: object
@@ -634,6 +647,7 @@ components:
         - profile-sexual-orientation
         - profile-trade-union
         - profile-sensitive-data
+
 
     # --- Grounding Module ---
     GroundingModuleConfig:
