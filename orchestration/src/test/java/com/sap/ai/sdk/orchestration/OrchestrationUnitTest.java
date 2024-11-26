@@ -386,7 +386,9 @@ class OrchestrationUnitTest {
   void testExecuteRequestFromJson() {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
 
-    prompt = new OrchestrationPrompt(Map.of());
+    prompt =
+        new OrchestrationPrompt(Map.of("foo", "bar"))
+            .messageHistory(List.of(ChatMessage.create().role("user").content("Hello World!")));
     final var configJson =
         """
         {
@@ -402,8 +404,13 @@ class OrchestrationUnitTest {
     final var expectedJson =
         """
         {
-          "messages_history": [],
-          "input_params": {},
+          "messages_history": [{
+            "role" : "user",
+            "content" : "Hello World!"
+          }],
+          "input_params": {
+            "foo" : "bar"
+          },
           "orchestration_config": {
             "module_configurations": {
               "llm_module_config": {
