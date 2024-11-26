@@ -2,7 +2,7 @@ name: "Fosstars (Security)"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # every day at midnight
+    - cron: '42 03 * * MON-FRI' # 03:42 on weekdays, a somewhat random time to avoid producing load spikes on the GH actions infrastructure
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
