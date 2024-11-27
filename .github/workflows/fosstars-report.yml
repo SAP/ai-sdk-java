@@ -48,7 +48,7 @@ jobs:
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          mvn -T1 --no-transfer-progress dependency-check:check dependency-check:aggregate
+          mvn -T1 --no-transfer-progress dependency-check:check
 
       - name: Delete Old CVE Cache
         run: |
