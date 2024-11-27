@@ -12,35 +12,47 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.annotations.Beta;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** LLMModuleConfig */
-@JsonPropertyOrder({
-  LLMModuleConfig.JSON_PROPERTY_MODEL_NAME,
-  LLMModuleConfig.JSON_PROPERTY_MODEL_PARAMS,
-  LLMModuleConfig.JSON_PROPERTY_MODEL_VERSION
-})
-@com.google.common.annotations.Beta
-@javax.annotation.Generated(
-    value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    comments = "Generator version: 7.9.0")
-public class LLMModuleConfig {
-  public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
+@Beta // CHECKSTYLE:OFF
+public class LLMModuleConfig
+// CHECKSTYLE:ON
+{
+  @JsonProperty("model_name")
   private String modelName;
 
-  public static final String JSON_PROPERTY_MODEL_PARAMS = "model_params";
+  @JsonProperty("model_params")
   private Object modelParams;
 
-  public static final String JSON_PROPERTY_MODEL_VERSION = "model_version";
+  @JsonProperty("model_version")
   private String modelVersion = "latest";
 
-  public LLMModuleConfig() {}
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  public LLMModuleConfig modelName(String modelName) {
+  /** Default constructor for LLMModuleConfig. */
+  protected LLMModuleConfig() {}
 
+  /**
+   * Set the modelName of this {@link LLMModuleConfig} instance and return the same instance.
+   *
+   * @param modelName Model name as in LLM Access configuration
+   * @return The same instance of this {@link LLMModuleConfig} class
+   */
+  @Nonnull
+  public LLMModuleConfig modelName(@Nonnull final String modelName) {
     this.modelName = modelName;
     return this;
   }
@@ -48,23 +60,30 @@ public class LLMModuleConfig {
   /**
    * Model name as in LLM Access configuration
    *
-   * @return modelName
+   * @return modelName The modelName of this {@link LLMModuleConfig} instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MODEL_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public String getModelName() {
     return modelName;
   }
 
-  @JsonProperty(JSON_PROPERTY_MODEL_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setModelName(String modelName) {
+  /**
+   * Set the modelName of this {@link LLMModuleConfig} instance.
+   *
+   * @param modelName Model name as in LLM Access configuration
+   */
+  public void setModelName(@Nonnull final String modelName) {
     this.modelName = modelName;
   }
 
-  public LLMModuleConfig modelParams(Object modelParams) {
-
+  /**
+   * Set the modelParams of this {@link LLMModuleConfig} instance and return the same instance.
+   *
+   * @param modelParams Model parameters
+   * @return The same instance of this {@link LLMModuleConfig} class
+   */
+  @Nonnull
+  public LLMModuleConfig modelParams(@Nonnull final Object modelParams) {
     this.modelParams = modelParams;
     return this;
   }
@@ -72,23 +91,30 @@ public class LLMModuleConfig {
   /**
    * Model parameters
    *
-   * @return modelParams
+   * @return modelParams The modelParams of this {@link LLMModuleConfig} instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MODEL_PARAMS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public Object getModelParams() {
     return modelParams;
   }
 
-  @JsonProperty(JSON_PROPERTY_MODEL_PARAMS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setModelParams(Object modelParams) {
+  /**
+   * Set the modelParams of this {@link LLMModuleConfig} instance.
+   *
+   * @param modelParams Model parameters
+   */
+  public void setModelParams(@Nonnull final Object modelParams) {
     this.modelParams = modelParams;
   }
 
-  public LLMModuleConfig modelVersion(String modelVersion) {
-
+  /**
+   * Set the modelVersion of this {@link LLMModuleConfig} instance and return the same instance.
+   *
+   * @param modelVersion Version of the model to use
+   * @return The same instance of this {@link LLMModuleConfig} class
+   */
+  @Nonnull
+  public LLMModuleConfig modelVersion(@Nullable final String modelVersion) {
     this.modelVersion = modelVersion;
     return this;
   }
@@ -96,47 +122,91 @@ public class LLMModuleConfig {
   /**
    * Version of the model to use
    *
-   * @return modelVersion
+   * @return modelVersion The modelVersion of this {@link LLMModuleConfig} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MODEL_VERSION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public String getModelVersion() {
     return modelVersion;
   }
 
-  @JsonProperty(JSON_PROPERTY_MODEL_VERSION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setModelVersion(String modelVersion) {
+  /**
+   * Set the modelVersion of this {@link LLMModuleConfig} instance.
+   *
+   * @param modelVersion Version of the model to use
+   */
+  public void setModelVersion(@Nullable final String modelVersion) {
     this.modelVersion = modelVersion;
   }
 
+  /**
+   * Get the names of the unrecognizable properties of the {@link LLMModuleConfig}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link LLMModuleConfig} instance.
+   *
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException("LLMModuleConfig has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link LLMModuleConfig} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LLMModuleConfig llMModuleConfig = (LLMModuleConfig) o;
-    return Objects.equals(this.modelName, llMModuleConfig.modelName)
+    final LLMModuleConfig llMModuleConfig = (LLMModuleConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, llMModuleConfig.cloudSdkCustomFields)
+        && Objects.equals(this.modelName, llMModuleConfig.modelName)
         && Objects.equals(this.modelParams, llMModuleConfig.modelParams)
         && Objects.equals(this.modelVersion, llMModuleConfig.modelVersion);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modelName, modelParams, modelVersion);
+    return Objects.hash(modelName, modelParams, modelVersion, cloudSdkCustomFields);
   }
 
   @Override
+  @Nonnull
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("class LLMModuleConfig {\n");
     sb.append("    modelName: ").append(toIndentedString(modelName)).append("\n");
     sb.append("    modelParams: ").append(toIndentedString(modelParams)).append("\n");
     sb.append("    modelVersion: ").append(toIndentedString(modelVersion)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -144,70 +214,41 @@ public class LLMModuleConfig {
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static class Builder {
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link LLMModuleConfig}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (modelName) ->
+        (modelParams) -> new LLMModuleConfig().modelName(modelName).modelParams(modelParams);
+  }
 
-    private LLMModuleConfig instance;
-
-    public Builder() {
-      this(new LLMModuleConfig());
-    }
-
-    protected Builder(LLMModuleConfig instance) {
-      this.instance = instance;
-    }
-
-    public LLMModuleConfig.Builder modelName(String modelName) {
-      this.instance.modelName = modelName;
-      return this;
-    }
-
-    public LLMModuleConfig.Builder modelParams(Object modelParams) {
-      this.instance.modelParams = modelParams;
-      return this;
-    }
-
-    public LLMModuleConfig.Builder modelVersion(String modelVersion) {
-      this.instance.modelVersion = modelVersion;
-      return this;
-    }
-
+  /** Builder helper class. */
+  public interface Builder {
     /**
-     * returns a built LLMModuleConfig instance.
+     * Set the modelName of this {@link LLMModuleConfig} instance.
      *
-     * <p>The builder is not reusable.
+     * @param modelName Model name as in LLM Access configuration
+     * @return The LLMModuleConfig builder.
      */
-    public LLMModuleConfig build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
-    }
+    Builder1 modelName(@Nonnull final String modelName);
   }
 
-  /** Create a builder with no initialized field. */
-  public static LLMModuleConfig.Builder builder() {
-    return new LLMModuleConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMModuleConfig.Builder toBuilder() {
-    return new LLMModuleConfig.Builder()
-        .modelName(getModelName())
-        .modelParams(getModelParams())
-        .modelVersion(getModelVersion());
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the modelParams of this {@link LLMModuleConfig} instance.
+     *
+     * @param modelParams Model parameters
+     * @return The LLMModuleConfig instance.
+     */
+    LLMModuleConfig modelParams(@Nonnull final Object modelParams);
   }
 }

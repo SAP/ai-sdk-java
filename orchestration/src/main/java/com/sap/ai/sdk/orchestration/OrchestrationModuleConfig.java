@@ -82,7 +82,7 @@ public class OrchestrationModuleConfig {
       @Nonnull final MaskingProvider maskingProvider,
       @Nonnull final MaskingProvider... maskingProviders) {
     val newMaskingConfig =
-        new MaskingModuleConfig().addMaskingProvidersItem(maskingProvider.createConfig());
+        MaskingModuleConfig.create().maskingProviders(maskingProvider.createConfig());
     Arrays.stream(maskingProviders)
         .forEach(it -> newMaskingConfig.addMaskingProvidersItem(it.createConfig()));
 
@@ -109,10 +109,10 @@ public class OrchestrationModuleConfig {
     final var filterConfigs =
         allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createConfig).toList();
 
-    final var inputFilter = new InputFilteringConfig().filters(filterConfigs);
+    final var inputFilter = InputFilteringConfig.create().filters(filterConfigs);
 
     final var newFilteringConfig =
-        new FilteringModuleConfig()
+        FilteringModuleConfig.create()
             .input(inputFilter)
             .output(this.filteringConfig != null ? this.filteringConfig.getOutput() : null);
 
@@ -140,10 +140,10 @@ public class OrchestrationModuleConfig {
     final var filterConfigs =
         allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createConfig).toList();
 
-    final var outputFilter = new OutputFilteringConfig().filters(filterConfigs);
+    final var outputFilter = OutputFilteringConfig.create().filters(filterConfigs);
 
     final var newFilteringConfig =
-        new FilteringModuleConfig()
+        FilteringModuleConfig.create()
             .output(outputFilter)
             .input(this.filteringConfig != null ? this.filteringConfig.getInput() : null);
 
