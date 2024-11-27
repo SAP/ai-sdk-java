@@ -50,13 +50,6 @@ jobs:
         run: |
           mvn -T1 --no-transfer-progress dependency-check:check dependency-check:aggregate
 
-#      - name: "Archive CVE Report"
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: cve-report
-#          path: target/dependency-check-report.html
-#          retention-days: 7
-
       - name: Delete Old CVE Cache
         run: |
           CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --ref "${{ env.CVE_CACHE_REF }}" --json id | jq -r '.[] | .id')
