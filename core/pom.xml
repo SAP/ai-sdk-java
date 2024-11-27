@@ -157,6 +157,8 @@
             <groupId>com.sap.cloud.sdk.datamodel</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
+              <skip>true</skip>
+              <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>released</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>

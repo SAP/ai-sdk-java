@@ -14,6 +14,7 @@ package com.sap.ai.sdk.orchestration.client.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import javax.annotation.Nonnull;
 
 /** Default entities supported by data privacy and integration service */
 public enum DPIEntities {
@@ -69,25 +70,38 @@ public enum DPIEntities {
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
-  private String value;
+  private final String value;
 
   DPIEntities(String value) {
     this.value = value;
   }
 
+  /**
+   * @return The enum value.
+   */
   @JsonValue
   public String getValue() {
     return value;
   }
 
+  /**
+   * @return The String representation of the enum value.
+   */
   @Override
+  @Nonnull
   public String toString() {
     return String.valueOf(value);
   }
 
+  /**
+   * Converts the given value to its enum representation.
+   *
+   * @param value The input value.
+   * @return The enum representation of the given value.
+   */
   @JsonCreator
-  public static DPIEntities fromValue(String value) {
-    for (DPIEntities b : DPIEntities.values()) {
+  public static DPIEntities fromValue(@Nonnull final String value) {
+    for (final DPIEntities b : DPIEntities.values()) {
       if (b.value.equals(value)) {
         return b;
       }

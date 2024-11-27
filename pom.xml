@@ -205,7 +205,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.9.0</version>
+          <version>7.10.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -332,7 +332,8 @@
             <configuration>
               <rules>
                 <bannedDependencies>
-                  <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests will (silently) simply not be executed.</message>
+                  <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests will (silently)
+                    simply not be executed.</message>
                   <excludes>
                     <exclude>junit:junit</exclude>
                   </excludes>
@@ -596,6 +597,50 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <suppressionFile>${project.rootdir}/.pipeline/dependency-check-suppression.xml</suppressionFile>
           <nvdValidForHours>46</nvdValidForHours>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>2.4.0</version>
+        <configuration>
+          <acceptPomPackaging>true</acceptPomPackaging>
+          <licenseName>apache_v2</licenseName>
+          <failOnBlacklist>true</failOnBlacklist>
+          <failOnMissing>true</failOnMissing>
+          <excludedScopes>test</excludedScopes>
+          <includedLicenses>
+            <includedLicense>The MIT License</includedLicense>
+            <includedLicense>Apache Software License - Version 2.0</includedLicense>
+            <includedLicense>ISC</includedLicense>
+            <includedLicense>The BSD 3-Clause License</includedLicense>
+            <includedLicense>WTFPL</includedLicense>
+            <includedLicense>CC-BY</includedLicense>
+            <includedLicense>CC0</includedLicense>
+            <includedLicense>Unlicense</includedLicense>
+            <includedLicense>Public Domain</includedLicense>
+
+            <!-- other licenses as needed -->
+            <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
+            <includedLicense>Bouncy Castle Licence</includedLicense>
+          </includedLicenses>
+          <licenseMerges>
+            <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
+              The Apache License, Version 2.0|Apache License, Version 2.0|Apache-2.0|
+              The Apache Software License, Version 2.0</licenseMerge>
+            <licenseMerge>The MIT License|MIT License|The MIT License (MIT)|MIT</licenseMerge>
+            <licenseMerge>The BSD 3-Clause License|BSD License 3</licenseMerge>
+            <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
+            <licenseMerge>Eclipse Public License v2.0|EPL 2.0</licenseMerge>
+          </licenseMerges>
+        </configuration>
+        <executions>
+          <execution>
+            <id>add-third-party</id>
+            <goals>
+              <goal>add-third-party</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

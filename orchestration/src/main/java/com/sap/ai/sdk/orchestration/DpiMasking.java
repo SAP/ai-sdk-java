@@ -78,8 +78,8 @@ public class DpiMasking implements MaskingProvider {
   @Nonnull
   @Override
   public MaskingProviderConfig createConfig() {
-    val entitiesDTO = entities.stream().map(it -> new DPIEntityConfig().type(it)).toList();
-    return new DPIConfig()
+    val entitiesDTO = entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
+    return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
         .entities(entitiesDTO);

@@ -12,43 +12,53 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.annotations.Beta;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** LLMChoice */
-@JsonPropertyOrder({
-  LLMChoice.JSON_PROPERTY_INDEX,
-  LLMChoice.JSON_PROPERTY_MESSAGE,
-  LLMChoice.JSON_PROPERTY_LOGPROBS,
-  LLMChoice.JSON_PROPERTY_FINISH_REASON
-})
-@com.google.common.annotations.Beta
-@javax.annotation.Generated(
-    value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    comments = "Generator version: 7.9.0")
-public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
-  public static final String JSON_PROPERTY_INDEX = "index";
+@Beta // CHECKSTYLE:OFF
+public class LLMChoice implements ModuleResultsOutputUnmaskingInner
+// CHECKSTYLE:ON
+{
+  @JsonProperty("index")
   private Integer index;
 
-  public static final String JSON_PROPERTY_MESSAGE = "message";
+  @JsonProperty("message")
   private ChatMessage message;
 
-  public static final String JSON_PROPERTY_LOGPROBS = "logprobs";
+  @JsonProperty("logprobs")
   private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
 
-  public static final String JSON_PROPERTY_FINISH_REASON = "finish_reason";
+  @JsonProperty("finish_reason")
   private String finishReason;
 
-  public LLMChoice() {}
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  public LLMChoice index(Integer index) {
+  /** Default constructor for LLMChoice. */
+  protected LLMChoice() {}
 
+  /**
+   * Set the index of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param index Index of the choice
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull
+  public LLMChoice index(@Nonnull final Integer index) {
     this.index = index;
     return this;
   }
@@ -56,23 +66,30 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   /**
    * Index of the choice
    *
-   * @return index
+   * @return index The index of this {@link LLMChoice} instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_INDEX)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public Integer getIndex() {
     return index;
   }
 
-  @JsonProperty(JSON_PROPERTY_INDEX)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setIndex(Integer index) {
+  /**
+   * Set the index of this {@link LLMChoice} instance.
+   *
+   * @param index Index of the choice
+   */
+  public void setIndex(@Nonnull final Integer index) {
     this.index = index;
   }
 
-  public LLMChoice message(ChatMessage message) {
-
+  /**
+   * Set the message of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param message The message of this {@link LLMChoice}
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull
+  public LLMChoice message(@Nonnull final ChatMessage message) {
     this.message = message;
     return this;
   }
@@ -80,28 +97,44 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   /**
    * Get message
    *
-   * @return message
+   * @return message The message of this {@link LLMChoice} instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MESSAGE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public ChatMessage getMessage() {
     return message;
   }
 
-  @JsonProperty(JSON_PROPERTY_MESSAGE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMessage(ChatMessage message) {
+  /**
+   * Set the message of this {@link LLMChoice} instance.
+   *
+   * @param message The message of this {@link LLMChoice}
+   */
+  public void setMessage(@Nonnull final ChatMessage message) {
     this.message = message;
   }
 
-  public LLMChoice logprobs(Map<String, List<BigDecimal>> logprobs) {
-
+  /**
+   * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param logprobs Log probabilities
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull
+  public LLMChoice logprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
     return this;
   }
 
-  public LLMChoice putLogprobsItem(String key, List<BigDecimal> logprobsItem) {
+  /**
+   * Put one logprobs instance to this {@link LLMChoice} instance.
+   *
+   * @param key The String key of this logprobs instance
+   * @param logprobsItem The logprobs that should be added under the given key
+   * @return The same instance of type {@link LLMChoice}
+   */
+  @Nonnull
+  public LLMChoice putlogprobsItem(
+      @Nonnull final String key, @Nonnull final List<BigDecimal> logprobsItem) {
     if (this.logprobs == null) {
       this.logprobs = new HashMap<>();
     }
@@ -112,23 +145,33 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   /**
    * Log probabilities
    *
-   * @return logprobs
+   * @return logprobs The logprobs of this {@link LLMChoice} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LOGPROBS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public Map<String, List<BigDecimal>> getLogprobs() {
     return logprobs;
   }
 
-  @JsonProperty(JSON_PROPERTY_LOGPROBS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLogprobs(Map<String, List<BigDecimal>> logprobs) {
+  /**
+   * Set the logprobs of this {@link LLMChoice} instance.
+   *
+   * @param logprobs Log probabilities
+   */
+  public void setLogprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
   }
 
-  public LLMChoice finishReason(String finishReason) {
-
+  /**
+   * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
+   *
+   * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
+   *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
+   *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+   *     enforced by the LLM model provider or the content filtering module
+   * @return The same instance of this {@link LLMChoice} class
+   */
+  @Nonnull
+  public LLMChoice finishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
     return this;
   }
@@ -139,31 +182,74 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
    * &#39;content_filter&#39; if content was omitted due to a filter enforced by the LLM model
    * provider or the content filtering module
    *
-   * @return finishReason
+   * @return finishReason The finishReason of this {@link LLMChoice} instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FINISH_REASON)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public String getFinishReason() {
     return finishReason;
   }
 
-  @JsonProperty(JSON_PROPERTY_FINISH_REASON)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFinishReason(String finishReason) {
+  /**
+   * Set the finishReason of this {@link LLMChoice} instance.
+   *
+   * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
+   *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
+   *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+   *     enforced by the LLM model provider or the content filtering module
+   */
+  public void setFinishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
   }
 
+  /**
+   * Get the names of the unrecognizable properties of the {@link LLMChoice}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link LLMChoice} instance.
+   *
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException("LLMChoice has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link LLMChoice} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LLMChoice llMChoice = (LLMChoice) o;
-    return Objects.equals(this.index, llMChoice.index)
+    final LLMChoice llMChoice = (LLMChoice) o;
+    return Objects.equals(this.cloudSdkCustomFields, llMChoice.cloudSdkCustomFields)
+        && Objects.equals(this.index, llMChoice.index)
         && Objects.equals(this.message, llMChoice.message)
         && Objects.equals(this.logprobs, llMChoice.logprobs)
         && Objects.equals(this.finishReason, llMChoice.finishReason);
@@ -171,17 +257,21 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, message, logprobs, finishReason);
+    return Objects.hash(index, message, logprobs, finishReason, cloudSdkCustomFields);
   }
 
   @Override
+  @Nonnull
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("class LLMChoice {\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
     sb.append("    finishReason: ").append(toIndentedString(finishReason)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -189,76 +279,57 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner {
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static class Builder {
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoice} instance
+   * with all required arguments.
+   */
+  public static Builder create() {
+    return (index) ->
+        (message) ->
+            (finishReason) ->
+                new LLMChoice().index(index).message(message).finishReason(finishReason);
+  }
 
-    private LLMChoice instance;
-
-    public Builder() {
-      this(new LLMChoice());
-    }
-
-    protected Builder(LLMChoice instance) {
-      this.instance = instance;
-    }
-
-    public LLMChoice.Builder index(Integer index) {
-      this.instance.index = index;
-      return this;
-    }
-
-    public LLMChoice.Builder message(ChatMessage message) {
-      this.instance.message = message;
-      return this;
-    }
-
-    public LLMChoice.Builder logprobs(Map<String, List<BigDecimal>> logprobs) {
-      this.instance.logprobs = logprobs;
-      return this;
-    }
-
-    public LLMChoice.Builder finishReason(String finishReason) {
-      this.instance.finishReason = finishReason;
-      return this;
-    }
-
+  /** Builder helper class. */
+  public interface Builder {
     /**
-     * returns a built LLMChoice instance.
+     * Set the index of this {@link LLMChoice} instance.
      *
-     * <p>The builder is not reusable.
+     * @param index Index of the choice
+     * @return The LLMChoice builder.
      */
-    public LLMChoice build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
-    }
+    Builder1 index(@Nonnull final Integer index);
   }
 
-  /** Create a builder with no initialized field. */
-  public static LLMChoice.Builder builder() {
-    return new LLMChoice.Builder();
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the message of this {@link LLMChoice} instance.
+     *
+     * @param message The message of this {@link LLMChoice}
+     * @return The LLMChoice builder.
+     */
+    Builder2 message(@Nonnull final ChatMessage message);
   }
 
-  /** Create a builder with a shallow copy of this instance. */
-  public LLMChoice.Builder toBuilder() {
-    return new LLMChoice.Builder()
-        .index(getIndex())
-        .message(getMessage())
-        .logprobs(getLogprobs())
-        .finishReason(getFinishReason());
+  /** Builder helper class. */
+  public interface Builder2 {
+    /**
+     * Set the finishReason of this {@link LLMChoice} instance.
+     *
+     * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model
+     *     hit a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum
+     *     token number was reached, &#39;content_filter&#39; if content was omitted due to a filter
+     *     enforced by the LLM model provider or the content filtering module
+     * @return The LLMChoice instance.
+     */
+    LLMChoice finishReason(@Nonnull final String finishReason);
   }
 }
