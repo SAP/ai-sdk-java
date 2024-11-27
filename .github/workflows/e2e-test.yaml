@@ -2,7 +2,7 @@ name: "End-to-end Tests"
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 2 * * *
+    - cron: 15 2 * * MON-FRI
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -16,7 +16,7 @@ jobs:
         environment: [ canary, production ]
         exclude:
           - environment: production
-            secret-name: AI_CORE_PRODUCTION
+            # secret-name: AI_CORE_PRODUCTION
         include:
           - environment: canary
             secret-name: AI_CORE_CANARY
