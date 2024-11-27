@@ -12,54 +12,70 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.annotations.Beta;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** Results of each module. */
-@JsonPropertyOrder({
-  ModuleResults.JSON_PROPERTY_TEMPLATING,
-  ModuleResults.JSON_PROPERTY_INPUT_MASKING,
-  ModuleResults.JSON_PROPERTY_INPUT_FILTERING,
-  ModuleResults.JSON_PROPERTY_LLM,
-  ModuleResults.JSON_PROPERTY_OUTPUT_FILTERING,
-  ModuleResults.JSON_PROPERTY_OUTPUT_UNMASKING
-})
-@com.google.common.annotations.Beta
-@javax.annotation.Generated(
-    value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    comments = "Generator version: 7.9.0")
-public class ModuleResults {
-  public static final String JSON_PROPERTY_TEMPLATING = "templating";
+@Beta // CHECKSTYLE:OFF
+public class ModuleResults
+// CHECKSTYLE:ON
+{
+  @JsonProperty("templating")
   private List<ChatMessage> templating = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_INPUT_MASKING = "input_masking";
+  @JsonProperty("input_masking")
   private GenericModuleResult inputMasking;
 
-  public static final String JSON_PROPERTY_INPUT_FILTERING = "input_filtering";
+  @JsonProperty("input_filtering")
   private GenericModuleResult inputFiltering;
 
-  public static final String JSON_PROPERTY_LLM = "llm";
+  @JsonProperty("llm")
   private LLMModuleResult llm;
 
-  public static final String JSON_PROPERTY_OUTPUT_FILTERING = "output_filtering";
+  @JsonProperty("output_filtering")
   private GenericModuleResult outputFiltering;
 
-  public static final String JSON_PROPERTY_OUTPUT_UNMASKING = "output_unmasking";
+  @JsonProperty("output_unmasking")
   private List<ModuleResultsOutputUnmaskingInner> outputUnmasking = new ArrayList<>();
 
-  public ModuleResults() {}
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  public ModuleResults templating(List<ChatMessage> templating) {
+  /** Default constructor for ModuleResults. */
+  protected ModuleResults() {}
 
+  /**
+   * Set the templating of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param templating The templating of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults templating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
     return this;
   }
 
-  public ModuleResults addTemplatingItem(ChatMessage templatingItem) {
+  /**
+   * Add one templating instance to this {@link ModuleResults}.
+   *
+   * @param templatingItem The templating that should be added
+   * @return The same instance of type {@link ModuleResults}
+   */
+  @Nonnull
+  public ModuleResults addTemplatingItem(@Nonnull final ChatMessage templatingItem) {
     if (this.templating == null) {
       this.templating = new ArrayList<>();
     }
@@ -70,23 +86,30 @@ public class ModuleResults {
   /**
    * Get templating
    *
-   * @return templating
+   * @return templating The templating of this {@link ModuleResults} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TEMPLATING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public List<ChatMessage> getTemplating() {
     return templating;
   }
 
-  @JsonProperty(JSON_PROPERTY_TEMPLATING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTemplating(List<ChatMessage> templating) {
+  /**
+   * Set the templating of this {@link ModuleResults} instance.
+   *
+   * @param templating The templating of this {@link ModuleResults}
+   */
+  public void setTemplating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
   }
 
-  public ModuleResults inputMasking(GenericModuleResult inputMasking) {
-
+  /**
+   * Set the inputMasking of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param inputMasking The inputMasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults inputMasking(@Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
     return this;
   }
@@ -94,23 +117,30 @@ public class ModuleResults {
   /**
    * Get inputMasking
    *
-   * @return inputMasking
+   * @return inputMasking The inputMasking of this {@link ModuleResults} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_INPUT_MASKING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public GenericModuleResult getInputMasking() {
     return inputMasking;
   }
 
-  @JsonProperty(JSON_PROPERTY_INPUT_MASKING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setInputMasking(GenericModuleResult inputMasking) {
+  /**
+   * Set the inputMasking of this {@link ModuleResults} instance.
+   *
+   * @param inputMasking The inputMasking of this {@link ModuleResults}
+   */
+  public void setInputMasking(@Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
   }
 
-  public ModuleResults inputFiltering(GenericModuleResult inputFiltering) {
-
+  /**
+   * Set the inputFiltering of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param inputFiltering The inputFiltering of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults inputFiltering(@Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
     return this;
   }
@@ -118,23 +148,30 @@ public class ModuleResults {
   /**
    * Get inputFiltering
    *
-   * @return inputFiltering
+   * @return inputFiltering The inputFiltering of this {@link ModuleResults} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_INPUT_FILTERING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public GenericModuleResult getInputFiltering() {
     return inputFiltering;
   }
 
-  @JsonProperty(JSON_PROPERTY_INPUT_FILTERING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setInputFiltering(GenericModuleResult inputFiltering) {
+  /**
+   * Set the inputFiltering of this {@link ModuleResults} instance.
+   *
+   * @param inputFiltering The inputFiltering of this {@link ModuleResults}
+   */
+  public void setInputFiltering(@Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
   }
 
-  public ModuleResults llm(LLMModuleResult llm) {
-
+  /**
+   * Set the llm of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param llm The llm of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults llm(@Nullable final LLMModuleResult llm) {
     this.llm = llm;
     return this;
   }
@@ -142,23 +179,30 @@ public class ModuleResults {
   /**
    * Get llm
    *
-   * @return llm
+   * @return llm The llm of this {@link ModuleResults} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LLM)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public LLMModuleResult getLlm() {
     return llm;
   }
 
-  @JsonProperty(JSON_PROPERTY_LLM)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLlm(LLMModuleResult llm) {
+  /**
+   * Set the llm of this {@link ModuleResults} instance.
+   *
+   * @param llm The llm of this {@link ModuleResults}
+   */
+  public void setLlm(@Nullable final LLMModuleResult llm) {
     this.llm = llm;
   }
 
-  public ModuleResults outputFiltering(GenericModuleResult outputFiltering) {
-
+  /**
+   * Set the outputFiltering of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param outputFiltering The outputFiltering of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults outputFiltering(@Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
     return this;
   }
@@ -166,29 +210,44 @@ public class ModuleResults {
   /**
    * Get outputFiltering
    *
-   * @return outputFiltering
+   * @return outputFiltering The outputFiltering of this {@link ModuleResults} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_OUTPUT_FILTERING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public GenericModuleResult getOutputFiltering() {
     return outputFiltering;
   }
 
-  @JsonProperty(JSON_PROPERTY_OUTPUT_FILTERING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOutputFiltering(GenericModuleResult outputFiltering) {
+  /**
+   * Set the outputFiltering of this {@link ModuleResults} instance.
+   *
+   * @param outputFiltering The outputFiltering of this {@link ModuleResults}
+   */
+  public void setOutputFiltering(@Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
   }
 
-  public ModuleResults outputUnmasking(List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
-
+  /**
+   * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults outputUnmasking(
+      @Nullable final List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
     return this;
   }
 
+  /**
+   * Add one outputUnmasking instance to this {@link ModuleResults}.
+   *
+   * @param outputUnmaskingItem The outputUnmasking that should be added
+   * @return The same instance of type {@link ModuleResults}
+   */
+  @Nonnull
   public ModuleResults addOutputUnmaskingItem(
-      ModuleResultsOutputUnmaskingInner outputUnmaskingItem) {
+      @Nonnull final ModuleResultsOutputUnmaskingInner outputUnmaskingItem) {
     if (this.outputUnmasking == null) {
       this.outputUnmasking = new ArrayList<>();
     }
@@ -199,31 +258,72 @@ public class ModuleResults {
   /**
    * Get outputUnmasking
    *
-   * @return outputUnmasking
+   * @return outputUnmasking The outputUnmasking of this {@link ModuleResults} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_OUTPUT_UNMASKING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public List<ModuleResultsOutputUnmaskingInner> getOutputUnmasking() {
     return outputUnmasking;
   }
 
-  @JsonProperty(JSON_PROPERTY_OUTPUT_UNMASKING)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOutputUnmasking(List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
+  /**
+   * Set the outputUnmasking of this {@link ModuleResults} instance.
+   *
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
+   */
+  public void setOutputUnmasking(
+      @Nullable final List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
   }
 
+  /**
+   * Get the names of the unrecognizable properties of the {@link ModuleResults}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link ModuleResults} instance.
+   *
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException("ModuleResults has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link ModuleResults} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ModuleResults moduleResults = (ModuleResults) o;
-    return Objects.equals(this.templating, moduleResults.templating)
+    final ModuleResults moduleResults = (ModuleResults) o;
+    return Objects.equals(this.cloudSdkCustomFields, moduleResults.cloudSdkCustomFields)
+        && Objects.equals(this.templating, moduleResults.templating)
         && Objects.equals(this.inputMasking, moduleResults.inputMasking)
         && Objects.equals(this.inputFiltering, moduleResults.inputFiltering)
         && Objects.equals(this.llm, moduleResults.llm)
@@ -234,12 +334,19 @@ public class ModuleResults {
   @Override
   public int hashCode() {
     return Objects.hash(
-        templating, inputMasking, inputFiltering, llm, outputFiltering, outputUnmasking);
+        templating,
+        inputMasking,
+        inputFiltering,
+        llm,
+        outputFiltering,
+        outputUnmasking,
+        cloudSdkCustomFields);
   }
 
   @Override
+  @Nonnull
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("class ModuleResults {\n");
     sb.append("    templating: ").append(toIndentedString(templating)).append("\n");
     sb.append("    inputMasking: ").append(toIndentedString(inputMasking)).append("\n");
@@ -247,6 +354,9 @@ public class ModuleResults {
     sb.append("    llm: ").append(toIndentedString(llm)).append("\n");
     sb.append("    outputFiltering: ").append(toIndentedString(outputFiltering)).append("\n");
     sb.append("    outputUnmasking: ").append(toIndentedString(outputUnmasking)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -254,89 +364,15 @@ public class ModuleResults {
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static class Builder {
-
-    private ModuleResults instance;
-
-    public Builder() {
-      this(new ModuleResults());
-    }
-
-    protected Builder(ModuleResults instance) {
-      this.instance = instance;
-    }
-
-    public ModuleResults.Builder templating(List<ChatMessage> templating) {
-      this.instance.templating = templating;
-      return this;
-    }
-
-    public ModuleResults.Builder inputMasking(GenericModuleResult inputMasking) {
-      this.instance.inputMasking = inputMasking;
-      return this;
-    }
-
-    public ModuleResults.Builder inputFiltering(GenericModuleResult inputFiltering) {
-      this.instance.inputFiltering = inputFiltering;
-      return this;
-    }
-
-    public ModuleResults.Builder llm(LLMModuleResult llm) {
-      this.instance.llm = llm;
-      return this;
-    }
-
-    public ModuleResults.Builder outputFiltering(GenericModuleResult outputFiltering) {
-      this.instance.outputFiltering = outputFiltering;
-      return this;
-    }
-
-    public ModuleResults.Builder outputUnmasking(
-        List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
-      this.instance.outputUnmasking = outputUnmasking;
-      return this;
-    }
-
-    /**
-     * returns a built ModuleResults instance.
-     *
-     * <p>The builder is not reusable.
-     */
-    public ModuleResults build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
-    }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ModuleResults.Builder builder() {
-    return new ModuleResults.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ModuleResults.Builder toBuilder() {
-    return new ModuleResults.Builder()
-        .templating(getTemplating())
-        .inputMasking(getInputMasking())
-        .inputFiltering(getInputFiltering())
-        .llm(getLlm())
-        .outputFiltering(getOutputFiltering())
-        .outputUnmasking(getOutputUnmasking());
+  /** Create a new {@link ModuleResults} instance. No arguments are required. */
+  public static ModuleResults create() {
+    return new ModuleResults();
   }
 }

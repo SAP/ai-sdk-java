@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.core;
 
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -30,7 +30,8 @@ public class AiCoreDeployment implements AiCoreDestination {
 
   @Nonnull
   @Override
-  public Destination destination() throws DestinationAccessException, DestinationNotFoundException {
+  public HttpDestination destination()
+      throws DestinationAccessException, DestinationNotFoundException {
     aiCoreService.deploymentId = deploymentId.get();
     return aiCoreService.destination();
   }

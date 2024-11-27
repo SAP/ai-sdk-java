@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
@@ -30,7 +33,6 @@ import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /** Client to execute requests to the orchestration service. */
@@ -132,26 +134,73 @@ public class OrchestrationClient {
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
-    final BasicClassicHttpRequest postRequest = new HttpPost("/completion");
+    final String jsonRequest;
     try {
-      val json = JACKSON.writeValueAsString(request);
-      log.debug("Serialized request into JSON payload: {}", json);
-      postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+      jsonRequest = JACKSON.writeValueAsString(request);
+      log.debug("Serialized request into JSON payload: {}", jsonRequest);
     } catch (final JsonProcessingException e) {
       throw new OrchestrationClientException("Failed to serialize request parameters", e);
     }
 
-    return executeRequest(postRequest);
+    return executeRequest(jsonRequest);
+  }
+
+  /**
+   * Perform a request to the orchestration service using a module configuration provided as JSON
+   * string. This can be useful when building a configuration in the AI Launchpad UI and exporting
+   * it as JSON. Furthermore, this allows for using features that are not yet supported natively by
+   * the API.
+   *
+   * <p><b>NOTE:</b> This method does not support streaming.
+   *
+   * @param prompt The input parameters and optionally message history to use for prompt execution.
+   * @param moduleConfig The module configuration in JSON format.
+   * @return The completion response.
+   * @throws OrchestrationClientException If the request fails.
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationChatResponse executeRequestFromJsonModuleConfig(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final String moduleConfig)
+      throws OrchestrationClientException {
+    if (!prompt.getMessages().isEmpty()) {
+      throw new IllegalArgumentException(
+          "Prompt must not contain any messages when using a JSON module configuration, as the template is already defined in the JSON.");
+    }
+
+    final ObjectNode requestJson = JACKSON.createObjectNode();
+    requestJson.set("messages_history", JACKSON.valueToTree(prompt.getMessagesHistory()));
+    requestJson.set("input_params", JACKSON.valueToTree(prompt.getTemplateParameters()));
+
+    final JsonNode moduleConfigJson;
+    try {
+      moduleConfigJson = JACKSON.readTree(moduleConfig);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException(
+          "The provided module configuration is not valid JSON: " + moduleConfig, e);
+    }
+    requestJson.set("orchestration_config", moduleConfigJson);
+
+    final String body;
+    try {
+      body = JACKSON.writeValueAsString(requestJson);
+    } catch (JsonProcessingException e) {
+      throw new OrchestrationClientException("Failed to serialize request to JSON", e);
+    }
+    return new OrchestrationChatResponse(executeRequest(body));
   }
 
   @Nonnull
-  CompletionPostResponse executeRequest(@Nonnull final BasicClassicHttpRequest request) {
+  CompletionPostResponse executeRequest(@Nonnull final String request) {
+    val postRequest = new HttpPost("/completion");
+    postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
+
     try {
       val destination = deployment.get().destination();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
-          request, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
+          postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
     } catch (NoSuchElementException
         | DestinationAccessException
         | DestinationNotFoundException

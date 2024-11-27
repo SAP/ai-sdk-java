@@ -184,6 +184,13 @@
           <skipTests>${skipTests}</skipTests>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <skipAddThirdParty>true</skipAddThirdParty>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
