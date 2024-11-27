@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
-  OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+  OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig()
+          .withLlmConfig(GPT_35_TURBO.withParams(Map.of("temperature", 0.0)));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -49,10 +51,10 @@ class OrchestrationController {
   @Nonnull
   public OrchestrationChatResponse template() {
     final var template =
-        new ChatMessage()
+        ChatMessage.create()
             .role("user")
             .content("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = new Template().template(List.of(template));
+    final var templatingConfig = Template.create().template(List.of(template));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     final var inputParams = Map.of("language", "German");
@@ -71,9 +73,10 @@ class OrchestrationController {
   public OrchestrationChatResponse messagesHistory() {
     final List<ChatMessage> messagesHistory =
         List.of(
-            new ChatMessage().role("user").content("What is the capital of France?"),
-            new ChatMessage().role("assistant").content("The capital of France is Paris."));
-    final var message = new ChatMessage().role("user").content("What is the typical food there?");
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
     final var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -117,12 +120,12 @@ class OrchestrationController {
   @Nonnull
   public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
-        new ChatMessage()
+        ChatMessage.create()
             .role("system")
             .content(
                 "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
-        new ChatMessage()
+        ChatMessage.create()
             .role("user")
             .content(
                 """
@@ -147,7 +150,7 @@ class OrchestrationController {
   @Nonnull
   public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
-        new ChatMessage()
+        ChatMessage.create()
             .role("system")
             .content(
                 """
@@ -155,7 +158,7 @@ class OrchestrationController {
                 Please make sure to address the user in person and end with "Best regards, the AI SDK team".
                 """);
     final var userMessage =
-        new ChatMessage()
+        ChatMessage.create()
             .role("user")
             .content(
                 """

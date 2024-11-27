@@ -204,3 +204,21 @@ OrchestrationAiModel customGPT4O =
             params().maxTokens(50).temperature(0.1).frequencyPenalty(0).presencePenalty(0))
         .withVersion("2024-05-13");
 ```
+
+### Using a Configuration from AI Launchpad
+
+In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
+
+```java
+var configJson = """
+    ... paste your configuration JSON in here ...
+    """;
+// or load your config from a file, e.g.
+// configJson = Files.readString(Paths.get("path/to/my/orchestration-config.json"));
+
+var prompt = new OrchestrationPrompt(Map.of("your-input-parameter", "your-param-value"));
+
+new OrchestrationClient().executeRequestFromJsonModuleConfig(prompt, configJson);
+```
+
+While this is not recommended for long term use, it can be useful for creating demos and PoCs.

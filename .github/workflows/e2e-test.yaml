@@ -2,16 +2,24 @@ name: "End-to-end Tests"
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 2 * * *
+    - cron: 15 2 * * MON-FRI
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   JAVA_VERSION: 17
 
 jobs:
-
   end-to-end-tests:
-    # https://wiki.one.int.sap/wiki/display/DevFw/SUGAR
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [ canary, production ]
+        exclude:
+          - environment: production
+            # secret-name: AI_CORE_PRODUCTION
+        include:
+          - environment: canary
+            secret-name: AI_CORE_CANARY
     runs-on: ubuntu-latest
     steps:
 
@@ -33,10 +41,10 @@ jobs:
       - name: "Run tests"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
-          mvn $MVN_ARGS
+          mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}"
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
-          AICORE_SERVICE_KEY: ${{ secrets.AICORE_SERVICE_KEY }}
+          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
 
       - name: "Start Application Locally"
         run: |
@@ -53,7 +61,7 @@ jobs:
           done
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
-          AICORE_SERVICE_KEY: ${{ secrets.AICORE_SERVICE_KEY }}
+          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
 
       - name: "Health Check"
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers

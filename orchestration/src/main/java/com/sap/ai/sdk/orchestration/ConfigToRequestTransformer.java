@@ -27,9 +27,9 @@ final class ConfigToRequestTransformer {
     // subsequent requests
     val configCopy = config.withTemplateConfig(template);
 
-    return new CompletionPostRequest()
+    return CompletionPostRequest.create()
         .orchestrationConfig(
-            new OrchestrationConfig().moduleConfigurations(toModuleConfigs(configCopy)))
+            OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
         .messagesHistory(prompt.getMessagesHistory());
   }
@@ -51,7 +51,7 @@ final class ConfigToRequestTransformer {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return new Template().template(messagesWithPrompt);
+    return Template.create().template(messagesWithPrompt);
   }
 
   @Nonnull
@@ -62,7 +62,7 @@ final class ConfigToRequestTransformer {
 
     //noinspection DataFlowIssue the template is always non-null here
     val moduleConfig =
-        new ModuleConfigs()
+        ModuleConfigs.create()
             .llmModuleConfig(llmConfig)
             .templatingModuleConfig(config.getTemplateConfig());
 

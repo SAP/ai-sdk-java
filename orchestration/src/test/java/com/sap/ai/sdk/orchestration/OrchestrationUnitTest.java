@@ -118,7 +118,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = new ChatMessage().role("user").content("{{?input}}");
+    final var template = ChatMessage.create().role("user").content("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
@@ -127,9 +127,9 @@ class OrchestrationUnitTest {
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(response.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(response.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
@@ -142,7 +142,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -157,7 +157,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -257,9 +257,10 @@ class OrchestrationUnitTest {
 
     final List<ChatMessage> messagesHistory =
         List.of(
-            new ChatMessage().role("user").content("What is the capital of France?"),
-            new ChatMessage().role("assistant").content("The capital of France is Paris."));
-    final var message = new ChatMessage().role("user").content("What is the typical food there?");
+            ChatMessage.create().role("user").content("What is the capital of France?"),
+            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+    final var message =
+        ChatMessage.create().role("user").content("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -380,15 +381,60 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testEmptyChoicesResponse() {
-    stubFor(
-        post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("emptyChoicesResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-    final var result = client.chatCompletion(prompt, config);
+  void testExecuteRequestFromJson() {
+    stubFor(post(anyUrl()).willReturn(okJson("{}")));
 
-    assertThat(result.getContent()).isEmpty();
+    prompt =
+        new OrchestrationPrompt(Map.of("foo", "bar"))
+            .messageHistory(List.of(ChatMessage.create().role("user").content("Hello World!")));
+    final var configJson =
+        """
+        {
+          "module_configurations": {
+            "llm_module_config": {
+              "model_name": "mistralai--mistral-large-instruct",
+              "model_params": {}
+            }
+          }
+        }
+        """;
+
+    final var expectedJson =
+        """
+        {
+          "messages_history": [{
+            "role" : "user",
+            "content" : "Hello World!"
+          }],
+          "input_params": {
+            "foo" : "bar"
+          },
+          "orchestration_config": {
+            "module_configurations": {
+              "llm_module_config": {
+                "model_name": "mistralai--mistral-large-instruct",
+                "model_params": {}
+              }
+            }
+          }
+        }
+        """;
+
+    var result = client.executeRequestFromJsonModuleConfig(prompt, configJson);
+    assertThat(result).isNotNull();
+
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedJson)));
+  }
+
+  @Test
+  void testExecuteRequestFromJsonThrows() {
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{}"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("messages");
+
+    prompt = new OrchestrationPrompt(Map.of());
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("not valid JSON");
   }
 }

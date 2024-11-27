@@ -12,28 +12,44 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.annotations.Beta;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** ChatDelta */
-@JsonPropertyOrder({ChatDelta.JSON_PROPERTY_ROLE, ChatDelta.JSON_PROPERTY_CONTENT})
-@com.google.common.annotations.Beta
-@javax.annotation.Generated(
-    value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    comments = "Generator version: 7.9.0")
-public class ChatDelta {
-  public static final String JSON_PROPERTY_ROLE = "role";
+@Beta // CHECKSTYLE:OFF
+public class ChatDelta
+// CHECKSTYLE:ON
+{
+  @JsonProperty("role")
   private String role;
 
-  public static final String JSON_PROPERTY_CONTENT = "content";
+  @JsonProperty("content")
   private String content = "";
 
-  public ChatDelta() {}
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  public ChatDelta role(String role) {
+  /** Default constructor for ChatDelta. */
+  protected ChatDelta() {}
 
+  /**
+   * Set the role of this {@link ChatDelta} instance and return the same instance.
+   *
+   * @param role The role of this {@link ChatDelta}
+   * @return The same instance of this {@link ChatDelta} class
+   */
+  @Nonnull
+  public ChatDelta role(@Nullable final String role) {
     this.role = role;
     return this;
   }
@@ -41,23 +57,30 @@ public class ChatDelta {
   /**
    * Get role
    *
-   * @return role
+   * @return role The role of this {@link ChatDelta} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ROLE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public String getRole() {
     return role;
   }
 
-  @JsonProperty(JSON_PROPERTY_ROLE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setRole(String role) {
+  /**
+   * Set the role of this {@link ChatDelta} instance.
+   *
+   * @param role The role of this {@link ChatDelta}
+   */
+  public void setRole(@Nullable final String role) {
     this.role = role;
   }
 
-  public ChatDelta content(String content) {
-
+  /**
+   * Set the content of this {@link ChatDelta} instance and return the same instance.
+   *
+   * @param content The content of this {@link ChatDelta}
+   * @return The same instance of this {@link ChatDelta} class
+   */
+  @Nonnull
+  public ChatDelta content(@Nonnull final String content) {
     this.content = content;
     return this;
   }
@@ -65,45 +88,89 @@ public class ChatDelta {
   /**
    * Get content
    *
-   * @return content
+   * @return content The content of this {@link ChatDelta} instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_CONTENT)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public String getContent() {
     return content;
   }
 
-  @JsonProperty(JSON_PROPERTY_CONTENT)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setContent(String content) {
+  /**
+   * Set the content of this {@link ChatDelta} instance.
+   *
+   * @param content The content of this {@link ChatDelta}
+   */
+  public void setContent(@Nonnull final String content) {
     this.content = content;
   }
 
+  /**
+   * Get the names of the unrecognizable properties of the {@link ChatDelta}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link ChatDelta} instance.
+   *
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException("ChatDelta has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link ChatDelta} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ChatDelta chatDelta = (ChatDelta) o;
-    return Objects.equals(this.role, chatDelta.role)
+    final ChatDelta chatDelta = (ChatDelta) o;
+    return Objects.equals(this.cloudSdkCustomFields, chatDelta.cloudSdkCustomFields)
+        && Objects.equals(this.role, chatDelta.role)
         && Objects.equals(this.content, chatDelta.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(role, content);
+    return Objects.hash(role, content, cloudSdkCustomFields);
   }
 
   @Override
+  @Nonnull
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("class ChatDelta {\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -111,62 +178,29 @@ public class ChatDelta {
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static class Builder {
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link ChatDelta} instance
+   * with all required arguments.
+   */
+  public static Builder create() {
+    return (content) -> new ChatDelta().content(content);
+  }
 
-    private ChatDelta instance;
-
-    public Builder() {
-      this(new ChatDelta());
-    }
-
-    protected Builder(ChatDelta instance) {
-      this.instance = instance;
-    }
-
-    public ChatDelta.Builder role(String role) {
-      this.instance.role = role;
-      return this;
-    }
-
-    public ChatDelta.Builder content(String content) {
-      this.instance.content = content;
-      return this;
-    }
-
+  /** Builder helper class. */
+  public interface Builder {
     /**
-     * returns a built ChatDelta instance.
+     * Set the content of this {@link ChatDelta} instance.
      *
-     * <p>The builder is not reusable.
+     * @param content The content of this {@link ChatDelta}
+     * @return The ChatDelta instance.
      */
-    public ChatDelta build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
-    }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static ChatDelta.Builder builder() {
-    return new ChatDelta.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public ChatDelta.Builder toBuilder() {
-    return new ChatDelta.Builder().role(getRole()).content(getContent());
+    ChatDelta content(@Nonnull final String content);
   }
 }

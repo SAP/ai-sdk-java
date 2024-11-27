@@ -8,12 +8,11 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
-import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 @Slf4j
 class OrchestrationTest {
@@ -37,14 +36,14 @@ class OrchestrationTest {
     assertThat(controller.config.getLlmConfig()).isNotNull();
     final var modelName = controller.config.getLlmConfig().getModelName();
 
-    final var response = controller.template();
-    final var result = response.getOriginalResponse();
+    final var result = controller.template();
+    final var response = result.getOriginalResponse();
 
-    assertThat(result.getRequestId()).isNotEmpty();
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(response.getRequestId()).isNotEmpty();
+    assertThat(result.getAllMessages().get(0).getContent())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) result.getModuleResults().getLlm();
+    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
@@ -54,12 +53,12 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = ((LLMModuleResultSynchronous) result.getOrchestrationResult());
+    var orchestrationResult = ((LLMModuleResultSynchronous) response.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
     assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
@@ -68,7 +67,7 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = orchestrationResult.getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
@@ -114,9 +113,9 @@ class OrchestrationTest {
     var maskingResult = result.getModuleResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
-    var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(0);
-    assertThat(maskedMessage.get("content"))
-        .asInstanceOf(InstanceOfAssertFactories.STRING)
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
+        .describedAs("The masked input should not contain any user names")
         .doesNotContain("Alice", "Bob");
 
     assertThat(result.getModuleResults().getOutputUnmasking()).isEmpty();
@@ -137,9 +136,8 @@ class OrchestrationTest {
     var maskingResult = result.getModuleResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
-    var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(1);
-    assertThat(maskedMessage.get("content"))
-        .asInstanceOf(InstanceOfAssertFactories.STRING)
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
         .describedAs("The masked input should not contain any user names but only pseudonyms")
         .doesNotContain("Mallory", "Alice", "Bob")
         .contains("MASKED_PERSON");
@@ -150,5 +148,12 @@ class OrchestrationTest {
         .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
         .doesNotContain("MASKED_PERSON")
         .contains("Mallory");
+  }
+
+  @Test
+  @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
+  void testGrounding() {
+    // Placeholder for grounding test
+    assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
   }
 }

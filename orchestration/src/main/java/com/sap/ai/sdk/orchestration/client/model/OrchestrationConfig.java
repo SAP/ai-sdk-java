@@ -12,35 +12,49 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.annotations.Beta;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** OrchestrationConfig */
-@JsonPropertyOrder({
-  OrchestrationConfig.JSON_PROPERTY_MODULE_CONFIGURATIONS,
-  OrchestrationConfig.JSON_PROPERTY_STREAM,
-  OrchestrationConfig.JSON_PROPERTY_STREAM_OPTIONS
-})
-@com.google.common.annotations.Beta
-@javax.annotation.Generated(
-    value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    comments = "Generator version: 7.9.0")
-public class OrchestrationConfig {
-  public static final String JSON_PROPERTY_MODULE_CONFIGURATIONS = "module_configurations";
+@Beta // CHECKSTYLE:OFF
+public class OrchestrationConfig
+// CHECKSTYLE:ON
+{
+  @JsonProperty("module_configurations")
   private ModuleConfigs moduleConfigurations;
 
-  public static final String JSON_PROPERTY_STREAM = "stream";
+  @JsonProperty("stream")
   private Boolean stream = false;
 
-  public static final String JSON_PROPERTY_STREAM_OPTIONS = "stream_options";
+  @JsonProperty("stream_options")
   private GlobalStreamOptions streamOptions;
 
-  public OrchestrationConfig() {}
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  public OrchestrationConfig moduleConfigurations(ModuleConfigs moduleConfigurations) {
+  /** Default constructor for OrchestrationConfig. */
+  protected OrchestrationConfig() {}
 
+  /**
+   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance and return the same
+   * instance.
+   *
+   * @param moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+   * @return The same instance of this {@link OrchestrationConfig} class
+   */
+  @Nonnull
+  public OrchestrationConfig moduleConfigurations(
+      @Nonnull final ModuleConfigs moduleConfigurations) {
     this.moduleConfigurations = moduleConfigurations;
     return this;
   }
@@ -48,23 +62,31 @@ public class OrchestrationConfig {
   /**
    * Get moduleConfigurations
    *
-   * @return moduleConfigurations
+   * @return moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+   *     instance.
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MODULE_CONFIGURATIONS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @Nonnull
   public ModuleConfigs getModuleConfigurations() {
     return moduleConfigurations;
   }
 
-  @JsonProperty(JSON_PROPERTY_MODULE_CONFIGURATIONS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setModuleConfigurations(ModuleConfigs moduleConfigurations) {
+  /**
+   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance.
+   *
+   * @param moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+   */
+  public void setModuleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations) {
     this.moduleConfigurations = moduleConfigurations;
   }
 
-  public OrchestrationConfig stream(Boolean stream) {
-
+  /**
+   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   *
+   * @param stream If true, the response will be streamed back to the client
+   * @return The same instance of this {@link OrchestrationConfig} class
+   */
+  @Nonnull
+  public OrchestrationConfig stream(@Nullable final Boolean stream) {
     this.stream = stream;
     return this;
   }
@@ -72,23 +94,31 @@ public class OrchestrationConfig {
   /**
    * If true, the response will be streamed back to the client
    *
-   * @return stream
+   * @return stream The stream of this {@link OrchestrationConfig} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STREAM)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public Boolean getStream() {
+  @Nonnull
+  public Boolean isStream() {
     return stream;
   }
 
-  @JsonProperty(JSON_PROPERTY_STREAM)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStream(Boolean stream) {
+  /**
+   * Set the stream of this {@link OrchestrationConfig} instance.
+   *
+   * @param stream If true, the response will be streamed back to the client
+   */
+  public void setStream(@Nullable final Boolean stream) {
     this.stream = stream;
   }
 
-  public OrchestrationConfig streamOptions(GlobalStreamOptions streamOptions) {
-
+  /**
+   * Set the streamOptions of this {@link OrchestrationConfig} instance and return the same
+   * instance.
+   *
+   * @param streamOptions The streamOptions of this {@link OrchestrationConfig}
+   * @return The same instance of this {@link OrchestrationConfig} class
+   */
+  @Nonnull
+  public OrchestrationConfig streamOptions(@Nullable final GlobalStreamOptions streamOptions) {
     this.streamOptions = streamOptions;
     return this;
   }
@@ -96,49 +126,94 @@ public class OrchestrationConfig {
   /**
    * Get streamOptions
    *
-   * @return streamOptions
+   * @return streamOptions The streamOptions of this {@link OrchestrationConfig} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STREAM_OPTIONS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public GlobalStreamOptions getStreamOptions() {
     return streamOptions;
   }
 
-  @JsonProperty(JSON_PROPERTY_STREAM_OPTIONS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStreamOptions(GlobalStreamOptions streamOptions) {
+  /**
+   * Set the streamOptions of this {@link OrchestrationConfig} instance.
+   *
+   * @param streamOptions The streamOptions of this {@link OrchestrationConfig}
+   */
+  public void setStreamOptions(@Nullable final GlobalStreamOptions streamOptions) {
     this.streamOptions = streamOptions;
   }
 
+  /**
+   * Get the names of the unrecognizable properties of the {@link OrchestrationConfig}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link OrchestrationConfig} instance.
+   *
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException(
+          "OrchestrationConfig has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link OrchestrationConfig} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
-    return Objects.equals(this.moduleConfigurations, orchestrationConfig.moduleConfigurations)
+    final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
+        && Objects.equals(this.moduleConfigurations, orchestrationConfig.moduleConfigurations)
         && Objects.equals(this.stream, orchestrationConfig.stream)
         && Objects.equals(this.streamOptions, orchestrationConfig.streamOptions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(moduleConfigurations, stream, streamOptions);
+    return Objects.hash(moduleConfigurations, stream, streamOptions, cloudSdkCustomFields);
   }
 
   @Override
+  @Nonnull
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("class OrchestrationConfig {\n");
     sb.append("    moduleConfigurations: ")
         .append(toIndentedString(moduleConfigurations))
         .append("\n");
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
     sb.append("    streamOptions: ").append(toIndentedString(streamOptions)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -146,69 +221,30 @@ public class OrchestrationConfig {
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static class Builder {
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link OrchestrationConfig}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (moduleConfigurations) ->
+        new OrchestrationConfig().moduleConfigurations(moduleConfigurations);
+  }
 
-    private OrchestrationConfig instance;
-
-    public Builder() {
-      this(new OrchestrationConfig());
-    }
-
-    protected Builder(OrchestrationConfig instance) {
-      this.instance = instance;
-    }
-
-    public OrchestrationConfig.Builder moduleConfigurations(ModuleConfigs moduleConfigurations) {
-      this.instance.moduleConfigurations = moduleConfigurations;
-      return this;
-    }
-
-    public OrchestrationConfig.Builder stream(Boolean stream) {
-      this.instance.stream = stream;
-      return this;
-    }
-
-    public OrchestrationConfig.Builder streamOptions(GlobalStreamOptions streamOptions) {
-      this.instance.streamOptions = streamOptions;
-      return this;
-    }
-
+  /** Builder helper class. */
+  public interface Builder {
     /**
-     * returns a built OrchestrationConfig instance.
+     * Set the moduleConfigurations of this {@link OrchestrationConfig} instance.
      *
-     * <p>The builder is not reusable.
+     * @param moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+     * @return The OrchestrationConfig instance.
      */
-    public OrchestrationConfig build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
-    }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static OrchestrationConfig.Builder builder() {
-    return new OrchestrationConfig.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public OrchestrationConfig.Builder toBuilder() {
-    return new OrchestrationConfig.Builder()
-        .moduleConfigurations(getModuleConfigurations()).stream(getStream())
-            .streamOptions(getStreamOptions());
+    OrchestrationConfig moduleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations);
   }
 }

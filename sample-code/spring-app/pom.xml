@@ -33,7 +33,7 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.3.5</spring-boot.version>
+    <spring-boot.version>3.4.0</spring-boot.version>
     <logback.version>1.5.12</logback.version>
     <cf-logging.version>3.8.4</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
@@ -182,6 +182,13 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <skipAddThirdParty>true</skipAddThirdParty>
         </configuration>
       </plugin>
     </plugins>
