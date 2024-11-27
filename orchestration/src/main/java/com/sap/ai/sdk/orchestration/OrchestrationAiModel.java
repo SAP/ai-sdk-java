@@ -1,23 +1,22 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import lombok.AccessLevel;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.With;
-import lombok.experimental.Tolerate;
 
 /** Large language models available in Orchestration. */
+@Value
 @With
 @AllArgsConstructor
-@Getter(AccessLevel.PACKAGE)
-@EqualsAndHashCode
 public class OrchestrationAiModel {
   /** The name of the model */
-  private final String name;
+  String name;
 
   /**
    * Optional parameters on this model.
@@ -30,10 +29,10 @@ public class OrchestrationAiModel {
    *     "presence_penalty", 0)
    * }</pre>
    */
-  private final Map<String, Object> params;
+  Map<String, Object> params;
 
   /** The version of the model, defaults to "latest". */
-  private final String version;
+  String version;
 
   /** IBM Granite 13B chat completions model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
@@ -80,28 +79,23 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("amazon--titan-text-express");
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
-  public static final Parameterized<OrchestrationAiModelParameters.GPT> GPT_35_TURBO =
-      new Parameterized<>("gpt-35-turbo");
+  public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
-  public static final Parameterized<OrchestrationAiModelParameters.GPT> GPT_35_TURBO_16K =
-      new Parameterized<>("gpt-35-turbo-16k");
+  public static final OrchestrationAiModel GPT_35_TURBO_16K =
+      new OrchestrationAiModel("gpt-35-turbo-16k");
 
   /** Azure OpenAI GPT-4 chat completions model */
-  public static final Parameterized<OrchestrationAiModelParameters.GPT> GPT_4 =
-      new Parameterized<>("gpt-4");
+  public static final OrchestrationAiModel GPT_4 = new OrchestrationAiModel("gpt-4");
 
   /** Azure OpenAI GPT-4-32k chat completions model */
-  public static final Parameterized<OrchestrationAiModelParameters.GPT> GPT_4_32K =
-      new Parameterized<>("gpt-4-32k");
+  public static final OrchestrationAiModel GPT_4_32K = new OrchestrationAiModel("gpt-4-32k");
 
   /** Azure OpenAI GPT-4o chat completions model */
-  public static final Parameterized<OrchestrationAiModelParameters.GPT> GPT_4O =
-      new Parameterized<>("gpt-4o");
+  public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
   /** Azure OpenAI GPT-4o-mini chat completions model */
-  public static final Parameterized<OrchestrationAiModelParameters.GPT> GPT_4O_MINI =
-      new Parameterized<>("gpt-4o-mini");
+  public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
   /** Google Cloud Platform Gemini 1.0 Pro model */
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
@@ -125,26 +119,56 @@ public class OrchestrationAiModel {
   }
 
   /**
-   * Subclass to allow for parameterized models.
+   * Additional parameter on this model.
    *
-   * @param <T> The type of parameters for this model.
+   * @param key the parameter key.
+   * @param value the parameter value, nullable.
+   * @return A new model with the additional parameter.
    */
-  public static final class Parameterized<T extends OrchestrationAiModelParameters>
-      extends OrchestrationAiModel {
-    private Parameterized(@Nonnull final String name) {
-      super(name);
-    }
+  @Nonnull
+  public OrchestrationAiModel withParam(@Nonnull final String key, @Nullable final Object value) {
+    final var params = new LinkedHashMap<>(getParams());
+    params.put(key, value);
+    return withParams(params);
+  }
 
-    /**
-     * Set the typed parameters for this model.
-     *
-     * @param params The parameters for this model.
-     * @return The model with the parameters set.
-     */
-    @Tolerate
-    @Nonnull
-    public OrchestrationAiModel withParams(@Nonnull final T params) {
-      return super.withParams(params.getParams());
-    }
+  /**
+   * Additional parameter on this model.
+   *
+   * @param param the parameter key.
+   * @param value the parameter value, nullable.
+   * @return A new model with the additional parameter.
+   */
+  @Nonnull
+  public OrchestrationAiModel withParam(
+      @Nonnull final Parameter param, @Nullable final Object value) {
+    return withParam(param.value, value);
+  }
+
+  /** Parameter key for a model. */
+  @RequiredArgsConstructor
+  public enum Parameter {
+    /** The maximum number of tokens to generate. */
+    MAX_TOKENS("max_tokens"),
+    /** The sampling temperature. */
+    TEMPERATURE("temperature"),
+    /** The frequency penalty. */
+    FREQUENCY_PENALTY("frequency_penalty"),
+    /** The presence penalty. */
+    PRESENCE_PENALTY("presence_penalty"),
+    /** The maximum number of tokens for completion */
+    MAX_COMPLETION_TOKENS("max_completion_tokens"),
+    /** The probability mass to be considered . */
+    TOP_P("top_p"),
+    /** The toggle to enable partial message delta. */
+    STREAM("stream"),
+    /** The options for streaming response. */
+    STREAM_OPTIONS("stream_options"),
+    /** The tokens where the API will stop generating further tokens. */
+    STOP("stop"),
+    /** The number of chat completion choices to generate for each input message. */
+    N("n");
+
+    private final String value;
   }
 }

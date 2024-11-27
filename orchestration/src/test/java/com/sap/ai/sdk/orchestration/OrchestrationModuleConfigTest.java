@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -63,6 +64,44 @@ class OrchestrationModuleConfigTest {
     assertThat(configModified.getMaskingConfig().getMaskingProviders())
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
+  }
+
+  @Test
+  void testParams() {
+    // test withParams(Map<String, Object>)
+    {
+      var params = Map.<String, Object>of("foo", "bar", "fizz", "buzz");
+
+      var modelA = GPT_4O.withParams(params);
+      var modelB = modelA.withParams(params);
+      assertThat(modelA).isEqualTo(modelB);
+
+      var modelC = modelA.withParams(Map.of("foo", "bar"));
+      assertThat(modelA).isNotEqualTo(modelC);
+
+      var modelD = modelA.withParams(Map.of("foo", "bazz"));
+      assertThat(modelA).isNotEqualTo(modelD);
+    }
+
+    // test withParam(String, Object)
+    {
+      var modelA = GPT_4O.withParam("foo", "bar");
+      var modelB = modelA.withParam("foo", "bar");
+      assertThat(modelA).isEqualTo(modelB);
+
+      var modelC = modelA.withParam("foo", "bazz");
+      assertThat(modelA).isNotEqualTo(modelC);
+    }
+
+    // test withParam(Parameter, Object)
+    {
+      var modelA = GPT_4O.withParam(MAX_TOKENS, 10);
+      var modelB = modelA.withParam(MAX_TOKENS, 10);
+      assertThat(modelA).isEqualTo(modelB);
+
+      var modelC = modelA.withParam(MAX_TOKENS, 20);
+      assertThat(modelA).isNotEqualTo(modelC);
+    }
   }
 
   @Test
