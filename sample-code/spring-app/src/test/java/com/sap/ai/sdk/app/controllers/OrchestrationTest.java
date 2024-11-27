@@ -154,7 +154,8 @@ class OrchestrationTest {
 
   @Test
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
-  void testFoo() {
+  void testGrounding() {
+    // Placeholder for grounding test
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
   }
 }
