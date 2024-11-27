@@ -44,7 +44,7 @@ jobs:
           mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}"
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
-          AICORE_SERVICE_KEY: ${{ secrets.AICORE_SERVICE_KEY }}
+          AICORE_SERVICE_KEY: ${{ matrix.secret-name }}
 
       - name: "Start Application Locally"
         run: |
@@ -61,7 +61,7 @@ jobs:
           done
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
-          AICORE_SERVICE_KEY: ${{ secrets.AICORE_SERVICE_KEY }}
+          AICORE_SERVICE_KEY: ${{ matrix.secret-name }}
 
       - name: "Health Check"
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
