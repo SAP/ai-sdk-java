@@ -53,10 +53,10 @@ public class AzureContentFilter implements ContentFilter {
       throw new IllegalArgumentException("At least one filter category must be set");
     }
 
-    return new AzureContentSafetyFilterConfig()
+    return AzureContentSafetyFilterConfig.create()
         .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
         .config(
-            new AzureContentSafety()
+            AzureContentSafety.create()
                 .hate(hate != null ? hate.getAzureThreshold() : null)
                 .selfHarm(selfHarm != null ? selfHarm.getAzureThreshold() : null)
                 .sexual(sexual != null ? sexual.getAzureThreshold() : null)

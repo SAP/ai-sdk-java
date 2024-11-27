@@ -168,12 +168,10 @@ public class OrchestrationClient {
           "Prompt must not contain any messages when using a JSON module configuration, as the template is already defined in the JSON.");
     }
 
-    final var request =
-        new CompletionPostRequest()
-            .messagesHistory(prompt.getMessagesHistory())
-            .inputParams(prompt.getTemplateParameters());
+    final ObjectNode requestJson = JACKSON.createObjectNode();
+    requestJson.set("messages_history", JACKSON.valueToTree(prompt.getMessagesHistory()));
+    requestJson.set("input_params", JACKSON.valueToTree(prompt.getTemplateParameters()));
 
-    final ObjectNode requestJson = JACKSON.valueToTree(request);
     final JsonNode moduleConfigJson;
     try {
       moduleConfigJson = JACKSON.readTree(moduleConfig);

@@ -31,16 +31,16 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void testEmptyTemplateConfig() {
-    var systemMessage = new ChatMessage().role("system").content("foo");
-    var userMessage = new ChatMessage().role("user").content("Hello");
+    var systemMessage = ChatMessage.create().role("system").content("foo");
+    var userMessage = ChatMessage.create().role("user").content("Hello");
 
-    var expected = new Template().template(List.of(systemMessage, userMessage));
+    var expected = Template.create().template(List.of(systemMessage, userMessage));
 
     var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     var actual =
         (Template)
             ConfigToRequestTransformer.toTemplateModuleConfig(
-                prompt, new Template().template(List.of()));
+                prompt, Template.create().template(List.of()));
 
     assertThat(actual).isEqualTo(expected);
     assertThat(actual.getTemplate())
@@ -51,14 +51,14 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void testMergingTemplateConfig() {
-    var systemMessage = new ChatMessage().role("system").content("foo");
-    var userMessage = new ChatMessage().role("user").content("Hello ");
-    var userMessage2 = new ChatMessage().role("user").content("World");
+    var systemMessage = ChatMessage.create().role("system").content("foo");
+    var userMessage = ChatMessage.create().role("user").content("Hello ");
+    var userMessage2 = ChatMessage.create().role("user").content("World");
 
-    var expected = new Template().template(List.of(systemMessage, userMessage, userMessage2));
+    var expected = Template.create().template(List.of(systemMessage, userMessage, userMessage2));
 
     var prompt = new OrchestrationPrompt(userMessage2);
-    var templateConfig = new Template().template(List.of(systemMessage, userMessage));
+    var templateConfig = Template.create().template(List.of(systemMessage, userMessage));
     var actual = ConfigToRequestTransformer.toTemplateModuleConfig(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
@@ -66,7 +66,7 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void testMessagesHistory() {
-    var systemMessage = new ChatMessage().role("system").content("foo");
+    var systemMessage = ChatMessage.create().role("system").content("foo");
 
     var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(systemMessage));
     var actual =

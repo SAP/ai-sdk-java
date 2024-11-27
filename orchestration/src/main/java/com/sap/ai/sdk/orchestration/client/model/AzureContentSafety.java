@@ -12,39 +12,50 @@
 
 package com.sap.ai.sdk.orchestration.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.annotations.Beta;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** Filter configuration for Azure Content Safety */
-@JsonPropertyOrder({
-  AzureContentSafety.JSON_PROPERTY_HATE,
-  AzureContentSafety.JSON_PROPERTY_SELF_HARM,
-  AzureContentSafety.JSON_PROPERTY_SEXUAL,
-  AzureContentSafety.JSON_PROPERTY_VIOLENCE
-})
-@com.google.common.annotations.Beta
-@javax.annotation.Generated(
-    value = "org.openapitools.codegen.languages.JavaClientCodegen",
-    comments = "Generator version: 7.9.0")
-public class AzureContentSafety {
-  public static final String JSON_PROPERTY_HATE = "Hate";
+@Beta // CHECKSTYLE:OFF
+public class AzureContentSafety
+// CHECKSTYLE:ON
+{
+  @JsonProperty("Hate")
   private AzureThreshold hate;
 
-  public static final String JSON_PROPERTY_SELF_HARM = "SelfHarm";
+  @JsonProperty("SelfHarm")
   private AzureThreshold selfHarm;
 
-  public static final String JSON_PROPERTY_SEXUAL = "Sexual";
+  @JsonProperty("Sexual")
   private AzureThreshold sexual;
 
-  public static final String JSON_PROPERTY_VIOLENCE = "Violence";
+  @JsonProperty("Violence")
   private AzureThreshold violence;
 
-  public AzureContentSafety() {}
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  public AzureContentSafety hate(AzureThreshold hate) {
+  /** Default constructor for AzureContentSafety. */
+  protected AzureContentSafety() {}
 
+  /**
+   * Set the hate of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param hate The hate of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
+  @Nonnull
+  public AzureContentSafety hate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
@@ -52,23 +63,30 @@ public class AzureContentSafety {
   /**
    * Get hate
    *
-   * @return hate
+   * @return hate The hate of this {@link AzureContentSafety} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HATE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public AzureThreshold getHate() {
     return hate;
   }
 
-  @JsonProperty(JSON_PROPERTY_HATE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setHate(AzureThreshold hate) {
+  /**
+   * Set the hate of this {@link AzureContentSafety} instance.
+   *
+   * @param hate The hate of this {@link AzureContentSafety}
+   */
+  public void setHate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
   }
 
-  public AzureContentSafety selfHarm(AzureThreshold selfHarm) {
-
+  /**
+   * Set the selfHarm of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param selfHarm The selfHarm of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
+  @Nonnull
+  public AzureContentSafety selfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
@@ -76,23 +94,30 @@ public class AzureContentSafety {
   /**
    * Get selfHarm
    *
-   * @return selfHarm
+   * @return selfHarm The selfHarm of this {@link AzureContentSafety} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SELF_HARM)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public AzureThreshold getSelfHarm() {
     return selfHarm;
   }
 
-  @JsonProperty(JSON_PROPERTY_SELF_HARM)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSelfHarm(AzureThreshold selfHarm) {
+  /**
+   * Set the selfHarm of this {@link AzureContentSafety} instance.
+   *
+   * @param selfHarm The selfHarm of this {@link AzureContentSafety}
+   */
+  public void setSelfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
-  public AzureContentSafety sexual(AzureThreshold sexual) {
-
+  /**
+   * Set the sexual of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param sexual The sexual of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
+  @Nonnull
+  public AzureContentSafety sexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
@@ -100,23 +125,30 @@ public class AzureContentSafety {
   /**
    * Get sexual
    *
-   * @return sexual
+   * @return sexual The sexual of this {@link AzureContentSafety} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SEXUAL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public AzureThreshold getSexual() {
     return sexual;
   }
 
-  @JsonProperty(JSON_PROPERTY_SEXUAL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSexual(AzureThreshold sexual) {
+  /**
+   * Set the sexual of this {@link AzureContentSafety} instance.
+   *
+   * @param sexual The sexual of this {@link AzureContentSafety}
+   */
+  public void setSexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
-  public AzureContentSafety violence(AzureThreshold violence) {
-
+  /**
+   * Set the violence of this {@link AzureContentSafety} instance and return the same instance.
+   *
+   * @param violence The violence of this {@link AzureContentSafety}
+   * @return The same instance of this {@link AzureContentSafety} class
+   */
+  @Nonnull
+  public AzureContentSafety violence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
@@ -124,31 +156,71 @@ public class AzureContentSafety {
   /**
    * Get violence
    *
-   * @return violence
+   * @return violence The violence of this {@link AzureContentSafety} instance.
    */
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VIOLENCE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @Nonnull
   public AzureThreshold getViolence() {
     return violence;
   }
 
-  @JsonProperty(JSON_PROPERTY_VIOLENCE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setViolence(AzureThreshold violence) {
+  /**
+   * Set the violence of this {@link AzureContentSafety} instance.
+   *
+   * @param violence The violence of this {@link AzureContentSafety}
+   */
+  public void setViolence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
   }
 
+  /**
+   * Get the names of the unrecognizable properties of the {@link AzureContentSafety}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link AzureContentSafety} instance.
+   *
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException("AzureContentSafety has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link AzureContentSafety} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AzureContentSafety azureContentSafety = (AzureContentSafety) o;
-    return Objects.equals(this.hate, azureContentSafety.hate)
+    final AzureContentSafety azureContentSafety = (AzureContentSafety) o;
+    return Objects.equals(this.cloudSdkCustomFields, azureContentSafety.cloudSdkCustomFields)
+        && Objects.equals(this.hate, azureContentSafety.hate)
         && Objects.equals(this.selfHarm, azureContentSafety.selfHarm)
         && Objects.equals(this.sexual, azureContentSafety.sexual)
         && Objects.equals(this.violence, azureContentSafety.violence);
@@ -156,17 +228,21 @@ public class AzureContentSafety {
 
   @Override
   public int hashCode() {
-    return Objects.hash(hate, selfHarm, sexual, violence);
+    return Objects.hash(hate, selfHarm, sexual, violence, cloudSdkCustomFields);
   }
 
   @Override
+  @Nonnull
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("class AzureContentSafety {\n");
     sb.append("    hate: ").append(toIndentedString(hate)).append("\n");
     sb.append("    selfHarm: ").append(toIndentedString(selfHarm)).append("\n");
     sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
     sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -174,76 +250,15 @@ public class AzureContentSafety {
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 
-  public static class Builder {
-
-    private AzureContentSafety instance;
-
-    public Builder() {
-      this(new AzureContentSafety());
-    }
-
-    protected Builder(AzureContentSafety instance) {
-      this.instance = instance;
-    }
-
-    public AzureContentSafety.Builder hate(AzureThreshold hate) {
-      this.instance.hate = hate;
-      return this;
-    }
-
-    public AzureContentSafety.Builder selfHarm(AzureThreshold selfHarm) {
-      this.instance.selfHarm = selfHarm;
-      return this;
-    }
-
-    public AzureContentSafety.Builder sexual(AzureThreshold sexual) {
-      this.instance.sexual = sexual;
-      return this;
-    }
-
-    public AzureContentSafety.Builder violence(AzureThreshold violence) {
-      this.instance.violence = violence;
-      return this;
-    }
-
-    /**
-     * returns a built AzureContentSafety instance.
-     *
-     * <p>The builder is not reusable.
-     */
-    public AzureContentSafety build() {
-      try {
-        return this.instance;
-      } finally {
-        // ensure that this.instance is not reused
-        this.instance = null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return getClass() + "=(" + instance + ")";
-    }
-  }
-
-  /** Create a builder with no initialized field. */
-  public static AzureContentSafety.Builder builder() {
-    return new AzureContentSafety.Builder();
-  }
-
-  /** Create a builder with a shallow copy of this instance. */
-  public AzureContentSafety.Builder toBuilder() {
-    return new AzureContentSafety.Builder()
-        .hate(getHate())
-        .selfHarm(getSelfHarm())
-        .sexual(getSexual())
-        .violence(getViolence());
+  /** Create a new {@link AzureContentSafety} instance. No arguments are required. */
+  public static AzureContentSafety create() {
+    return new AzureContentSafety();
   }
 }

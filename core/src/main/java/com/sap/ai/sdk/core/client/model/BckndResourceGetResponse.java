@@ -64,7 +64,6 @@ public class BckndResourceGetResponse
   public BckndResourceGetResponse putresourcePlansItem(
       @Nonnull final String key,
       @Nonnull final BckndResourceGetResourcePlansValue resourcePlansItem) {
-    this.resourcePlans = new HashMap<>();
     this.resourcePlans.put(key, resourcePlansItem);
     return this;
   }
