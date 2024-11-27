@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
-  OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+  OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig()
+          .withLlmConfig(GPT_35_TURBO.withParams(Map.of("temperature", 0.0)));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.

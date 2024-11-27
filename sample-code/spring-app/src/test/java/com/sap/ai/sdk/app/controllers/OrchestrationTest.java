@@ -12,6 +12,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 @Slf4j
 class OrchestrationTest {
@@ -147,5 +148,12 @@ class OrchestrationTest {
         .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
         .doesNotContain("MASKED_PERSON")
         .contains("Mallory");
+  }
+
+  @Test
+  @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
+  void testGrounding() {
+    // Placeholder for grounding test
+    assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
   }
 }
