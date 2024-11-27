@@ -611,9 +611,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <includedLicense>Bouncy Castle Licence</includedLicense>
 
             <!-- licenses for which action needed! -->
-
             <includedLicense>CDDL + GPLv2 with classpath exception</includedLicense>
-            <!-- Used in javax.annotation:javax.annotation-api -->
           </includedLicenses>
           <licenseMerges>
             <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
