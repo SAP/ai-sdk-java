@@ -8,10 +8,8 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
-import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
@@ -115,9 +113,9 @@ class OrchestrationTest {
     var maskingResult = result.getModuleResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
-    var maskedMessage = ((List<Map<String, Object>>) data.get("masked_template")).get(0);
-    assertThat(maskedMessage.get("content"))
-        .asInstanceOf(InstanceOfAssertFactories.STRING)
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
+        .describedAs("The masked input should not contain any user names")
         .doesNotContain("Alice", "Bob");
 
     assertThat(result.getModuleResults().getOutputUnmasking()).isEmpty();
