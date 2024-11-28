@@ -4,7 +4,7 @@ import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
 import javax.annotation.Nonnull;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
-public sealed interface Message permits UserMessage, AssistantMessage, SystemMessage {
+public interface Message {
 
   /**
    * Converts the message to a serializable ChatMessage object.
