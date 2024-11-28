@@ -588,6 +588,20 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <version>3.3.1</version>
       </plugin>
       <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>11.1.0</version>
+        <configuration>
+          <connectionTimeout>60000</connectionTimeout>
+          <nvdMaxRetryCount>10</nvdMaxRetryCount>
+          <failBuildOnCVSS>7</failBuildOnCVSS>
+          <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+          <suppressionFile>${project.rootdir}/.pipeline/dependency-check-suppression.xml</suppressionFile>
+          <nvdValidForHours>46</nvdValidForHours>
+          <skipProvidedScope>true</skipProvidedScope>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>2.4.0</version>
