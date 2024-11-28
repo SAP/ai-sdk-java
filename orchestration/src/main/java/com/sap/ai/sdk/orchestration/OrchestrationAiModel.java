@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
