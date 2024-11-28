@@ -2,10 +2,10 @@ package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.TrckDeleteMetricsResponse;
-import com.sap.ai.sdk.core.client.model.TrckExecutionId;
-import com.sap.ai.sdk.core.client.model.TrckGetMetricResourceList;
-import com.sap.ai.sdk.core.client.model.TrckMetricResource;
+import com.sap.ai.sdk.core.model.TrckDeleteMetricsResponse;
+import com.sap.ai.sdk.core.model.TrckExecutionId;
+import com.sap.ai.sdk.core.model.TrckGetMetricResourceList;
+import com.sap.ai.sdk.core.model.TrckMetricResource;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;

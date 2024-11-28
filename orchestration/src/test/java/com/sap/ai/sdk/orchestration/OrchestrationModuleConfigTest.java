@@ -6,8 +6,8 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TO
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIConfig;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
