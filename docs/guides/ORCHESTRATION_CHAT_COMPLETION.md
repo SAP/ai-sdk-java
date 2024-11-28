@@ -200,8 +200,10 @@ Change your LLM configuration to add model parameters:
 ```java
 OrchestrationAiModel customGPT4O =
     OrchestrationAiModel.GPT_4O
-        .withParams(
-            params().maxTokens(50).temperature(0.1).frequencyPenalty(0).presencePenalty(0))
+        .withParam(MAX_TOKENS, 50)
+        .withParam(TEMPERATURE, 0.1)
+        .withParam(FREQUENCY_PENALTY, 0)
+        .withParam(PRESENCE_PENALTY, 0)
         .withVersion("2024-05-13");
 ```
 
