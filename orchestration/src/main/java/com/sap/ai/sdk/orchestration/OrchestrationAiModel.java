@@ -27,6 +27,10 @@ public class OrchestrationAiModel {
    *     "frequency_penalty", 0,
    *     "presence_penalty", 0)
    * }</pre>
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
+   *     AI Core: Orchestration - Harmonized API</a>
    */
   Map<String, Object> params;
 
@@ -123,6 +127,9 @@ public class OrchestrationAiModel {
    * @param key the parameter key.
    * @param value the parameter value, nullable.
    * @return A new model with the additional parameter.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
+   *     AI Core: Orchestration - Harmonized API</a>
    */
   @Nonnull
   public OrchestrationAiModel withParam(@Nonnull final String key, @Nullable final Object value) {
@@ -138,6 +145,9 @@ public class OrchestrationAiModel {
    * @param value the parameter value, nullable.
    * @param <ValueT> the parameter value type.
    * @return A new model with the additional parameter.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
+   *     AI Core: Orchestration - Harmonized API</a>
    */
   @Nonnull
   public <ValueT> OrchestrationAiModel withParam(
