@@ -10,7 +10,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -19,25 +21,33 @@ import lombok.val;
  * scenario or for a model.
  */
 @Slf4j
-class DeploymentCache {
+@RequiredArgsConstructor
+class DeploymentResolver {
+
+  private static final Map<String, Set<AiDeployment>> DEFAULT_GLOBAL_CACHE =
+      new ConcurrentHashMap<>();
+
+  @Nonnull private final AiCoreService service;
 
   /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
-  private final Map<String, Set<AiDeployment>> cache = new ConcurrentHashMap<>();
+  @Nonnull private final Map<String, Set<AiDeployment>> cache;
+
+  DeploymentResolver(@Nonnull final AiCoreService service) {
+    this(service, DEFAULT_GLOBAL_CACHE);
+  }
 
   /**
    * Remove all entries from the cache then load all deployments into the cache.
    *
    * <p><b>Call this whenever a deployment is deleted.</b>
    *
-   * @param aiCoreDestination the configured connection to the AI Core service.
    * @param resourceGroup the resource group, usually "default".
    */
-  void resetCache(
-      @Nonnull final AiCoreDestination aiCoreDestination, @Nonnull final String resourceGroup) {
+  void resetCache(@Nonnull final String resourceGroup) {
     cache.remove(resourceGroup);
     try {
       val deployments =
-          new HashSet<>(new DeploymentApi(aiCoreDestination).query(resourceGroup).getResources());
+          new HashSet<>(new DeploymentApi(service).query(resourceGroup).getResources());
       cache.put(resourceGroup, deployments);
     } catch (final OpenApiRequestException e) {
       log.error("Failed to load deployments into cache", e);
@@ -48,43 +58,26 @@ class DeploymentCache {
    * Get the deployment id from the foundation model object. If there are multiple deployments of
    * the same model, the first one is returned.
    *
-   * @param aiCoreDestination the configured connection to the AI Core service.
    * @param resourceGroup the resource group, usually "default".
    * @param model the foundation model.
    * @return the deployment id.
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  String getDeploymentIdByModel(
-      @Nonnull final AiCoreDestination aiCoreDestination,
-      @Nonnull final String resourceGroup,
-      @Nonnull final AiModel model)
+  String getDeploymentIdByModel(@Nonnull final String resourceGroup, @Nonnull final AiModel model)
       throws NoSuchElementException {
-    return getDeploymentIdByModel(resourceGroup, model)
-        .orElseGet(
-            () -> {
-              resetCache(aiCoreDestination, resourceGroup);
-              return getDeploymentIdByModel(resourceGroup, model)
-                  .orElseThrow(
-                      () ->
-                          new NoSuchElementException(
-                              "No running deployment found for model: " + model));
-            });
-  }
-
-  private Optional<String> getDeploymentIdByModel(
-      @Nonnull final String resourceGroup, @Nonnull final AiModel model) {
-    return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
-        .filter(deployment -> isDeploymentOfModel(model, deployment))
-        .findFirst()
-        .map(AiDeployment::getId);
+    final Predicate<AiDeployment> predicate = deployment -> isDeploymentOfModel(model, deployment);
+    return resolveDeployment(resourceGroup, predicate)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "No running deployment found for model: " + model.name()));
   }
 
   /**
    * Get the deployment id from the scenario id. If there are multiple deployments of the * same
    * model, the first one is returned.
    *
-   * @param aiCoreDestination the configured connection to the AI Core service.
    * @param resourceGroup the resource group, usually "default".
    * @param scenarioId the scenario id, can be "orchestration".
    * @return the deployment id.
@@ -92,26 +85,39 @@ class DeploymentCache {
    */
   @Nonnull
   String getDeploymentIdByScenario(
-      @Nonnull final AiCoreDestination aiCoreDestination,
-      @Nonnull final String resourceGroup,
-      @Nonnull final String scenarioId)
+      @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
       throws NoSuchElementException {
-    return getDeploymentIdByScenario(resourceGroup, scenarioId)
-        .orElseGet(
-            () -> {
-              resetCache(aiCoreDestination, resourceGroup);
-              return getDeploymentIdByScenario(resourceGroup, scenarioId)
-                  .orElseThrow(
-                      () ->
-                          new NoSuchElementException(
-                              "No running deployment found for scenario: " + scenarioId));
-            });
+    final Predicate<AiDeployment> predicate =
+        deployment -> scenarioId.equals(deployment.getScenarioId());
+    return resolveDeployment(resourceGroup, predicate)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "No running deployment found for scenario: " + scenarioId));
   }
 
-  private Optional<String> getDeploymentIdByScenario(
-      @Nonnull final String resourceGroup, @Nonnull final String scenarioId) {
+  @Nonnull
+  Optional<String> resolveDeployment(
+      @Nonnull final String resourceGroup, @Nonnull final Predicate<AiDeployment> predicate) {
+    var deployment = getCachedDeployment(resourceGroup, predicate);
+    if (deployment.isPresent()) {
+      return deployment;
+    }
+    // double-checked locking to allow for safe cache resets under parallel access
+    synchronized (cache) {
+      deployment = getCachedDeployment(resourceGroup, predicate);
+      if (deployment.isPresent()) {
+        return deployment;
+      }
+      resetCache(resourceGroup);
+      return getCachedDeployment(resourceGroup, predicate);
+    }
+  }
+
+  private Optional<String> getCachedDeployment(
+      @Nonnull final String resourceGroup, @Nonnull final Predicate<AiDeployment> predicate) {
     return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
-        .filter(deployment -> scenarioId.equals(deployment.getScenarioId()))
+        .filter(predicate)
         .findFirst()
         .map(AiDeployment::getId);
   }

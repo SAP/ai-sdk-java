@@ -71,7 +71,12 @@ class AiCoreServiceTest {
         .containsExactly(
             new Header("AI-Client-Type", "AI SDK Java"), new Header("AI-Resource-Group", "foo"));
 
-    verify(resolver, times(1)).getDestination();
+    assertThat(service.destination())
+        .describedAs("The service object should remain unchanged")
+        .extracting(HttpDestination::getUri)
+        .isEqualTo(serviceBindingDestination.getUri());
+
+    verify(resolver, times(2)).getDestination();
   }
 
   @Test

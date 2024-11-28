@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
@@ -21,6 +20,7 @@ import com.sap.ai.sdk.orchestration.client.model.ModuleResultsOutputUnmaskingInn
 import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
@@ -38,6 +38,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 /** Client to execute requests to the orchestration service. */
 @Slf4j
 public class OrchestrationClient {
+  private static final String DEFAULT_SCENARIO = "orchestration";
+
   static final ObjectMapper JACKSON;
 
   static {
@@ -57,27 +59,28 @@ public class OrchestrationClient {
             .build();
   }
 
-  @Nonnull private final Supplier<AiCoreDeployment> deployment;
+  @Nonnull private final Supplier<HttpDestination> destinationSupplier;
 
   /** Default constructor. */
   public OrchestrationClient() {
-    deployment = () -> new AiCoreService().forDeploymentByScenario("orchestration");
+    destinationSupplier = () -> new AiCoreService().getDestinationForDeploymentByScenario(AiCoreService.DEFAULT_RESOURCE_GROUP, DEFAULT_SCENARIO);
   }
 
   /**
-   * Constructor with a custom deployment, allowing for a custom resource group or otherwise
-   * specific deployment ID.
+   * Constructor with a custom destination, allowing for a custom resource group or otherwise
+   * custom destination.
    *
    * <p>Example:
    *
    * <pre>{@code
-   * new OrchestrationClient(new AiCoreService().forDeploymentByScenario("orchestration"));
+   * new OrchestrationClient(new AiCoreService().getDestinationForDeploymentByScenario("custom-rg", "orchestration"));
    * }</pre>
    *
-   * @param deployment The specific {@link AiCoreDeployment} to use.
+   * @param destination The specific {@link HttpDestination} to use.
+   * @see AiCoreService#getDestinationForDeploymentByScenario(String, String)
    */
-  public OrchestrationClient(@Nonnull final AiCoreDeployment deployment) {
-    this.deployment = () -> deployment;
+  public OrchestrationClient(@Nonnull final HttpDestination destination) {
+    this.destinationSupplier = () -> destination;
   }
 
   /**
@@ -196,7 +199,7 @@ public class OrchestrationClient {
     postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
 
     try {
-      val destination = deployment.get().destination();
+      val destination = destinationSupplier.get();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(

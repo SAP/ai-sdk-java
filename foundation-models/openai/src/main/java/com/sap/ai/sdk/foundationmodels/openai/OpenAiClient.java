@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -19,8 +20,11 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,18 +55,20 @@ public final class OpenAiClient {
   @Nonnull private final Destination destination;
 
   /**
-   * Create a new OpenAI client for the given foundation model.
+   * Create a new OpenAI client for the given foundation model, using the default resource group.
    *
    * @param foundationModel the OpenAI model which is deployed.
    * @return a new OpenAI client.
+   * @throws NoSuchElementException if no deployment for the given model was found in the default
+   *     resource group.
    */
   @Nonnull
-  public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel) {
+  public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel)
+      throws NoSuchElementException {
     final var destination =
         new AiCoreService()
-            .forDeploymentByModel(foundationModel)
-            .withResourceGroup("default")
-            .destination();
+            .getDestinationForDeploymentByModel(
+                AiCoreService.DEFAULT_RESOURCE_GROUP, foundationModel);
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
@@ -70,32 +76,28 @@ public final class OpenAiClient {
   // package private, but prepared in case we want to expose it later
   @Nonnull
   OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
-    final var destination =
+    final var newDestination =
         DefaultHttpDestination.fromDestination(this.destination)
             // set the API version as URL query parameter
             .property("URL.queries.api-version", apiVersion)
             .build();
-    return new OpenAiClient(destination);
+    return new OpenAiClient(newDestination);
   }
 
   /**
-   * Create a new OpenAI client with a <b>custom destination</b>. This can be used to customize the
-   * connectivity behaviour of the client. For most use-cases, {@link
-   * OpenAiClient#forModel(OpenAiModel)} should be used instead.
+   * Create a new OpenAI client with a custom destination, allowing for a custom resource group or otherwise
+   *     custom destination.
    *
-   * <p>The destination needs to be configured with all relevant connectivity details relevant for
-   * accessing the OpenAI models. For Azure-hosted models on AI Core this includes:
+   * <p>Example:
    *
-   * <ul>
-   *   <li>URL up and including the deployment id
-   *   <li>Authorization
-   *   <li>Resource Group Header
-   *   <li>API Version
-   * </ul>
+   * <pre>{@code
+   * OpenAiClient.withCustomDestination(new AiCoreService().getDestinationForDeploymentByModel("custom-rg", GPT_4O));
    *
-   * @param destination the destination to use for the client
-   * @return a new OpenAI client
-   * @see OpenAiClient#forModel(OpenAiModel)
+   * }</pre>
+   *
+   * @param destination The specific {@link HttpDestination} to use.
+   *
+   * @see AiCoreService#getDestinationForDeploymentByModel(String, AiModel)
    */
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {

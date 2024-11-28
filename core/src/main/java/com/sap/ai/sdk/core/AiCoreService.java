@@ -7,16 +7,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.Iterables;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationProperty;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import java.util.NoSuchElementException;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
@@ -25,123 +25,93 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-/** Connectivity convenience methods for AI Core. */
+/**
+ * Connectivity convenience methods for AI Core, offering convenient access to destinations
+ * targeting the AI Core service. Loads base destinations from the environment or allows for setting
+ * a custom base destination.
+ */
 @Slf4j
-public class AiCoreService implements AiCoreDestination {
-  static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
-  static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
-  static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
+@Getter(AccessLevel.PACKAGE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+public class AiCoreService {
+  /** The default resource group. */
+  public static final String DEFAULT_RESOURCE_GROUP = "default";
 
-  private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
+  private static final String RESOURCE_GROUP_HEADER_PROPERTY = "URL.headers.AI-Resource-Group";
 
-  @Nonnull private final DestinationResolver destinationResolver;
-
-  @Nonnull private Function<AiCoreService, HttpDestination> baseDestinationHandler;
-  @Nonnull private final BiFunction<AiCoreService, HttpDestination, ApiClient> clientHandler;
-
-  @Nonnull
-  private final BiFunction<AiCoreService, HttpDestination, DefaultHttpDestination.Builder>
-      builderHandler;
-
-  /** The resource group is defined by AiCoreDeployment.withResourceGroup(). */
-  @Nonnull String resourceGroup;
-
-  /** The deployment id is set by AiCoreDeployment.destination() or AiCoreDeployment.client(). */
-  @Nonnull String deploymentId;
+  @Nonnull private final Supplier<HttpDestination> baseDestinationResolver;
+  @Nonnull private final DeploymentResolver deploymentResolver;
 
   /** The default constructor. */
   public AiCoreService() {
-    this(new DestinationResolver());
+    val resolver = new DestinationResolver();
+    this.baseDestinationResolver = resolver::getDestination;
+    this.deploymentResolver = new DeploymentResolver(this);
   }
 
-  AiCoreService(@Nonnull final DestinationResolver destinationResolver) {
-    this.destinationResolver = destinationResolver;
-    baseDestinationHandler = AiCoreService::getBaseDestination;
-    clientHandler = AiCoreService::buildApiClient;
-    builderHandler = AiCoreService::getDestinationBuilder;
-    resourceGroup = "default";
-    deploymentId = "";
-  }
-
-  @Nonnull
-  @Override
-  public ApiClient client() {
-    val destination = destination();
-    return clientHandler.apply(this, destination);
-  }
-
-  @Nonnull
-  @Override
-  public HttpDestination destination() {
-    val dest = baseDestinationHandler.apply(this);
-    val builder = builderHandler.apply(this, dest);
-    if (!deploymentId.isEmpty()) {
-      destinationSetUrl(builder, dest);
-      destinationSetHeaders(builder);
-    }
-    return builder.build();
+  AiCoreService(@Nonnull final Supplier<HttpDestination> baseDestinationResolver) {
+    this.baseDestinationResolver = baseDestinationResolver;
+    this.deploymentResolver = new DeploymentResolver(this);
   }
 
   /**
-   * Update and set the URL for the destination.
+   * Set a specific base destination. This is useful when loading a destination from the BTP
+   * destination service or some other source.
    *
-   * @param builder The destination builder.
-   * @param dest The original destination reference.
-   */
-  protected void destinationSetUrl(
-      @Nonnull final DefaultHttpDestination.Builder builder, @Nonnull final Destination dest) {
-    String uri = dest.get(DestinationProperty.URI).get();
-    if (!uri.endsWith("/")) {
-      uri = uri + "/";
-    }
-    builder.uri(uri + "v2/inference/deployments/%s/".formatted(deploymentId));
-  }
-
-  /**
-   * Update and set the default request headers for the destination.
+   * <p><b>Note:</b> For typical scenarios, the destination is expected to have the {@code /v2/}
+   * base path set. But for special cases a different base path may be required (e.g. when consuming
+   * AI Core via some proxy that expects a different base path).
    *
-   * @param builder The destination builder.
-   */
-  protected void destinationSetHeaders(@Nonnull final DefaultHttpDestination.Builder builder) {
-    builder.property(AI_RESOURCE_GROUP, resourceGroup);
-  }
-
-  /**
-   * Set a specific base destination.
-   *
-   * @param destination The destination to be used for AI Core service calls.
-   * @return The AI Core Service based on the provided destination.
+   * @param destination The base destination to be used for AI Core service calls.
+   * @return A new AI Core Service object using the provided destination as basis.
    */
   @Nonnull
-  public AiCoreService withDestination(@Nonnull final HttpDestination destination) {
-    baseDestinationHandler = service -> destination;
-    return this;
+  public AiCoreService withBaseDestination(@Nonnull final HttpDestination destination) {
+    return new AiCoreService(() -> DestinationResolver.fromCustomBaseDestination(destination));
   }
 
   /**
-   * Set a specific deployment by id.
+   * Get the base destination for AI Core service calls. This destination won't have any resource group set.
    *
-   * @param deploymentId The deployment id to be used for AI Core service calls.
-   * @return A new instance of the AI Core Deployment.
+   * @return The base destination.
+   * @throws DestinationAccessException If there was an issue creating the base destination, e.g. in
+   *     case of invalid credentials.
+   * @throws DestinationNotFoundException If there was an issue creating the base destination, e.g.
+   *     in case of missing credentials.
+   * @see #withBaseDestination(HttpDestination)
    */
   @Nonnull
-  public AiCoreDeployment forDeployment(@Nonnull final String deploymentId) {
-    return new AiCoreDeployment(this, () -> deploymentId);
+  public HttpDestination getBaseDestination()
+      throws DestinationAccessException, DestinationNotFoundException {
+    return baseDestinationResolver.get();
   }
 
   /**
-   * Set a specific deployment by model. If there are multiple deployments of the same model, the
-   * first one is returned.
+   * Get a new endpoint object, targeting a specific deployment ID.
    *
-   * @param model The model to be used for AI Core service calls.
+   * @param deploymentId The deployment id to be used for the new endpoint.
+   * @return the new instance.
+   */
+  @Nonnull
+  public HttpDestination getDestinationForDeploymentById(
+      @Nonnull final String resourceGroup, @Nonnull final String deploymentId) {
+    return toInferenceDestination(resourceGroup, deploymentId);
+  }
+
+  /**
+   * Get a destination to perform inference calls for a specific model. If there are multiple
+   * deployments of the same model, the first one is returned.
+   *
+   * @param model The model to be used for inference calls.
    * @return A new instance of the AI Core Deployment.
    * @throws NoSuchElementException if no running deployment is found for the model.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByModel(@Nonnull final AiModel model)
+  public HttpDestination getDestinationForDeploymentByModel(
+      @Nonnull final String resourceGroup, @Nonnull final AiModel model)
       throws NoSuchElementException {
-    return new AiCoreDeployment(
-        this, () -> DEPLOYMENT_CACHE.getDeploymentIdByModel(this, resourceGroup, model));
+    val deploymentId = deploymentResolver.getDeploymentIdByModel(resourceGroup, model);
+    return toInferenceDestination(resourceGroup, deploymentId);
   }
 
   /**
@@ -153,51 +123,20 @@ public class AiCoreService implements AiCoreDestination {
    * @throws NoSuchElementException if no running deployment is found for the scenario.
    */
   @Nonnull
-  public AiCoreDeployment forDeploymentByScenario(@Nonnull final String scenarioId)
+  public HttpDestination getDestinationForDeploymentByScenario(
+      @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
       throws NoSuchElementException {
-    return new AiCoreDeployment(
-        this, () -> DEPLOYMENT_CACHE.getDeploymentIdByScenario(this, resourceGroup, scenarioId));
+    val deploymentId = deploymentResolver.getDeploymentIdByScenario(resourceGroup, scenarioId);
+    return toInferenceDestination(resourceGroup, deploymentId);
   }
 
-  /**
-   * Get a destination using the default service binding loading logic.
-   *
-   * @return The destination.
-   * @throws DestinationAccessException If the destination cannot be accessed.
-   * @throws DestinationNotFoundException If the destination cannot be found.
-   */
   @Nonnull
-  protected HttpDestination getBaseDestination()
-      throws DestinationAccessException, DestinationNotFoundException {
-    return destinationResolver.getDestination();
-  }
+  public ApiClient getApiClient() {
+    val destination = getBaseDestination();
+    val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+    httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
 
-  /**
-   * Get the destination builder with adjustments for AI Core.
-   *
-   * @param destination The destination.
-   * @return The destination builder.
-   */
-  @Nonnull
-  protected DefaultHttpDestination.Builder getDestinationBuilder(
-      @Nonnull final Destination destination) {
-    val builder = DefaultHttpDestination.fromDestination(destination);
-    String uri = destination.get(DestinationProperty.URI).get();
-    if (!uri.endsWith("/")) {
-      uri = uri + "/";
-    }
-    builder.uri(uri + "v2/").property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE);
-    return builder;
-  }
-
-  /**
-   * Build an {@link ApiClient} that can be used for executing plain REST HTTP calls.
-   *
-   * @param destination The destination to use as basis for the client.
-   * @return The new API client.
-   */
-  @Nonnull
-  protected ApiClient buildApiClient(@Nonnull final Destination destination) {
+    val rt = new RestTemplate();
     val objectMapper =
         new Jackson2ObjectMapperBuilder()
             .modules(new JavaTimeModule())
@@ -206,15 +145,27 @@ public class AiCoreService implements AiCoreDestination {
             .serializationInclusion(JsonInclude.Include.NON_NULL) // THIS STOPS `null` serialization
             .build();
 
-    val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-    httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
-
-    val rt = new RestTemplate();
     Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
         .forEach(converter -> converter.setObjectMapper(objectMapper));
     rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
 
     return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
+  }
+
+  private HttpDestination toInferenceDestination(
+      @Nonnull final String resourceGroup, @Nonnull final String deploymentId) {
+    val destination = getBaseDestination();
+    val path = buildDeploymentPath(deploymentId);
+
+    return DefaultHttpDestination.fromDestination(destination)
+        .uri(destination.getUri().resolve(path))
+        .property(RESOURCE_GROUP_HEADER_PROPERTY, resourceGroup)
+        .build();
+  }
+
+  @Nonnull
+  private static String buildDeploymentPath(@Nonnull final String deploymentId) {
+    return "inference/deployments/%s/".formatted(deploymentId);
   }
 
   /**
@@ -225,6 +176,6 @@ public class AiCoreService implements AiCoreDestination {
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
-    DEPLOYMENT_CACHE.resetCache(this, resourceGroup);
+    new DeploymentResolver(this).resetCache(resourceGroup);
   }
 }

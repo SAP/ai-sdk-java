@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.client;
 
-import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.client.model.AiArtifact;
 import com.sap.ai.sdk.core.client.model.AiArtifactCreationResponse;
@@ -37,16 +36,16 @@ public class ArtifactApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ArtifactApi() {
-    super(new AiCoreService().client());
+    super(new AiCoreService().getApiClient());
   }
 
   /**
    * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param aiCoreDestination The configured connectivity instance to AI Core
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public ArtifactApi(@Nonnull final AiCoreDestination aiCoreDestination) {
-    super(aiCoreDestination.client());
+  public ArtifactApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**
