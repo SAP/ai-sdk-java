@@ -1,11 +1,11 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.Template;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.generated.ChatMessage;
+import com.sap.ai.sdk.orchestration.generated.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.generated.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.generated.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.generated.Template;
+import com.sap.ai.sdk.orchestration.generated.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,13 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.MethodEnum.ANONYMIZATION;
-import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.MethodEnum.PSEUDONYMIZATION;
-import static com.sap.ai.sdk.orchestration.client.model.DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
+import static com.sap.ai.sdk.orchestration.generated.DPIConfig.MethodEnum.ANONYMIZATION;
+import static com.sap.ai.sdk.orchestration.generated.DPIConfig.MethodEnum.PSEUDONYMIZATION;
+import static com.sap.ai.sdk.orchestration.generated.DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
 
-import com.sap.ai.sdk.orchestration.client.model.DPIConfig;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
+import com.sap.ai.sdk.orchestration.generated.DPIConfig;
+import com.sap.ai.sdk.orchestration.generated.DPIEntities;
+import com.sap.ai.sdk.orchestration.generated.DPIEntityConfig;
+import com.sap.ai.sdk.orchestration.generated.MaskingProviderConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

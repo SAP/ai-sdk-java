@@ -2,9 +2,9 @@ package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BckndCommonResourceQuotaResponse;
-import com.sap.ai.sdk.core.client.model.BckndDeploymentResourceQuotaResponse;
-import com.sap.ai.sdk.core.client.model.BckndExecutableResourceQuotaResponse;
+import com.sap.ai.sdk.core.model.BckndCommonResourceQuotaResponse;
+import com.sap.ai.sdk.core.model.BckndDeploymentResourceQuotaResponse;
+import com.sap.ai.sdk.core.model.BckndExecutableResourceQuotaResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.List;

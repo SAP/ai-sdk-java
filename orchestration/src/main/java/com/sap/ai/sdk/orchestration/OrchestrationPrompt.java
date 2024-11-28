@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.generated.ChatMessage;
+import com.sap.ai.sdk.orchestration.generated.OrchestrationConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

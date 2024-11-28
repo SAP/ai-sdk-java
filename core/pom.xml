@@ -175,7 +175,7 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/aicore.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
-                  <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
+                  <modelPackage>com.sap.ai.sdk.core.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>

@@ -4,8 +4,8 @@ import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_35;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.Template;
+import com.sap.ai.sdk.orchestration.generated.ChatMessage;
+import com.sap.ai.sdk.orchestration.generated.Template;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

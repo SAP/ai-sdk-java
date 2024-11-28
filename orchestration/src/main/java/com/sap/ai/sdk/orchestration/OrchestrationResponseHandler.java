@@ -3,7 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.JACKSON;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sap.ai.sdk.orchestration.client.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.generated.ErrorResponse;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

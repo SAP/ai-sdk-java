@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.generated.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.generated.LLMChoice;
+import com.sap.ai.sdk.orchestration.generated.LLMModuleResultSynchronous;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

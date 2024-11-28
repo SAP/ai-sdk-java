@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafetyFilterConfig;
+import com.sap.ai.sdk.orchestration.generated.AzureContentSafety;
+import com.sap.ai.sdk.orchestration.generated.AzureContentSafetyFilterConfig;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.NoArgsConstructor;
