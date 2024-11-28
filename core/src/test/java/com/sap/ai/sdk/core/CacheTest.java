@@ -9,10 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
-import com.sap.ai.sdk.core.client.model.AiDeployment;
-import com.sap.ai.sdk.core.client.model.AiDeploymentDetails;
-import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
-import com.sap.ai.sdk.core.client.model.AiResourcesDetails;
+import com.sap.ai.sdk.core.model.AiDeployment;
+import com.sap.ai.sdk.core.model.AiDeploymentDetails;
+import com.sap.ai.sdk.core.model.AiDeploymentStatus;
+import com.sap.ai.sdk.core.model.AiResourcesDetails;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.time.OffsetDateTime;
 import java.util.Map;

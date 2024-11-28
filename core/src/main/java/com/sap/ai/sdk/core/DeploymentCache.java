@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
-import com.sap.ai.sdk.core.client.model.AiDeployment;
+import com.sap.ai.sdk.core.model.AiDeployment;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashSet;
 import java.util.Map;
