@@ -31,7 +31,7 @@ final class ConfigToRequestTransformer {
         .orchestrationConfig(
             OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
-        .messagesHistory(prompt.getMessagesHistory());
+        .messagesHistory(prompt.getMessagesHistory().stream().map(Message::toChatMessage).toList());
   }
 
   @Nonnull
@@ -46,7 +46,7 @@ final class ConfigToRequestTransformer {
      */
     val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
     val messagesWithPrompt = new ArrayList<>(messages);
-    messagesWithPrompt.addAll(prompt.getMessages());
+    messagesWithPrompt.addAll(prompt.getMessages().stream().map(Message::toChatMessage).toList());
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
