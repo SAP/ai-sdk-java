@@ -2,11 +2,11 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.With;
 
@@ -137,38 +137,58 @@ public class OrchestrationAiModel {
    *
    * @param param the parameter key.
    * @param value the parameter value, nullable.
+   * @param <ValueT> the parameter value type.
    * @return A new model with the additional parameter.
    */
   @Nonnull
-  public OrchestrationAiModel withParam(
-      @Nonnull final Parameter param, @Nullable final Object value) {
-    return withParam(param.value, value);
+  public <ValueT> OrchestrationAiModel withParam(
+      @Nonnull final Parameter<ValueT> param, @Nullable final ValueT value) {
+    return withParam(param.getName(), value);
   }
 
-  /** Parameter key for a model. */
-  @RequiredArgsConstructor
-  public enum Parameter {
+  /**
+   * Parameter key for a model.
+   *
+   * @param <ValueT> the parameter value type.
+   */
+  @FunctionalInterface
+  public interface Parameter<ValueT> {
     /** The maximum number of tokens to generate. */
-    MAX_TOKENS("max_tokens"),
-    /** The sampling temperature. */
-    TEMPERATURE("temperature"),
-    /** The frequency penalty. */
-    FREQUENCY_PENALTY("frequency_penalty"),
-    /** The presence penalty. */
-    PRESENCE_PENALTY("presence_penalty"),
-    /** The maximum number of tokens for completion */
-    MAX_COMPLETION_TOKENS("max_completion_tokens"),
-    /** The probability mass to be considered . */
-    TOP_P("top_p"),
-    /** The toggle to enable partial message delta. */
-    STREAM("stream"),
-    /** The options for streaming response. */
-    STREAM_OPTIONS("stream_options"),
-    /** The tokens where the API will stop generating further tokens. */
-    STOP("stop"),
-    /** The number of chat completion choices to generate for each input message. */
-    N("n");
+    Parameter<Integer> MAX_TOKENS = () -> "max_tokens";
 
-    private final String value;
+    /** The sampling temperature. */
+    Parameter<Number> TEMPERATURE = () -> "temperature";
+
+    /** The frequency penalty. */
+    Parameter<Number> FREQUENCY_PENALTY = () -> "frequency_penalty";
+
+    /** The presence penalty. */
+    Parameter<Number> PRESENCE_PENALTY = () -> "presence_penalty";
+
+    /** The maximum number of tokens for completion */
+    Parameter<Integer> MAX_COMPLETION_TOKENS = () -> "max_completion_tokens";
+
+    /** The probability mass to be considered . */
+    Parameter<Number> TOP_P = () -> "top_p";
+
+    /** The toggle to enable partial message delta. */
+    Parameter<Boolean> STREAM = () -> "stream";
+
+    /** The options for streaming response. Only used in combination with STREAM = true. */
+    Parameter<Map<String, Object>> STREAM_OPTIONS = () -> "stream_options";
+
+    /** The tokens where the API will stop generating further tokens. */
+    Parameter<List<String>> STOP = () -> "stop";
+
+    /** The number of chat completion choices to generate for each input message. */
+    Parameter<Integer> N = () -> "n";
+
+    /**
+     * The name of the parameter.
+     *
+     * @return the name of the parameter.
+     */
+    @Nonnull
+    String getName();
   }
 }
