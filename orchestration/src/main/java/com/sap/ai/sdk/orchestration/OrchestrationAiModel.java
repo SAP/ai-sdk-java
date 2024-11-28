@@ -165,20 +165,8 @@ public class OrchestrationAiModel {
     /** The presence penalty. */
     Parameter<Number> PRESENCE_PENALTY = () -> "presence_penalty";
 
-    /** The maximum number of tokens for completion */
-    Parameter<Integer> MAX_COMPLETION_TOKENS = () -> "max_completion_tokens";
-
     /** The probability mass to be considered . */
     Parameter<Number> TOP_P = () -> "top_p";
-
-    /** The toggle to enable partial message delta. */
-    Parameter<Boolean> STREAM = () -> "stream";
-
-    /** The options for streaming response. Only used in combination with STREAM = true. */
-    Parameter<Map<String, Object>> STREAM_OPTIONS = () -> "stream_options";
-
-    /** The tokens where the API will stop generating further tokens. */
-    Parameter<List<String>> STOP = () -> "stop";
 
     /** The number of chat completion choices to generate for each input message. */
     Parameter<Integer> N = () -> "n";
