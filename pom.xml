@@ -6,7 +6,7 @@
   <version>0.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Parent pom</name>
-  <description>SAP Cloud SDK for AI - The parent pom defines dependency versions and plugin configurations</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. The parent pom defines dependency versions and plugin configurations</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>

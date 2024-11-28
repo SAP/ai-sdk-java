@@ -8,7 +8,7 @@
   </parent>
   <artifactId>orchestration</artifactId>
   <name>Orchestration client</name>
-  <description>SAP Cloud SDK for AI - Client for the Orchestration service.</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Orchestration Service.</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
