@@ -9,10 +9,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiArtifactArgumentBinding;
-import com.sap.ai.sdk.core.client.model.AiConfiguration;
-import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
-import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import com.sap.ai.sdk.core.model.AiArtifactArgumentBinding;
+import com.sap.ai.sdk.core.model.AiConfiguration;
+import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
+import com.sap.ai.sdk.core.model.AiParameterArgumentBinding;
 import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;

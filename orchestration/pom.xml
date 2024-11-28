@@ -158,7 +158,7 @@
                   <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
                   <generateApis>false</generateApis>
-                  <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+                  <modelPackage>com.sap.ai.sdk.orchestration.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
