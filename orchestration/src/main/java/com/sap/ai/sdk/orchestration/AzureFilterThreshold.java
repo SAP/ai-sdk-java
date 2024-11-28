@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
+import com.sap.ai.sdk.orchestration.model.AzureThreshold;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

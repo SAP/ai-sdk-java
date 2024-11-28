@@ -5,8 +5,8 @@
   <artifactId>sdk-parent</artifactId>
   <version>0.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>SAP AI SDK - Parent POM</name>
-  <description>Parent POM for the SAP AI SDK. Defines dependency versions and plugin configurations</description>
+  <name>Parent pom</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. The parent pom defines dependency versions and plugin configurations</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
@@ -472,8 +472,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <printFailingErrors>true</printFailingErrors>
           <excludes>
             <!-- Exclude generated clients -->
-            <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
-            <exclude>com/sap/ai/sdk/orchestration/client/**/*</exclude>
+            <exclude>com/sap/ai/sdk/core/client/*</exclude>
+            <exclude>com/sap/ai/sdk/core/model/*</exclude>
+            <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -513,8 +514,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <configuration>
           <excludes>
             <!-- Exclude generated clients and end to end application from test coverage -->
-            <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
-            <exclude>com/sap/ai/sdk/orchestration/client/**/*</exclude>
+            <exclude>com/sap/ai/sdk/core/client/*</exclude>
+            <exclude>com/sap/ai/sdk/core/model/*</exclude>
+            <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
@@ -584,6 +586,20 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.3.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>11.1.0</version>
+        <configuration>
+          <connectionTimeout>60000</connectionTimeout>
+          <nvdMaxRetryCount>10</nvdMaxRetryCount>
+          <failBuildOnCVSS>7</failBuildOnCVSS>
+          <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+          <suppressionFile>${project.rootdir}/.pipeline/dependency-check-suppression.xml</suppressionFile>
+          <nvdValidForHours>46</nvdValidForHours>
+          <skipProvidedScope>true</skipProvidedScope>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

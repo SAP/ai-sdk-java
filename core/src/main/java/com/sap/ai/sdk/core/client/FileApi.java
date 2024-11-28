@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.DSetFileCreationResponse;
+import com.sap.ai.sdk.core.model.DSetFileCreationResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;

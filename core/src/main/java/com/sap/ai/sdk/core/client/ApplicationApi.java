@@ -1,15 +1,15 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BckndAllArgoCDApplicationData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationBaseData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationCreationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationDeletionResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationModificationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationRefreshResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationStatus;
-import com.sap.ai.sdk.core.client.model.KubesubmitV4ApplicationsCreateRequest;
+import com.sap.ai.sdk.core.model.BckndAllArgoCDApplicationData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationBaseData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationCreationResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationDeletionResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationModificationResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationRefreshResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationStatus;
+import com.sap.ai.sdk.core.model.KubesubmitV4ApplicationsCreateRequest;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashMap;

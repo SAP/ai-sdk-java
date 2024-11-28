@@ -1,10 +1,10 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.AiConfiguration;
-import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
-import com.sap.ai.sdk.core.client.model.AiConfigurationCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiConfigurationList;
+import com.sap.ai.sdk.core.model.AiConfiguration;
+import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
+import com.sap.ai.sdk.core.model.AiConfigurationCreationResponse;
+import com.sap.ai.sdk.core.model.AiConfigurationList;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;

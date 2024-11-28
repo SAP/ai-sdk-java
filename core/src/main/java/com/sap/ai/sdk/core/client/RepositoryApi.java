@@ -1,13 +1,13 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCreationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryCredentials;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDataResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDeletionResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryDetails;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDRepositoryModificationResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryCreationResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryCredentials;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryData;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryDataResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryDeletionResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryDetails;
+import com.sap.ai.sdk.core.model.BckndArgoCDRepositoryModificationResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashMap;

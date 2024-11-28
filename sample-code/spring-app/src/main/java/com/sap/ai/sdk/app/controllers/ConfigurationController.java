@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.core.client.ConfigurationApi;
-import com.sap.ai.sdk.core.client.model.AiConfigurationList;
+import com.sap.ai.sdk.core.model.AiConfigurationList;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,10 +1,10 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BckndGenericSecretDataResponse;
-import com.sap.ai.sdk.core.client.model.BckndGenericSecretPatchBody;
-import com.sap.ai.sdk.core.client.model.BckndGenericSecretPostBody;
-import com.sap.ai.sdk.core.client.model.BckndListGenericSecretsResponse;
+import com.sap.ai.sdk.core.model.BckndGenericSecretDataResponse;
+import com.sap.ai.sdk.core.model.BckndGenericSecretPatchBody;
+import com.sap.ai.sdk.core.model.BckndGenericSecretPostBody;
+import com.sap.ai.sdk.core.model.BckndListGenericSecretsResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;

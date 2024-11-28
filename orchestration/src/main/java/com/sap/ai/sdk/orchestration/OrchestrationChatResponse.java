@@ -2,11 +2,11 @@ package com.sap.ai.sdk.orchestration;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.client.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.client.model.TokenUsage;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.model.LLMChoice;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

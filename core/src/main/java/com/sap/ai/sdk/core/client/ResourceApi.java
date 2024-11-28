@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BckndResourceGetResponse;
-import com.sap.ai.sdk.core.client.model.BckndResourcePatchBody;
-import com.sap.ai.sdk.core.client.model.BckndResourcePatchResponse;
+import com.sap.ai.sdk.core.model.BckndResourceGetResponse;
+import com.sap.ai.sdk.core.model.BckndResourcePatchBody;
+import com.sap.ai.sdk.core.model.BckndResourcePatchResponse;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.List;

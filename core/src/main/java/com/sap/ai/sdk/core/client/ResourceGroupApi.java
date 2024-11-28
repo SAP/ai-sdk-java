@@ -1,12 +1,12 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BckndResourceGroup;
-import com.sap.ai.sdk.core.client.model.BckndResourceGroupBase;
-import com.sap.ai.sdk.core.client.model.BckndResourceGroupDeletionResponse;
-import com.sap.ai.sdk.core.client.model.BckndResourceGroupList;
-import com.sap.ai.sdk.core.client.model.BckndResourceGroupPatchRequest;
-import com.sap.ai.sdk.core.client.model.BckndResourceGroupsPostRequest;
+import com.sap.ai.sdk.core.model.BckndResourceGroup;
+import com.sap.ai.sdk.core.model.BckndResourceGroupBase;
+import com.sap.ai.sdk.core.model.BckndResourceGroupDeletionResponse;
+import com.sap.ai.sdk.core.model.BckndResourceGroupList;
+import com.sap.ai.sdk.core.model.BckndResourceGroupPatchRequest;
+import com.sap.ai.sdk.core.model.BckndResourceGroupsPostRequest;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;

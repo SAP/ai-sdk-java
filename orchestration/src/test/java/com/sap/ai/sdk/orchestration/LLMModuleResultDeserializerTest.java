@@ -2,8 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResult;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
