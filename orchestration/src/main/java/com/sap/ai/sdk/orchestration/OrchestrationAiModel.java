@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
