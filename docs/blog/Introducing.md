@@ -22,7 +22,7 @@ This post introduces the main modules and their features.
 </dependency>
 ```
 
-Use the generative AI Hub orchestration service with our `orchestration` module to set up templating, content filtering, and data masking for your applications.
+This `orchestration` module lets you use the generative AI Hub orchestration service with templating, content filtering, and data masking from within your applications.
 The orchestration service streamlines AI interactions while ensuring adherence to content safety guidelines.
 
 * Templating: Build dynamic prompts with placeholders to tailor AI interactions to user inputs.
