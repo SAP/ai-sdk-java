@@ -53,7 +53,7 @@ def set_header(file, version):
 
 def link_github_release(file, version):
     old_github_release_link = "\[All Release Changes\]\(https://github.com/SAP/ai-sdk-java/releases/\)"
-    new_github_release_link = "[All Release Changes](https://github.com/SAP/cloud-sdk-java/releases/tag/rel%2F"+version+")"
+    new_github_release_link = "[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F"+version+")"
     file = re.sub(old_github_release_link, new_github_release_link, file)
     return file
 
