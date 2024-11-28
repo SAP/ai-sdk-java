@@ -63,12 +63,16 @@ public class OrchestrationClient {
 
   /** Default constructor. */
   public OrchestrationClient() {
-    destinationSupplier = () -> new AiCoreService().getDestinationForDeploymentByScenario(AiCoreService.DEFAULT_RESOURCE_GROUP, DEFAULT_SCENARIO);
+    destinationSupplier =
+        () ->
+            new AiCoreService()
+                .getDestinationForDeploymentByScenario(
+                    AiCoreService.DEFAULT_RESOURCE_GROUP, DEFAULT_SCENARIO);
   }
 
   /**
-   * Constructor with a custom destination, allowing for a custom resource group or otherwise
-   * custom destination.
+   * Constructor with a custom destination, allowing for a custom resource group or otherwise custom
+   * destination.
    *
    * <p>Example:
    *
