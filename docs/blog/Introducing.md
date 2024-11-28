@@ -10,7 +10,7 @@ Similarly, this SDK for Java enables convenient integration of generative AI cap
 
 For [SAP BTP](https://help.sap.com/docs/btp?locale=en-US) developers, the AI SDK is crafted to simplify AI integration and enhance application impact. With features that optimize deployment, improve content safety, and facilitate model orchestration, the SDK lets you bring advanced AI functionality to your applications swiftly and with minimal setup. Whether you need adaptable workflows, secure data handling, or smooth generative model integration, the SDK equips you with robust tools to embed AI-powered features in your SAP BTP solutions.
 
-This post introduces the main artifacts and their features.
+This post introduces the main modules and their features.
 
 ## AI Orchestration
 
@@ -53,7 +53,7 @@ You can learn more about the orchestration service capabilities [here](https://g
 </dependency>
 ```
 
-Automate tasks such as creating artifacts, configurations, and deployments, executing batch inference jobs, as well as managing Docker registries and object storage for training data.
+Automate tasks such as creating AI Core artifacts, configurations, and deployments, executing batch inference jobs, as well as managing Docker registries and object storage for training data.
 The `core` module provides tools for workflow and scenario management within SAP AI Core.
 * Artifact Management: Register and organize datasets and model artifacts.
 * Configuration Management: Set up configurations for various models and use cases.
@@ -84,7 +84,7 @@ You can learn more about the SAP AI Core capabilities [here](https://github.com/
 </dependency>
 ```
 
-The `openai` module, along with other artifacts in the `com.sap.ai.sdk.foundationmodels` group, enables streamlined access to specific generative AI models available through the Generative AI Hub.
+The `openai` module, along with other modules in the `com.sap.ai.sdk.foundationmodels` group, enables streamlined access to specific generative AI models available through the Generative AI Hub.
 The module provides a simplified interface focused on direct model interactions, ideal for developers who require direct access to foundation models for inference and embedding requests without additional orchestration features.
 
 **Example:** Write a simple chat completion.
