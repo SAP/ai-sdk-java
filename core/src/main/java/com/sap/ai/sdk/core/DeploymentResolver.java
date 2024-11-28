@@ -2,10 +2,8 @@ package com.sap.ai.sdk.core;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -43,14 +41,15 @@ class DeploymentResolver {
    *
    * @param resourceGroup the resource group, usually "default".
    */
-  void resetCache(@Nonnull final String resourceGroup) {
+  void reloadDeployments(@Nonnull final String resourceGroup) {
     cache.remove(resourceGroup);
     try {
-      val deployments =
-          new HashSet<>(new DeploymentApi(service).query(resourceGroup).getResources());
+      val apiClient = new DeploymentApi(service);
+      val deployments = new HashSet<>(apiClient.query(resourceGroup).getResources());
       cache.put(resourceGroup, deployments);
-    } catch (final OpenApiRequestException e) {
-      log.error("Failed to load deployments into cache", e);
+    } catch (final RuntimeException e) {
+      throw new DeploymentResolutionException(
+          "Failed to load deployments for resource group " + resourceGroup, e);
     }
   }
 
@@ -61,16 +60,16 @@ class DeploymentResolver {
    * @param resourceGroup the resource group, usually "default".
    * @param model the foundation model.
    * @return the deployment id.
-   * @throws NoSuchElementException if no running deployment is found for the model.
+   * @throws DeploymentResolutionException if no running deployment is found for the model.
    */
   @Nonnull
   String getDeploymentIdByModel(@Nonnull final String resourceGroup, @Nonnull final AiModel model)
-      throws NoSuchElementException {
+      throws DeploymentResolutionException {
     final Predicate<AiDeployment> predicate = deployment -> isDeploymentOfModel(model, deployment);
     return resolveDeployment(resourceGroup, predicate)
         .orElseThrow(
             () ->
-                new NoSuchElementException(
+                new DeploymentResolutionException(
                     "No running deployment found for model: " + model.name()));
   }
 
@@ -81,18 +80,18 @@ class DeploymentResolver {
    * @param resourceGroup the resource group, usually "default".
    * @param scenarioId the scenario id, can be "orchestration".
    * @return the deployment id.
-   * @throws NoSuchElementException if no running deployment is found for the scenario.
+   * @throws DeploymentResolutionException if no running deployment is found for the scenario.
    */
   @Nonnull
   String getDeploymentIdByScenario(
       @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
-      throws NoSuchElementException {
+      throws DeploymentResolutionException {
     final Predicate<AiDeployment> predicate =
         deployment -> scenarioId.equals(deployment.getScenarioId());
     return resolveDeployment(resourceGroup, predicate)
         .orElseThrow(
             () ->
-                new NoSuchElementException(
+                new DeploymentResolutionException(
                     "No running deployment found for scenario: " + scenarioId));
   }
 
@@ -109,7 +108,7 @@ class DeploymentResolver {
       if (deployment.isPresent()) {
         return deployment;
       }
-      resetCache(resourceGroup);
+      reloadDeployments(resourceGroup);
       return getCachedDeployment(resourceGroup, predicate);
     }
   }

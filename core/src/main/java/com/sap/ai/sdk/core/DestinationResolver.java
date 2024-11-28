@@ -22,8 +22,8 @@ import lombok.val;
 @Slf4j
 @AllArgsConstructor
 class DestinationResolver {
-  static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
-  static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
+  private static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
+  private static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
 
   private static final String BASE_PATH = "/v2/";
 

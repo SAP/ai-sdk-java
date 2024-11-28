@@ -11,7 +11,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -71,7 +70,8 @@ public class AiCoreService {
   }
 
   /**
-   * Get the base destination for AI Core service calls. This destination won't have any resource group set.
+   * Get the base destination for AI Core service calls. This destination won't have any resource
+   * group set.
    *
    * @return The base destination.
    * @throws DestinationAccessException If there was an issue creating the base destination, e.g. in
@@ -104,12 +104,12 @@ public class AiCoreService {
    *
    * @param model The model to be used for inference calls.
    * @return A new instance of the AI Core Deployment.
-   * @throws NoSuchElementException if no running deployment is found for the model.
+   * @throws DeploymentResolutionException if no running deployment is found for the model.
    */
   @Nonnull
   public HttpDestination getDestinationForDeploymentByModel(
       @Nonnull final String resourceGroup, @Nonnull final AiModel model)
-      throws NoSuchElementException {
+      throws DeploymentResolutionException {
     val deploymentId = deploymentResolver.getDeploymentIdByModel(resourceGroup, model);
     return toInferenceDestination(resourceGroup, deploymentId);
   }
@@ -120,12 +120,12 @@ public class AiCoreService {
    *
    * @param scenarioId The scenario id to be used for AI Core service calls.
    * @return A new instance of the AI Core Deployment.
-   * @throws NoSuchElementException if no running deployment is found for the scenario.
+   * @throws DeploymentResolutionException if no running deployment is found for the scenario.
    */
   @Nonnull
   public HttpDestination getDestinationForDeploymentByScenario(
       @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
-      throws NoSuchElementException {
+      throws DeploymentResolutionException {
     val deploymentId = deploymentResolver.getDeploymentIdByScenario(resourceGroup, scenarioId);
     return toInferenceDestination(resourceGroup, deploymentId);
   }
@@ -152,7 +152,7 @@ public class AiCoreService {
     return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
   }
 
-  private HttpDestination toInferenceDestination(
+  HttpDestination toInferenceDestination(
       @Nonnull final String resourceGroup, @Nonnull final String deploymentId) {
     val destination = getBaseDestination();
     val path = buildDeploymentPath(deploymentId);
@@ -176,6 +176,6 @@ public class AiCoreService {
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
-    new DeploymentResolver(this).resetCache(resourceGroup);
+    new DeploymentResolver(this).reloadDeployments(resourceGroup);
   }
 }

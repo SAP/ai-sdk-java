@@ -158,7 +158,7 @@
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <version>5.15.0-SNAPSHOT</version>
             <configuration>
-              <!--              <skip>true</skip>-->
+              <skip>true</skip>
               <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>released</apiMaturity>

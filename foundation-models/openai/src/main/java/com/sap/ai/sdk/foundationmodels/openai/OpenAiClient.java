@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.AiModel;
+import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -20,7 +21,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
@@ -59,12 +59,12 @@ public final class OpenAiClient {
    *
    * @param foundationModel the OpenAI model which is deployed.
    * @return a new OpenAI client.
-   * @throws NoSuchElementException if no deployment for the given model was found in the default
+   * @throws DeploymentResolutionException if no deployment for the given model was found in the default
    *     resource group.
    */
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel)
-      throws NoSuchElementException {
+      throws DeploymentResolutionException {
     final var destination =
         new AiCoreService()
             .getDestinationForDeploymentByModel(

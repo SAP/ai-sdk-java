@@ -23,8 +23,8 @@ public abstract class WireMockTestServer {
     wireMockServer = new WireMockServer(WIREMOCK_CONFIGURATION);
     wireMockServer.start();
 
-    val destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
-    aiCoreService = new AiCoreService().withDestination(destination);
+    val destination = DefaultHttpDestination.builder(wireMockServer.baseUrl() + "/v2/").build();
+    aiCoreService = new AiCoreService().withBaseDestination(destination);
   }
 
   // Reset WireMock before each test to ensure clean state

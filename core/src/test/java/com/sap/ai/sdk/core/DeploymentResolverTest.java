@@ -1,108 +1,84 @@
 package com.sap.ai.sdk.core;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
+import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.sap.ai.sdk.core.AiCoreService.DEFAULT_RESOURCE_GROUP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
 import com.sap.ai.sdk.core.client.model.AiDeployment;
 import com.sap.ai.sdk.core.client.model.AiDeploymentDetails;
 import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
 import com.sap.ai.sdk.core.client.model.AiResourcesDetails;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.Nonnull;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class DeploymentResolverTest extends WireMockTestServer {
 
+  private static final String GPT_4 = "GPT4DeploymentResponse.json";
+  private static final String EMPTY = "emptyDeploymentResponse.json";
+  private static final AiModel GPT_4_Model = new TestModel("gpt-4-32k", null);
+
   private DeploymentResolver resolver;
+  private Map<String, Set<AiDeployment>> cache;
 
   @BeforeEach
   void setup() {
-    var wiremockDestination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
-    var service = new AiCoreService(() -> wiremockDestination, mock(DeploymentResolver.class));
-
-    resolver = new DeploymentResolver(service, new ConcurrentHashMap<>());
-    wireMockServer.resetRequests();
+    cache = new ConcurrentHashMap<>();
+    resolver = new DeploymentResolver(WireMockTestServer.aiCoreService, cache);
   }
 
-  private static void stubGPT4(String resourceGroup) {
-    wireMockServer.stubFor(
-        get(urlPathEqualTo("/v2/lm/deployments"))
-            .withHeader("AI-Resource-Group", equalTo(resourceGroup))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("GPT4DeploymentResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-  }
-
-  private static void stubEmpty(String resourceGroup) {
-    wireMockServer.stubFor(
-        get(urlPathEqualTo("/v2/lm/deployments"))
-            .withHeader("AI-Resource-Group", equalTo(resourceGroup))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("emptyDeploymentResponse.json")
-                    .withHeader("content-type", "application/json")));
-  }
-
-  /**
-   * The user creates a deployment.
-   *
-   * <p>The user uses the OpenAI client and specifies only the name "foo".
-   *
-   * <p>The user repeatedly uses the API in the same way
-   *
-   * <p>Simple case, the deployment should be served from cache as much as possible
-   */
   @Test
-  void newDeployment() {
-    val resourceGroup = "default";
-    stubGPT4(resourceGroup);
+  void testDeploymentsAreCached() {
+    stubResponse(DEFAULT_RESOURCE_GROUP, GPT_4);
 
-    val gpt4 = createAiModel("gpt-4-32k", null);
+    resolver.getDeploymentIdByModel(DEFAULT_RESOURCE_GROUP, GPT_4_Model);
+    resolver.getDeploymentIdByModel(DEFAULT_RESOURCE_GROUP, GPT_4_Model);
 
-    resolver.getDeploymentIdByModel(resourceGroup, gpt4);
-    wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
+    assertThat(cache).containsOnlyKeys(DEFAULT_RESOURCE_GROUP);
+    assertThat(cache.get(DEFAULT_RESOURCE_GROUP))
+        .hasSize(1)
+        .allMatch(deployment -> deployment.getId().equals("d19b998f347341aa"));
 
-    resolver.getDeploymentIdByModel(resourceGroup, gpt4);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
-  /**
-   * The user creates a deployment after starting with an empty cache.
-   *
-   * <p>The user uses the OpenAI client and specifies only the name "foo".
-   *
-   * <p>The user repeatedly uses the API in the same way
-   *
-   * <p>Simple case, the deployment should be served from cache as much as possible
-   */
   @Test
-  void newDeploymentAfterReset() {
-    val resourceGroup = "default";
-    stubEmpty(resourceGroup);
-    resolver.resetCache(resourceGroup);
-    stubGPT4(resourceGroup);
+  void testCacheReload() {
+    assertThat(cache).isEmpty();
 
-    val gpt4 = createAiModel("gpt-4-32k", null);
+    stubResponse(DEFAULT_RESOURCE_GROUP, EMPTY);
+    resolver.reloadDeployments(DEFAULT_RESOURCE_GROUP);
+    assertThat(cache.get(DEFAULT_RESOURCE_GROUP)).isEmpty();
 
-    resolver.getDeploymentIdByModel(resourceGroup, gpt4);
-    // 1 reset empty and 1 cache miss
+    stubResponse(DEFAULT_RESOURCE_GROUP, GPT_4);
+    resolver.reloadDeployments(DEFAULT_RESOURCE_GROUP);
+    assertThat(cache.get(DEFAULT_RESOURCE_GROUP)).hasSize(1);
+
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
+  }
 
-    resolver.getDeploymentIdByModel(resourceGroup, gpt4);
+  @Test
+  void testCacheMissCausesReload() {
+    stubResponse(DEFAULT_RESOURCE_GROUP, EMPTY);
+    resolver.reloadDeployments(DEFAULT_RESOURCE_GROUP);
+
+    assertThatThrownBy(() -> resolver.getDeploymentIdByModel(DEFAULT_RESOURCE_GROUP, GPT_4_Model))
+        .isExactlyInstanceOf(DeploymentResolutionException.class)
+        .hasMessageContaining("No running deployment found for model: gpt-4-32k");
+
     wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
   }
 
@@ -110,52 +86,70 @@ class DeploymentResolverTest extends WireMockTestServer {
   void resourceGroupIsolation() {
     val resourceGroupA = "A";
     val resourceGroupB = "B";
-    stubGPT4(resourceGroupA);
-    stubGPT4(resourceGroupB);
+    stubResponse(resourceGroupA, GPT_4);
+    stubResponse(resourceGroupB, EMPTY);
 
-    val gpt4 = createAiModel("gpt-4-32k", null);
+    resolver.reloadDeployments(resourceGroupA);
+    resolver.reloadDeployments(resourceGroupB);
 
-    resolver.getDeploymentIdByModel(resourceGroupA, gpt4);
+    assertThat(cache).containsOnlyKeys(resourceGroupA, resourceGroupB);
+    assertThat(cache.get(resourceGroupA)).hasSize(1);
+    assertThat(cache.get(resourceGroupB)).isEmpty();
+
     wireMockServer.verify(
         1,
         getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo(resourceGroupA)));
     wireMockServer.verify(
-        0,
+        1,
         getRequestedFor(urlPathEqualTo("/v2/lm/deployments"))
             .withHeader("AI-Resource-Group", equalTo(resourceGroupB)));
   }
 
   @Test
-  void exceptionDeploymentNotFound() {
-    val resourceGroup = "default";
-    stubEmpty(resourceGroup);
+  void testDeploymentCacheIsGlobalByDefault() {
+    val resolver1 = new DeploymentResolver(WireMockTestServer.aiCoreService);
+    val resolver2 = new DeploymentResolver(WireMockTestServer.aiCoreService);
 
-    val gpt4 = createAiModel("gpt-4-32k", null);
+    stubResponse(DEFAULT_RESOURCE_GROUP, GPT_4);
+    resolver1.reloadDeployments(DEFAULT_RESOURCE_GROUP);
 
-    assertThatThrownBy(() -> resolver.getDeploymentIdByModel(resourceGroup, gpt4))
-        .isExactlyInstanceOf(NoSuchElementException.class)
-        .hasMessageContaining("No running deployment found for model: gpt-4-32k");
-  }
+    assertThat(resolver1.getDeploymentIdByModel(DEFAULT_RESOURCE_GROUP, GPT_4_Model))
+        .isSameAs(resolver2.getDeploymentIdByModel(DEFAULT_RESOURCE_GROUP, GPT_4_Model));
 
-  @Test
-  void resetCache() {
-    val resourceGroup = "default";
-    stubGPT4(resourceGroup);
-    resolver.resetCache(resourceGroup);
     wireMockServer.verify(1, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
 
-    val destination = DefaultHttpDestination.builder(wireMockServer.baseUrl()).build();
-    new AiCoreService().withDestination(destination).reloadCachedDeployments(resourceGroup);
-    wireMockServer.verify(2, getRequestedFor(urlPathEqualTo("/v2/lm/deployments")));
+    resolver2.reloadDeployments(DEFAULT_RESOURCE_GROUP);
   }
 
   @Test
-  void isDeploymentOfModel() {
+  void testErrorHandling() {
+    wireMockServer.stubFor(get(anyUrl()).willReturn(badRequest()));
+
+    assertThatThrownBy(() -> resolver.reloadDeployments(DEFAULT_RESOURCE_GROUP))
+        .isExactlyInstanceOf(DeploymentResolutionException.class);
+
+    assertThatThrownBy(() -> resolver.getDeploymentIdByModel(DEFAULT_RESOURCE_GROUP, GPT_4_Model))
+        .isExactlyInstanceOf(DeploymentResolutionException.class);
+
+    var serviceWithBrokenCredentials =
+        new AiCoreService(
+            () -> {
+              throw new DestinationAccessException();
+            });
+    resolver = new DeploymentResolver(serviceWithBrokenCredentials, cache);
+
+    assertThatThrownBy(() -> resolver.reloadDeployments(DEFAULT_RESOURCE_GROUP))
+        .isExactlyInstanceOf(DeploymentResolutionException.class)
+        .hasCauseInstanceOf(DestinationAccessException.class);
+  }
+
+  @Test
+  void testIsDeploymentOfModel() {
     // Create a target model
-    val gpt4AnyVersion = createAiModel("gpt-4-32k", null);
-    val gpt4Version1 = createAiModel("gpt-4-32k", "1.0");
-    val gpt4VersionLatest = createAiModel("gpt-4-32k", "latest");
+    val gpt4AnyVersion = new TestModel("gpt-4-32k", null);
+    val gpt4Version1 = new TestModel("gpt-4-32k", "1.0");
+    val gpt4VersionLatest = new TestModel("gpt-4-32k", "latest");
 
     // Create a deployment with a different model by version
     val model = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
@@ -175,22 +169,13 @@ class DeploymentResolverTest extends WireMockTestServer {
     assertThat(DeploymentResolver.isDeploymentOfModel(gpt4VersionLatest, deployment)).isTrue();
   }
 
-  static AiModel createAiModel(String name, String version) {
-    return new AiModel() {
-      @Nonnull
-      @Override
-      public String name() {
-        return name;
-      }
+  private record TestModel(String name, String version) implements AiModel {}
 
-      @Override
-      public String version() {
-        return version;
-      }
-
-      public String toString() {
-        return name;
-      }
-    };
+  private static void stubResponse(String resourceGroup, String fileName) {
+    wireMockServer.stubFor(
+        get(urlPathEqualTo("/v2/lm/deployments"))
+            .withHeader("AI-Resource-Group", equalTo(resourceGroup))
+            .willReturn(
+                aResponse().withBodyFile(fileName).withHeader("content-type", "application/json")));
   }
 }
