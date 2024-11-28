@@ -9,8 +9,8 @@
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
   <artifactId>spring-app</artifactId>
-  <name>End-to-end test application</name>
-  <description>Spring Boot application that tests AI clients when deployed in BTP.</description>
+  <name>Spring Boot application</name>
+  <description>End-to-end test application, also sample code for customers</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>

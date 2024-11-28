@@ -8,7 +8,7 @@
   </parent>
   <artifactId>core</artifactId>
   <name>AI Core client</name>
-  <description>Generating and testing the AI Core client and other convenience methods.</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the AI Core client and other convenience methods.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
