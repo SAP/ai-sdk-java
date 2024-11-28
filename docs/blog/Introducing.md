@@ -22,15 +22,15 @@ This post introduces the main modules and their features.
 </dependency>
 ```
 
-This `orchestration` module lets you use the generative AI Hub orchestration service with templating, content filtering, and data masking from within your applications.
-The orchestration service streamlines AI interactions while ensuring adherence to content safety guidelines.
+This `orchestration` module lets you use the [Generative AI Hub Orchestration Service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) with templating, content filtering, and data masking from within your applications.
+The Orchestration Service streamlines AI interactions while ensuring adherence to content safety guidelines.
 
 * Templating: Build dynamic prompts with placeholders to tailor AI interactions to user inputs.
 * Content Filtering: Apply filters to maintain compliance with content safety guidelines.
 * Data Masking: Anonymize and pseudonymize sensitive data.
 * Grounding:  Add external data sources for contextually relevant information (planned for Q1 2025).
 
-**Example:** Write a simple chat completion.
+**Example SDK code:** Write a simple chat completion.
 
 ```java
 var client = new OrchestrationClient();
@@ -41,7 +41,7 @@ var result = client.chatCompletion(prompt, config);
 String messageResult = result.getContent();
 ```
 
-You can learn more about the orchestration service capabilities [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
+You can learn more about the SDK's capabilities for Orchestration Service [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
 
 ## AI Management
 
@@ -55,11 +55,11 @@ You can learn more about the orchestration service capabilities [here](https://g
 
 Automate tasks such as creating AI Core artifacts, configurations, and deployments, executing batch inference jobs, as well as managing Docker registries and object storage for training data.
 The `core` module provides tools for workflow and scenario management within SAP AI Core.
-* Artifact Management: Register and organize datasets and model artifacts.
-* Configuration Management: Set up configurations for various models and use cases.
-* Deployment Management: Deploy AI models and manage their lifecycle within SAP AI Core.
+* Artifact management: register and organize datasets and model artifacts.
+* Configuration management: set up configurations for various models and use cases.
+* Deployment management: deploy AI models and manage their lifecycle within SAP AI Core.
 
-**Example:** Create a deployment in SAP AI Core.
+**Example SDK code:** Create a deployment in SAP AI Core.
 
 ```java
 var api = new DeploymentApi();
@@ -72,7 +72,7 @@ String id = deployment.getId();
 AiExecutionStatus status = deployment.getStatus();
 ```
 
-You can learn more about the SAP AI Core capabilities [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/AI_CORE_DEPLOYMENT.md).
+You can learn more about the SDK's capabilities for SAP AI Core [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/AI_CORE_DEPLOYMENT.md).
 
 ## Generative AI with Foundation Models and OpenAI
 
@@ -87,7 +87,7 @@ You can learn more about the SAP AI Core capabilities [here](https://github.com/
 The `openai` module, along with other modules in the `com.sap.ai.sdk.foundationmodels` group, enables streamlined access to specific generative AI models available through the Generative AI Hub.
 The module provides a simplified interface focused on direct model interactions, ideal for developers who require direct access to foundation models for inference and embedding requests without additional orchestration features.
 
-**Example:** Write a simple chat completion.
+**Example SDK code:** Write a simple chat completion.
 
 ```java
 var result = 
@@ -98,12 +98,12 @@ var result =
 String resultMessage = result.getContent();
 ```
 
-You can learn more about the foundation models and OpenAI specific capabilities [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/OPENAI_CHAT_COMPLETION.md).
+You can learn more about the SDK's capabilities for foundation models and OpenAI specific features [here](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/OPENAI_CHAT_COMPLETION.md).
 
 ## Getting Started
 
 You will need _Java 17_ or higher.
-_Spring Boot_ or _SAP CAP_ as a framework is recommended, but not required.
+_Spring Boot_ or [_SAP Cloud Application Programming Model (CAP)_](https://cap.cloud.sap/docs/) as a framework is recommended, but not required.
 To explore these packages further, check out [our sample project](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app), which shows the usage of the various SDK packages.
 
 ## Support and Feedback
