@@ -20,11 +20,10 @@ import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,8 +58,8 @@ public final class OpenAiClient {
    *
    * @param foundationModel the OpenAI model which is deployed.
    * @return a new OpenAI client.
-   * @throws DeploymentResolutionException if no deployment for the given model was found in the default
-   *     resource group.
+   * @throws DeploymentResolutionException if no deployment for the given model was found in the
+   *     default resource group.
    */
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel)
@@ -85,8 +84,8 @@ public final class OpenAiClient {
   }
 
   /**
-   * Create a new OpenAI client with a custom destination, allowing for a custom resource group or otherwise
-   *     custom destination.
+   * Create a new OpenAI client with a custom destination, allowing for a custom resource group or
+   * otherwise custom destination.
    *
    * <p>Example:
    *
@@ -96,7 +95,6 @@ public final class OpenAiClient {
    * }</pre>
    *
    * @param destination The specific {@link HttpDestination} to use.
-   *
    * @see AiCoreService#getDestinationForDeploymentByModel(String, AiModel)
    */
   @Nonnull
