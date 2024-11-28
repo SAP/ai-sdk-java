@@ -472,9 +472,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <printFailingErrors>true</printFailingErrors>
           <excludes>
             <!-- Exclude generated clients -->
-            <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
-            <exclude>com/sap/ai/sdk/core/model/**/*</exclude>
-            <exclude>com/sap/ai/sdk/orchestration/generated/**/*</exclude>
+            <exclude>com/sap/ai/sdk/core/client/*</exclude>
+            <exclude>com/sap/ai/sdk/core/model/*</exclude>
+            <exclude>com/sap/ai/sdk/orchestration/generated/*</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -514,9 +514,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <configuration>
           <excludes>
             <!-- Exclude generated clients and end to end application from test coverage -->
-            <exclude>com/sap/ai/sdk/core/client/**/*</exclude>
-            <exclude>com/sap/ai/sdk/core/model/**/*</exclude>
-            <exclude>com/sap/ai/sdk/orchestration/generated/**/*</exclude>
+            <exclude>com/sap/ai/sdk/core/client/*</exclude>
+            <exclude>com/sap/ai/sdk/core/model/*</exclude>
+            <exclude>com/sap/ai/sdk/orchestration/generated/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
