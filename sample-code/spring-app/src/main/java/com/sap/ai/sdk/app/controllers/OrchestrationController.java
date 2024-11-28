@@ -55,7 +55,7 @@ class OrchestrationController {
   public OrchestrationChatResponse template() {
     final var template =
         new UserMessage("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = Template.create().template(List.of(template.toChatMessage()));
+    final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     final var inputParams = Map.of("language", "German");

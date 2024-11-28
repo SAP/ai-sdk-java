@@ -21,7 +21,7 @@ public class SystemMessage implements Message {
    * @return the corresponding {@code ChatMessage} object.
    */
   @Nonnull
-  public ChatMessage toChatMessage() {
+  public ChatMessage createChatMessage() {
     return ChatMessage.create().role(ROLE).content(content);
   }
 }

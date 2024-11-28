@@ -35,7 +35,7 @@ class ConfigToRequestTransformerTest {
 
     var expected =
         Template.create()
-            .template(List.of(systemMessage.toChatMessage(), userMessage.toChatMessage()));
+            .template(List.of(systemMessage.createChatMessage(), userMessage.createChatMessage()));
 
     var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     var actual =
@@ -60,14 +60,14 @@ class ConfigToRequestTransformerTest {
         Template.create()
             .template(
                 List.of(
-                    systemMessage.toChatMessage(),
-                    userMessage.toChatMessage(),
-                    userMessage2.toChatMessage()));
+                    systemMessage.createChatMessage(),
+                    userMessage.createChatMessage(),
+                    userMessage2.createChatMessage()));
 
     var prompt = new OrchestrationPrompt(userMessage2);
     var templateConfig =
         Template.create()
-            .template(List.of(systemMessage.toChatMessage(), userMessage.toChatMessage()));
+            .template(List.of(systemMessage.createChatMessage(), userMessage.createChatMessage()));
     var actual = ConfigToRequestTransformer.toTemplateModuleConfig(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
@@ -82,6 +82,6 @@ class ConfigToRequestTransformerTest {
         ConfigToRequestTransformer.toCompletionPostRequest(
             prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35));
 
-    assertThat(actual.getMessagesHistory()).containsExactly(systemMessage.toChatMessage());
+    assertThat(actual.getMessagesHistory()).containsExactly(systemMessage.createChatMessage());
   }
 }

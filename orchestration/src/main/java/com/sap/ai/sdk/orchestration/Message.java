@@ -12,5 +12,5 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    * @return the corresponding {@code ChatMessage} object.
    */
   @Nonnull
-  ChatMessage toChatMessage();
+  ChatMessage createChatMessage();
 }
