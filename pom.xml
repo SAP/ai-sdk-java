@@ -55,7 +55,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cloud-sdk.version>5.15.0-SNAPSHOT</cloud-sdk.version>
+    <cloud-sdk.version>5.14.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.3</junit-jupiter.version>
     <wiremock.version>3.9.2</wiremock.version>
     <assertj-core.version>3.26.3</assertj-core.version>
