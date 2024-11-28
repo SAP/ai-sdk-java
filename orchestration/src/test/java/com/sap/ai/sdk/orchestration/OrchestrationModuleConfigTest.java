@@ -5,8 +5,8 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.sap.ai.sdk.orchestration.generated.DPIConfig;
-import com.sap.ai.sdk.orchestration.generated.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIConfig;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 

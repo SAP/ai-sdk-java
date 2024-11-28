@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.generated.FilterConfig;
+import com.sap.ai.sdk.orchestration.model.FilterConfig;
 import javax.annotation.Nonnull;
 
 /**

@@ -2,8 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sap.ai.sdk.orchestration.generated.LLMChoice;
-import com.sap.ai.sdk.orchestration.generated.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMChoice;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

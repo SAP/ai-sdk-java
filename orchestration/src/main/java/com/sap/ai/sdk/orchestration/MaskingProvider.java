@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.generated.MaskingProviderConfig;
+import com.sap.ai.sdk.orchestration.model.MaskingProviderConfig;
 import javax.annotation.Nonnull;
 
 /** Interface for masking configurations. */
