@@ -12,38 +12,7 @@ For [SAP BTP](https://help.sap.com/docs/btp?locale=en-US) developers, the AI SDK
 
 This post introduces the main modules and their features.
 
-## AI Orchestration
-
-```xml
-<dependency>
-  <groupId>com.sap.ai.sdk</groupId>
-  <artifactId>orchestration</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-
-This `orchestration` module lets you use the [Generative AI Hub Orchestration Service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) with templating, content filtering, and data masking from within your applications.
-The Orchestration Service streamlines AI interactions while ensuring adherence to content safety guidelines.
-
-* Templating: Build dynamic prompts with placeholders to tailor AI interactions to user inputs.
-* Content Filtering: Apply filters to maintain compliance with content safety guidelines.
-* Data Masking: Anonymize and pseudonymize sensitive data.
-* Grounding:  Add external data sources for contextually relevant information (planned for Q1 2025).
-
-**Example SDK code:** Write a simple chat completion.
-
-```java
-var client = new OrchestrationClient();
-var config = new OrchestrationModuleConfig().withLlmConfig(OrchestrationAiModel.GPT_4O);
-var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
-var result = client.chatCompletion(prompt, config);
-
-String messageResult = result.getContent();
-```
-
-You can learn more about the SDK's capabilities for Orchestration Service [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
-
-## AI Management
+## AI Core - Setup and Usage
 
 ```xml
 <dependency>
@@ -74,7 +43,38 @@ AiExecutionStatus status = deployment.getStatus();
 
 You can learn more about the SDK's capabilities for SAP AI Core [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/AI_CORE_DEPLOYMENT.md).
 
-## Generative AI with Foundation Models and OpenAI
+## AI Core - Orchestration
+
+```xml
+<dependency>
+  <groupId>com.sap.ai.sdk</groupId>
+  <artifactId>orchestration</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+This `orchestration` module lets you use the [Generative AI Hub Orchestration Service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) with templating, content filtering, and data masking from within your applications.
+The Orchestration Service streamlines AI interactions while ensuring adherence to content safety guidelines.
+
+* Templating: Build dynamic prompts with placeholders to tailor AI interactions to user inputs.
+* Content Filtering: Apply filters to maintain compliance with content safety guidelines.
+* Data Masking: Anonymize and pseudonymize sensitive data.
+* Grounding:  Add external data sources for contextually relevant information (planned for Q1 2025).
+
+**Example SDK code:** Write a simple chat completion.
+
+```java
+var client = new OrchestrationClient();
+var config = new OrchestrationModuleConfig().withLlmConfig(OrchestrationAiModel.GPT_4O);
+var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+var result = client.chatCompletion(prompt, config);
+
+String messageResult = result.getContent();
+```
+
+You can learn more about the SDK's capabilities for Orchestration Service [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
+
+## AI Core - Foundation Models and OpenAI
 
 ```xml
 <dependency>
