@@ -10,7 +10,7 @@
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
   <artifactId>openai</artifactId>
   <name>OpenAI client</name>
-  <description>Client that communicates with OpenAI.</description>
+  <description>SAP Cloud SDK for AI - Client that communicates with OpenAI.</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
