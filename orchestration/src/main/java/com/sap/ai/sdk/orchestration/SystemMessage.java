@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;

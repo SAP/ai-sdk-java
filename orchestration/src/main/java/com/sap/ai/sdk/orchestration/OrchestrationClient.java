@@ -169,7 +169,7 @@ public class OrchestrationClient {
     }
 
     final ObjectNode requestJson = JACKSON.createObjectNode();
-    var chatMessageHistory =
+    final var chatMessageHistory =
         prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
     requestJson.set("messages_history", JACKSON.valueToTree(chatMessageHistory));
     requestJson.set("input_params", JACKSON.valueToTree(prompt.getTemplateParameters()));

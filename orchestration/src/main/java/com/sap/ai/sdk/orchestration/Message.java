@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import javax.annotation.Nonnull;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
