@@ -4,8 +4,9 @@ SAP Managed Tags: Artificial Intelligence, Java, SAP AI Core, SAP AI Launchpad, 
 
 ---
 
-We’re excited to announce the initial release of the [SAP Cloud SDK for AI](https://github.com/SAP/ai-sdk-java#readme) for Java!
-This SDK enables integration of generative AI capabilities within your SAP Business Technology Platform (BTP) applications and allows you to utilize the [Generative AI Hub](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generative-ai-hub-in-sap-ai-core) in [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core).
+We’re excited to announce the initial release of the [SAP Cloud SDK for AI for Java](https://github.com/SAP/ai-sdk-java#readme)!
+Only a few weeks ago we already [announced the release](https://community.sap.com/t5/technology-blogs-by-sap/introducing-the-sap-cloud-sdk-for-ai-javascript-typescript/ba-p/13892856) of the JavaScript/TypeScript variant.
+Similarly, this SDK for Java enables convenient integration of generative AI capabilities within your SAP Business Technology Platform (BTP) applications and allows you to utilize the [Generative AI Hub](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generative-ai-hub-in-sap-ai-core) in [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core).
 
 For SAP BTP developers, the AI SDK is crafted to simplify AI integration and enhance application impact. With features that optimize deployment, improve content safety, and facilitate model orchestration, the SDK lets you bring advanced AI functionality to your applications swiftly and with minimal setup. Whether you need adaptable workflows, secure data handling, or smooth generative model integration, the SDK equips you with robust tools to embed AI-powered features in your SAP BTP solutions.
 
