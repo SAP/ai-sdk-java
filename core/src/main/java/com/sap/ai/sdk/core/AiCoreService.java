@@ -130,6 +130,12 @@ public class AiCoreService {
     return toInferenceDestination(resourceGroup, deploymentId);
   }
 
+  /**
+   * Get an {@link ApiClient} to execute requests based on clients generated from OpenAPI
+   * specifications.
+   *
+   * @return A new client object based on {@link #getBaseDestination()}.
+   */
   @Nonnull
   public ApiClient getApiClient() {
     val destination = getBaseDestination();
@@ -176,6 +182,6 @@ public class AiCoreService {
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
-    new DeploymentResolver(this).reloadDeployments(resourceGroup);
+    deploymentResolver.reloadDeployments(resourceGroup);
   }
 }
