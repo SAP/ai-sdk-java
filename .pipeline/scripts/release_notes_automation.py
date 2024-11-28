@@ -14,30 +14,30 @@ def write_file(file_name, data):
         file.write(data)
 
 unchanged_sections = [
-    """### 🚧 Known Issues
-    
-    -
-    
-    """,
-    """### 🔧 Compatibility Notes
-    
-    -
-    
-    """,
-    """### ✨ New Functionality
-    
-    -
-    
-    """,
-    """### 📈 Improvements
-    
-    -
-    
-    """,
-    """### 🐛 Fixed Issues
-    
-    - 
-    """]
+"""### 🚧 Known Issues
+
+-
+
+""",
+"""### 🔧 Compatibility Notes
+
+-
+
+""",
+"""### ✨ New Functionality
+
+-
+
+""",
+"""### 📈 Improvements
+
+-
+
+""",
+"""### 🐛 Fixed Issues
+
+- 
+"""]
 
 def remove_unchanged_sections(file, unchanged_sections):
     for unchanged_section in unchanged_sections:
