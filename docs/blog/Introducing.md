@@ -87,7 +87,8 @@ You can learn more about the SDK's capabilities for Orchestration Service [in th
 The `openai` module, along with other modules in the `com.sap.ai.sdk.foundationmodels` group, enables streamlined access to specific generative AI models available through the Generative AI Hub.
 The module provides a simplified interface focused on direct model interactions, ideal for developers who require direct access to foundation models for inference and embedding requests without additional orchestration features.
 
-Currently only `openai` is supported, we are planning support for `vertex-ai` and `anthropic` soon - depending on user feedback.
+Currently only `openai` is supported.
+We are planning support for `vertex-ai` and `anthropic` soon - depending on user feedback.
 
 **Example SDK code:** Write a simple chat completion.
 
