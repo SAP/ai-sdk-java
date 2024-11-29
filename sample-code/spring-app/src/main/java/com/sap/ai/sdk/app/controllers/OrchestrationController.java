@@ -10,6 +10,7 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
@@ -19,6 +20,7 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoints for the Orchestration service */
 @RestController
+@Slf4j
 @RequestMapping("/orchestration")
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
@@ -42,7 +45,11 @@ class OrchestrationController {
   public OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
-    return client.chatCompletion(prompt, config);
+    final var result = client.chatCompletion(prompt, config);
+
+    log.info("Our trusty AI answered with: {}", result.getContent());
+
+    return result;
   }
 
   /**
@@ -106,7 +113,16 @@ class OrchestrationController {
     final var configWithFilter =
         config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    final OrchestrationChatResponse result = client.chatCompletion(prompt, configWithFilter);
+    try {
+      // in case the output was filtered, calling .getContent() will throw
+      log.info("The following AI response passed the output filter: {}", result.getContent());
+    } catch (OrchestrationClientException e) {
+      log.info("The content filter blocked the output.");
+      // alternatively to calling .getContent(), you can also check the finish reason manually
+      log.info("Finish reason: {}", result.getCurrentChoice().getFinishReason());
+    }
+    return result;
   }
 
   /**

@@ -62,12 +62,12 @@ public class OrchestrationChatResponse {
   }
 
   /**
-   * Get current choice.
+   * Get the LLM response. Useful for accessing the finish reason or further data like logprobs.
    *
-   * @return The current choice.
+   * @return The (first, in case of multiple) {@link LLMChoice}.
    */
   @Nonnull
-  private LLMChoice getCurrentChoice() {
+  public LLMChoice getCurrentChoice() {
     //    We expect choices to be defined and never empty.
     return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
         .getChoices()
