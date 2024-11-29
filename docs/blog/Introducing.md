@@ -74,7 +74,7 @@ String messageResult = result.getContent();
 
 You can learn more about the SDK's capabilities for Orchestration Service [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
 
-## AI Core - Foundation Models and OpenAI
+## AI Core - Foundation Models
 
 ```xml
 <dependency>
@@ -88,7 +88,7 @@ The `openai` module, along with other modules in the `com.sap.ai.sdk.foundationm
 The module provides a simplified interface focused on direct model interactions, ideal for developers who require direct access to foundation models for inference and embedding requests without additional orchestration features.
 
 Currently only `openai` is supported.
-We are planning support for `vertex-ai` and `anthropic` soon - depending on user feedback.
+Please open a [feature request](https://github.com/SAP/ai-sdk-java/issues/new/choose), if you need direct LLM access for other foundation models.
 
 **Example SDK code:** Write a simple chat completion.
 
