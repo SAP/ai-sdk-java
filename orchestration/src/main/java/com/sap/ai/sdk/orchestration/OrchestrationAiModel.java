@@ -1,8 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.With;
@@ -25,6 +27,10 @@ public class OrchestrationAiModel {
    *     "frequency_penalty", 0,
    *     "presence_penalty", 0)
    * }</pre>
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
+   *     AI Core: Orchestration - Harmonized API</a>
    */
   Map<String, Object> params;
 
@@ -113,5 +119,73 @@ public class OrchestrationAiModel {
   @Nonnull
   LLMModuleConfig createConfig() {
     return LLMModuleConfig.create().modelName(name).modelParams(params).modelVersion(version);
+  }
+
+  /**
+   * Additional parameter on this model.
+   *
+   * @param key the parameter key.
+   * @param value the parameter value, nullable.
+   * @return A new model with the additional parameter.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
+   *     AI Core: Orchestration - Harmonized API</a>
+   */
+  @Nonnull
+  public OrchestrationAiModel withParam(@Nonnull final String key, @Nullable final Object value) {
+    final var params = new LinkedHashMap<>(getParams());
+    params.put(key, value);
+    return withParams(params);
+  }
+
+  /**
+   * Additional parameter on this model.
+   *
+   * @param param the parameter key.
+   * @param value the parameter value, nullable.
+   * @param <ValueT> the parameter value type.
+   * @return A new model with the additional parameter.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
+   *     AI Core: Orchestration - Harmonized API</a>
+   */
+  @Nonnull
+  public <ValueT> OrchestrationAiModel withParam(
+      @Nonnull final Parameter<ValueT> param, @Nullable final ValueT value) {
+    return withParam(param.getName(), value);
+  }
+
+  /**
+   * Parameter key for a model.
+   *
+   * @param <ValueT> the parameter value type.
+   */
+  @FunctionalInterface
+  public interface Parameter<ValueT> {
+    /** The maximum number of tokens to generate. */
+    Parameter<Integer> MAX_TOKENS = () -> "max_tokens";
+
+    /** The sampling temperature. */
+    Parameter<Number> TEMPERATURE = () -> "temperature";
+
+    /** The frequency penalty. */
+    Parameter<Number> FREQUENCY_PENALTY = () -> "frequency_penalty";
+
+    /** The presence penalty. */
+    Parameter<Number> PRESENCE_PENALTY = () -> "presence_penalty";
+
+    /** The probability mass to be considered . */
+    Parameter<Number> TOP_P = () -> "top_p";
+
+    /** The number of chat completion choices to generate for each input message. */
+    Parameter<Integer> N = () -> "n";
+
+    /**
+     * The name of the parameter.
+     *
+     * @return the name of the parameter.
+     */
+    @Nonnull
+    String getName();
   }
 }

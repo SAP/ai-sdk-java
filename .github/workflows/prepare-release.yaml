@@ -59,6 +59,11 @@ jobs:
           git add .
           git commit -m "Update to version ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
 
+          # Create release notes
+          python .pipeline/scripts/release_notes_automation.py --version ${{ steps.determine-versions.outputs.RELEASE_VERSION }} --folder "docs/release-notes"
+          git add .
+          git commit -m "Add new release notes"
+
           # We need to get the commit id, and push the branch so the release tag will point at the right commit afterwards
           RELEASE_COMMIT_ID=$(git log -1 --pretty=format:"%H")
           echo "RELEASE_COMMIT_ID=$RELEASE_COMMIT_ID" >> $GITHUB_OUTPUT
@@ -135,11 +140,16 @@ jobs:
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
 
-      - name: "Set New Version"
+      - name: "Set New Version and Reset Release Notes"
         run: |
           python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
           git add .
           git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
+          
+          # Reset release notes for next version
+          cp .pipeline/scripts/release_notes_template.md docs/release-notes/release_notes.md
+          git add docs/release-notes/release_notes.md
+          git commit -m "Reset release notes"
           git push
 
       - name: "Create Code PR"
@@ -148,7 +158,6 @@ jobs:
           
           PR_URL=$(gh pr create --title "Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
-          - [ ] Update the Release notes
           - [ ] Review the [Draft Release](${{ needs.create-release.outputs.release-url }})
           - [ ] Review **and approve** this PR
           - [ ] Trigger the [Perform Release Workflow](${{ github.event.repository.html_url }}/actions/workflows/perform-release.yml)

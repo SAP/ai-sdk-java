@@ -17,6 +17,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +27,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
@@ -49,12 +49,12 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class OrchestrationUnitTest {
   static final OrchestrationAiModel CUSTOM_GPT_35 =
-      GPT_35_TURBO_16K.withParams(
-          Map.of(
-              "max_tokens", 50,
-              "temperature", 0.1,
-              "frequency_penalty", 0,
-              "presence_penalty", 0));
+      GPT_35_TURBO_16K
+          .withParam(MAX_TOKENS, 50)
+          .withParam(TEMPERATURE, 0.1)
+          .withParam(FREQUENCY_PENALTY, 0)
+          .withParam(PRESENCE_PENALTY, 0);
+
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -94,7 +94,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = new UserMessage("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
@@ -225,12 +225,11 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final List<ChatMessage> messagesHistory =
+    final List<Message> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+            new UserMessage("What is the capital of France?"),
+            new AssistantMessage("The capital of France is Paris."));
+    final var message = new UserMessage("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -352,7 +351,7 @@ class OrchestrationUnitTest {
 
     prompt =
         new OrchestrationPrompt(Map.of("foo", "bar"))
-            .messageHistory(List.of(ChatMessage.create().role("user").content("Hello World!")));
+            .messageHistory(List.of(new UserMessage("Hello World!")));
     final var configJson =
         """
         {
