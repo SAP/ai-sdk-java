@@ -30,7 +30,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
@@ -121,7 +120,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = new UserMessage("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
@@ -258,12 +257,11 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final List<ChatMessage> messagesHistory =
+    final List<Message> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+            new UserMessage("What is the capital of France?"),
+            new AssistantMessage("The capital of France is Paris."));
+    final var message = new UserMessage("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -389,7 +387,7 @@ class OrchestrationUnitTest {
 
     prompt =
         new OrchestrationPrompt(Map.of("foo", "bar"))
-            .messageHistory(List.of(ChatMessage.create().role("user").content("Hello World!")));
+            .messageHistory(List.of(new UserMessage("Hello World!")));
     final var configJson =
         """
         {
