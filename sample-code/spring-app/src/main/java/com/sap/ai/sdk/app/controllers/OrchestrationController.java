@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
@@ -26,8 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
   OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig()
-          .withLlmConfig(GPT_35_TURBO.withParams(Map.of("temperature", 0.0)));
+      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
