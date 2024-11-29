@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
+        with:
+          ref: fix/cve-scan
 
       - name: "Setup java"
         uses: actions/setup-java@v4
