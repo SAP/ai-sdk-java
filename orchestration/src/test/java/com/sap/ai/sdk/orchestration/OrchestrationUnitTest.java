@@ -89,9 +89,8 @@ class OrchestrationUnitTest {
 
     final var deployment =
         new AiCoreService()
-            .withDestination(destination)
-            .forDeploymentByScenario("orchestration")
-            .withResourceGroup("my-resource-group");
+            .withBaseDestination(destination)
+            .getDestinationForDeploymentByScenario("my-resource-group", "orchestration");
     client = new OrchestrationClient(deployment);
     config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
