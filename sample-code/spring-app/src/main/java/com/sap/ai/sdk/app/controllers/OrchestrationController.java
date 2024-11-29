@@ -10,7 +10,6 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
@@ -113,16 +112,7 @@ class OrchestrationController {
     final var configWithFilter =
         config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
 
-    final OrchestrationChatResponse result = client.chatCompletion(prompt, configWithFilter);
-    try {
-      // in case the output was filtered, calling .getContent() will throw
-      log.info("The following AI response passed the output filter: {}", result.getContent());
-    } catch (OrchestrationClientException e) {
-      log.info("The content filter blocked the output.");
-      // alternatively to calling .getContent(), you can also check the finish reason manually
-      log.info("Finish reason: {}", result.getCurrentChoice().getFinishReason());
-    }
-    return result;
+    return client.chatCompletion(prompt, configWithFilter);
   }
 
   /**
