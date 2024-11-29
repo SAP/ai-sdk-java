@@ -170,8 +170,17 @@ public class AiCoreService {
         .build();
   }
 
+  /**
+   * Helper method to build the <b>relative</b> URL path for the inference endpoint of a deployment.
+   * The result of this together with the base path defined on the destination will be used for
+   * inference calls towards this deployment.
+   *
+   * @param deploymentId The deployment ID to be used for the path.
+   * @return The path to the deployment.
+   */
   @Nonnull
-  private static String buildDeploymentPath(@Nonnull final String deploymentId) {
+  @Beta
+  protected String buildDeploymentPath(@Nonnull final String deploymentId) {
     return "inference/deployments/%s/".formatted(deploymentId);
   }
 
