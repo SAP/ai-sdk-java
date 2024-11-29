@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,9 +21,9 @@ import lombok.Value;
 @Value
 @Getter(AccessLevel.PACKAGE)
 public class OrchestrationPrompt {
-  @Nonnull List<ChatMessage> messages = new ArrayList<>();
+  @Nonnull List<Message> messages = new ArrayList<>();
   @Nonnull Map<String, String> templateParameters = new TreeMap<>();
-  @Nonnull List<ChatMessage> messagesHistory = new ArrayList<>();
+  @Nonnull List<Message> messagesHistory = new ArrayList<>();
 
   /**
    * Initialize a prompt with the given user message.
@@ -32,7 +31,7 @@ public class OrchestrationPrompt {
    * @param message A user message.
    */
   public OrchestrationPrompt(@Nonnull final String message) {
-    messages.add(ChatMessage.create().role("user").content(message));
+    messages.add(new UserMessage(message));
   }
 
   /**
@@ -41,8 +40,7 @@ public class OrchestrationPrompt {
    * @param message The first message.
    * @param messages Optionally, more messages.
    */
-  public OrchestrationPrompt(
-      @Nonnull final ChatMessage message, @Nonnull final ChatMessage... messages) {
+  public OrchestrationPrompt(@Nonnull final Message message, @Nonnull final Message... messages) {
     this.messages.add(message);
     this.messages.addAll(Arrays.asList(messages));
   }
@@ -53,7 +51,7 @@ public class OrchestrationPrompt {
    * @param inputParams The input parameters as entries of template variables and their contents.
    */
   public OrchestrationPrompt(
-      @Nonnull final Map<String, String> inputParams, @Nonnull final ChatMessage... messages) {
+      @Nonnull final Map<String, String> inputParams, @Nonnull final Message... messages) {
     this.templateParameters.putAll(inputParams);
     this.messages.addAll(Arrays.asList(messages));
   }
@@ -64,7 +62,7 @@ public class OrchestrationPrompt {
    * @param messagesHistory The chat history to add.
    */
   @Nonnull
-  public OrchestrationPrompt messageHistory(@Nonnull final List<ChatMessage> messagesHistory) {
+  public OrchestrationPrompt messageHistory(@Nonnull final List<Message> messagesHistory) {
     this.messagesHistory.clear();
     this.messagesHistory.addAll(messagesHistory);
     return this;

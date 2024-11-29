@@ -3,14 +3,17 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
+import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.SystemMessage;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
@@ -51,10 +54,8 @@ class OrchestrationController {
   @Nonnull
   public OrchestrationChatResponse template() {
     final var template =
-        ChatMessage.create()
-            .role("user")
-            .content("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = Template.create().template(List.of(template));
+        new UserMessage("Reply with 'Orchestration Service is working!' in {{?language}}");
+    final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     final var inputParams = Map.of("language", "German");
@@ -71,12 +72,11 @@ class OrchestrationController {
   @GetMapping("/messagesHistory")
   @Nonnull
   public OrchestrationChatResponse messagesHistory() {
-    final List<ChatMessage> messagesHistory =
+    final List<Message> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+            new UserMessage("What is the capital of France?"),
+            new AssistantMessage("The capital of France is Paris."));
+    final var message = new UserMessage("What is the typical food there?");
 
     final var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -120,15 +120,11 @@ class OrchestrationController {
   @Nonnull
   public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
-        ChatMessage.create()
-            .role("system")
-            .content(
-                "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
+        new SystemMessage(
+            "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
-        ChatMessage.create()
-            .role("user")
-            .content(
-                """
+        new UserMessage(
+            """
     I think the SDK is good, but could use some further enhancements.
     My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
     """);
@@ -150,18 +146,14 @@ class OrchestrationController {
   @Nonnull
   public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
-        ChatMessage.create()
-            .role("system")
-            .content(
-                """
+        new SystemMessage(
+            """
                 Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
                 Please make sure to address the user in person and end with "Best regards, the AI SDK team".
                 """);
     final var userMessage =
-        ChatMessage.create()
-            .role("user")
-            .content(
-                """
+        new UserMessage(
+            """
                 Username: Mallory
                 userEmail: mallory@sap.com
                 Date: 2022-01-01
