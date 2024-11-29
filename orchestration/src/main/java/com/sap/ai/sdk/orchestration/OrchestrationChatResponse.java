@@ -9,7 +9,6 @@ import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -54,10 +53,21 @@ public class OrchestrationChatResponse {
    * @return A list of all messages.
    */
   @Nonnull
-  public List<ChatMessage> getAllMessages() {
-    final var items = Objects.requireNonNull(originalResponse.getModuleResults().getTemplating());
-    final var messages = new ArrayList<>(items);
-    messages.add(getCurrentChoice().getMessage());
+  public List<Message> getAllMessages() {
+    final var messages = new ArrayList<Message>();
+
+    for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
+      final var message =
+          switch (chatMessage.getRole()) {
+            case "user" -> new UserMessage(chatMessage.getContent());
+            case "assistant" -> new AssistantMessage(chatMessage.getContent());
+            case "system" -> new SystemMessage(chatMessage.getContent());
+            default -> throw new IllegalStateException("Unexpected role: " + chatMessage.getRole());
+          };
+      messages.add(message);
+    }
+
+    messages.add(new AssistantMessage(getCurrentChoice().getMessage().getContent()));
     return messages;
   }
 
