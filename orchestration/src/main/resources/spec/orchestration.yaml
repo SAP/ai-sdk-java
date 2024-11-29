@@ -764,7 +764,6 @@ components:
       anyOf:
         - enum:
             - vector
-            - help.sap.com
         - {}
       title: DataRepositoryType
     KeyValueListPair:
