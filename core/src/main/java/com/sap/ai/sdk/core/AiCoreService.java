@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Iterables;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -181,6 +182,7 @@ public class AiCoreService {
    *
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
+  @Beta
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
     deploymentResolver.reloadDeployments(resourceGroup);
   }
