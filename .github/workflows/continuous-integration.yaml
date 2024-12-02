@@ -32,7 +32,7 @@ jobs:
           cache: 'maven'
 
       - name: "REUSE Compliance Check"
-        uses: fsfe/reuse-action@v4
+        uses: fsfe/reuse-action@v5
 
       - name: "Format code"
         run: |
@@ -72,7 +72,7 @@ jobs:
 
       - name: "Slack Notification"
         if: ${{ github.ref == 'refs/heads/main' && failure() }}
-        uses: slackapi/slack-github-action@v1.27.0
+        uses: slackapi/slack-github-action@v2.0.0
         with:
           payload: |
             {
