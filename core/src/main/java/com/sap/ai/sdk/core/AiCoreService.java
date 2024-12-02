@@ -138,6 +138,7 @@ public class AiCoreService {
    * @return A new client object based on {@link #getBaseDestination()}.
    */
   @Nonnull
+  @Beta
   public ApiClient getApiClient() {
     val destination = getBaseDestination();
     val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
