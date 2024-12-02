@@ -45,6 +45,8 @@ class OrchestrationController {
   /**
    * Chat request to OpenAI through the Orchestration service with a template
    *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @return the result object
    */
   @GetMapping("/template")
@@ -84,6 +86,12 @@ class OrchestrationController {
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
    * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
@@ -112,6 +120,9 @@ class OrchestrationController {
    * user. Anonymize any names given as they are not relevant for judging the sentiment of the
    * feedback.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingAnonymization")
@@ -138,6 +149,9 @@ class OrchestrationController {
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
    * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingPseudonymization")
