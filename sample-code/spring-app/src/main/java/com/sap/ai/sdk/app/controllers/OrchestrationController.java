@@ -39,7 +39,7 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public OrchestrationChatResponse completion() {
+  OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
     return client.chatCompletion(prompt, config);
@@ -52,7 +52,7 @@ class OrchestrationController {
    */
   @GetMapping("/template")
   @Nonnull
-  public OrchestrationChatResponse template() {
+  OrchestrationChatResponse template() {
     final var template =
         new UserMessage("Reply with 'Orchestration Service is working!' in {{?language}}");
     final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
@@ -71,7 +71,7 @@ class OrchestrationController {
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public OrchestrationChatResponse messagesHistory() {
+  OrchestrationChatResponse messagesHistory() {
     final List<Message> messagesHistory =
         List.of(
             new UserMessage("What is the capital of France?"),
@@ -91,7 +91,7 @@ class OrchestrationController {
    */
   @GetMapping("/filter/{policy}")
   @Nonnull
-  public OrchestrationChatResponse filter(
+  OrchestrationChatResponse filter(
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
@@ -118,16 +118,16 @@ class OrchestrationController {
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public OrchestrationChatResponse maskingAnonymization() {
+  OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
         new SystemMessage(
             "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
         new UserMessage(
             """
-    I think the SDK is good, but could use some further enhancements.
-    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-    """);
+                I think the SDK is good, but could use some further enhancements.
+                My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+                """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
@@ -144,7 +144,7 @@ class OrchestrationController {
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public OrchestrationChatResponse maskingPseudonymization() {
+  OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
         new SystemMessage(
             """

@@ -1,94 +1,259 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>AI SDK test app</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI SDK Test Application</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            color: #333333;
+            background-color: #f4f6f9;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
-        a {
+        .card-header {
+            background-color: #0C7ECF;
+            color: white;
+            font-weight: bold;
+        }
+        .card-link {
             color: #0C7ECF;
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
-        li{
-            margin: 10px 0;
+        .card-link:hover {
+            color: #085e9b;
+            text-decoration: underline;
         }
-        code {
-            font-family: Courier, monospace;
-            font-size: 95%;
-            padding: 0.2em;
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-            background-color: #EBEBEB;
-            border-radius: 3px;
+        .section-card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .sap-logo {
+            max-width: 200px;
+            margin: 20px 0;
+        }
+        .section-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .sub-section-description {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+        .list-group-item:first-child {
+            border-top: none;
+        }
+        .list-group-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
-<h1>Welcome to the end-to-end test application!</h1>
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold mb-4">AI SDK Test Application</h1>
 
-<a href="https://sap.github.io/cloud-sdk/docs/java/getting-started" class="svg">
-    <object data="https://help.sap.com/http.svc/rc/6c02295dfa8f47cf9c08a19f2e172901/1.0/en-US/logo.svg"
-            type="image/svg+xml"></object>
-</a>
+        <!-- SAP Logo -->
+        <a href="https://sap.github.io/cloud-sdk/docs/java/getting-started" target="_blank">
+            <img src="https://help.sap.com/http.svc/rc/6c02295dfa8f47cf9c08a19f2e172901/1.0/en-US/logo.svg"
+                 alt="SAP Logo"
+                 class="sap-logo img-fluid"
+                 onerror="this.style.display='none'">
+        </a>
+    </div>
 
-<h2>Endpoints</h2>
-<ul>
-    <li><h3>AI Core</h3>
-        <ul>
-            <li><h4>Java specific Deployments</h4> <i>Only UNKNOWN and STOPPED deployments can be DELETED. Only RUNNING deployments can be
-                STOPPED</i></li>
-            <ul>
-                <li><a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete">/deployments/by-config/[...]/createDelete</a></li>
-                <li><a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop">/deployments/by-config/[...]/stop</a></li>
-                <li><a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/delete">/deployments/by-config/[...]/delete</a></li>
-                <li><a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll">/deployments/by-config/[...]/getAll</a></li>
-            </ul>
-        </ul>
-        <ul>
-            <li><h4>All Deployments</h4></li>
-            <ul>
-                <li><a href="/deployments/getAll">/deployments/getAll</a></li>
-            </ul>
-        </ul>
-        <ul>
-            <li><h4>Scenarios</h4></li>
-            <ul>
-                <li><a href="/scenarios">/scenarios</a></li>
-                <li><a href="/models">/models</a> All available foundation models in this region</li>
-            </ul>
-        </ul>
-        <ul>
-            <li><h4>Configurations</h4></li>
-            <ul>
-                <li><a href="/configurations">/configurations</a></li>
-            </ul>
-        </ul>
-    </li>
-    <li><h3>Orchestration</h3>
-        <ul>
-            <li><a href="/orchestration/completion">/orchestration/completion</a></li>
-            <li><a href="/orchestration/template">/orchestration/template</a></li>
-            <li><a href="/orchestration/messagesHistory">/orchestration/messagesHistory</a></li>
-            <li><a href="/orchestration/filter/NUMBER_4">/orchestration/filter/NUMBER_4</a> Loose filter</li>
-            <li><a href="/orchestration/filter/NUMBER_0">/orchestration/filter/NUMBER_0</a> Strict filter (fails)</li>
-            <li><a href="/orchestration/maskingAnonymization">/orchestration/maskingAnonymization</a></li>
-            <li><a href="/orchestration/maskingPseudonymization">/orchestration/maskingPseudonymization</a></li>
-        </ul>
-    </li>
-    <li><h3>Foundation Models</h3>
-        <ul>
-            <li><h4>OpenAI</h4></li>
-            <ul>
-                <li><a href="/chatCompletion">/chatCompletion</a></li>
-                <li><a href="/streamChatCompletion">/streamChatCompletion</a></li>
-                <li><a href="/streamChatCompletionDeltas">/streamChatCompletionDeltas</a></li>
-                <li><a href="/chatCompletionTool">/chatCompletionTool</a></li>
-                <li><a href="/chatCompletionImage">/chatCompletionImage</a></li>
-                <li><a href="/embedding">/embedding</a></li>
-            </ul>
-        </ul>
-    </li>
-</ul>
+    <div class="row">
+        <!-- Orchestration Section - Now First and Widest -->
+        <div class="col-md-6">
+            <div class="card section-card">
+                <div class="card-header">
+                    <h3 class="mb-0">Orchestration</h3>
+                </div>
+                <div class="card-body">
+                    <p class="section-description">
+                        Orchestration endpoints provide advanced workflow management and processing capabilities for AI-driven applications.
+                    </p>
 
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0">Core Workflow</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="sub-section-description">
+                                        Essential endpoints for managing AI workflow processes, including completion generation, templating, and message tracking.
+                                    </p>
+                                    <div class="list-group">
+                                        <a href="/orchestration/completion"
+                                           class="list-group-item list-group-item-action card-link">
+                                            Completion
+                                        </a>
+                                        <a href="/orchestration/template"
+                                           class="list-group-item list-group-item-action card-link">
+                                            Template
+                                        </a>
+                                        <a href="/orchestration/messagesHistory"
+                                           class="list-group-item list-group-item-action card-link">
+                                            Messages History
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0">Filtering</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="sub-section-description">
+                                        Filtering mechanisms to control and refine AI-generated content, including both loose and strict filtering approaches.
+                                    </p>
+                                    <div class="list-group">
+                                        <a href="/orchestration/filter/NUMBER_4"
+                                           class="list-group-item list-group-item-action card-link">
+                                            Loose Filter
+                                        </a>
+                                        <a href="/orchestration/filter/NUMBER_0"
+                                           class="list-group-item list-group-item-action card-link text-warning">
+                                            Strict Filter (fails)
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0">Masking</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="sub-section-description">
+                                        Data privacy and protection endpoints for anonymizing and pseudonymizing sensitive information in AI processing.
+                                    </p>
+                                    <div class="list-group">
+                                        <a href="/orchestration/maskingAnonymization"
+                                           class="list-group-item list-group-item-action card-link">
+                                            Masking Anonymization
+                                        </a>
+                                        <a href="/orchestration/maskingPseudonymization"
+                                           class="list-group-item list-group-item-action card-link">
+                                            Masking Pseudonymization
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Core Section -->
+        <div class="col-md-3">
+            <div class="card section-card">
+                <div class="card-header">
+                    <h3 class="mb-0">AI Core</h3>
+                </div>
+                <div class="card-body">
+                    <p class="section-description">
+                        AI Core provides comprehensive management of deployments, scenarios, and model configurations.
+                    </p>
+
+                    <h4>Java Specific Deployments</h4>
+                    <div class="list-group mb-3">
+                        <a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete"
+                           class="list-group-item list-group-item-action card-link">
+                            Create/Delete Deployments
+                        </a>
+                        <a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop"
+                           class="list-group-item list-group-item-action card-link">
+                            Stop Deployments
+                        </a>
+                        <a href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll"
+                           class="list-group-item list-group-item-action card-link">
+                            Get All Deployments
+                        </a>
+                    </div>
+
+                    <h4>Scenarios & Models</h4>
+                    <div class="list-group">
+                        <a href="/scenarios"
+                           class="list-group-item list-group-item-action card-link">
+                            Scenarios
+                        </a>
+                        <a href="/models"
+                           class="list-group-item list-group-item-action card-link">
+                            Available Foundation Models
+                        </a>
+                        <a href="/configurations"
+                           class="list-group-item list-group-item-action card-link">
+                            Configurations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Foundation Models Section -->
+        <div class="col-md-3">
+            <div class="card section-card">
+                <div class="card-header">
+                    <h3 class="mb-0">Foundation Models</h3>
+                </div>
+                <div class="card-body">
+                    <p class="section-description">
+                        Foundation Models offer diverse AI capabilities including chat completion, embeddings, and advanced tooling.
+                    </p>
+
+                    <h4>OpenAI</h4>
+                    <div class="list-group">
+                        <a href="/chatCompletion"
+                           class="list-group-item list-group-item-action card-link">
+                            Chat Completion
+                        </a>
+                        <a href="/streamChatCompletion"
+                           class="list-group-item list-group-item-action card-link">
+                            Stream Chat Completion
+                        </a>
+                        <a href="/streamChatCompletionDeltas"
+                           class="list-group-item list-group-item-action card-link">
+                            Stream Chat Completion Deltas
+                        </a>
+                        <a href="/chatCompletionTool"
+                           class="list-group-item list-group-item-action card-link">
+                            Chat Completion Tool
+                        </a>
+                        <a href="/chatCompletionImage"
+                           class="list-group-item list-group-item-action card-link">
+                            Chat Completion Image
+                        </a>
+                        <a href="/embedding"
+                           class="list-group-item list-group-item-action card-link">
+                            Embedding
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
