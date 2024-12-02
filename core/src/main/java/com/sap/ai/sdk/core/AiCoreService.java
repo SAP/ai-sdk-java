@@ -1,9 +1,15 @@
 package com.sap.ai.sdk.core;
 
+import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Iterables;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -21,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,6 +38,7 @@ public class AiCoreService implements AiCoreDestination {
   static final String AI_RESOURCE_GROUP = "URL.headers.AI-Resource-Group";
 
   private static final DeploymentCache DEPLOYMENT_CACHE = new DeploymentCache();
+  private static final JsonMapper objectMapper = getDefaultObjectMapper();
 
   @Nonnull private final DestinationResolver destinationResolver;
 
@@ -198,14 +204,6 @@ public class AiCoreService implements AiCoreDestination {
    */
   @Nonnull
   protected ApiClient buildApiClient(@Nonnull final Destination destination) {
-    val objectMapper =
-        new Jackson2ObjectMapperBuilder()
-            .modules(new JavaTimeModule())
-            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-            .serializationInclusion(JsonInclude.Include.NON_NULL) // THIS STOPS `null` serialization
-            .build();
-
     val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
     httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
 
@@ -226,5 +224,30 @@ public class AiCoreService implements AiCoreDestination {
    */
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
     DEPLOYMENT_CACHE.resetCache(this, resourceGroup);
+  }
+
+  /**
+   * Default object mapper used for JSON de-/serialization. <b>Only intended for internal usage
+   * within this SDK</b>. Largely follows the defaults set by Spring.
+   *
+   * @return A new object mapper with the default configuration.
+   * @see <a
+   *     href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html">Jackson2ObjectMapperBuilder</a>
+   */
+  @Nonnull
+  @Beta
+  public static JsonMapper getDefaultObjectMapper() {
+    return JsonMapper.builder()
+        .addModule(new JavaTimeModule())
+        .addModule(new ParameterNamesModule())
+        // Disable automatic detection of getters and setters
+        .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
+        .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
+        .serializationInclusion(JsonInclude.Include.NON_NULL)
+        // for generated code unknown properties should always be stored as custom fields
+        // still added for any non-generated code and additional safety
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .disable(DEFAULT_VIEW_INCLUSION)
+        .build();
   }
 }

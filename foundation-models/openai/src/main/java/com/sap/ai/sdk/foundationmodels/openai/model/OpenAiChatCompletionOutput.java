@@ -52,6 +52,7 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    *
    * @param delta the delta to add.
    */
+  @Override
   public void addDelta(@Nonnull final OpenAiChatCompletionDelta delta) {
     super.addDelta(delta);
 

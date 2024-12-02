@@ -1,13 +1,11 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
+import static com.sap.ai.sdk.core.AiCoreService.getDefaultObjectMapper;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -40,15 +38,7 @@ public class OrchestrationClient {
   static final ObjectMapper JACKSON;
 
   static {
-    JACKSON = new ObjectMapper();
-    JACKSON.registerModule(new JavaTimeModule());
-
-    // Disable automatic detection of getters and setters
-    JACKSON.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
-    JACKSON.setVisibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE);
-
-    // Only serialize non-null values
-    JACKSON.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    JACKSON = getDefaultObjectMapper();
 
     // Add mix-ins
     JACKSON.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);

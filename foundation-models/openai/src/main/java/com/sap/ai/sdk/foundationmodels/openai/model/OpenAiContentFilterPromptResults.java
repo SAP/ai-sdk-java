@@ -17,6 +17,7 @@ public class OpenAiContentFilterPromptResults extends OpenAiContentFilterResults
   @Getter(onMethod_ = @Nullable)
   private OpenAiContentFilterDetectedResult jailbreak;
 
+  @Override
   void addDelta(@Nonnull final OpenAiContentFilterPromptResults delta) {
     super.addDelta(delta);
 
