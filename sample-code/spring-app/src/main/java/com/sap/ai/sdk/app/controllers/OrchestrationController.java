@@ -43,7 +43,7 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service with a template.
    *
    * @return the result object
    */
@@ -62,7 +62,7 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service using message history.
    *
    * @return the result object
    */
