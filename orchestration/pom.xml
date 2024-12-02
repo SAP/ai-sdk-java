@@ -89,12 +89,6 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
-
-    <!-- TODO: only needed for JsonObjectMapperBuilder, maybe we can use Jackson natively to avoid this dependency -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-    </dependency>
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
