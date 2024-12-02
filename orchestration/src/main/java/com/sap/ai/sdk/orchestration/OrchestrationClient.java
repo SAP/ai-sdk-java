@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.FilterConfig;
@@ -25,7 +26,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
@@ -64,25 +64,25 @@ public class OrchestrationClient {
   /** Default constructor. */
   public OrchestrationClient() {
     destinationSupplier =
-        () ->
-            new AiCoreService()
-                .getDestinationForDeploymentByScenario(
-                    AiCoreService.DEFAULT_RESOURCE_GROUP, DEFAULT_SCENARIO);
+        () -> new AiCoreService().getInferenceDestination().forScenario(DEFAULT_SCENARIO);
   }
 
   /**
    * Constructor with a custom destination, allowing for a custom resource group or otherwise custom
-   * destination.
+   * destination. The destination needs to be configured with a URL pointing to an orchestration
+   * service deployment. Typically, such a destination should be obtained using {@link
+   * AiCoreService#getInferenceDestination(String)}.
    *
    * <p>Example:
    *
    * <pre>{@code
-   * new OrchestrationClient(new AiCoreService().getDestinationForDeploymentByScenario("custom-rg", "orchestration"));
+   * new OrchestrationClient(new AiCoreService().getInferenceDestination("custom-rg").forScenario("orchestration"));
    * }</pre>
    *
    * @param destination The specific {@link HttpDestination} to use.
-   * @see AiCoreService#getDestinationForDeploymentByScenario(String, String)
+   * @see AiCoreService#getInferenceDestination(String)
    */
+  @Beta
   public OrchestrationClient(@Nonnull final HttpDestination destination) {
     this.destinationSupplier = () -> destination;
   }
@@ -210,7 +210,7 @@ public class OrchestrationClient {
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
           postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
-    } catch (NoSuchElementException
+    } catch (DeploymentResolutionException
         | DestinationAccessException
         | DestinationNotFoundException
         | HttpClientInstantiationException
