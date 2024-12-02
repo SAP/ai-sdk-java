@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** FilterConfig */
+/** GroundingModuleConfigConfigFiltersInner */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "",
     visible = true)
-public interface FilterConfig {}
+public interface GroundingModuleConfigConfigFiltersInner {}

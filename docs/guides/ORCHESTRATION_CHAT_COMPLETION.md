@@ -102,10 +102,7 @@ The LLM response is available as the first choice under the `result.getOrchestra
 Use a prepared template and execute requests with by passing only the input parameters:
 
 ```java
-var template =
-    ChatMessage.create()
-        .role("user")
-        .content("Reply with 'Orchestration Service is working!' in {{?language}}");
+var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
 var templatingConfig = TemplatingModuleConfig.create().template(template);
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
@@ -124,10 +121,10 @@ Include a message history to maintain context in the conversation:
 ```java
 var messagesHistory =
         List.of(
-                ChatMessage.create().role("user").content("What is the capital of France?"),
-                ChatMessage.create().role("assistant").content("The capital of France is Paris."));
+            Message.user("What is the capital of France?"),
+            Message.assistant("The capital of France is Paris."));
 var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+    Message.user("What is the typical food there?");
 
 var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
@@ -175,12 +172,8 @@ var maskingConfig =
     DpiMasking.anonymization().withEntities(DPIEntities.PHONE, DPIEntities.PERSON);
 var configWithMasking = config.withMaskingConfig(maskingConfig);
 
-var systemMessage = ChatMessage.create()
-        .role("system")
-        .content("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
-var userMessage = ChatMessage.create()
-        .role("user")
-        .content("""
+var systemMessage = Message.system("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
+var userMessage = Message.user("""
                  I think the SDK is good, but could use some further enhancements.
                  My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                  """);
