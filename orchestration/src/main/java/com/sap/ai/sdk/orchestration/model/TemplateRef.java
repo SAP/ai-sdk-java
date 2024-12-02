@@ -25,56 +25,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Stream options for output filtering. Will be ignored if stream is false. */
+/** TemplateRef */
 @Beta // CHECKSTYLE:OFF
-public class FilteringStreamOptions
+public class TemplateRef implements TemplatingModuleConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("overlap")
-  private Integer overlap = 0;
+  @JsonProperty("template_ref")
+  private TemplateRefTemplateRef templateRef;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for FilteringStreamOptions. */
-  protected FilteringStreamOptions() {}
+  /** Default constructor for TemplateRef. */
+  protected TemplateRef() {}
 
   /**
-   * Set the overlap of this {@link FilteringStreamOptions} instance and return the same instance.
+   * Set the templateRef of this {@link TemplateRef} instance and return the same instance.
    *
-   * @param overlap Number of characters that should be additionally sent to content filtering
-   *     services from previous chunks as additional context. Minimum: 0 Maximum: 10000
-   * @return The same instance of this {@link FilteringStreamOptions} class
+   * @param templateRef The templateRef of this {@link TemplateRef}
+   * @return The same instance of this {@link TemplateRef} class
    */
   @Nonnull
-  public FilteringStreamOptions overlap(@Nullable final Integer overlap) {
-    this.overlap = overlap;
+  public TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
+    this.templateRef = templateRef;
     return this;
   }
 
   /**
-   * Number of characters that should be additionally sent to content filtering services from
-   * previous chunks as additional context. minimum: 0 maximum: 10000
+   * Get templateRef
    *
-   * @return overlap The overlap of this {@link FilteringStreamOptions} instance.
+   * @return templateRef The templateRef of this {@link TemplateRef} instance.
    */
   @Nonnull
-  public Integer getOverlap() {
-    return overlap;
+  public TemplateRefTemplateRef getTemplateRef() {
+    return templateRef;
   }
 
   /**
-   * Set the overlap of this {@link FilteringStreamOptions} instance.
+   * Set the templateRef of this {@link TemplateRef} instance.
    *
-   * @param overlap Number of characters that should be additionally sent to content filtering
-   *     services from previous chunks as additional context. Minimum: 0 Maximum: 10000
+   * @param templateRef The templateRef of this {@link TemplateRef}
    */
-  public void setOverlap(@Nullable final Integer overlap) {
-    this.overlap = overlap;
+  public void setTemplateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
+    this.templateRef = templateRef;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link FilteringStreamOptions}.
+   * Get the names of the unrecognizable properties of the {@link TemplateRef}.
    *
    * @return The set of properties names
    */
@@ -85,7 +82,7 @@ public class FilteringStreamOptions
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link FilteringStreamOptions} instance.
+   * Get the value of an unrecognizable property of this {@link TemplateRef} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -94,15 +91,14 @@ public class FilteringStreamOptions
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "FilteringStreamOptions has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TemplateRef has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link FilteringStreamOptions} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TemplateRef} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -120,22 +116,22 @@ public class FilteringStreamOptions
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final FilteringStreamOptions filteringStreamOptions = (FilteringStreamOptions) o;
-    return Objects.equals(this.cloudSdkCustomFields, filteringStreamOptions.cloudSdkCustomFields)
-        && Objects.equals(this.overlap, filteringStreamOptions.overlap);
+    final TemplateRef templateRef = (TemplateRef) o;
+    return Objects.equals(this.cloudSdkCustomFields, templateRef.cloudSdkCustomFields)
+        && Objects.equals(this.templateRef, templateRef.templateRef);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(overlap, cloudSdkCustomFields);
+    return Objects.hash(templateRef, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class FilteringStreamOptions {\n");
-    sb.append("    overlap: ").append(toIndentedString(overlap)).append("\n");
+    sb.append("class TemplateRef {\n");
+    sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -153,8 +149,22 @@ public class FilteringStreamOptions
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link FilteringStreamOptions} instance. No arguments are required. */
-  public static FilteringStreamOptions create() {
-    return new FilteringStreamOptions();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRef} instance
+   * with all required arguments.
+   */
+  public static Builder create() {
+    return (templateRef) -> new TemplateRef().templateRef(templateRef);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the templateRef of this {@link TemplateRef} instance.
+     *
+     * @param templateRef The templateRef of this {@link TemplateRef}
+     * @return The TemplateRef instance.
+     */
+    TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
   }
 }

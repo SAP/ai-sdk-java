@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** AzureContentSafetyFilterConfig */
+/** GroundingModuleConfig */
 @Beta // CHECKSTYLE:OFF
-public class AzureContentSafetyFilterConfig implements FilterConfig
+public class GroundingModuleConfig
 // CHECKSTYLE:ON
 {
-  /** String represents name of the filter provider */
+  /** Gets or Sets type */
   public enum TypeEnum {
-    /** The AZURE_CONTENT_SAFETY option of this AzureContentSafetyFilterConfig */
-    AZURE_CONTENT_SAFETY("azure_content_safety"),
+    /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
+    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this AzureContentSafetyFilterConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingModuleConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type AzureContentSafetyFilterConfig
+     * @return The enum value of type GroundingModuleConfig
      */
     @JsonCreator
     @Nonnull
@@ -82,7 +82,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
           return b;
         }
       }
-      return UNKNOWN_DEFAULT_OPEN_API;
+      return null;
     }
   }
 
@@ -90,55 +90,53 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   private TypeEnum type;
 
   @JsonProperty("config")
-  private AzureContentSafety config;
+  private GroundingModuleConfigConfig config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AzureContentSafetyFilterConfig. */
-  protected AzureContentSafetyFilterConfig() {}
+  /** Default constructor for GroundingModuleConfig. */
+  protected GroundingModuleConfig() {}
 
   /**
-   * Set the type of this {@link AzureContentSafetyFilterConfig} instance and return the same
-   * instance.
+   * Set the type of this {@link GroundingModuleConfig} instance and return the same instance.
    *
-   * @param type String represents name of the filter provider
-   * @return The same instance of this {@link AzureContentSafetyFilterConfig} class
+   * @param type The type of this {@link GroundingModuleConfig}
+   * @return The same instance of this {@link GroundingModuleConfig} class
    */
   @Nonnull
-  public AzureContentSafetyFilterConfig type(@Nonnull final TypeEnum type) {
+  public GroundingModuleConfig type(@Nullable final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * String represents name of the filter provider
+   * Get type
    *
-   * @return type The type of this {@link AzureContentSafetyFilterConfig} instance.
+   * @return type The type of this {@link GroundingModuleConfig} instance.
    */
-  @Nonnull
+  @Nullable
   public TypeEnum getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link AzureContentSafetyFilterConfig} instance.
+   * Set the type of this {@link GroundingModuleConfig} instance.
    *
-   * @param type String represents name of the filter provider
+   * @param type The type of this {@link GroundingModuleConfig}
    */
-  public void setType(@Nonnull final TypeEnum type) {
+  public void setType(@Nullable final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the config of this {@link AzureContentSafetyFilterConfig} instance and return the same
-   * instance.
+   * Set the config of this {@link GroundingModuleConfig} instance and return the same instance.
    *
-   * @param config The config of this {@link AzureContentSafetyFilterConfig}
-   * @return The same instance of this {@link AzureContentSafetyFilterConfig} class
+   * @param config The config of this {@link GroundingModuleConfig}
+   * @return The same instance of this {@link GroundingModuleConfig} class
    */
   @Nonnull
-  public AzureContentSafetyFilterConfig config(@Nullable final AzureContentSafety config) {
+  public GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config) {
     this.config = config;
     return this;
   }
@@ -146,24 +144,24 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   /**
    * Get config
    *
-   * @return config The config of this {@link AzureContentSafetyFilterConfig} instance.
+   * @return config The config of this {@link GroundingModuleConfig} instance.
    */
   @Nonnull
-  public AzureContentSafety getConfig() {
+  public GroundingModuleConfigConfig getConfig() {
     return config;
   }
 
   /**
-   * Set the config of this {@link AzureContentSafetyFilterConfig} instance.
+   * Set the config of this {@link GroundingModuleConfig} instance.
    *
-   * @param config The config of this {@link AzureContentSafetyFilterConfig}
+   * @param config The config of this {@link GroundingModuleConfig}
    */
-  public void setConfig(@Nullable final AzureContentSafety config) {
+  public void setConfig(@Nonnull final GroundingModuleConfigConfig config) {
     this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AzureContentSafetyFilterConfig}.
+   * Get the names of the unrecognizable properties of the {@link GroundingModuleConfig}.
    *
    * @return The set of properties names
    */
@@ -174,8 +172,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AzureContentSafetyFilterConfig}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link GroundingModuleConfig} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -185,15 +182,14 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AzureContentSafetyFilterConfig has no field with name '" + name + "'.");
+          "GroundingModuleConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link AzureContentSafetyFilterConfig} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link GroundingModuleConfig} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -211,12 +207,10 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AzureContentSafetyFilterConfig azureContentSafetyFilterConfig =
-        (AzureContentSafetyFilterConfig) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, azureContentSafetyFilterConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, azureContentSafetyFilterConfig.type)
-        && Objects.equals(this.config, azureContentSafetyFilterConfig.config);
+    final GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, groundingModuleConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, groundingModuleConfig.type)
+        && Objects.equals(this.config, groundingModuleConfig.config);
   }
 
   @Override
@@ -228,7 +222,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AzureContentSafetyFilterConfig {\n");
+    sb.append("class GroundingModuleConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -249,21 +243,32 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * AzureContentSafetyFilterConfig} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfig}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new AzureContentSafetyFilterConfig().type(type);
+    return (type) -> (config) -> new GroundingModuleConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link AzureContentSafetyFilterConfig} instance.
+     * Set the type of this {@link GroundingModuleConfig} instance.
      *
-     * @param type String represents name of the filter provider
-     * @return The AzureContentSafetyFilterConfig instance.
+     * @param type The type of this {@link GroundingModuleConfig}
+     * @return The GroundingModuleConfig builder.
      */
-    AzureContentSafetyFilterConfig type(@Nonnull final TypeEnum type);
+    Builder1 type(@Nullable final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the config of this {@link GroundingModuleConfig} instance.
+     *
+     * @param config The config of this {@link GroundingModuleConfig}
+     * @return The GroundingModuleConfig instance.
+     */
+    GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config);
   }
 }
