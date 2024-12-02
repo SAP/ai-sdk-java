@@ -34,6 +34,10 @@ import lombok.val;
  *   <li>Input Content Filtering (Optional)
  *   <li>Output Content Filtering (Optional)
  * </ul>
+ *
+ * @link <a
+ *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow">
+ *     SAP AI Core: Orchestration - Orchestration Workflow</a>
  */
 @Value
 @With
@@ -42,23 +46,50 @@ import lombok.val;
 public class OrchestrationModuleConfig {
   /**
    * The configured language model settings. This configuration is required when executing requests.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
+   *     SAP AI Core: Orchestration - Model Configuration</a>
    */
   @Nullable LLMModuleConfig llmConfig;
 
   /**
    * A template to be populated with input parameters. Upon request execution, this template will be
    * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    */
   @Nullable TemplatingModuleConfig templateConfig;
 
-  /** A masking configuration to pseudonymous or anonymize sensitive data in the input. */
+  /**
+   * A masking configuration to pseudonymous or anonymize sensitive data in the input.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
+   *     AI Core: Orchestration - Data Masking</a>
+   * */
   @Nullable MaskingModuleConfig maskingConfig;
 
-  /** A content filter to filter the prompt. */
+  /**
+   * A content filter to filter the prompt.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * */
   @Nullable FilteringModuleConfig filteringConfig;
 
   /**
    * Creates a new configuration with the given LLM configuration.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
+   *     SAP AI Core: Orchestration - Model Configuration</a>
    *
    * @param aiModel The LLM configuration to use.
    * @return A new configuration with the given LLM configuration.
@@ -71,6 +102,10 @@ public class OrchestrationModuleConfig {
 
   /**
    * Creates a new configuration with the given Data Masking configuration.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
+   *     AI Core: Orchestration - Data Masking</a>
    *
    * @param maskingProvider The Data Masking configuration to use.
    * @param maskingProviders Additional Data Masking configurations to use.
@@ -93,6 +128,10 @@ public class OrchestrationModuleConfig {
    * Adds input content filters to the orchestration configuration.
    *
    * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding input filters.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
    *
    * @param contentFilters one or more content filters to apply to the input.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified input filters
@@ -124,6 +163,10 @@ public class OrchestrationModuleConfig {
    *
    * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding output
    * filters.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
    *
    * @param contentFilters one or more content filters to apply to the output.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified output filters
