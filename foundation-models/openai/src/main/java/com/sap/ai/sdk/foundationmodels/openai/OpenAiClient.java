@@ -78,7 +78,7 @@ public final class OpenAiClient {
    */
   @Beta
   @Nonnull
-  OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
+  public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =
         DefaultHttpDestination.fromDestination(this.destination)
             // set the API version as URL query parameter
