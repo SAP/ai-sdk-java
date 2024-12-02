@@ -1,15 +1,33 @@
 openapi: 3.0.0
-
 info:
-  title: Internal Orchestration Service API
-  description: SAP AI Core - Orchestration Service API
-  contact:
-    name: SAP AI Core
-  version: 0.0.1
-
+  title: Orchestration
+  description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
+  version: 0.36.1
+x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
 servers:
-  - url: "/v1"
-
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1
+      orchestration_deployment_id:
+        description: The deployment ID of the orchestration service. To be obtained from the SAP AI Core service using the deployments endpoint.
+        default: x111111
+externalDocs:
+  description: Documentation for SAP AI Core - Orchestration
+  url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration
+security:
+  - Oauth2: []
 tags:
   - name: Orchestrated Completion
     description: Run an orchestrated completion inference request
@@ -18,8 +36,10 @@ paths:
   /completion:
     post:
       tags:
-        - OrchestrationCompletion
+        - Orchestration Completion
       operationId: orchestration.v1.endpoints.create
+      summary: "Orchestrated Completion"
+      description: "Run an orchestrated completion inference request"
       requestBody:
         required: true
         content:
@@ -27,42 +47,27 @@ paths:
             schema:
               $ref: "#/components/schemas/CompletionPostRequest"
       responses:
-        200:
+        '200':
           description: "Successful response"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CompletionPostResponse"
-        400:
+        '400':
           $ref: "#/components/responses/BadRequest"
         default:
           $ref: "#/components/responses/CommonError"
 
-  /healthz:
-    get:
-      tags:
-        - OrchestrationHealthz
-      operationId: orchestration.v1.endpoints.healthz
-      responses:
-        "200":
-          description: "Service is up and running."
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "OK"
-        "503":
-          description: "Service is unavailable."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "Service Unavailable"
-
 components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     CompletionPostRequest:
       type: object
@@ -85,6 +90,11 @@ components:
 
     ChatMessages:
       type: array
+      items:
+        $ref: "#/components/schemas/ChatMessage"
+
+    TemplatingChatMessage:
+      type: array
       minItems: 1
       items:
         $ref: "#/components/schemas/ChatMessage"
@@ -100,7 +110,7 @@ components:
           example: user
         content:
           type: string
-      
+
     ChatDelta:
       type: object
       required:
@@ -111,12 +121,6 @@ components:
         content:
           type: string
           default: ""
-
-    # InputParamsEntry:
-    #   oneOf:
-    #     - type: string
-    #     - type: number
-    #       example: "What is SAP S/4HANA?"
 
     CompletionPostResponse:
       type: object
@@ -133,7 +137,7 @@ components:
           $ref: "#/components/schemas/ModuleResults"
         orchestration_result:
           $ref: "#/components/schemas/LLMModuleResult"
-    
+
     CompletionPostResponseStreaming:
       type: object
       required:
@@ -186,7 +190,7 @@ components:
         grounding:
           $ref: "#/components/schemas/GenericModuleResult"
         templating:
-          $ref: "#/components/schemas/ChatMessages"
+          $ref: "#/components/schemas/TemplatingChatMessage"
         input_masking:
           $ref: "#/components/schemas/GenericModuleResult"
         input_filtering:
@@ -200,6 +204,7 @@ components:
           items:
             oneOf:
               - $ref: "#/components/schemas/LLMChoice"
+              - $ref: "#/components/schemas/LLMChoiceStreaming"
 
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if stream is false.
@@ -208,10 +213,10 @@ components:
       properties:
         chunk_size:
           type: integer
-          description: Number of characters per chunk that post-LLM modules operate on. 
+          description: Number of characters per chunk that post-LLM modules operate on.
           default: 100
           minimum: 1
-          maximum: 10000 # currently determined by max_size of ACS text records
+          maximum: 10000
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -256,6 +261,7 @@ components:
       description: Output of LLM module. Follows the OpenAI spec.
       oneOf:
         - $ref: "#/components/schemas/LLMModuleResultSynchronous"
+        - $ref: "#/components/schemas/LLMModuleResultStreaming"
 
     LLMModuleResultSynchronous:
       type: object
@@ -402,6 +408,7 @@ components:
     TemplatingModuleConfig:
       oneOf:
         - $ref: "#/components/schemas/Template"
+        - $ref: "#/components/schemas/TemplateRef"
 
     # --- Templating Module with User Defined Template ---
     Template:
@@ -411,7 +418,7 @@ components:
       properties:
         template:
           allOf:
-            - $ref: "#/components/schemas/ChatMessages"
+            - $ref: "#/components/schemas/TemplatingChatMessage"
           description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
@@ -422,7 +429,7 @@ components:
             content: "How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}"
         defaults:
           inputContext: The default text that will be used in the template if inputContext is not set
-    
+
     # --- Templating Module with reference to Prompt Registry ---
     TemplateRef:
       type: object
@@ -434,7 +441,8 @@ components:
           description: Reference to a template in the prompt registry by ID or by scenario, name and version
           oneOf:
             - $ref: "#/components/schemas/TemplateRefByID"
-    
+            - $ref: "#/components/schemas/TemplateRefByScenarioNameVersion"
+
     TemplateRefByID:
       type: object
       required:
@@ -465,7 +473,6 @@ components:
           description: Version of the template
           example: "some version, can be `latest`"
 
-
     # --- Filtering Module ---
     FilteringModuleConfig:
       type: object
@@ -492,7 +499,7 @@ components:
           minItems: 1
           items:
             $ref: "#/components/schemas/FilterConfig"
-    
+
     OutputFilteringConfig:
       type: object
       required:
@@ -554,6 +561,7 @@ components:
 
     AzureThreshold:
       type: integer
+      description: Threshold for the filter. Setting it to `0` blocks content with low severity, whereas `6` is the most permissive and blocks only the highest severity
       enum:
         - 0
         - 2
@@ -582,12 +590,12 @@ components:
 
     DPIConfig:
       type: object
-      required: 
+      required:
         - type
         - method
         - entities
       properties:
-        type: 
+        type:
           description: Type of masking service provider
           type: string
           enum:
@@ -604,6 +612,12 @@ components:
           minItems: 1
           items:
             $ref: "#/components/schemas/DPIEntityConfig"
+        allowlist:
+          description: List of strings that should not be masked
+          type: array
+          items:
+            type: string
+            example: "David Smith"
 
     DPIEntityConfig:
       type: object
@@ -645,7 +659,6 @@ components:
         - profile-trade-union
         - profile-sensitive-data
 
-
     # --- Grounding Module ---
     GroundingModuleConfig:
       type: object
@@ -656,9 +669,9 @@ components:
         type:
           type: string
           anyOf:
-          - enum:
-            - document_grounding_service
-          - {}
+            - enum:
+                - document_grounding_service
+            - {}
           example: document_grounding_service
         config:
           type: object
@@ -699,7 +712,7 @@ components:
           title: DataRepositories
           description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
           default:
-          - "*"
+            - "*"
         data_repository_type:
           type: string
           $ref: "#/components/schemas/DataRepositoryType"
@@ -750,8 +763,7 @@ components:
       type: string
       anyOf:
         - enum:
-          - vector
-          - help.sap.com
+            - vector
         - {}
       title: DataRepositoryType
     KeyValueListPair:
@@ -768,8 +780,8 @@ components:
           title: Value
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: KeyValueListPair
     SearchDocumentKeyValueListPair:
       properties:
@@ -791,14 +803,14 @@ components:
           description: Select mode for search filters
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: SearchDocumentKeyValueListPair
     SearchSelectOptionEnum:
       type: string
       anyOf:
         - enum:
-          - ignoreIfKeyAbsent
+            - ignoreIfKeyAbsent
         - {}
       title: SearchSelectOptionEnum
 

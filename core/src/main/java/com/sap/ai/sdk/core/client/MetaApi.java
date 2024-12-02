@@ -2,7 +2,7 @@ package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.MetaCapabilities;
+import com.sap.ai.sdk.core.model.MetaCapabilities;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.36.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve

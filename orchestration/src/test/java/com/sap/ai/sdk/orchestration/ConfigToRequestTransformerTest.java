@@ -1,11 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.LLM_CONFIG;
+import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_35;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -31,15 +30,18 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void testEmptyTemplateConfig() {
-    var systemMessage = ChatMessage.create().role("system").content("foo");
-    var userMessage = ChatMessage.create().role("user").content("Hello");
+    var systemMessage = new SystemMessage("foo");
+    var userMessage = new UserMessage("Hello");
 
-    var expected = TemplatingModuleConfig.create().template(systemMessage, userMessage);
+    var expected =
+        Template.create()
+            .template(List.of(systemMessage.createChatMessage(), userMessage.createChatMessage()));
 
     var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     var actual =
-        ConfigToRequestTransformer.toTemplateModuleConfig(
-            prompt, TemplatingModuleConfig.create().template());
+        (Template)
+            ConfigToRequestTransformer.toTemplateModuleConfig(
+                prompt, Template.create().template(List.of()));
 
     assertThat(actual).isEqualTo(expected);
     assertThat(actual.getTemplate())
@@ -50,15 +52,22 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void testMergingTemplateConfig() {
-    var systemMessage = ChatMessage.create().role("system").content("foo");
-    var userMessage = ChatMessage.create().role("user").content("Hello ");
-    var userMessage2 = ChatMessage.create().role("user").content("World");
+    var systemMessage = new SystemMessage("foo");
+    var userMessage = new UserMessage("Hello ");
+    var userMessage2 = new UserMessage("World");
 
     var expected =
-        TemplatingModuleConfig.create().template(systemMessage, userMessage, userMessage2);
+        Template.create()
+            .template(
+                List.of(
+                    systemMessage.createChatMessage(),
+                    userMessage.createChatMessage(),
+                    userMessage2.createChatMessage()));
 
     var prompt = new OrchestrationPrompt(userMessage2);
-    var templateConfig = TemplatingModuleConfig.create().template(systemMessage, userMessage);
+    var templateConfig =
+        Template.create()
+            .template(List.of(systemMessage.createChatMessage(), userMessage.createChatMessage()));
     var actual = ConfigToRequestTransformer.toTemplateModuleConfig(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
@@ -66,13 +75,13 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void testMessagesHistory() {
-    var systemMessage = ChatMessage.create().role("system").content("foo");
+    var systemMessage = new SystemMessage("foo");
 
     var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(systemMessage));
     var actual =
         ConfigToRequestTransformer.toCompletionPostRequest(
-            prompt, new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG));
+            prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35));
 
-    assertThat(actual.getMessagesHistory()).containsExactly(systemMessage);
+    assertThat(actual.getMessagesHistory()).containsExactly(systemMessage.createChatMessage());
   }
 }

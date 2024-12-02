@@ -2,13 +2,13 @@ package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.BcknddockerRegistrySecretCreationResponse;
-import com.sap.ai.sdk.core.client.model.BcknddockerRegistrySecretDeletionResponse;
-import com.sap.ai.sdk.core.client.model.BcknddockerRegistrySecretModificationResponse;
-import com.sap.ai.sdk.core.client.model.BcknddockerRegistrySecretStatus;
-import com.sap.ai.sdk.core.client.model.BcknddockerRegistrySecretStatusResponse;
-import com.sap.ai.sdk.core.client.model.BcknddockerRegistrySecretWithSensitiveDataRequest;
-import com.sap.ai.sdk.core.client.model.KubesubmitV4DockerRegistrySecretsCreateRequest;
+import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretCreationResponse;
+import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretDeletionResponse;
+import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretModificationResponse;
+import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretStatus;
+import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretStatusResponse;
+import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretWithSensitiveDataRequest;
+import com.sap.ai.sdk.core.model.KubesubmitV4DockerRegistrySecretsCreateRequest;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.36.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve

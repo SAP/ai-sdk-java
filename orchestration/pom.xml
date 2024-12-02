@@ -4,11 +4,11 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
   </parent>
   <artifactId>orchestration</artifactId>
   <name>Orchestration client</name>
-  <description>Generating and testing the Orchestration client.</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Orchestration Service.</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
@@ -85,6 +85,10 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
 
     <!-- TODO: only needed for JsonObjectMapperBuilder, maybe we can use Jackson natively to avoid this dependency -->
     <dependency>
@@ -136,7 +140,7 @@
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
               <skip>true</skip>
-              <!-- skip automatic generation until we can omit API classes from code generation -->
+              <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>beta</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
@@ -153,12 +157,14 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/orchestration.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.orchestration.client</apiPackage>
-                  <modelPackage>com.sap.ai.sdk.orchestration.client.model</modelPackage>
+                  <generateApis>false</generateApis>
+                  <modelPackage>com.sap.ai.sdk.orchestration.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
                   </additionalProperties>
                 </configuration>
               </execution>

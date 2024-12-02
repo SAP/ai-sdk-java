@@ -1,0 +1,124 @@
+name: Test SAP Cloud SDK Versions
+
+on:
+  workflow_dispatch:
+
+env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  JAVA_VERSION: 17
+
+jobs:
+  fetch-dependency-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.fetch-versions.outputs.VERSIONS }}
+
+    steps:
+      - name: Fetch versions from Maven Central
+        id: fetch-versions
+        run: |
+          # Specify the dependency coordinates
+          GROUP_ID="com.sap.cloud.sdk"
+          ARTIFACT_ID="sdk-bom"
+
+          # Fetch available versions from Maven Central API
+          response=$(curl -s "https://search.maven.org/solrsearch/select?q=g:%22${GROUP_ID}%22+AND+a:%22${ARTIFACT_ID}%22&rows=15&core=gav&wt=json")
+          
+          # Extract and filter versions (e.g., to exclude snapshots or specific versions)
+          versions=$(echo "$response" | jq -r '.response.docs[].v' | grep -v -E 'SNAPSHOT|alpha|beta' | sort -V)
+          
+          # Convert the versions to a JSON array
+          json_versions=$(echo "$versions" | jq -R . | jq -s . | tr -d '\n')
+          
+          echo "JSON Versions: $json_versions"
+          
+          # Output the versions as a string that can be used in the matrix
+          echo "VERSIONS=${json_versions}" >> $GITHUB_OUTPUT
+
+  setup-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-build.outputs.cache-key }}
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Cache build"
+        id: cache-build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            target
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: "Build SDK"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          mvn $MVN_ARGS
+
+  test-dependency-versions:
+    needs: [ fetch-dependency-versions, setup-environment ]
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        version: ${{ fromJson(needs.fetch-dependency-versions.outputs.versions) }}
+    continue-on-error: true
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Restore build cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            target
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+
+      - name: "Run tests with explicit version"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean package -pl :spring-app -DskipTests=false -DskipFormatting -Dcloud-sdk.version=${{ matrix.version }} -Denforcer.skip=true -Dspotless.skip=true"
+          mvn $MVN_ARGS
+        env:
+          # See "End-to-end test application instructions" on the README.md to update the secret
+          AICORE_SERVICE_KEY: ${{ secrets.AICORE_SERVICE_KEY }}
+
+      - name: "Start Application Locally"
+        run: |
+          cd sample-code/spring-app
+          mvn spring-boot:run &
+          timeout=15
+          while ! nc -z localhost 8080; do
+            sleep 1
+            timeout=$((timeout - 1))
+            if [ $timeout -le 0 ]; then
+              echo "Server did not start within 15 seconds."
+              exit 1
+            fi
+          done
+        env:
+          # See "End-to-end test application instructions" on the README.md to update the secret
+          AICORE_SERVICE_KEY: ${{ secrets.AICORE_SERVICE_KEY }}
+
+      - name: "Health Check"
+        # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
+        run: wget -qO- -S localhost:8080

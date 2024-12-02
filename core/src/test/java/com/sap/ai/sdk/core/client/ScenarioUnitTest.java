@@ -6,8 +6,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiModelVersion;
-import com.sap.ai.sdk.core.client.model.AiScenarioLabel;
+import com.sap.ai.sdk.core.model.AiModelVersion;
+import com.sap.ai.sdk.core.model.AiScenarioLabel;
 import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;

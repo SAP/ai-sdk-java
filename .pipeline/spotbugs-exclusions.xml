@@ -3,9 +3,8 @@
   <Match>
     <Or>
       <Package name="com.sap.ai.sdk.core.client"/>
-      <Package name="com.sap.ai.sdk.core.client.model"/>
-      <Package name="com.sap.ai.sdk.orchestration.client"/>
-      <Package name="com.sap.ai.sdk.orchestration.client.model"/>
+      <Package name="com.sap.ai.sdk.core.model"/>
+      <Package name="com.sap.ai.sdk.orchestration.model"/>
     </Or>
   </Match>
 </FindBugsFilter>

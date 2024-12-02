@@ -4,11 +4,11 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
   </parent>
   <artifactId>core</artifactId>
   <name>AI Core client</name>
-  <description>Generating and testing the AI Core client and other convenience methods.</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the AI Core client and other convenience methods.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -157,6 +157,8 @@
             <groupId>com.sap.cloud.sdk.datamodel</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
+              <skip>true</skip>
+              <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>released</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
@@ -173,7 +175,7 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/aicore.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
-                  <modelPackage>com.sap.ai.sdk.core.client.model</modelPackage>
+                  <modelPackage>com.sap.ai.sdk.core.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>

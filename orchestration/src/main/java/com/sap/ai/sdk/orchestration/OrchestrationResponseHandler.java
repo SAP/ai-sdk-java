@@ -3,7 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.JACKSON;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sap.ai.sdk.orchestration.client.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,44 +22,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 @RequiredArgsConstructor
 class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
   @Nonnull private final Class<T> responseType;
-
-  /**
-   * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
-   *
-   * @param response The response to process
-   * @return A model class instantiated from the response
-   * @throws OrchestrationClientException in case of a problem or the connection was aborted
-   */
-  @Override
-  public T handleResponse(@Nonnull final ClassicHttpResponse response)
-      throws OrchestrationClientException {
-    if (response.getCode() >= 300) {
-      buildExceptionAndThrow(response);
-    }
-    val result = parseResponse(response);
-    log.debug("Received the following response from orchestration service: {}", result);
-    return result;
-  }
-
-  // The InputStream of the HTTP entity is closed by EntityUtils.toString
-  @SuppressWarnings("PMD.CloseResource")
-  @Nonnull
-  private T parseResponse(@Nonnull final ClassicHttpResponse response)
-      throws OrchestrationClientException {
-    final HttpEntity responseEntity = response.getEntity();
-    if (responseEntity == null) {
-      throw new OrchestrationClientException("Response from Orchestration service was empty.");
-    }
-    val content = getContent(responseEntity);
-    log.debug("Parsing response from JSON response: {}", content);
-    try {
-      return JACKSON.readValue(content, responseType);
-    } catch (final JsonProcessingException e) {
-      log.error("Failed to parse the following response from orchestration service: {}", content);
-      throw new OrchestrationClientException(
-          "Failed to parse response from orchestration service", e);
-    }
-  }
 
   @Nonnull
   private static String getContent(@Nonnull final HttpEntity entity) {
@@ -122,5 +84,43 @@ class OrchestrationResponseHandler<T> implements HttpClientResponseHandler<T> {
     throw new OrchestrationClientException(
         "%s and error message: '%s'"
             .formatted(baseException.getMessage(), maybeError.get().getMessage()));
+  }
+
+  /**
+   * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
+   *
+   * @param response The response to process
+   * @return A model class instantiated from the response
+   * @throws OrchestrationClientException in case of a problem or the connection was aborted
+   */
+  @Override
+  public T handleResponse(@Nonnull final ClassicHttpResponse response)
+      throws OrchestrationClientException {
+    if (response.getCode() >= 300) {
+      buildExceptionAndThrow(response);
+    }
+    val result = parseResponse(response);
+    log.debug("Received the following response from orchestration service: {}", result);
+    return result;
+  }
+
+  // The InputStream of the HTTP entity is closed by EntityUtils.toString
+  @SuppressWarnings("PMD.CloseResource")
+  @Nonnull
+  private T parseResponse(@Nonnull final ClassicHttpResponse response)
+      throws OrchestrationClientException {
+    final HttpEntity responseEntity = response.getEntity();
+    if (responseEntity == null) {
+      throw new OrchestrationClientException("Response from Orchestration service was empty.");
+    }
+    val content = getContent(responseEntity);
+    log.debug("Parsing response from JSON response: {}", content);
+    try {
+      return JACKSON.readValue(content, responseType);
+    } catch (final JsonProcessingException e) {
+      log.error("Failed to parse the following response from orchestration service: {}", content);
+      throw new OrchestrationClientException(
+          "Failed to parse response from orchestration service", e);
+    }
   }
 }

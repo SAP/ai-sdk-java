@@ -7,46 +7,41 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_0;
-import static com.sap.ai.sdk.orchestration.client.model.AzureThreshold.NUMBER_4;
+import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
+import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.GenericModuleResult;
-import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
+import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import javax.annotation.Nonnull;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,15 +51,13 @@ import org.junit.jupiter.api.Test;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create()
-          .modelName("gpt-35-turbo-16k")
-          .modelParams(
-              Map.of(
-                  "max_tokens", 50,
-                  "temperature", 0.1,
-                  "frequency_penalty", 0,
-                  "presence_penalty", 0));
+  static final OrchestrationAiModel CUSTOM_GPT_35 =
+      GPT_35_TURBO_16K
+          .withParam(MAX_TOKENS, 50)
+          .withParam(TEMPERATURE, 0.1)
+          .withParam(FREQUENCY_PENALTY, 0)
+          .withParam(PRESENCE_PENALTY, 0);
+
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -100,7 +93,7 @@ class OrchestrationUnitTest {
             .forDeploymentByScenario("orchestration")
             .withResourceGroup("my-resource-group");
     client = new OrchestrationClient(deployment);
-    config = new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
   }
 
@@ -115,8 +108,7 @@ class OrchestrationUnitTest {
     final var result = client.chatCompletion(prompt, config);
 
     assertThat(result).isNotNull();
-    assertThat(result.getOrchestrationResult().getChoices().get(0).getMessage().getContent())
-        .isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
   }
 
   @Test
@@ -128,18 +120,20 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
+    final var template = new UserMessage("{{?input}}");
     final var inputParams =
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
     final var result =
         client.chatCompletion(new OrchestrationPrompt(inputParams, template), config);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    final var response = result.getOriginalResponse();
+    assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getAllMessages().get(0).content())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getModuleResults().getTemplating().get(0).getRole()).isEqualTo("user");
-    var llm = result.getModuleResults().getLlm();
+    assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isEqualTo(1721224505);
@@ -150,22 +144,22 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = llm.getUsage();
+    var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    assertThat(result.getOrchestrationResult().getId())
-        .isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
-    assertThat(result.getOrchestrationResult().getObject()).isEqualTo("chat.completion");
-    assertThat(result.getOrchestrationResult().getCreated()).isEqualTo(1721224505);
-    assertThat(result.getOrchestrationResult().getModel()).isEqualTo("gpt-35-turbo-16k");
-    choices = result.getOrchestrationResult().getChoices();
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-35-turbo-16k");
+    choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = result.getOrchestrationResult().getUsage();
+    usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
@@ -211,9 +205,14 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var filter = createAzureContentFilter(NUMBER_4);
+    final var filter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-    client.chatCompletion(prompt, config.withFilteringConfig(filter));
+    client.chatCompletion(prompt, config.withInputFiltering(filter).withOutputFiltering(filter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -234,31 +233,19 @@ class OrchestrationUnitTest {
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
-    final var filter = createAzureContentFilter(NUMBER_0);
+    final var filter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withFilteringConfig(filter);
+    final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
             "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
-  }
-
-  private static FilteringModuleConfig createAzureContentFilter(
-      @Nonnull final AzureThreshold threshold) {
-    final var filter =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                AzureContentSafety.create()
-                    .hate(threshold)
-                    .selfHarm(threshold)
-                    .sexual(threshold)
-                    .violence(threshold));
-
-    return FilteringModuleConfig.create()
-        .input(InputFilteringConfig.create().filters(filter))
-        .output(OutputFilteringConfig.create().filters(filter));
   }
 
   @Test
@@ -270,18 +257,18 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final List<ChatMessage> messagesHistory =
+    final List<Message> messagesHistory =
         List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+            new UserMessage("What is the capital of France?"),
+            new AssistantMessage("The capital of France is Paris."));
+    final var message = new UserMessage("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
     final var result = client.chatCompletion(prompt, config);
 
-    assertThat(result.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
+    assertThat(result.getOriginalResponse().getRequestId())
+        .isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
     try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
@@ -293,7 +280,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void maskingAnonymization() throws IOException {
+  void maskingPseudonymization() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/inference/deployments/abcdef0123456789/completion"))
             .willReturn(
@@ -301,19 +288,17 @@ class OrchestrationUnitTest {
                     .withBodyFile("maskingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var maskingConfig =
-        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PHONE);
+    final var maskingConfig = DpiMasking.pseudonymization().withEntities(DPIEntities.PHONE);
 
     final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    final var response = result.getOriginalResponse();
 
-    assertThat(result).isNotNull();
-    GenericModuleResult inputMasking = result.getModuleResults().getInputMasking();
+    assertThat(response).isNotNull();
+    GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
+    assertThat(inputMasking).isNotNull();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
-    final var choices = result.getOrchestrationResult().getChoices();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo(
-            "I'm sorry, I cannot provide information about specific individuals, including their nationality.");
+    assertThat(result.getContent()).contains("Hi Mallory");
 
     // verify that the request is sent correctly
     try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
@@ -324,41 +309,133 @@ class OrchestrationUnitTest {
     }
   }
 
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final MaskingProviderConfig.MethodEnum method,
-      @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingModuleConfig.create()
-        .maskingProviders(
-            MaskingProviderConfig.create()
-                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                .method(method)
-                .entities(entityConfigs));
-  }
-
   @Test
-  void testGenericErrorHandling() {
-    stubFor(post(anyUrl()).willReturn(serverError()));
-
-    assertThatThrownBy(() -> client.executeRequest(mock(CompletionPostRequest.class)))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("500 Server Error");
-  }
-
-  @Test
-  void testOrchestrationErrorParsing() {
+  void testErrorHandling() {
     stubFor(
         post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs(Scenario.STARTED)
+            .willReturn(serverError())
+            .willSetStateTo("1"));
+    stubFor(
+        post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs("1")
             .willReturn(
                 badRequest()
                     .withHeader("Content-Type", "application/json")
-                    .withBodyFile("errorResponse.json")));
+                    .withBodyFile("errorResponse.json"))
+            .willSetStateTo("2"));
+    stubFor(
+        post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs("2")
+            .willReturn(
+                badRequest()
+                    .withBody("{ broken json")
+                    .withHeader("Content-type", "application/json"))
+            .willSetStateTo("3"));
+    stubFor(
+        post(anyUrl())
+            .inScenario("Errors")
+            .whenScenarioStateIs("3")
+            .willReturn(okXml("<xml></xml>"))
+            .willSetStateTo("4"));
+    stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
 
-    assertThatThrownBy(() -> client.executeRequest(mock(CompletionPostRequest.class)))
+    final var softly = new SoftAssertions();
+    final Runnable request = () -> client.executeRequest(mock(CompletionPostRequest.class));
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Server errors should be handled")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("400 Bad Request")
+        .hasMessageContaining("500");
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Error objects from Orchestration should be interpreted")
+        .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("'orchestration_config' is a required property");
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Failures while parsing error message should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400")
+        .extracting(e -> e.getSuppressed()[0])
+        .isInstanceOf(JsonParseException.class);
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Non-JSON responses should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Failed to parse");
+
+    softly
+        .assertThatThrownBy(request::run)
+        .describedAs("Empty responses should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("was empty");
+
+    softly.assertAll();
+  }
+
+  @Test
+  void testExecuteRequestFromJson() {
+    stubFor(post(anyUrl()).willReturn(okJson("{}")));
+
+    prompt =
+        new OrchestrationPrompt(Map.of("foo", "bar"))
+            .messageHistory(List.of(new UserMessage("Hello World!")));
+    final var configJson =
+        """
+        {
+          "module_configurations": {
+            "llm_module_config": {
+              "model_name": "mistralai--mistral-large-instruct",
+              "model_params": {}
+            }
+          }
+        }
+        """;
+
+    final var expectedJson =
+        """
+        {
+          "messages_history": [{
+            "role" : "user",
+            "content" : "Hello World!"
+          }],
+          "input_params": {
+            "foo" : "bar"
+          },
+          "orchestration_config": {
+            "module_configurations": {
+              "llm_module_config": {
+                "model_name": "mistralai--mistral-large-instruct",
+                "model_params": {}
+              }
+            }
+          }
+        }
+        """;
+
+    var result = client.executeRequestFromJsonModuleConfig(prompt, configJson);
+    assertThat(result).isNotNull();
+
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedJson)));
+  }
+
+  @Test
+  void testExecuteRequestFromJsonThrows() {
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{}"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("messages");
+
+    prompt = new OrchestrationPrompt(Map.of());
+    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("not valid JSON");
   }
 }

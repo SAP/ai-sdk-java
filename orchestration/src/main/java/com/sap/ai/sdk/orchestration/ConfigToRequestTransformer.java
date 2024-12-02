@@ -1,9 +1,11 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,8 @@ final class ConfigToRequestTransformer {
         .orchestrationConfig(
             OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
-        .messagesHistory(prompt.getMessagesHistory());
+        .messagesHistory(
+            prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList());
   }
 
   @Nonnull
@@ -42,14 +45,15 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages = Option.of(template).map(TemplatingModuleConfig::getTemplate).getOrElse(List::of);
+    val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
     val messagesWithPrompt = new ArrayList<>(messages);
-    messagesWithPrompt.addAll(prompt.getMessages());
+    messagesWithPrompt.addAll(
+        prompt.getMessages().stream().map(Message::createChatMessage).toList());
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return TemplatingModuleConfig.create().template(messagesWithPrompt);
+    return Template.create().template(messagesWithPrompt);
   }
 
   @Nonnull

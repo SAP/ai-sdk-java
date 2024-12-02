@@ -23,12 +23,13 @@
         "masking_providers": [
           {
             "type": "sap_data_privacy_integration",
-            "method": "anonymization",
+            "method": "pseudonymization",
             "entities": [
               {
                 "type": "profile-phone"
               }
-            ]
+            ],
+            "allowlist" : [ ]
           }
         ]
       }

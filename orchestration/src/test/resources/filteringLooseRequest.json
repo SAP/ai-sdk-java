@@ -48,9 +48,9 @@
         }
       }
     },
-    "stream" : false
+    "stream": false
   },
   "input_params": {
   },
-  "messages_history" : [ ]
+  "messages_history": []
 }

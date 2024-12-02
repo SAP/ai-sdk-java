@@ -1,23 +1,18 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-import java.util.Arrays;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -30,12 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
-
   private final OrchestrationClient client = new OrchestrationClient();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(LLM_CONFIG);
+  OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -44,25 +36,25 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public CompletionPostResponse completion() {
+  public OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
     return client.chatCompletion(prompt, config);
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service with a template.
    *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @return the result object
    */
   @GetMapping("/template")
   @Nonnull
-  public CompletionPostResponse template() {
+  public OrchestrationChatResponse template() {
     final var template =
-        ChatMessage.create()
-            .role("user")
-            .content("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = TemplatingModuleConfig.create().template(template);
+        Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
+    final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     final var inputParams = Map.of("language", "German");
@@ -72,35 +64,41 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service using message history.
    *
    * @return the result object
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public CompletionPostResponse messagesHistory() {
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
+  public OrchestrationChatResponse messagesHistory() {
+    final var prompt = new OrchestrationPrompt(Message.user("What is the capital of France?"));
 
-    final var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
+    final var result = client.chatCompletion(prompt, config);
 
-    return client.chatCompletion(prompt, config);
+    // Let's presume a user asks the following follow-up question
+    final var nextPrompt =
+        new OrchestrationPrompt(Message.user("What is the typical food there?"))
+            .messageHistory(result.getAllMessages());
+
+    return client.chatCompletion(nextPrompt, config);
   }
 
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
-  @GetMapping("/filter/{threshold}")
+  @GetMapping("/filter/{policy}")
   @Nonnull
-  public CompletionPostResponse filter(
-      @Nonnull @PathVariable("threshold") final AzureThreshold threshold) {
+  public OrchestrationChatResponse filter(
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
             """
@@ -108,33 +106,13 @@ class OrchestrationController {
 
             ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
             """);
-    final var filterConfig = createAzureContentFilter(threshold);
-    final var configWithFilter = config.withFilteringConfig(filterConfig);
+    final var filterConfig =
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+
+    final var configWithFilter =
+        config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
 
     return client.chatCompletion(prompt, configWithFilter);
-  }
-
-  /**
-   * Helper method to build filter configurations.
-   *
-   * @param threshold The threshold to be applied across all filter categories.
-   * @return A new filter configuration object.
-   */
-  private static FilteringModuleConfig createAzureContentFilter(
-      @Nonnull final AzureThreshold threshold) {
-    final var filter =
-        FilterConfig.create()
-            .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-            .config(
-                AzureContentSafety.create()
-                    .hate(threshold)
-                    .selfHarm(threshold)
-                    .sexual(threshold)
-                    .violence(threshold));
-
-    return FilteringModuleConfig.create()
-        .input(InputFilteringConfig.create().filters(filter))
-        .output(OutputFilteringConfig.create().filters(filter));
   }
 
   /**
@@ -142,28 +120,26 @@ class OrchestrationController {
    * user. Anonymize any names given as they are not relevant for judging the sentiment of the
    * feedback.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public CompletionPostResponse maskingAnonymization() {
+  public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
-        ChatMessage.create()
-            .role("system")
-            .content(
-                "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
+        Message.system(
+            "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
-        ChatMessage.create()
-            .role("user")
-            .content(
-                """
+        Message.user(
+            """
     I think the SDK is good, but could use some further enhancements.
     My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
     """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig =
-        createMaskingConfig(MaskingProviderConfig.MethodEnum.ANONYMIZATION, DPIEntities.PERSON);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -171,26 +147,25 @@ class OrchestrationController {
 
   /**
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
-   * SDK. Pseydonymize the user's name and location to protect their privacy.
+   * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public CompletionPostResponse maskingPseudonymization() {
+  public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
-        ChatMessage.create()
-            .role("system")
-            .content(
-                """
+        Message.system(
+            """
                 Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
                 Please make sure to address the user in person and end with "Best regards, the AI SDK team".
                 """);
     final var userMessage =
-        ChatMessage.create()
-            .role("user")
-            .content(
-                """
+        Message.user(
+            """
                 Username: Mallory
                 userEmail: mallory@sap.com
                 Date: 2022-01-01
@@ -201,33 +176,9 @@ class OrchestrationController {
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig =
-        createMaskingConfig(
-            MaskingProviderConfig.MethodEnum.PSEUDONYMIZATION,
-            DPIEntities.PERSON,
-            DPIEntities.EMAIL);
+        DpiMasking.pseudonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
-  }
-
-  /**
-   * Helper method to build masking configurations.
-   *
-   * @param method Either anonymization or pseudonymization.
-   * @param entities The entities to mask.
-   * @return A new masking configuration object.
-   */
-  private static MaskingModuleConfig createMaskingConfig(
-      @Nonnull final MaskingProviderConfig.MethodEnum method,
-      @Nonnull final DPIEntities... entities) {
-
-    final var entityConfigs =
-        Arrays.stream(entities).map(it -> DPIEntityConfig.create().type(it)).toList();
-    return MaskingModuleConfig.create()
-        .maskingProviders(
-            MaskingProviderConfig.create()
-                .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                .method(method)
-                .entities(entityConfigs));
   }
 }

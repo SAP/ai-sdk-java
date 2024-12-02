@@ -4,13 +4,13 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
   <artifactId>spring-app</artifactId>
-  <name>End-to-end test application</name>
-  <description>Spring Boot application that tests AI clients when deployed in BTP.</description>
+  <name>Spring Boot application</name>
+  <description>End-to-end test application, also sample code for customers</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
@@ -33,7 +33,7 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.3.5</spring-boot.version>
+    <spring-boot.version>3.4.0</spring-boot.version>
     <logback.version>1.5.12</logback.version>
     <cf-logging.version>3.8.4</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
@@ -182,6 +182,13 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <skipAddThirdParty>true</skipAddThirdParty>
         </configuration>
       </plugin>
     </plugins>

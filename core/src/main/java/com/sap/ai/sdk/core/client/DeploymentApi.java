@@ -2,16 +2,16 @@ package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentList;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
-import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentBulkModificationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentBulkModificationResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentCreationResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentDeletionResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentList;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentResponseWithDetails;
+import com.sap.ai.sdk.core.model.RTALogCommonResponse;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -31,7 +31,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.36.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
