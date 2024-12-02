@@ -22,9 +22,8 @@ import lombok.val;
  * SAP Data Privacy Integration (DPI) can mask personally identifiable information using either
  * anonymization or pseudonymization.
  *
- * @link <a
- *    href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
- *    AI Core: Orchestration - Data Masking</a>
+ * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
+ *     AI Core: Orchestration - Data Masking</a>
  */
 @Value
 @Getter(AccessLevel.PACKAGE)

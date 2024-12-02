@@ -57,8 +57,7 @@ public class OrchestrationModuleConfig {
    * A template to be populated with input parameters. Upon request execution, this template will be
    * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
    *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
   @Nullable TemplatingModuleConfig templateConfig;
@@ -67,9 +66,9 @@ public class OrchestrationModuleConfig {
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
    *
    * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
-   *     AI Core: Orchestration - Data Masking</a>
-   * */
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   */
   @Nullable MaskingModuleConfig maskingConfig;
 
   /**
@@ -81,7 +80,7 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * */
+   */
   @Nullable FilteringModuleConfig filteringConfig;
 
   /**
@@ -90,7 +89,6 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
    *     SAP AI Core: Orchestration - Model Configuration</a>
-   *
    * @param aiModel The LLM configuration to use.
    * @return A new configuration with the given LLM configuration.
    */
@@ -104,9 +102,8 @@ public class OrchestrationModuleConfig {
    * Creates a new configuration with the given Data Masking configuration.
    *
    * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
-   *     AI Core: Orchestration - Data Masking</a>
-   *
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @param maskingProvider The Data Masking configuration to use.
    * @param maskingProviders Additional Data Masking configurations to use.
    * @return A new configuration with the given Data Masking configuration.
@@ -132,7 +129,6 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   *
    * @param contentFilters one or more content filters to apply to the input.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified input filters
    *     added.
@@ -167,7 +163,6 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   *
    * @param contentFilters one or more content filters to apply to the output.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified output filters
    *     added.

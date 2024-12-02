@@ -23,11 +23,11 @@ import lombok.experimental.Accessors;
  * }</pre>
  *
  * @link <a
- *    href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
- *    AI Core: Orchestration - Input Filtering</a>
+ *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP AI
+ *     Core: Orchestration - Input Filtering</a>
  * @link <a
- *    href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
- *    AI Core: Orchestration - Output Filtering</a>
+ *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+ *     AI Core: Orchestration - Output Filtering</a>
  */
 @Setter
 @NoArgsConstructor
