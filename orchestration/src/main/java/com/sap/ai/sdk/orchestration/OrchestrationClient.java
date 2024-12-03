@@ -1,13 +1,11 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
@@ -33,7 +31,6 @@ import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
@@ -43,20 +40,16 @@ public class OrchestrationClient {
   static final ObjectMapper JACKSON;
 
   static {
-    JACKSON =
-        new Jackson2ObjectMapperBuilder()
-            .modules(new JavaTimeModule())
-            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .mixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class)
-            .mixIn(
-                ModuleResultsOutputUnmaskingInner.class,
-                JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class)
-            .mixIn(FilterConfig.class, JacksonMixins.NoTypeInfoMixin.class)
-            .mixIn(MaskingProviderConfig.class, JacksonMixins.NoTypeInfoMixin.class)
-            .mixIn(TemplatingModuleConfig.class, JacksonMixins.NoTypeInfoMixin.class)
-            .build();
+    JACKSON = getDefaultObjectMapper();
+
+    // Add mix-ins
+    JACKSON.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);
+    JACKSON.addMixIn(
+        ModuleResultsOutputUnmaskingInner.class,
+        JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
+    JACKSON.addMixIn(FilterConfig.class, JacksonMixins.NoTypeInfoMixin.class);
+    JACKSON.addMixIn(MaskingProviderConfig.class, JacksonMixins.NoTypeInfoMixin.class);
+    JACKSON.addMixIn(TemplatingModuleConfig.class, JacksonMixins.NoTypeInfoMixin.class);
   }
 
   @Nonnull private final Supplier<HttpDestination> destinationSupplier;

@@ -1,9 +1,8 @@
 package com.sap.ai.sdk.core;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Iterables;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -37,6 +35,7 @@ public class AiCoreService {
   /** The default resource group. */
   public static final String DEFAULT_RESOURCE_GROUP = "default";
 
+  private static final JsonMapper objectMapper = getDefaultObjectMapper();
   private static final String RESOURCE_GROUP_HEADER_PROPERTY = "URL.headers.AI-Resource-Group";
 
   @Nonnull private final Supplier<HttpDestination> baseDestinationResolver;
@@ -131,14 +130,6 @@ public class AiCoreService {
     httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
 
     val rt = new RestTemplate();
-    val objectMapper =
-        new Jackson2ObjectMapperBuilder()
-            .modules(new JavaTimeModule())
-            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-            .serializationInclusion(JsonInclude.Include.NON_NULL) // THIS STOPS `null` serialization
-            .build();
-
     Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
         .forEach(converter -> converter.setObjectMapper(objectMapper));
     rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));

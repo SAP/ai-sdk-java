@@ -1,11 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
@@ -24,6 +22,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,25 +30,14 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /** Client for interacting with OpenAI models. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  static final ObjectMapper JACKSON;
-  private String systemPrompt = null;
-
-  static {
-    JACKSON =
-        new Jackson2ObjectMapperBuilder()
-            .modules(new JavaTimeModule())
-            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .build();
-  }
+  static final ObjectMapper JACKSON = getDefaultObjectMapper();
+  @Nullable private String systemPrompt = null;
 
   @Nonnull private final Destination destination;
 
@@ -154,11 +142,29 @@ public final class OpenAiClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of text
+   * chunks. To access more details about the individual chunks, use {@link
+   * #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
+   *
+   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
+   * HTTP connection is closed.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * try (var stream = client.streamChatCompletion("...")) {
+   *       stream.forEach(System.out::println);
+   * }
+   * }</pre>
+   *
+   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
+   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
+   * Stream#parallel()} on this stream is not supported.
    *
    * @param prompt a text message.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @see #streamChatCompletionDeltas(OpenAiChatCompletionParameters)
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
@@ -181,11 +187,31 @@ public final class OpenAiClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of delta
+   * objects. To simply stream the text chunks use {@link #streamChatCompletion(String)}
    *
-   * @param parameters the prompt, including messages and other parameters.
-   * @return A stream of chat completion delta elements.
-   * @throws OpenAiClientException if the request fails
+   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
+   * HTTP connection is closed.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * try (var stream = client.streamChatCompletionDeltas(params)) {
+   *       stream
+   *           .peek(delta -> System.out.println(delta.getUsage()))
+   *           .map(OpenAiChatCompletionDelta::getDeltaContent)
+   *           .forEach(System.out::println);
+   * }
+   * }</pre>
+   *
+   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
+   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
+   * Stream#parallel()} on this stream is not supported.
+   *
+   * @param parameters The prompt, including messages and other parameters.
+   * @return A stream of message deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @see #streamChatCompletion(String)
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(

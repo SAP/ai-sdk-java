@@ -2,31 +2,18 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters.ResponseFormat.JSON_OBJECT;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
+import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessageTest.OBJECT_MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-public class OpenAiChatCompletionParametersTest {
-  private static final ObjectMapper OBJECT_MAPPER =
-      new Jackson2ObjectMapperBuilder()
-          .modules(new JavaTimeModule())
-          .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-          .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-          .serializationInclusion(JsonInclude.Include.NON_NULL) // THIS STOPS `null` serialization
-          .build();
-
+class OpenAiChatCompletionParametersTest {
   @SneakyThrows
   @Test
-  public void testCompletionParametersStop() {
+  void testCompletionParametersStop() {
     var pNone = new OpenAiChatCompletionParameters().setStop();
     var pNull = new OpenAiChatCompletionParameters().setStop((String[]) null);
     var p1 = new OpenAiChatCompletionParameters().setStop("<|endoftext|>");
@@ -60,7 +47,7 @@ public class OpenAiChatCompletionParametersTest {
 
   @SneakyThrows
   @Test
-  public void testCompletionParametersToolChoice() {
+  void testCompletionParametersToolChoice() {
     var c = new OpenAiChatCompletionParameters();
     var cAuto = new OpenAiChatCompletionParameters().setToolChoiceAuto();
     var cNone = new OpenAiChatCompletionParameters().setToolChoiceNone();
@@ -95,7 +82,7 @@ public class OpenAiChatCompletionParametersTest {
 
   @SneakyThrows
   @Test
-  public void testCompletionParametersTools() {
+  void testCompletionParametersTools() {
     var funcParams = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
     var func = new OpenAiChatCompletionFunction().setName("fibonacci").setParameters(funcParams);
 
@@ -128,7 +115,7 @@ public class OpenAiChatCompletionParametersTest {
 
   @SneakyThrows
   @Test
-  public void testCompletionParameters() {
+  void testCompletionParameters() {
     var params =
         new OpenAiChatCompletionParameters()
             .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText("foo"))
