@@ -61,9 +61,12 @@ class DestinationResolver {
 
   @Nonnull
   static HttpDestination fromCustomBaseDestination(@Nonnull final HttpDestination destination) {
-    // for custom base destinations we only add the client type header, since users are allowed to
-    // pass a custom base path
-    return addClientTypeHeader(destination);
+    var enhancedBaseDestination = addClientTypeHeader(destination);
+    val path = enhancedBaseDestination.getUri().getPath();
+    if (path == null || path.isEmpty() || path.equals("/")) {
+      return setBasePath(enhancedBaseDestination);
+    }
+    return enhancedBaseDestination;
   }
 
   @Nonnull
