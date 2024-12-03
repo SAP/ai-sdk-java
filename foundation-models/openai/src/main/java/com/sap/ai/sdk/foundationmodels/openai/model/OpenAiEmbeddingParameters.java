@@ -2,6 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
+@Beta
 public class OpenAiEmbeddingParameters {
   /**
    * Input text to get embeddings for, encoded as a string. The number of input tokens varies
