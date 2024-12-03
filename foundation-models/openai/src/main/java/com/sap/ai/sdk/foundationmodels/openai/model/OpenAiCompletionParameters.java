@@ -128,6 +128,49 @@ public class OpenAiCompletionParameters {
   private Integer topLogprobs;
 
   /**
+   * Generates `best_of` completions server-side and returns the "best" (the one with the highest
+   * log probability per token). Results cannot be streamed.
+   *
+   * <p>When used with `n`, `best_of` controls the number of candidate completions and `n` specifies
+   * how many to return – `best_of` must be greater than `n`.
+   *
+   * <p>Minimum: 0, Maximum: 20, Default: 1.
+   */
+  @JsonProperty("best_of")
+  @Setter(onParam_ = @Nullable)
+  private Integer bestOf;
+
+  /** Echo back the prompt in addition to the completion. Default: false. */
+  @JsonProperty("echo")
+  @Setter(onParam_ = @Nullable)
+  private Boolean echo;
+
+  /**
+   * The prompt(s) to generate completions for, encoded as a string, array of strings, array of
+   * tokens, or array of token arrays. Default: <|endoftext|>.
+   */
+  @JsonProperty("prompt")
+  @Setter(onParam_ = @Nullable)
+  private List<String> prompt;
+
+  /**
+   * The suffix that comes after a completion of inserted text.
+   *
+   * <p>This parameter is only supported for `gpt-3.5-turbo-instruct`. Default: null.
+   */
+  @JsonProperty("suffix")
+  @Setter(onParam_ = @Nullable)
+  private String suffix;
+
+  /**
+   * An upper bound for the number of tokens that can be generated for a completion, including
+   * visible output tokens and reasoning tokens. Default: null.
+   */
+  @JsonProperty("max_completion_tokens")
+  @Setter(onParam_ = @Nullable)
+  private Integer maxCompletionTokens;
+
+  /**
    * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only
    * <a
    * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format">server-sent
