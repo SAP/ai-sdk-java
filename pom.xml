@@ -592,9 +592,11 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <version>11.1.0</version>
         <configuration>
           <connectionTimeout>60000</connectionTimeout>
-          <nvdMaxRetryCount>10</nvdMaxRetryCount>
+          <nvdMaxRetryCount>20</nvdMaxRetryCount>
           <failBuildOnCVSS>7</failBuildOnCVSS>
-          <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+          <!-- Using the https://mirror.cveb.in mirror because NVD is too slow.
+           For more information see this discussion: https://github.com/jeremylong/DependencyCheck/issues/7180#issuecomment-2500914164 -->
+          <nvdDatafeedUrl>https://mirror.cveb.in/nvd/json/cve/1.1/nvdcve-1.1-{0}.json.gz</nvdDatafeedUrl>
           <suppressionFile>${project.rootdir}/.pipeline/dependency-check-suppression.xml</suppressionFile>
           <nvdValidForHours>46</nvdValidForHours>
           <skipProvidedScope>true</skipProvidedScope>

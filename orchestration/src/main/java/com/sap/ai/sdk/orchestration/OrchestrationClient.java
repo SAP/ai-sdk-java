@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.AiCoreDeployment;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.FilterConfig;
@@ -19,11 +19,11 @@ import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +35,8 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 /** Client to execute requests to the orchestration service. */
 @Slf4j
 public class OrchestrationClient {
+  private static final String DEFAULT_SCENARIO = "orchestration";
+
   static final ObjectMapper JACKSON;
 
   static {
@@ -50,27 +52,32 @@ public class OrchestrationClient {
     JACKSON.addMixIn(TemplatingModuleConfig.class, JacksonMixins.NoTypeInfoMixin.class);
   }
 
-  @Nonnull private final Supplier<AiCoreDeployment> deployment;
+  @Nonnull private final Supplier<HttpDestination> destinationSupplier;
 
   /** Default constructor. */
   public OrchestrationClient() {
-    deployment = () -> new AiCoreService().forDeploymentByScenario("orchestration");
+    destinationSupplier =
+        () -> new AiCoreService().getInferenceDestination().forScenario(DEFAULT_SCENARIO);
   }
 
   /**
-   * Constructor with a custom deployment, allowing for a custom resource group or otherwise
-   * specific deployment ID.
+   * Constructor with a custom destination, allowing for a custom resource group or otherwise custom
+   * destination. The destination needs to be configured with a URL pointing to an orchestration
+   * service deployment. Typically, such a destination should be obtained using {@link
+   * AiCoreService#getInferenceDestination(String)}.
    *
    * <p>Example:
    *
    * <pre>{@code
-   * new OrchestrationClient(new AiCoreService().forDeploymentByScenario("orchestration"));
+   * new OrchestrationClient(new AiCoreService().getInferenceDestination("custom-rg").forScenario("orchestration"));
    * }</pre>
    *
-   * @param deployment The specific {@link AiCoreDeployment} to use.
+   * @param destination The specific {@link HttpDestination} to use.
+   * @see AiCoreService#getInferenceDestination(String)
    */
-  public OrchestrationClient(@Nonnull final AiCoreDeployment deployment) {
-    this.deployment = () -> deployment;
+  @Beta
+  public OrchestrationClient(@Nonnull final HttpDestination destination) {
+    this.destinationSupplier = () -> destination;
   }
 
   /**
@@ -191,12 +198,12 @@ public class OrchestrationClient {
     postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
 
     try {
-      val destination = deployment.get().destination();
+      val destination = destinationSupplier.get();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
           postRequest, new OrchestrationResponseHandler<>(CompletionPostResponse.class));
-    } catch (NoSuchElementException
+    } catch (DeploymentResolutionException
         | DestinationAccessException
         | DestinationNotFoundException
         | HttpClientInstantiationException

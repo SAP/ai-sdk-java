@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.client;
 
-import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndobjectStoreSecretCreationResponse;
 import com.sap.ai.sdk.core.model.BckndobjectStoreSecretDeletionResponse;
@@ -38,16 +37,16 @@ public class ObjectStoreSecretApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ObjectStoreSecretApi() {
-    super(new AiCoreService().client());
+    super(new AiCoreService().getApiClient());
   }
 
   /**
    * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param aiCoreDestination The configured connectivity instance to AI Core
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public ObjectStoreSecretApi(@Nonnull final AiCoreDestination aiCoreDestination) {
-    super(aiCoreDestination.client());
+  public ObjectStoreSecretApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**

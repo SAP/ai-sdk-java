@@ -8,6 +8,7 @@ import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingMerger;
 import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationLoader;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions;
@@ -21,6 +22,11 @@ import lombok.val;
 @Slf4j
 @AllArgsConstructor
 class DestinationResolver {
+  private static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
+  private static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
+
+  private static final String BASE_PATH = "/v2/";
+
   @Nonnull private final ServiceBindingAccessor accessor;
 
   DestinationResolver() {
@@ -31,6 +37,7 @@ class DestinationResolver {
   }
 
   @SuppressWarnings("UnstableApiUsage")
+  @Nonnull
   HttpDestination getDestination() {
     val binding =
         accessor.getServiceBindings().stream()
@@ -48,7 +55,29 @@ class DestinationResolver {
             .onBehalfOf(TECHNICAL_USER_PROVIDER)
             .build();
 
-    return ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(opts);
+    val destination = ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(opts);
+    return setBasePath(addClientTypeHeader(destination));
+  }
+
+  @Nonnull
+  static HttpDestination fromCustomBaseDestination(@Nonnull final HttpDestination destination) {
+    // for custom base destinations we only add the client type header, since users are allowed to
+    // pass a custom base path
+    return addClientTypeHeader(destination);
+  }
+
+  @Nonnull
+  private static HttpDestination setBasePath(@Nonnull final HttpDestination destination) {
+    return DefaultHttpDestination.fromDestination(destination)
+        .uri(destination.getUri().resolve(BASE_PATH))
+        .build();
+  }
+
+  @Nonnull
+  private static HttpDestination addClientTypeHeader(@Nonnull final HttpDestination destination) {
+    return DefaultHttpDestination.fromDestination(destination)
+        .property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE)
+        .build();
   }
 
   private static boolean isAiCoreService(@Nonnull final ServiceBinding binding) {
