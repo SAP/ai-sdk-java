@@ -17,4 +17,9 @@ public class OpenAiChatCompletionLogProbability {
   @JsonProperty("content")
   @Setter(onParam_ = @Nullable)
   private List<OpenAiChatCompletionLogProbabilityTop> content;
+
+  /** A list of message content tokens with log probability information. */
+  @JsonProperty("refusal")
+  @Setter(onParam_ = @Nullable)
+  private List<OpenAiChatCompletionLogProbabilityTop> refusal;
 }
