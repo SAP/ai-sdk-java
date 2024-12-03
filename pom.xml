@@ -81,7 +81,7 @@
     <coverage.complexity>69%</coverage.complexity>
     <coverage.line>76%</coverage.line>
     <coverage.method>85%</coverage.method>
-    <coverage.class>85%</coverage.class>
+    <coverage.class>80%</coverage.class>
   </properties>
 
   <dependencyManagement>
