@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 /** Log probability information for the choice. */
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
@@ -15,5 +17,5 @@ public class OpenAiChatCompletionLogProbabilityTop extends OpenAiChatCompletionL
    * cases, there may be fewer than the number of requested `top_logprobs` returned.
    */
   @JsonProperty("top_logprobs")
-  private OpenAiChatCompletionLogProbabilityToken top_logprobs;
+  private List<OpenAiChatCompletionLogProbabilityToken> top_logprobs;
 }
