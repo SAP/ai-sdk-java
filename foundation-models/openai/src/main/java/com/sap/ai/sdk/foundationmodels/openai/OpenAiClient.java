@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static com.sap.ai.sdk.core.AiCoreService.getDefaultObjectMapper;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

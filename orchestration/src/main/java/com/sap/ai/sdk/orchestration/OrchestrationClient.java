@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.core.AiCoreService.getDefaultObjectMapper;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

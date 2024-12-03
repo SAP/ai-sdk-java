@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
-import static com.sap.ai.sdk.core.AiCoreService.getDefaultObjectMapper;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ContentPartText;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
