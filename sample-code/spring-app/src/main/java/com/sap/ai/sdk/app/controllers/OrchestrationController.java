@@ -16,6 +16,7 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoints for the Orchestration service */
 @RestController
+@Slf4j
 @RequestMapping("/orchestration")
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
@@ -39,7 +41,11 @@ class OrchestrationController {
   OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
-    return client.chatCompletion(prompt, config);
+    final var result = client.chatCompletion(prompt, config);
+
+    log.info("Our trusty AI answered with: {}", result.getContent());
+
+    return result;
   }
 
   /**
