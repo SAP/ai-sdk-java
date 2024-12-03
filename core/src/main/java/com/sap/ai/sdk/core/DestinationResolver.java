@@ -61,7 +61,7 @@ class DestinationResolver {
 
   @Nonnull
   static HttpDestination fromCustomBaseDestination(@Nonnull final HttpDestination destination) {
-    var enhancedBaseDestination = addClientTypeHeader(destination);
+    val enhancedBaseDestination = addClientTypeHeader(destination);
     val path = enhancedBaseDestination.getUri().getPath();
     if (path == null || path.isEmpty() || path.equals("/")) {
       return setBasePath(enhancedBaseDestination);
