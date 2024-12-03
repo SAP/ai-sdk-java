@@ -37,4 +37,13 @@ public class OpenAiChatCompletionFunction {
   @JsonProperty("parameters")
   @Setter(onParam_ = @Nullable)
   private Map<String, Object> parameters;
+
+  /**
+   * Whether to enable strict schema adherence when generating the function call. If set to true,
+   * the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON
+   * Schema is supported when `strict` is `true`. Default: false.
+   */
+  @JsonProperty("strict")
+  @Setter(onParam_ = @Nullable)
+  private Boolean strict;
 }

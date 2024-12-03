@@ -94,6 +94,9 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
      */
     JSON_OBJECT("json_object"),
 
+    /** The schema for the response format, described as a JSON Schema object. */
+    JSON_SCHEMA(null),
+
     /** Response format is a plain text string. */
     TEXT("text");
 
@@ -102,6 +105,9 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
 
     @JsonCreator
     static ResponseFormat fromValue(@JsonProperty("type") final String type) {
+      if (type == null) {
+        return JSON_SCHEMA;
+      }
       final var l = Arrays.stream(values()).filter(f -> f.value.equalsIgnoreCase(type));
       return l.findFirst().orElseThrow(() -> new IllegalArgumentException("Unexpected: " + type));
     }
