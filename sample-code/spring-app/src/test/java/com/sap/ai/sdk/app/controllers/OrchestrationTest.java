@@ -157,4 +157,14 @@ class OrchestrationTest {
     // Placeholder for grounding test
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
   }
+
+  @Test
+  void testCompletionWithResourceGroup() {
+    var response = controller.completionWithResourceGroup("ai-sdk-java-e2e");
+    var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+    assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
+  }
 }

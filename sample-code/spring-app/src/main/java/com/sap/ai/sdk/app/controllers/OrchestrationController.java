@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -149,6 +150,25 @@ class OrchestrationController {
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
+   *
+   * @return the result object
+   */
+  @GetMapping("/completion/{resourceGroup}")
+  @Nonnull
+  public OrchestrationChatResponse completionWithResourceGroup(
+      @PathVariable("resourceGroup") @Nonnull final String resourceGroup) {
+
+    final var destination =
+        new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
+    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+
+    return clientWithResourceGroup.chatCompletion(prompt, config);
   }
 
   /**
