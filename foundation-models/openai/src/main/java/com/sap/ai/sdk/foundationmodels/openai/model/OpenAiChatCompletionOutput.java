@@ -47,11 +47,6 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
     return Objects.requireNonNullElse(getChoices().get(0).getMessage().getContent(), "");
   }
 
-  /**
-   * Add a streamed delta to the total output.
-   *
-   * @param delta the delta to add.
-   */
   @Override
   public void addDelta(@Nonnull final OpenAiChatCompletionDelta delta) {
     super.addDelta(delta);
