@@ -171,7 +171,10 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
     NONE("none"),
 
     /** `auto` means the model can pick between generating a message or calling a function. */
-    AUTO("auto");
+    AUTO("auto"),
+
+    /** `auto` means the model can pick between generating a message or calling a function. */
+    REQUIRED("required");
 
     @JsonValue @Nonnull private final String type;
   }
