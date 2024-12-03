@@ -25,7 +25,6 @@ public class OpenAiChatCompletionTool {
   private OpenAiChatCompletionFunction function;
 
   /** The type of the tool. Currently, only `function` is supported. */
-  // JSON payload sent: { "type": "function" }
   @RequiredArgsConstructor
   public enum ToolType {
     /**

@@ -84,18 +84,6 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   @Nullable
   private ToolChoice toolChoice;
 
-  /**
-   * <b>NOTE:</b> This method is currently not supported. Therefore, it stays protected.<br>
-   * <br>
-   * The configuration entries for Azure OpenAI chat extensions that use them. This additional
-   * specification is only compatible with Azure OpenAI.
-   */
-  @JsonProperty("data_sources")
-  @Setter(onParam_ = @Nullable, value = AccessLevel.PROTECTED)
-  private List<Object> dataSources; // TODO for implementation details, please find
-
-  // https://github.com/Azure/azure-rest-api-specs/blob/3cb1b51638616435470fc10ea00de92512186ece/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-02-01/inference.json#L1223
-
   /** "response_format": { "type": "json_object" } */
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
   @RequiredArgsConstructor

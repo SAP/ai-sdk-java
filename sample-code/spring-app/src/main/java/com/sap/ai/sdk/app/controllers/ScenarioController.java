@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** Endpoint for Scenario operations */
 @RestController
 @SuppressWarnings("unused") // debug method that doesn't need to be tested
-public class ScenarioController {
+class ScenarioController {
 
   private static final ScenarioApi CLIENT = new ScenarioApi();
 
@@ -32,7 +32,7 @@ public class ScenarioController {
    */
   @GetMapping("/models")
   @Nonnull
-  public AiModelList getModels() {
+  AiModelList getModels() {
     return CLIENT.queryModels("foundation-models", "default");
   }
 }
