@@ -3,7 +3,6 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
-import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -12,13 +11,12 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoints for the Orchestration service */
 @RestController
+@Slf4j
 @RequestMapping("/orchestration")
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
@@ -39,22 +38,28 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public OrchestrationChatResponse completion() {
+  OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
-    return client.chatCompletion(prompt, config);
+    final var result = client.chatCompletion(prompt, config);
+
+    log.info("Our trusty AI answered with: {}", result.getContent());
+
+    return result;
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service with a template.
    *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @return the result object
    */
   @GetMapping("/template")
   @Nonnull
-  public OrchestrationChatResponse template() {
+  OrchestrationChatResponse template() {
     final var template =
-        new UserMessage("Reply with 'Orchestration Service is working!' in {{?language}}");
+        Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
     final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
@@ -65,33 +70,40 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service using message history.
    *
    * @return the result object
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public OrchestrationChatResponse messagesHistory() {
-    final List<Message> messagesHistory =
-        List.of(
-            new UserMessage("What is the capital of France?"),
-            new AssistantMessage("The capital of France is Paris."));
-    final var message = new UserMessage("What is the typical food there?");
+  OrchestrationChatResponse messagesHistory() {
+    final var prompt = new OrchestrationPrompt(Message.user("What is the capital of France?"));
 
-    final var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
+    final var result = client.chatCompletion(prompt, config);
 
-    return client.chatCompletion(prompt, config);
+    // Let's presume a user asks the following follow-up question
+    final var nextPrompt =
+        new OrchestrationPrompt(Message.user("What is the typical food there?"))
+            .messageHistory(result.getAllMessages());
+
+    return client.chatCompletion(nextPrompt, config);
   }
 
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
    * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
   @GetMapping("/filter/{policy}")
   @Nonnull
-  public OrchestrationChatResponse filter(
+  OrchestrationChatResponse filter(
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
@@ -114,20 +126,23 @@ class OrchestrationController {
    * user. Anonymize any names given as they are not relevant for judging the sentiment of the
    * feedback.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public OrchestrationChatResponse maskingAnonymization() {
+  OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
-        new SystemMessage(
+        Message.system(
             "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
-        new UserMessage(
+        Message.user(
             """
-    I think the SDK is good, but could use some further enhancements.
-    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-    """);
+                I think the SDK is good, but could use some further enhancements.
+                My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+                """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
@@ -140,19 +155,22 @@ class OrchestrationController {
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
    * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public OrchestrationChatResponse maskingPseudonymization() {
+  OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
-        new SystemMessage(
+        Message.system(
             """
                 Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
                 Please make sure to address the user in person and end with "Best regards, the AI SDK team".
                 """);
     final var userMessage =
-        new UserMessage(
+        Message.user(
             """
                 Username: Mallory
                 userEmail: mallory@sap.com

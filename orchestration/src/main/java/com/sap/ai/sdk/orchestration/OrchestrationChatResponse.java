@@ -9,7 +9,6 @@ import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -30,7 +29,7 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public String getContent() throws OrchestrationClientException {
-    final var choice = getCurrentChoice();
+    final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
       throw new OrchestrationClientException("Content filter filtered the output.");
@@ -54,20 +53,31 @@ public class OrchestrationChatResponse {
    * @return A list of all messages.
    */
   @Nonnull
-  public List<ChatMessage> getAllMessages() {
-    final var items = Objects.requireNonNull(originalResponse.getModuleResults().getTemplating());
-    final var messages = new ArrayList<>(items);
-    messages.add(getCurrentChoice().getMessage());
+  public List<Message> getAllMessages() {
+    final var messages = new ArrayList<Message>();
+
+    for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
+      final var message =
+          switch (chatMessage.getRole()) {
+            case "user" -> new UserMessage(chatMessage.getContent());
+            case "assistant" -> new AssistantMessage(chatMessage.getContent());
+            case "system" -> new SystemMessage(chatMessage.getContent());
+            default -> throw new IllegalStateException("Unexpected role: " + chatMessage.getRole());
+          };
+      messages.add(message);
+    }
+
+    messages.add(new AssistantMessage(getChoice().getMessage().getContent()));
     return messages;
   }
 
   /**
-   * Get current choice.
+   * Get the LLM response. Useful for accessing the finish reason or further data like logprobs.
    *
-   * @return The current choice.
+   * @return The (first, in case of multiple) {@link LLMChoice}.
    */
   @Nonnull
-  private LLMChoice getCurrentChoice() {
+  public LLMChoice getChoice() {
     //    We expect choices to be defined and never empty.
     return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
         .getChoices()

@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.client;
 
-import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.AiModelList;
 import com.sap.ai.sdk.core.model.AiScenario;
@@ -37,16 +36,16 @@ public class ScenarioApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ScenarioApi() {
-    super(new AiCoreService().client());
+    super(new AiCoreService().getApiClient());
   }
 
   /**
    * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param aiCoreDestination The configured connectivity instance to AI Core
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public ScenarioApi(@Nonnull final AiCoreDestination aiCoreDestination) {
-    super(aiCoreDestination.client());
+  public ScenarioApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**

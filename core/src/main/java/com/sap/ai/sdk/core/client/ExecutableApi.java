@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.client;
 
-import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.AiExecutable;
 import com.sap.ai.sdk.core.model.AiExecutableList;
@@ -33,16 +32,16 @@ public class ExecutableApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ExecutableApi() {
-    super(new AiCoreService().client());
+    super(new AiCoreService().getApiClient());
   }
 
   /**
    * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param aiCoreDestination The configured connectivity instance to AI Core
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public ExecutableApi(@Nonnull final AiCoreDestination aiCoreDestination) {
-    super(aiCoreDestination.client());
+  public ExecutableApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**
