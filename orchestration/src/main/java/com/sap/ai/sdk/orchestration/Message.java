@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import javax.annotation.Nonnull;
 
@@ -63,5 +64,6 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    * @return the content.
    */
   @Nonnull
+  @Beta
   String content();
 }

@@ -40,9 +40,9 @@ class OrchestrationTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
-    assertThat(result.getAllMessages().get(0).getContent())
+    assertThat(result.getAllMessages().get(0).content())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getAllMessages().get(0).getRole()).isEqualTo("user");
+    assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm.getId()).isNotEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");

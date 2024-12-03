@@ -26,12 +26,12 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      - name: Restore CVE Database
+      - name: "Restore CVE Database"
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
-#          fail-on-cache-miss: true
+          fail-on-cache-miss: true
 
       - name: "Build SDK"
         run: |
@@ -48,9 +48,16 @@ jobs:
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          mvn -T1 --no-transfer-progress dependency-check:check
+          mvn -T1 --no-transfer-progress --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
 
-      - name: Delete Old CVE Cache
+      - name: "Archive CVE Report"
+        uses: actions/upload-artifact@v4
+        with:
+          name: cve-report
+          path: target/dependency-check-report.html
+          retention-days: 7
+
+      - name: "Delete Old CVE Cache"
         run: |
           CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --ref "${{ env.CVE_CACHE_REF }}" --json id | jq -r '.[] | .id')
           for CACHE_ID in $CACHE_IDS; do
@@ -60,7 +67,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Updated CVE Cache
+      - name: "Create Updated CVE Cache"
         uses: actions/cache/save@v4
         with:
           path: ${{ env.CVE_CACHE_DIR }}
@@ -68,12 +75,11 @@ jobs:
 
       - name: "Slack Notification"
         if: failure()
-        uses: slackapi/slack-github-action@v1.27.0
+        uses: slackapi/slack-github-action@v2.0.0
         with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
           payload: |
             {
               "text": "⚠️ OWASP Dependency check failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -371,6 +372,22 @@ class OpenAiClientTest {
         postRequestedFor(urlPathEqualTo("/embeddings"))
             .withRequestBody(equalToJson("""
                       {"input":["Hello World"]}""")));
+  }
+
+  @Test
+  void testThrowsOnContentFilter() {
+    var mock = mock(OpenAiClient.class);
+    when(mock.streamChatCompletion(any())).thenCallRealMethod();
+
+    var deltaWithContentFilter = mock(OpenAiChatCompletionDelta.class);
+    when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+
+    // this must not throw, since the stream is lazily evaluated
+    var stream = mock.streamChatCompletion("");
+    assertThatThrownBy(stream::toList)
+        .isInstanceOf(OpenAiClientException.class)
+        .hasMessageContaining("Content filter");
   }
 
   @Test
