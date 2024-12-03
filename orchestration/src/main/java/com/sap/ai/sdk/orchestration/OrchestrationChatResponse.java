@@ -29,7 +29,7 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public String getContent() throws OrchestrationClientException {
-    final var choice = getCurrentChoice();
+    final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
       throw new OrchestrationClientException("Content filter filtered the output.");
@@ -67,7 +67,7 @@ public class OrchestrationChatResponse {
       messages.add(message);
     }
 
-    messages.add(new AssistantMessage(getCurrentChoice().getMessage().getContent()));
+    messages.add(new AssistantMessage(getChoice().getMessage().getContent()));
     return messages;
   }
 
@@ -77,7 +77,7 @@ public class OrchestrationChatResponse {
    * @return The (first, in case of multiple) {@link LLMChoice}.
    */
   @Nonnull
-  public LLMChoice getCurrentChoice() {
+  public LLMChoice getChoice() {
     //    We expect choices to be defined and never empty.
     return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
         .getChoices()
