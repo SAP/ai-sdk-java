@@ -34,7 +34,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
-  private static final String DEFAULT_API_VERSION = "2024-02-01";
+  private static final String DEFAULT_API_VERSION = "2024-06-01";
   static final ObjectMapper JACKSON;
   private String systemPrompt = null;
 
