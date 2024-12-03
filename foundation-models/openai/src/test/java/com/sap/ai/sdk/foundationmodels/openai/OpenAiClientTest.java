@@ -74,7 +74,9 @@ class OpenAiClientTest {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
 
-    verify(exactly(1), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
+    verify(
+        exactly(1),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
     Try.of(
         () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionParameters()));
@@ -85,7 +87,9 @@ class OpenAiClientTest {
             "withApiVersion should return a new object, the sut object should remain unchanged")
         .isNotSameAs(client.withApiVersion("fooBar"));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
-    verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
+    verify(
+        exactly(2),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
   }
 
   private static Runnable[] errorHandlingCalls() {
@@ -197,7 +201,11 @@ class OpenAiClientTest {
     try (var inputStream = fileLoader.apply("__files/chatCompletionResponse.json")) {
 
       final String response = new String(inputStream.readAllBytes());
-      stubFor(post("/chat/completions").willReturn(okJson(response)));
+      // with query parameter api-version=2024-02-01
+      stubFor(
+          post(urlPathEqualTo("/chat/completions"))
+              .withQueryParam("api-version", equalTo("2024-02-01"))
+              .willReturn(okJson(response)));
 
       final OpenAiChatCompletionOutput result = request.call();
 
@@ -264,6 +272,7 @@ class OpenAiClientTest {
 
       verify(
           postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withQueryParam("api-version", equalTo("2024-02-01"))
               .withRequestBody(
                   equalToJson(
                       """

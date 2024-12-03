@@ -88,4 +88,13 @@ class OpenAiTest {
     assertThat(embedding.getModel()).isEqualTo("ada");
     assertThat(embedding.getObject()).isEqualTo("list");
   }
+
+  @Test
+  void chatCompletionWithResource() {
+    final var completion = OpenAiController.chatCompletionWithResource("ai-sdk-java-e2e");
+
+    final var message = completion.getChoices().get(0).getMessage();
+    assertThat(message.getRole()).isEqualTo("assistant");
+    assertThat(message.getContent()).isNotEmpty();
+  }
 }

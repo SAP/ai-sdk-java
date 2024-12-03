@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.util.List;
 import lombok.val;
 import org.junit.jupiter.api.Test;
@@ -53,5 +54,27 @@ class DestinationResolverTest {
 
     var resolver = new DestinationResolver(mock);
     assertThatThrownBy(resolver::getDestination).isSameAs(exception);
+  }
+
+  private record DestinationTestCase(String givenBasePath, String expectedBasePath) {}
+
+  @Test
+  void testFromCustomBaseDestination() {
+    var testCases =
+        new DestinationTestCase[] {
+          new DestinationTestCase("", "/v2/"),
+          new DestinationTestCase("/", "/v2/"),
+          new DestinationTestCase("/foo", "/foo/"),
+          new DestinationTestCase("/foo/", "/foo/")
+        };
+    for (var testCase : testCases) {
+      var url = "https://api.ai.sap" + testCase.givenBasePath;
+      var destination = DefaultHttpDestination.builder(url).build();
+      assertThat(DestinationResolver.fromCustomBaseDestination(destination).getUri().getPath())
+          .describedAs(
+              "Expecting given base path %s to resolve to %s",
+              testCase.givenBasePath, testCase.expectedBasePath)
+          .hasToString(testCase.expectedBasePath);
+    }
   }
 }

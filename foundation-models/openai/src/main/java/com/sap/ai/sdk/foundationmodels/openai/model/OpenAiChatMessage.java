@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatFunctionMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
   @Type(value = OpenAiChatToolMessage.class, name = "tool"),
   @Type(value = OpenAiChatFunctionMessage.class, name = "function")
 })
+@Beta
 public interface OpenAiChatMessage {
   /**
    * The role of the messages author.
