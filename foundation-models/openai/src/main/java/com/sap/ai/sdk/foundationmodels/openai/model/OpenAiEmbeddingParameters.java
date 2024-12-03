@@ -41,6 +41,21 @@ public class OpenAiEmbeddingParameters {
   private String inputType;
 
   /**
+   * The format to return the embeddings in. Can be either `float` or `base64`. Defaults to `float`.
+   */
+  @JsonProperty("encoding_format")
+  @Setter(onParam_ = @Nullable)
+  private String encodingFormat;
+
+  /**
+   * The number of dimensions the resulting output embeddings should have. Only supported in
+   * `text-embedding-3` and later models.
+   */
+  @JsonProperty("dimensions")
+  @Setter(onParam_ = @Nullable)
+  private Integer dimensions;
+
+  /**
    * Input text to get embeddings for, encoded as a string. The number of input tokens varies
    * depending on what model you are using. Unless you're embedding code, we suggest replacing
    * newlines (\n) in your input with a single space, as we have observed inferior results when
