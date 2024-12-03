@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.client;
 
-import com.sap.ai.sdk.core.AiCoreDestination;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.MetaCapabilities;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -29,16 +28,16 @@ public class MetaApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public MetaApi() {
-    super(new AiCoreService().client());
+    super(new AiCoreService().getApiClient());
   }
 
   /**
    * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param aiCoreDestination The configured connectivity instance to AI Core
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public MetaApi(@Nonnull final AiCoreDestination aiCoreDestination) {
-    super(aiCoreDestination.client());
+  public MetaApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**
