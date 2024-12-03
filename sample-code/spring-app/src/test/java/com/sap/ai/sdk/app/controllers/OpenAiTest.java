@@ -9,13 +9,21 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
 class OpenAiTest {
+  OpenAiController controller;
+
+  @BeforeEach
+  void setUp() {
+    controller = new OpenAiController();
+  }
+
   @Test
   void chatCompletion() {
-    final var completion = OpenAiController.chatCompletion();
+    final var completion = controller.chatCompletion();
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -24,7 +32,7 @@ class OpenAiTest {
 
   @Test
   void chatCompletionImage() {
-    final var completion = OpenAiController.chatCompletionImage();
+    final var completion = controller.chatCompletionImage();
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -64,7 +72,7 @@ class OpenAiTest {
 
   @Test
   void chatCompletionTools() {
-    final var completion = OpenAiController.chatCompletionTools();
+    final var completion = controller.chatCompletionTools();
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -74,9 +82,8 @@ class OpenAiTest {
 
   @Test
   void embedding() {
-    final var embedding = OpenAiController.embedding();
+    final var embedding = controller.embedding();
 
-    // {"object":"list","model":"ada","data":[{"object":"embedding","embedding":[-0.0070958645....,-0.0014557659],"index":0}],"usage":{"completion_tokens":null,"prompt_tokens":2,"total_tokens":2}}
     assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
     assertThat(embedding.getModel()).isEqualTo("ada");
     assertThat(embedding.getObject()).isEqualTo("list");

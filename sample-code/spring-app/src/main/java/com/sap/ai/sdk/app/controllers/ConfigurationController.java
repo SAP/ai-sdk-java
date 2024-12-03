@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** Endpoint for Configuration operations */
 @SuppressWarnings("unused") // debug class that doesn't need to be tested
 @RestController
-public class ConfigurationController {
+class ConfigurationController {
 
   private static final ConfigurationApi CLIENT = new ConfigurationApi();
 
