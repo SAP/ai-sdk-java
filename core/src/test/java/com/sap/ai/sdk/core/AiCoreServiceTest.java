@@ -55,7 +55,7 @@ class AiCoreServiceTest {
 
     assertThat(customService.getBaseDestination().getUri())
         .hasHost("custom.ai.com")
-        .hasPath("/custom/base/path");
+        .hasPath("/custom/base/path/");
     assertThat(customService.getBaseDestination().getHeaders())
         .describedAs("The client type should be added to ensure its present in all requests")
         .containsExactly(new Header("AI-Client-Type", "AI SDK Java"));

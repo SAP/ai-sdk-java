@@ -12,6 +12,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationLoader;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions;
+import java.net.URI;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
@@ -61,9 +62,19 @@ class DestinationResolver {
 
   @Nonnull
   static HttpDestination fromCustomBaseDestination(@Nonnull final HttpDestination destination) {
-    // for custom base destinations we only add the client type header, since users are allowed to
-    // pass a custom base path
-    return addClientTypeHeader(destination);
+    val enhancedBaseDestination = addClientTypeHeader(destination);
+    val path = enhancedBaseDestination.getUri().getPath();
+    if (path == null || path.isEmpty() || path.equals("/")) {
+      return setBasePath(enhancedBaseDestination);
+    }
+    if (path.endsWith("/")) {
+      return enhancedBaseDestination;
+    }
+    val urlWithTrailingSlash = URI.create(enhancedBaseDestination.getUri() + "/");
+
+    return DefaultHttpDestination.fromDestination(enhancedBaseDestination)
+        .uri(urlWithTrailingSlash)
+        .build();
   }
 
   @Nonnull
