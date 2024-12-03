@@ -23,7 +23,7 @@ import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class IterableStreamConverterTest {
+class IterableStreamConverterTest {
   @SneakyThrows
   @Test
   @DisplayName("Stream is fully consumed")

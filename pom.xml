@@ -104,16 +104,15 @@
         <artifactId>spring-web</artifactId>
         <version>${springframework.version}</version>
       </dependency>
-      <!-- Additional dependencies for OSS code generator resttemplate  -->
-      <dependency>
-        <groupId>javax.annotation</groupId>
-        <artifactId>javax.annotation-api</artifactId>
-        <version>1.3.2</version>
-      </dependency>
       <dependency>
         <groupId>io.github.cdimascio</groupId>
         <artifactId>dotenv-java</artifactId>
         <version>${dotenv-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-parameter-names</artifactId>
+        <version>2.18.1</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
@@ -593,9 +592,11 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <version>11.1.0</version>
         <configuration>
           <connectionTimeout>60000</connectionTimeout>
-          <nvdMaxRetryCount>10</nvdMaxRetryCount>
+          <nvdMaxRetryCount>20</nvdMaxRetryCount>
           <failBuildOnCVSS>7</failBuildOnCVSS>
-          <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+          <!-- Using the https://mirror.cveb.in mirror because NVD is too slow.
+           For more information see this discussion: https://github.com/jeremylong/DependencyCheck/issues/7180#issuecomment-2500914164 -->
+          <nvdDatafeedUrl>https://mirror.cveb.in/nvd/json/cve/1.1/nvdcve-1.1-{0}.json.gz</nvdDatafeedUrl>
           <suppressionFile>${project.rootdir}/.pipeline/dependency-check-suppression.xml</suppressionFile>
           <nvdValidForHours>46</nvdValidForHours>
           <skipProvidedScope>true</skipProvidedScope>
