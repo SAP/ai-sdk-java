@@ -94,13 +94,13 @@ public final class OpenAiClient {
   @Beta
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
-    OpenAiClient client = new OpenAiClient(destination);
+    final OpenAiClient client = new OpenAiClient(destination);
 
-    if (!destination.get("URL.queries.api-version").isDefined()) {
-      client = client.withApiVersion(DEFAULT_API_VERSION);
+    if (destination.get("URL.queries.api-version").isDefined()) {
+      return client;
     }
 
-    return client;
+    return client.withApiVersion(DEFAULT_API_VERSION);
   }
 
   /**
