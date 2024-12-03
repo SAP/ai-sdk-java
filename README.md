@@ -5,11 +5,14 @@
 
 # <img src="https://sap.github.io/cloud-sdk/img/logo.svg" alt="SAP Cloud SDK" width="30"/> SAP Cloud SDK for AI (for Java)
 
-> ⚠️ **This is a pre-alpha version of the AI SDK for Java. The APIs are subject to change.** ⚠️
+**SAP Cloud SDK for AI** is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+
+This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
+Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
+The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [General Requirements](#general-requirements)
 - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
     - [Option 1: Set Credentials as Environment Variable](#option-1-set-ai-core-credentials)
@@ -27,13 +30,6 @@
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
 - [Licensing](#licensing)
-
-## Introduction
-
-Welcome to the **SAP Cloud SDK for AI (for Java)**.
-This SDK enables developers to seamlessly integrate AI capabilities, such as chat completion, into their Java-based business applications using SAP's Generative AI Hub.
-Leverage powerful features like templating, grounding, data masking, and content filtering to build intelligent applications.
-The SDK simplifies the setup and interaction with SAP AI Core, allowing you to focus on delivering value through AI integration.
 
 ## General Requirements
 
