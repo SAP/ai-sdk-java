@@ -88,47 +88,33 @@ public class AiCoreService {
   }
 
   /**
-   * Get a new endpoint object, targeting a specific deployment ID.
+   * Get a destination to perform inference calls against a deployment under the default resource
+   * group on AI Core.
    *
-   * @param deploymentId The deployment id to be used for the new endpoint.
-   * @return the new instance.
+   * @return The destination pointing to the specific deployment ID.
+   * @throws DestinationAccessException If there was an issue creating the base destination, e.g. in
+   *     case of invalid credentials.
+   * @throws DestinationNotFoundException If there was an issue creating the base destination, e.g.
+   *     in case of missing credentials.
+   * @see #getInferenceDestination(String) for specifying a custom resource group.
    */
   @Nonnull
-  public HttpDestination getDestinationForDeploymentById(
-      @Nonnull final String resourceGroup, @Nonnull final String deploymentId) {
-    return toInferenceDestination(resourceGroup, deploymentId);
+  public InferenceDestinationBuilder getInferenceDestination()
+      throws DestinationAccessException, DestinationNotFoundException {
+    return new InferenceDestinationBuilder(DEFAULT_RESOURCE_GROUP);
   }
 
   /**
-   * Get a destination to perform inference calls for a specific model. If there are multiple
-   * deployments of the same model, the first one is returned.
+   * Get a destination to perform inference calls against a deployment for the given resource group
+   * on AI Core.
    *
-   * @param model The model to be used for inference calls.
-   * @return A new instance of the AI Core Deployment.
-   * @throws DeploymentResolutionException if no running deployment is found for the model.
+   * @param resourceGroup The resource group to be used for the new endpoint.
+   * @return The destination pointing to the specific deployment ID.
+   * @see #getInferenceDestination() for using the default resource group.
    */
   @Nonnull
-  public HttpDestination getDestinationForDeploymentByModel(
-      @Nonnull final String resourceGroup, @Nonnull final AiModel model)
-      throws DeploymentResolutionException {
-    val deploymentId = deploymentResolver.getDeploymentIdByModel(resourceGroup, model);
-    return toInferenceDestination(resourceGroup, deploymentId);
-  }
-
-  /**
-   * Set a specific deployment by scenario id. If there are multiple deployments of the same model,
-   * the first one is returned.
-   *
-   * @param scenarioId The scenario id to be used for AI Core service calls.
-   * @return A new instance of the AI Core Deployment.
-   * @throws DeploymentResolutionException if no running deployment is found for the scenario.
-   */
-  @Nonnull
-  public HttpDestination getDestinationForDeploymentByScenario(
-      @Nonnull final String resourceGroup, @Nonnull final String scenarioId)
-      throws DeploymentResolutionException {
-    val deploymentId = deploymentResolver.getDeploymentIdByScenario(resourceGroup, scenarioId);
-    return toInferenceDestination(resourceGroup, deploymentId);
+  public InferenceDestinationBuilder getInferenceDestination(@Nonnull final String resourceGroup) {
+    return new InferenceDestinationBuilder(resourceGroup);
   }
 
   /**
@@ -160,17 +146,6 @@ public class AiCoreService {
     return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
   }
 
-  HttpDestination toInferenceDestination(
-      @Nonnull final String resourceGroup, @Nonnull final String deploymentId) {
-    val destination = getBaseDestination();
-    val path = buildDeploymentPath(deploymentId);
-
-    return DefaultHttpDestination.fromDestination(destination)
-        .uri(destination.getUri().resolve(path))
-        .property(RESOURCE_GROUP_HEADER_PROPERTY, resourceGroup)
-        .build();
-  }
-
   /**
    * Helper method to build the <b>relative</b> URL path for the inference endpoint of a deployment.
    * The result of this together with the base path defined on the destination will be used for
@@ -195,5 +170,74 @@ public class AiCoreService {
   @Beta
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
     deploymentResolver.reloadDeployments(resourceGroup);
+  }
+
+  /** Builder for creating inference destinations. */
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  public class InferenceDestinationBuilder {
+    @Nonnull private final String resourceGroup;
+
+    /**
+     * Use a fixed deployment ID to identify the deployment.
+     *
+     * @param deploymentId The ID of the deployment to target.
+     * @return A new destination targeting the specified deployment.
+     * @throws DestinationAccessException If there was an issue creating the base destination, e.g.
+     *     in case of invalid credentials.
+     * @throws DestinationNotFoundException If there was an issue creating the base destination,
+     *     e.g. in case of missing credentials.
+     * @see #forModel(AiModel)
+     * @see #forScenario(String)
+     */
+    @Nonnull
+    public HttpDestination usingDeploymentId(@Nonnull final String deploymentId)
+        throws DestinationAccessException, DestinationNotFoundException {
+      return build(deploymentId);
+    }
+
+    /**
+     * Lookup a deployment based on the given {@link AiModel}. If there are multiple deployments for
+     * the given model, the first one is returned.
+     *
+     * @param model The model to be used for inference calls.
+     * @return A new destination targeting a deployment for the given model.
+     * @throws DeploymentResolutionException If no running deployment is found for the model.
+     * @see #forScenario(String)
+     * @see #usingDeploymentId(String)
+     */
+    @Nonnull
+    public HttpDestination forModel(@Nonnull final AiModel model)
+        throws DeploymentResolutionException {
+      val id = deploymentResolver.getDeploymentIdByModel(resourceGroup, model);
+      return build(id);
+    }
+
+    /**
+     * Lookup a deployment based on the given scenario. If there are multiple deployments within the
+     * same scenario, the first one is returned.
+     *
+     * @param scenarioId The scenario to discover deployments for.
+     * @return A new destination targeting a deployment within the given scenario.
+     * @throws DeploymentResolutionException If no running deployment is found within the scenario.
+     * @see #forModel(AiModel)
+     * @see #usingDeploymentId(String)
+     */
+    @Nonnull
+    public HttpDestination forScenario(@Nonnull final String scenarioId)
+        throws DeploymentResolutionException {
+      val id = deploymentResolver.getDeploymentIdByScenario(resourceGroup, scenarioId);
+      return build(id);
+    }
+
+    @Nonnull
+    HttpDestination build(@Nonnull final String deploymentId) {
+      val destination = getBaseDestination();
+      val path = buildDeploymentPath(deploymentId);
+
+      return DefaultHttpDestination.fromDestination(destination)
+          .uri(destination.getUri().resolve(path))
+          .property(RESOURCE_GROUP_HEADER_PROPERTY, resourceGroup)
+          .build();
+    }
   }
 }

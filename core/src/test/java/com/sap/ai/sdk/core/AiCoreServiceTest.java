@@ -2,6 +2,7 @@ package com.sap.ai.sdk.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
@@ -61,8 +62,12 @@ class AiCoreServiceTest {
   }
 
   @Test
-  void testToInferenceDestination() {
-    val destination = service.toInferenceDestination("foo", "123");
+  void testGetInferenceDestination() {
+    var builder = service.getInferenceDestination();
+    assertThatThrownBy(() -> builder.forScenario("doesn't exist"))
+        .isExactlyInstanceOf(DeploymentResolutionException.class);
+
+    val destination = service.getInferenceDestination("foo").usingDeploymentId("123");
 
     assertThat(destination.getUri())
         .hasHost("api.ai.com")

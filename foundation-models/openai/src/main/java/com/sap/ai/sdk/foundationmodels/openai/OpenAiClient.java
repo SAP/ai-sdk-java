@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
@@ -64,17 +64,21 @@ public final class OpenAiClient {
   @Nonnull
   public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel)
       throws DeploymentResolutionException {
-    final var destination =
-        new AiCoreService()
-            .getDestinationForDeploymentByModel(
-                AiCoreService.DEFAULT_RESOURCE_GROUP, foundationModel);
+    final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
+
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
 
-  // package private, but prepared in case we want to expose it later
+  /**
+   * Create a new OpenAI client targeting the specified API version.
+   *
+   * @param apiVersion the API version to target.
+   * @return a new client.
+   */
+  @Beta
   @Nonnull
-  OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
+  public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =
         DefaultHttpDestination.fromDestination(this.destination)
             // set the API version as URL query parameter
@@ -85,18 +89,21 @@ public final class OpenAiClient {
 
   /**
    * Create a new OpenAI client with a custom destination, allowing for a custom resource group or
-   * otherwise custom destination.
+   * otherwise custom destination. The destination needs to be configured with a URL pointing to an
+   * OpenAI model deployment. Typically, such a destination should be obtained using {@link
+   * AiCoreService#getInferenceDestination(String)}.
    *
    * <p>Example:
    *
    * <pre>{@code
-   * OpenAiClient.withCustomDestination(new AiCoreService().getDestinationForDeploymentByModel("custom-rg", GPT_4O));
-   *
+   * var destination = new AiCoreService().getInferenceDestination("custom-rg").forModel(GPT_4O);
+   * OpenAiClient.withCustomDestination(destination).withApiVersion("2024-10-21");
    * }</pre>
    *
    * @param destination The specific {@link HttpDestination} to use.
-   * @see AiCoreService#getDestinationForDeploymentByModel(String, AiModel)
+   * @see AiCoreService#getInferenceDestination(String)
    */
+  @Beta
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
     return new OpenAiClient(destination);
