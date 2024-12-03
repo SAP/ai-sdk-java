@@ -110,6 +110,24 @@ public class OpenAiCompletionParameters {
   private Boolean stream;
 
   /**
+   * Whether to return log probabilities of the output tokens or not. If true, returns the log
+   * probabilities of each output token returned in the `content` of `message`. This option is
+   * currently not available on the `gpt-4-vision-preview` model. Default: false.
+   */
+  @JsonProperty("logprobs")
+  @Setter(onParam_ = @Nullable)
+  private Boolean logprobs;
+
+  /**
+   * An integer between 0 and 5 specifying the number of most likely tokens to return at each token
+   * position, each with an associated log probability. `logprobs` must be set to `true` if this
+   * parameter is used.
+   */
+  @JsonProperty("top_logprobs")
+  @Setter(onParam_ = @Nullable)
+  private Integer topLogprobs;
+
+  /**
    * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only
    * <a
    * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format">server-sent

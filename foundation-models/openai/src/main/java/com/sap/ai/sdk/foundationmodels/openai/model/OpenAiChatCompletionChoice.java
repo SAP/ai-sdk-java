@@ -3,6 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatAssistantMessage;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,6 +21,12 @@ public class OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
   @Getter(onMethod_ = @Nonnull)
   @Setter(onMethod_ = @Nonnull, value = AccessLevel.PACKAGE)
   private OpenAiChatAssistantMessage message;
+
+  /** Completion chat log probability information for the choice. */
+  @JsonProperty("logprobs")
+  @Getter(onMethod_ = @Nullable)
+  @Setter(onMethod_ = @Nullable, value = AccessLevel.PACKAGE)
+  private OpenAiChatCompletionLogProbability logProbs;
 
   void addDelta(@Nonnull final OpenAiDeltaChatCompletionChoice delta) {
     super.addDelta(delta);
