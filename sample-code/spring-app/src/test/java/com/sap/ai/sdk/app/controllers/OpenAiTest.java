@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
@@ -80,5 +81,15 @@ class OpenAiTest {
     assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
     assertThat(embedding.getModel()).isEqualTo("ada");
     assertThat(embedding.getObject()).isEqualTo("list");
+  }
+
+  @Test
+  @Disabled
+  void chatCompletionWithResource() {
+    final var completion = OpenAiController.chatCompletionWithResource("ai-sdk-java-e2e");
+
+    final var message = completion.getChoices().get(0).getMessage();
+    assertThat(message.getRole()).isEqualTo("assistant");
+    assertThat(message.getContent()).isNotEmpty();
   }
 }

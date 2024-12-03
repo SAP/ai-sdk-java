@@ -7,6 +7,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionT
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
@@ -26,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
@@ -188,5 +190,26 @@ class OpenAiController {
     final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
 
     return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+  }
+
+  /**
+   * Chat request to OpenAI with filtering by resource group
+   *
+   * @param resourceGroup The resource group to use
+   * @return the assistant message response
+   */
+  @GetMapping("/chatCompletion/{resourceGroup}")
+  @Nonnull
+  public static OpenAiChatCompletionOutput chatCompletionWithResource(
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
+
+    final var destinationWithResource =
+        new AiCoreService()
+            .forDeploymentByModel(GPT_4O)
+            .withResourceGroup(resourceGroup)
+            .destination();
+
+    return OpenAiClient.withCustomDestination(destinationWithResource)
+        .chatCompletion("Where is the nearest coffee shop?");
   }
 }

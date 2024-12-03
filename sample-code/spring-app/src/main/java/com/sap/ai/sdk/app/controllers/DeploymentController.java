@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 class DeploymentController {
 
   private static final DeploymentApi CLIENT = new DeploymentApi();
-  private static final String RESSOURCE_GROUP = "default";
+  private static final String RESOURCE_GROUP = "default";
 
   /**
    * Create and delete a deployment with the Java specific configuration ID
@@ -44,11 +44,11 @@ class DeploymentController {
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
         CLIENT.create(
-            RESSOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
+            RESOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
 
     // shortly after creation, the deployment will be status UNKNOWN.
     // We can directly DELETE it, without going through STOPPED
-    return CLIENT.delete(RESSOURCE_GROUP, deployment.getId());
+    return CLIENT.delete(RESOURCE_GROUP, deployment.getId());
   }
 
   /**
@@ -72,7 +72,7 @@ class DeploymentController {
         .map(
             deployment ->
                 CLIENT.modify(
-                    RESSOURCE_GROUP,
+                    RESOURCE_GROUP,
                     deployment.getId(),
                     AiDeploymentModificationRequest.create()
                         .targetStatus(AiDeploymentTargetStatus.STOPPED)))
@@ -97,7 +97,7 @@ class DeploymentController {
 
     // DELETE my deployments
     return myDeployments.stream()
-        .map(deployment -> CLIENT.delete(RESSOURCE_GROUP, deployment.getId()))
+        .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
         .toList();
   }
 
@@ -110,7 +110,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
   public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
-    final AiDeploymentList deploymentList = CLIENT.query(RESSOURCE_GROUP);
+    final AiDeploymentList deploymentList = CLIENT.query(RESOURCE_GROUP);
 
     return deploymentList.getResources().stream()
         .filter(deployment -> configId.equals(deployment.getConfigurationId()))
@@ -125,7 +125,7 @@ class DeploymentController {
   @GetMapping("/getAll")
   @Nullable
   public AiDeploymentList getAll() {
-    return CLIENT.query(RESSOURCE_GROUP);
+    return CLIENT.query(RESOURCE_GROUP);
   }
 
   /**
@@ -154,12 +154,12 @@ class DeploymentController {
             .addParameterBindingsItem(modelVersion);
 
     final AiConfigurationCreationResponse configuration =
-        new ConfigurationApi().create(RESSOURCE_GROUP, configurationBaseData);
+        new ConfigurationApi().create(RESOURCE_GROUP, configurationBaseData);
 
     // Create a deployment from the configuration
     final var deploymentCreationRequest =
         AiDeploymentCreationRequest.create().configurationId(configuration.getId());
 
-    return CLIENT.create(RESSOURCE_GROUP, deploymentCreationRequest);
+    return CLIENT.create(RESOURCE_GROUP, deploymentCreationRequest);
   }
 }
