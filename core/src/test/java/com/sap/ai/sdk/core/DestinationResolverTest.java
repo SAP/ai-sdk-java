@@ -56,18 +56,25 @@ class DestinationResolverTest {
     assertThatThrownBy(resolver::getDestination).isSameAs(exception);
   }
 
+  private record DestinationTestCase(String givenBasePath, String expectedBasePath) {}
+
   @Test
   void testFromCustomBaseDestination() {
-    var destination = DefaultHttpDestination.builder("https://api.ai.sap").build();
-    assertThat(DestinationResolver.fromCustomBaseDestination(destination).getUri())
-        .hasToString("https://api.ai.sap/v2/");
-
-    destination = DefaultHttpDestination.builder("https://api.ai.sap/").build();
-    assertThat(DestinationResolver.fromCustomBaseDestination(destination).getUri())
-        .hasToString("https://api.ai.sap/v2/");
-
-    destination = DefaultHttpDestination.builder("https://api.ai.sap/foo").build();
-    assertThat(DestinationResolver.fromCustomBaseDestination(destination).getUri())
-        .hasToString("https://api.ai.sap/foo");
+    var testCases =
+        new DestinationTestCase[] {
+          new DestinationTestCase("", "/v2/"),
+          new DestinationTestCase("/", "/v2/"),
+          new DestinationTestCase("/foo", "/foo/"),
+          new DestinationTestCase("/foo/", "/foo/")
+        };
+    for (var testCase : testCases) {
+      var url = "https://api.ai.sap" + testCase.givenBasePath;
+      var destination = DefaultHttpDestination.builder(url).build();
+      assertThat(DestinationResolver.fromCustomBaseDestination(destination).getUri().getPath())
+          .describedAs(
+              "Expecting given base path %s to resolve to %s",
+              testCase.givenBasePath, testCase.expectedBasePath)
+          .hasToString(testCase.expectedBasePath);
+    }
   }
 }
