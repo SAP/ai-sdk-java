@@ -37,20 +37,22 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  public OrchestrationChatResponse completion() {
+  OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
     return client.chatCompletion(prompt, config);
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service with a template.
    *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @return the result object
    */
   @GetMapping("/template")
   @Nonnull
-  public OrchestrationChatResponse template() {
+  OrchestrationChatResponse template() {
     final var template =
         Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
     final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
@@ -63,13 +65,13 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to OpenAI through the Orchestration service using message history.
    *
    * @return the result object
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public OrchestrationChatResponse messagesHistory() {
+  OrchestrationChatResponse messagesHistory() {
     final var prompt = new OrchestrationPrompt(Message.user("What is the capital of France?"));
 
     final var result = client.chatCompletion(prompt, config);
@@ -85,12 +87,18 @@ class OrchestrationController {
   /**
    * Apply both input and output filtering for a request to orchestration.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
    * @param policy A high threshold is a loose filter, a low threshold is a strict filter
    * @return the result object
    */
   @GetMapping("/filter/{policy}")
   @Nonnull
-  public OrchestrationChatResponse filter(
+  OrchestrationChatResponse filter(
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
     final var prompt =
         new OrchestrationPrompt(
@@ -113,20 +121,23 @@ class OrchestrationController {
    * user. Anonymize any names given as they are not relevant for judging the sentiment of the
    * feedback.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public OrchestrationChatResponse maskingAnonymization() {
+  OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
         Message.system(
             "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
     final var userMessage =
         Message.user(
             """
-    I think the SDK is good, but could use some further enhancements.
-    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-    """);
+                I think the SDK is good, but could use some further enhancements.
+                My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+                """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
     final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
@@ -160,11 +171,14 @@ class OrchestrationController {
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
    * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    * @return the result object
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public OrchestrationChatResponse maskingPseudonymization() {
+  OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
         Message.system(
             """

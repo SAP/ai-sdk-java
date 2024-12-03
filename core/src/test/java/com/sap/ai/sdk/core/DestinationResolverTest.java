@@ -29,7 +29,12 @@ class DestinationResolverTest {
     var binding = AiCoreServiceKeyAccessor.createServiceBinding(serviceKey);
     var resolver = new DestinationResolver(() -> List.of(binding));
     var result = resolver.getDestination();
-    assertThat(result.getUri()).hasToString("https://api.ai.core");
+    assertThat(result.getUri())
+        .describedAs("The destination should already contain the /v2 base path")
+        .hasToString("https://api.ai.core/v2/");
+    assertThat(result.get("URL.headers.AI-Client-Type"))
+        .describedAs("The destination must contain the AI-Client-Type header")
+        .containsExactly("AI SDK Java");
   }
 
   @Test

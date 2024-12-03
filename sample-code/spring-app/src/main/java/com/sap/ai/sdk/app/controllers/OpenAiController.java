@@ -42,7 +42,7 @@ class OpenAiController {
    */
   @GetMapping("/chatCompletion")
   @Nonnull
-  public static OpenAiChatCompletionOutput chatCompletion() {
+  OpenAiChatCompletionOutput chatCompletion() {
     return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Who is the prettiest");
   }
 
@@ -54,7 +54,7 @@ class OpenAiController {
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
-  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas() {
+  ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas() {
     final var msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var request =
         new OpenAiChatCompletionParameters().addMessages(new OpenAiChatUserMessage().addText(msg));
@@ -99,7 +99,7 @@ class OpenAiController {
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
-  public static ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var stream =
         OpenAiClient.forModel(GPT_35_TURBO)
             .withSystemPrompt("Be a good, honest AI and answer the following question:")
@@ -140,7 +140,7 @@ class OpenAiController {
    */
   @GetMapping("/chatCompletionImage")
   @Nonnull
-  public static OpenAiChatCompletionOutput chatCompletionImage() {
+  OpenAiChatCompletionOutput chatCompletionImage() {
     final var request =
         new OpenAiChatCompletionParameters()
             .addMessages(
@@ -160,7 +160,7 @@ class OpenAiController {
    */
   @GetMapping("/chatCompletionTool")
   @Nonnull
-  public static OpenAiChatCompletionOutput chatCompletionTools() {
+  OpenAiChatCompletionOutput chatCompletionTools() {
     final var question =
         "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?";
     final var par = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
@@ -186,7 +186,7 @@ class OpenAiController {
    */
   @GetMapping("/embedding")
   @Nonnull
-  public static OpenAiEmbeddingOutput embedding() {
+  OpenAiEmbeddingOutput embedding() {
     final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
 
     return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);

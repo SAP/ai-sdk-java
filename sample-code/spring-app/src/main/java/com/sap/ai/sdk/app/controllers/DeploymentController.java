@@ -40,7 +40,7 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/createDelete")
   @Nullable
-  public AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
+  AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final var deployment =
         CLIENT.create(
@@ -62,7 +62,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/stop")
   @Nonnull
   @SuppressWarnings("unused") // debug method that doesn't need to be tested
-  public List<AiDeploymentModificationResponse> stopByConfigId(
+  List<AiDeploymentModificationResponse> stopByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to STOP", myDeployments.size());
@@ -90,7 +90,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/delete")
   @Nonnull
   @SuppressWarnings("unused") // debug method that doesn't need to be tested
-  public List<AiDeploymentDeletionResponse> deleteByConfigId(
+  List<AiDeploymentDeletionResponse> deleteByConfigId(
       @Nonnull @PathVariable("id") final String configId) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to DELETE", myDeployments.size());
@@ -109,7 +109,7 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/getAll")
   @Nonnull
-  public List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
+  List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
     final AiDeploymentList deploymentList = CLIENT.query(RESOURCE_GROUP);
 
     return deploymentList.getResources().stream()
@@ -124,7 +124,7 @@ class DeploymentController {
    */
   @GetMapping("/getAll")
   @Nullable
-  public AiDeploymentList getAll() {
+  AiDeploymentList getAll() {
     return CLIENT.query(RESOURCE_GROUP);
   }
 
@@ -138,7 +138,7 @@ class DeploymentController {
    */
   @Nonnull
   @SuppressWarnings("unused") // debug method that doesn't need to be tested
-  public AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
+  AiDeploymentCreationResponse createConfigAndDeploy(final OpenAiModel model) {
 
     // Create a configuration
     final var modelNameParameter =
