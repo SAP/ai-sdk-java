@@ -193,7 +193,7 @@ class OpenAiController {
   }
 
   /**
-   * Chat request to OpenAI with filtering by resource group
+   * Chat request to OpenAI filtering by resource group
    *
    * @param resourceGroup The resource group to use
    * @return the assistant message response
@@ -203,13 +203,10 @@ class OpenAiController {
   public static OpenAiChatCompletionOutput chatCompletionWithResource(
       @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
 
-    final var destinationWithResource =
-        new AiCoreService()
-            .forDeploymentByModel(GPT_4O)
-            .withResourceGroup(resourceGroup)
-            .destination();
+    final var destination =
+        new AiCoreService().getInferenceDestination(resourceGroup).forModel(GPT_4O);
 
-    return OpenAiClient.withCustomDestination(destinationWithResource)
+    return OpenAiClient.withCustomDestination(destination)
         .chatCompletion("Where is the nearest coffee shop?");
   }
 }

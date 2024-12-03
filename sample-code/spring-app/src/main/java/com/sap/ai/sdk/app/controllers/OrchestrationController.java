@@ -156,11 +156,9 @@ class OrchestrationController {
   public OrchestrationChatResponse completionWithResourceGroup(
       @PathVariable("resourceGroup") @Nonnull final String resourceGroup) {
 
-    var deployment =
-        new AiCoreService()
-            .forDeploymentByScenario("orchestration")
-            .withResourceGroup(resourceGroup);
-    var clientWithResourceGroup = new OrchestrationClient(deployment);
+    final var destination =
+        new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
+    final var clientWithResourceGroup = new OrchestrationClient(destination);
 
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 
