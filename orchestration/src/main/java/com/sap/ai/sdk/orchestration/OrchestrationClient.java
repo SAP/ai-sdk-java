@@ -25,12 +25,14 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoun
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
@@ -109,6 +111,23 @@ public class OrchestrationClient {
 
     val request = toCompletionPostRequest(prompt, config);
     return new OrchestrationChatResponse(executeRequest(request));
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param prompt a text message.
+   * @return A stream of message deltas
+   * @throws OrchestrationClientException if the request fails or if the finish reason is
+   *     content_filter
+   */
+  @Nonnull
+  public Stream<OrchestrationChatCompletionDelta> streamChatCompletion(
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
+      throws OrchestrationClientException {
+
+    val request = toCompletionPostRequest(prompt, config);
+    return streamChatCompletionDeltas(request);
   }
 
   /**
@@ -209,6 +228,55 @@ public class OrchestrationClient {
         | HttpClientInstantiationException
         | IOException e) {
       throw new OrchestrationClientException("Failed to execute request", e);
+    }
+  }
+
+  /**
+   * Generate a completion for the given prompt.
+   *
+   * @param request the prompt, including messages and other parameters.
+   * @return A stream of chat completion delta elements.
+   * @throws OrchestrationClientException if the request fails
+   */
+  @Nonnull
+  public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
+      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
+    request.getOrchestrationConfig().setStream(true);
+    return executeStream("/completion", request, OrchestrationChatCompletionDelta.class);
+  }
+
+  @Nonnull
+  private <D extends StreamedDelta> Stream<D> executeStream(
+      @Nonnull final String path,
+      @Nonnull final Object payload,
+      @Nonnull final Class<D> deltaType) {
+    final var request = new HttpPost(path);
+    serializeAndSetHttpEntity(request, payload);
+    return streamRequest(request, deltaType);
+  }
+
+  private static void serializeAndSetHttpEntity(
+      @Nonnull final BasicClassicHttpRequest request, @Nonnull final Object payload) {
+    try {
+      final var json = JACKSON.writeValueAsString(payload);
+      request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+    } catch (final JsonProcessingException e) {
+      throw new OrchestrationClientException("Failed to serialize request parameters", e);
+    }
+  }
+
+  @Nonnull
+  private <D extends StreamedDelta> Stream<D> streamRequest(
+      final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
+    val postRequest = new HttpPost("/completion");
+    try {
+      val destination = destinationSupplier.get();
+      log.debug("Using destination {} to connect to orchestration service", destination);
+      val client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      return new OrchestrationStreamingHandler<>(deltaType)
+          .handleResponse(client.executeOpen(null, request, null));
+    } catch (final IOException e) {
+      throw new OrchestrationClientException("Request to the Orchestration service failed", e);
     }
   }
 }
