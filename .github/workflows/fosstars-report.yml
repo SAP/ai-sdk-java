@@ -48,7 +48,7 @@ jobs:
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          mvn -T1 --no-transfer-progress --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
+          mvn -T1 --no-transfer-progress dependency-check:check
 
       - name: "Archive CVE Report"
         uses: actions/upload-artifact@v4
@@ -72,14 +72,3 @@ jobs:
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
-
-      - name: "Slack Notification"
-        if: failure()
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": "⚠️ OWASP Dependency check failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
-            }
