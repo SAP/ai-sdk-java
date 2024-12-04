@@ -48,7 +48,7 @@ jobs:
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          mvn org.owasp:dependency-check-maven:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=.pipeline/dependency-check-suppression.xml -DnvdDatafeedUrl=https://mirror.cveb.in/nvd/json/cve/1.1/nvdcve-1.1-{0}.json.gz
+          mvn org.owasp:dependency-check-maven:10.0.4:check -DnvdApiKey=$NVD_API_KEY -DfailBuildOnCVSS=7 -DskipProvidedScope=true -DsuppressionFile=.pipeline/dependency-check-suppression.xml -DnvdDatafeedUrl=https://mirror.cveb.in/nvd/json/cve/1.1/nvdcve-1.1-{0}.json.gz
 
       - name: "Archive CVE Report"
         uses: actions/upload-artifact@v4
