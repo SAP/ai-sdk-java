@@ -6,6 +6,7 @@ import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -82,6 +83,14 @@ public class OrchestrationModuleConfig {
    *     AI Core: Orchestration - Output Filtering</a>
    */
   @Nullable FilteringModuleConfig filteringConfig;
+
+  /**
+   * A grounding configuration to provide additional context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - </a>
+   */
+  @Nullable GroundingModuleConfig groundingConfig;
 
   /**
    * Creates a new configuration with the given LLM configuration.
