@@ -74,8 +74,8 @@ class OrchestrationController {
           try (stream) {
             stream.forEach(
                 deltaMessage -> {
-                  log.info("Controller: {}", deltaMessage.getDeltaContent());
-                  send(emitter, deltaMessage.getDeltaContent());
+                  log.info("Controller: {}", deltaMessage);
+                  send(emitter, deltaMessage);
                 });
           } finally {
             emitter.complete();

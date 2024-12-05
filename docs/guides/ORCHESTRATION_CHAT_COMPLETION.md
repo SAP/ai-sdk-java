@@ -186,6 +186,33 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
+### Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+#### Asynchronous Streaming
+
+This is a blocking example for streaming and printing directly to the console:
+
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+// try-with-resources on stream ensures the connection will be closed
+try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
+    stream.forEach(
+        deltaString -> {
+            System.out.print(deltaString);
+            System.out.flush();
+        });
+}
+```
+
+#### Spring Boot example
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java). It shows the usage of Spring
+Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+
 ### Set model parameters
 
 Change your LLM configuration to add model parameters:
