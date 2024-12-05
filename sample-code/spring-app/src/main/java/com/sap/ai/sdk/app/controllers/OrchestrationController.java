@@ -242,6 +242,5 @@ class OrchestrationController {
         final var configWithGrounding = config.withGroundingConfig(groundingConfig);
 
         return client.chatCompletion(prompt, configWithGrounding);
-//    return client.chatCompletion(prompt, config);
   }
 }
