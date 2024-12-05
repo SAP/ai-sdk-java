@@ -248,8 +248,8 @@ Your application should now be running on Cloud Foundry, and the AI Core credent
 
 For more detailed information and advanced usage, please refer to the following:
 
-- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
+- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
 ## FAQs
