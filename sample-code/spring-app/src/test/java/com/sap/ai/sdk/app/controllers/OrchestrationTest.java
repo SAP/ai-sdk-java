@@ -44,9 +44,8 @@ class OrchestrationTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
         delta -> {
-          final String deltaContent = delta.getDeltaContent();
           log.info("delta: {}", delta);
-          if (!deltaContent.isEmpty()) {
+          if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
         });

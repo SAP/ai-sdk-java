@@ -99,7 +99,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
   static Stream<String> lines(@Nullable final HttpEntity entity)
       throws OrchestrationClientException {
     if (entity == null) {
-      throw new OrchestrationClientException("OpenAI response was empty.");
+      throw new OrchestrationClientException("Orchestration service response was empty.");
     }
 
     final InputStream inputStream;

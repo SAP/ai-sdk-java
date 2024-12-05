@@ -33,11 +33,11 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,13 +46,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 /**
@@ -71,9 +75,9 @@ class OrchestrationUnitTest {
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
-  private OrchestrationClient client;
-  private OrchestrationModuleConfig config;
-  private OrchestrationPrompt prompt;
+  private static OrchestrationClient client;
+  private static OrchestrationModuleConfig config;
+  private static OrchestrationPrompt prompt;
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -82,6 +86,13 @@ class OrchestrationUnitTest {
     client = new OrchestrationClient(destination);
     config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
+    ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
+  }
+
+  @AfterEach
+  void reset() {
+    ApacheHttpClient5Accessor.setHttpClientCache(null);
+    ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
   @Test
@@ -286,8 +297,20 @@ class OrchestrationUnitTest {
     }
   }
 
-  @Test
-  void testErrorHandling() {
+  private static Runnable[] errorHandlingCalls() {
+    return new Runnable[] {
+      () -> client.chatCompletion(new OrchestrationPrompt(""), config),
+      () ->
+          client
+              .streamChatCompletion(new OrchestrationPrompt(""), config)
+              // the stream needs to be consumed to parse the response
+              .forEach(System.out::println)
+    };
+  }
+
+  @ParameterizedTest
+  @MethodSource("errorHandlingCalls")
+  void testErrorHandling(@Nonnull final Runnable request) {
     stubFor(
         post(anyUrl())
             .inScenario("Errors")
@@ -321,7 +344,6 @@ class OrchestrationUnitTest {
     stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
 
     final var softly = new SoftAssertions();
-    final Runnable request = () -> client.executeRequest(mock(CompletionPostRequest.class));
 
     softly
         .assertThatThrownBy(request::run)
@@ -433,6 +455,32 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void streamChatCompletionOutputFilterErrorHandling() throws IOException {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletionOutputFilter.txt"))) {
+
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      // Create a mock response
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      mockResponse.setEntity(inputStreamEntity);
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+
+      // Configure the HttpClient mock to return the mock response
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
+        assertThatThrownBy(() -> stream.forEach(System.out::println))
+            .isInstanceOf(OrchestrationClientException.class)
+            .hasMessage("Content filter filtered the output.");
+      }
+
+      Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @Test
   void streamChatCompletionDeltas() throws IOException {
     try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
 
@@ -470,6 +518,10 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getRequestId())
             .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
 
+        assertThat(deltaList.get(0).getFinishReason()).isEqualTo("");
+        assertThat(deltaList.get(1).getFinishReason()).isEqualTo("");
+        assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
+
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
         var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
         var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
@@ -486,6 +538,8 @@ class OrchestrationUnitTest {
         final var choices0 = result0.getChoices().get(0);
         assertThat(choices0.getIndex()).isEqualTo(0);
         assertThat(choices0.getFinishReason()).isEmpty();
+        assertThat(choices0.getCustomField("delta")).isNotNull();
+        // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
         final var message0 = (Map<String, Object>) choices0.getCustomField("delta");
         assertThat(message0.get("role")).isEqualTo("");
         assertThat(message0.get("content")).isEqualTo("");
@@ -501,10 +555,10 @@ class OrchestrationUnitTest {
         assertThat(result1.getModel()).isEqualTo("gpt-35-turbo");
         assertThat(result1.getObject()).isEqualTo("chat.completion.chunk");
         assertThat(result1.getUsage()).isNull();
+        assertThat(result1.getChoices()).hasSize(1);
         final var choices1 = result1.getChoices().get(0);
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
-        // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
         assertThat(choices1.getCustomField("delta")).isNotNull();
         final var message1 = (Map<String, Object>) choices1.getCustomField("delta");
         assertThat(message1.get("role")).isEqualTo("assistant");
@@ -516,6 +570,7 @@ class OrchestrationUnitTest {
         assertThat(result2.getModel()).isEqualTo("gpt-35-turbo");
         assertThat(result2.getObject()).isEqualTo("chat.completion.chunk");
         assertThat(result2.getUsage()).isNull();
+        assertThat(result2.getChoices()).hasSize(1);
         final var choices2 = result2.getChoices().get(0);
         assertThat(choices2.getIndex()).isEqualTo(0);
         assertThat(choices2.getFinishReason()).isEqualTo("stop");

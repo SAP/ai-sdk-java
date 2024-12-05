@@ -45,7 +45,9 @@ class OrchestrationStreamingHandler<D extends StreamedDelta> {
               try {
                 return JACKSON.readValue(data, deltaType);
               } catch (final IOException e) { // exception message e gets lost
-                log.error("Failed to parse the following response from OpenAI model: {}", line);
+                log.error(
+                    "Failed to parse the following response from the Orchestration service: {}",
+                    line);
                 throw new OrchestrationClientException("Failed to parse delta message: " + line, e);
               }
             });
