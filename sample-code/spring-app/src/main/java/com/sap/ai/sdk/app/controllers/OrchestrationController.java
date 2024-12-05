@@ -239,8 +239,8 @@ class OrchestrationController {
         GroundingModuleConfig.create()
             .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
             .config(groundingConfigConfig);
-        final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
 
-        return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion(prompt, configWithGrounding);
   }
 }
