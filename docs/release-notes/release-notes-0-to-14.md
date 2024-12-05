@@ -1,4 +1,4 @@
-### 1.0.0 - December 03, 2024
+## 1.0.0 - December 03, 2024
 
 [All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.0.0)
 
