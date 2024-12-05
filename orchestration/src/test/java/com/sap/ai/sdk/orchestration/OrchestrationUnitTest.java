@@ -463,9 +463,12 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(1).getDeltaContent()).isEqualTo("Sure");
         assertThat(deltaList.get(2).getDeltaContent()).isEqualTo("!");
 
-        assertThat(deltaList.get(0).getRequestId()).isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
-        assertThat(deltaList.get(1).getRequestId()).isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
-        assertThat(deltaList.get(2).getRequestId()).isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
+        assertThat(deltaList.get(0).getRequestId())
+            .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
+        assertThat(deltaList.get(1).getRequestId())
+            .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
+        assertThat(deltaList.get(2).getRequestId())
+            .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
         var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
@@ -489,7 +492,8 @@ class OrchestrationUnitTest {
         List<ChatMessage> templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
         assertThat(templating.get(0).getRole()).isEqualTo("user");
-        assertThat(templating.get(0).getContent()).isEqualTo("Hello world! Why is this phrase so famous?");
+        assertThat(templating.get(0).getContent())
+            .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
         assertThat(result1.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");

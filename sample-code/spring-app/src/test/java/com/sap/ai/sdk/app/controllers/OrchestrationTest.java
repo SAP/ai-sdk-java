@@ -43,17 +43,17 @@ class OrchestrationTest {
     stream
         // foreach consumes all elements, closing the stream at the end
         .forEach(
-            delta -> {
-              final String deltaContent = delta.getDeltaContent();
-              log.info("delta: {}", delta);
-              if (!deltaContent.isEmpty()) {
-                filledDeltaCount.incrementAndGet();
-              }
-            });
+        delta -> {
+          final String deltaContent = delta.getDeltaContent();
+          log.info("delta: {}", delta);
+          if (!deltaContent.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
 
     // the first two and the last delta don't have any content
     // see OpenAiChatCompletionDelta#getDeltaContent
-    assertThat(filledDeltaCount.get()).isGreaterThan(0);  
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
   @Test

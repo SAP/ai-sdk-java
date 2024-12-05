@@ -123,8 +123,7 @@ class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  static void send(
-      @Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
+  static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
     try {
       emitter.send(chunk);
     } catch (final IOException e) {
