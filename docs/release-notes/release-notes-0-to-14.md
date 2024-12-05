@@ -19,6 +19,7 @@
     - Text
     - Images
     - Tools
+  - Generate embeddings for input text.
 
 > [!WARNING]  
 > All model classes are generated or depend on changing specifications.
