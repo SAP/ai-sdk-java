@@ -14,16 +14,12 @@ The SDK simplifies the setup and interaction with SAP AI Core, allowing you to f
 ## Table of Contents
 
 - [General Requirements](#general-requirements)
-- [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
-    - [Option 1: Set Credentials as Environment Variable](#option-1-set-ai-core-credentials)
-    - [Option 2: Regular Service Binding in SAP BTP Cloud Foundry](#option-2-regular-service-binding-in-sap-btp-cloud-foundry)
-    - [Option 3: Define and Use a Destination](#option-3-define-and-use-a-destination)
 - [Getting Started](#getting-started)
     - [What You'll Build](#what-youll-build)
     - [Prerequisites](#prerequisites)
-    - [Write the Code](#write-the-code)
-    - [Run and Test the Application Locally](#run-and-test-the-application-locally)
-    - [Deploying to Cloud Foundry (Optional)](#deploying-to-cloud-foundry-optional)
+    - [Use the Orchestration API](#use-the-orchestration-api)
+    - [Run the Application Locally](#run-the-application-locally)
+    - [Explore Further Capabilities](#explore-further-capabilities)
 - [Documentation](#documentation)
 - [FAQs](#faqs)
 - [Contribute, Support and Feedback](#contribute-support-and-feedback)
@@ -35,219 +31,101 @@ The SDK simplifies the setup and interaction with SAP AI Core, allowing you to f
 
 To use the SDK in a Java application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
 
-- **SAP AI Core Service** enabled in your SAP BTP account.
-    - [How to enable the AI Core service](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
-- **SAP AI Core Credentials** to access the AI Core service.
-    - [Connecting to SAP AI Core](#connecting-to-sap-ai-core)
+- Java 17 or higher.
+- Access to an **SAP AI Core Service** instance.
+
+Please refer to [this documentation on **how to connect the SDK to AI Core**](docs/guides/CONNECTING_TO_AICORE.md).
 
 The following table lists the required versions, based on the latest release:
 
-| Dependency | Minimum Version | Recommended Version |
-| --- | --- | --- |
-| JDK | 17 (LTS) | 21 (LTS) |
-| SAP Cloud SDK | 5.6.0 | latest |
-| (optional) CAP Java | 3.0.0 | latest |
-| (optional) Spring Boot | 3.0 | latest |
+| Dependency             | Minimum Version | Recommended Version |
+|------------------------|-----------------|---------------------|
+| JDK                    | 17 (LTS)        | 21 (LTS)            |
+| SAP Cloud SDK          | 5.6.0           | latest              |
+| (optional) CAP Java    | 3.0.0           | latest              |
+| (optional) Spring Boot | 3.0             | latest              |
 
 See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
-
-## Connecting to SAP AI Core
-
-To interact with SAP AI Core services, the SAP AI SDK requires credentials available at application runtime.
-By default, the SDK automatically extracts these credentials from a service instance of  type `aicore` bound to your application.
-
-If running the application locally without this service binding, you may encounter an exception:
-
-```
-Could not find any matching service bindings for service identifier 'aicore'
-```
-
-There are multiple ways to provide these credentials:
-
-| Option | Description                                                                                              |
-|--------|----------------------------------------------------------------------------------------------------------|
-| **1**  | Create an `.env` file containing an `AICORE_SERVICE_KEY={...}`                                           |
-| **2**  | Regular service binding in SAP BTP Cloud Foundry (results in `VCAP_SERVICES` environment variable entry) |
-| **3**  | Define and use a _Destination_ in the SAP BTP Destination Service                                        |
-
-Additional methods (not recommended for production):
-
-- Use the [hybrid testing](https://cap.cloud.sap/docs/advanced/hybrid-testing#services-on-cloud-foundry) approach for
-  CAP applications (e.g., `cds bind --to aicore --exec mvn spring-boot:run`)
-- Leverage a "user-provided" service binding
-- Define and use a custom `ServiceBinding` or `ServiceBindingAccessor` in your application
-
-### Option 1: Set AI Core Credentials
-
-<details>
-<summary>Click to view detailed steps</summary>
-
-
-**1. Obtain Service Credentials:**
-
-- Log into the **SAP BTP Cockpit**
-- Navigate to **Services** -> **Instances and Subscriptions** -> **Instances** -> **AI Core**
-- Click **View Credentials** and copy the JSON content
-
-**2. Create `.env` file:**
-
-- Create an `.env` file in the root directory of your application
-- Add a **one line** entry `AICORE_SERVICE_KEY={...}` with the copied JSON
-
-<details>
-<summary>Set an environment variable instead of .env</summary>
-
-**2. Set an Environment Variable: (alternative)**
-
-- In your IDE or terminal, set the environment variable `AICORE_SERVICE_KEY` with the copied JSON content
-
-  ℹ️ The environment variable has priority over the `.env` file.
-
-Example Linux/MacOS:
-
-```shell
-export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
-```
-
-Example Windows:
-
-```shell
-$env:AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
-```
-
-</details>
-</details>
-
-### Option 2: Regular Service Binding in SAP BTP Cloud Foundry
-
-<details>
-<summary>Click to view detailed steps</summary>
-
-
-**1. Bind an existing `aicore` service instance to your application**
-
-SAP BTP provides multiple ways to do this:
-
-- Using the web interface
-- Using the CLI
-- Using MTA or manifest files
-
-[Learn more about binding service instances to applications](https://help.sap.com/docs/btp/sap-business-technology-platform/binding-service-instances-to-applications)
-
-After restarting your application, you should see an "aicore" entry in the `VCAP_SERVICES` environment variable:
-
-```json
-{
-  "aicore": [
-    {
-      "clientid": "...",
-      "clientsecret": "...",
-      "url": "...",
-      "serviceurls": {
-        "AI_API_URL": "..."
-      }
-    }
-  ]
-}
-```
-
-</details>
-
-### Option 3: Define and Use a Destination
-
-<details>
-<summary>Click to view detailed steps</summary>
-
-**1. Obtain Service Credentials:** (Same as in Option 1)
-
-**2. Create a Destination:**
-
-- In the **SAP BTP Cockpit**, go to **Connectivity** -> **Destinations**
-- Click **New Destination** and configure:
-
-    - **Name**: `my-aicore`
-    - **Type**: `HTTP`
-    - **URL**: `[serviceurls.AI_API_URL]`
-    - **Proxy Type**: `Internet`
-    - **Authentication**: `OAuth2ClientCredentials`
-    - **Client ID**: `[clientid]`
-    - **Client Secret**: `[clientsecret]`
-    - **Token Service URL Type**: `Dedicated`
-    - **Token Service URL**: `[url]`
-
-**3. Use the Destination in Your Application:**
-
-```java
-Destination destination = DestinationAccessor.getDestination("my-aicore");
-AiCoreService aiCoreService = new AiCoreService().withDestination(destination);
-DeploymentApi client = new DeploymentApi(aiCoreService);
-```
-
-</details>
 
 ## Getting Started
 
 ### What You'll Build
 
-In this quickstart, you'll build a simple Spring Boot application that uses the OpenAI GPT-3.5 Turbo model for chat completion.
+In this quickstart, you'll use the OpenAI GPT-4o model through the [Orchestration Service of AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) for generating text.
 The application will send a prompt to the AI model and display the generated response.
 
 ### Prerequisites
 
-Before you begin, ensure you have:
+This quickstart assumes you have a **deployment of the Orchestration service available** in the `default` resource group of your AI Core instance.
+If you don't have a deployment yet, please refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) on how to create one.
 
-- Met the [General Requirements](#general-requirements).
-- Met the OpenAI Chat Completion module specific requirements
-    - Refer to [Prerequisites for OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md#prerequisites)
-- Set up the AI Core credentials
-  using [(1) Environment variable or env-file](#option-1-set-ai-core-credentials)
-  or [(2) Regular Service Binding](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
-- Deployed the OpenAI GPT-3.5 Turbo model in SAP AI Core.
-    - Refer to [Deploying the OpenAI GPT-3.5 Turbo Model](docs/guides/OPENAI_CHAT_COMPLETION.md#usage)
+### Add the SDK as a Dependency
 
-### Write the Code
+Add the following dependency to your `pom.xml` file:
 
-Add the following code to the controller or service class in your Spring Boot application:
-
-```java
-// Initialize the client for GPT-3.5 Turbo model
-OpenAiClient client = OpenAiClient.forModel(OpenAiModel.GPT_35_TURBO);
-
-// Perform chat completion
-OpenAiChatCompletionOutput result =
-    client
-        .withSystemPrompt("You are a helpful assistant.")
-        .chatCompletion("Hello World! Why is this phrase so famous?");
+```xml
+<dependency>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>orchestration</artifactId>
+    <!-- Use the latest version here -->
+    <version>${ai-sdk.version}</version>
+</dependency>
 ```
 
-### Run and Test the Application Locally
+### Use the Orchestration API
 
-Then, compile and run your application:
+We'll use a `client` to interact with the Orchestration service:
+
+```java
+var client = new OrchestrationClient();
+```
+
+Next, we'll specify the model we want to use:
+
+```java
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+```
+
+Now we can create our first prompt:
+
+```java
+var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+
+var result = client.chatCompletion(prompt, config).getContent();
+```
+
+The result will be the text generated by the AI model.
+
+### Run the Application Locally
+
+In order to run the application locally, you need to provide credentials for your AI Core service instance.
+
+For this example we'll use a **service key** and pass it as an **environment variable** to the application.
 
 ```shell
 cd your-spring-app/
 
-mvn compile
+# assuming a bash, for other shells (e.g. PowerShell) see the below documentation
+export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": "...", "serviceurls": { "AI_API_URL": "..." } }'
+
+# assuming Maven and a Spring Boot application
 mvn spring-boot:run
 ```
 
-### Deploying to Cloud Foundry (Optional)
+Please find **detailed instructions** and more examples [in this documentation](docs/guides/CONNECTING_TO_AICORE.md#using-the-aicore_service_key-environment-variable).
 
-When deploying your productive application to Cloud Foundry, it is recommended to use **service binding** to provide the AI Core credentials as per [Option 2](#option-2-regular-service-binding-in-sap-btp-cloud-foundry).
+### Explore Further Capabilities
 
-Build your application using Maven and deploy it to Cloud Foundry:
-
- ```shell
- cf push
- ```
-
-That's it!
-Your application should now be running on Cloud Foundry, and the AI Core credentials are provided securely via service binding.
+Check out the options available for the `OrchestrationPrompt` and `OrchestrationModuleConfig` classes.
+You can use templating, content filtering, data masking and more.
+Please refer to [this documentation](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md) for more information.
 
 ## Documentation
 
 For more detailed information and advanced usage, please refer to the following:
 
+- [Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
 - [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
 - [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
