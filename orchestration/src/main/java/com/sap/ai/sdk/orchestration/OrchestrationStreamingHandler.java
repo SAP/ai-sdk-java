@@ -35,7 +35,7 @@ class OrchestrationStreamingHandler<D extends StreamedDelta> {
         .peek(
             line -> {
               if (!line.startsWith("data: ")) {
-                final String msg = "Failed to parse response from OpenAI model";
+                final String msg = "Failed to parse response from the Orchestration service";
                 parseErrorAndThrow(line, new OrchestrationClientException(msg));
               }
             })

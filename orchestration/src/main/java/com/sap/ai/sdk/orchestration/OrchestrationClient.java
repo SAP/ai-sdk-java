@@ -122,12 +122,21 @@ public class OrchestrationClient {
    *     content_filter
    */
   @Nonnull
-  public Stream<OrchestrationChatCompletionDelta> streamChatCompletion(
+  public Stream<String> streamChatCompletion(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
       throws OrchestrationClientException {
 
     val request = toCompletionPostRequest(prompt, config);
-    return streamChatCompletionDeltas(request);
+    return streamChatCompletionDeltas(request)
+        .peek(OrchestrationClient::throwOnContentFilter)
+        .map(OrchestrationChatCompletionDelta::getDeltaContent);
+  }
+
+  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
+    final String finishReason = delta.getFinishReason();
+    if (finishReason != null && finishReason.equals("content_filter")) {
+      throw new OrchestrationClientException("Content filter filtered the output.");
+    }
   }
 
   /**
