@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- Added `streamChatCompletion()` and `streamChatCompletionDeltas()` to the `OrchestrationClient`
 
 ### 📈 Improvements
 
