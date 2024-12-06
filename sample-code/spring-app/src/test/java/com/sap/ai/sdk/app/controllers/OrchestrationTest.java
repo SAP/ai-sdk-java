@@ -151,13 +151,20 @@ class OrchestrationTest {
         .contains("Mallory");
   }
 
+  //  TODO: Ask about DisabledIfSystemProperty, is this needed anymore?
   @Test
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
     var response = controller.grounding();
+    var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(response).isNotNull();
-    assertThat(response.getOriginalResponse().getModuleResults().getGrounding()).isNotNull();
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+    assertThat(result.getModuleResults().getGrounding()).isNotNull();
+    //  TODO:  check for grounding/data
+    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
   }
 
   @Test

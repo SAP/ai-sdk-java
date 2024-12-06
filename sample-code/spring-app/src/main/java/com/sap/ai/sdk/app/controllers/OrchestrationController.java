@@ -225,8 +225,7 @@ class OrchestrationController {
         Message.user(
             "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
     final var prompt =
-        new OrchestrationPrompt(
-            Map.of("groundingInput", "Give the number of letters in the word 'world'."), message);
+        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
 
     final var filterInner =
         DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
