@@ -1,12 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
-import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
