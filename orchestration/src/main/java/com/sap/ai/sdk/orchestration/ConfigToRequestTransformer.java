@@ -70,6 +70,7 @@ final class ConfigToRequestTransformer {
 
     Option.of(config.getFilteringConfig()).forEach(moduleConfig::filteringModuleConfig);
     Option.of(config.getMaskingConfig()).forEach(moduleConfig::maskingModuleConfig);
+    Option.of(config.getGroundingConfig()).forEach(moduleConfig::groundingModuleConfig);
 
     return moduleConfig;
   }
