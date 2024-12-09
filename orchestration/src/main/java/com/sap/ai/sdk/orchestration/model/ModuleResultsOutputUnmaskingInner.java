@@ -12,12 +12,13 @@
 
 package com.sap.ai.sdk.orchestration.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /** ModuleResultsOutputUnmaskingInner */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "",
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = LLMChoice.class),
+  @JsonSubTypes.Type(value = LLMChoiceStreaming.class),
+})
 public interface ModuleResultsOutputUnmaskingInner {}

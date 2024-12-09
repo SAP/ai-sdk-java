@@ -12,12 +12,13 @@
 
 package com.sap.ai.sdk.orchestration.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /** TemplatingModuleConfig */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "",
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Template.class),
+  @JsonSubTypes.Type(value = TemplateRef.class),
+})
 public interface TemplatingModuleConfig {}
