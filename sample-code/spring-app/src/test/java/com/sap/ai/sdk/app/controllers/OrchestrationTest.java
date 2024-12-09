@@ -151,7 +151,6 @@ class OrchestrationTest {
         .contains("Mallory");
   }
 
-  //  TODO: Ask about DisabledIfSystemProperty, is this needed anymore?
   @Test
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
@@ -163,7 +162,7 @@ class OrchestrationTest {
     assertThat(response).isNotNull();
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getModuleResults().getGrounding()).isNotNull();
-    //  TODO:  check for grounding/data
+    assertThat(result.getModuleResults().getGrounding().getData()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
   }
 
