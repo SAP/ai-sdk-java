@@ -107,7 +107,7 @@ class OrchestrationUnitTest {
             "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler.```It enables the companion of the Intelligent Enterprise, guiding you through content discovery within SAP Ecosystem, and giving a transparent role-based access to the relevant processes from everywhere. This is the one assistant experience, a unified and delightful user experience across SAP’s \u01ee solution portfolio.");
     assertThat(llmChoice.getMessage().getContent())
         .isEqualTo(
-                "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems. It enables the companion of the Intelligent Enterprise, guiding users through content discovery within the SAP Ecosystem and providing transparent role-based access to relevant processes from anywhere. Joule aims to provide a unified and delightful user experience across SAP's solution portfolio.");
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems. It enables the companion of the Intelligent Enterprise, guiding users through content discovery within the SAP Ecosystem and providing transparent role-based access to relevant processes from anywhere. Joule aims to provide a unified and delightful user experience across SAP's solution portfolio.");
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent())
         .isEqualTo(
