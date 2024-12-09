@@ -112,7 +112,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-parameter-names</artifactId>
-        <version>2.18.1</version>
+        <version>2.18.2</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
@@ -589,7 +589,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>11.1.0</version>
+        <version>11.1.1</version>
         <configuration>
           <connectionTimeout>60000</connectionTimeout>
           <nvdMaxRetryCount>20</nvdMaxRetryCount>
