@@ -12,12 +12,13 @@
 
 package com.sap.ai.sdk.orchestration.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /** Reference to a template in the prompt registry by ID or by scenario, name and version */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "",
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = TemplateRefByID.class),
+  @JsonSubTypes.Type(value = TemplateRefByScenarioNameVersion.class),
+})
 public interface TemplateRefTemplateRef {}
