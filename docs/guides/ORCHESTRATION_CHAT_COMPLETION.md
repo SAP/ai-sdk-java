@@ -186,6 +186,37 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
+### Grounding
+
+Use the grounding module to provide additional context to the AI model. 
+
+```java
+    var message =
+        Message.user(
+            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
+    var prompt =
+        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+
+    var filterInner =
+        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
+    var groundingConfigConfig =
+        GroundingModuleConfigConfig.create()
+            .inputParams(List.of("groundingInput"))
+            .outputParam("groundingOutput");
+    groundingConfigConfig.setFilters(List.of(filterInner));
+    
+    var groundingConfig =
+        GroundingModuleConfig.create()
+            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+            .config(groundingConfigConfig);
+    var configWithGrounding = config.withGroundingConfig(groundingConfig);
+
+    var result =  
+            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
+```
+
+In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding information in the user message.
+
 ### Set model parameters
 
 Change your LLM configuration to add model parameters:
