@@ -200,3 +200,15 @@ System.out.println("Tokens used: " + tokensUsed);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java). It shows the usage of Spring
 Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+### Embedding
+
+Get the embeddings of a text input in list of float values:
+
+```java
+OpenAiEmbeddingParameters request = new OpenAiEmbeddingParameters().setInput("Hello World");
+
+OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+```
+
+See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
