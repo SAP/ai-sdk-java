@@ -126,8 +126,8 @@ Please refer to [this documentation](docs/guides/ORCHESTRATION_CHAT_COMPLETION.m
 For more detailed information and advanced usage, please refer to the following:
 
 - [Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
-- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
+- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
 ## FAQs

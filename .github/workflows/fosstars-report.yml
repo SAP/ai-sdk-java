@@ -31,18 +31,12 @@ jobs:
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
-          fail-on-cache-miss: true
+         # fail-on-cache-miss: true
 
       - name: "Build SDK"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
-
-      - name: "Fosstars Rating"
-        uses: SAP/fosstars-rating-core-action@v1.14.0
-        with:
-          report-branch: fosstars-report
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "CVE Scan"
         env:
@@ -72,6 +66,13 @@ jobs:
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
+
+      # This action changes the active branch!
+      - name: "Fosstars Rating"
+        uses: SAP/fosstars-rating-core-action@v1.14.0
+        with:
+          report-branch: fosstars-report
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Slack Notification"
         if: failure()
