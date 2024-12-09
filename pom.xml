@@ -76,11 +76,11 @@
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
     <!-- Test coverage -->
-    <coverage.instruction>75%</coverage.instruction>
-    <coverage.branch>67%</coverage.branch>
-    <coverage.complexity>69%</coverage.complexity>
-    <coverage.line>76%</coverage.line>
-    <coverage.method>85%</coverage.method>
+    <coverage.instruction>77%</coverage.instruction>
+    <coverage.branch>68%</coverage.branch>
+    <coverage.complexity>71%</coverage.complexity>
+    <coverage.line>79%</coverage.line>
+    <coverage.method>100%</coverage.method>
     <coverage.class>85%</coverage.class>
   </properties>
 
