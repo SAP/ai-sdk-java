@@ -35,7 +35,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
-  private static final String DEFAULT_API_VERSION = "2024-02-01";
+  private static final String DEFAULT_API_VERSION = "2024-06-01";
   static final ObjectMapper JACKSON = getDefaultObjectMapper();
   @Nullable private String systemPrompt = null;
 
