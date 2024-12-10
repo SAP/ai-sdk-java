@@ -20,8 +20,6 @@ import javax.annotation.Nonnull;
 public enum DataRepositoryType {
   VECTOR("vector"),
 
-  HELP_SAP_COM("help.sap.com"),
-
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
