@@ -215,7 +215,7 @@ Use the grounding module to provide additional context to the AI model.
             new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
 ```
 
-In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding information in the user message.
+In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
 
 ### Set model parameters
 
