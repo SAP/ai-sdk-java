@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import javax.annotation.Nonnull;
@@ -56,6 +57,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    * @return the role.
    */
   @Nonnull
+  @JsonProperty("role")
   String role();
 
   /**
@@ -65,5 +67,6 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   @Beta
+  @JsonProperty("content")
   String content();
 }
