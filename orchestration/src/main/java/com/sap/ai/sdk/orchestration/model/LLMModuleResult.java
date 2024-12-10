@@ -12,12 +12,13 @@
 
 package com.sap.ai.sdk.orchestration.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /** Output of LLM module. Follows the OpenAI spec. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "",
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = LLMModuleResultStreaming.class),
+  @JsonSubTypes.Type(value = LLMModuleResultSynchronous.class),
+})
 public interface LLMModuleResult {}

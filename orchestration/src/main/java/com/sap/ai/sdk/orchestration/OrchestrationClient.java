@@ -11,13 +11,10 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
-import com.sap.ai.sdk.orchestration.model.MaskingProviderConfig;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -49,9 +46,6 @@ public class OrchestrationClient {
     JACKSON.addMixIn(
         ModuleResultsOutputUnmaskingInner.class,
         JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
-    JACKSON.addMixIn(FilterConfig.class, JacksonMixins.NoTypeInfoMixin.class);
-    JACKSON.addMixIn(MaskingProviderConfig.class, JacksonMixins.NoTypeInfoMixin.class);
-    JACKSON.addMixIn(TemplatingModuleConfig.class, JacksonMixins.NoTypeInfoMixin.class);
   }
 
   @Nonnull private final Supplier<HttpDestination> destinationSupplier;
