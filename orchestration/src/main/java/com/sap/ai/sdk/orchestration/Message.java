@@ -66,4 +66,12 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   @Nonnull
   @Beta
   String content();
+
+  default String getContent() {
+    return content();
+  }
+
+  default String getRole() {
+    return role();
+  }
 }
