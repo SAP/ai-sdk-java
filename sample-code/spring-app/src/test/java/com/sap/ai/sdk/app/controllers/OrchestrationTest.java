@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +32,27 @@ class OrchestrationTest {
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testStreamChatCompletion() {
+    final var prompt = new OrchestrationPrompt("Who is the prettiest?");
+    final var stream = new OrchestrationClient().streamChatCompletion(prompt, controller.config);
+
+    final var filledDeltaCount = new AtomicInteger(0);
+    stream
+        // foreach consumes all elements, closing the stream at the end
+        .forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          if (!delta.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+
+    // the first two and the last delta don't have any content
+    // see OpenAiChatCompletionDelta#getDeltaContent
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
   @Test

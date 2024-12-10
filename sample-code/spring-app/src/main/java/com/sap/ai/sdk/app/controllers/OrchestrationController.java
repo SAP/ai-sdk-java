@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
@@ -18,14 +19,18 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Endpoints for the Orchestration service */
 @RestController
@@ -51,6 +56,40 @@ class OrchestrationController {
     log.info("Our trusty AI answered with: {}", result.getContent());
 
     return result;
+  }
+
+  /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return the emitter that streams the assistant message response
+   */
+  @SuppressWarnings("unused") // The end-to-end test doesn't use this method
+  @GetMapping("/streamChatCompletion")
+  @Nonnull
+  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+    final var prompt =
+        new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+    final var stream = client.streamChatCompletion(prompt, config);
+
+    final var emitter = new ResponseBodyEmitter();
+
+    final Runnable consumeStream =
+        () -> {
+          try (stream) {
+            stream.forEach(
+                deltaMessage -> {
+                  log.info("Controller: {}", deltaMessage);
+                  send(emitter, deltaMessage);
+                });
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
   /**
