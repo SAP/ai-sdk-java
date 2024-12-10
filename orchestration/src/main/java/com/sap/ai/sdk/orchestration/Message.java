@@ -47,7 +47,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   default ChatMessage createChatMessage() {
-    return ChatMessage.create().role(role()).content(content());
+    return ChatMessage.create().role(getRole()).content(getContent());
   }
 
   /**
@@ -56,7 +56,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    * @return the role.
    */
   @Nonnull
-  String role();
+  String getRole();
 
   /**
    * Returns the content of the message.
@@ -65,5 +65,5 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   @Beta
-  String content();
+  String getContent();
 }

@@ -6,7 +6,6 @@ import lombok.experimental.Accessors;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
 @Value
-@Accessors(fluent = true)
 public class AssistantMessage implements Message {
 
   /** The role of the assistant. */
