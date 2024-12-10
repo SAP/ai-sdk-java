@@ -114,6 +114,7 @@ public class OrchestrationClient {
    * @return A stream of message deltas
    * @throws OrchestrationClientException if the request fails or if the finish reason is
    *     content_filter
+   * @since 1.1.0
    */
   @Nonnull
   public Stream<String> streamChatCompletion(
@@ -240,6 +241,7 @@ public class OrchestrationClient {
    * @param request the prompt, including messages and other parameters.
    * @return A stream of chat completion delta elements.
    * @throws OrchestrationClientException if the request fails
+   * @since 1.1.0
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
@@ -271,7 +273,6 @@ public class OrchestrationClient {
   @Nonnull
   private <D extends StreamedDelta> Stream<D> streamRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
-    val postRequest = new HttpPost("/completion");
     try {
       val destination = destinationSupplier.get();
       log.debug("Using destination {} to connect to orchestration service", destination);

@@ -209,8 +209,8 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 
 #### Spring Boot example
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java). It shows the usage of Spring
-Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 
 ### Set model parameters
