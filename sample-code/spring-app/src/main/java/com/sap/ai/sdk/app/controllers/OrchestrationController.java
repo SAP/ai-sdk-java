@@ -14,6 +14,10 @@ import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
+import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.util.List;
@@ -245,5 +249,36 @@ class OrchestrationController {
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
+  }
+
+  /**
+   * Using grounding to provide additional context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   */
+  @GetMapping("/grounding")
+  @Nonnull
+  OrchestrationChatResponse grounding() {
+    final var message =
+        Message.user(
+            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
+    final var prompt =
+        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+
+    final var filterInner =
+        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
+    final var groundingConfigConfig =
+        GroundingModuleConfigConfig.create()
+            .inputParams(List.of("groundingInput"))
+            .outputParam("groundingOutput")
+            .addFiltersItem(filterInner);
+    final var groundingConfig =
+        GroundingModuleConfig.create()
+            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+            .config(groundingConfigConfig);
+    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+
+    return client.chatCompletion(prompt, configWithGrounding);
   }
 }

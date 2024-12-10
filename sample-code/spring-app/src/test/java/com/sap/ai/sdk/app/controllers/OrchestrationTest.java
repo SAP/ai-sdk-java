@@ -178,8 +178,16 @@ class OrchestrationTest {
   @Test
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
-    // Placeholder for grounding test
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
+    var response = controller.grounding();
+    var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    assertThat(response).isNotNull();
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+    assertThat(result.getModuleResults().getGrounding()).isNotNull();
+    assertThat(result.getModuleResults().getGrounding().getData()).isNotNull();
+    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
   }
 
   @Test

@@ -186,6 +186,37 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
+### Grounding
+
+Use the grounding module to provide additional context to the AI model. 
+
+```java
+    var message =
+        Message.user(
+            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
+    var prompt =
+        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+
+    var filterInner =
+        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
+    var groundingConfigConfig =
+        GroundingModuleConfigConfig.create()
+            .inputParams(List.of("groundingInput"))
+            .outputParam("groundingOutput")
+            .addFiltersItem(filterInner);
+    
+    var groundingConfig =
+        GroundingModuleConfig.create()
+            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+            .config(groundingConfigConfig);
+    var configWithGrounding = config.withGroundingConfig(groundingConfig);
+
+    var result =  
+            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
+```
+
+In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
+
 ### Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
@@ -211,7 +242,6 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
-
 
 ### Set model parameters
 
