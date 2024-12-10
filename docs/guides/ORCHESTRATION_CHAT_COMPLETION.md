@@ -202,8 +202,8 @@ Use the grounding module to provide additional context to the AI model.
     var groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput");
-    groundingConfigConfig.setFilters(List.of(filterInner));
+            .outputParam("groundingOutput")
+            .addFiltersItem(filterInner);
     
     var groundingConfig =
         GroundingModuleConfig.create()

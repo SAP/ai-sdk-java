@@ -232,8 +232,8 @@ class OrchestrationController {
     final var groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput");
-    groundingConfigConfig.setFilters(List.of(filterInner));
+            .outputParam("groundingOutput")
+            .addFiltersItem(filterInner);
     final var groundingConfig =
         GroundingModuleConfig.create()
             .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)

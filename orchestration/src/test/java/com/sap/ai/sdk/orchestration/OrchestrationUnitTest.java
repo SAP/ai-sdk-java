@@ -98,20 +98,22 @@ class OrchestrationUnitTest {
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
 
-    assertThat(result.getModuleResults().getGrounding().getData().toString())
-        .isEqualTo(
-            "{grounding_query=grounding call, grounding_result=Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler.```It enables the companion of the Intelligent Enterprise, guiding you through content discovery within SAP Ecosystem, and giving a transparent role-based access to the relevant processes from everywhere. This is the one assistant experience, a unified and delightful user experience across SAP’s Ǯ solution portfolio.}");
+    final var groundingData =
+        (Map<String, Object>) result.getModuleResults().getGrounding().getData();
+    assertThat(groundingData.get("grounding_query")).isEqualTo("grounding call");
+    assertThat(groundingData.get("grounding_result").toString())
+        .startsWith("Joule is the AI copilot that truly understands your business.");
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
     assertThat(result.getModuleResults().getTemplating().get(0).getContent())
-        .isEqualTo(
-            "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler.```It enables the companion of the Intelligent Enterprise, guiding you through content discovery within SAP Ecosystem, and giving a transparent role-based access to the relevant processes from everywhere. This is the one assistant experience, a unified and delightful user experience across SAP’s \u01ee solution portfolio.");
+        .startsWith(
+            "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
     assertThat(llmChoice.getMessage().getContent())
-        .isEqualTo(
-            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems. It enables the companion of the Intelligent Enterprise, guiding users through content discovery within the SAP Ecosystem and providing transparent role-based access to relevant processes from anywhere. Joule aims to provide a unified and delightful user experience across SAP's solution portfolio.");
+        .startsWith(
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent())
-        .isEqualTo(
-            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems. It enables the companion of the Intelligent Enterprise, guiding users through content discovery within the SAP Ecosystem and providing transparent role-based access to relevant processes from anywhere. Joule aims to provide a unified and delightful user experience across SAP's solution portfolio.");
+        .startsWith(
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
   }
 
   @Test

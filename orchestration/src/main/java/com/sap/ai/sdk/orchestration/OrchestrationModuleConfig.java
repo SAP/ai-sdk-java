@@ -89,6 +89,7 @@ public class OrchestrationModuleConfig {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - </a>
+   * @since 1.1.0
    */
   @Nullable GroundingModuleConfig groundingConfig;
 
