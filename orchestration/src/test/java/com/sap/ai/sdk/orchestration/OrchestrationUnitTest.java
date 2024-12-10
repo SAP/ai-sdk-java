@@ -86,6 +86,37 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testGrounding() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var response = client.chatCompletion(prompt, config);
+    final var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+
+    final var groundingData =
+        (Map<String, Object>) result.getModuleResults().getGrounding().getData();
+    assertThat(groundingData.get("grounding_query")).isEqualTo("grounding call");
+    assertThat(groundingData.get("grounding_result").toString())
+        .startsWith("Joule is the AI copilot that truly understands your business.");
+    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
+    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+        .startsWith(
+            "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
+    assertThat(llmChoice.getMessage().getContent())
+        .startsWith(
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+    assertThat(llmChoice.getMessage().getContent())
+        .startsWith(
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
+  }
+
+  @Test
   void testTemplating() throws IOException {
     stubFor(
         post(anyUrl())
