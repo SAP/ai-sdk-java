@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -39,7 +39,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
   OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
