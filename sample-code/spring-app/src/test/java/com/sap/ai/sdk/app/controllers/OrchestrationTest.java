@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.sap.ai.sdk.app.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -20,10 +21,12 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 @Slf4j
 class OrchestrationTest {
   OrchestrationController controller;
+    OrchestrationService service;
 
   @BeforeEach
   void setUp() {
     controller = new OrchestrationController();
+    service = new OrchestrationService();
   }
 
   @Test
@@ -57,10 +60,10 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
-    assertThat(controller.config.getLlmConfig()).isNotNull();
+    assertThat(service.config.getLlmConfig()).isNotNull();
     final var modelName = controller.config.getLlmConfig().getModelName();
 
-    final var result = controller.template();
+    final var result = service.template();
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
@@ -121,7 +124,7 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result = controller.messagesHistory().getOriginalResponse();
+    CompletionPostResponse result = service.messagesHistory().getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
