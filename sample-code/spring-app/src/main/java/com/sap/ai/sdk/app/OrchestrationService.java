@@ -3,16 +3,23 @@ package com.sap.ai.sdk.app;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.*;
 import com.sap.ai.sdk.orchestration.model.*;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 @Service
+@Slf4j
 public class OrchestrationService {
   private final OrchestrationClient client = new OrchestrationClient();
   public OrchestrationModuleConfig config =
@@ -102,7 +109,7 @@ public class OrchestrationService {
   }
 
   @Nonnull
-  OrchestrationChatResponse maskingPseudonymization() {
+  public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
         Message.system(
             """
@@ -150,5 +157,32 @@ public class OrchestrationService {
     final var configWithGrounding = config.withGroundingConfig(groundingConfig);
 
     return client.chatCompletion(prompt, configWithGrounding);
+  }
+
+  @Nonnull
+  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+    final var prompt =
+            new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+    final var stream = client.streamChatCompletion(prompt, config);
+
+    final var emitter = new ResponseBodyEmitter();
+
+    final Runnable consumeStream =
+            () -> {
+              try (stream) {
+                stream.forEach(
+                        deltaMessage -> {
+                          log.info("Service: {}", deltaMessage);
+                          send(emitter, deltaMessage);
+                        });
+              } finally {
+                emitter.complete();
+              }
+            };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 }

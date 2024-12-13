@@ -20,18 +20,16 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 @Slf4j
 class OrchestrationTest {
-  OrchestrationController controller;
-    OrchestrationService service;
+  OrchestrationService service;
 
   @BeforeEach
   void setUp() {
-    controller = new OrchestrationController();
     service = new OrchestrationService();
   }
 
   @Test
   void testCompletion() {
-    final var result = controller.completion();
+    final var result = service.completion();
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
@@ -40,7 +38,7 @@ class OrchestrationTest {
   @Test
   void testStreamChatCompletion() {
     final var prompt = new OrchestrationPrompt("Who is the prettiest?");
-    final var stream = new OrchestrationClient().streamChatCompletion(prompt, controller.config);
+    final var stream = new OrchestrationClient().streamChatCompletion(prompt, service.config);
 
     final var filledDeltaCount = new AtomicInteger(0);
     stream
@@ -61,7 +59,7 @@ class OrchestrationTest {
   @Test
   void testTemplate() {
     assertThat(service.config.getLlmConfig()).isNotNull();
-    final var modelName = controller.config.getLlmConfig().getModelName();
+    final var modelName = service.config.getLlmConfig().getModelName();
 
     final var result = service.template();
     final var response = result.getOriginalResponse();
@@ -103,7 +101,7 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var response = controller.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
+    var response = service.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -116,7 +114,7 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> controller.filter(AzureFilterThreshold.ALLOW_SAFE))
+    assertThatThrownBy(() -> service.filter(AzureFilterThreshold.ALLOW_SAFE))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");
@@ -132,7 +130,7 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingAnonymization() {
-    var response = controller.maskingAnonymization();
+    var response = service.maskingAnonymization();
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -152,7 +150,7 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingPseudonymization() {
-    var response = controller.maskingPseudonymization();
+    var response = service.maskingPseudonymization();
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -182,7 +180,7 @@ class OrchestrationTest {
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
-    var response = controller.grounding();
+    var response = service.grounding();
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -195,7 +193,7 @@ class OrchestrationTest {
 
   @Test
   void testCompletionWithResourceGroup() {
-    var response = controller.completionWithResourceGroup("ai-sdk-java-e2e");
+    var response = service.completionWithResourceGroup("ai-sdk-java-e2e");
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);

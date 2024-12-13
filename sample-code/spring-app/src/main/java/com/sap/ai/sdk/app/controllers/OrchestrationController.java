@@ -1,31 +1,15 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.app.OrchestrationService;
-import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
-import com.sap.ai.sdk.orchestration.DpiMasking;
-import com.sap.ai.sdk.orchestration.Message;
-import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
-import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
-import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
-import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
-import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,16 +20,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 /** Endpoints for the Orchestration service */
 @RestController
 @Slf4j
+@SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
   private final OrchestrationClient client = new OrchestrationClient();
+  private final OrchestrationService service = new OrchestrationService();
   OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0.0));
 
   private String cleanString(String str) {
     return str.replaceAll("\n" + " {8}", " ")
-            .replaceAll("\n" + " {4}", " ")
-            .replaceAll(" {4}", " ");
+        .replaceAll("\n" + " {4}", " ")
+        .replaceAll(" {4}", " ");
   }
 
   /**
@@ -56,7 +42,7 @@ class OrchestrationController {
   @GetMapping("/completion")
   @Nonnull
   ResponseEntity<List<String>> completion() {
-    var result = new OrchestrationService().completion();
+    var result = service.completion();
     var content = List.of(result.getContent());
     log.info("Our trusty AI answered with: {}", result.getContent());
     return ResponseEntity.ok(content);
@@ -67,34 +53,10 @@ class OrchestrationController {
    *
    * @return the emitter that streams the assistant message response
    */
-  @SuppressWarnings("unused") // The end-to-end test doesn't use this method
-//  TODO: Refactor this.
   @GetMapping("/streamChatCompletion")
   @Nonnull
   public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    final var prompt =
-        new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
-    final var stream = client.streamChatCompletion(prompt, config);
-
-    final var emitter = new ResponseBodyEmitter();
-
-    final Runnable consumeStream =
-        () -> {
-          try (stream) {
-            stream.forEach(
-                deltaMessage -> {
-                  log.info("Controller: {}", deltaMessage);
-                  send(emitter, deltaMessage);
-                });
-          } finally {
-            emitter.complete();
-          }
-        };
-
-    ThreadContextExecutors.getExecutor().execute(consumeStream);
-
-    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+    return service.streamChatCompletion();
   }
 
   /**
@@ -107,7 +69,7 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   ResponseEntity<List<String>> template() {
-    var result = new OrchestrationService().template();
+    var result = service.template();
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
@@ -115,7 +77,7 @@ class OrchestrationController {
   @GetMapping("/template/full")
   @Nonnull
   ResponseEntity<List<String>> templateFull() {
-    var result = new OrchestrationService().template();
+    var result = service.template();
     var content = List.of(cleanString(result.toString()));
     return ResponseEntity.ok(content);
   }
@@ -127,8 +89,8 @@ class OrchestrationController {
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  ResponseEntity<List<String>>  messagesHistory() {
-    var result = new OrchestrationService().messagesHistory();
+  ResponseEntity<List<String>> messagesHistory() {
+    var result = service.messagesHistory();
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
@@ -149,7 +111,7 @@ class OrchestrationController {
   @Nonnull
   ResponseEntity<List<String>> filter(
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
-    var result = new OrchestrationService().filter(policy);
+    var result = service.filter(policy);
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
@@ -167,7 +129,7 @@ class OrchestrationController {
   @GetMapping("/maskingAnonymization")
   @Nonnull
   ResponseEntity<List<String>> maskingAnonymization() {
-    var result = new OrchestrationService().maskingAnonymization();
+    var result = service.maskingAnonymization();
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
@@ -181,7 +143,7 @@ class OrchestrationController {
   @Nonnull
   public ResponseEntity<List<String>> completionWithResourceGroup(
       @PathVariable("resourceGroup") @Nonnull final String resourceGroup) {
-    var result = new OrchestrationService().completionWithResourceGroup(resourceGroup);
+    var result = service.completionWithResourceGroup(resourceGroup);
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
@@ -198,7 +160,7 @@ class OrchestrationController {
   @GetMapping("/maskingPseudonymization")
   @Nonnull
   ResponseEntity<List<String>> maskingPseudonymization() {
-    var result = new OrchestrationService().maskingAnonymization();
+    var result = service.maskingPseudonymization();
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
@@ -212,7 +174,7 @@ class OrchestrationController {
   @GetMapping("/grounding")
   @Nonnull
   ResponseEntity<List<String>> grounding() {
-    var result = new OrchestrationService().grounding();
+    var result = service.grounding();
     var content = List.of(result.getContent());
     return ResponseEntity.ok(content);
   }
