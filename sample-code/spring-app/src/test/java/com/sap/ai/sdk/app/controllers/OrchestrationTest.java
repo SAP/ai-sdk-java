@@ -38,7 +38,7 @@ class OrchestrationTest {
   @Test
   void testStreamChatCompletion() {
     final var prompt = new OrchestrationPrompt("Who is the prettiest?");
-    final var stream = new OrchestrationClient().streamChatCompletion(prompt, service.config);
+    final var stream = new OrchestrationClient().streamChatCompletion(prompt, service.getConfig());
 
     final var filledDeltaCount = new AtomicInteger(0);
     stream
@@ -58,8 +58,8 @@ class OrchestrationTest {
 
   @Test
   void testTemplate() {
-    assertThat(service.config.getLlmConfig()).isNotNull();
-    final var modelName = service.config.getLlmConfig().getModelName();
+    assertThat(service.getConfig().getLlmConfig()).isNotNull();
+    final var modelName = service.getConfig().getLlmConfig().getModelName();
 
     final var result = service.template();
     final var response = result.getOriginalResponse();

@@ -123,6 +123,12 @@ public class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
+  /**
+   * Send a chunk to the emitter
+   *
+   * @param emitter The emitter to send the chunk to
+   * @param chunk The chunk to send
+   */
   public static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
     try {
       emitter.send(chunk);

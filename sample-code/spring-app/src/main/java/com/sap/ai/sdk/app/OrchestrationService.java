@@ -1,36 +1,63 @@
 package com.sap.ai.sdk.app;
 
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.*;
-import com.sap.ai.sdk.orchestration.model.*;
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
+import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Map;
-
-import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
-
+/** Service class for the Orchestration service */
 @Service
 @Slf4j
 public class OrchestrationService {
   private final OrchestrationClient client = new OrchestrationClient();
-  public OrchestrationModuleConfig config =
+
+  @Getter
+  private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0.0));
 
+  /**
+   * Chat request to OpenAI through the Orchestration service with a simple prompt.
+   *
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse completion() {
     final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
     return client.chatCompletion(prompt, config);
   }
 
+  /**
+   * Chat request to OpenAI through the Orchestration service with a template.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse template() {
     final var template =
@@ -44,6 +71,11 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, configWithTemplate);
   }
 
+  /**
+   * Chat request to OpenAI through the Orchestration service using message history.
+   *
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse messagesHistory() {
     final var prompt = new OrchestrationPrompt(Message.user("What is the capital of France?"));
@@ -58,6 +90,18 @@ public class OrchestrationService {
     return client.chatCompletion(nextPrompt, config);
   }
 
+  /**
+   * Apply both input and output filtering for a request to orchestration.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse filter(@Nonnull final AzureFilterThreshold policy) {
     final var prompt =
@@ -76,6 +120,16 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, configWithFilter);
   }
 
+  /**
+   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
+   * user. Anonymize any names given as they are not relevant for judging the sentiment of the
+   * feedback.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse maskingAnonymization() {
     final var systemMessage =
@@ -95,6 +149,11 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, configWithMasking);
   }
 
+  /**
+   * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
+   *
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse completionWithResourceGroup(
       @Nonnull final String resourceGroup) {
@@ -108,6 +167,15 @@ public class OrchestrationService {
     return clientWithResourceGroup.chatCompletion(prompt, config);
   }
 
+  /**
+   * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
+   * SDK. Pseudonymize the user's name and location to protect their privacy.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse maskingPseudonymization() {
     final var systemMessage =
@@ -135,6 +203,13 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, configWithMasking);
   }
 
+  /**
+   * Using grounding to provide additional context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse grounding() {
     final var message =
@@ -159,26 +234,31 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, configWithGrounding);
   }
 
+  /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return the emitter that streams the assistant message response
+   */
   @Nonnull
   public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var prompt =
-            new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+        new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
     final var stream = client.streamChatCompletion(prompt, config);
 
     final var emitter = new ResponseBodyEmitter();
 
     final Runnable consumeStream =
-            () -> {
-              try (stream) {
-                stream.forEach(
-                        deltaMessage -> {
-                          log.info("Service: {}", deltaMessage);
-                          send(emitter, deltaMessage);
-                        });
-              } finally {
-                emitter.complete();
-              }
-            };
+        () -> {
+          try (stream) {
+            stream.forEach(
+                deltaMessage -> {
+                  log.info("Service: {}", deltaMessage);
+                  send(emitter, deltaMessage);
+                });
+          } finally {
+            emitter.complete();
+          }
+        };
 
     ThreadContextExecutors.getExecutor().execute(consumeStream);
 
