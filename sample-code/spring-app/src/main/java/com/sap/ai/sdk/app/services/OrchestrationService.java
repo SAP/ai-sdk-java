@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.app;
+package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;

@@ -5,10 +5,9 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPER
 
 import com.sap.ai.sdk.app.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
-import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +21,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  private final OrchestrationClient client = new OrchestrationClient();
-  private final OrchestrationService service = new OrchestrationService();
-  OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
+  @Autowired
+  private OrchestrationService service;
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
