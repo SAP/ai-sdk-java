@@ -8,6 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/jquery-jsonview/dist/jquery.jsonview.min.css" rel="stylesheet" >
     <style>
         body { background-color: #f4f6f9; }
+        .max-width-container {
+            max-width: 550px;
+        }
         .endpoint-card {
             margin-bottom: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -135,97 +138,258 @@
 <!-- API endpoints in containers -->
 <div class="container-fluid py-4">
     <h1 class="mb-4 text-center">Java AI SDK Application</h1>
-    <div class="row">
-        <div class="col-md-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-4 max-width-container">
             <div class="card endpoint-card">
-                <div class="card-header"><h3>AI Core</h3></div>
+                <div class="card-header">
+                    <h2>AI Core</h2>
+                    The AI Core API offers functionality for managing your scenarios, configurations and deployments.
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generative-ai-hub-in-sap-ai-core-7db524ee75e74bf8b50c167951fe34a5">AI Core Documentation</a>
+                </div>
                 <div class="card-body">
-                   <div class="info-tooltip">
-                       <h5>Java Specific Deployments</h5>
-                       <div class="tooltip-content">
-                           Only UNKNOWN and STOPPED deployments can be DELETED. Only RUNNING deployments can be
-                               STOPPED.
-                       </div>
-                   </div>
+                    <h5>Java Specific Deployments</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete"><code>/deployments/by-config/[...]/createDelete</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop"><code>/deployments/by-config/[...]/stop</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/delete"><code>/deployments/by-config/[...]/delete</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll"><code>/deployments/by-config/[...]/getAll</code></a></li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete"><code>/deployments/by-config/[...]/createDelete</code></a>
+                                <div class="tooltip-content">
+                                    Create and delete a deployment with the Java specific configuration ID.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop"><code>/deployments/by-config/[...]/stop</code></a>
+                                <div class="tooltip-content">
+                                    Stop all deployments with the Java specific configuration ID. Only RUNNING deployments can be STOPPED.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/delete"><code>/deployments/by-config/[...]/delete</code></a>
+                                <div class="tooltip-content">
+                                    Delete all deployments with the Java specific configuration ID. Only UNKNOWN and STOPPED deployments can be DELETED
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll"><code>/deployments/by-config/[...]/getAll</code></a>
+                                <div class="tooltip-content">
+                                    Get all deployments with the Java specific configuration ID.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                     <br>
                     <h5>All Deployments</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/deployments/getAll"><code>/deployments/getAll</code></a></li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/deployments/getAll"><code>/deployments/getAll</code></a>
+                                <div class="tooltip-content">
+                                    Get all deployments, including non-Java specific deployments.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                     <br>
                     <h5>Scenarios</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/scenarios"><code>/scenarios</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/models"><code>/models</code></a></li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/scenarios"><code>/scenarios</code></a>
+                                <div class="tooltip-content">
+                                    Get the list of available scenarios.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/models"><code>/models</code></a>
+                                <div class="tooltip-content">
+                                    Get the list of available models.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                     <br>
                     <h5>Configurations</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/configurations"><code>/configurations</code></a></li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/configurations"><code>/configurations</code></a>
+                                <div class="tooltip-content">
+                                    Get the list of configurations.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
-
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-xl-4 max-width-container">
             <div class="card endpoint-card">
-                <div class="card-header"><h3>Orchestration</h3></div>
+                <div class="card-header">
+                    <h2>Orchestration</h2>
+                    The Orchestration API offers functionality for enhancing your LLM calls with Grounding, Templating, Data Masking, Filtering and other.
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration">Orchestration Documentation</a>
+                </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/completion"><code>/orchestration/completion</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/template"><code>/orchestration/template</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/messagesHistory"><code>/orchestration/messageHistory</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/filter/NUMBER_4"><code>/orchestration/filter/NUMBER_4</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/filter/NUMBER_0"><code>/orchestration/filter/NUMBER_0</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/maskingAnonymization"><code>/orchestration/maskingAnonymization</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/orchestration/maskingPseudonymization"><code>/orchestration/maskingPseudonymization</code></a></li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/completion"><code>/orchestration/completion</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI through the Orchestration service with a simple prompt.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/template"><code>/orchestration/template</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI through the Orchestration service with a template.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/messagesHistory"><code>/orchestration/messageHistory</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI through the Orchestration service using message history.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/filter/NUMBER_4"><code>/orchestration/filter/NUMBER_4</code></a>
+                                <div class="tooltip-content">
+                                    Apply both input and output filtering for a request to orchestration with a loose filter.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/filter/NUMBER_0"><code>/orchestration/filter/NUMBER_0</code></a>
+                                <div class="tooltip-content">
+                                    Apply both input and output filtering for a request to orchestration with a strict filter.                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/maskingAnonymization"><code>/orchestration/maskingAnonymization</code></a>
+                                <div class="tooltip-content">
+                                    Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
+                                    user. Anonymize any names given as they are not relevant for judging the sentiment of the
+                                    feedback.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/maskingPseudonymization"><code>/orchestration/maskingPseudonymization</code></a>
+                                <div class="tooltip-content">
+                                    Let the orchestration service a response to a hypothetical user who provided feedback on the AI
+                                    SDK. Pseudonymize the user's name and location to protect their privacy.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-xl-4 max-width-container">
             <div class="card endpoint-card">
-                <div class="card-header"><h3>Foundation Models</h3></div>
+                <div class="card-header">
+                    <h2>Foundation Models</h2>
+                    The Foundation Models API offers functionality for directly calling a foundation model and using the features provided by its own API.
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-generative-ai-models-using-sap-ai-core">Foundation Models Documentation</a>
+                </div>
                 <div class="card-body">
                     <h5>OpenAI</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/chatCompletion"><code>/chatCompletion</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/streamChatCompletion"><code>/streamChatCompletion</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/streamChatCompletionDeltas"><code>/streamChatCompletionDeltas</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/chatCompletionTool"><code>/chatCompletionTool</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/chatCompletionImage"><code>/chatCompletionImage</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/embedding"><code>/embedding</code></a></li>
-                        <li class="list-group-item"><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                                       href="/chatCompletion/ai-sdk-java-e2e"><code>/chatCompletion/resourceGroup</code></a></li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/chatCompletion"><code>/chatCompletion</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/streamChatCompletion"><code>/streamChatCompletion</code></a>
+                                <div class="tooltip-content">
+                                    Asynchronous stream of an OpenAI chat request.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/streamChatCompletionDeltas"><code>/streamChatCompletionDeltas</code></a>
+                                <div class="tooltip-content">
+                                    Asynchronous stream of an OpenAI chat request and provision of complete response.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/chatCompletionTool"><code>/chatCompletionTool</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI with a tool.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/chatCompletionImage"><code>/chatCompletionImage</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI with an image.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/embedding"><code>/embedding</code></a>
+                                <div class="tooltip-content">
+                                    Get the embedding of a text.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/chatCompletion/ai-sdk-java-e2e"><code>/chatCompletion/resourceGroup</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI filtering by resource group.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -317,6 +481,10 @@
 
             // Set the modal title
             modalTitle.innerHTML = `<code>${endpointName}</code>`;
+            const existingToggleGroup = modalHeader.querySelector('.btn-group');
+            if (existingToggleGroup) {
+                existingToggleGroup.remove();
+            }
 
             // Prepare the modal body for streaming content
             modalBody.innerHTML = `
@@ -385,7 +553,7 @@
         if(error) {
             modalBody.innerHTML = `
                     <div class="alert alert-danger" role="alert">
-                        ${data}. For more information, check output of <a href="${endpoint}">API Endpoint</a>
+                        ${data}. For more information, check the output of <a href="${endpoint}">${endpointName}</a>
                     </div>
                 `;
             modalInstance.show();
