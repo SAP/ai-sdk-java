@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,12 @@ class OrchestrationController {
   ResponseEntity<String> completion(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
-    final var content = service.completion().getContent();
+    final var content = service.completion("HelloWorld!").getContent();
     log.info("Our trusty AI answered with: {}", content);
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.completion()));
+          .body(mapper.writeValueAsString(service.completion("HelloWorld!")));
     }
     return ResponseEntity.ok(content);
   }
@@ -56,7 +57,7 @@ class OrchestrationController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    return service.streamChatCompletion();
+    return service.streamChatCompletion(100);
   }
 
   /**
@@ -74,9 +75,9 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.template()));
+          .body(mapper.writeValueAsString(service.template("German")));
     }
-    return ResponseEntity.ok(service.template().getContent());
+    return ResponseEntity.ok(service.template("German").getContent());
   }
 
   /**
@@ -92,9 +93,11 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.messagesHistory()));
+          .body(
+              mapper.writeValueAsString(service.messagesHistory("What is the capital of France?")));
     }
-    return ResponseEntity.ok(service.messagesHistory().getContent());
+    return ResponseEntity.ok(
+        service.messagesHistory("What is the capital of France?").getContent());
   }
 
   /**
@@ -118,9 +121,9 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.filter(policy)));
+          .body(mapper.writeValueAsString(service.filter(policy, "the downtown area")));
     }
-    return ResponseEntity.ok(service.filter(policy).getContent());
+    return ResponseEntity.ok(service.filter(policy, "the downtown area").getContent());
   }
 
   /**
@@ -141,9 +144,9 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.maskingAnonymization()));
+          .body(mapper.writeValueAsString(service.maskingAnonymization(DPIEntities.PERSON)));
     }
-    return ResponseEntity.ok(service.maskingAnonymization().getContent());
+    return ResponseEntity.ok(service.maskingAnonymization(DPIEntities.PERSON).getContent());
   }
 
   /**
@@ -160,9 +163,12 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.completionWithResourceGroup(resourceGroup)));
+          .body(
+              mapper.writeValueAsString(
+                  service.completionWithResourceGroup(resourceGroup, "Hello world!")));
     }
-    return ResponseEntity.ok(service.completionWithResourceGroup(resourceGroup).getContent());
+    return ResponseEntity.ok(
+        service.completionWithResourceGroup(resourceGroup, "Hello world!").getContent());
   }
 
   /**
@@ -182,9 +188,9 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.maskingPseudonymization()));
+          .body(mapper.writeValueAsString(service.maskingPseudonymization(DPIEntities.PERSON)));
     }
-    return ResponseEntity.ok(service.maskingPseudonymization().getContent());
+    return ResponseEntity.ok(service.maskingPseudonymization(DPIEntities.PERSON).getContent());
   }
 
   /**
@@ -202,8 +208,8 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.grounding()));
+          .body(mapper.writeValueAsString(service.grounding("What does Joule do?")));
     }
-    return ResponseEntity.ok(service.grounding().getContent());
+    return ResponseEntity.ok(service.grounding("What does Joule do?").getContent());
   }
 }

@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -38,7 +38,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -46,8 +46,8 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse completion() {
-    final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+  public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
+    final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     return client.chatCompletion(prompt, config);
   }
 
@@ -59,13 +59,13 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse template() {
+  public OrchestrationChatResponse template(@Nonnull final String language) {
     final var template =
         Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
     final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
     final var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
-    final var inputParams = Map.of("language", "German");
+    final var inputParams = Map.of("language", language);
     final var prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
@@ -77,8 +77,8 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse messagesHistory() {
-    final var prompt = new OrchestrationPrompt(Message.user("What is the capital of France?"));
+  public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
+    final var prompt = new OrchestrationPrompt(Message.user(prevMessage));
 
     final var result = client.chatCompletion(prompt, config);
 
@@ -103,14 +103,16 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse filter(@Nonnull final AzureFilterThreshold policy) {
+  public OrchestrationChatResponse filter(
+      @Nonnull final AzureFilterThreshold policy, @Nonnull final String area) {
     final var prompt =
         new OrchestrationPrompt(
             """
-                        Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
+                        Create a rental posting for subletting my apartment in %s. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
 
                         ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
-                        """);
+                        """
+                .formatted(area));
     final var filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
@@ -131,7 +133,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse maskingAnonymization() {
+  public OrchestrationChatResponse maskingAnonymization(@Nonnull final DPIEntities entity) {
     final var systemMessage =
         Message.system(
             "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
@@ -143,7 +145,7 @@ public class OrchestrationService {
                             """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(entity);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -156,13 +158,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse completionWithResourceGroup(
-      @Nonnull final String resourceGroup) {
-
+      @Nonnull final String resourceGroup, @Nonnull final String famousPhrase) {
     final var destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
     final var clientWithResourceGroup = new OrchestrationClient(destination);
 
-    final var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+    final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
 
     return clientWithResourceGroup.chatCompletion(prompt, config);
   }
@@ -177,7 +178,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse maskingPseudonymization() {
+  public OrchestrationChatResponse maskingPseudonymization(@Nonnull final DPIEntities entity) {
     final var systemMessage =
         Message.system(
             """
@@ -196,8 +197,7 @@ public class OrchestrationService {
                             """);
 
     final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig =
-        DpiMasking.pseudonymization().withEntities(DPIEntities.PERSON, DPIEntities.EMAIL);
+    final var maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
     final var configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -211,12 +211,11 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse grounding() {
+  public OrchestrationChatResponse grounding(@Nonnull final String groundingInput) {
     final var message =
         Message.user(
             "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    final var prompt =
-        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+    final var prompt = new OrchestrationPrompt(Map.of("groundingInput", groundingInput), message);
 
     final var filterInner =
         DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
@@ -240,9 +239,12 @@ public class OrchestrationService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion(final int numberOfFibonacci) {
     final var prompt =
-        new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+        new OrchestrationPrompt(
+            "Can you give me the first "
+                + numberOfFibonacci
+                + " numbers of the Fibonacci sequence?");
     final var stream = client.streamChatCompletion(prompt, config);
 
     final var emitter = new ResponseBodyEmitter();

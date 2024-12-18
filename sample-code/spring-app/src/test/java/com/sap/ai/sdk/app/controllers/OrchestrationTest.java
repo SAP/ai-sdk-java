@@ -9,6 +9,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import java.util.Map;
@@ -29,7 +30,7 @@ class OrchestrationTest {
 
   @Test
   void testCompletion() {
-    final var result = service.completion();
+    final var result = service.completion("HelloWorld!");
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
@@ -61,7 +62,7 @@ class OrchestrationTest {
     assertThat(service.getConfig().getLlmConfig()).isNotNull();
     final var modelName = service.getConfig().getLlmConfig().getModelName();
 
-    final var result = service.template();
+    final var result = service.template("German");
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
@@ -101,7 +102,7 @@ class OrchestrationTest {
 
   @Test
   void testLenientContentFilter() {
-    var response = service.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM);
+    var response = service.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM, "the downtown area");
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -114,7 +115,7 @@ class OrchestrationTest {
 
   @Test
   void testStrictContentFilter() {
-    assertThatThrownBy(() -> service.filter(AzureFilterThreshold.ALLOW_SAFE))
+    assertThatThrownBy(() -> service.filter(AzureFilterThreshold.ALLOW_SAFE, "the downtown area"))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400 Bad Request")
         .hasMessageContaining("Content filtered");
@@ -122,7 +123,8 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result = service.messagesHistory().getOriginalResponse();
+    CompletionPostResponse result =
+        service.messagesHistory("What is the capital of France?").getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
@@ -130,7 +132,7 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingAnonymization() {
-    var response = service.maskingAnonymization();
+    var response = service.maskingAnonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -150,7 +152,7 @@ class OrchestrationTest {
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingPseudonymization() {
-    var response = service.maskingPseudonymization();
+    var response = service.maskingPseudonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -180,7 +182,7 @@ class OrchestrationTest {
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
-    var response = service.grounding();
+    var response = service.grounding("What does Joule do?");
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -193,7 +195,7 @@ class OrchestrationTest {
 
   @Test
   void testCompletionWithResourceGroup() {
-    var response = service.completionWithResourceGroup("ai-sdk-java-e2e");
+    var response = service.completionWithResourceGroup("ai-sdk-java-e2e", "Hello world!");
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
