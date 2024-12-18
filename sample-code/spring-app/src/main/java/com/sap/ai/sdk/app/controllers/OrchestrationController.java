@@ -1,16 +1,19 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
-
-import com.sap.ai.sdk.app.OrchestrationService;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
@@ -21,8 +24,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
-  @Autowired
-  private OrchestrationService service;
+  @Autowired private OrchestrationService service;
+  private final ObjectMapper mapper =
+      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -31,9 +35,16 @@ class OrchestrationController {
    */
   @GetMapping("/completion")
   @Nonnull
-  ResponseEntity<String> completion() {
+  ResponseEntity<String> completion(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
     final var content = service.completion().getContent();
     log.info("Our trusty AI answered with: {}", content);
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.completion()));
+    }
     return ResponseEntity.ok(content);
   }
 
@@ -44,7 +55,7 @@ class OrchestrationController {
    */
   @GetMapping("/streamChatCompletion")
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     return service.streamChatCompletion();
   }
 
@@ -55,23 +66,17 @@ class OrchestrationController {
    *     AI Core: Orchestration - Templating</a>
    * @return a ResponseEntity with the response content
    */
-  @GetMapping("/template")
+  @GetMapping(value = "/template")
   @Nonnull
-  ResponseEntity<String> template() {
+  ResponseEntity<Object> template(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.template()));
+    }
     return ResponseEntity.ok(service.template().getContent());
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template and full response.
-   *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
-   *     AI Core: Orchestration - Templating</a>
-   * @return a ResponseEntity with the full response
-   */
-  @GetMapping("/template/full")
-  @Nonnull
-  ResponseEntity<String> templateFull() {
-    return ResponseEntity.ok(service.template().toString());
   }
 
   /**
@@ -81,7 +86,14 @@ class OrchestrationController {
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  ResponseEntity<String> messagesHistory() {
+  ResponseEntity<String> messagesHistory(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.messagesHistory()));
+    }
     return ResponseEntity.ok(service.messagesHistory().getContent());
   }
 
@@ -100,7 +112,14 @@ class OrchestrationController {
   @GetMapping("/filter/{policy}")
   @Nonnull
   ResponseEntity<String> filter(
-      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
+      @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.filter(policy)));
+    }
     return ResponseEntity.ok(service.filter(policy).getContent());
   }
 
@@ -116,7 +135,14 @@ class OrchestrationController {
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  ResponseEntity<String> maskingAnonymization() {
+  ResponseEntity<String> maskingAnonymization(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.maskingAnonymization()));
+    }
     return ResponseEntity.ok(service.maskingAnonymization().getContent());
   }
 
@@ -128,7 +154,14 @@ class OrchestrationController {
   @GetMapping("/completion/{resourceGroup}")
   @Nonnull
   public ResponseEntity<String> completionWithResourceGroup(
-      @PathVariable("resourceGroup") @Nonnull final String resourceGroup) {
+      @RequestHeader(value = "accept", required = false) final String accept,
+      @PathVariable("resourceGroup") @Nonnull final String resourceGroup)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.completionWithResourceGroup(resourceGroup)));
+    }
     return ResponseEntity.ok(service.completionWithResourceGroup(resourceGroup).getContent());
   }
 
@@ -143,7 +176,14 @@ class OrchestrationController {
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  ResponseEntity<String> maskingPseudonymization() {
+  ResponseEntity<String> maskingPseudonymization(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.maskingPseudonymization()));
+    }
     return ResponseEntity.ok(service.maskingPseudonymization().getContent());
   }
 
@@ -156,7 +196,14 @@ class OrchestrationController {
    */
   @GetMapping("/grounding")
   @Nonnull
-  ResponseEntity<String> grounding() {
+  ResponseEntity<String> grounding(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(service.grounding()));
+    }
     return ResponseEntity.ok(service.grounding().getContent());
   }
 }
