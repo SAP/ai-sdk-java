@@ -40,14 +40,12 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.completion("HelloWorld!");
-    final var content = response.getContent();
-    log.info("Our trusty AI answered with: {}", content);
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(content);
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
