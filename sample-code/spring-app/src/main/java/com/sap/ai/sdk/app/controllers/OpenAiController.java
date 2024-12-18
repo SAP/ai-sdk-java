@@ -34,7 +34,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 /** Endpoints for OpenAI operations */
 @Slf4j
 @RestController
-class OpenAiController {
+public class OpenAiController {
   /**
    * Chat request to OpenAI
    *
@@ -123,7 +123,13 @@ class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
+  /**
+   * Send a chunk to the emitter
+   *
+   * @param emitter The emitter to send the chunk to
+   * @param chunk The chunk to send
+   */
+  public static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
     try {
       emitter.send(chunk);
     } catch (final IOException e) {
