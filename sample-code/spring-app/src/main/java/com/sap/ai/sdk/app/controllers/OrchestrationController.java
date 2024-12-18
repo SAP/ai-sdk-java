@@ -66,7 +66,7 @@ class OrchestrationController {
    *     AI Core: Orchestration - Templating</a>
    * @return a ResponseEntity with the response content
    */
-  @GetMapping(value = "/template")
+  @GetMapping("/template")
   @Nonnull
   ResponseEntity<Object> template(
       @RequestHeader(value = "accept", required = false) final String accept)
