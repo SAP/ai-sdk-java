@@ -39,12 +39,13 @@ class OrchestrationController {
   ResponseEntity<String> completion(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
-    final var content = service.completion("HelloWorld!").getContent();
+    final var response = service.completion("HelloWorld!");
+    final var content = response.getContent();
     log.info("Our trusty AI answered with: {}", content);
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.completion("HelloWorld!")));
+          .body(mapper.writeValueAsString(response));
     }
     return ResponseEntity.ok(content);
   }
@@ -72,12 +73,13 @@ class OrchestrationController {
   ResponseEntity<Object> template(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
+    final var response = service.template("German");
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.template("German")));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(service.template("German").getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -90,14 +92,13 @@ class OrchestrationController {
   ResponseEntity<String> messagesHistory(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
+    final var response = service.messagesHistory("What is the capital of France?");
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(
-              mapper.writeValueAsString(service.messagesHistory("What is the capital of France?")));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(
-        service.messagesHistory("What is the capital of France?").getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -118,12 +119,13 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
       throws JsonProcessingException {
+    final var response = service.filter(policy, "the downtown area");
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.filter(policy, "the downtown area")));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(service.filter(policy, "the downtown area").getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -141,12 +143,13 @@ class OrchestrationController {
   ResponseEntity<String> maskingAnonymization(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
+    final var response = service.maskingAnonymization(DPIEntities.PERSON);
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.maskingAnonymization(DPIEntities.PERSON)));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(service.maskingAnonymization(DPIEntities.PERSON).getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -160,15 +163,13 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept,
       @PathVariable("resourceGroup") @Nonnull final String resourceGroup)
       throws JsonProcessingException {
+    final var response = service.completionWithResourceGroup(resourceGroup, "Hello world!");
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(
-              mapper.writeValueAsString(
-                  service.completionWithResourceGroup(resourceGroup, "Hello world!")));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(
-        service.completionWithResourceGroup(resourceGroup, "Hello world!").getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -185,12 +186,13 @@ class OrchestrationController {
   ResponseEntity<String> maskingPseudonymization(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
+    final var response = service.maskingPseudonymization(DPIEntities.PERSON);
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.maskingPseudonymization(DPIEntities.PERSON)));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(service.maskingPseudonymization(DPIEntities.PERSON).getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -205,11 +207,12 @@ class OrchestrationController {
   ResponseEntity<String> grounding(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
+    final var response = service.grounding("What does Joule do?");
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(service.grounding("What does Joule do?")));
+          .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(service.grounding("What does Joule do?").getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 }
