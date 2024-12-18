@@ -66,9 +66,10 @@ class OrchestrationController {
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var prompt =
-        new OrchestrationPrompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+        new OrchestrationPrompt(
+            "Please create a small story about developing a software project with around 700 words");
     final var stream = client.streamChatCompletion(prompt, config);
 
     final var emitter = new ResponseBodyEmitter();
