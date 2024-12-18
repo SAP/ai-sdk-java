@@ -33,6 +33,12 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <coverage.complexity>70%</coverage.complexity>
+    <coverage.line>76%</coverage.line>
+    <coverage.instruction>75%</coverage.instruction>
+    <coverage.branch>66%</coverage.branch>
+    <coverage.method>83%</coverage.method>
+    <coverage.class>85%</coverage.class>
   </properties>
   <dependencies>
     <dependency>

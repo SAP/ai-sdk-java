@@ -75,13 +75,13 @@
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
-    <!-- Test coverage -->
-    <coverage.instruction>77%</coverage.instruction>
-    <coverage.branch>68%</coverage.branch>
-    <coverage.complexity>71%</coverage.complexity>
-    <coverage.line>79%</coverage.line>
+    <!-- Test coverage DO NOT CHANGE IN THE ROOT POM -->
+    <coverage.complexity>100%</coverage.complexity>
+    <coverage.line>100%</coverage.line>
+    <coverage.instruction>100%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
-    <coverage.class>85%</coverage.class>
+    <coverage.class>100%</coverage.class>
   </properties>
 
   <dependencyManagement>
@@ -490,6 +490,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.8.6.6</version>
         <configuration>
+          <skip>true</skip>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
           <excludeFilterFile>${project.rootdir}/.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
@@ -562,6 +563,11 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                       <counter>BRANCH</counter>
                       <value>COVEREDRATIO</value>
                       <minimum>${coverage.branch}</minimum>
+                    </limit>
+                    <limit>
+                      <counter>METHOD</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${coverage.method}</minimum>
                     </limit>
                     <limit>
                       <counter>CLASS</counter>

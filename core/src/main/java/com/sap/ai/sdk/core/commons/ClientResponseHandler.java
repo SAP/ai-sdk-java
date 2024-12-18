@@ -1,12 +1,13 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.core.commons;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClient.JACKSON;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,22 +19,33 @@ import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
+/**
+ * Parse incoming JSON responses and handles any errors
+ *
+ * @param <T> The type of the response
+ * @param <E> The type of the exception to throw
+ */
 @Slf4j
 @RequiredArgsConstructor
-class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
-
+public class ClientResponseHandler<T, E extends ClientException>
+    implements HttpClientResponseHandler<T> {
   @Nonnull private final Class<T> responseType;
+  @Nonnull private final Class<? extends ClientError> errorType;
+  @Nonnull private final BiFunction<String, Throwable, E> exceptionType;
+
+  /** The parses for JSON responses, will be private once we can remove mixins */
+  @Nonnull public ObjectMapper JACKSON = getDefaultObjectMapper();
 
   /**
    * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
    *
    * @param response The response to process
    * @return A model class instantiated from the response
-   * @throws OpenAiClientException in case of a problem or the connection was aborted
+   * @throws E in case of a problem or the connection was aborted
    */
+  @Nonnull
   @Override
-  public T handleResponse(@Nonnull final ClassicHttpResponse response)
-      throws OpenAiClientException {
+  public T handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
     }
@@ -43,38 +55,42 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
   @SuppressWarnings("PMD.CloseResource")
   @Nonnull
-  private T parseResponse(@Nonnull final ClassicHttpResponse response)
-      throws OpenAiClientException {
+  private T parseResponse(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw new OpenAiClientException("Response from OpenAI model was empty.");
+      throw exceptionType.apply("Response was empty.", null);
     }
     val content = getContent(responseEntity);
+    log.debug("Parsing response from JSON response: {}", content);
     try {
       return JACKSON.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
-      log.error("Failed to parse the following response from OpenAI model: {}", content);
-      throw new OpenAiClientException("Failed to parse response from OpenAI model", e);
+      log.error("Failed to parse the following response: {}", content);
+      throw exceptionType.apply("Failed to parse response", e);
     }
   }
 
   @Nonnull
-  private static String getContent(@Nonnull final HttpEntity entity) {
+  private String getContent(@Nonnull final HttpEntity entity) {
     try {
       return EntityUtils.toString(entity, StandardCharsets.UTF_8);
     } catch (IOException | ParseException e) {
-      throw new OpenAiClientException("Failed to read response content.", e);
+      throw exceptionType.apply("Failed to read response content.", e);
     }
   }
 
-  // The InputStream of the HTTP entity is closed by EntityUtils.toString
+  /**
+   * Parse the error response and throw an exception.
+   *
+   * @param response The response to process
+   */
   @SuppressWarnings("PMD.CloseResource")
-  static void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response)
-      throws OpenAiClientException {
+  public void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response) throws E {
     val exception =
-        new OpenAiClientException(
-            "Request to OpenAI model failed with status %s %s"
-                .formatted(response.getCode(), response.getReasonPhrase()));
+        exceptionType.apply(
+            "Request failed with status %s %s"
+                .formatted(response.getCode(), response.getReasonPhrase()),
+            null);
     val entity = response.getEntity();
     if (entity == null) {
       throw exception;
@@ -89,7 +105,7 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
       throw exception;
     }
 
-    log.error("OpenAI model responded with an HTTP error and the following content: {}", content);
+    log.error("The service responded with an HTTP error and the following content: {}", content);
     val contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       throw exception;
@@ -101,23 +117,20 @@ class OpenAiResponseHandler<T> implements HttpClientResponseHandler<T> {
   /**
    * Parse the error response and throw an exception.
    *
-   * @param errorResponse the error response, most likely a JSON of {@link OpenAiError}.
+   * @param errorResponse the error response, most likely a unique JSON class.
    * @param baseException a base exception to add the error message to.
    */
-  static void parseErrorAndThrow(
-      @Nonnull final String errorResponse, @Nonnull final OpenAiClientException baseException)
-      throws OpenAiClientException {
-    val maybeError = Try.of(() -> JACKSON.readValue(errorResponse, OpenAiError.class));
+  public void parseErrorAndThrow(
+      @Nonnull final String errorResponse, @Nonnull final E baseException) throws E {
+    val maybeError = Try.of(() -> JACKSON.readValue(errorResponse, errorType));
     if (maybeError.isFailure()) {
       baseException.addSuppressed(maybeError.getCause());
       throw baseException;
     }
 
-    val error = maybeError.get().getError();
-    if (error == null) {
-      throw baseException;
-    }
-    throw new OpenAiClientException(
-        "%s and error message: '%s'".formatted(baseException.getMessage(), error.getMessage()));
+    throw exceptionType.apply(
+        "%s and error message: '%s'"
+            .formatted(baseException.getMessage(), maybeError.get().getMessage()),
+        null);
   }
 }
