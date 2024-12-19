@@ -24,9 +24,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** KpiGet400Response */
+/** InlineObject4 */
 // CHECKSTYLE:OFF
-public class KpiGet400Response
+public class InlineObject4
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
@@ -35,17 +35,17 @@ public class KpiGet400Response
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for KpiGet400Response. */
-  protected KpiGet400Response() {}
+  /** Default constructor for InlineObject4. */
+  protected InlineObject4() {}
 
   /**
-   * Set the error of this {@link KpiGet400Response} instance and return the same instance.
+   * Set the error of this {@link InlineObject4} instance and return the same instance.
    *
-   * @param error The error of this {@link KpiGet400Response}
-   * @return The same instance of this {@link KpiGet400Response} class
+   * @param error The error of this {@link InlineObject4}
+   * @return The same instance of this {@link InlineObject4} class
    */
   @Nonnull
-  public KpiGet400Response error(@Nullable final KpiApiError error) {
+  public InlineObject4 error(@Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
@@ -53,7 +53,7 @@ public class KpiGet400Response
   /**
    * Get error
    *
-   * @return error The error of this {@link KpiGet400Response} instance.
+   * @return error The error of this {@link InlineObject4} instance.
    */
   @Nonnull
   public KpiApiError getError() {
@@ -61,16 +61,16 @@ public class KpiGet400Response
   }
 
   /**
-   * Set the error of this {@link KpiGet400Response} instance.
+   * Set the error of this {@link InlineObject4} instance.
    *
-   * @param error The error of this {@link KpiGet400Response}
+   * @param error The error of this {@link InlineObject4}
    */
   public void setError(@Nullable final KpiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link KpiGet400Response}.
+   * Get the names of the unrecognizable properties of the {@link InlineObject4}.
    *
    * @return The set of properties names
    */
@@ -81,7 +81,7 @@ public class KpiGet400Response
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link KpiGet400Response} instance.
+   * Get the value of an unrecognizable property of this {@link InlineObject4} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,14 +90,14 @@ public class KpiGet400Response
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("KpiGet400Response has no field with name '" + name + "'.");
+      throw new NoSuchElementException("InlineObject4 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link KpiGet400Response} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link InlineObject4} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -115,9 +115,9 @@ public class KpiGet400Response
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final KpiGet400Response kpiGet400Response = (KpiGet400Response) o;
-    return Objects.equals(this.cloudSdkCustomFields, kpiGet400Response.cloudSdkCustomFields)
-        && Objects.equals(this.error, kpiGet400Response.error);
+    final InlineObject4 inlineObject4 = (InlineObject4) o;
+    return Objects.equals(this.cloudSdkCustomFields, inlineObject4.cloudSdkCustomFields)
+        && Objects.equals(this.error, inlineObject4.error);
   }
 
   @Override
@@ -129,7 +129,7 @@ public class KpiGet400Response
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class KpiGet400Response {\n");
+    sb.append("class InlineObject4 {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -148,8 +148,8 @@ public class KpiGet400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link KpiGet400Response} instance. No arguments are required. */
-  public static KpiGet400Response create() {
-    return new KpiGet400Response();
+  /** Create a new {@link InlineObject4} instance. No arguments are required. */
+  public static InlineObject4 create() {
+    return new InlineObject4();
   }
 }
