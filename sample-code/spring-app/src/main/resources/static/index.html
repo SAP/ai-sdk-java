@@ -416,8 +416,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
+    // Animate cards when page is loaded (only design, no core functionality)
     document.addEventListener('DOMContentLoaded', () => {
-        // Animate cards
         anime({
             targets: '.endpoint-card',
             translateY: [50, 0],
@@ -427,6 +428,7 @@
         });
     });
 
+
     // Get the modal instance
     const modalElement = document.getElementById("exampleModal");
     const modalInstance = new bootstrap.Modal(modalElement);
@@ -434,51 +436,39 @@
     const modalTitle = modalElement.querySelector('.modal-title');
     const modalHeader = modalElement.querySelector('.modal-header');
 
+
     document.querySelectorAll('.endpoint').forEach(link => {
         link.addEventListener('click', async (event) => {
-            event.preventDefault(); // Prevent the default link behavior
+            const spinner = document.getElementById("loading-spinner");
+            spinner.classList.remove("d-none");
 
-            const endpoint = event.target.parentElement.href; // Get the endpoint
+            event.preventDefault();
+            const endpoint = event.target.parentElement.href;
+
             try {
-                if (endpoint.includes('streamChatCompletion')) {
-                    await handleStreamingResponse(endpoint, event.target.innerHTML);
+                // Make initial request and check content type
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error("Error occurred with status code: " + response.status);
+
+                const contentType = response.headers.get('content-type');
+
+                if (contentType && contentType.includes('text/event-stream')) {
+                    await handleStreamingResponse(response, event.target.innerHTML);
                 } else {
-                    const data = await fetchData(endpoint); // Fetch the JSON data from the backend
-                    updateDisplay(data, event.target.innerHTML, endpoint, false); // Display the data in the modal
+                    const data = await response.json();
+                    updateDisplay(data, event.target.innerHTML, endpoint, false);
                 }
             } catch (error) {
                 updateDisplay(error.message, event.target.innerHTML, endpoint, true);
+            } finally {
+                // Hide the spinner
+                spinner.classList.add("d-none");
             }
         });
     });
 
-    async function fetchData(endpoint) {
-        const spinner = document.getElementById("loading-spinner"); // Get spinner element
-
+    async function handleStreamingResponse(response, endpointName) {
         try {
-            // Show the spinner
-            spinner.classList.remove("d-none");
-
-            const response = await fetch(endpoint);
-            if (!response.ok) throw new Error("Error occurred with status code: " + response.status);
-
-            return await response.json();
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            throw error;
-        } finally {
-            // Hide the spinner
-            spinner.classList.add("d-none");
-        }
-    }
-
-    async function handleStreamingResponse(endpoint, endpointName) {
-        const spinner = document.getElementById("loading-spinner");
-
-        try {
-            // Show the spinner
-            spinner.classList.remove("d-none");
-
             // Set the modal title
             modalTitle.innerHTML = `<code>${endpointName}</code>`;
             const existingToggleGroup = modalHeader.querySelector('.btn-group');
@@ -493,13 +483,6 @@
                 </div>
             `;
             const streamContainer = modalBody.querySelector('.stream-container');
-
-            // Fetch the streaming response
-            const response = await fetch(endpoint);
-
-            if (!response.ok) {
-                throw new Error(`Error occurred with status code: ${response.status}`);
-            }
 
             // Check if the response is a ReadableStream
             if (response.body) {
@@ -528,9 +511,6 @@
             }
         } catch (error) {
             updateDisplay(error.message, endpointName, endpoint, true);
-        } finally {
-            // Hide the spinner
-            spinner.classList.add("d-none");
         }
     }
 
