@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
+import static com.sap.ai.sdk.app.services.OpenAiService.send;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
