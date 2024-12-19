@@ -239,10 +239,10 @@ public class OrchestrationService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion(@Nonnull final String topic) {
     final var prompt =
         new OrchestrationPrompt(
-            "Please create a small story about developing a software project with around 700 words.");
+            "Please create a small story about " + topic + " with around 700 words.");
     final var stream = client.streamChatCompletion(prompt, config);
 
     final var emitter = new ResponseBodyEmitter();

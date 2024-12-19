@@ -56,7 +56,7 @@ class OrchestrationController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    return service.streamChatCompletion();
+    return service.streamChatCompletion("developing a software project");
   }
 
   /**
