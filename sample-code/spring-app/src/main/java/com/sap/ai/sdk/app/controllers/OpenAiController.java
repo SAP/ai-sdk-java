@@ -36,7 +36,7 @@ public class OpenAiController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.chatCompletion("Who is the prettiest");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -83,7 +83,7 @@ public class OpenAiController {
     final var response =
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -103,7 +103,7 @@ public class OpenAiController {
       throws JsonProcessingException {
     final var response =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -139,7 +139,7 @@ public class OpenAiController {
       throws JsonProcessingException {
     final var response =
         service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
