@@ -24,28 +24,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** FileDownload400Response */
+/** InlineObject3 */
 // CHECKSTYLE:OFF
-public class FileDownload400Response
+public class InlineObject3
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private DSetError error;
+  private MetaApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for FileDownload400Response. */
-  protected FileDownload400Response() {}
+  /** Default constructor for InlineObject3. */
+  protected InlineObject3() {}
 
   /**
-   * Set the error of this {@link FileDownload400Response} instance and return the same instance.
+   * Set the error of this {@link InlineObject3} instance and return the same instance.
    *
-   * @param error The error of this {@link FileDownload400Response}
-   * @return The same instance of this {@link FileDownload400Response} class
+   * @param error The error of this {@link InlineObject3}
+   * @return The same instance of this {@link InlineObject3} class
    */
   @Nonnull
-  public FileDownload400Response error(@Nullable final DSetError error) {
+  public InlineObject3 error(@Nullable final MetaApiError error) {
     this.error = error;
     return this;
   }
@@ -53,24 +53,24 @@ public class FileDownload400Response
   /**
    * Get error
    *
-   * @return error The error of this {@link FileDownload400Response} instance.
+   * @return error The error of this {@link InlineObject3} instance.
    */
   @Nonnull
-  public DSetError getError() {
+  public MetaApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link FileDownload400Response} instance.
+   * Set the error of this {@link InlineObject3} instance.
    *
-   * @param error The error of this {@link FileDownload400Response}
+   * @param error The error of this {@link InlineObject3}
    */
-  public void setError(@Nullable final DSetError error) {
+  public void setError(@Nullable final MetaApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link FileDownload400Response}.
+   * Get the names of the unrecognizable properties of the {@link InlineObject3}.
    *
    * @return The set of properties names
    */
@@ -81,7 +81,7 @@ public class FileDownload400Response
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link FileDownload400Response} instance.
+   * Get the value of an unrecognizable property of this {@link InlineObject3} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,15 +90,14 @@ public class FileDownload400Response
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "FileDownload400Response has no field with name '" + name + "'.");
+      throw new NoSuchElementException("InlineObject3 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link FileDownload400Response} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link InlineObject3} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -116,9 +115,9 @@ public class FileDownload400Response
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final FileDownload400Response fileDownload400Response = (FileDownload400Response) o;
-    return Objects.equals(this.cloudSdkCustomFields, fileDownload400Response.cloudSdkCustomFields)
-        && Objects.equals(this.error, fileDownload400Response.error);
+    final InlineObject3 inlineObject3 = (InlineObject3) o;
+    return Objects.equals(this.cloudSdkCustomFields, inlineObject3.cloudSdkCustomFields)
+        && Objects.equals(this.error, inlineObject3.error);
   }
 
   @Override
@@ -130,7 +129,7 @@ public class FileDownload400Response
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class FileDownload400Response {\n");
+    sb.append("class InlineObject3 {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -149,8 +148,8 @@ public class FileDownload400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link FileDownload400Response} instance. No arguments are required. */
-  public static FileDownload400Response create() {
-    return new FileDownload400Response();
+  /** Create a new {@link InlineObject3} instance. No arguments are required. */
+  public static InlineObject3 create() {
+    return new InlineObject3();
   }
 }

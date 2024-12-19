@@ -24,28 +24,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MetaGet404Response */
+/** InlineObject1 */
 // CHECKSTYLE:OFF
-public class MetaGet404Response
+public class InlineObject1
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private MetaApiError error;
+  private TrckApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MetaGet404Response. */
-  protected MetaGet404Response() {}
+  /** Default constructor for InlineObject1. */
+  protected InlineObject1() {}
 
   /**
-   * Set the error of this {@link MetaGet404Response} instance and return the same instance.
+   * Set the error of this {@link InlineObject1} instance and return the same instance.
    *
-   * @param error The error of this {@link MetaGet404Response}
-   * @return The same instance of this {@link MetaGet404Response} class
+   * @param error The error of this {@link InlineObject1}
+   * @return The same instance of this {@link InlineObject1} class
    */
   @Nonnull
-  public MetaGet404Response error(@Nullable final MetaApiError error) {
+  public InlineObject1 error(@Nullable final TrckApiError error) {
     this.error = error;
     return this;
   }
@@ -53,24 +53,24 @@ public class MetaGet404Response
   /**
    * Get error
    *
-   * @return error The error of this {@link MetaGet404Response} instance.
+   * @return error The error of this {@link InlineObject1} instance.
    */
   @Nonnull
-  public MetaApiError getError() {
+  public TrckApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link MetaGet404Response} instance.
+   * Set the error of this {@link InlineObject1} instance.
    *
-   * @param error The error of this {@link MetaGet404Response}
+   * @param error The error of this {@link InlineObject1}
    */
-  public void setError(@Nullable final MetaApiError error) {
+  public void setError(@Nullable final TrckApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link MetaGet404Response}.
+   * Get the names of the unrecognizable properties of the {@link InlineObject1}.
    *
    * @return The set of properties names
    */
@@ -81,7 +81,7 @@ public class MetaGet404Response
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MetaGet404Response} instance.
+   * Get the value of an unrecognizable property of this {@link InlineObject1} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,14 +90,14 @@ public class MetaGet404Response
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("MetaGet404Response has no field with name '" + name + "'.");
+      throw new NoSuchElementException("InlineObject1 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link MetaGet404Response} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link InlineObject1} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -115,9 +115,9 @@ public class MetaGet404Response
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MetaGet404Response metaGet404Response = (MetaGet404Response) o;
-    return Objects.equals(this.cloudSdkCustomFields, metaGet404Response.cloudSdkCustomFields)
-        && Objects.equals(this.error, metaGet404Response.error);
+    final InlineObject1 inlineObject1 = (InlineObject1) o;
+    return Objects.equals(this.cloudSdkCustomFields, inlineObject1.cloudSdkCustomFields)
+        && Objects.equals(this.error, inlineObject1.error);
   }
 
   @Override
@@ -129,7 +129,7 @@ public class MetaGet404Response
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MetaGet404Response {\n");
+    sb.append("class InlineObject1 {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -148,8 +148,8 @@ public class MetaGet404Response
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link MetaGet404Response} instance. No arguments are required. */
-  public static MetaGet404Response create() {
-    return new MetaGet404Response();
+  /** Create a new {@link InlineObject1} instance. No arguments are required. */
+  public static InlineObject1 create() {
+    return new InlineObject1();
   }
 }
