@@ -109,6 +109,8 @@
             overflow-y: auto;
         }
 
+
+
     </style>
 </head>
 <body>
@@ -398,6 +400,12 @@
 </div>
 
 <footer class="footer">
+    <div class="global-view-toggle">
+        <div class="btn-group">
+            <button id="global-json-btn" class="btn btn-sm btn-outline-primary active">JSON</button>
+            <button id="global-content-btn" class="btn btn-sm btn-outline-primary">Message</button>
+        </div>
+    </div>
     <div class="footer-links">
         <a href="https://github.com/SAP/ai-sdk-java">GitHub</a>
     </div>
@@ -436,6 +444,30 @@
     const modalTitle = modalElement.querySelector('.modal-title');
     const modalHeader = modalElement.querySelector('.modal-header');
 
+    let ToggleJSON = true; // Default to JSON view
+
+    function getCurrentViewPreference() {
+        return ToggleJSON;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const globalJsonBtn = document.getElementById('global-json-btn');
+        const globalContentBtn = document.getElementById('global-content-btn');
+
+        function toggleView(showJson) {
+            ToggleJSON = showJson ? true : false;
+            if (showJson) {
+                globalJsonBtn.classList.add('active');
+                globalContentBtn.classList.remove('active');
+            } else {
+                globalContentBtn.classList.add('active');
+                globalJsonBtn.classList.remove('active');
+            }
+        }
+
+        globalJsonBtn.addEventListener('click', () => toggleView(true));
+        globalContentBtn.addEventListener('click', () => toggleView(false));
+    });
 
     document.querySelectorAll('.endpoint').forEach(link => {
         link.addEventListener('click', async (event) => {
@@ -447,8 +479,19 @@
 
             try {
                 // Make initial request and check content type
-                const response = await fetch(endpoint);
-                if (!response.ok) throw new Error("Error occurred with status code: " + response.status);
+
+                let response = null;
+                if (getCurrentViewPreference) {
+                    const headers = {
+                        'accept': 'application/json'
+                    };
+                    response = await fetch(endpoint, { headers });
+                }
+                else {
+                    response = await fetch(endpoint);
+                }
+
+                if (!response.ok) throw new Error("Error occurred!");
 
                 const contentType = response.headers.get('content-type');
 
@@ -456,10 +499,10 @@
                     await handleStreamingResponse(response, event.target.innerHTML);
                 } else {
                     const data = await response.json();
-                    updateDisplay(data, event.target.innerHTML, endpoint, false);
+                    updateDisplay(data, event.target.innerHTML, endpoint, contentType);
                 }
             } catch (error) {
-                updateDisplay(error.message, event.target.innerHTML, endpoint, true);
+                updateDisplay(error.message, event.target.innerHTML, endpoint, 'error');
             } finally {
                 // Hide the spinner
                 spinner.classList.add("d-none");
@@ -471,10 +514,6 @@
         try {
             // Set the modal title
             modalTitle.innerHTML = `<code>${endpointName}</code>`;
-            const existingToggleGroup = modalHeader.querySelector('.btn-group');
-            if (existingToggleGroup) {
-                existingToggleGroup.remove();
-            }
 
             // Prepare the modal body for streaming content
             modalBody.innerHTML = `
@@ -510,7 +549,7 @@
                 throw new Error('Response is not a stream');
             }
         } catch (error) {
-            updateDisplay(error.message, endpointName, endpoint, true);
+            updateDisplay(error.message, endpointName, endpoint, 'error');
         }
     }
 
@@ -523,83 +562,41 @@
              .replace(/'/g, "&#039;");
     }
 
-    function updateDisplay(data, endpointName, endpoint, error) {
+    function updateDisplay(data, endpointName, endpoint, contentType) {
         // Set the modal title to the endpointName
         modalTitle.innerHTML = `<code>${endpointName}</code>`;
-        const existingToggleGroup = modalHeader.querySelector('.btn-group');
-            if (existingToggleGroup) {
-                existingToggleGroup.remove();
-            }
-        if(error) {
+
+        if(contentType === 'error') {
             modalBody.innerHTML = `
                     <div class="alert alert-danger" role="alert">
-                        ${data}. For more information, check the output of <a href="${endpoint}">${endpointName}</a>
+                        ${data} For more information, check the output of <a href="${endpoint}">${endpointName}</a>
                     </div>
                 `;
             modalInstance.show();
             return;
         }
 
-        // Check if the data has a 'content' field
-        const hasContentField = data.hasOwnProperty('content');
-
-        // Create a container for the modal content with toggle functionality
-        modalBody.innerHTML = `
-            <div class="json-display-container">
-                <div id="json-container"></div>
-                ${hasContentField ? `
-                    <div id="content-container" class="d-none p-3 bg-light border rounded mt-3">
-                        <pre class="m-0 text-wrap"></pre>
+        // Create the content based on the current view preference
+        if (getCurrentViewPreference()) {
+            modalBody.innerHTML = '<div id="json-container"></div>';
+            try {
+                // Parse the data if it's a string
+                const jsonData = typeof data === 'string' ? JSON.parse(data) : data;
+                $('#json-container').JSONView(jsonData);
+            } catch (e) {
+                modalBody.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Error parsing JSON response: ${e.message}
                     </div>
-                ` : ''}
-            </div>
-        `;
-
-        // Render full JSON
-        $('#json-container').JSONView(data);
-
-        // If content field exists, set up toggle functionality
-        if (hasContentField) {
-
-            // Create toggle buttons in the modal header
-            const toggleGroup = document.createElement('div');
-            toggleGroup.className = 'btn-group ms-auto';
-            toggleGroup.innerHTML = `
-                <button id="full-json-btn" class="btn btn-sm btn-outline-primary active">JSON</button>
-                <button id="content-json-btn" class="btn btn-sm btn-outline-primary">Message</button>
+                `;
+            }
+        } else {
+            const jsonData = typeof data === 'string' ? data : JSON.stringify(data, null, 4);
+            modalBody.innerHTML = `
+                <div id="content-container" class="p-3 bg-light border rounded">
+                    <pre> ${jsonData} </pre>
+                </div>
             `;
-
-            // Insert the toggle group before the close button
-            const closeButton = modalHeader.querySelector('.btn-close');
-            modalHeader.insertBefore(toggleGroup, closeButton);
-
-            const jsonContainer = document.getElementById('json-container');
-            const contentContainer = document.getElementById('content-container');
-            const contentPre = contentContainer.querySelector('pre');
-
-            // Render content field
-            contentPre.textContent = typeof data.content === 'object'
-                ? JSON.stringify(data.content, null, 2)
-                : data.content;
-
-            // Get toggle buttons
-            const fullJsonBtn = document.getElementById('full-json-btn');
-            const contentJsonBtn = document.getElementById('content-json-btn');
-
-            // Toggle functionality
-            fullJsonBtn.addEventListener('click', () => {
-                fullJsonBtn.classList.add('active');
-                contentJsonBtn.classList.remove('active');
-                jsonContainer.classList.remove('d-none');
-                contentContainer.classList.add('d-none');
-            });
-
-            contentJsonBtn.addEventListener('click', () => {
-                contentJsonBtn.classList.add('active');
-                fullJsonBtn.classList.remove('active');
-                contentContainer.classList.remove('d-none');
-                jsonContainer.classList.add('d-none');
-            });
         }
 
         // Show the modal
