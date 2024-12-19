@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClient.JACKSON;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.buildExceptionAndThrow;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiResponseHandler.parseErrorAndThrow;
 
+import com.sap.ai.sdk.core.commons.ClientResponseHandler;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -17,6 +17,12 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 class OpenAiStreamingHandler<D extends StreamedDelta> {
 
   @Nonnull private final Class<D> deltaType;
+  private static final ClientResponseHandler<OpenAiError, OpenAiClientException> HANDLER =
+      new ClientResponseHandler<>(OpenAiError.class, OpenAiError.class, OpenAiClientException::new);
+
+  static {
+    HANDLER.JACKSON = JACKSON;
+  }
 
   /**
    * @param response The response to process
@@ -27,7 +33,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
   Stream<D> handleResponse(@Nonnull final ClassicHttpResponse response)
       throws OpenAiClientException {
     if (response.getCode() >= 300) {
-      buildExceptionAndThrow(response);
+      HANDLER.buildExceptionAndThrow(response);
     }
     return IterableStreamConverter.lines(response.getEntity())
         // half of the lines are empty newlines, the last line is "data: [DONE]"
@@ -36,7 +42,7 @@ class OpenAiStreamingHandler<D extends StreamedDelta> {
             line -> {
               if (!line.startsWith("data: ")) {
                 final String msg = "Failed to parse response from OpenAI model";
-                parseErrorAndThrow(line, new OpenAiClientException(msg));
+                HANDLER.parseErrorAndThrow(line, new OpenAiClientException(msg));
               }
             })
         .map(

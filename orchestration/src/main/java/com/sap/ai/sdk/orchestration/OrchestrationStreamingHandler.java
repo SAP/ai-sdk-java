@@ -1,9 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.JACKSON;
-import static com.sap.ai.sdk.orchestration.OrchestrationResponseHandler.buildExceptionAndThrow;
-import static com.sap.ai.sdk.orchestration.OrchestrationResponseHandler.parseErrorAndThrow;
 
+import com.sap.ai.sdk.core.commons.ClientResponseHandler;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -16,6 +15,16 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 class OrchestrationStreamingHandler<D extends StreamedDelta> {
 
   @Nonnull private final Class<D> deltaType;
+  private static final ClientResponseHandler<OrchestrationError, OrchestrationClientException>
+      HANDLER =
+          new ClientResponseHandler<>(
+              OrchestrationError.class,
+              OrchestrationError.class,
+              OrchestrationClientException::new);
+
+  static {
+    HANDLER.JACKSON = JACKSON;
+  }
 
   /**
    * @param response The response to process
@@ -26,7 +35,7 @@ class OrchestrationStreamingHandler<D extends StreamedDelta> {
   Stream<D> handleResponse(@Nonnull final ClassicHttpResponse response)
       throws OrchestrationClientException {
     if (response.getCode() >= 300) {
-      buildExceptionAndThrow(response);
+      HANDLER.buildExceptionAndThrow(response);
     }
     return IterableStreamConverter.lines(response.getEntity())
         // half of the lines are empty newlines, the last line is "data: [DONE]"
@@ -36,7 +45,7 @@ class OrchestrationStreamingHandler<D extends StreamedDelta> {
             line -> {
               if (!line.startsWith("data: ")) {
                 final String msg = "Failed to parse response from the Orchestration service";
-                parseErrorAndThrow(line, new OrchestrationClientException(msg));
+                HANDLER.parseErrorAndThrow(line, new OrchestrationClientException(msg));
               }
             })
         .map(
