@@ -239,12 +239,10 @@ public class OrchestrationService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion(final int numberOfFibonacci) {
+  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var prompt =
         new OrchestrationPrompt(
-            "Can you give me the first "
-                + numberOfFibonacci
-                + " numbers of the Fibonacci sequence?");
+            "Please create a small story about developing a software project with around 700 words.");
     final var stream = client.streamChatCompletion(prompt, config);
 
     final var emitter = new ResponseBodyEmitter();
