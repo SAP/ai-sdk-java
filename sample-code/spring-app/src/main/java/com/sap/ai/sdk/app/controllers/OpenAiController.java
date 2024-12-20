@@ -73,7 +73,6 @@ public class OpenAiController {
             emitter.complete();
           }
         };
-
     ThreadContextExecutors.getExecutor().execute(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
@@ -101,7 +100,6 @@ public class OpenAiController {
             emitter.complete();
           }
         };
-
     ThreadContextExecutors.getExecutor().execute(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
