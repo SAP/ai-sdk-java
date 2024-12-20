@@ -24,28 +24,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ArtifactQuery400Response */
+/** InlineObject */
 // CHECKSTYLE:OFF
-public class ArtifactQuery400Response
+public class InlineObject
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private AiApiError error;
+  private DSetError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ArtifactQuery400Response. */
-  protected ArtifactQuery400Response() {}
+  /** Default constructor for InlineObject. */
+  protected InlineObject() {}
 
   /**
-   * Set the error of this {@link ArtifactQuery400Response} instance and return the same instance.
+   * Set the error of this {@link InlineObject} instance and return the same instance.
    *
-   * @param error The error of this {@link ArtifactQuery400Response}
-   * @return The same instance of this {@link ArtifactQuery400Response} class
+   * @param error The error of this {@link InlineObject}
+   * @return The same instance of this {@link InlineObject} class
    */
   @Nonnull
-  public ArtifactQuery400Response error(@Nullable final AiApiError error) {
+  public InlineObject error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -53,24 +53,24 @@ public class ArtifactQuery400Response
   /**
    * Get error
    *
-   * @return error The error of this {@link ArtifactQuery400Response} instance.
+   * @return error The error of this {@link InlineObject} instance.
    */
   @Nonnull
-  public AiApiError getError() {
+  public DSetError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link ArtifactQuery400Response} instance.
+   * Set the error of this {@link InlineObject} instance.
    *
-   * @param error The error of this {@link ArtifactQuery400Response}
+   * @param error The error of this {@link InlineObject}
    */
-  public void setError(@Nullable final AiApiError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ArtifactQuery400Response}.
+   * Get the names of the unrecognizable properties of the {@link InlineObject}.
    *
    * @return The set of properties names
    */
@@ -81,7 +81,7 @@ public class ArtifactQuery400Response
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ArtifactQuery400Response} instance.
+   * Get the value of an unrecognizable property of this {@link InlineObject} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,15 +90,14 @@ public class ArtifactQuery400Response
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ArtifactQuery400Response has no field with name '" + name + "'.");
+      throw new NoSuchElementException("InlineObject has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ArtifactQuery400Response} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link InlineObject} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -116,9 +115,9 @@ public class ArtifactQuery400Response
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ArtifactQuery400Response artifactQuery400Response = (ArtifactQuery400Response) o;
-    return Objects.equals(this.cloudSdkCustomFields, artifactQuery400Response.cloudSdkCustomFields)
-        && Objects.equals(this.error, artifactQuery400Response.error);
+    final InlineObject inlineObject = (InlineObject) o;
+    return Objects.equals(this.cloudSdkCustomFields, inlineObject.cloudSdkCustomFields)
+        && Objects.equals(this.error, inlineObject.error);
   }
 
   @Override
@@ -130,7 +129,7 @@ public class ArtifactQuery400Response
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ArtifactQuery400Response {\n");
+    sb.append("class InlineObject {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -149,8 +148,8 @@ public class ArtifactQuery400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ArtifactQuery400Response} instance. No arguments are required. */
-  public static ArtifactQuery400Response create() {
-    return new ArtifactQuery400Response();
+  /** Create a new {@link InlineObject} instance. No arguments are required. */
+  public static InlineObject create() {
+    return new InlineObject();
   }
 }
