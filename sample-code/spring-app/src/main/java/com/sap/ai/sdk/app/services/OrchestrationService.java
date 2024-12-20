@@ -235,12 +235,10 @@ public class OrchestrationService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public Stream<String> streamChatCompletion(final int numberOfFibonacci) {
+  public Stream<String> streamChatCompletion(@Nonnull final String topic) {
     final var prompt =
         new OrchestrationPrompt(
-            "Can you give me the first "
-                + numberOfFibonacci
-                + " numbers of the Fibonacci sequence?");
+            "Please create a small story about " + topic + " with around 700 words.");
     return client.streamChatCompletion(prompt, config);
   }
 }

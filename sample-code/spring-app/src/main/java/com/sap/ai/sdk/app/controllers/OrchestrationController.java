@@ -60,7 +60,7 @@ class OrchestrationController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    final var stream = service.streamChatCompletion(100);
+    final var stream = service.streamChatCompletion("developing a software project");
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
