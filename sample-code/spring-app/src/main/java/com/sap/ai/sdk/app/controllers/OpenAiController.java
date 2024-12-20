@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import javax.annotation.Nonnull;
-
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.io.IOException;
+import java.util.Arrays;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,9 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 /** Endpoints for OpenAI operations */
 @Slf4j

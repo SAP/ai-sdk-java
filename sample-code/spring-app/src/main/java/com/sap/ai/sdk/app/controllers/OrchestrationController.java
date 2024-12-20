@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,9 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import javax.annotation.Nonnull;
-
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-
-import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 
 /** Endpoints for the Orchestration service */
 @RestController
