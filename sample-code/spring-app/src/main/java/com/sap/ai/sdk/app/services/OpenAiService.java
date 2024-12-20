@@ -5,10 +5,9 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -16,17 +15,12 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
-import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Service class for OpenAI service */
 @Service
@@ -50,34 +44,13 @@ public class OpenAiService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas(
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final String message) {
     final var request =
         new OpenAiChatCompletionParameters()
             .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText(message));
 
-    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
-
-    final var emitter = new ResponseBodyEmitter();
-
-    final Runnable consumeStream =
-        () -> {
-          final var totalOutput = new OpenAiChatCompletionOutput();
-          // try-with-resources ensures the stream is closed
-          try (stream) {
-            stream
-                .peek(totalOutput::addDelta)
-                .forEach(delta -> send(emitter, delta.getDeltaContent()));
-          } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
-            emitter.complete();
-          }
-        };
-
-    ThreadContextExecutors.getExecutor().execute(consumeStream);
-
-    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+    return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
   }
 
   /**
@@ -86,50 +59,10 @@ public class OpenAiService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion(@Nonnull final String message) {
-    final var stream =
-        OpenAiClient.forModel(GPT_35_TURBO)
-            .withSystemPrompt("Be a good, honest AI and answer the following question:")
-            .streamChatCompletion(message);
-
-    final var emitter = new ResponseBodyEmitter();
-
-    final Runnable consumeStream =
-        () -> {
-          try (stream) {
-            stream.forEach(deltaMessage -> send(emitter, deltaMessage));
-          } finally {
-            emitter.complete();
-          }
-        };
-
-    ThreadContextExecutors.getExecutor().execute(consumeStream);
-
-    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
-  }
-
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
-    }
-  }
-
-  /**
-   * Send a chunk to the emitter
-   *
-   * @param emitter The emitter to send the chunk to
-   * @param chunk The chunk to send
-   */
-  public static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
-    try {
-      emitter.send(chunk);
-    } catch (final IOException e) {
-      log.error(Arrays.toString(e.getStackTrace()));
-      emitter.completeWithError(e);
-    }
+  public Stream<String> streamChatCompletion(@Nonnull final String message) {
+    return OpenAiClient.forModel(GPT_35_TURBO)
+        .withSystemPrompt("Be a good, honest AI and answer the following question:")
+        .streamChatCompletion(message);
   }
 
   /**

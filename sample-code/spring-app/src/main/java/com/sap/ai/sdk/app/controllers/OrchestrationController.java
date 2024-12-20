@@ -8,6 +8,8 @@ import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import javax.annotation.Nonnull;
+
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 
 /** Endpoints for the Orchestration service */
 @RestController
@@ -56,7 +60,25 @@ class OrchestrationController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    return service.streamChatCompletion(100);
+    final var stream = service.streamChatCompletion(100);
+    final var emitter = new ResponseBodyEmitter();
+    final Runnable consumeStream =
+        () -> {
+          try (stream) {
+            stream.forEach(
+                deltaMessage -> {
+                  log.info("Service: {}", deltaMessage);
+                  send(emitter, deltaMessage);
+                });
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
   /**
