@@ -47,6 +47,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
     - Refer
       to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
       for setup instructions.
+    - In case the model is deployed in a custom resource group, refer to [this section](#using-a-custom-resource-group).
     - <details>
       <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
 
@@ -95,6 +96,15 @@ OpenAiChatCompletionOutput result =
         .chatCompletion("Hello World! Why is this phrase so famous?");
 
 String resultMessage = result.getContent();
+```
+
+### Using a Custom Resource Group
+
+```java
+var destination = new AiCoreService()
+        .getInferenceDestination("custom-rg")
+        .forModel(GPT_4O);
+OpenAiClient.withCustomDestination(destination);
 ```
 
 ### Message history
