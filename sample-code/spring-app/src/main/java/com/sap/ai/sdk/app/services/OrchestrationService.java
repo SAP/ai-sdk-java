@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
@@ -19,16 +18,13 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Service class for the Orchestration service */
 @Service
@@ -239,30 +235,10 @@ public class OrchestrationService {
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
-  public ResponseEntity<ResponseBodyEmitter> streamChatCompletion(@Nonnull final String topic) {
+  public Stream<String> streamChatCompletion(@Nonnull final String topic) {
     final var prompt =
         new OrchestrationPrompt(
             "Please create a small story about " + topic + " with around 700 words.");
-    final var stream = client.streamChatCompletion(prompt, config);
-
-    final var emitter = new ResponseBodyEmitter();
-
-    final Runnable consumeStream =
-        () -> {
-          try (stream) {
-            stream.forEach(
-                deltaMessage -> {
-                  log.info("Service: {}", deltaMessage);
-                  send(emitter, deltaMessage);
-                });
-          } finally {
-            emitter.complete();
-          }
-        };
-
-    ThreadContextExecutors.getExecutor().execute(consumeStream);
-
-    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+    return client.streamChatCompletion(prompt, config);
   }
 }

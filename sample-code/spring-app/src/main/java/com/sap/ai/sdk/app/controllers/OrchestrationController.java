@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,7 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.completion("HelloWorld!");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -56,7 +59,25 @@ class OrchestrationController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    return service.streamChatCompletion("developing a software project");
+    final var stream = service.streamChatCompletion("developing a software project");
+    final var emitter = new ResponseBodyEmitter();
+    final Runnable consumeStream =
+        () -> {
+          try (stream) {
+            stream.forEach(
+                deltaMessage -> {
+                  log.info("Service: {}", deltaMessage);
+                  send(emitter, deltaMessage);
+                });
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
   /**
@@ -72,7 +93,7 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.template("German");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -91,7 +112,7 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.messagesHistory("What is the capital of France?");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -118,7 +139,7 @@ class OrchestrationController {
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
       throws JsonProcessingException {
     final var response = service.filter(policy, "the downtown area");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -142,7 +163,7 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.maskingAnonymization(DPIEntities.PERSON);
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -162,7 +183,7 @@ class OrchestrationController {
       @PathVariable("resourceGroup") @Nonnull final String resourceGroup)
       throws JsonProcessingException {
     final var response = service.completionWithResourceGroup(resourceGroup, "Hello world!");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -185,7 +206,7 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.maskingPseudonymization(DPIEntities.PERSON);
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
@@ -206,7 +227,7 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.grounding("What does Joule do?");
-    if (accept.equals("application/json")) {
+    if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
