@@ -500,14 +500,16 @@
                 // Make initial request and check content type
 
                 let response = null;
-                if (getCurrentViewPreference) {
+                if (getCurrentViewPreference()) {
                     const headers = {
                         'accept': 'application/json'
                     };
                     response = await fetch(endpoint, { headers });
-                }
-                else {
-                    response = await fetch(endpoint);
+                } else {
+                    const headers = {
+                        'accept': 'text/html'
+                    };
+                    response = await fetch(endpoint, { headers });
                 }
 
                 if (!response.ok) throw new Error("Error occurred!");
@@ -517,7 +519,7 @@
                 if (contentType && contentType.includes('text/event-stream')) {
                     await handleStreamingResponse(response, event.target.innerHTML);
                 } else {
-                    const data = await response.json();
+                    const data = getCurrentViewPreference() ? await response.json() : await response.text();
                     updateDisplay(data, event.target.innerHTML, endpoint, contentType);
                 }
             } catch (error) {
