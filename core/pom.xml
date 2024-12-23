@@ -30,6 +30,12 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
+    <coverage.complexity>60%</coverage.complexity>
+    <coverage.line>69%</coverage.line>
+    <coverage.instruction>68%</coverage.instruction>
+    <coverage.branch>52%</coverage.branch>
+    <coverage.method>73%</coverage.method>
+    <coverage.class>87%</coverage.class>
   </properties>
 
   <dependencies>
@@ -65,6 +71,10 @@
     <dependency>
       <groupId>org.apache.httpcomponents.client5</groupId>
       <artifactId>httpclient5</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.core5</groupId>
+      <artifactId>httpcore5</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -127,11 +137,6 @@
     <dependency>
       <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.core5</groupId>
-      <artifactId>httpcore5</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
