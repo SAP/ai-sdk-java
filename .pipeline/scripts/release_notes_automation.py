@@ -69,10 +69,10 @@ def count_releases(filename):
     return count
 
 def find_target_file(version):
-    # release-notes-X-to-Y.mdx with every 15 versions the index increases by 15 and stays the same for 15 versions
+    # release-notes-X-to-Y.md with every 15 versions the index increases by 15 and stays the same for 15 versions
     minor_version = int(version.split(".")[1])
     index = minor_version // 15 * 15
-    return "release-notes-" + str(index) + "-to-" + str(index + 14) + ".mdx"
+    return "release-notes-" + str(index) + "-to-" + str(index + 14) + ".md"
 
 def write_release_notes(folder, target_file):
     absolute_target_file = os.path.join(folder, target_file)

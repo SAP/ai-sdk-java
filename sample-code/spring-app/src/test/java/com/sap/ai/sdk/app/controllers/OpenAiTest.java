@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -14,16 +15,16 @@ import org.junit.jupiter.api.Test;
 
 @Slf4j
 class OpenAiTest {
-  OpenAiController controller;
+  OpenAiService service;
 
   @BeforeEach
   void setUp() {
-    controller = new OpenAiController();
+    service = new OpenAiService();
   }
 
   @Test
   void chatCompletion() {
-    final var completion = controller.chatCompletion();
+    final var completion = service.chatCompletion("Who is the prettiest");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -32,7 +33,9 @@ class OpenAiTest {
 
   @Test
   void chatCompletionImage() {
-    final var completion = controller.chatCompletionImage();
+    final var completion =
+        service.chatCompletionImage(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -72,7 +75,8 @@ class OpenAiTest {
 
   @Test
   void chatCompletionTools() {
-    final var completion = controller.chatCompletionTools();
+    final var completion =
+        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -82,7 +86,7 @@ class OpenAiTest {
 
   @Test
   void embedding() {
-    final var embedding = controller.embedding();
+    final var embedding = service.embedding("Hello world");
 
     assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
     assertThat(embedding.getModel()).isEqualTo("ada");
@@ -91,7 +95,8 @@ class OpenAiTest {
 
   @Test
   void chatCompletionWithResource() {
-    final var completion = OpenAiController.chatCompletionWithResource("ai-sdk-java-e2e");
+    final var completion =
+        service.chatCompletionWithResource("ai-sdk-java-e2e", "Where is the nearest coffee shop?");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
