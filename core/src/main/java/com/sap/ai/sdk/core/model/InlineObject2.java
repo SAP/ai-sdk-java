@@ -24,28 +24,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MetricsFind400Response */
+/** InlineObject2 */
 // CHECKSTYLE:OFF
-public class MetricsFind400Response
+public class InlineObject2
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TrckApiError error;
+  private AiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MetricsFind400Response. */
-  protected MetricsFind400Response() {}
+  /** Default constructor for InlineObject2. */
+  protected InlineObject2() {}
 
   /**
-   * Set the error of this {@link MetricsFind400Response} instance and return the same instance.
+   * Set the error of this {@link InlineObject2} instance and return the same instance.
    *
-   * @param error The error of this {@link MetricsFind400Response}
-   * @return The same instance of this {@link MetricsFind400Response} class
+   * @param error The error of this {@link InlineObject2}
+   * @return The same instance of this {@link InlineObject2} class
    */
   @Nonnull
-  public MetricsFind400Response error(@Nullable final TrckApiError error) {
+  public InlineObject2 error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -53,24 +53,24 @@ public class MetricsFind400Response
   /**
    * Get error
    *
-   * @return error The error of this {@link MetricsFind400Response} instance.
+   * @return error The error of this {@link InlineObject2} instance.
    */
   @Nonnull
-  public TrckApiError getError() {
+  public AiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link MetricsFind400Response} instance.
+   * Set the error of this {@link InlineObject2} instance.
    *
-   * @param error The error of this {@link MetricsFind400Response}
+   * @param error The error of this {@link InlineObject2}
    */
-  public void setError(@Nullable final TrckApiError error) {
+  public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link MetricsFind400Response}.
+   * Get the names of the unrecognizable properties of the {@link InlineObject2}.
    *
    * @return The set of properties names
    */
@@ -81,7 +81,7 @@ public class MetricsFind400Response
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MetricsFind400Response} instance.
+   * Get the value of an unrecognizable property of this {@link InlineObject2} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -90,15 +90,14 @@ public class MetricsFind400Response
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "MetricsFind400Response has no field with name '" + name + "'.");
+      throw new NoSuchElementException("InlineObject2 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link MetricsFind400Response} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link InlineObject2} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -116,9 +115,9 @@ public class MetricsFind400Response
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MetricsFind400Response metricsFind400Response = (MetricsFind400Response) o;
-    return Objects.equals(this.cloudSdkCustomFields, metricsFind400Response.cloudSdkCustomFields)
-        && Objects.equals(this.error, metricsFind400Response.error);
+    final InlineObject2 inlineObject2 = (InlineObject2) o;
+    return Objects.equals(this.cloudSdkCustomFields, inlineObject2.cloudSdkCustomFields)
+        && Objects.equals(this.error, inlineObject2.error);
   }
 
   @Override
@@ -130,7 +129,7 @@ public class MetricsFind400Response
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MetricsFind400Response {\n");
+    sb.append("class InlineObject2 {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -149,8 +148,8 @@ public class MetricsFind400Response
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link MetricsFind400Response} instance. No arguments are required. */
-  public static MetricsFind400Response create() {
-    return new MetricsFind400Response();
+  /** Create a new {@link InlineObject2} instance. No arguments are required. */
+  public static InlineObject2 create() {
+    return new InlineObject2();
   }
 }
