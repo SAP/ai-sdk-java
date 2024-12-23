@@ -1,49 +1,51 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
-import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
+import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage.ImageDetailLevel;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Endpoints for OpenAI operations */
 @Slf4j
 @RestController
-class OpenAiController {
+@SuppressWarnings("unused")
+public class OpenAiController {
+  @Autowired private OpenAiService service;
+  private final ObjectMapper mapper =
+      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
   /**
    * Chat request to OpenAI
    *
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/chatCompletion")
   @Nonnull
-  OpenAiChatCompletionOutput chatCompletion() {
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion("Who is the prettiest");
+  ResponseEntity<String> chatCompletion(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.chatCompletion("Who is the prettiest");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -55,14 +57,9 @@ class OpenAiController {
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletionDeltas() {
-    final var msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
-    final var request =
-        new OpenAiChatCompletionParameters().addMessages(new OpenAiChatUserMessage().addText(msg));
-
-    final var stream = OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
-
+    final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+    final var stream = service.streamChatCompletionDeltas(message);
     final var emitter = new ResponseBodyEmitter();
-
     final Runnable consumeStream =
         () -> {
           final var totalOutput = new OpenAiChatCompletionOutput();
@@ -76,19 +73,10 @@ class OpenAiController {
             emitter.complete();
           }
         };
-
     ThreadContextExecutors.getExecutor().execute(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
-  }
-
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
-    }
   }
 
   /**
@@ -100,12 +88,8 @@ class OpenAiController {
   @GetMapping("/streamChatCompletion")
   @Nonnull
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
-    final var stream =
-        OpenAiClient.forModel(GPT_35_TURBO)
-            .withSystemPrompt("Be a good, honest AI and answer the following question:")
-            .streamChatCompletion(
-                "Can you give me the first 100 numbers of the Fibonacci sequence?");
-
+    final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+    final var stream = service.streamChatCompletion(message);
     final var emitter = new ResponseBodyEmitter();
 
     final Runnable consumeStream =
@@ -116,15 +100,19 @@ class OpenAiController {
             emitter.complete();
           }
         };
-
     ThreadContextExecutors.getExecutor().execute(consumeStream);
 
     // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  private static void send(
-      @Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
+  /**
+   * Send a chunk to the emitter
+   *
+   * @param emitter The emitter to send the chunk to
+   * @param chunk The chunk to send
+   */
+  public static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
     try {
       emitter.send(chunk);
     } catch (final IOException e) {
@@ -134,79 +122,93 @@ class OpenAiController {
   }
 
   /**
+   * Convert an object to JSON
+   *
+   * @param obj The object to convert
+   * @return The JSON representation of the object
+   */
+  private static String objectToJson(@Nonnull final Object obj) {
+    try {
+      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+    } catch (final JsonProcessingException ignored) {
+      return "Could not parse object to JSON";
+    }
+  }
+
+  /**
    * Chat request to OpenAI with an image
    *
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/chatCompletionImage")
   @Nonnull
-  OpenAiChatCompletionOutput chatCompletionImage() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .addMessages(
-                new OpenAiChatUserMessage()
-                    .addText("Describe the following image.")
-                    .addImage(
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
-                        ImageDetailLevel.HIGH));
-
-    return OpenAiClient.forModel(GPT_4O).chatCompletion(request);
+  ResponseEntity<String> chatCompletionImage(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response =
+        service.chatCompletionImage(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
    * Chat request to OpenAI with a tool.
    *
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/chatCompletionTool")
   @Nonnull
-  OpenAiChatCompletionOutput chatCompletionTools() {
-    final var question =
-        "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?";
-    final var par = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
-    final var function =
-        new OpenAiChatCompletionFunction()
-            .setName("fibonacci")
-            .setDescription("Calculate the Fibonacci number for given sequence index.")
-            .setParameters(par);
-    final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .addMessages(new OpenAiChatUserMessage().addText(question))
-            .setTools(List.of(tool))
-            .setToolChoiceFunction("fibonacci");
-
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+  ResponseEntity<String> chatCompletionTools(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response =
+        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
    * Get the embedding of a text
    *
-   * @return the embedding response
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/embedding")
   @Nonnull
-  OpenAiEmbeddingOutput embedding() {
-    final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
-
-    return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+  ResponseEntity<String> embedding() throws JsonProcessingException {
+    final var response = service.embedding("Hello world");
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(mapper.writeValueAsString(response));
   }
 
   /**
    * Chat request to OpenAI filtering by resource group
    *
    * @param resourceGroup The resource group to use
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
-  public static OpenAiChatCompletionOutput chatCompletionWithResource(
-      @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
-
-    final var destination =
-        new AiCoreService().getInferenceDestination(resourceGroup).forModel(GPT_4O);
-
-    return OpenAiClient.withCustomDestination(destination)
-        .chatCompletion("Where is the nearest coffee shop?");
+  ResponseEntity<String> chatCompletionWithResource(
+      @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
+      throws JsonProcessingException {
+    final var response =
+        service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 }

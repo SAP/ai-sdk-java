@@ -21,16 +21,23 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,9 +45,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import javax.annotation.Nonnull;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 /**
  * Test that queries are on the right URL, with the right headers. Also check that the received
@@ -58,9 +75,9 @@ class OrchestrationUnitTest {
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
-  private OrchestrationClient client;
-  private OrchestrationModuleConfig config;
-  private OrchestrationPrompt prompt;
+  private static OrchestrationClient client;
+  private static OrchestrationModuleConfig config;
+  private static OrchestrationPrompt prompt;
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -69,6 +86,13 @@ class OrchestrationUnitTest {
     client = new OrchestrationClient(destination);
     config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
+    ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
+  }
+
+  @AfterEach
+  void reset() {
+    ApacheHttpClient5Accessor.setHttpClientCache(null);
+    ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
   @Test
@@ -83,6 +107,37 @@ class OrchestrationUnitTest {
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testGrounding() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var response = client.chatCompletion(prompt, config);
+    final var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+
+    final var groundingData =
+        (Map<String, Object>) result.getModuleResults().getGrounding().getData();
+    assertThat(groundingData.get("grounding_query")).isEqualTo("grounding call");
+    assertThat(groundingData.get("grounding_result").toString())
+        .startsWith("Joule is the AI copilot that truly understands your business.");
+    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
+    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+        .startsWith(
+            "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
+    assertThat(llmChoice.getMessage().getContent())
+        .startsWith(
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+    assertThat(llmChoice.getMessage().getContent())
+        .startsWith(
+            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
   }
 
   @Test
@@ -273,8 +328,20 @@ class OrchestrationUnitTest {
     }
   }
 
-  @Test
-  void testErrorHandling() {
+  private static Runnable[] errorHandlingCalls() {
+    return new Runnable[] {
+      () -> client.chatCompletion(new OrchestrationPrompt(""), config),
+      () ->
+          client
+              .streamChatCompletion(new OrchestrationPrompt(""), config)
+              // the stream needs to be consumed to parse the response
+              .forEach(System.out::println)
+    };
+  }
+
+  @ParameterizedTest
+  @MethodSource("errorHandlingCalls")
+  void testErrorHandling(@Nonnull final Runnable request) {
     stubFor(
         post(anyUrl())
             .inScenario("Errors")
@@ -308,7 +375,6 @@ class OrchestrationUnitTest {
     stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
 
     final var softly = new SoftAssertions();
-    final Runnable request = () -> client.executeRequest(mock(CompletionPostRequest.class));
 
     softly
         .assertThatThrownBy(request::run)
@@ -401,5 +467,151 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("not valid JSON");
+  }
+
+  @Test
+  void testThrowsOnContentFilter() {
+    var mock = mock(OrchestrationClient.class);
+    when(mock.streamChatCompletion(any(), any())).thenCallRealMethod();
+
+    var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
+    when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+
+    // this must not throw, since the stream is lazily evaluated
+    var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
+    assertThatThrownBy(stream::toList)
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Content filter");
+  }
+
+  @Test
+  void streamChatCompletionOutputFilterErrorHandling() throws IOException {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletionOutputFilter.txt"))) {
+
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      // Create a mock response
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      mockResponse.setEntity(inputStreamEntity);
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+
+      // Configure the HttpClient mock to return the mock response
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
+        assertThatThrownBy(() -> stream.forEach(System.out::println))
+            .isInstanceOf(OrchestrationClientException.class)
+            .hasMessage("Content filter filtered the output.");
+      }
+
+      Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @Test
+  void streamChatCompletionDeltas() throws IOException {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
+
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      // Create a mock response
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      mockResponse.setEntity(inputStreamEntity);
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+
+      // Configure the HttpClient mock to return the mock response
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      var prompt =
+          new OrchestrationPrompt(
+              "Can you give me the first 100 numbers of the Fibonacci sequence?");
+      var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
+
+      try (Stream<OrchestrationChatCompletionDelta> stream =
+          client.streamChatCompletionDeltas(request)) {
+        var deltaList = stream.toList();
+
+        assertThat(deltaList).hasSize(3);
+        // the first delta doesn't have any content
+        assertThat(deltaList.get(0).getDeltaContent()).isEqualTo("");
+        assertThat(deltaList.get(1).getDeltaContent()).isEqualTo("Sure");
+        assertThat(deltaList.get(2).getDeltaContent()).isEqualTo("!");
+
+        assertThat(deltaList.get(0).getRequestId())
+            .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
+        assertThat(deltaList.get(1).getRequestId())
+            .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
+        assertThat(deltaList.get(2).getRequestId())
+            .isEqualTo("5bd87b41-6368-4c18-aaae-47ab82e9475b");
+
+        assertThat(deltaList.get(0).getFinishReason()).isEqualTo("");
+        assertThat(deltaList.get(1).getFinishReason()).isEqualTo("");
+        assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
+
+        // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
+        var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
+        var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
+        var result2 = (LLMModuleResultSynchronous) deltaList.get(2).getOrchestrationResult();
+
+        assertThat(result0.getSystemFingerprint()).isEmpty();
+        assertThat(result0.getId()).isEmpty();
+        assertThat(result0.getCreated()).isEqualTo(0);
+        assertThat(result0.getModel()).isEmpty();
+        assertThat(result0.getObject()).isEmpty();
+        // BUG: usage is absent from the request
+        assertThat(result0.getUsage()).isNull();
+        assertThat(result0.getChoices()).hasSize(1);
+        final var choices0 = result0.getChoices().get(0);
+        assertThat(choices0.getIndex()).isEqualTo(0);
+        assertThat(choices0.getFinishReason()).isEmpty();
+        assertThat(choices0.getCustomField("delta")).isNotNull();
+        // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
+        final var message0 = (Map<String, Object>) choices0.getCustomField("delta");
+        assertThat(message0.get("role")).isEqualTo("");
+        assertThat(message0.get("content")).isEqualTo("");
+        List<ChatMessage> templating = deltaList.get(0).getModuleResults().getTemplating();
+        assertThat(templating).hasSize(1);
+        assertThat(templating.get(0).getRole()).isEqualTo("user");
+        assertThat(templating.get(0).getContent())
+            .isEqualTo("Hello world! Why is this phrase so famous?");
+
+        assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
+        assertThat(result1.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");
+        assertThat(result1.getCreated()).isEqualTo(1732802814);
+        assertThat(result1.getModel()).isEqualTo("gpt-35-turbo");
+        assertThat(result1.getObject()).isEqualTo("chat.completion.chunk");
+        assertThat(result1.getUsage()).isNull();
+        assertThat(result1.getChoices()).hasSize(1);
+        final var choices1 = result1.getChoices().get(0);
+        assertThat(choices1.getIndex()).isEqualTo(0);
+        assertThat(choices1.getFinishReason()).isEmpty();
+        assertThat(choices1.getCustomField("delta")).isNotNull();
+        final var message1 = (Map<String, Object>) choices1.getCustomField("delta");
+        assertThat(message1.get("role")).isEqualTo("assistant");
+        assertThat(message1.get("content")).isEqualTo("Sure");
+
+        assertThat(result2.getSystemFingerprint()).isEqualTo("fp_808245b034");
+        assertThat(result2.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");
+        assertThat(result2.getCreated()).isEqualTo(1732802814);
+        assertThat(result2.getModel()).isEqualTo("gpt-35-turbo");
+        assertThat(result2.getObject()).isEqualTo("chat.completion.chunk");
+        assertThat(result2.getUsage()).isNull();
+        assertThat(result2.getChoices()).hasSize(1);
+        final var choices2 = result2.getChoices().get(0);
+        assertThat(choices2.getIndex()).isEqualTo(0);
+        assertThat(choices2.getFinishReason()).isEqualTo("stop");
+        // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
+        assertThat(choices2.getCustomField("delta")).isNotNull();
+        final var message2 = (Map<String, Object>) choices2.getCustomField("delta");
+        assertThat(message2.get("role")).isEqualTo("assistant");
+        assertThat(message2.get("content")).isEqualTo("!");
+      }
+      Mockito.verify(inputStream, times(1)).close();
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "request_id": "b589de57-512e-4e11-9b69-8601453b3296",
+  "code": 400,
+  "message": "Content filtered due to safety violations. Please modify the prompt and try again.",
+  "location": "Filtering Module - Input Filter",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "Fuck you"
+      }
+    ],
+    "input_filtering": {
+      "message": "Content filtered due to safety violations. Please modify the prompt and try again.",
+      "data": {
+        "azure_content_safety": {
+          "Hate": 2
+        }
+      }
+    }
+  }
+}
