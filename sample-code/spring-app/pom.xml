@@ -33,7 +33,7 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.4.0</spring-boot.version>
+    <spring-boot.version>3.4.1</spring-boot.version>
     <logback.version>1.5.12</logback.version>
     <cf-logging.version>3.8.4</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
@@ -96,6 +96,11 @@
       <version>${springframework.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${springframework.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
@@ -110,6 +115,10 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
     <!-- scope "runtime" -->
     <dependency>
