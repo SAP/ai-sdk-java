@@ -146,7 +146,7 @@
                 <div class="card-header">
                     <h2>AI Core</h2>
                     The AI Core API offers functionality for managing your scenarios, configurations and deployments.
-                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generative-ai-hub-in-sap-ai-core-7db524ee75e74bf8b50c167951fe34a5">AI Core Documentation</a>
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/generative-ai-hub-in-sap-ai-core-7db524ee75e74bf8b50c167951fe34a5">AI Core documentation</a>.
                 </div>
                 <div class="card-body">
                     <h5>Java Specific Deployments</h5>
@@ -244,8 +244,8 @@
             <div class="card endpoint-card">
                 <div class="card-header">
                     <h2>Orchestration</h2>
-                    The Orchestration API offers functionality for enhancing your LLM calls with Grounding, Templating, Data Masking, Filtering and other.
-                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration">Orchestration Documentation</a>
+                    The Orchestration API offers functionality for enhancing your LLM calls with Templating, Filtering, Data Masking, Grounding and more.
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration">Orchestration documentation</a>.
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
@@ -253,6 +253,15 @@
                             <div class="info-tooltip">
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
                                    href="/orchestration/completion"><code>/orchestration/completion</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI through the Orchestration service with a simple prompt.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/streamChatCompletion"><code>/orchestration/streamChatCompletion</code></a>
                                 <div class="tooltip-content">
                                     Chat request to OpenAI through the Orchestration service with a simple prompt.
                                 </div>
@@ -279,7 +288,7 @@
                         <li class="list-group-item">
                             <div class="info-tooltip">
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/filter/NUMBER_4"><code>/orchestration/filter/NUMBER_4</code></a>
+                                   href="/orchestration/filter/ALLOW_SAFE_LOW_MEDIUM"><code>/orchestration/filter/ALLOW_SAFE_LOW_MEDIUM</code></a>
                                 <div class="tooltip-content">
                                     Apply both input and output filtering for a request to orchestration with a loose filter.
                                 </div>
@@ -288,7 +297,7 @@
                         <li class="list-group-item">
                             <div class="info-tooltip">
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/filter/NUMBER_0"><code>/orchestration/filter/NUMBER_0</code></a>
+                                   href="/orchestration/filter/ALLOW_SAFE"><code>/orchestration/filter/ALLOW_SAFE</code></a>
                                 <div class="tooltip-content">
                                     Apply both input and output filtering for a request to orchestration with a strict filter.                                </div>
                             </div>
@@ -314,6 +323,16 @@
                                 </div>
                             </div>
                         </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/orchestration/grounding"><code>/orchestration/grounding</code></a>
+                                <div class="tooltip-content">
+                                    Let the orchestration service a response to a hypothetical user who provided feedback on the AI
+                                    SDK. Pseudonymize the user's name and location to protect their privacy.
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -324,7 +343,7 @@
                 <div class="card-header">
                     <h2>Foundation Models</h2>
                     The Foundation Models API offers functionality for directly calling a foundation model and using the features provided by its own API.
-                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-generative-ai-models-using-sap-ai-core">Foundation Models Documentation</a>
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-generative-ai-models-using-sap-ai-core">Foundation Models documentation</a>.
                 </div>
                 <div class="card-body">
                     <h5>OpenAI</h5>
@@ -425,8 +444,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 
-    // Animate cards when page is loaded (only design, no core functionality)
     document.addEventListener('DOMContentLoaded', () => {
+        animateCards();
+        setupToggleView();
+    });
+
+    // Animate cards when page is loaded (only design, no core functionality)
+    function animateCards() {
         anime({
             targets: '.endpoint-card',
             translateY: [50, 0],
@@ -434,7 +458,21 @@
             easing: 'easeOutQuad',
             delay: anime.stagger(200)
         });
-    });
+    }
+
+    function setupToggleView() {
+        const globalJsonBtn = document.getElementById('global-json-btn');
+        const globalContentBtn = document.getElementById('global-content-btn');
+
+        function toggleView(showJson) {
+            ToggleJSON = showJson;
+            globalJsonBtn.classList.toggle('active', showJson);
+            globalContentBtn.classList.toggle('active', !showJson);
+        }
+
+        globalJsonBtn.addEventListener('click', () => toggleView(true));
+        globalContentBtn.addEventListener('click', () => toggleView(false));
+    }
 
 
     // Get the modal instance
@@ -446,28 +484,9 @@
 
     let ToggleJSON = true; // Default to JSON view
 
-    function getCurrentViewPreference() {
+    function isJsonMode() {
         return ToggleJSON;
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const globalJsonBtn = document.getElementById('global-json-btn');
-        const globalContentBtn = document.getElementById('global-content-btn');
-
-        function toggleView(showJson) {
-            ToggleJSON = showJson ? true : false;
-            if (showJson) {
-                globalJsonBtn.classList.add('active');
-                globalContentBtn.classList.remove('active');
-            } else {
-                globalContentBtn.classList.add('active');
-                globalJsonBtn.classList.remove('active');
-            }
-        }
-
-        globalJsonBtn.addEventListener('click', () => toggleView(true));
-        globalContentBtn.addEventListener('click', () => toggleView(false));
-    });
 
     document.querySelectorAll('.endpoint').forEach(link => {
         link.addEventListener('click', async (event) => {
@@ -481,14 +500,16 @@
                 // Make initial request and check content type
 
                 let response = null;
-                if (getCurrentViewPreference) {
+                if (isJsonMode()) {
                     const headers = {
                         'accept': 'application/json'
                     };
                     response = await fetch(endpoint, { headers });
-                }
-                else {
-                    response = await fetch(endpoint);
+                } else {
+                    const headers = {
+                        'accept': 'text/html'
+                    };
+                    response = await fetch(endpoint, { headers });
                 }
 
                 if (!response.ok) throw new Error("Error occurred!");
@@ -498,7 +519,7 @@
                 if (contentType && contentType.includes('text/event-stream')) {
                     await handleStreamingResponse(response, event.target.innerHTML);
                 } else {
-                    const data = await response.json();
+                    const data = isJsonMode() ? await response.json() : await response.text();
                     updateDisplay(data, event.target.innerHTML, endpoint, contentType);
                 }
             } catch (error) {
@@ -577,7 +598,7 @@
         }
 
         // Create the content based on the current view preference
-        if (getCurrentViewPreference()) {
+        if (isJsonMode()) {
             modalBody.innerHTML = '<div id="json-container"></div>';
             try {
                 // Parse the data if it's a string

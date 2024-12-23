@@ -220,7 +220,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request to orchestration service failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
+            "Request failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
   }
 
   @Test
@@ -268,7 +268,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request to orchestration service failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
+            "Request failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
   }
 
   @Test

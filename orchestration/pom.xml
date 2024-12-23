@@ -31,6 +31,12 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
+    <coverage.complexity>70%</coverage.complexity>
+    <coverage.line>86%</coverage.line>
+    <coverage.instruction>86%</coverage.instruction>
+    <coverage.branch>67%</coverage.branch>
+    <coverage.method>85%</coverage.method>
+    <coverage.class>100%</coverage.class>
   </properties>
 
   <dependencies>
@@ -134,8 +140,6 @@
             <groupId>com.sap.cloud.sdk.datamodel</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
-              <skip>true</skip>
-              <!-- TODO: remove this once Cloud SDK 5.15.0 is released -->
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>beta</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
