@@ -11,6 +11,7 @@ import lombok.experimental.Delegate;
 
 /**
  * Orchestration error response.
+ *
  * @since 1.1.0
  */
 @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
