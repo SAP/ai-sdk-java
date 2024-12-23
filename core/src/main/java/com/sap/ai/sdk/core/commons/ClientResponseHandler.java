@@ -8,6 +8,7 @@ import com.google.common.annotations.Beta;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
@@ -131,9 +132,8 @@ public class ClientResponseHandler<T, E extends ClientException>
       throw baseException;
     }
 
-    throw exceptionType.apply(
-        "%s and error message: '%s'"
-            .formatted(baseException.getMessage(), maybeError.get().getMessage()),
-        null);
+    val error = Objects.requireNonNullElse(maybeError.get().getMessage(), "");
+    val message = "%s and error message: '%s'".formatted(baseException.getMessage(), error);
+    throw exceptionType.apply(message, baseException);
   }
 }

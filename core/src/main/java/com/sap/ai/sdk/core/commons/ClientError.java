@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core.commons;
 
 import com.google.common.annotations.Beta;
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Generic class that contains a JSON error response.
@@ -16,6 +16,6 @@ public interface ClientError {
    *
    * @return The error message
    */
-  @Nonnull
+  @Nullable
   String getMessage();
 }
