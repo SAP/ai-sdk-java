@@ -24,8 +24,8 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 /**
  * Parse incoming JSON responses and handles any errors. For internal use only.
  *
- * @param <T> The type of the response
- * @param <E> The type of the exception to throw
+ * @param <T> The type of the response.
+ * @param <E> The type of the exception to throw.
  * @since 1.1.0
  */
 @Beta
