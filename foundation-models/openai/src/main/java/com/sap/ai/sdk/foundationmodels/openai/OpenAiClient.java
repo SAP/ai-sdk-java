@@ -87,7 +87,7 @@ public final class OpenAiClient {
    *
    * <pre>{@code
    * var destination = new AiCoreService().getInferenceDestination("custom-rg").forModel(GPT_4O);
-   * OpenAiClient.withCustomDestination(destination).withApiVersion("2024-10-21");
+   * OpenAiClient.withCustomDestination(destination);
    * }</pre>
    *
    * @param destination The specific {@link HttpDestination} to use.
