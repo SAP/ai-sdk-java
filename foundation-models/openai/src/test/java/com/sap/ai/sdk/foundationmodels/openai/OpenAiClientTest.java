@@ -373,9 +373,7 @@ class OpenAiClientTest {
     assertThat(embeddingData.getEmbedding())
         .isNotNull()
         .isNotEmpty()
-        .containsExactly(-0.0000000070958645d, 2.123e-300d, -0.0069813123d, -3.385849e-05d)
-        // ensure double precision
-        .hasToString("[-7.0958645E-9, 2.123E-300, -0.0069813123, -3.385849E-5]");
+        .isEqualTo(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
