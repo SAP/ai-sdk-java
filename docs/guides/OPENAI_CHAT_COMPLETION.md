@@ -102,8 +102,8 @@ String resultMessage = result.getContent();
 
 ```java
 var destination = new AiCoreService()
-        .getInferenceDestination("custom-rg")
-        .forModel(GPT_4O);
+    .getInferenceDestination("custom-rg")
+    .forModel(GPT_4O);
 OpenAiClient.withCustomDestination(destination);
 ```
 
