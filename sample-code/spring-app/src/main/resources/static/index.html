@@ -254,7 +254,7 @@
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
                                    href="/orchestration/completion"><code>/orchestration/completion</code></a>
                                 <div class="tooltip-content">
-                                    Chat request to OpenAI through the Orchestration service with a simple prompt.
+                                    Chat request to an LLM through the Orchestration service with a simple prompt.
                                 </div>
                             </div>
                         </li>
@@ -263,7 +263,7 @@
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
                                    href="/orchestration/streamChatCompletion"><code>/orchestration/streamChatCompletion</code></a>
                                 <div class="tooltip-content">
-                                    Chat request to OpenAI through the Orchestration service with a simple prompt.
+                                    Asynchronous stream of an LLM chat request.
                                 </div>
                             </div>
                         </li>
@@ -272,7 +272,7 @@
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
                                    href="/orchestration/template"><code>/orchestration/template</code></a>
                                 <div class="tooltip-content">
-                                    Chat request to OpenAI through the Orchestration service with a template.
+                                    Chat request to an LLM through the Orchestration service with a template.
                                 </div>
                             </div>
                         </li>
@@ -281,7 +281,7 @@
                                 <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
                                    href="/orchestration/messagesHistory"><code>/orchestration/messageHistory</code></a>
                                 <div class="tooltip-content">
-                                    Chat request to OpenAI through the Orchestration service using message history.
+                                    Chat request to an LLM through the Orchestration service using message history.
                                 </div>
                             </div>
                         </li>
@@ -508,7 +508,7 @@
                     const headers = {
                         'accept': 'text/html'
                     };
-                    response = await fetch(endpoint, { headers });
+                    response = await fetch(endpoint, {headers});
                 }
 
                 if (!response.ok) throw new Error("Error occurred!");
