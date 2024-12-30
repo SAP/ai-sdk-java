@@ -33,7 +33,7 @@ class OrchestrationController {
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a simple prompt.
+   * Chat request to an LLM through the Orchestration service with a simple prompt.
    *
    * @return a ResponseEntity with the response content
    */
@@ -52,7 +52,7 @@ class OrchestrationController {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an LLM chat request
    *
    * @return the emitter that streams the assistant message response
    */
@@ -81,7 +81,7 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template.
+   * Chat request to an LLM through the Orchestration service with a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
@@ -102,7 +102,7 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service using message history.
+   * Chat request to an LLM through the Orchestration service using message history.
    *
    * @return a ResponseEntity with the response content
    */
@@ -172,7 +172,7 @@ class OrchestrationController {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
+   * Chat request to an LLM through the Orchestration deployment under a specific resource group.
    *
    * @return a ResponseEntity with the response content
    */
