@@ -25,87 +25,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** FilteringModuleConfig */
+/** ImageContentImageUrl */
 @Beta // CHECKSTYLE:OFF
-public class FilteringModuleConfig
+public class ImageContentImageUrl
 // CHECKSTYLE:ON
 {
-  @JsonProperty("input")
-  private InputFilteringConfig input;
+  @JsonProperty("url")
+  private String url;
 
-  @JsonProperty("output")
-  private OutputFilteringConfig output;
+  @JsonProperty("detail")
+  private String detail = "auto";
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for FilteringModuleConfig. */
-  protected FilteringModuleConfig() {}
+  /** Default constructor for ImageContentImageUrl. */
+  protected ImageContentImageUrl() {}
 
   /**
-   * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
+   * Set the url of this {@link ImageContentImageUrl} instance and return the same instance.
    *
-   * @param input List of provider type and filters
-   * @return The same instance of this {@link FilteringModuleConfig} class
+   * @param url The url of this {@link ImageContentImageUrl}
+   * @return The same instance of this {@link ImageContentImageUrl} class
    */
   @Nonnull
-  public FilteringModuleConfig input(@Nullable final InputFilteringConfig input) {
-    this.input = input;
+  public ImageContentImageUrl url(@Nonnull final String url) {
+    this.url = url;
     return this;
   }
 
   /**
-   * List of provider type and filters
+   * Get url
    *
-   * @return input The input of this {@link FilteringModuleConfig} instance.
+   * @return url The url of this {@link ImageContentImageUrl} instance.
    */
   @Nonnull
-  public InputFilteringConfig getInput() {
-    return input;
+  public String getUrl() {
+    return url;
   }
 
   /**
-   * Set the input of this {@link FilteringModuleConfig} instance.
+   * Set the url of this {@link ImageContentImageUrl} instance.
    *
-   * @param input List of provider type and filters
+   * @param url The url of this {@link ImageContentImageUrl}
    */
-  public void setInput(@Nullable final InputFilteringConfig input) {
-    this.input = input;
+  public void setUrl(@Nonnull final String url) {
+    this.url = url;
   }
 
   /**
-   * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
+   * Set the detail of this {@link ImageContentImageUrl} instance and return the same instance.
    *
-   * @param output List of provider type and filters
-   * @return The same instance of this {@link FilteringModuleConfig} class
+   * @param detail The detail of this {@link ImageContentImageUrl}
+   * @return The same instance of this {@link ImageContentImageUrl} class
    */
   @Nonnull
-  public FilteringModuleConfig output(@Nullable final OutputFilteringConfig output) {
-    this.output = output;
+  public ImageContentImageUrl detail(@Nullable final String detail) {
+    this.detail = detail;
     return this;
   }
 
   /**
-   * List of provider type and filters
+   * Get detail
    *
-   * @return output The output of this {@link FilteringModuleConfig} instance.
+   * @return detail The detail of this {@link ImageContentImageUrl} instance.
    */
   @Nonnull
-  public OutputFilteringConfig getOutput() {
-    return output;
+  public String getDetail() {
+    return detail;
   }
 
   /**
-   * Set the output of this {@link FilteringModuleConfig} instance.
+   * Set the detail of this {@link ImageContentImageUrl} instance.
    *
-   * @param output List of provider type and filters
+   * @param detail The detail of this {@link ImageContentImageUrl}
    */
-  public void setOutput(@Nullable final OutputFilteringConfig output) {
-    this.output = output;
+  public void setDetail(@Nullable final String detail) {
+    this.detail = detail;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link FilteringModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link ImageContentImageUrl}.
    *
    * @return The set of properties names
    */
@@ -116,7 +116,7 @@ public class FilteringModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link FilteringModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link ImageContentImageUrl} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -126,13 +126,13 @@ public class FilteringModuleConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "FilteringModuleConfig has no field with name '" + name + "'.");
+          "ImageContentImageUrl has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link FilteringModuleConfig} instance. If the map
+   * Set an unrecognizable property of this {@link ImageContentImageUrl} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -151,24 +151,24 @@ public class FilteringModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final FilteringModuleConfig filteringModuleConfig = (FilteringModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, filteringModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.input, filteringModuleConfig.input)
-        && Objects.equals(this.output, filteringModuleConfig.output);
+    final ImageContentImageUrl imageContentImageUrl = (ImageContentImageUrl) o;
+    return Objects.equals(this.cloudSdkCustomFields, imageContentImageUrl.cloudSdkCustomFields)
+        && Objects.equals(this.url, imageContentImageUrl.url)
+        && Objects.equals(this.detail, imageContentImageUrl.detail);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(input, output, cloudSdkCustomFields);
+    return Objects.hash(url, detail, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class FilteringModuleConfig {\n");
-    sb.append("    input: ").append(toIndentedString(input)).append("\n");
-    sb.append("    output: ").append(toIndentedString(output)).append("\n");
+    sb.append("class ImageContentImageUrl {\n");
+    sb.append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -186,8 +186,22 @@ public class FilteringModuleConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link FilteringModuleConfig} instance. No arguments are required. */
-  public static FilteringModuleConfig create() {
-    return new FilteringModuleConfig();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContentImageUrl}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (url) -> new ImageContentImageUrl().url(url);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the url of this {@link ImageContentImageUrl} instance.
+     *
+     * @param url The url of this {@link ImageContentImageUrl}
+     * @return The ImageContentImageUrl instance.
+     */
+    ImageContentImageUrl url(@Nonnull final String url);
   }
 }

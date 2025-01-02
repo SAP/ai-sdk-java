@@ -15,9 +15,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** GroundingModuleConfigConfigFiltersInner */
+/** MultiChatMessageContent */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = DocumentGroundingFilter.class),
+  @JsonSubTypes.Type(value = ImageContent.class),
+  @JsonSubTypes.Type(value = TextContent.class),
 })
-public interface GroundingModuleConfigConfigFiltersInner {}
+public interface MultiChatMessageContent {}
