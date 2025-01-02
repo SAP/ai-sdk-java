@@ -614,4 +614,16 @@ class OrchestrationUnitTest {
       Mockito.verify(inputStream, times(1)).close();
     }
   }
+
+  @Test
+  void testOrchestrationError() {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var response = client.chatCompletion(prompt, config);
+    OrchestrationError error = new OrchestrationError(response);
+  }
 }
