@@ -123,7 +123,7 @@ class OrchestrationController {
   /**
    * Send an HTTP GET request for input filtering to the Orchestration service.
    *
-   * @link <ae *
+   * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     * AI Core: Orchestration - Input Filtering</a>
    * @param accept an optional HTTP header specifying the desired content type for the response.
