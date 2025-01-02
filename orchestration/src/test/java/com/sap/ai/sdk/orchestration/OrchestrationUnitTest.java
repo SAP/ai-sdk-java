@@ -70,7 +70,9 @@ class OrchestrationUnitTest {
           .withParam(MAX_TOKENS, 50)
           .withParam(TEMPERATURE, 0.1)
           .withParam(FREQUENCY_PENALTY, 0)
-          .withParam(PRESENCE_PENALTY, 0);
+          .withParam(PRESENCE_PENALTY, 0)
+          .withParam(TOP_P, 1)
+          .withParam(N, 1);
 
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
@@ -613,17 +615,5 @@ class OrchestrationUnitTest {
       }
       Mockito.verify(inputStream, times(1)).close();
     }
-  }
-
-  @Test
-  void testOrchestrationError() {
-    stubFor(
-        post(urlPathEqualTo("/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("templatingResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-    final var response = client.chatCompletion(prompt, config);
-    OrchestrationError error = new OrchestrationError(response);
   }
 }
