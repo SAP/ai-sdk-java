@@ -99,28 +99,7 @@ class OrchestrationTest {
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
   }
-
-  @Test
-  void testLenientContentFilter() {
-    var response = service.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM, "the downtown area");
-    var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
-    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
-    assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
-
-    var filterResult = result.getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
-  }
-
-  @Test
-  void testStrictContentFilter() {
-    assertThatThrownBy(() -> service.filter(AzureFilterThreshold.ALLOW_SAFE, "the downtown area"))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("400 Bad Request")
-        .hasMessageContaining("Content filtered");
-  }
-
+  
   @Test
   void testMessagesHistory() {
     CompletionPostResponse result =
@@ -201,5 +180,51 @@ class OrchestrationTest {
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testInputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    assertThatThrownBy(() -> service.inputFiltering(policy))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
+  }
+
+  @Test
+  void testInputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.inputFiltering(policy);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testOutputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    assertThatThrownBy(() -> service.outputFiltering(policy))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Content filter filtered the output.");
+  }
+
+  @Test
+  void testOutputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.outputFiltering(policy);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getModuleResults().getOutputFiltering();
+    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
   }
 }
