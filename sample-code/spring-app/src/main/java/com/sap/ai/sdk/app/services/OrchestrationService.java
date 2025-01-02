@@ -127,7 +127,6 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
 
-    // TODO: update controller and index.html
     var systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
     // is difficult. The prompt below may be rendered ineffective in the future.
@@ -143,7 +142,7 @@ public class OrchestrationService {
     try {
       response.getContent();
     } catch (OrchestrationClientException e) {
-      if (e.getMessage().contains("filtered the output.")) {
+      if (e.getMessage().contains("filtered the output")) {
         log.info(
             "Content filtered out by output filter but the LLM instead responded: '{}'",
             response.getChoice().getMessage().getContent());

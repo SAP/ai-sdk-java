@@ -134,7 +134,7 @@ class OrchestrationController {
    *     otherwise.
    * @throws JsonProcessingException if an error occurs while converting the response to JSON.
    */
-  @GetMapping("/inputFiltering")
+  @GetMapping("/inputFiltering/{policy}")
   @Nonnull
   ResponseEntity<String> inputFiltering(
       @RequestHeader(value = "accept", required = false) final String accept,
@@ -163,7 +163,7 @@ class OrchestrationController {
    *     otherwise.
    * @throws JsonProcessingException if an error occurs while converting the response to JSON.
    */
-  @GetMapping("/outputFiltering")
+  @GetMapping("/outputFiltering/{policy}")
   @Nonnull
   ResponseEntity<String> outputFiltering(
       @RequestHeader(value = "accept", required = false) final String accept,
