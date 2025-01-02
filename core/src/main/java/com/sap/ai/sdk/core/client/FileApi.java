@@ -20,7 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.36.0.
+ * AI Core in version 2.37.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -254,7 +254,7 @@ public class FileApi extends AbstractOpenApiService {
       @Nonnull final String path,
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean overwrite,
-      @Nullable final String body)
+      @Nullable final Object body)
       throws OpenApiRequestException {
     final Object localVarPostBody = body;
 
