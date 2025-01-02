@@ -99,7 +99,7 @@ class OrchestrationTest {
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
   }
-  
+
   @Test
   void testMessagesHistory() {
     CompletionPostResponse result =

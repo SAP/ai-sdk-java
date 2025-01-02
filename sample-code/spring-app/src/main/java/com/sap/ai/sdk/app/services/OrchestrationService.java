@@ -127,7 +127,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
 
-    var systemMessage = Message.system("Give three paraphrases for the following sentence");
+    final var systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
     // is difficult. The prompt below may be rendered ineffective in the future.
     final var prompt =
@@ -137,7 +137,7 @@ public class OrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
     final var configWithFilter = config.withOutputFiltering(filterConfig);
-    var response = client.chatCompletion(prompt, configWithFilter);
+    final var response = client.chatCompletion(prompt, configWithFilter);
 
     try {
       response.getContent();
