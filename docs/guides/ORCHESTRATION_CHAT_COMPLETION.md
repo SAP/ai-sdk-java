@@ -162,6 +162,12 @@ var configWithFilter = config.withInputFiltering(filterStrict).withOutputFilteri
 var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ```
+#### Behavior of Input and Output Filters
+
+- **Input Filter**: Triggers a `400 Bad Request` in response during the `chatCompletion` call if the input message violates the filter policy.
+- **Output Filter**: Allows the request to complete but throws an exception when accessing filtered content via `result.getContent()`.
+
+You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)  in our Spring Boot application demonstrating response handling with filters.
 
 ### Data masking
 
