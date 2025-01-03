@@ -93,11 +93,13 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
+   * @throws OrchestrationClientException if input filter filters the prompt
    * @param policy the explicitness of content that should be allowed through the filter
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy) {
+  public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
+      throws OrchestrationClientException {
     final var prompt =
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
     final var filterConfig =
@@ -105,14 +107,7 @@ public class OrchestrationService {
 
     final var configWithFilter = config.withInputFiltering(filterConfig);
 
-    try {
-      return client.chatCompletion(prompt, configWithFilter);
-    } catch (OrchestrationClientException e) {
-      if (e.getMessage().contains("400 Bad Request")) {
-        log.info("Content filtered out by input filter before any response was available.");
-      }
-      throw e;
-    }
+    return client.chatCompletion(prompt, configWithFilter);
   }
 
   /**
@@ -137,20 +132,7 @@ public class OrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
     final var configWithFilter = config.withOutputFiltering(filterConfig);
-    final var response = client.chatCompletion(prompt, configWithFilter);
-
-    try {
-      response.getContent();
-    } catch (OrchestrationClientException e) {
-      if (e.getMessage().contains("filtered the output")) {
-        log.info(
-            "Content filtered out by output filter but the LLM instead responded: '{}'",
-            response.getChoice().getMessage().getContent());
-      }
-      throw e;
-    }
-
-    return response;
+    return client.chatCompletion(prompt, configWithFilter);
   }
 
   /**

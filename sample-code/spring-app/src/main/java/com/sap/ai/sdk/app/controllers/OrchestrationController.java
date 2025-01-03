@@ -8,8 +8,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +163,7 @@ class OrchestrationController {
    * @return a {@link ResponseEntity} containing the filtered output. The response is either in JSON
    *     format if the "accept" header specifies "application/json" or in plain content format
    *     otherwise.
+   * @throws OrchestrationClientException if the output filter filtered the LLM response.
    * @throws JsonProcessingException if an error occurs while converting the response to JSON.
    */
   @GetMapping("/outputFiltering/{policy}")
@@ -168,14 +171,23 @@ class OrchestrationController {
   ResponseEntity<String> outputFiltering(
       @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
-      throws JsonProcessingException {
-    final var response = service.outputFiltering(policy);
+      throws JsonProcessingException, OrchestrationClientException {
+
+    String content;
+    try {
+      content = service.outputFiltering(policy).getContent();
+    } catch (OrchestrationClientException e) {
+      content = "Failed to obtain a response as the content was flagged by output filter.";
+      log.debug(content, e);
+    }
+
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(mapper.writeValueAsString(Map.of("content", content)));
     }
-    return ResponseEntity.ok(response.getContent());
+
+    return ResponseEntity.ok(content);
   }
 
   /**

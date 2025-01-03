@@ -210,7 +210,7 @@ class OrchestrationTest {
   void testOutputFilteringStrict() {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
-    assertThatThrownBy(() -> service.outputFiltering(policy))
+    assertThatThrownBy(() -> service.outputFiltering(policy).getContent())
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("Content filter filtered the output.");
   }
