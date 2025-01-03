@@ -10,6 +10,8 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.commons.ClientResponseHandler;
+import com.sap.ai.sdk.core.commons.ClientStreamingHandler;
+import com.sap.ai.sdk.core.commons.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
@@ -227,10 +229,10 @@ public class OrchestrationClient {
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       val handler =
           new ClientResponseHandler<>(
-              CompletionPostResponse.class,
-              OrchestrationError.class,
-              OrchestrationClientException::new);
-      handler.JACKSON = JACKSON;
+                  CompletionPostResponse.class,
+                  OrchestrationError.class,
+                  OrchestrationClientException::new)
+              .objectMapper(JACKSON);
       return client.execute(postRequest, handler);
     } catch (DeploymentResolutionException
         | DestinationAccessException
@@ -283,7 +285,9 @@ public class OrchestrationClient {
       val destination = destinationSupplier.get();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return new OrchestrationStreamingHandler<>(deltaType)
+      return new ClientStreamingHandler<>(
+              deltaType, OrchestrationError.class, OrchestrationClientException::new)
+          .objectMapper(JACKSON)
           .handleResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OrchestrationClientException("Request to the Orchestration service failed", e);
