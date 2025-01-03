@@ -1,6 +1,5 @@
-package com.sap.ai.sdk.foundationmodels.openai.model;
+package com.sap.ai.sdk.core.commons;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -11,7 +10,6 @@ import javax.annotation.Nullable;
  * stream of data. Implementations of this interface should provide the logic to extract the
  * relevant content from the delta.
  */
-@Beta
 public interface StreamedDelta {
 
   /**

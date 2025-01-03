@@ -38,7 +38,19 @@ public class ClientResponseHandler<T, E extends ClientException>
   @Nonnull private final BiFunction<String, Throwable, E> exceptionType;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
-  @Nonnull public ObjectMapper JACKSON = getDefaultObjectMapper();
+  @Nonnull private ObjectMapper JACKSON = getDefaultObjectMapper();
+
+  /**
+   * Set the {@link ObjectMapper} to use for parsing JSON responses.
+   *
+   * @param jackson The {@link ObjectMapper} to use
+   */
+  @Beta
+  @Nonnull
+  public ClientResponseHandler<T, E> objectMapper(@Nonnull final ObjectMapper jackson) {
+    JACKSON = jackson;
+    return this;
+  }
 
   /**
    * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.

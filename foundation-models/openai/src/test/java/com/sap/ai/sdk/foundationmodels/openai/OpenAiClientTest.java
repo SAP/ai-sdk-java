@@ -422,8 +422,7 @@ class OpenAiClientTest {
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .isInstanceOf(OpenAiClientException.class)
-            .hasMessage(
-                "Failed to parse response from OpenAI model and error message: 'exceeded token rate limit'");
+            .hasMessage("Failed to parse response and error message: 'exceeded token rate limit'");
       }
 
       Mockito.verify(inputStream, times(1)).close();
