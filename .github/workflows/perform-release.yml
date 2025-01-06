@@ -36,7 +36,7 @@ jobs:
           echo $RELEASE_VERSION
           RELEASE_TAG=rel/$RELEASE_VERSION
           echo $RELEASE_TAG
-          RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
+          RELEASE_COMMIT=$(gh release view rel/1.1.0 --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
           echo $RELEASE_COMMIT
           
           echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
