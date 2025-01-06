@@ -10,6 +10,10 @@
 
 - Added `streamChatCompletion()` and `streamChatCompletionDeltas()` to the `OrchestrationClient`.
 
+### 📈 Improvements
+
+- Update AI Core client to 2.37.0
+
 
 ## 1.0.0 - December 03, 2024
 
