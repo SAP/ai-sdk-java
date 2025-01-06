@@ -36,15 +36,9 @@ jobs:
           echo $RELEASE_VERSION
           RELEASE_TAG=rel/$RELEASE_VERSION
           echo $RELEASE_TAG
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \"https://api.github.com/repos/${{ github.repository }}/releases/tags/rel/1.1.0"
+          gh auth login --with-token $GH_TOKEN
           RELEASE_COMMIT=$(gh release view rel/1.1.0 --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
-          echo $RELEASE_COMMIT
-          
-          echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
-          
-          echo "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
         env:
           GH_TOKEN: ${{ github.token }}
 
