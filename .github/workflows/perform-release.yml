@@ -30,16 +30,11 @@ jobs:
       - name: "Determine Branch Names"
         id: determine-branch-names
         run: |
-          CODE_BRANCH_NAME=$(gh pr view ${{ github.event.inputs.release_pr_number }} --repo "SAP/ai-sdk-java" --json headRefName | jq -r '.headRefName')
-          RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2)
-          RELEASE_TAG="rel/$RELEASE_VERSION"
-          RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "SAP/ai-sdk-java" --json targetCommitish | jq -r '.targetCommitish')
-          
           echo "" >> $GITHUB_OUTPUT
-          echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
+          echo "CODE_BRANCH_NAME=$(gh pr view ${{ github.event.inputs.release_pr_number }} --repo "SAP/ai-sdk-java" --json headRefName --jq '.headRefName')" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2)" >> $GITHUB_OUTPUT
+          echo "RELEASE_TAG=rel/$RELEASE_VERSION" >> $GITHUB_OUTPUT
+          echo "RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "SAP/ai-sdk-java" --json targetCommitish --jq '.targetCommitish')" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           
           echo "[DEBUG] Current GITHUB_OUTPUT: '$(cat $GITHUB_OUTPUT)'"
