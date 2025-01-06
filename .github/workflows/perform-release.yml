@@ -31,6 +31,7 @@ jobs:
         id: determine-branch-names
         run: |
           echo "CODE_BRANCH_NAME=$(gh pr view ${{ github.event.inputs.release_pr_number }} --repo "SAP/ai-sdk-java" --json headRefName --jq '.headRefName')" >> $GITHUB_OUTPUT
+          RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2)
           echo "RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2)" >> $GITHUB_OUTPUT
           echo "RELEASE_TAG=rel/$RELEASE_VERSION" >> $GITHUB_OUTPUT
           echo "RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "SAP/ai-sdk-java" --json targetCommitish --jq '.targetCommitish')" >> $GITHUB_OUTPUT
