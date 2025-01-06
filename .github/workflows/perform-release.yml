@@ -22,9 +22,7 @@ jobs:
     outputs:
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
-    permissions:
-      pull-requests: read
-      contents: read
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: "Determine Branch Names"
