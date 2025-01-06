@@ -10,6 +10,7 @@ import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,37 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.completion("HelloWorld!");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
+  }
+
+  @GetMapping("/image")
+  @Nonnull
+  ResponseEntity<String> imageInput(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response =
+        service.imageInput(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(mapper.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
+  }
+
+  @GetMapping("/multiString")
+  @Nonnull
+  ResponseEntity<String> multiStringInput(
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response =
+        service.multiStringInput(List.of("What is the capital of France?", "What is Chess about?"));
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)

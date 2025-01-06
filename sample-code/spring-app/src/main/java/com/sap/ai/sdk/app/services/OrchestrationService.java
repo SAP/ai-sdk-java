@@ -48,6 +48,98 @@ public class OrchestrationService {
   }
 
   /**
+   * Chat request to OpenAI through the Orchestration service with an image.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
+    final var prompt = new OrchestrationPrompt(Map.of());
+    final var configJsonImage =
+        """
+        {
+          "module_configurations": {
+            "templating_module_config": {
+              "template": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "What’s in this image?"
+                    },
+                    {
+                      "type": "image_url",
+                      "image_url": {
+                        "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
+                        "detail": "low"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "llm_module_config": {
+              "model_name": "gpt-4o",
+              "model_params": {
+                "max_tokens": 50,
+                "temperature": 0.1,
+                "frequency_penalty": 0,
+                "presence_penalty": 0
+              }
+            }
+          }
+        }
+        """;
+    return client.executeRequestFromJsonModuleConfig(prompt, configJsonImage);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with multiple strings.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
+    final var prompt = new OrchestrationPrompt(Map.of());
+    final var configJson =
+        """
+{
+    "module_configurations": {
+      "templating_module_config": {
+        "template": [
+          {
+            "role":"user",
+            "content":[
+              {
+                "type": "text",
+                "text": "%s"
+              },
+              {
+                "type": "text",
+                "text": "%s"
+              }
+            ]
+          }
+        ]
+      },
+      "llm_module_config": {
+        "model_name": "gpt-4o",
+        "model_params": {
+          "max_tokens": 50,
+          "temperature": 0.1,
+          "frequency_penalty": 0,
+          "presence_penalty": 0
+        }
+      }
+    }
+  }
+"""
+            .formatted(questions.get(0), questions.get(1));
+    return client.executeRequestFromJsonModuleConfig(prompt, configJson);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
