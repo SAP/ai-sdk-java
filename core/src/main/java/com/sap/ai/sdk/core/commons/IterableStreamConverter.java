@@ -91,6 +91,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
    * when an exception occurred.
    *
    * @param entity The HTTP entity object.
+   * @param exceptionType The type of the client exception to throw in case of an error.
    * @return A sequential Stream object.
    * @throws ClientException if the provided HTTP entity object is {@code null} or empty.
    */
