@@ -48,6 +48,17 @@ public class OrchestrationService {
   }
 
   /**
+   * For Demo app!
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse processInput(@Nonnull final String userInput) {
+    final var prompt = new OrchestrationPrompt(userInput);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
