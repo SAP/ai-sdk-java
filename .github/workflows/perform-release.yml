@@ -20,8 +20,6 @@ jobs:
   prerequisites:
     name: "Prerequisites"
     outputs:
-      release-version: ${{ steps.determine-branch-names.outputs.RELEASE_VERSION }}
-      release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
     permissions:
@@ -44,11 +42,14 @@ jobs:
           fi
           
           RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2) 
-
+          CODE_BRANCH_NAME=$BRANCH_NAME
+          RELEASE_TAG=rel/$RELEASE_VERSION
+          RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "${{ github.repository }}" --json targetCommitish | jq -r '.targetCommitish')
+          
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "RELEASE_TAG=rel/$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "CODE_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "${{ github.repository }}" --json targetCommitish | jq -r '.targetCommitish')" >> $GITHUB_OUTPUT
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
           
           echo "[DEBUG] Current GITHUB_OUTPUT: '$(cat $GITHUB_OUTPUT)'"
         env:
