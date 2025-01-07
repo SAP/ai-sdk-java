@@ -128,7 +128,7 @@ class OrchestrationUnitTest {
     assertThat(groundingData.get("grounding_result").toString())
         .startsWith("Joule is the AI copilot that truly understands your business.");
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(((ChatMessage)result.getModuleResults().getTemplating().get(0)).getContent())
         .startsWith(
             "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
     assertThat(llmChoice.getMessage().getContent())
@@ -574,10 +574,12 @@ class OrchestrationUnitTest {
         final var message0 = (Map<String, Object>) choices0.getCustomField("delta");
         assertThat(message0.get("role")).isEqualTo("");
         assertThat(message0.get("content")).isEqualTo("");
-        List<ChatMessage> templating = deltaList.get(0).getModuleResults().getTemplating();
+        final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
-        assertThat(templating.get(0).getRole()).isEqualTo("user");
-        assertThat(templating.get(0).getContent())
+        
+        final var templateItem = (ChatMessage) templating.get(0);
+        assertThat(templateItem.getRole()).isEqualTo("user");
+        assertThat(templateItem.getContent())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");

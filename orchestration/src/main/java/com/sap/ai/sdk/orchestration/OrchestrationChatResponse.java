@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
@@ -50,23 +51,30 @@ public class OrchestrationChatResponse {
   /**
    * Get all messages. This can be used for subsequent prompts as a message history.
    *
+   * @throws UnsupportedOperationException if the MultiChatMessage type message in chat.
    * @return A list of all messages.
    */
   @Nonnull
-  public List<Message> getAllMessages() {
+  public List<Message> getAllMessages() throws UnsupportedOperationException{
     final var messages = new ArrayList<Message>();
 
-    for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
-      final var message =
-          switch (chatMessage.getRole()) {
-            case "user" -> new UserMessage(chatMessage.getContent());
-            case "assistant" -> new AssistantMessage(chatMessage.getContent());
-            case "system" -> new SystemMessage(chatMessage.getContent());
-            default -> throw new IllegalStateException("Unexpected role: " + chatMessage.getRole());
-          };
-      messages.add(message);
+    for (final ChatMessagesInner chatMessage : originalResponse.getModuleResults().getTemplating()) {
+      if (chatMessage instanceof ChatMessage simpleMsg) {
+        final var message =
+            switch (simpleMsg.getRole()) {
+              case "user" -> new UserMessage(simpleMsg.getContent());
+              case "assistant" -> new AssistantMessage(simpleMsg.getContent());
+              case "system" -> new SystemMessage(simpleMsg.getContent());
+              default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
+            };
+        messages.add(message);
+      }
+      else {
+        throw new UnsupportedOperationException("Currently MultiChatMessage type not supported by convenience API");
+      }
     }
-
+    // TODO: Review { bypassing throwing OrchestrationClientException and
+    //       assumes AssistantMessage is always only type ChatMessage }
     messages.add(new AssistantMessage(getChoice().getMessage().getContent()));
     return messages;
   }
