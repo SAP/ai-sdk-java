@@ -97,12 +97,12 @@ jobs:
         run: |
           echo '${{ secrets.CENTRAL_SONATYPE_SETTINGS_XML }}' > settings.xml
 
-      - name: "Deploy"
-        run: |
-          MVN_ARGS="${{ env.MVN_CLI_ARGS }} -Drelease -s settings.xml"
-          mvn deploy $MVN_ARGS
-        env:
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+#      - name: "Deploy"
+#        run: |
+#          MVN_ARGS="${{ env.MVN_CLI_ARGS }} -Drelease -s settings.xml"
+#          mvn deploy $MVN_ARGS
+#        env:
+#          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Merge Code PR"
         if: ${{ inputs.skip-pr-merge != 'true' }}
