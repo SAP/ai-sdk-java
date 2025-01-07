@@ -20,7 +20,7 @@ class OrchestrationController {
   @PostMapping("/processInput")
   public ResponseEntity<String> processInput(@RequestParam("userInput") String userInput) {
     log.info("User input: {}", userInput);
-    final var output = service.processInput(userInput);
+    final String output = service.processInput(userInput);
     return ResponseEntity.ok(output);
   }
 }
