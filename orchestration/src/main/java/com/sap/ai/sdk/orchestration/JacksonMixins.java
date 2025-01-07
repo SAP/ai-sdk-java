@@ -18,4 +18,8 @@ final class JacksonMixins {
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
   @JsonDeserialize(as = LLMChoice.class)
   interface ModuleResultsOutputUnmaskingInnerMixIn {}
+
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+  interface NoneTypeInfoMixin {}
+  
 }
