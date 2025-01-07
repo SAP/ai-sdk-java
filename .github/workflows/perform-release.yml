@@ -21,6 +21,7 @@ jobs:
     name: "Prerequisites"
     outputs:
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
+      release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
     permissions: write-all
     runs-on: ubuntu-latest
