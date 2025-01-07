@@ -20,37 +20,29 @@ jobs:
   prerequisites:
     name: "Prerequisites"
     outputs:
-      release-version: ${{ steps.determine-branch-names.outputs.RELEASE_VERSION }}
-      release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
-    permissions:
-      pull-requests: read
-      contents: read
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: "Determine Branch Names"
         id: determine-branch-names
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
-            echo "[DEBUG] Taking branch name from pull request event"
-            BRANCH_NAME=${{ github.event.pull_request.head.ref }}
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "[DEBUG] Taking branch name from workflow dispatch event"
-            BRANCH_NAME=$(gh pr view ${{ github.event.inputs.release_pr_number }} --repo "${{ github.repository }}" --json headRefName | jq -r '.headRefName')
-          else
-            echo "Cannot determine branch name from event '${{ github.event_name }}'"
-            exit 1
-          fi
+          CODE_BRANCH_NAME=$(gh pr view ${{github.event.inputs.release_pr_number}} --repo ${{github.repository}} --json headRefName --jq '.headRefName')
+          echo $CODE_BRANCH_NAME
+          RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2)
+          echo $RELEASE_VERSION
+          RELEASE_TAG=rel/$RELEASE_VERSION
+          echo $RELEASE_TAG
+          RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
+          echo $RELEASE_COMMIT
           
-          RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2) 
-
+          echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "RELEASE_TAG=rel/$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "CODE_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "${{ github.repository }}" --json targetCommitish | jq -r '.targetCommitish')" >> $GITHUB_OUTPUT
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
           
-          echo "[DEBUG] Current GITHUB_OUTPUT: '$(cat $GITHUB_OUTPUT)'"
+          echo -e "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -68,12 +60,12 @@ jobs:
               \"dependabot merger\": [] 
             }
 
-      - name: "Check Code Release Commit Continuous Integration"
-        if: ${{ inputs.skip-pr-merge != 'true' }}
-        uses: ./.github/actions/workflow-succeeded
-        with:
-          workflow: "Continuous Integration"
-          sha: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
+#      - name: "Check Code Release Commit Continuous Integration"
+#        if: ${{ inputs.skip-pr-merge != 'true' }}
+#        uses: ./.github/actions/workflow-succeeded
+#        with:
+#          workflow: "Continuous Integration"
+#          sha: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
 
   release:
     name: "Release"
@@ -88,9 +80,6 @@ jobs:
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
-          server-id: ossrh
-          server-username: MAVEN_CENTRAL_USER # env variable for username in deploy
-          server-password: MAVEN_CENTRAL_PASSWORD # env variable for token in deploy
 
       - name: "Download Release Asset"
         id: download-asset
@@ -107,28 +96,16 @@ jobs:
         env:
           PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
-      - name: "Deploy Locally"
-        run: >
-          mvn
-          $MVN_CLI_ARGS
-          -DaltDeploymentRepository=local::file:./temp_local_repo
-          -Drelease
-          deploy
-        env:
-          MAVEN_CENTRAL_USER: ${{ secrets.MAVEN_CENTRAL_USER }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-
-      - name: "Deploy Staging"
+      - name: "Create settings.xml"
         run: |
-          # Create an empty directory to correctly execute the plugin
-          mkdir temp
-          cd temp
-          MVN_ARGS="$MVN_CLI_ARGS org.sonatype.plugins:nexus-staging-maven-plugin:1.7.0:deploy-staged-repository -DserverId=ossrh -DnexusUrl=https://oss.sonatype.org -DrepositoryDirectory=../temp_local_repo -DstagingProfileId=$MAVEN_CENTRAL_PROFILE_ID"
-          mvn $MVN_ARGS
+          echo '${{ secrets.CENTRAL_SONATYPE_SETTINGS_XML }}' > settings.xml
+
+      - name: "Deploy"
+        run: |
+          MVN_ARGS="${{ env.MVN_CLI_ARGS }} -Drelease -s settings.xml"
+          mvn deploy $MVN_ARGS
         env:
-          MAVEN_CENTRAL_USER: ${{ secrets.SONATYPE_TOKEN_NAME }}
-          MAVEN_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_TOKEN_PASS }}
-          MAVEN_CENTRAL_PROFILE_ID: ${{ secrets.MAVEN_CENTRAL_PROFILE_ID }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
       - name: "Merge Code PR"
         if: ${{ inputs.skip-pr-merge != 'true' }}

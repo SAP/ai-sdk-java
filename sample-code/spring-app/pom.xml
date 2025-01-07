@@ -4,13 +4,13 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
   <artifactId>spring-app</artifactId>
-  <name>End-to-end test application</name>
-  <description>Spring Boot application that tests AI clients when deployed in BTP.</description>
+  <name>Spring Boot application</name>
+  <description>End-to-end test application, also sample code for customers</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
@@ -31,10 +31,10 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
-
   <properties>
-    <spring-boot.version>3.3.3</spring-boot.version>
-    <logback.version>1.5.8</logback.version>
+    <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <spring-boot.version>3.4.1</spring-boot.version>
+    <logback.version>1.5.16</logback.version>
     <cf-logging.version>3.8.4</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
@@ -60,10 +60,6 @@
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -100,6 +96,11 @@
       <version>${springframework.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${springframework.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
@@ -114,6 +115,10 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
     <!-- scope "runtime" -->
     <dependency>
@@ -161,6 +166,10 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -186,6 +195,13 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <skipAddThirdParty>true</skipAddThirdParty>
         </configuration>
       </plugin>
     </plugins>

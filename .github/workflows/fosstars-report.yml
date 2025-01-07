@@ -2,15 +2,85 @@ name: "Fosstars (Security)"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: '42 03 * * MON-FRI' # 03:42 on weekdays, a somewhat random time to avoid producing load spikes on the GH actions infrastructure
+
+env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  JAVA_VERSION: 17
+  CVE_CACHE_KEY: cve-db
+  CVE_CACHE_DIR: ~/.m2/repository/org/owasp/dependency-check-data
+  CVE_CACHE_REF: refs/heads/main
 
 jobs:
   create_fosstars_report:
     runs-on: ubuntu-latest
     name: "Security rating"
     steps:
-      - uses: actions/checkout@v4
-      - uses: SAP/fosstars-rating-core-action@v1.14.0
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Restore CVE Database"
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CVE_CACHE_DIR }}
+          key: ${{ env.CVE_CACHE_KEY }}
+         # fail-on-cache-miss: true
+
+      - name: "Build SDK"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
+          mvn $MVN_ARGS
+
+      - name: "CVE Scan"
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: |
+          mvn -T1 --no-transfer-progress --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
+
+      - name: "Archive CVE Report"
+        uses: actions/upload-artifact@v4
+        with:
+          name: cve-report
+          path: target/dependency-check-report.html
+          retention-days: 7
+
+      - name: "Delete Old CVE Cache"
+        run: |
+          CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --ref "${{ env.CVE_CACHE_REF }}" --json id | jq -r '.[] | .id')
+          for CACHE_ID in $CACHE_IDS; do
+              echo "Deleting cache with ID: $CACHE_ID"
+              gh cache delete "${CACHE_ID}"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Create Updated CVE Cache"
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CVE_CACHE_DIR }}
+          key: ${{ env.CVE_CACHE_KEY }}
+
+      # This action changes the active branch!
+      - name: "Fosstars Rating"
+        uses: SAP/fosstars-rating-core-action@v1.14.0
         with:
           report-branch: fosstars-report
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "⚠️ OWASP Dependency check failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+            }

@@ -1,0 +1,75 @@
+{
+  "request_id": "c252c73e-849f-4fa7-8b35-b16f3434a0da",
+  "module_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.\nPlease make sure to address the user in person and end with \"Best regards, the AI SDK team\".\n"
+      },
+      {
+        "role": "user",
+        "content": "Username: Mallory\nuserEmail: mallory@sap.com\nDate: 2022-01-01\n\nI think the SDK is good, but could use some further enhancements.\nMy architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.\n"
+      }
+    ],
+    "input_masking": {
+      "message": "Input to LLM is masked successfully.",
+      "data": {
+        "masked_template": "[{\"role\": \"system\", \"content\": \"Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.\\nPlease make sure to address the user in person and end with \\\"Best regards, the AI SDK team\\\".\\n\"}, {\"role\": \"user\", \"content\": \"Username: MASKED_PERSON_2\\nuserEmail: MASKED_PERSON_1MASKED_EMAIL_1\\nDate: 2022-01-01\\n\\nI think the SDK is good, but could use some further enhancements.\\nMy architect MASKED_PERSON_4 and manager MASKED_PERSON_3 pointed out that we need the grounding capabilities, which aren't supported yet.\\n\"}]"
+      }
+    },
+    "llm": {
+      "id": "chatcmpl-AUr7GVVoQbg52GRbADpkx4hQvDBiz",
+      "object": "chat.completion",
+      "created": 1731917382,
+      "model": "gpt-35-turbo",
+      "system_fingerprint": "fp_808245b034",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Hi MASKED_PERSON_2,\n\nThank you for your feedback on the SDK. We appreciate your insights and are currently working on further enhancements, including the grounding capabilities that your architect and manager have highlighted. We will take your suggestions into consideration and aim to address them in our future updates.\n\nBest regards, the AI SDK team"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 64,
+        "prompt_tokens": 134,
+        "total_tokens": 198
+      }
+    },
+    "output_unmasking": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hi Mallory,\n\nThank you for your feedback on the SDK. We appreciate your insights and are currently working on further enhancements, including the grounding capabilities that your architect and manager have highlighted. We will take your suggestions into consideration and aim to address them in our future updates.\n\nBest regards, the AI SDK team"
+        },
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-AUr7GVVoQbg52GRbADpkx4hQvDBiz",
+    "object": "chat.completion",
+    "created": 1731917382,
+    "model": "gpt-35-turbo",
+    "system_fingerprint": "fp_808245b034",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hi Mallory,\n\nThank you for your feedback on the SDK. We appreciate your insights and are currently working on further enhancements, including the grounding capabilities that your architect and manager have highlighted. We will take your suggestions into consideration and aim to address them in our future updates.\n\nBest regards, the AI SDK team"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 64,
+      "prompt_tokens": 134,
+      "total_tokens": 198
+    }
+  }
+}

@@ -1,17 +1,16 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentCreationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentDeletionResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentList;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationResponse;
-import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
-import com.sap.ai.sdk.core.client.model.RTALogCommonResponse;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.model.AiDeploymentBulkModificationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentBulkModificationResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentCreationResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentDeletionResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentList;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationResponse;
+import com.sap.ai.sdk.core.model.AiDeploymentResponseWithDetails;
+import com.sap.ai.sdk.core.model.RTALogCommonResponse;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -31,7 +30,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.37.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -41,24 +40,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class DeploymentApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public DeploymentApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public DeploymentApi() {
+    super(new AiCoreService().getApiClient());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  @Beta
-  public DeploymentApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public DeploymentApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**

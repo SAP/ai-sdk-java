@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -51,7 +52,7 @@ import org.mockito.Mockito;
 @WireMockTest
 class OpenAiClientTest {
   private static OpenAiClient client;
-  private final Function<String, InputStream> TEST_FILE_LOADER =
+  private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   @BeforeEach
@@ -73,7 +74,9 @@ class OpenAiClientTest {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
 
-    verify(exactly(1), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
+    verify(
+        exactly(1),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
     Try.of(
         () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionParameters()));
@@ -84,7 +87,9 @@ class OpenAiClientTest {
             "withApiVersion should return a new object, the sut object should remain unchanged")
         .isNotSameAs(client.withApiVersion("fooBar"));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
-    verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
+    verify(
+        exactly(2),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
   }
 
   private static Runnable[] errorHandlingCalls() {
@@ -193,24 +198,28 @@ class OpenAiClientTest {
   @ParameterizedTest
   @MethodSource("chatCompletionCalls")
   void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionOutput> request) {
-    try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
+    try (var inputStream = fileLoader.apply("__files/chatCompletionResponse.json")) {
 
       final String response = new String(inputStream.readAllBytes());
-      stubFor(post("/chat/completions").willReturn(okJson(response)));
+      // with query parameter api-version=2024-02-01
+      stubFor(
+          post(urlPathEqualTo("/chat/completions"))
+              .withQueryParam("api-version", equalTo("2024-02-01"))
+              .willReturn(okJson(response)));
 
       final OpenAiChatCompletionOutput result = request.call();
 
       assertThat(result).isNotNull();
-      assertThat(result.getCreated()).isEqualTo(1719300073);
-      assertThat(result.getId()).isEqualTo("chatcmpl-9dumHtDEyysGFnknk17n4Lt37tg7T");
-      assertThat(result.getModel()).isEqualTo("gpt-4-32k");
+      assertThat(result.getCreated()).isEqualTo(1727436279);
+      assertThat(result.getId()).isEqualTo("chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf");
+      assertThat(result.getModel()).isEqualTo("gpt-35-turbo");
       assertThat(result.getObject()).isEqualTo("chat.completion");
       assertThat(result.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
       assertThat(result.getUsage()).isNotNull();
-      assertThat(result.getUsage().getCompletionTokens()).isEqualTo(54);
+      assertThat(result.getUsage().getCompletionTokens()).isEqualTo(20);
       assertThat(result.getUsage().getPromptTokens()).isEqualTo(13);
-      assertThat(result.getUsage().getTotalTokens()).isEqualTo(67);
+      assertThat(result.getUsage().getTotalTokens()).isEqualTo(33);
 
       assertThat(result.getPromptFilterResults()).hasSize(1);
       assertThat(result.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
@@ -226,13 +235,12 @@ class OpenAiClientTest {
       assertThat(promptFilterResults.getHate()).isNotNull();
       assertThat(promptFilterResults.getHate().isFiltered()).isFalse();
       assertThat(promptFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
-      // TODO: update the JSON response and those assertions
-      assertThat(promptFilterResults.getSelfHarm()).isNull();
+      assertThat(promptFilterResults.getSelfHarm()).isNotNull();
+      assertThat(promptFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
+      assertThat(promptFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(promptFilterResults.getProfanity()).isNull();
       assertThat(promptFilterResults.getError()).isNull();
-      assertThat(promptFilterResults.getJailbreak()).isNotNull();
-      assertThat(promptFilterResults.getJailbreak().isFiltered()).isFalse();
-      assertThat(promptFilterResults.getJailbreak().isDetected()).isFalse();
+      assertThat(promptFilterResults.getJailbreak()).isNull();
 
       assertThat(result.getChoices()).hasSize(1);
       OpenAiChatCompletionChoice choice = result.getChoices().get(0);
@@ -240,9 +248,9 @@ class OpenAiClientTest {
       assertThat(choice.getIndex()).isEqualTo(0);
       assertThat(choice.getMessage().getContent())
           .isEqualTo(
-              """
-                This is a highly subjective question as the concept of beauty differs from one person to another. It's based on personal preferences and cultural standards. There are attractive people in all walks of life and industries, making it impossible to universally determine who is the "prettiest".""");
+              "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
       assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
+      assertThat(choice.getMessage().getToolCalls()).isNull();
 
       OpenAiContentFilterPromptResults contentFilterResults = choice.getContentFilterResults();
       assertThat(contentFilterResults).isNotNull();
@@ -255,13 +263,16 @@ class OpenAiClientTest {
       assertThat(contentFilterResults.getHate()).isNotNull();
       assertThat(contentFilterResults.getHate().isFiltered()).isFalse();
       assertThat(contentFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
-      assertThat(contentFilterResults.getSelfHarm()).isNull();
+      assertThat(contentFilterResults.getSelfHarm()).isNotNull();
+      assertThat(contentFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
+      assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(contentFilterResults.getProfanity()).isNull();
       assertThat(contentFilterResults.getError()).isNull();
       assertThat(contentFilterResults.getJailbreak()).isNull();
 
       verify(
           postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withQueryParam("api-version", equalTo("2024-02-01"))
               .withRequestBody(
                   equalToJson(
                       """
@@ -282,20 +293,22 @@ class OpenAiClientTest {
 
   @Test
   @DisplayName("Chat history is not implemented yet")
-  void history() throws IOException {
-    try (var inputStream = TEST_FILE_LOADER.apply("chatCompletionResponse.json")) {
+  void history() {
+    stubFor(
+        post(urlPathEqualTo("/chat/completions"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("chatCompletionResponse.json")
+                    .withHeader("Content-Type", "application/json")));
 
-      final String response = new String(inputStream.readAllBytes());
-      stubFor(post("/chat/completions").willReturn(okJson(response)));
+    client.withSystemPrompt("system prompt").chatCompletion("chat completion 1");
 
-      client.withSystemPrompt("system prompt").chatCompletion("chat completion 1");
-
-      verify(
-          exactly(1),
-          postRequestedFor(urlPathEqualTo("/chat/completions"))
-              .withRequestBody(
-                  equalToJson(
-                      """
+    verify(
+        exactly(1),
+        postRequestedFor(urlPathEqualTo("/chat/completions"))
+            .withRequestBody(
+                equalToJson(
+                    """
                       {
                         "messages" : [ {
                           "role" : "system",
@@ -309,14 +322,14 @@ class OpenAiClientTest {
                         } ]
                       }""")));
 
-      client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
+    client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
 
-      verify(
-          exactly(1),
-          postRequestedFor(urlPathEqualTo("/chat/completions"))
-              .withRequestBody(
-                  equalToJson(
-                      """
+    verify(
+        exactly(1),
+        postRequestedFor(urlPathEqualTo("/chat/completions"))
+            .withRequestBody(
+                equalToJson(
+                    """
                       {
                         "messages" : [ {
                           "role" : "system",
@@ -329,51 +342,64 @@ class OpenAiClientTest {
                           } ]
                         } ]
                       }""")));
-    }
   }
 
   @Test
-  void embedding() throws IOException {
-    try (var inputStream = TEST_FILE_LOADER.apply("embeddingResponse.json")) {
+  void embedding() {
+    stubFor(
+        post(urlPathEqualTo("/embeddings"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("embeddingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
 
-      final String response = new String(inputStream.readAllBytes());
-      stubFor(post("/embeddings").willReturn(okJson(response)));
+    final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
+    final var result = client.embedding(request);
 
-      final var request = new OpenAiEmbeddingParameters().setInput("Hello World");
-      final var result = client.embedding(request);
+    assertThat(result).isNotNull();
+    assertThat(result.getModel()).isEqualTo("ada");
+    assertThat(result.getObject()).isEqualTo("list");
 
-      assertThat(result).isNotNull();
-      assertThat(result.getModel()).isEqualTo("ada");
-      assertThat(result.getObject()).isEqualTo("list");
+    assertThat(result.getUsage()).isNotNull();
+    assertThat(result.getUsage().getCompletionTokens()).isNull();
+    assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
+    assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
 
-      assertThat(result.getUsage()).isNotNull();
-      assertThat(result.getUsage().getCompletionTokens()).isNull();
-      assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
-      assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
+    assertThat(result.getData()).isNotNull().hasSize(1);
+    var embeddingData = result.getData().get(0);
+    assertThat(embeddingData).isNotNull();
+    assertThat(embeddingData.getObject()).isEqualTo("embedding");
+    assertThat(embeddingData.getIndex()).isEqualTo(0);
+    assertThat(embeddingData.getEmbedding())
+        .isNotNull()
+        .isNotEmpty()
+        .isEqualTo(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
 
-      assertThat(result.getData()).isNotNull().hasSize(1);
-      var embeddingData = result.getData().get(0);
-      assertThat(embeddingData).isNotNull();
-      assertThat(embeddingData.getObject()).isEqualTo("embedding");
-      assertThat(embeddingData.getIndex()).isEqualTo(0);
-      assertThat(embeddingData.getEmbedding())
-          .isNotNull()
-          .isNotEmpty()
-          .containsExactly(-0.0000000070958645d, 2.123e-300d, -0.0069813123d, -3.385849e-05d)
-          // ensure double precision
-          .hasToString("[-7.0958645E-9, 2.123E-300, -0.0069813123, -3.385849E-5]");
-
-      verify(
-          postRequestedFor(urlPathEqualTo("/embeddings"))
-              .withRequestBody(
-                  equalToJson("""
+    verify(
+        postRequestedFor(urlPathEqualTo("/embeddings"))
+            .withRequestBody(equalToJson("""
                       {"input":["Hello World"]}""")));
-    }
+  }
+
+  @Test
+  void testThrowsOnContentFilter() {
+    var mock = mock(OpenAiClient.class);
+    when(mock.streamChatCompletion(any())).thenCallRealMethod();
+
+    var deltaWithContentFilter = mock(OpenAiChatCompletionDelta.class);
+    when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+
+    // this must not throw, since the stream is lazily evaluated
+    var stream = mock.streamChatCompletion("");
+    assertThatThrownBy(stream::toList)
+        .isInstanceOf(OpenAiClientException.class)
+        .hasMessageContaining("Content filter");
   }
 
   @Test
   void streamChatCompletionDeltasErrorHandling() throws IOException {
-    try (var inputStream = spy(TEST_FILE_LOADER.apply("streamChatCompletionError.txt"))) {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletionError.txt"))) {
 
       final var httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -406,7 +432,7 @@ class OpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltas() throws IOException {
-    try (var inputStream = spy(TEST_FILE_LOADER.apply("streamChatCompletion.txt"))) {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
 
       final var httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -490,7 +516,7 @@ class OpenAiClientTest {
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(choices2.getMessage().getRole()).isEqualTo("assistant");
         assertThat(choices2.getMessage().getContent()).isEqualTo("Sure");
-        assertThat(choices2.getMessage().getTool_calls()).isNull();
+        assertThat(choices2.getMessage().getToolCalls()).isNull();
         final var filter2 = choices2.getContentFilterResults();
         assertFilter(filter2);
 
@@ -503,7 +529,7 @@ class OpenAiClientTest {
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(delta4Choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(delta4Choice.getMessage().getContent()).isNull();
-        assertThat(delta4Choice.getMessage().getTool_calls()).isNull();
+        assertThat(delta4Choice.getMessage().getToolCalls()).isNull();
         assertThat(totalOutput.getChoices()).hasSize(1);
         final var choice = totalOutput.getChoices().get(0);
         assertThat(choice.getFinishReason()).isEqualTo("stop");
@@ -512,7 +538,7 @@ class OpenAiClientTest {
         assertThat(choice.getMessage()).isNotNull();
         assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(choice.getMessage().getContent()).isEqualTo("Sure!");
-        assertThat(choice.getMessage().getTool_calls()).isNull();
+        assertThat(choice.getMessage().getToolCalls()).isNull();
         assertThat(totalOutput.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(totalOutput.getCreated()).isEqualTo(1724825677);
         assertThat(totalOutput.getModel()).isEqualTo("gpt-35-turbo");

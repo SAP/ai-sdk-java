@@ -131,7 +131,7 @@
             <property name="xpath">
                 <value>
                     <![CDATA[
-                        //MethodDeclaration[@EffectiveVisibility='public' and @Void=false() and ClassType and not(
+                        //MethodDeclaration[(@EffectiveVisibility='public' or @EffectiveVisibility='protected') and @Void=false() and ClassType and not(
                             ./ModifierList/Annotation[@SimpleName='Nullable'] or
                             ./ModifierList/Annotation[@SimpleName='Nonnull']
                         )]
@@ -185,7 +185,7 @@
                 <value>
                     <![CDATA[
                         //ClassBody
-                        /*[@EffectiveVisibility='public']
+                        /*[(@EffectiveVisibility='public' or @EffectiveVisibility='protected')]
                         /FormalParameters
                         /FormalParameter[
                             ClassType and
@@ -278,7 +278,6 @@
     <rule ref="category/java/codestyle.xml/FieldDeclarationsShouldBeAtStartOfClass" />
     <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions" />
     <rule ref="category/java/codestyle.xml/IdenticalCatchBranches" />
-    <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
     <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" />
     <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal" />
     <rule ref="category/java/codestyle.xml/MethodNamingConventions" />
@@ -369,6 +368,39 @@
                 log.debug("This is " +
                   " a " + CONSTANT + " String");
             }
+            ]]>
+        </example>
+    </rule>
+
+    <!-- Custom rule for LocalVariableCouldBeFinal -->
+    <!-- <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" /> -->
+    <rule name="LocalVariableShouldBeFinal" language="java"
+          message="Check for final variable declarations."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Mark constant variable declarations as final.
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //LocalVariableDeclaration[
+                            @Final=false() and
+                            not(parent::ForInit) and
+                            not(./ClassType[@SimpleName="val"]) and
+                            not(./VariableDeclarator[@Name = ancestor::Block//AssignmentExpression/VariableAccess/@Name])
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            final int x = 5; // good
+            final var x = 5; // good
+            val x = 5; // good
+            var x = 5; // bad
             ]]>
         </example>
     </rule>

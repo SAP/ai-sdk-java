@@ -1,12 +1,13 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sap.ai.sdk.core.Core;
+import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.DeploymentResolutionException;
+import com.sap.ai.sdk.core.commons.ClientResponseHandler;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
@@ -14,13 +15,16 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChat
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,74 +32,77 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /** Client for interacting with OpenAI models. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  static final ObjectMapper JACKSON;
-  private String systemPrompt = null;
-
-  static {
-    JACKSON =
-        new Jackson2ObjectMapperBuilder()
-            .modules(new JavaTimeModule())
-            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .build();
-  }
+  static final ObjectMapper JACKSON = getDefaultObjectMapper();
+  @Nullable private String systemPrompt = null;
 
   @Nonnull private final Destination destination;
 
   /**
-   * Create a new OpenAI client for the given foundation model.
+   * Create a new OpenAI client for the given foundation model, using the default resource group.
    *
    * @param foundationModel the OpenAI model which is deployed.
    * @return a new OpenAI client.
+   * @throws DeploymentResolutionException if no deployment for the given model was found in the
+   *     default resource group.
    */
   @Nonnull
-  public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel) {
-    final var destination = Core.getDestinationForModel(foundationModel.model(), "default");
+  public static OpenAiClient forModel(@Nonnull final OpenAiModel foundationModel)
+      throws DeploymentResolutionException {
+    final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
+
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
 
-  // package private, but prepared in case we want to expose it later
+  /**
+   * Create a new OpenAI client targeting the specified API version.
+   *
+   * @param apiVersion the API version to target.
+   * @return a new client.
+   */
+  @Beta
   @Nonnull
-  OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
-    final var destination =
+  public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
+    final var newDestination =
         DefaultHttpDestination.fromDestination(this.destination)
             // set the API version as URL query parameter
             .property("URL.queries.api-version", apiVersion)
             .build();
-    return new OpenAiClient(destination);
+    return new OpenAiClient(newDestination);
   }
 
   /**
-   * Create a new OpenAI client with a <b>custom destination</b>. This can be used to customize the
-   * connectivity behaviour of the client. For most use-cases, {@link
-   * OpenAiClient#forModel(OpenAiModel)} should be used instead.
+   * Create a new OpenAI client with a custom destination, allowing for a custom resource group or
+   * otherwise custom destination. The destination needs to be configured with a URL pointing to an
+   * OpenAI model deployment. Typically, such a destination should be obtained using {@link
+   * AiCoreService#getInferenceDestination(String)}.
    *
-   * <p>The destination needs to be configured with all relevant connectivity details relevant for
-   * accessing the OpenAI models. For Azure-hosted models on AI Core this includes:
+   * <p>Example:
    *
-   * <ul>
-   *   <li>URL up and including the deployment id
-   *   <li>Authorization
-   *   <li>Resource Group Header
-   *   <li>API Version
-   * </ul>
+   * <pre>{@code
+   * var destination = new AiCoreService().getInferenceDestination("custom-rg").forModel(GPT_4O);
+   * OpenAiClient.withCustomDestination(destination);
+   * }</pre>
    *
-   * @param destination the destination to use for the client
-   * @return a new OpenAI client
-   * @see OpenAiClient#forModel(OpenAiModel)
+   * @param destination The specific {@link HttpDestination} to use.
+   * @see AiCoreService#getInferenceDestination(String)
    */
+  @Beta
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
-    return new OpenAiClient(destination);
+    final OpenAiClient client = new OpenAiClient(destination);
+
+    if (destination.get("URL.queries.api-version").isDefined()) {
+      return client;
+    }
+
+    return client.withApiVersion(DEFAULT_API_VERSION);
   }
 
   /**
@@ -143,11 +150,29 @@ public final class OpenAiClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of text
+   * chunks. To access more details about the individual chunks, use {@link
+   * #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
+   *
+   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
+   * HTTP connection is closed.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * try (var stream = client.streamChatCompletion("...")) {
+   *       stream.forEach(System.out::println);
+   * }
+   * }</pre>
+   *
+   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
+   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
+   * Stream#parallel()} on this stream is not supported.
    *
    * @param prompt a text message.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @see #streamChatCompletionDeltas(OpenAiChatCompletionParameters)
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
@@ -170,11 +195,31 @@ public final class OpenAiClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of delta
+   * objects. To simply stream the text chunks use {@link #streamChatCompletion(String)}
    *
-   * @param parameters the prompt, including messages and other parameters.
-   * @return A stream of chat completion delta elements.
-   * @throws OpenAiClientException if the request fails
+   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
+   * HTTP connection is closed.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * try (var stream = client.streamChatCompletionDeltas(params)) {
+   *       stream
+   *           .peek(delta -> System.out.println(delta.getUsage()))
+   *           .map(OpenAiChatCompletionDelta::getDeltaContent)
+   *           .forEach(System.out::println);
+   * }
+   * }</pre>
+   *
+   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
+   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
+   * Stream#parallel()} on this stream is not supported.
+   *
+   * @param parameters The prompt, including messages and other parameters.
+   * @return A stream of message deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @see #streamChatCompletion(String)
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
@@ -239,9 +284,10 @@ public final class OpenAiClient {
   private <T> T executeRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
     try {
-      @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return client.execute(request, new OpenAiResponseHandler<>(responseType));
+      return client.execute(
+          request,
+          new ClientResponseHandler<>(responseType, OpenAiError.class, OpenAiClientException::new));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
@@ -251,7 +297,6 @@ public final class OpenAiClient {
   private <D extends StreamedDelta> Stream<D> streamRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
-      @SuppressWarnings("UnstableApiUsage")
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return new OpenAiStreamingHandler<>(deltaType)
           .handleResponse(client.executeOpen(null, request, null));

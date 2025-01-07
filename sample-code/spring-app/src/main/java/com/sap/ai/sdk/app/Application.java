@@ -5,10 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 
+/** Main class to start the Spring Boot application. */
 @SpringBootApplication
 @ComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
 @ServletComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
-class Application {
+public class Application {
   /**
    * Main method to start the Spring Boot application.
    *

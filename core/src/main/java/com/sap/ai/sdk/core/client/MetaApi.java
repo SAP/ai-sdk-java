@@ -1,9 +1,7 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.client.model.MetaCapabilities;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.model.MetaCapabilities;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.List;
@@ -17,7 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.37.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -27,24 +25,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class MetaApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public MetaApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public MetaApi() {
+    super(new AiCoreService().getApiClient());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  @Beta
-  public MetaApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public MetaApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**

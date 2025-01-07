@@ -1,17 +1,15 @@
 package com.sap.ai.sdk.core.client;
 
-import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.client.model.BckndAllArgoCDApplicationData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationBaseData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationCreationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationData;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationDeletionResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationModificationResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationRefreshResponse;
-import com.sap.ai.sdk.core.client.model.BckndArgoCDApplicationStatus;
-import com.sap.ai.sdk.core.client.model.KubesubmitV4ApplicationsCreateRequest;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.model.BckndAllArgoCDApplicationData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationBaseData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationCreationResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationDeletionResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationModificationResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationRefreshResponse;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationStatus;
+import com.sap.ai.sdk.core.model.KubesubmitV4ApplicationsCreateRequest;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.HashMap;
@@ -28,7 +26,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.37.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -38,24 +36,19 @@ import org.springframework.web.util.UriComponentsBuilder;
  * data and trained models.
  */
 public class ApplicationApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public ApplicationApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public ApplicationApi() {
+    super(new AiCoreService().getApiClient());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  @Beta
-  public ApplicationApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public ApplicationApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**

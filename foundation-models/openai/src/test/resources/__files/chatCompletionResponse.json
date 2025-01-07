@@ -1,0 +1,71 @@
+{
+  "content": "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.",
+  "created": 1727436279,
+  "id": "chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf",
+  "model": "gpt-35-turbo",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 20,
+    "prompt_tokens": 13,
+    "total_tokens": 33
+  },
+  "prompt_filter_results": [
+    {
+      "prompt_index": 0,
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "profanity": null,
+        "error": null,
+        "jailbreak": null
+      }
+    }
+  ],
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "profanity": null,
+        "error": null,
+        "jailbreak": null
+      },
+      "message": {
+        "role": "assistant",
+        "content": "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.",
+        "tool_calls": null
+      }
+    }
+  ],
+  "system_fingerprint": "fp_e49e4201a9"
+}

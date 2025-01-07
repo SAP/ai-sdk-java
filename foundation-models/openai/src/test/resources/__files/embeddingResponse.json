@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "embedding": [ 0.0, 3.4028235E38, 1.4E-45, 1.23, -4.56 ],
+      "index": 0,
+      "object": "embedding"
+    }
+  ],
+  "model": "ada",
+  "object": "list",
+  "usage": {
+    "prompt_tokens": 2,
+    "total_tokens": 2
+  }
+}

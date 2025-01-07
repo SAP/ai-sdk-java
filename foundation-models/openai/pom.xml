@@ -4,13 +4,13 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
   <artifactId>openai</artifactId>
   <name>OpenAI client</name>
-  <description>Client that communicates with OpenAI.</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for consuming Azure OpenAI models without Orchestration Service.</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
@@ -31,12 +31,16 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
-
+  <properties>
+    <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <coverage.complexity>70%</coverage.complexity>
+    <coverage.line>76%</coverage.line>
+    <coverage.instruction>75%</coverage.instruction>
+    <coverage.branch>66%</coverage.branch>
+    <coverage.method>83%</coverage.method>
+    <coverage.class>85%</coverage.class>
+  </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
@@ -74,16 +78,16 @@
       <artifactId>jackson-annotations</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.vavr</groupId>
       <artifactId>vavr</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>

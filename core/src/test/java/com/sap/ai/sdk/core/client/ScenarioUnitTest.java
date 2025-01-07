@@ -4,17 +4,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.sap.ai.sdk.core.Core.getClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiModelBaseData;
-import com.sap.ai.sdk.core.client.model.AiModelList;
-import com.sap.ai.sdk.core.client.model.AiModelVersion;
-import com.sap.ai.sdk.core.client.model.AiScenario;
-import com.sap.ai.sdk.core.client.model.AiScenarioLabel;
-import com.sap.ai.sdk.core.client.model.AiScenarioList;
-import com.sap.ai.sdk.core.client.model.AiVersion;
-import com.sap.ai.sdk.core.client.model.AiVersionList;
+import com.sap.ai.sdk.core.model.AiModelVersion;
+import com.sap.ai.sdk.core.model.AiScenarioLabel;
+import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -22,11 +16,11 @@ import org.junit.jupiter.api.Test;
  * Test that queries are on the right URL, with the right headers. Also check that the received
  * response is parsed correctly in the generated client.
  */
-public class ScenarioUnitTest extends WireMockTestServer {
+class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarios() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios"))
+        get(urlPathEqualTo("/v2/lm/scenarios"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -54,13 +48,13 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiScenarioList scenarioList = new ScenarioApi(getClient(destination)).query("default");
+    val scenarioList = new ScenarioApi(aiCoreService).query("default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
     assertThat(scenarioList.getResources()).hasSize(1);
 
-    final AiScenario scenario = scenarioList.getResources().get(0);
+    val scenario = scenarioList.getResources().get(0);
 
     assertThat(scenario.getId()).isEqualTo("foundation-models");
     assertThat(scenario.getName()).isEqualTo("foundation-models");
@@ -72,7 +66,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioVersions() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models/versions"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models/versions"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -93,14 +87,13 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiVersionList versionList =
-        new ScenarioApi(getClient(destination)).queryVersions("default", "foundation-models");
+    val versionList = new ScenarioApi(aiCoreService).queryVersions("default", "foundation-models");
 
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
     assertThat(versionList.getResources()).hasSize(1);
 
-    final AiVersion version = versionList.getResources().get(0);
+    val version = versionList.getResources().get(0);
 
     assertThat(version.getCreatedAt()).isEqualTo("2024-05-08T08:41:23+00:00");
     assertThat(version.getId()).isEqualTo("0.0.1");
@@ -111,7 +104,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioById() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -134,8 +127,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    final AiScenario scenario =
-        new ScenarioApi(getClient(destination)).get("default", "foundation-models");
+    val scenario = new ScenarioApi(aiCoreService).get("default", "foundation-models");
 
     assertThat(scenario).isNotNull();
     assertThat(scenario.getCreatedAt()).isEqualTo("2023-11-03T14:02:46+00:00");
@@ -152,7 +144,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
   @Test
   void getScenarioModels() {
     wireMockServer.stubFor(
-        get(urlPathEqualTo("/lm/scenarios/foundation-models/models"))
+        get(urlPathEqualTo("/v2/lm/scenarios/foundation-models/models"))
             .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
@@ -180,14 +172,13 @@ public class ScenarioUnitTest extends WireMockTestServer {
                             }
                             """)));
 
-    final AiModelList scenarioList =
-        new ScenarioApi(getClient(destination)).queryModels("foundation-models", "default");
+    val scenarioList = new ScenarioApi(aiCoreService).queryModels("foundation-models", "default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
     assertThat(scenarioList.getResources()).hasSize(1);
 
-    final AiModelBaseData scenario = scenarioList.getResources().get(0);
+    val scenario = scenarioList.getResources().get(0);
     assertThat(scenario.getDescription()).isEqualTo("Mistral mixtral-8x7b-instruct-v01 model");
     assertThat(scenario.getExecutableId()).isEqualTo("aicore-opensource");
     assertThat(scenario.getModel()).isEqualTo("mistralai--mixtral-8x7b-instruct-v01");
@@ -195,7 +186,7 @@ public class ScenarioUnitTest extends WireMockTestServer {
     AiModelVersion aiModelVersion = scenario.getVersions().get(0);
     assertThat(aiModelVersion.getName()).isEqualTo("202407");
     assertThat(aiModelVersion.isIsLatest()).isTrue();
-    assertThat(aiModelVersion.isDeprecated()).isEqualTo(false);
-    assertThat(aiModelVersion.getRetirementDate()).isEqualTo("");
+    assertThat(aiModelVersion.isDeprecated()).isFalse();
+    assertThat(aiModelVersion.getRetirementDate()).isEmpty();
   }
 }
