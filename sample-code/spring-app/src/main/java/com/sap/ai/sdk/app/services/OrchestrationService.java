@@ -1,29 +1,20 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
-import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.AzureContentFilter;
-import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
-import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
-import com.sap.ai.sdk.orchestration.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
-import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,188 +22,21 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OrchestrationService {
-  private final OrchestrationClient client = new OrchestrationClient();
-
-  @Getter
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
-
   /**
-   * Chat request to OpenAI through the Orchestration service with a simple prompt.
+   * For Demo app.
    *
-   * @return the assistant response object
+   * Uses grounding to be able to answer question about AI SDK features.
+   *
+   * @return the assistant response
    */
   @Nonnull
-  public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
-    final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    return client.chatCompletion(prompt, config);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template.
-   *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
-   *     AI Core: Orchestration - Templating</a>
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse template(@Nonnull final String language) {
-    final var template =
-        Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
-    final var configWithTemplate = config.withTemplateConfig(templatingConfig);
-
-    final var inputParams = Map.of("language", language);
-    final var prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service using message history.
-   *
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
-    final var prompt = new OrchestrationPrompt(Message.user(prevMessage));
-
-    final var result = client.chatCompletion(prompt, config);
-
-    // Let's presume a user asks the following follow-up question
-    final var nextPrompt =
-        new OrchestrationPrompt(Message.user("What is the typical food there?"))
-            .messageHistory(result.getAllMessages());
-
-    return client.chatCompletion(nextPrompt, config);
-  }
-
-  /**
-   * Apply both input and output filtering for a request to orchestration.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
-   *     AI Core: Orchestration - Input Filtering</a>
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
-   *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse filter(
-      @Nonnull final AzureFilterThreshold policy, @Nonnull final String area) {
-    final var prompt =
-        new OrchestrationPrompt(
-            """
-                        Create a rental posting for subletting my apartment in %s. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
-
-                        ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
-                        """
-                .formatted(area));
-    final var filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
-
-    final var configWithFilter =
-        config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
-
-    return client.chatCompletion(prompt, configWithFilter);
-  }
-
-  /**
-   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
-   * user. Anonymize any names given as they are not relevant for judging the sentiment of the
-   * feedback.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-   *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse maskingAnonymization(@Nonnull final DPIEntities entity) {
-    final var systemMessage =
-        Message.system(
-            "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
-    final var userMessage =
-        Message.user(
-            """
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
-
-    final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig = DpiMasking.anonymization().withEntities(entity);
-    final var configWithMasking = config.withMaskingConfig(maskingConfig);
-
-    return client.chatCompletion(prompt, configWithMasking);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
-   *
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse completionWithResourceGroup(
-      @Nonnull final String resourceGroup, @Nonnull final String famousPhrase) {
-    final var destination =
-        new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
-    final var clientWithResourceGroup = new OrchestrationClient(destination);
-
-    final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-
-    return clientWithResourceGroup.chatCompletion(prompt, config);
-  }
-
-  /**
-   * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
-   * SDK. Pseudonymize the user's name and location to protect their privacy.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-   *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse maskingPseudonymization(@Nonnull final DPIEntities entity) {
-    final var systemMessage =
-        Message.system(
-            """
-                            Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
-                            Please make sure to address the user in person and end with "Best regards, the AI SDK team".
-                            """);
-    final var userMessage =
-        Message.user(
-            """
-                            Username: Mallory
-                            userEmail: mallory@sap.com
-                            Date: 2022-01-01
-
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
-
-    final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
-    final var configWithMasking = config.withMaskingConfig(maskingConfig);
-
-    return client.chatCompletion(prompt, configWithMasking);
-  }
-
-  /**
-   * Using grounding to provide additional context to the AI model.
-   *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
-   *     AI Core: Orchestration - Grounding</a>
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse grounding(@Nonnull final String groundingInput) {
+  public String processInput(@Nonnull final String userInput) {
+    final var config = new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH);
+    final var client = new OrchestrationClient();
     final var message =
         Message.user(
             "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    final var prompt = new OrchestrationPrompt(Map.of("groundingInput", groundingInput), message);
+    final var prompt = new OrchestrationPrompt(Map.of("groundingInput", userInput), message);
 
     final var filterInner =
         DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
@@ -227,39 +51,28 @@ public class OrchestrationService {
             .config(groundingConfigConfig);
     final var configWithGrounding = config.withGroundingConfig(groundingConfig);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion(prompt, configWithGrounding).getContent();
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * For Demo app.
    *
-   * @return the emitter that streams the assistant message response
-   */
-  @Nonnull
-  public Stream<String> streamChatCompletion(@Nonnull final String topic) {
-    final var prompt =
-        new OrchestrationPrompt(
-            "Please create a small story about " + topic + " with around 700 words.");
-    return client.streamChatCompletion(prompt, config);
-  }
-
-  /**
-   * For Demo app!
+   * Starting point for demo app.
    *
-   * @return the assistant response object
+   * @return the assistant response
    */
-  @Nonnull
-  public String processInput(@Nonnull final String userInput) {
-    final var prompt = new OrchestrationPrompt(userInput);
-    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.LOCATION);
-    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig)).getContent();
-  }
-
   @Nonnull
   public String processInput00(@Nonnull final String userInput) {
     return userInput;
   }
 
+  /**
+   * For Demo app.
+   *
+   * First step for demo app, using the Orchestration service without features.
+   *
+   * @return the assistant response
+   */
   @Nonnull
   public String processInput01(@Nonnull final String userInput) {
     final var config = new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH);
@@ -268,6 +81,13 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, config).getContent();
   }
 
+  /**
+   * For Demo app.
+   *
+   * Second step for demo app, using the Orchestration service with masking.
+   *
+   * @return the assistant response
+   */
   @Nonnull
   public String processInput02(@Nonnull final String userInput) {
     final var config = new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH);
