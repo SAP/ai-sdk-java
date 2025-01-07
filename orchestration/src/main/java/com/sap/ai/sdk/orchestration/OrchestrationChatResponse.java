@@ -73,8 +73,7 @@ public class OrchestrationChatResponse {
         throw new UnsupportedOperationException("Currently MultiChatMessage type not supported by convenience API");
       }
     }
-    // TODO: Review { bypassing throwing OrchestrationClientException and
-    //       assumes AssistantMessage is always only type ChatMessage }
+
     messages.add(new AssistantMessage(getChoice().getMessage().getContent()));
     return messages;
   }
