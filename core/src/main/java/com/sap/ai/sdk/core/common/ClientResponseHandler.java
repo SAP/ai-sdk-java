@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
@@ -33,12 +33,24 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 @RequiredArgsConstructor
 public class ClientResponseHandler<T, E extends ClientException>
     implements HttpClientResponseHandler<T> {
-  @Nonnull private final Class<T> responseType;
+  @Nonnull final Class<T> responseType;
   @Nonnull private final Class<? extends ClientError> errorType;
-  @Nonnull private final BiFunction<String, Throwable, E> exceptionType;
+  @Nonnull final BiFunction<String, Throwable, E> exceptionConstructor;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
-  @Nonnull public ObjectMapper JACKSON = getDefaultObjectMapper();
+  @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();
+
+  /**
+   * Set the {@link ObjectMapper} to use for parsing JSON responses.
+   *
+   * @param jackson The {@link ObjectMapper} to use
+   */
+  @Beta
+  @Nonnull
+  public ClientResponseHandler<T, E> objectMapper(@Nonnull final ObjectMapper jackson) {
+    objectMapper = jackson;
+    return this;
+  }
 
   /**
    * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
@@ -62,15 +74,15 @@ public class ClientResponseHandler<T, E extends ClientException>
   private T parseResponse(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw exceptionType.apply("Response was empty.", null);
+      throw exceptionConstructor.apply("Response was empty.", null);
     }
     val content = getContent(responseEntity);
     log.debug("Parsing response from JSON response: {}", content);
     try {
-      return JACKSON.readValue(content, responseType);
+      return objectMapper.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response: {}", content);
-      throw exceptionType.apply("Failed to parse response", e);
+      throw exceptionConstructor.apply("Failed to parse response", e);
     }
   }
 
@@ -79,7 +91,7 @@ public class ClientResponseHandler<T, E extends ClientException>
     try {
       return EntityUtils.toString(entity, StandardCharsets.UTF_8);
     } catch (IOException | ParseException e) {
-      throw exceptionType.apply("Failed to read response content.", e);
+      throw exceptionConstructor.apply("Failed to read response content.", e);
     }
   }
 
@@ -91,7 +103,7 @@ public class ClientResponseHandler<T, E extends ClientException>
   @SuppressWarnings("PMD.CloseResource")
   public void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response) throws E {
     val exception =
-        exceptionType.apply(
+        exceptionConstructor.apply(
             "Request failed with status %s %s"
                 .formatted(response.getCode(), response.getReasonPhrase()),
             null);
@@ -126,7 +138,7 @@ public class ClientResponseHandler<T, E extends ClientException>
    */
   public void parseErrorAndThrow(
       @Nonnull final String errorResponse, @Nonnull final E baseException) throws E {
-    val maybeError = Try.of(() -> JACKSON.readValue(errorResponse, errorType));
+    val maybeError = Try.of(() -> objectMapper.readValue(errorResponse, errorType));
     if (maybeError.isFailure()) {
       baseException.addSuppressed(maybeError.getCause());
       throw baseException;
@@ -134,6 +146,6 @@ public class ClientResponseHandler<T, E extends ClientException>
 
     val error = Objects.requireNonNullElse(maybeError.get().getMessage(), "");
     val message = "%s and error message: '%s'".formatted(baseException.getMessage(), error);
-    throw exceptionType.apply(message, baseException);
+    throw exceptionConstructor.apply(message, baseException);
   }
 }
