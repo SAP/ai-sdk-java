@@ -15,6 +15,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.FilterConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -44,17 +45,6 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
     final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    return client.chatCompletion(prompt, config);
-  }
-
-  /**
-   * For Demo app!
-   *
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse processInput(@Nonnull final String userInput) {
-    final var prompt = new OrchestrationPrompt(userInput);
     return client.chatCompletion(prompt, config);
   }
 
@@ -251,5 +241,39 @@ public class OrchestrationService {
         new OrchestrationPrompt(
             "Please create a small story about " + topic + " with around 700 words.");
     return client.streamChatCompletion(prompt, config);
+  }
+
+  /**
+   * For Demo app!
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public String processInput(@Nonnull final String userInput) {
+    final var prompt = new OrchestrationPrompt(userInput);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.LOCATION);
+    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig)).getContent();
+  }
+
+  @Nonnull
+  public String processInput00(@Nonnull final String userInput) {
+    return userInput;
+  }
+
+  @Nonnull
+  public String processInput01(@Nonnull final String userInput) {
+    final var config = new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH);
+    final var client = new OrchestrationClient();
+    final var prompt = new OrchestrationPrompt(userInput);
+    return client.chatCompletion(prompt, config).getContent();
+  }
+
+  @Nonnull
+  public String processInput02(@Nonnull final String userInput) {
+    final var config = new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH);
+    final var client = new OrchestrationClient();
+    final var prompt = new OrchestrationPrompt(userInput);
+    final var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.LOCATION);
+    return client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig)).getContent();
   }
 }
