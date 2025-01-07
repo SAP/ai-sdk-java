@@ -164,10 +164,16 @@ var result =
 ```
 #### Behavior of Input and Output Filters
 
-- **Input Filter**: Triggers a `400 Bad Request` in response during the `chatCompletion` call if the input message violates the filter policy.
-- **Output Filter**: Allows the request to complete but throws an exception when accessing filtered content via `result.getContent()`.
+- **Input Filter**:
+  If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
+  An `OrchestrationClientException` will be thrown.
 
-You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)  in our Spring Boot application demonstrating response handling with filters.
+- **Output Filter**:
+  If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
+  The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
+  The low level API under `getOriginalResponse()` will not throw an exception.
+
+You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) in our Spring Boot application demonstrating response handling with filters.
 
 ### Data masking
 

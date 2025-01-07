@@ -8,10 +8,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,13 +142,22 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
       throws JsonProcessingException {
-    final var response = service.inputFiltering(policy);
-    if ("application/json".equals(accept)) {
+
+    final OrchestrationChatResponse response;
+    try {
+      response = service.inputFiltering(policy);
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+
+    if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    return ResponseEntity.ok().body(response.getContent());
   }
 
   /**
@@ -173,21 +182,19 @@ class OrchestrationController {
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
       throws JsonProcessingException, OrchestrationClientException {
 
-    String content;
+    final var response = service.outputFiltering(policy);
     try {
-      content = service.outputFiltering(policy).getContent();
+      if (accept.equals("application/json")) {
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(mapper.writeValueAsString(response));
+      }
+      return ResponseEntity.ok().body(response.getContent());
     } catch (OrchestrationClientException e) {
-      content = "Failed to obtain a response as the content was flagged by output filter.";
-      log.debug(content, e);
+      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
     }
-
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(Map.of("content", content)));
-    }
-
-    return ResponseEntity.ok(content);
   }
 
   /**
