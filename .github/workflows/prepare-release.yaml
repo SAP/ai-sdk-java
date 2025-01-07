@@ -156,7 +156,7 @@ jobs:
 
       - name: "Run Continuous Integration" # It should trigger on push but sometimes doesn't
         run: |
-          gh workflow run continuous-integration.yml --ref ${{ needs.bump-version.outputs.release-branch }}
+          gh workflow run continuous-integration.yaml --ref ${{ needs.bump-version.outputs.release-branch }}
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
