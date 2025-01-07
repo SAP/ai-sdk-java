@@ -10,7 +10,10 @@
     - [Message history](#message-history)
     - [Chat Completion Filter](#chat-completion-filter)
     - [Data Masking](#data-masking)
+    - [Grounding](#grounding)
+    - [Stream chat completion](#stream-chat-completion)
     - [Set Model Parameters](#set-model-parameters)
+    - [Using a Configuration from AI Launchpad](#using-a-configuration-from-ai-launchpad)
 
 ## Introduction
 
