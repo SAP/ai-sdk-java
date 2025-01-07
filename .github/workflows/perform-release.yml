@@ -23,20 +23,16 @@ jobs:
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
       release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
-    permissions: write-all
+    permissions: write-all # contents and push are needed to see the draft release
     runs-on: ubuntu-latest
     steps:
       - name: "Determine Branch Names"
         id: determine-branch-names
         run: |
           CODE_BRANCH_NAME=$(gh pr view ${{github.event.inputs.release_pr_number}} --repo ${{github.repository}} --json headRefName --jq '.headRefName')
-          echo $CODE_BRANCH_NAME
           RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2)
-          echo $RELEASE_VERSION
           RELEASE_TAG=rel/$RELEASE_VERSION
-          echo $RELEASE_TAG
           RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
-          echo $RELEASE_COMMIT
           
           echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
@@ -61,12 +57,12 @@ jobs:
               \"dependabot merger\": [] 
             }
 
-#      - name: "Check Code Release Commit Continuous Integration"
-#        if: ${{ inputs.skip-pr-merge != 'true' }}
-#        uses: ./.github/actions/workflow-succeeded
-#        with:
-#          workflow: "Continuous Integration"
-#          sha: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
+      - name: "Check Code Release Commit Continuous Integration"
+        if: ${{ inputs.skip-pr-merge != 'true' }}
+        uses: ./.github/actions/workflow-succeeded
+        with:
+          workflow: "Continuous Integration"
+          sha: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
 
   release:
     name: "Release"
