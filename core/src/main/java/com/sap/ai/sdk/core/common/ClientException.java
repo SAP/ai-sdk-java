@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import com.google.common.annotations.Beta;
 import lombok.experimental.StandardException;
