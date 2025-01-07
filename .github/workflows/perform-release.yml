@@ -42,7 +42,7 @@ jobs:
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
           
-          echo "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
+          echo -e "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
         env:
           GH_TOKEN: ${{ github.token }}
 

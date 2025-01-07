@@ -140,18 +140,6 @@ jobs:
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
 
-      - name: "Set New Version and Reset Release Notes"
-        run: |
-          python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
-          git add .
-          git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
-          
-          # Reset release notes for next version
-          cp .pipeline/scripts/release_notes_template.md docs/release-notes/release_notes.md
-          git add docs/release-notes/release_notes.md
-          git commit -m "Reset release notes"
-          git push
-
       - name: "Create Code PR"
         run: |
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ needs.bump-version.outputs.release-commit }}
@@ -165,6 +153,18 @@ jobs:
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
+      - name: "Set New Version and Reset Release Notes"
+        run: |
+          python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
+          git add .
+          git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
+          
+          # Reset release notes for next version
+          cp .pipeline/scripts/release_notes_template.md docs/release-notes/release_notes.md
+          git add docs/release-notes/release_notes.md
+          git commit -m "Reset release notes"
+          git push
 
   handle-failure:
     runs-on: ubuntu-latest
