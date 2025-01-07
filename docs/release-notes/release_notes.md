@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
--
+- Update AI Core client to 2.37.0
 
 ### 🐛 Fixed Issues
 
