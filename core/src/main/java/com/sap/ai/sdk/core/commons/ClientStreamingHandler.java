@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.core.commons;
 
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.function.BiFunction;
@@ -18,14 +16,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
  * @since 1.1.0
  */
 @Slf4j
-public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientException> {
-
-  @Nonnull private final Class<D> deltaType;
-  @Nonnull private final ClientResponseHandler<? extends ClientError, E> errorHandler;
-  @Nonnull private final BiFunction<String, Throwable, E> exceptionType;
-
-  /** The parses for JSON responses, will be private once we can remove mixins */
-  @Nonnull private ObjectMapper JACKSON = getDefaultObjectMapper();
+public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientException>
+    extends ClientResponseHandler<D, E> {
 
   /**
    * Set the {@link ObjectMapper} to use for parsing JSON responses.
@@ -34,8 +26,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
    */
   @Nonnull
   public ClientStreamingHandler<D, E> objectMapper(@Nonnull final ObjectMapper jackson) {
-    JACKSON = jackson;
-    errorHandler.objectMapper(jackson);
+    super.objectMapper(jackson);
     return this;
   }
 
@@ -50,9 +41,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
       @Nonnull final Class<D> deltaType,
       @Nonnull final Class<? extends ClientError> errorType,
       @Nonnull final BiFunction<String, Throwable, E> exceptionType) {
-    this.deltaType = deltaType;
-    this.exceptionType = exceptionType;
-    this.errorHandler = new ClientResponseHandler<>(errorType, errorType, exceptionType);
+    super(deltaType, errorType, exceptionType);
   }
 
   /**
@@ -65,9 +54,9 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
    */
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
-  public Stream<D> handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
+  public Stream<D> handleStreamingResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
-      errorHandler.buildExceptionAndThrow(response);
+      super.buildExceptionAndThrow(response);
     }
     return IterableStreamConverter.lines(response.getEntity(), exceptionType)
         // half of the lines are empty newlines, the last line is "data: [DONE]"
@@ -76,14 +65,14 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
             line -> {
               if (!line.startsWith("data: ")) {
                 final String msg = "Failed to parse response";
-                errorHandler.parseErrorAndThrow(line, exceptionType.apply(msg, null));
+                super.parseErrorAndThrow(line, exceptionType.apply(msg, null));
               }
             })
         .map(
             line -> {
               final String data = line.substring(5); // remove "data: "
               try {
-                return JACKSON.readValue(data, deltaType);
+                return objectMapper.readValue(data, responseType);
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse the following response: {}", line);
                 throw exceptionType.apply("Failed to parse delta message: " + line, e);

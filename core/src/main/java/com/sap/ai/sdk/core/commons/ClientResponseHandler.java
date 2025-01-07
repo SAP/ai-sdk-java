@@ -33,12 +33,12 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 @RequiredArgsConstructor
 public class ClientResponseHandler<T, E extends ClientException>
     implements HttpClientResponseHandler<T> {
-  @Nonnull private final Class<T> responseType;
+  @Nonnull final Class<T> responseType;
   @Nonnull private final Class<? extends ClientError> errorType;
-  @Nonnull private final BiFunction<String, Throwable, E> exceptionType;
+  @Nonnull final BiFunction<String, Throwable, E> exceptionType;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
-  @Nonnull private ObjectMapper JACKSON = getDefaultObjectMapper();
+  @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();
 
   /**
    * Set the {@link ObjectMapper} to use for parsing JSON responses.
@@ -48,7 +48,7 @@ public class ClientResponseHandler<T, E extends ClientException>
   @Beta
   @Nonnull
   public ClientResponseHandler<T, E> objectMapper(@Nonnull final ObjectMapper jackson) {
-    JACKSON = jackson;
+    objectMapper = jackson;
     return this;
   }
 
@@ -79,7 +79,7 @@ public class ClientResponseHandler<T, E extends ClientException>
     val content = getContent(responseEntity);
     log.debug("Parsing response from JSON response: {}", content);
     try {
-      return JACKSON.readValue(content, responseType);
+      return objectMapper.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response: {}", content);
       throw exceptionType.apply("Failed to parse response", e);
@@ -138,7 +138,7 @@ public class ClientResponseHandler<T, E extends ClientException>
    */
   public void parseErrorAndThrow(
       @Nonnull final String errorResponse, @Nonnull final E baseException) throws E {
-    val maybeError = Try.of(() -> JACKSON.readValue(errorResponse, errorType));
+    val maybeError = Try.of(() -> objectMapper.readValue(errorResponse, errorType));
     if (maybeError.isFailure()) {
       baseException.addSuppressed(maybeError.getCause());
       throw baseException;

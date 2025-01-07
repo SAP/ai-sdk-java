@@ -288,7 +288,7 @@ public class OrchestrationClient {
       return new ClientStreamingHandler<>(
               deltaType, OrchestrationError.class, OrchestrationClientException::new)
           .objectMapper(JACKSON)
-          .handleResponse(client.executeOpen(null, request, null));
+          .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OrchestrationClientException("Request to the Orchestration service failed", e);
     }

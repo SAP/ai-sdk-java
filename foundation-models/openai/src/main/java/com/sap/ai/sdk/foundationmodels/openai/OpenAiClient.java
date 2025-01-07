@@ -300,7 +300,7 @@ public final class OpenAiClient {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return new ClientStreamingHandler<>(deltaType, OpenAiError.class, OpenAiClientException::new)
-          .handleResponse(client.executeOpen(null, request, null));
+          .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
