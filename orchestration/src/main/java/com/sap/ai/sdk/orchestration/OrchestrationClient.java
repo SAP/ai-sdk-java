@@ -52,7 +52,7 @@ public class OrchestrationClient {
         ModuleResultsOutputUnmaskingInner.class,
         JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
 
-    var module =
+    final var module =
         new SimpleModule()
             .addDeserializer(
                 ChatMessagesInner.class,

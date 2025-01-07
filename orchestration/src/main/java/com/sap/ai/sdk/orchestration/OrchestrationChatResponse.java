@@ -55,10 +55,11 @@ public class OrchestrationChatResponse {
    * @return A list of all messages.
    */
   @Nonnull
-  public List<Message> getAllMessages() throws UnsupportedOperationException{
+  public List<Message> getAllMessages() throws UnsupportedOperationException {
     final var messages = new ArrayList<Message>();
 
-    for (final ChatMessagesInner chatMessage : originalResponse.getModuleResults().getTemplating()) {
+    for (final ChatMessagesInner chatMessage :
+        originalResponse.getModuleResults().getTemplating()) {
       if (chatMessage instanceof ChatMessage simpleMsg) {
         final var message =
             switch (simpleMsg.getRole()) {
@@ -68,9 +69,9 @@ public class OrchestrationChatResponse {
               default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
             };
         messages.add(message);
-      }
-      else {
-        throw new UnsupportedOperationException("Currently MultiChatMessage type not supported by convenience API");
+      } else {
+        throw new UnsupportedOperationException(
+            "Currently MultiChatMessage type not supported by convenience API");
       }
     }
 

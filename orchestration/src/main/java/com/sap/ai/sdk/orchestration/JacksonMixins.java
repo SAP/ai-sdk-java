@@ -21,5 +21,4 @@ final class JacksonMixins {
 
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
   interface NoneTypeInfoMixin {}
-  
 }

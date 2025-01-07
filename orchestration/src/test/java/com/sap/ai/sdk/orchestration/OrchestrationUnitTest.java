@@ -130,7 +130,7 @@ class OrchestrationUnitTest {
     assertThat(groundingData.get("grounding_result").toString())
         .startsWith("Joule is the AI copilot that truly understands your business.");
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
-    assertThat(((ChatMessage)result.getModuleResults().getTemplating().get(0)).getContent())
+    assertThat(((ChatMessage) result.getModuleResults().getTemplating().get(0)).getContent())
         .startsWith(
             "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
     assertThat(llmChoice.getMessage().getContent())
@@ -578,7 +578,7 @@ class OrchestrationUnitTest {
         assertThat(message0.get("content")).isEqualTo("");
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
-        
+
         final var templateItem = (ChatMessage) templating.get(0);
         assertThat(templateItem.getRole()).isEqualTo("user");
         assertThat(templateItem.getContent())
