@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Spliterator.NONNULL;

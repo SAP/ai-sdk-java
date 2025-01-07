@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

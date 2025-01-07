@@ -1,6 +1,7 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.annotations.Beta;
 import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
@@ -13,8 +14,9 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
  *
  * @param <D> The type of the response.
  * @param <E> The type of the exception to throw.
- * @since 1.1.0
+ * @since 1.2.0
  */
+@Beta
 @Slf4j
 public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientException>
     extends ClientResponseHandler<D, E> {
@@ -58,14 +60,14 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
     if (response.getCode() >= 300) {
       super.buildExceptionAndThrow(response);
     }
-    return IterableStreamConverter.lines(response.getEntity(), exceptionType)
+    return IterableStreamConverter.lines(response.getEntity(), exceptionConstructor)
         // half of the lines are empty newlines, the last line is "data: [DONE]"
         .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
         .peek(
             line -> {
               if (!line.startsWith("data: ")) {
                 final String msg = "Failed to parse response";
-                super.parseErrorAndThrow(line, exceptionType.apply(msg, null));
+                super.parseErrorAndThrow(line, exceptionConstructor.apply(msg, null));
               }
             })
         .map(
@@ -75,7 +77,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
                 return objectMapper.readValue(data, responseType);
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse the following response: {}", line);
-                throw exceptionType.apply("Failed to parse delta message: " + line, e);
+                throw exceptionConstructor.apply("Failed to parse delta message: " + line, e);
               }
             });
   }

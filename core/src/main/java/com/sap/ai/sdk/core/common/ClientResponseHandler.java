@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
@@ -35,7 +35,7 @@ public class ClientResponseHandler<T, E extends ClientException>
     implements HttpClientResponseHandler<T> {
   @Nonnull final Class<T> responseType;
   @Nonnull private final Class<? extends ClientError> errorType;
-  @Nonnull final BiFunction<String, Throwable, E> exceptionType;
+  @Nonnull final BiFunction<String, Throwable, E> exceptionConstructor;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
   @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();
@@ -74,7 +74,7 @@ public class ClientResponseHandler<T, E extends ClientException>
   private T parseResponse(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw exceptionType.apply("Response was empty.", null);
+      throw exceptionConstructor.apply("Response was empty.", null);
     }
     val content = getContent(responseEntity);
     log.debug("Parsing response from JSON response: {}", content);
@@ -82,7 +82,7 @@ public class ClientResponseHandler<T, E extends ClientException>
       return objectMapper.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response: {}", content);
-      throw exceptionType.apply("Failed to parse response", e);
+      throw exceptionConstructor.apply("Failed to parse response", e);
     }
   }
 
@@ -91,7 +91,7 @@ public class ClientResponseHandler<T, E extends ClientException>
     try {
       return EntityUtils.toString(entity, StandardCharsets.UTF_8);
     } catch (IOException | ParseException e) {
-      throw exceptionType.apply("Failed to read response content.", e);
+      throw exceptionConstructor.apply("Failed to read response content.", e);
     }
   }
 
@@ -103,7 +103,7 @@ public class ClientResponseHandler<T, E extends ClientException>
   @SuppressWarnings("PMD.CloseResource")
   public void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response) throws E {
     val exception =
-        exceptionType.apply(
+        exceptionConstructor.apply(
             "Request failed with status %s %s"
                 .formatted(response.getCode(), response.getReasonPhrase()),
             null);
@@ -146,6 +146,6 @@ public class ClientResponseHandler<T, E extends ClientException>
 
     val error = Objects.requireNonNullElse(maybeError.get().getMessage(), "");
     val message = "%s and error message: '%s'".formatted(baseException.getMessage(), error);
-    throw exceptionType.apply(message, baseException);
+    throw exceptionConstructor.apply(message, baseException);
   }
 }
