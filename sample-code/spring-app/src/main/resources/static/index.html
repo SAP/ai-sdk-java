@@ -423,7 +423,8 @@
             const jsonData = typeof data === 'string' ? marked.parse(data) : JSON.stringify(marked.parse(data), null, 4);
             modalBody.innerHTML = `
                 <div id="content-container" class="p-3 bg-light border rounded">
-                    <pre> ${jsonData} </pre>
+<!--                    <pre> ${jsonData} </pre>-->
+                        <div style="white-space: pre-wrap; word-wrap: break-word; font-size: 1.7rem;"> ${jsonData} </div>
                 </div>
             `;
         }
