@@ -788,7 +788,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <configuration>
                 <deploymentName>SAP AI SDK ${project.version}</deploymentName>
                 <publishingServerId>central</publishingServerId>
-                <autoPublish>false</autoPublish>
+                <autoPublish>true</autoPublish>
               </configuration>
             </plugin>
           </plugins>
