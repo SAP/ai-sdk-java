@@ -107,6 +107,7 @@
             word-wrap: break-word;
             max-height: 500px;
             overflow-y: auto;
+            font-size: 1.8rem;
         }
 
         .max-width-container {
@@ -121,7 +122,7 @@
         .form-control {
             border: 2px solid #e2e8f0;
             padding: 1rem;
-            font-size: 1.2rem;
+            font-size: 1.7rem;
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.8);
         }
@@ -132,7 +133,7 @@
         }
 
         .form-label {
-            font-size: 1.2rem;
+            font-size: 2rem;
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 0.75rem;
@@ -144,7 +145,7 @@
             background: linear-gradient(45deg, #4f46e5, #7c3aed);
             border: none;
             padding: 1rem 2rem;
-            font-size: 1.2rem;
+            font-size: 1.8rem;
             border-radius: 12px;
             font-weight: 600;
             letter-spacing: 0.05em;
@@ -159,6 +160,7 @@
         .mb-4 {
             margin-top: 10rem;
             padding-bottom: 4rem;
+            font-size: 5rem;
         }
 
         .modal-content {
@@ -197,7 +199,7 @@
 <div class="container-fluid py-4">
     <h1 class="mb-4 text-center">Java AI SDK Demo Application</h1>
     <div class="row justify-content-center">
-        <div class="col-xl-4 max-width-container">
+        <div class="col-xl-4 max-width-container" style="min-width: 70rem">
             <form id="processInputForm" action="/orchestration/processInput" method="post" class="mb-5">
                 <div class="mb-3">
                     <label for="userInput" class="form-label">Input:</label>
@@ -206,125 +208,8 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
-
-<!--        <div class="col-xl-4 max-width-container">-->
-<!--            <div class="card endpoint-card">-->
-<!--                <div class="card-header">-->
-<!--                    <h2>Orchestration</h2>-->
-<!--                    The Orchestration API offers functionality for enhancing your LLM calls with Templating, Filtering, Data Masking, Grounding and more.-->
-<!--                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration" target="_blank">Orchestration documentation</a>.-->
-<!--                </div>-->
-<!--                <div class="card-body">-->
-<!--                    <ul class="list-group">-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/completion"><code>/orchestration/completion</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Chat request to an LLM through the Orchestration service with a simple prompt.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/streamChatCompletion"><code>/orchestration/streamChatCompletion</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Asynchronous stream of an LLM chat request.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/template"><code>/orchestration/template</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Chat request to an LLM through the Orchestration service with a template.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/messagesHistory"><code>/orchestration/messageHistory</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Chat request to an LLM through the Orchestration service using message history.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/filter/ALLOW_SAFE_LOW_MEDIUM"><code>/orchestration/filter/ALLOW_SAFE_LOW_MEDIUM</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Apply both input and output filtering for a request to orchestration with a loose filter.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/filter/ALLOW_SAFE"><code>/orchestration/filter/ALLOW_SAFE</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Apply both input and output filtering for a request to orchestration with a strict filter.                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/maskingAnonymization"><code>/orchestration/maskingAnonymization</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical-->
-<!--                                    user. Anonymize any names given as they are not relevant for judging the sentiment of the-->
-<!--                                    feedback.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/maskingPseudonymization"><code>/orchestration/maskingPseudonymization</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                    Let the orchestration service a response to a hypothetical user who provided feedback on the AI-->
-<!--                                    SDK. Pseudonymize the user's name and location to protect their privacy.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="list-group-item">-->
-<!--                            <div class="info-tooltip">-->
-<!--                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"-->
-<!--                                   href="/orchestration/grounding"><code>/orchestration/grounding</code></a>-->
-<!--                                <div class="tooltip-content">-->
-<!--                                   Using grounding to provide additional context to the AI model.-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
-
-<!--<footer class="footer">-->
-<!--    <div class="global-view-toggle">-->
-<!--        <div class="btn-group">-->
-<!--            <button id="global-json-btn" class="btn btn-sm btn-outline-primary active">JSON</button>-->
-<!--            <button id="global-content-btn" class="btn btn-sm btn-outline-primary">Message</button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="footer-links">-->
-<!--        <a href="https://github.com/SAP/ai-sdk-java">GitHub</a>-->
-<!--    </div>-->
-<!--    <div class="info-tooltip">-->
-<!--        ❓-->
-<!--        <div class="tooltip-content">-->
-<!--            Welcome to the Java AI SDK Application. In this Demo and End-to-End Test App you can test several-->
-<!--            endpoints of our API. For more information, check our GitHub repository linked at the bottom.-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</footer>-->
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-jsonview/dist/jquery.jsonview.min.js"></script>
