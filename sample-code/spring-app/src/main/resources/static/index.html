@@ -258,8 +258,16 @@
                 if (!response.ok) throw new Error("Error occurred!");
 
                 const contentType = response.headers.get('content-type');
-                const data = isJsonMode() ? await response.json() : await response.text();
-                updateDisplay(data, 'Process Input', form.action, contentType);
+<!--                const data = isJsonMode() ? await response.json() : await response.text();-->
+<!--                updateDisplay(data, 'Process Input', form.action, contentType);-->
+
+                if (contentType && contentType.includes('text/event-stream')) {
+                    await handleStreamingResponse(response, event.target.innerHTML);
+                } else {
+                    const data = isJsonMode() ? await response.json() : await response.text();
+                    updateDisplay(data, 'Process Input', form.action, contentType);
+                }
+
             } catch (error) {
                 updateDisplay(error.message, 'Process Input', form.action, 'error');
             } finally {
@@ -342,7 +350,7 @@
     async function handleStreamingResponse(response, endpointName) {
         try {
             // Set the modal title
-            modalTitle.innerHTML = `<code>${endpointName}</code>`;
+            modalTitle.innerHTML = `<code>LLM Response</code>`;
 
             // Prepare the modal body for streaming content
             modalBody.innerHTML = `
@@ -360,6 +368,8 @@
                 // Show the modal early to start displaying stream
                 modalInstance.show();
 
+                let markdownText = "";
+
                 while (true) {
                     const { done, value } = await reader.read();
 
@@ -369,7 +379,8 @@
                     const decodedChunk = decoder.decode(value, { stream: true });
 
                     // Append the chunk to the stream container
-                    streamContainer.innerHTML += escapeHtml(decodedChunk);
+                    markdownText += decodedChunk;
+                    streamContainer.innerHTML = marked.parse(markdownText);
 
                     // Scroll to the bottom of the modal
                     modalBody.scrollTop = modalBody.scrollHeight;
@@ -423,7 +434,6 @@
             const jsonData = typeof data === 'string' ? marked.parse(data) : JSON.stringify(marked.parse(data), null, 4);
             modalBody.innerHTML = `
                 <div id="content-container" class="p-3 bg-light border rounded">
-<!--                    <pre> ${jsonData} </pre>-->
                         <div style="white-space: pre-wrap; word-wrap: break-word; font-size: 1.7rem;"> ${jsonData} </div>
                 </div>
             `;

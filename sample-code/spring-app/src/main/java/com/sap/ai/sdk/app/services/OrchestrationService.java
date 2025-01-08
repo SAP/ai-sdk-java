@@ -17,6 +17,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,14 @@ import org.springframework.stereotype.Service;
 public class OrchestrationService {
 
 
+  @Nonnull
+  public String processInput(@Nonnull final String userInput) {
+    return userInput;
+  }
 
 
   @Nonnull
-  public String processInput(@Nonnull final String userInput) {
+  public String processInput02(@Nonnull final String userInput) {
     var client = new OrchestrationClient();
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0));
     var prompt = new OrchestrationPrompt(userInput);
@@ -86,6 +91,8 @@ public class OrchestrationService {
 
 
 
+
+
   /**
    * For Demo app.
    * Uses grounding to be able to answer question about AI SDK features.
@@ -93,7 +100,7 @@ public class OrchestrationService {
    * @return the assistant response
    */
   @Nonnull
-  public String processInputGrounding(@Nonnull final String userInput) {
+  public Stream<String> processInputStream(@Nonnull final String userInput) {
     final var config = new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH);
     final var client = new OrchestrationClient();
     final var message =
@@ -114,6 +121,6 @@ public class OrchestrationService {
             .config(groundingConfigConfig);
     final var configWithGrounding = config.withGroundingConfig(groundingConfig);
 
-    return client.chatCompletion(prompt, configWithGrounding).getContent();
+    return client.streamChatCompletion(prompt, configWithGrounding);
   }
 }
