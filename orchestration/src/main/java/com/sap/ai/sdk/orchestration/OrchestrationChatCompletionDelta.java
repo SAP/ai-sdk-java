@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import java.util.Map;

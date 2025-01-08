@@ -2,7 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.commons.ClientError;
+import com.sap.ai.sdk.core.common.ClientError;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
