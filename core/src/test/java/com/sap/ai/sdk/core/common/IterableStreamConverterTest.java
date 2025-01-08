@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.core.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.SneakyThrows;
+import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ class IterableStreamConverterTest {
     final var inputStream = spy(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity);
+    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
     verify(inputStream, never()).read();
     verify(inputStream, never()).read(any());
     verify(inputStream, never()).read(any(), anyInt(), anyInt());
@@ -69,7 +70,7 @@ class IterableStreamConverterTest {
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity);
+    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
     assertThat(sut.findFirst()).contains("Foo Bar");
     verify(inputStream, times(1)).read(any(), anyInt(), anyInt());
     verify(inputStream, never()).close();
@@ -93,9 +94,9 @@ class IterableStreamConverterTest {
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity);
+    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
     assertThatThrownBy(sut::count)
-        .isInstanceOf(OpenAiClientException.class)
+        .isInstanceOf(TestClientException.class)
         .hasMessage("Parsing response content was interrupted.")
         .cause()
         .isInstanceOf(IOException.class)
@@ -103,4 +104,7 @@ class IterableStreamConverterTest {
     verify(inputStream, times(2)).read(any(), anyInt(), anyInt());
     verify(inputStream, times(1)).close();
   }
+
+  @StandardException
+  public static class TestClientException extends ClientException {}
 }
