@@ -97,6 +97,9 @@ public class OrchestrationService {
 
   @Nonnull
   public String processInput(@Nonnull final String userInput) {
+//    temp auf 0
+//    zoom ausprobieren und auf Bildschrimgröße anpassen
+//    Schrift art ändern und vergrößern in App
     var client = new OrchestrationClient();
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
     var prompt = new OrchestrationPrompt(userInput);
