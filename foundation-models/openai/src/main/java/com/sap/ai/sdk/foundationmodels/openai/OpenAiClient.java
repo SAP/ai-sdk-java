@@ -13,10 +13,19 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
 import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamResponseDelta;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -125,13 +134,14 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
+  public CreateChatCompletionResponse chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
+
     if (systemPrompt != null) {
-      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+      parameters.addMessagesItem(new ChatCompletionRequestSystemMessage().role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM).content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
     }
-    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
+    parameters.addMessagesItem(new ChatCompletionRequestUserMessage().role(ChatCompletionRequestUserMessage.RoleEnum.USER).content(ChatCompletionRequestUserMessageContent.create(prompt)));
     return chatCompletion(parameters);
   }
 
@@ -143,10 +153,10 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+  public CreateChatCompletionResponse chatCompletion(
+      @Nonnull final CreateChatCompletionRequest parameters) throws OpenAiClientException {
     warnIfUnsupportedUsage();
-    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
+    return execute("/chat/completions", parameters, CreateChatCompletionResponse.class);
   }
 
   /**
@@ -177,11 +187,13 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
+
     if (systemPrompt != null) {
-      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
+      parameters.addMessagesItem(new ChatCompletionRequestSystemMessage().role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM).content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
     }
-    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
+    parameters.addMessagesItem(new ChatCompletionRequestUserMessage().role(ChatCompletionRequestUserMessage.RoleEnum.USER).content(ChatCompletionRequestUserMessageContent.create(prompt)));
+
     return streamChatCompletionDeltas(parameters)
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
@@ -222,11 +234,11 @@ public final class OpenAiClient {
    * @see #streamChatCompletion(String)
    */
   @Nonnull
-  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+  public Stream<ChatCompletionStreamResponseDelta> streamChatCompletionDeltas(
+      @Nonnull final CreateChatCompletionRequest parameters) throws OpenAiClientException {
     warnIfUnsupportedUsage();
-    parameters.enableStreaming();
-    return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
+    parameters.stream(true).streamOptions(new ChatCompletionStreamOptions().includeUsage(true));
+    return executeStream("/chat/completions", parameters, ChatCompletionStreamResponseDelta.class);
   }
 
   private void warnIfUnsupportedUsage() {
@@ -261,7 +273,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D extends StreamedDelta> Stream<D> executeStream(
+  private <D> Stream<D> executeStream(
       @Nonnull final String path,
       @Nonnull final Object payload,
       @Nonnull final Class<D> deltaType) {
@@ -294,7 +306,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D extends StreamedDelta> Stream<D> streamRequest(
+  private <D> Stream<D> streamRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
