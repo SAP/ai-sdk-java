@@ -10,22 +10,15 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
-import com.sap.ai.sdk.foundationmodels.openai.model.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamResponseDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -141,9 +134,15 @@ public final class OpenAiClient {
     final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
 
     if (systemPrompt != null) {
-      parameters.addMessagesItem(new ChatCompletionRequestSystemMessage().role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM).content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
+      parameters.addMessagesItem(
+          new ChatCompletionRequestSystemMessage()
+              .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
+              .content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
     }
-    parameters.addMessagesItem(new ChatCompletionRequestUserMessage().role(ChatCompletionRequestUserMessage.RoleEnum.USER).content(ChatCompletionRequestUserMessageContent.create(prompt)));
+    parameters.addMessagesItem(
+        new ChatCompletionRequestUserMessage()
+            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
+            .content(ChatCompletionRequestUserMessageContent.create(prompt)));
     return chatCompletion(parameters);
   }
 
@@ -192,16 +191,24 @@ public final class OpenAiClient {
     final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
 
     if (systemPrompt != null) {
-      parameters.addMessagesItem(new ChatCompletionRequestSystemMessage().role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM).content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
+      parameters.addMessagesItem(
+          new ChatCompletionRequestSystemMessage()
+              .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
+              .content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
     }
-    parameters.addMessagesItem(new ChatCompletionRequestUserMessage().role(ChatCompletionRequestUserMessage.RoleEnum.USER).content(ChatCompletionRequestUserMessageContent.create(prompt)));
+    parameters.addMessagesItem(
+        new ChatCompletionRequestUserMessage()
+            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
+            .content(ChatCompletionRequestUserMessageContent.create(prompt)));
 
     return streamChatCompletionDeltas(parameters)
+        .map(com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta.class::cast)
         .peek(OpenAiClient::throwOnContentFilter)
-        .map(OpenAiChatCompletionDelta::getDeltaContent);
+        .map(com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta::getDeltaContent);
   }
 
-  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
+  private static void throwOnContentFilter(
+      @Nonnull final com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta delta) {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
       throw new OpenAiClientException("Content filter filtered the output.");
@@ -236,11 +243,11 @@ public final class OpenAiClient {
    * @see #streamChatCompletion(String)
    */
   @Nonnull
-  public Stream<ChatCompletionStreamResponseDelta> streamChatCompletionDeltas(
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CreateChatCompletionRequest parameters) throws OpenAiClientException {
     warnIfUnsupportedUsage();
     parameters.stream(true).streamOptions(new ChatCompletionStreamOptions().includeUsage(true));
-    return executeStream("/chat/completions", parameters, ChatCompletionStreamResponseDelta.class);
+    return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
   }
 
   private void warnIfUnsupportedUsage() {
@@ -275,7 +282,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D> Stream<D> executeStream(
+  private <D extends StreamedDelta> Stream<D> executeStream(
       @Nonnull final String path,
       @Nonnull final Object payload,
       @Nonnull final Class<D> deltaType) {
@@ -308,7 +315,7 @@ public final class OpenAiClient {
   }
 
   @Nonnull
-  private <D> Stream<D> streamRequest(
+  private <D extends StreamedDelta> Stream<D> streamRequest(
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
