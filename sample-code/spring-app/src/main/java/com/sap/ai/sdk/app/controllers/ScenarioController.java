@@ -63,7 +63,7 @@ class ScenarioController {
   ResponseEntity<String> getModels(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
-    var modelList = CLIENT.queryModels("foundation-models", "default");
+    var modelList = getModels();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
