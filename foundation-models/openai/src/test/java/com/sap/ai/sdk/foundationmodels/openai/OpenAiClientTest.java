@@ -280,7 +280,7 @@ class OpenAiClientTest {
       assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(contentFilterResults.getProfanity()).isNull();
       assertThat(contentFilterResults.getError()).isNull();
-      //assertThat(contentFilterResults.getJailbreak()).isNull();
+      // assertThat(contentFilterResults.getJailbreak()).isNull();
 
       verify(
           postRequestedFor(urlPathEqualTo("/chat/completions"))
@@ -386,7 +386,12 @@ class OpenAiClientTest {
     assertThat(embeddingData.getEmbedding())
         .isNotNull()
         .isNotEmpty()
-        .containsExactly(new BigDecimal("0.0"),new BigDecimal("3.4028235E+38"),new BigDecimal("1.4E-45"),new BigDecimal("1.23"),new BigDecimal("-4.56"));
+        .containsExactly(
+            new BigDecimal("0.0"),
+            new BigDecimal("3.4028235E+38"),
+            new BigDecimal("1.4E-45"),
+            new BigDecimal("1.23"),
+            new BigDecimal("-4.56"));
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
@@ -484,11 +489,26 @@ class OpenAiClientTest {
         assertThat(deltaList.get(3).getDeltaContent()).isEqualTo("!");
         assertThat(deltaList.get(4).getDeltaContent()).isEqualTo("");
 
-        assertThat(((CreateChatCompletionResponse)deltaList.get(0).getOriginalResponse()).getSystemFingerprint()).isNull();
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(1).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(2).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(3).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(4).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isNull();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(1).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(3).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
 
         /*
                 assertThat(deltaList.get(0).getUsage()).isNull();
@@ -501,11 +521,26 @@ class OpenAiClientTest {
                 assertThat(usage.getPromptTokens()).isEqualTo(21);
                 assertThat(usage.getTotalTokens()).isEqualTo(628);
         */
-        assertThat(((CreateChatCompletionResponse)deltaList.get(0).getOriginalResponse()).getChoices()).isEmpty();
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(1).getOriginalResponse()).getChoices()).hasSize(1);
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(2).getOriginalResponse()).getChoices()).hasSize(1);
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(3).getOriginalResponse()).getChoices()).hasSize(1);
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(4).getOriginalResponse()).getChoices()).hasSize(1);
+        assertThat(
+                ((CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse())
+                    .getChoices())
+            .isEmpty();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(1).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(3).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
 
         final var delta0 = (CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse();
         assertThat(delta0.getId()).isEqualTo("");
@@ -522,7 +557,8 @@ class OpenAiClientTest {
         // assertThat(promptFilter0).isNotNull();
         // assertFilter(promptFilter0);
 
-        final var delta2 = (CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse();
+        final var delta2 =
+            (CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse();
         assertThat(delta2.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(delta2.getCreated()).isEqualTo(1724825677);
         assertThat(delta2.getModel()).isEqualTo("gpt-35-turbo");
@@ -543,7 +579,8 @@ class OpenAiClientTest {
         final var delta3 = deltaList.get(3);
         assertThat(delta3.getDeltaContent()).isEqualTo("!");
 
-        final var delta4 = (CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse();
+        final var delta4 =
+            (CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse();
         final var delta4Choice = delta4.getChoices().get(0);
         assertThat(delta4Choice.getFinishReason()).isEqualTo("stop");
         assertThat(delta4Choice.getDelta().getContent()).isNotNull();

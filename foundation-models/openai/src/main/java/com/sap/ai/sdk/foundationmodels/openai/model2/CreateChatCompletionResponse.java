@@ -59,10 +59,9 @@ public class CreateChatCompletionResponse implements ChatCompletionsCreate200Res
   public enum ObjectEnum {
     /** The CHAT_COMPLETION option of this CreateChatCompletionResponse */
     CHAT_COMPLETION("chat.completion"),
-    /**
-     * The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponse
-     */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");;
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponse */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+    ;
 
     private String value;
 

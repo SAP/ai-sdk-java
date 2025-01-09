@@ -27,8 +27,8 @@ import java.util.List;
 public interface EmbeddingsCreateRequestInput {
   /** Helper class to create a String that implements {@link EmbeddingsCreateRequestInput}. */
   class InnerString implements EmbeddingsCreateRequestInput {
-    @com.fasterxml.jackson.annotation.JsonValue
-    String value;
+    @com.fasterxml.jackson.annotation.JsonValue String value;
+
     InnerString(String value) {
       this.value = value;
     }
