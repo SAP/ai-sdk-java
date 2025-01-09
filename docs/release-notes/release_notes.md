@@ -18,7 +18,7 @@
 
 ### 📈 Improvements
 
-- Update Orchestration client to latest version
+- Update Orchestration client to version 0.43.0 (2412a)
 
 ### 🐛 Fixed Issues
 
