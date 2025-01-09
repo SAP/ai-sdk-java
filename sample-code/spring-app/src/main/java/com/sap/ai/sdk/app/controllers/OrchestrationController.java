@@ -24,14 +24,14 @@ import java.util.Arrays;
 class OrchestrationController {
   @Autowired private OrchestrationService service;
 
-//  @PostMapping("/processInput")
+  @PostMapping("/processInput")
   public ResponseEntity<String> processInput(@RequestParam("userInput") String userInput) {
     log.info("User input: {}", userInput);
     final String output = service.processInput(userInput);
     return ResponseEntity.ok(output);
   }
 
-  @PostMapping("/processInput")
+//  @PostMapping("/processInput")
   ResponseEntity<ResponseBodyEmitter> processInputStream(@RequestParam("userInput") String userInput) {
     final var stream = service.processInputStream(userInput);
     final var emitter = new ResponseBodyEmitter();

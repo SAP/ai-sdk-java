@@ -30,19 +30,57 @@ public class OrchestrationService {
 
   @Nonnull
   public String processInput(@Nonnull final String userInput) {
-    return userInput;
-  }
-
-  @Nonnull
-  public String processInput02(@Nonnull final String userInput) {
     var client = new OrchestrationClient();
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0));
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0));
     var prompt = new OrchestrationPrompt(userInput);
     var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.LOCATION);
     var response = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
     return response.getContent();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /**
    * For Demo app. Uses grounding to be able to answer question about AI SDK features.
@@ -51,7 +89,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public Stream<String> processInputStream(@Nonnull final String userInput) {
-    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0));
     final var client = new OrchestrationClient();
     final var systemMessage = Message.system("Please respond with a short, structured overview using Markdown.");
     final var message =
