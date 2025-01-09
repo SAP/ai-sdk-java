@@ -6,10 +6,8 @@ import static com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterSeverit
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse.ObjectEnum.UNKNOWN_DEFAULT_OPEN_API;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.STOP;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse.ObjectEnum.CHAT_COMPLETION_CHUNK;
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.InstanceOfAssertFactories.map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -27,7 +25,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMe
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterChoiceResults;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterSeverityResult;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner;
@@ -289,7 +286,7 @@ class OpenAiClientTest {
       assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(contentFilterResults.getProfanity()).isNull();
       assertThat(contentFilterResults.getError()).isNull();
-      //assertThat(contentFilterResults.getJailbreak()).isNull();
+      // assertThat(contentFilterResults.getJailbreak()).isNull();
 
       verify(
           postRequestedFor(urlPathEqualTo("/chat/completions"))
@@ -404,7 +401,7 @@ class OpenAiClientTest {
     assertThat(result.getObject()).isEqualTo("list");
 
     assertThat(result.getUsage()).isNotNull();
-    // assertThat(result.getUsage().getCompletionTokens()).isNull();
+    assertThat(result.getUsage().getCustomFieldNames()).doesNotContain("completion_tokens");
     assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
     assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
 
@@ -416,7 +413,12 @@ class OpenAiClientTest {
     assertThat(embeddingData.getEmbedding())
         .isNotNull()
         .isNotEmpty()
-        .containsExactly(new BigDecimal("0.0"),new BigDecimal("3.4028235E+38"),new BigDecimal("1.4E-45"),new BigDecimal("1.23"),new BigDecimal("-4.56"));
+        .containsExactly(
+            new BigDecimal("0.0"),
+            new BigDecimal("3.4028235E+38"),
+            new BigDecimal("1.4E-45"),
+            new BigDecimal("1.23"),
+            new BigDecimal("-4.56"));
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
@@ -501,7 +503,7 @@ class OpenAiClientTest {
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 
-        CompletionUsage usage = new CompletionUsage();
+        CompletionUsage totalOutput = new CompletionUsage();
         final List<OpenAiChatCompletionDelta> deltaList = stream.toList();
         //            stream.peek(o -> usage.setCompletionTokens(o.getSystemFingerprint()).set
         // ::addDelta).toList();
@@ -514,28 +516,70 @@ class OpenAiClientTest {
         assertThat(deltaList.get(3).getDeltaContent()).isEqualTo("!");
         assertThat(deltaList.get(4).getDeltaContent()).isEqualTo("");
 
-        assertThat(((CreateChatCompletionResponse)deltaList.get(0).getOriginalResponse()).getSystemFingerprint()).isNull();
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(1).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(2).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(3).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(4).getOriginalResponse()).getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isNull();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(1).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(3).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse())
+                    .getSystemFingerprint())
+            .isEqualTo("fp_e49e4201a9");
 
-        /*
-                assertThat(deltaList.get(0).getUsage()).isNull();
-                assertThat(deltaList.get(1).getUsage()).isNull();
-                assertThat(deltaList.get(2).getUsage()).isNull();
-                assertThat(deltaList.get(3).getUsage()).isNull();
-                final var usage = deltaList.get(4).getUsage();
-                assertThat(usage).isNotNull();
-                assertThat(usage.getCompletionTokens()).isEqualTo(607);
-                assertThat(usage.getPromptTokens()).isEqualTo(21);
-                assertThat(usage.getTotalTokens()).isEqualTo(628);
-        */
-        assertThat(((CreateChatCompletionResponse)deltaList.get(0).getOriginalResponse()).getChoices()).isEmpty();
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(1).getOriginalResponse()).getChoices()).hasSize(1);
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(2).getOriginalResponse()).getChoices()).hasSize(1);
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(3).getOriginalResponse()).getChoices()).hasSize(1);
-        assertThat(((CreateChatCompletionStreamResponse)deltaList.get(4).getOriginalResponse()).getChoices()).hasSize(1);
+        assertThat(
+                ((CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse()).getUsage())
+            .isNull();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(1).getOriginalResponse())
+                    .getCustomField("usage"))
+            .isNull();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse())
+                    .getCustomField("usage"))
+            .isNull();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(3).getOriginalResponse())
+                    .getCustomField("usage"))
+            .isNull();
+        final var usage =
+            ((CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse())
+                .getCustomField("usage");
+        assertThat(usage).isNotNull();
+        assertThat(((Map<?, ?>) usage).get("completion_tokens")).isEqualTo(607);
+        assertThat(((Map<?, ?>) usage).get("prompt_tokens")).isEqualTo(21);
+        assertThat(((Map<?, ?>) usage).get("total_tokens")).isEqualTo(628);
+
+        assertThat(
+                ((CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse())
+                    .getChoices())
+            .isEmpty();
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(1).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(3).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
+        assertThat(
+                ((CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse())
+                    .getChoices())
+            .hasSize(1);
 
         final var delta0 = (CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse();
         assertThat(delta0.getId()).isEqualTo("");
@@ -552,7 +596,8 @@ class OpenAiClientTest {
         // assertThat(promptFilter0).isNotNull();
         // assertFilter(promptFilter0);
 
-        final var delta2 = (CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse();
+        final var delta2 =
+            (CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse();
         assertThat(delta2.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(delta2.getCreated()).isEqualTo(1724825677);
         assertThat(delta2.getModel()).isEqualTo("gpt-35-turbo");
@@ -573,9 +618,11 @@ class OpenAiClientTest {
         final var delta3 = deltaList.get(3);
         assertThat(delta3.getDeltaContent()).isEqualTo("!");
 
-        final var delta4 = (CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse();
+        final var delta4 =
+            (CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse();
         final var delta4Choice = delta4.getChoices().get(0);
-        assertThat(delta4Choice.getFinishReason()).isEqualTo(CreateChatCompletionStreamResponseChoicesInner.FinishReasonEnum.STOP);
+        assertThat(delta4Choice.getFinishReason())
+            .isEqualTo(CreateChatCompletionStreamResponseChoicesInner.FinishReasonEnum.STOP);
         assertThat(delta4Choice.getDelta().getContent()).isNull();
         // the role is only defined in delta 1
         assertThat(delta4Choice.getDelta().getRole()).isNull();

@@ -322,11 +322,17 @@ public final class OpenAiClient {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return new ClientStreamingHandler<>(deltaType, OpenAiError.class, OpenAiClientException::new)
-          .objectMapper(JACKSON
-              .addMixIn(CreateChatCompletionResponse.class, JacksonMixins.CreateChatCompletionResponseMixIn.class)
-              .addMixIn(CreateChatCompletionStreamResponse.class, JacksonMixins.CreateChatCompletionStreamResponseMixIn.class)
-              .addMixIn(ChatCompletionsCreate200Response.class, JacksonMixins.ChatCompletionCreate200ResponseMixIn.class)
-          )
+          .objectMapper(
+              JACKSON
+                  .addMixIn(
+                      CreateChatCompletionResponse.class,
+                      JacksonMixins.CreateChatCompletionResponseMixIn.class)
+                  .addMixIn(
+                      CreateChatCompletionStreamResponse.class,
+                      JacksonMixins.CreateChatCompletionStreamResponseMixIn.class)
+                  .addMixIn(
+                      ChatCompletionsCreate200Response.class,
+                      JacksonMixins.ChatCompletionCreate200ResponseMixIn.class))
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);

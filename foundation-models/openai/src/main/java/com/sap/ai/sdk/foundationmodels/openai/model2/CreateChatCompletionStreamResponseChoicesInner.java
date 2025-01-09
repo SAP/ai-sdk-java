@@ -106,7 +106,7 @@ public class CreateChatCompletionStreamResponseChoicesInner
           return b;
         }
       }
-      return null;
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
 

@@ -16,10 +16,16 @@ final class JacksonMixins {
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
   interface CreateChatCompletionResponseMixIn {}
 
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "object", defaultImpl = CreateChatCompletionResponse.class, visible = true)
+  @JsonTypeInfo(
+      use = JsonTypeInfo.Id.NAME,
+      property = "object",
+      defaultImpl = CreateChatCompletionResponse.class,
+      visible = true)
   @JsonSubTypes({
-      @JsonSubTypes.Type(value = CreateChatCompletionResponse.class, name="chat.completion"),
-      @JsonSubTypes.Type(value = CreateChatCompletionStreamResponse.class, name = "chat.completion.chunk"),
+    @JsonSubTypes.Type(value = CreateChatCompletionResponse.class, name = "chat.completion"),
+    @JsonSubTypes.Type(
+        value = CreateChatCompletionStreamResponse.class,
+        name = "chat.completion.chunk"),
   })
   public interface ChatCompletionCreate200ResponseMixIn {}
 }
