@@ -752,7 +752,7 @@ class OrchestrationUnitTest {
 
   @SneakyThrows
   @Test
-  void testOrchestrationChatResponseWithImage() {
+  void testOrchestrationChatResponseWithMultiChatMessage() {
     var module = new SimpleModule();
     module.setMixInAnnotation(LLMModuleResult.class, JacksonMixins.NoneTypeInfoMixin.class);
     module.addDeserializer(
