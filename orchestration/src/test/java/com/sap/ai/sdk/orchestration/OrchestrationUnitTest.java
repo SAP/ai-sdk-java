@@ -17,8 +17,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,9 +35,18 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.ImageContent;
+import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
+import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -623,6 +634,113 @@ class OrchestrationUnitTest {
         assertThat(message2.get("content")).isEqualTo("!");
       }
       Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @Test
+  void testMultiChatMessageRequest() throws IOException {
+
+    stubFor(
+        post("/completion")
+            .willReturn(
+                aResponse().withStatus(SC_OK).withBodyFile("multiChatMessageResponse.json")));
+
+    var multiChatMessage =
+        MultiChatMessage.create()
+            .role("user")
+            .content(
+                List.of(
+                    TextContent.create()
+                        .type(TextContent.TypeEnum.TEXT)
+                        .text("Can you solve this captcha? Please help me prove my humanity!"),
+                    ImageContent.create()
+                        .type(ImageContent.TypeEnum.IMAGE_URL)
+                        .imageUrl(
+                            ImageContentImageUrl.create()
+                                .url(
+                                    "https://images.unsplash.com/photo-1468971050039-be99497410af?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))));
+
+    var llmWithImageSupportConfig =
+        LLMModuleConfig.create()
+            .modelName(GPT_4O_MINI.getName())
+            .modelParams(Map.of())
+            .modelVersion(GPT_4O_MINI.getVersion());
+
+    var templatingModuleConfig = Template.create().template(List.of(multiChatMessage));
+
+    CompletionPostRequest completionPostRequest =
+        CompletionPostRequest.create()
+            .orchestrationConfig(
+                OrchestrationConfig.create()
+                    .moduleConfigurations(
+                        ModuleConfigs.create()
+                            .llmModuleConfig(llmWithImageSupportConfig)
+                            .templatingModuleConfig(templatingModuleConfig)));
+
+    var response = client.executeRequest(completionPostRequest);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getRequestId()).isEqualTo("2547cb86-a143-4064-bf40-45461c6a7ed9");
+
+    assertThat(response.getModuleResults()).isNotNull();
+    assertThat(response.getModuleResults().getTemplating()).hasSize(1);
+
+    var multiChatMessageResponse =
+        (MultiChatMessage) response.getModuleResults().getTemplating().get(0);
+    assertThat(((TextContent) multiChatMessageResponse.getContent().get(0)).getText())
+        .isEqualTo("Can you solve this captcha? Please help me prove my humanity!");
+    assertThat(((TextContent) multiChatMessageResponse.getContent().get(0)).getType())
+        .isEqualTo(TextContent.TypeEnum.TEXT);
+    assertThat(((ImageContent) multiChatMessageResponse.getContent().get(1)).getType())
+        .isEqualTo(ImageContent.TypeEnum.IMAGE_URL);
+    assertThat(((ImageContent) multiChatMessageResponse.getContent().get(1)).getImageUrl().getUrl())
+        .isEqualTo(
+            "https://images.unsplash.com/photo-1468971050039-be99497410af?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+
+    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llmResults).isNotNull();
+    assertThat(llmResults.getId()).isEqualTo("chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE");
+    assertThat(llmResults.getObject()).isEqualTo("chat.completion");
+    assertThat(llmResults.getCreated()).isEqualTo(1736432623);
+    assertThat(llmResults.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(llmResults.getSystemFingerprint()).isEqualTo("fp_5154047bf2");
+
+    assertThat(llmResults.getChoices()).hasSize(1);
+    assertThat(llmResults.getChoices().get(0).getMessage().getContent())
+        .isEqualTo(
+            "The text in the image says \"WORK HARDER\". If you need to enter this as part of a captcha verification, that's what you should type in!");
+    assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
+
+    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(31);
+    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(928);
+    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(959);
+
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult).isNotNull();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1736432623);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_5154047bf2");
+    assertThat(orchestrationResult.getChoices()).hasSize(1);
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
+        .isEqualTo(
+            "The text in the image says \"WORK HARDER\". If you need to enter this as part of a captcha verification, that's what you should type in!");
+    assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
+        .isEqualTo("assistant");
+    assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
+    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(31);
+    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(928);
+    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(959);
+
+    try (var requestInputStream = fileLoader.apply("multiChatMessageRequest.json")) {
+      final String requestBody = new String(requestInputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/completion"))
+              .withRequestBody(equalToJson(requestBody)));
     }
   }
 }
