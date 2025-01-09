@@ -1,9 +1,15 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionResponseMessageRole.ASSISTANT;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterSeverityResult.SeverityEnum.SAFE;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse.ObjectEnum.UNKNOWN_DEFAULT_OPEN_API;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.STOP;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse.ObjectEnum.CHAT_COMPLETION_CHUNK;
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -21,10 +27,12 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMe
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterChoiceResults;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterSeverityResult;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -35,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -226,7 +235,7 @@ class OpenAiClientTest {
       assertThat(result.getCreated()).isEqualTo(1727436279);
       assertThat(result.getId()).isEqualTo("chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf");
       assertThat(result.getModel()).isEqualTo("gpt-35-turbo");
-      assertThat(result.getObject()).isEqualTo("\"chat.completion\"");
+      assertThat(result.getObject().getValue()).isEqualTo("chat.completion");
       assertThat(result.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
       assertThat(result.getUsage()).isNotNull();
@@ -256,12 +265,12 @@ class OpenAiClientTest {
 
       assertThat(result.getChoices()).hasSize(1);
       CreateChatCompletionResponseChoicesInner choice = result.getChoices().get(0);
-      assertThat(choice.getFinishReason()).isEqualTo("stop");
+      assertThat(choice.getFinishReason()).isEqualTo(STOP);
       assertThat(choice.getIndex()).isEqualTo(0);
       assertThat(choice.getMessage().getContent())
           .isEqualTo(
               "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
-      assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
+      assertThat(choice.getMessage().getRole()).isEqualTo(ASSISTANT);
       assertThat(choice.getMessage().getToolCalls()).isNull();
 
       ContentFilterChoiceResults contentFilterResults = choice.getContentFilterResults();
@@ -289,16 +298,23 @@ class OpenAiClientTest {
                   equalToJson(
                       """
                       {
-                        "messages" : [ {
-                          "role" : "system",
-                          "content" : "You are a helpful AI"
-                        }, {
-                          "role" : "user",
-                          "content" : [ {
-                            "type" : "text",
-                            "text" : "Hello World! Why is this phrase so famous?"
-                          } ]
-                        } ]
+                             "temperature" : 1,
+                             "top_p" : 1,
+                             "stream" : false,
+                             "presence_penalty" : 0,
+                             "frequency_penalty" : 0,
+                             "messages" : [ {
+                               "content" : "You are a helpful AI",
+                               "role" : "system"
+                             }, {
+                               "content" : "Hello World! Why is this phrase so famous?",
+                               "role" : "user"
+                             } ],
+                             "logprobs" : false,
+                             "n" : 1,
+                             "parallel_tool_calls" : true,
+                             "tools" : [ ],
+                             "functions" : [ ]
                       }""")));
     }
   }
@@ -322,16 +338,23 @@ class OpenAiClientTest {
                 equalToJson(
                     """
                       {
-                        "messages" : [ {
-                          "role" : "system",
-                          "content" : "system prompt"
-                        }, {
-                          "role" : "user",
-                          "content" : [ {
-                            "type" : "text",
-                            "text" : "chat completion 1"
-                          } ]
-                        } ]
+                           "temperature" : 1,
+                           "top_p" : 1,
+                           "stream" : false,
+                           "presence_penalty" : 0,
+                           "frequency_penalty" : 0,
+                           "messages" : [ {
+                             "content" : "system prompt",
+                             "role" : "system"
+                           }, {
+                             "content" : "chat completion 1",
+                             "role" : "user"
+                           } ],
+                           "logprobs" : false,
+                           "n" : 1,
+                           "parallel_tool_calls" : true,
+                           "tools" : [ ],
+                           "functions" : [ ]
                       }""")));
 
     client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
@@ -343,16 +366,23 @@ class OpenAiClientTest {
                 equalToJson(
                     """
                       {
-                        "messages" : [ {
-                          "role" : "system",
-                          "content" : "system prompt"
-                        }, {
-                          "role" : "user",
-                          "content" : [ {
-                            "type" : "text",
-                            "text" : "chat completion 2"
-                          } ]
-                        } ]
+                           "temperature" : 1,
+                           "top_p" : 1,
+                           "stream" : false,
+                           "presence_penalty" : 0,
+                           "frequency_penalty" : 0,
+                           "messages" : [ {
+                             "content" : "system prompt",
+                             "role" : "system"
+                           }, {
+                             "content" : "chat completion 2",
+                             "role" : "user"
+                           } ],
+                           "logprobs" : false,
+                           "n" : 1,
+                           "parallel_tool_calls" : true,
+                           "tools" : [ ],
+                           "functions" : [ ]
                       }""")));
   }
 
@@ -511,7 +541,7 @@ class OpenAiClientTest {
         assertThat(delta0.getId()).isEqualTo("");
         assertThat(delta0.getCreated()).isEqualTo(0);
         assertThat(delta0.getModel()).isEqualTo("");
-        assertThat(delta0.getObject()).isEqualTo("");
+        assertThat(delta0.getObject()).isEqualTo(UNKNOWN_DEFAULT_OPEN_API);
         // assertThat(delta0.getUsage()).isNull();
         assertThat(delta0.getChoices()).isEmpty();
         // prompt filter results are only present in delta 0
@@ -526,17 +556,17 @@ class OpenAiClientTest {
         assertThat(delta2.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(delta2.getCreated()).isEqualTo(1724825677);
         assertThat(delta2.getModel()).isEqualTo("gpt-35-turbo");
-        assertThat(delta2.getObject()).isEqualTo("chat.completion.chunk");
+        assertThat(delta2.getObject()).isEqualTo(CHAT_COMPLETION_CHUNK);
         // assertThat(delta2.getUsage()).isNull();
         // assertThat(delta2.getPromptFilterResults()).isNull();
         final var choices2 = delta2.getChoices().get(0);
         assertThat(choices2.getIndex()).isEqualTo(0);
         assertThat(choices2.getFinishReason()).isNull();
         assertThat(choices2.getDelta()).isNotNull();
-        // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
-        assertThat(choices2.getDelta().getRole()).isEqualTo("assistant");
+        // the role is only defined in delta 1
+        assertThat(choices2.getDelta().getRole()).isNull();
         assertThat(choices2.getDelta().getContent()).isEqualTo("Sure");
-        assertThat(choices2.getDelta().getToolCalls()).isNull();
+        assertThat(choices2.getDelta().getToolCalls()).isNotNull().isEmpty();
         // final var filter2 = choices2.getContentFilterResults();
         // assertFilter(filter2);
 
@@ -545,12 +575,12 @@ class OpenAiClientTest {
 
         final var delta4 = (CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse();
         final var delta4Choice = delta4.getChoices().get(0);
-        assertThat(delta4Choice.getFinishReason()).isEqualTo("stop");
-        assertThat(delta4Choice.getDelta().getContent()).isNotNull();
-        // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
-        assertThat(delta4Choice.getDelta().getRole()).isEqualTo("assistant");
+        assertThat(delta4Choice.getFinishReason()).isEqualTo(CreateChatCompletionStreamResponseChoicesInner.FinishReasonEnum.STOP);
         assertThat(delta4Choice.getDelta().getContent()).isNull();
-        assertThat(delta4Choice.getDelta().getToolCalls()).isNull();
+        // the role is only defined in delta 1
+        assertThat(delta4Choice.getDelta().getRole()).isNull();
+        assertThat(delta4Choice.getDelta().getContent()).isNull();
+        assertThat(delta4Choice.getDelta().getToolCalls()).isEmpty();
         // assertThat(totalOutput.getChoices()).hasSize(1);
         // final var choice = totalOutput.getChoices().get(0);
         // assertThat(choice.getFinishReason()).isEqualTo("stop");
