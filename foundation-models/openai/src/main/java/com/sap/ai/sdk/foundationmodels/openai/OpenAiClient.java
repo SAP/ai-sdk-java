@@ -11,8 +11,6 @@ import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
@@ -21,6 +19,8 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMe
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
+import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
+import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -266,9 +266,9 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
+  public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest parameters)
       throws OpenAiClientException {
-    return execute("/embeddings", parameters, OpenAiEmbeddingOutput.class);
+    return execute("/embeddings", parameters, EmbeddingsCreate200Response.class);
   }
 
   @Nonnull

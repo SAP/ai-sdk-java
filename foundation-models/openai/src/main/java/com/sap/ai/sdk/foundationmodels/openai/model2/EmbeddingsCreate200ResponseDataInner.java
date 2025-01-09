@@ -43,7 +43,7 @@ public class EmbeddingsCreate200ResponseDataInner
   private String _object;
 
   @JsonProperty("embedding")
-  private List<BigDecimal> embedding = new ArrayList<>();
+  private List<BigDecimal> embedding = new ArrayList<>(); //
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();

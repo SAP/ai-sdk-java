@@ -58,7 +58,11 @@ public class CreateChatCompletionResponse implements ChatCompletionsCreate200Res
   /** The object type, which is always &#x60;chat.completion&#x60;. */
   public enum ObjectEnum {
     /** The CHAT_COMPLETION option of this CreateChatCompletionResponse */
-    CHAT_COMPLETION("chat.completion");
+    CHAT_COMPLETION("chat.completion"),
+    /**
+     * The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponse
+     */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");;
 
     private String value;
 
@@ -102,7 +106,7 @@ public class CreateChatCompletionResponse implements ChatCompletionsCreate200Res
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
