@@ -18,7 +18,7 @@
 
 ### 📈 Improvements
 
-- Update Orchestration client to version 2412a
+- Update Orchestration client to latest version
 
 ### 🐛 Fixed Issues
 
