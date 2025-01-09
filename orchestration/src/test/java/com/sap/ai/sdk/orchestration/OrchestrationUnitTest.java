@@ -160,9 +160,16 @@ class OrchestrationUnitTest {
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getAllMessages().get(0).content())
+    final var messageList = result.getAllMessages();
+
+    assertThat(messageList.get(0).content()).isEqualTo("You are a multi language translator");
+    assertThat(messageList.get(0).role()).isEqualTo("system");
+    assertThat(messageList.get(1).content())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
+    assertThat(messageList.get(1).role()).isEqualTo("user");
+    assertThat(messageList.get(2).content()).isEqualTo("Orchestration Service funktioniert!");
+    assertThat(messageList.get(2).role()).isEqualTo("assistant");
+
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
@@ -172,7 +179,7 @@ class OrchestrationUnitTest {
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
+        .isEqualTo("Le service d'orchestration fonctionne!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
@@ -187,7 +194,7 @@ class OrchestrationUnitTest {
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
+        .isEqualTo("Le service d'orchestration fonctionne!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     usage = result.getTokenUsage();
