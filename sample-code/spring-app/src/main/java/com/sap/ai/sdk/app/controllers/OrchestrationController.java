@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import javax.annotation.Nonnull;
@@ -121,30 +123,78 @@ class OrchestrationController {
   }
 
   /**
-   * Apply both input and output filtering for a request to orchestration.
+   * Send an HTTP GET request for input filtering to the Orchestration service.
    *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
-   *     AI Core: Orchestration - Input Filtering</a>
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
-   *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
-   * @return a ResponseEntity with the response content
+   *     * AI Core: Orchestration - Input Filtering</a>
+   * @param accept an optional HTTP header specifying the desired content type for the response.
+   * @param policy path variable specifying the {@link AzureFilterThreshold} the explicitness of
+   *     content that should be allowed through the filter
+   * @return a {@link ResponseEntity} containing the filtered input. The response is either in JSON
+   *     format if the "accept" header specifies "application/json" or in plain content format
+   *     otherwise.
+   * @throws JsonProcessingException if an error occurs while converting the response to JSON.
    */
-  @GetMapping("/filter/{policy}")
+  @GetMapping("/inputFiltering/{policy}")
   @Nonnull
-  ResponseEntity<String> filter(
+  ResponseEntity<String> inputFiltering(
       @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
       throws JsonProcessingException {
-    final var response = service.filter(policy, "the downtown area");
-    if ("application/json".equals(accept)) {
+
+    final OrchestrationChatResponse response;
+    try {
+      response = service.inputFiltering(policy);
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+
+    if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    return ResponseEntity.ok().body(response.getContent());
+  }
+
+  /**
+   * Send an HTTP GET request for output filtering to the Orchestration service.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * @param accept an optional HTTP header specifying the desired content type for the response.
+   * @param policy a mandatory path variable specifying the {@link AzureFilterThreshold} the
+   *     explicitness of content that should be allowed through the filter
+   * @return a {@link ResponseEntity} containing the filtered output. The response is either in JSON
+   *     format if the "accept" header specifies "application/json" or in plain content format
+   *     otherwise.
+   * @throws OrchestrationClientException if the output filter filtered the LLM response.
+   * @throws JsonProcessingException if an error occurs while converting the response to JSON.
+   */
+  @GetMapping("/outputFiltering/{policy}")
+  @Nonnull
+  ResponseEntity<String> outputFiltering(
+      @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
+      throws JsonProcessingException, OrchestrationClientException {
+
+    final var response = service.outputFiltering(policy);
+    try {
+      if (accept.equals("application/json")) {
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(mapper.writeValueAsString(response));
+      }
+      return ResponseEntity.ok().body(response.getContent());
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
   }
 
   /**
