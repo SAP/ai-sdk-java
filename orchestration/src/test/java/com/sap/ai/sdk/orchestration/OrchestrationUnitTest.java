@@ -31,16 +31,21 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
@@ -58,6 +63,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -638,7 +644,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testMultiChatMessageRequest() throws IOException {
+  void testRequestWithMultiChatMessage() throws IOException {
 
     stubFor(
         post("/completion")
@@ -742,5 +748,30 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/completion"))
               .withRequestBody(equalToJson(requestBody)));
     }
+  }
+
+  @SneakyThrows
+  @Test
+  void testOrchestrationChatResponseWithImage() {
+    var module = new SimpleModule();
+    module.setMixInAnnotation(LLMModuleResult.class, JacksonMixins.NoneTypeInfoMixin.class);
+    module.addDeserializer(
+        LLMModuleResult.class, new PolymorphicFallbackDeserializer<>(LLMModuleResult.class));
+    module.setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
+    module.addDeserializer(
+        ChatMessagesInner.class, new PolymorphicFallbackDeserializer<>(ChatMessagesInner.class));
+
+    var orchestrationChatResponse =
+        new OrchestrationChatResponse(
+            new ObjectMapper()
+                .registerModule(module)
+                .readValue(
+                    new String(
+                        fileLoader.apply("__files/multiChatMessageResponse.json").readAllBytes()),
+                    CompletionPostResponse.class));
+
+    assertThatThrownBy(orchestrationChatResponse::getAllMessages)
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessage("Messages of MultiChatMessage type not supported by convenience API");
   }
 }
