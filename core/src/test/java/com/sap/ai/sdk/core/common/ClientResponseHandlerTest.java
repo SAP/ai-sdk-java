@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.commons;
+package com.sap.ai.sdk.core.common;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,9 +47,7 @@ class ClientResponseHandlerTest {
         .hasCause(cause);
 
     assertThatThrownBy(() -> sut.parseErrorAndThrow("<message>foobar</message>", cause))
-        .isInstanceOf(MyException.class)
-        .hasMessage("Something wrong")
-        .hasNoCause();
+        .isEqualTo(cause);
   }
 
   @SneakyThrows
