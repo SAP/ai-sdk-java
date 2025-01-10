@@ -12,7 +12,7 @@
           {
             "type": "image_url",
             "image_url": {
-              "url": "https://images.unsplash.com/photo-1468971050039-be99497410af?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "url": "https://sample.sap.com/image",
               "detail": "auto"
             }
           }
@@ -30,7 +30,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "The text in the image says \"WORK HARDER\". If you need to enter this as part of a captcha verification, that's what you should type in!"
+            "content": "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix"
           },
           "finish_reason": "stop"
         }
@@ -53,7 +53,7 @@
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "The text in the image says \"WORK HARDER\". If you need to enter this as part of a captcha verification, that's what you should type in!"
+          "content": "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix"
         },
         "finish_reason": "stop"
       }

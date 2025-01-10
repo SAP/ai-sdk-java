@@ -662,9 +662,7 @@ class OrchestrationUnitTest {
                     ImageContent.create()
                         .type(ImageContent.TypeEnum.IMAGE_URL)
                         .imageUrl(
-                            ImageContentImageUrl.create()
-                                .url(
-                                    "https://images.unsplash.com/photo-1468971050039-be99497410af?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))));
+                            ImageContentImageUrl.create().url("https://sample.sap.com/image"))));
 
     var llmWithImageSupportConfig =
         LLMModuleConfig.create()
@@ -700,8 +698,7 @@ class OrchestrationUnitTest {
     assertThat(((ImageContent) multiChatMessageResponse.getContent().get(1)).getType())
         .isEqualTo(ImageContent.TypeEnum.IMAGE_URL);
     assertThat(((ImageContent) multiChatMessageResponse.getContent().get(1)).getImageUrl().getUrl())
-        .isEqualTo(
-            "https://images.unsplash.com/photo-1468971050039-be99497410af?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        .isEqualTo("https://sample.sap.com/image");
 
     var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
@@ -714,7 +711,7 @@ class OrchestrationUnitTest {
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
-            "The text in the image says \"WORK HARDER\". If you need to enter this as part of a captcha verification, that's what you should type in!");
+            "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
@@ -733,7 +730,7 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
-            "The text in the image says \"WORK HARDER\". If you need to enter this as part of a captcha verification, that's what you should type in!");
+            "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix");
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
         .isEqualTo("assistant");
