@@ -141,10 +141,14 @@ public final class OpenAiClient {
               .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
               .content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
     }
-    parameters.addMessagesItem(
-        new ChatCompletionRequestUserMessage()
-            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-            .content(ChatCompletionRequestUserMessageContent.create(prompt)));
+    parameters
+        .addMessagesItem(
+            new ChatCompletionRequestUserMessage()
+                .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
+                .content(ChatCompletionRequestUserMessageContent.create(prompt)))
+        .functions(null)
+        .tools(null)
+        .parallelToolCalls(null);
     return chatCompletion(parameters);
   }
 
@@ -165,7 +169,7 @@ public final class OpenAiClient {
   /**
    * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of text
    * chunks. To access more details about the individual chunks, use {@link
-   * #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
+   * #streamChatCompletionDeltas(CreateChatCompletionRequest)}.
    *
    * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
    * HTTP connection is closed.
@@ -185,7 +189,7 @@ public final class OpenAiClient {
    * @param prompt a text message.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @see #streamChatCompletionDeltas(OpenAiChatCompletionParameters)
+   * @see #streamChatCompletionDeltas(CreateChatCompletionRequest)
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
@@ -198,15 +202,16 @@ public final class OpenAiClient {
               .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
               .content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
     }
-    parameters.addMessagesItem(
+    final var userMessage =
         new ChatCompletionRequestUserMessage()
             .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-            .content(ChatCompletionRequestUserMessageContent.create(prompt)));
+            .content(ChatCompletionRequestUserMessageContent.create(prompt));
+    parameters.addMessagesItem(userMessage).tools(null).functions(null).parallelToolCalls(null);
 
     return streamChatCompletionDeltas(parameters)
-        .map(com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta.class::cast)
+        .map(OpenAiChatCompletionDelta.class::cast)
         .peek(OpenAiClient::throwOnContentFilter)
-        .map(com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta::getDeltaContent);
+        .map(OpenAiChatCompletionDelta::getDeltaContent);
   }
 
   private static void throwOnContentFilter(

@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
   }
 
   /**
@@ -62,14 +63,17 @@ public class OpenAiController {
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
-          final var totalOutput = new OpenAiChatCompletionOutput();
+          final var totalOutput = new AtomicReference<CompletionUsage>();
           // try-with-resources ensures the stream is closed
           try (stream) {
-            stream
-                .peek(totalOutput::addDelta)
-                .forEach(delta -> send(emitter, delta.getDeltaContent()));
+            stream.forEach(
+                delta -> {
+                  final var usage = delta.getCompletionUsage(mapper);
+                  totalOutput.compareAndExchange(null, usage);
+                  send(emitter, delta.getDeltaContent());
+                });
           } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+            send(emitter, "\n\n-----Total Output-----\n\n" + totalOutput);
             emitter.complete();
           }
         };
@@ -122,20 +126,6 @@ public class OpenAiController {
   }
 
   /**
-   * Convert an object to JSON
-   *
-   * @param obj The object to convert
-   * @return The JSON representation of the object
-   */
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
-    }
-  }
-
-  /**
    * Chat request to OpenAI with an image
    *
    * @return a ResponseEntity with the response content
@@ -153,7 +143,7 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
   }
 
   /**
@@ -173,7 +163,7 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
   }
 
   /**
@@ -209,6 +199,6 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
   }
 }

@@ -1,11 +1,14 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
+import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -63,6 +66,25 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
         final var finishReason = choices.get(0).getFinishReason();
         return finishReason != null ? finishReason.getValue() : null;
       }
+    }
+    return null;
+  }
+
+  /**
+   * Get the completion usage from the response, or null if it is not available.
+   *
+   * @param objectMapper The object mapper to use for conversion.
+   * @return The completion usage or null.
+   */
+  @Nullable
+  public CompletionUsage getCompletionUsage(@Nonnull final ObjectMapper objectMapper) {
+    if (getOriginalResponse() instanceof CreateChatCompletionStreamResponse response
+        && response.getCustomFieldNames().contains("usage")
+        && response.getCustomField("usage") instanceof Map<?, ?> usage) {
+      return objectMapper.convertValue(usage, CompletionUsage.class);
+    }
+    if (getOriginalResponse() instanceof CreateChatCompletionResponse response) {
+      return response.getUsage();
     }
     return null;
   }
