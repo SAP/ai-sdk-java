@@ -28,13 +28,14 @@ class ConfigurationController {
   /**
    * Get the list of configurations.
    *
-   * @return the list of configurations
+   * @param accept the accept header
+   * @return a response entity with a string representation of the list of configurations
    */
   @GetMapping("/configurations")
   ResponseEntity<String> getConfigurations(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
-    var configList = CLIENT.query("default");
+    final var configList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
@@ -43,9 +44,15 @@ class ConfigurationController {
     return ResponseEntity.ok(buildMessage(configList));
   }
 
-  String buildMessage(AiConfigurationList configList) {
-    var message = new StringBuilder("The following configurations are available: ");
-    for (var resource : configList.getResources()) {
+  /**
+   * Build a message from the configuration list.
+   *
+   * @param configList The configuration list.
+   * @return the message
+   */
+  private String buildMessage(final AiConfigurationList configList) {
+    final var message = new StringBuilder("The following configurations are available: ");
+    for (final var resource : configList.getResources()) {
       message.append(resource.getName()).append(", ");
     }
     message.setCharAt(message.length() - 2, '.');

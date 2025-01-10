@@ -15,7 +15,6 @@ import com.sap.ai.sdk.core.model.AiDeploymentCreationResponse;
 import com.sap.ai.sdk.core.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.model.AiDeploymentList;
 import com.sap.ai.sdk.core.model.AiDeploymentModificationRequest;
-import com.sap.ai.sdk.core.model.AiDeploymentModificationResponse;
 import com.sap.ai.sdk.core.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.model.AiParameterArgumentBinding;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
@@ -41,7 +40,8 @@ class DeploymentController {
   private static final DeploymentApi CLIENT = new DeploymentApi();
   private static final String RESOURCE_GROUP = "default";
   private final ObjectMapper mapper =
-      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+      new ObjectMapper()
+          .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
           .registerModule(new JavaTimeModule());
 
   /**
@@ -61,6 +61,13 @@ class DeploymentController {
     return CLIENT.delete(RESOURCE_GROUP, deployment.getId());
   }
 
+  /**
+   * Create and delete a deployment with the Java specific configuration ID
+   *
+   * @param configId The configuration id.
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the deployment creation response
+   */
   @GetMapping("/by-config/{id}/createDelete")
   ResponseEntity<String> createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId,
@@ -72,7 +79,8 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok("Deployment under config with id " + configId + " created and deleted.");
+    return ResponseEntity.ok(
+        "Deployment under config with id " + configId + " created and deleted.");
   }
 
   /**
@@ -81,26 +89,29 @@ class DeploymentController {
    * <p>Only RUNNING deployments can be STOPPED
    *
    * @param configId The configuration id.
-   * @return the deployment modification response
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the deployment modification response
    */
   @GetMapping("/by-config/{id}/stop")
   @Nonnull
   ResponseEntity<String> stopByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @RequestHeader(value = "accept", required = false) final String accept) throws JsonProcessingException {
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to STOP", myDeployments.size());
 
     // STOP my deployments
-    var stoppedDeployments = myDeployments.stream()
-        .map(
-            deployment ->
-                CLIENT.modify(
-                    RESOURCE_GROUP,
-                    deployment.getId(),
-                    AiDeploymentModificationRequest.create()
-                        .targetStatus(AiDeploymentTargetStatus.STOPPED)))
-        .toList();
+    final var stoppedDeployments =
+        myDeployments.stream()
+            .map(
+                deployment ->
+                    CLIENT.modify(
+                        RESOURCE_GROUP,
+                        deployment.getId(),
+                        AiDeploymentModificationRequest.create()
+                            .targetStatus(AiDeploymentTargetStatus.STOPPED)))
+            .toList();
 
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
@@ -116,19 +127,23 @@ class DeploymentController {
    * <p>Only UNKNOWN and STOPPED deployments can be DELETED
    *
    * @param configId The configuration id.
-   * @return the deployment deletion response
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the deployment deletion response
    */
   @GetMapping("/by-config/{id}/delete")
   @Nonnull
   ResponseEntity<String> deleteByConfigId(
-      @Nonnull @PathVariable("id") final String configId, @RequestHeader(value = "accept", required = false) final String accept) throws JsonProcessingException {
+      @Nonnull @PathVariable("id") final String configId,
+      @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to DELETE", myDeployments.size());
 
     // DELETE my deployments
-    var responseList = myDeployments.stream()
-        .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
-        .toList();
+    final var responseList =
+        myDeployments.stream()
+            .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
+            .toList();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +156,8 @@ class DeploymentController {
    * Get all deployments with the Java specific configuration ID
    *
    * @param configId The configuration id.
-   * @return the Java specific deployments
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the Java specific deployments
    */
   @GetMapping("/by-config/{id}/getAll")
   ResponseEntity<String> getAllByConfigId(
@@ -157,16 +173,27 @@ class DeploymentController {
     return ResponseEntity.ok(buildMessage(deployments));
   }
 
-  private String buildMessage(List<AiDeployment> deployments) {
-    var message = new StringBuilder("The following deployments are available: ");
-    for (var deployment : deployments) {
+  /**
+   * Build a message from the deployment list.
+   *
+   * @param deployments The deployment list.
+   * @return the message
+   */
+  private String buildMessage(final List<AiDeployment> deployments) {
+    final var message = new StringBuilder("The following deployments are available: ");
+    for (final var deployment : deployments) {
       message.append(deployment.getId()).append(", ");
     }
     message.setCharAt(message.length() - 2, '.');
     return message.toString();
   }
 
-
+  /**
+   * Get all deployments with the Java specific configuration ID
+   *
+   * @param configId The configuration id.
+   * @return the Java specific deployments
+   */
   @Nonnull
   List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
     final AiDeploymentList deploymentList = CLIENT.query(RESOURCE_GROUP);
@@ -179,7 +206,8 @@ class DeploymentController {
   /**
    * Get all deployments, including non-Java specific deployments
    *
-   * @return the Java specific deployments
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the Java specific deployments
    */
   @GetMapping("/getAll")
   @Nonnull
@@ -195,6 +223,11 @@ class DeploymentController {
     return ResponseEntity.ok(buildMessage(deployments.getResources().stream().toList()));
   }
 
+  /**
+   * Get all deployments
+   *
+   * @return all deployments
+   */
   @Nullable
   AiDeploymentList getAll() {
     return CLIENT.query(RESOURCE_GROUP);

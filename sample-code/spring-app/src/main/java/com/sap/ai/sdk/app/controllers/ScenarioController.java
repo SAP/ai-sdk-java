@@ -9,7 +9,6 @@ import com.sap.ai.sdk.core.client.ScenarioApi;
 import com.sap.ai.sdk.core.model.AiModelList;
 import com.sap.ai.sdk.core.model.AiScenarioList;
 import javax.annotation.Nonnull;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("unused") // debug method that doesn't need to be tested
 class ScenarioController {
 
-//  TODO: Fix javadocs
-
   private static final ScenarioApi CLIENT = new ScenarioApi();
   private final ObjectMapper mapper =
       new ObjectMapper()
@@ -32,14 +29,15 @@ class ScenarioController {
   /**
    * Get the list of available scenarios
    *
-   * @return the list of available scenarios
+   * @param accept the accept header
+   * @return a response entity with a string representation of the list of available scenarios
    */
   @GetMapping("/scenarios")
   @Nonnull
   ResponseEntity<String> getScenarios(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
-    var scenarioList = CLIENT.query("default");
+    final var scenarioList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
@@ -48,6 +46,11 @@ class ScenarioController {
     return ResponseEntity.ok(buildScenarioMessage(scenarioList));
   }
 
+  /**
+   * Get the list of available models
+   *
+   * @return the list of available models
+   */
   @Nonnull
   AiModelList getModels() {
     return CLIENT.queryModels("foundation-models", "default");
@@ -56,14 +59,15 @@ class ScenarioController {
   /**
    * Get the list of available models
    *
-   * @return the list of available models
+   * @param accept the accept header
+   * @return a response entity with a string representation of the list of available models
    */
   @GetMapping("/models")
   @Nonnull
   ResponseEntity<String> getModels(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
-    var modelList = getModels();
+    final var modelList = getModels();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
@@ -72,18 +76,30 @@ class ScenarioController {
     return ResponseEntity.ok(buildModelMessage(modelList));
   }
 
-  String buildScenarioMessage(AiScenarioList scenarioList) {
-    var message = new StringBuilder("The following scenarios are available: ");
-    for (var resource : scenarioList.getResources()) {
+  /**
+   * Build a message from the scenario list
+   *
+   * @param scenarioList the list of scenarios
+   * @return a string representation of the list of scenarios
+   */
+  private String buildScenarioMessage(final AiScenarioList scenarioList) {
+    final var message = new StringBuilder("The following scenarios are available: ");
+    for (final var resource : scenarioList.getResources()) {
       message.append(resource.getName()).append(", ");
     }
     message.setCharAt(message.length() - 2, '.');
     return message.toString();
   }
 
-  String buildModelMessage(AiModelList modelList) {
-    var message = new StringBuilder("The following models are available: ");
-    for (var resource : modelList.getResources()) {
+  /**
+   * Build a message from the model list
+   *
+   * @param modelList the list of models
+   * @return a string representation of the list of models
+   */
+  private String buildModelMessage(final AiModelList modelList) {
+    final var message = new StringBuilder("The following models are available: ");
+    for (final var resource : modelList.getResources()) {
       message.append(resource.getModel()).append(", ");
     }
     message.setCharAt(message.length() - 2, '.');
