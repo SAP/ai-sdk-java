@@ -79,8 +79,7 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(
-        "Deployment created and will be deleted.");
+    return ResponseEntity.ok("Deployment created and will be deleted.");
   }
 
   /**
