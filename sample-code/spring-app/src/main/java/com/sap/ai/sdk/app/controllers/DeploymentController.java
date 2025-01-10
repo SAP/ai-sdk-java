@@ -80,7 +80,7 @@ class DeploymentController {
           .body(mapper.writeValueAsString(response));
     }
     return ResponseEntity.ok(
-        "Deployment under config with id " + configId + " created and deleted.");
+        "Deployment created and will be deleted.");
   }
 
   /**
@@ -118,7 +118,7 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(stoppedDeployments));
     }
-    return ResponseEntity.ok("Deployments under config with id " + configId + " stopped.");
+    return ResponseEntity.ok("Deployments under config the given config ID stopped.");
   }
 
   /**
@@ -149,7 +149,7 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(responseList));
     }
-    return ResponseEntity.ok("Deployments under config with id " + configId + " deleted.");
+    return ResponseEntity.ok("Deployments under the given config ID deleted.");
   }
 
   /**
