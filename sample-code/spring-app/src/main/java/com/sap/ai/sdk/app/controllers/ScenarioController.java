@@ -27,7 +27,7 @@ class ScenarioController {
           .registerModule(new JavaTimeModule());
 
   /**
-   * Get the list of available scenarios
+   * Get the list of available scenarios.
    *
    * @param accept the accept header
    * @return a response entity with a string representation of the list of available scenarios
@@ -47,7 +47,7 @@ class ScenarioController {
   }
 
   /**
-   * Get the list of available models
+   * Get the list of available models.
    *
    * @return the list of available models
    */
@@ -57,7 +57,7 @@ class ScenarioController {
   }
 
   /**
-   * Get the list of available models
+   * Get the list of available models.
    *
    * @param accept the accept header
    * @return a response entity with a string representation of the list of available models
@@ -77,7 +77,7 @@ class ScenarioController {
   }
 
   /**
-   * Build a message from the scenario list
+   * Build a message from the scenario list.
    *
    * @param scenarioList the list of scenarios
    * @return a string representation of the list of scenarios
@@ -92,7 +92,7 @@ class ScenarioController {
   }
 
   /**
-   * Build a message from the model list
+   * Build a message from the model list.
    *
    * @param modelList the list of models
    * @return a string representation of the list of models

@@ -45,7 +45,7 @@ class DeploymentController {
           .registerModule(new JavaTimeModule());
 
   /**
-   * Create and delete a deployment with the Java specific configuration ID
+   * Create and delete a deployment with the Java specific configuration ID.
    *
    * @param configId The configuration id.
    * @return the deployment deletion response
@@ -62,7 +62,7 @@ class DeploymentController {
   }
 
   /**
-   * Create and delete a deployment with the Java specific configuration ID
+   * Create and delete a deployment with the Java specific configuration ID.
    *
    * @param configId The configuration id.
    * @param accept The accept header.
@@ -79,12 +79,11 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(mapper.writeValueAsString(response));
     }
-    return ResponseEntity.ok(
-        "Deployment created and will be deleted.");
+    return ResponseEntity.ok("Deployment created and will be deleted.");
   }
 
   /**
-   * Stop all deployments with the Java specific configuration ID
+   * Stop all deployments with the Java specific configuration ID.
    *
    * <p>Only RUNNING deployments can be STOPPED
    *
@@ -122,7 +121,7 @@ class DeploymentController {
   }
 
   /**
-   * Delete all deployments with the Java specific configuration ID
+   * Delete all deployments with the Java specific configuration ID.
    *
    * <p>Only UNKNOWN and STOPPED deployments can be DELETED
    *
@@ -153,7 +152,7 @@ class DeploymentController {
   }
 
   /**
-   * Get all deployments with the Java specific configuration ID
+   * Get all deployments with the Java specific configuration ID.
    *
    * @param configId The configuration id.
    * @param accept The accept header.
@@ -189,7 +188,7 @@ class DeploymentController {
   }
 
   /**
-   * Get all deployments with the Java specific configuration ID
+   * Get all deployments with the Java specific configuration ID.
    *
    * @param configId The configuration id.
    * @return the Java specific deployments
