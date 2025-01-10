@@ -4,6 +4,7 @@ on:
     branches: [ "*" ]
   push:
     branches: [ "main" ]
+  workflow_dispatch: # triggered by the prepare-release workflow
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
