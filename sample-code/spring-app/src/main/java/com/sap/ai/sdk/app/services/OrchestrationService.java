@@ -10,6 +10,7 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -87,34 +88,50 @@ public class OrchestrationService {
   }
 
   /**
-   * Apply both input and output filtering for a request to orchestration.
+   * Apply input filtering for a request to orchestration.
    *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
-   *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
+   * @throws OrchestrationClientException if input filter filters the prompt
+   * @param policy the explicitness of content that should be allowed through the filter
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse filter(
-      @Nonnull final AzureFilterThreshold policy, @Nonnull final String area) {
+  public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
+      throws OrchestrationClientException {
     final var prompt =
-        new OrchestrationPrompt(
-            """
-                        Create a rental posting for subletting my apartment in %s. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
-
-                        ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
-                        """
-                .formatted(area));
+        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
     final var filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
-    final var configWithFilter =
-        config.withInputFiltering(filterConfig).withOutputFiltering(filterConfig);
+    final var configWithFilter = config.withInputFiltering(filterConfig);
 
+    return client.chatCompletion(prompt, configWithFilter);
+  }
+
+  /**
+   * Apply output filtering for a request to orchestration.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * @param policy the explicitness of content that should be allowed through the filter
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
+
+    final var systemMessage = Message.system("Give three paraphrases for the following sentence");
+    // Reliably triggering the content filter of models fine-tuned for ethical compliance
+    // is difficult. The prompt below may be rendered ineffective in the future.
+    final var prompt =
+        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
+            .messageHistory(List.of(systemMessage));
+    final var filterConfig =
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+
+    final var configWithFilter = config.withOutputFiltering(filterConfig);
     return client.chatCompletion(prompt, configWithFilter);
   }
 
