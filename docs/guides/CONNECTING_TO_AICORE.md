@@ -116,13 +116,17 @@ You can define a destination in the BTP Destination Service and use that to conn
   - **Client ID**: `[clientid]`
   - **Client Secret**: `[clientsecret]`
   - **Token Service URL Type**: `Dedicated`
-  - **Token Service URL**: `[url]`
+  - **Token Service URL**: `[url]/oauth/token`
   
     Fill in the values for URL, client ID, client secret, and token service URL from the service key JSON.
+    Make sure to add `/oauth/token` in the token service URL.
 
 </details>
 
 To use the destination, ensure you have created an instance of the BTP Destination Service and bound it to your application.
+
+> [!Tip]
+> If you are using CAP, you can again use Hybrid Testing to bind the destination service to your application when running **locally**.
 
 ```java
 Destination destination = DestinationAccessor.getDestination("my-aicore").asHttp();
