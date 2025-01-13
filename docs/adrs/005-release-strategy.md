@@ -65,7 +65,7 @@ Further explanations and notes:
 
 - Any features released exclusively under the `sap-internal` plan are not supported.
 - There will be no stable releases of the SDKs to internal artifactory.
-  For Java, we deliver SNAPSHOT versions to the interhal artifactories, for JS we deliver canary releases to NPM.
+  For Java, we deliver SNAPSHOT versions to Artifactory, for JS we deliver canary releases to NPM.
 - Please note that the following is allowed:
   - Public API in an unreleased SDK version for unreleased AI Core features.
     Notably, this will **block** the release of the SDK until the AI Core feature is released publicly.
@@ -85,13 +85,12 @@ The following depicts a development flow where the AI SDK development steps are 
    - With an E2E test against canary.
 5. The AI SDK PR is merged.
 6. (+1 week later) The feature is released to EU10 production landscape.
-7. The E2E test is updated to now also run against production.
-8. The AI SDK is released publicly.
+7. The AI SDK is released publicly.
 
 In case of delays in the release process of AI Core:
 
 - If step (3) is delayed, the open PR may be closed and re-opened later
-- If step (5) is delayed, we consider 3 options:
+- If step (6) is delayed, we consider 3 options:
   1. The PR is reverted, together with potentially other related PRs
   2. The AI SDK release is delayed equally
   3. The AI SDK is released anyway with exceptional PO approval
