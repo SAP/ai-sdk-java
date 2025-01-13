@@ -71,7 +71,7 @@ public class OrchestrationChatResponse {
         messages.add(message);
       } else {
         throw new UnsupportedOperationException(
-            "Currently MultiChatMessage type not supported by convenience API");
+            "Messages of MultiChatMessage type not supported by convenience API");
       }
     }
 
