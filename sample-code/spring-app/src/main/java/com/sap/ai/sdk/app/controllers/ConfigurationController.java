@@ -6,12 +6,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
-import com.sap.ai.sdk.core.model.AiConfigurationList;
+import com.sap.ai.sdk.core.model.AiConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.stream.Collectors;
 
 /** Endpoint for Configuration operations */
 @SuppressWarnings("unused") // debug class that doesn't need to be tested
@@ -40,21 +41,10 @@ class ConfigurationController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(configList));
     }
-    return ResponseEntity.ok(buildMessage(configList));
-  }
-
-  /**
-   * Build a message from the configuration list.
-   *
-   * @param configList The configuration list.
-   * @return the message
-   */
-  private String buildMessage(final AiConfigurationList configList) {
-    final var message = new StringBuilder("The following configurations are available: ");
-    for (final var resource : configList.getResources()) {
-      message.append(resource.getName()).append(", ");
-    }
-    message.setCharAt(message.length() - 2, '.');
-    return message.toString();
+    final var items =
+        configList.getResources().stream()
+            .map(AiConfiguration::getName)
+            .collect(Collectors.joining(", "));
+    return ResponseEntity.ok("The following configurations are available: %s.".formatted(items));
   }
 }

@@ -6,14 +6,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.client.ScenarioApi;
+import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.core.model.AiModelList;
-import com.sap.ai.sdk.core.model.AiScenarioList;
+import com.sap.ai.sdk.core.model.AiScenario;
 import javax.annotation.Nonnull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.Collectors;
 
 /** Endpoint for Scenario operations */
 @RestController
@@ -43,7 +46,11 @@ class ScenarioController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(scenarioList));
     }
-    return ResponseEntity.ok(buildScenarioMessage(scenarioList));
+    var items =
+        scenarioList.getResources().stream()
+            .map(AiScenario::getName)
+            .collect(Collectors.joining(", "));
+    return ResponseEntity.ok("The following scenarios are available: %s.".formatted(items));
   }
 
   /**
@@ -73,36 +80,7 @@ class ScenarioController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(modelList));
     }
-    return ResponseEntity.ok(buildModelMessage(modelList));
-  }
-
-  /**
-   * Build a message from the scenario list.
-   *
-   * @param scenarioList the list of scenarios
-   * @return a string representation of the list of scenarios
-   */
-  private String buildScenarioMessage(final AiScenarioList scenarioList) {
-    final var message = new StringBuilder("The following scenarios are available: ");
-    for (final var resource : scenarioList.getResources()) {
-      message.append(resource.getName()).append(", ");
-    }
-    message.setCharAt(message.length() - 2, '.');
-    return message.toString();
-  }
-
-  /**
-   * Build a message from the model list.
-   *
-   * @param modelList the list of models
-   * @return a string representation of the list of models
-   */
-  private String buildModelMessage(final AiModelList modelList) {
-    final var message = new StringBuilder("The following models are available: ");
-    for (final var resource : modelList.getResources()) {
-      message.append(resource.getModel()).append(", ");
-    }
-    message.setCharAt(message.length() - 2, '.');
-    return message.toString();
+    var items = modelList.getResources().stream().map(AiModelBaseData::getModel).collect(Collectors.joining(", "));
+    return ResponseEntity.ok("The following models are available: %s.".formatted(items));
   }
 }

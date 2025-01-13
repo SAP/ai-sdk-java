@@ -19,6 +19,7 @@ import com.sap.ai.sdk.core.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.model.AiParameterArgumentBinding;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -117,7 +118,7 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(stoppedDeployments));
     }
-    return ResponseEntity.ok("Deployments under config the given config ID stopped.");
+    return ResponseEntity.ok("Deployments under the given config ID stopped.");
   }
 
   /**
@@ -169,22 +170,9 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(deployments));
     }
-    return ResponseEntity.ok(buildMessage(deployments));
-  }
-
-  /**
-   * Build a message from the deployment list.
-   *
-   * @param deployments The deployment list.
-   * @return the message
-   */
-  private String buildMessage(final List<AiDeployment> deployments) {
-    final var message = new StringBuilder("The following deployments are available: ");
-    for (final var deployment : deployments) {
-      message.append(deployment.getId()).append(", ");
-    }
-    message.setCharAt(message.length() - 2, '.');
-    return message.toString();
+    var items = deployments.stream().map(AiDeployment::getId).collect(Collectors.joining(", "));
+    return ResponseEntity.ok(
+        "The following Java-specific deployments are available: %s.".formatted(items));
   }
 
   /**
@@ -219,7 +207,13 @@ class DeploymentController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(deployments));
     }
-    return ResponseEntity.ok(buildMessage(deployments.getResources().stream().toList()));
+    var items =
+        deployments != null
+            ? deployments.getResources().stream()
+                .map(AiDeployment::getId)
+                .collect(Collectors.joining(", "))
+            : "";
+    return ResponseEntity.ok("The following deployments are available: %s.".formatted(items));
   }
 
   /**
