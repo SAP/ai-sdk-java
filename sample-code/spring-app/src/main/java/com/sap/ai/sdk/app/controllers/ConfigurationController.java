@@ -1,14 +1,13 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.model.AiConfiguration;
+import java.util.stream.Collectors;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.stream.Collectors;
 
 /** Endpoint for Configuration operations */
 @SuppressWarnings("unused") // debug class that doesn't need to be tested
@@ -25,13 +24,10 @@ class ConfigurationController {
    */
   @GetMapping("/configurations")
   ResponseEntity<Object> getConfigurations(
-      @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
+      @RequestHeader(value = "accept", required = false) final String accept) {
     final var configList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(configList);
+      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(configList);
     }
     final var items =
         configList.getResources().stream()
