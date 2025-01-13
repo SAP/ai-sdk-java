@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.sap.ai.sdk.core.model.AiDeploymentTargetStatus.STOPPED;
+
 /** Endpoints for AI Core AiDeployment operations */
 @Slf4j
 @RestController
@@ -94,15 +96,11 @@ class DeploymentController {
     log.info("Found {} deployments to STOP", myDeployments.size());
 
     // STOP my deployments
+    final var modificationRequest = AiDeploymentModificationRequest.create().targetStatus(STOPPED);
     final var stoppedDeployments =
         myDeployments.stream()
-            .map(
-                deployment ->
-                    CLIENT.modify(
-                        RESOURCE_GROUP,
-                        deployment.getId(),
-                        AiDeploymentModificationRequest.create()
-                            .targetStatus(AiDeploymentTargetStatus.STOPPED)))
+            .map(AiDeployment::getId)
+            .map(id -> CLIENT.modify(RESOURCE_GROUP, id, modificationRequest))
             .toList();
 
     if ("application/json".equals(accept)) {
