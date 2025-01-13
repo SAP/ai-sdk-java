@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.google.common.annotations.Beta;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,43 +19,53 @@ import javax.annotation.Nonnull;
  * explicitly. If deserialization fails for all candidates, a {@link JsonMappingException} is thrown
  * with suppressed exceptions.
  *
+ * @since 1.2.0
  * @param <T> The base type for deserialization.
  */
+@Beta
 public class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
 
   @Nonnull private final List<Class<? extends T>> candidates;
-  Class<T> baseClass;
+  @Nonnull private final Class<T> baseClass;
+
+  private PolymorphicFallbackDeserializer(
+      @Nonnull final Class<T> baseClass, @Nonnull final List<Class<? extends T>> candidates) {
+    this.baseClass = baseClass;
+    this.candidates = candidates;
+  }
 
   /**
-   * Constructs the deserializer using the {@link JsonSubTypes} annotation.
+   * Constructs the deserializer using candidates inferred from the {@link JsonSubTypes} annotation.
    *
    * @param baseClass The base class or interface to be resolved.
    * @throws IllegalStateException If no subtypes are found.
    */
-  protected PolymorphicFallbackDeserializer(@Nonnull final Class<T> baseClass) {
-    this.baseClass = baseClass;
-
+  @Nonnull
+  protected static <T> PolymorphicFallbackDeserializer<T> fromJsonSubTypes(
+      @Nonnull final Class<T> baseClass) {
     final var subTypes = baseClass.getAnnotation(JsonSubTypes.class);
     if (subTypes == null || subTypes.value().length == 0) {
       throw new IllegalStateException("No subtypes found for " + baseClass.getName());
     }
 
-    candidates = new ArrayList<>();
+    final var candidates = new ArrayList<Class<? extends T>>();
     for (final var subType : subTypes.value()) {
       candidates.add((Class<? extends T>) subType.value());
     }
+
+    return new PolymorphicFallbackDeserializer<>(baseClass, candidates);
   }
 
   /**
-   * Constructs the deserializer with an explicit list of candidate types.
+   * Constructs the deserializer with an explicit given list of candidate types.
    *
    * @param baseClass The base class or interface to be resolved.
    * @param candidates A list of candidate classes to try deserialization.
    */
-  protected PolymorphicFallbackDeserializer(
+  @Nonnull
+  protected static <T> PolymorphicFallbackDeserializer<T> fromCandidates(
       @Nonnull final Class<T> baseClass, @Nonnull final List<Class<? extends T>> candidates) {
-    this.baseClass = baseClass;
-    this.candidates = candidates;
+    return new PolymorphicFallbackDeserializer<>(baseClass, candidates);
   }
 
   /**
@@ -74,19 +85,25 @@ public class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
       throws IOException {
 
     final var root = jsonParser.readValueAsTree();
-    final var throwable =
-        JsonMappingException.from(
-            jsonParser,
-            "PolymorphicFallbackDeserializer failed to deserialize " + this.baseClass.getName());
+    final var suppressed = new ArrayList<JsonMappingException>();
 
     for (final var candidate : candidates) {
       try {
         return jsonParser.getCodec().treeToValue(root, candidate);
       } catch (JsonMappingException e) {
-        throwable.addSuppressed(e);
+        suppressed.add(e);
       }
     }
 
-    throw throwable;
+    final var aggregateException =
+        JsonMappingException.from(
+            jsonParser,
+            "PolymorphicFallbackDeserializer failed to deserialize "
+                + this.baseClass.getName()
+                + ". Attempted candidates: "
+                + candidates.stream().map(Class::getName).toList());
+
+    suppressed.forEach(aggregateException::addSuppressed);
+    throw aggregateException;
   }
 }

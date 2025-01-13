@@ -753,10 +753,12 @@ class OrchestrationUnitTest {
     var module = new SimpleModule();
     module.setMixInAnnotation(LLMModuleResult.class, JacksonMixins.NoneTypeInfoMixin.class);
     module.addDeserializer(
-        LLMModuleResult.class, new PolymorphicFallbackDeserializer<>(LLMModuleResult.class));
+        LLMModuleResult.class,
+        PolymorphicFallbackDeserializer.fromJsonSubTypes(LLMModuleResult.class));
     module.setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
     module.addDeserializer(
-        ChatMessagesInner.class, new PolymorphicFallbackDeserializer<>(ChatMessagesInner.class));
+        ChatMessagesInner.class,
+        PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class));
 
     var orchestrationChatResponse =
         new OrchestrationChatResponse(

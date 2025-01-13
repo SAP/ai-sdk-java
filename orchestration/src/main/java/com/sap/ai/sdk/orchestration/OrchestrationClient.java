@@ -56,7 +56,7 @@ public class OrchestrationClient {
         new SimpleModule()
             .addDeserializer(
                 ChatMessagesInner.class,
-                new PolymorphicFallbackDeserializer<>(ChatMessagesInner.class))
+                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class))
             .setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
     JACKSON.registerModule(module);
   }
