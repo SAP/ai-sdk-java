@@ -25,12 +25,11 @@ import org.springframework.ai.chat.prompt.Prompt;
 @RequiredArgsConstructor
 public class OrchestrationChatModel implements ChatModel {
   @Nonnull private final OrchestrationClient client = new OrchestrationClient();
-  @Nonnull private final OrchestrationModuleConfig config;
 
   @Override
   public ChatResponse call(Prompt prompt) {
     val orchestrationPrompt = toOrchestrationPrompt(prompt);
-    val response = client.chatCompletion(orchestrationPrompt, config);
+    val response = client.chatCompletion(orchestrationPrompt, ((OrchestrationChatOptions) prompt.getOptions()).getConfig());
     return OrchestrationChatResponse.fromOrchestrationResponse(response.getOriginalResponse());
   }
 
