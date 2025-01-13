@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 class ScenarioController {
 
   private static final ScenarioApi CLIENT = new ScenarioApi();
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper()
           .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
           .registerModule(new JavaTimeModule());
@@ -41,7 +41,7 @@ class ScenarioController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(scenarioList));
+          .body(MAPPER.writeValueAsString(scenarioList));
     }
     return ResponseEntity.ok(buildScenarioMessage(scenarioList));
   }
@@ -71,7 +71,7 @@ class ScenarioController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(modelList));
+          .body(MAPPER.writeValueAsString(modelList));
     }
     return ResponseEntity.ok(buildModelMessage(modelList));
   }

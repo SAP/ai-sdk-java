@@ -39,7 +39,7 @@ class DeploymentController {
 
   private static final DeploymentApi CLIENT = new DeploymentApi();
   private static final String RESOURCE_GROUP = "default";
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper()
           .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
           .registerModule(new JavaTimeModule());
@@ -77,7 +77,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok("Deployment created and will be deleted.");
   }
@@ -115,7 +115,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(stoppedDeployments));
+          .body(MAPPER.writeValueAsString(stoppedDeployments));
     }
     return ResponseEntity.ok("Deployments under config the given config ID stopped.");
   }
@@ -146,7 +146,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(responseList));
+          .body(MAPPER.writeValueAsString(responseList));
     }
     return ResponseEntity.ok("Deployments under the given config ID deleted.");
   }
@@ -167,7 +167,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(deployments));
+          .body(MAPPER.writeValueAsString(deployments));
     }
     return ResponseEntity.ok(buildMessage(deployments));
   }
@@ -217,7 +217,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(deployments));
+          .body(MAPPER.writeValueAsString(deployments));
     }
     return ResponseEntity.ok(buildMessage(deployments.getResources().stream().toList()));
   }

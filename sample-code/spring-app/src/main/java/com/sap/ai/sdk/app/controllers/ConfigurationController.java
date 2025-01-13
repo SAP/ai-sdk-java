@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-// import com.fasterxml.jackson.datatype.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.model.AiConfigurationList;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 class ConfigurationController {
 
   private static final ConfigurationApi CLIENT = new ConfigurationApi();
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper()
           .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
           .registerModule(new JavaTimeModule());
@@ -39,7 +38,7 @@ class ConfigurationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(configList));
+          .body(MAPPER.writeValueAsString(configList));
     }
     return ResponseEntity.ok(buildMessage(configList));
   }

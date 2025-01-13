@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
   /**
@@ -43,7 +43,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -151,7 +151,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -171,7 +171,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -187,7 +187,7 @@ public class OpenAiController {
     final var response = service.embedding("Hello world");
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
-        .body(mapper.writeValueAsString(response));
+        .body(MAPPER.writeValueAsString(response));
   }
 
   /**
@@ -207,7 +207,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
