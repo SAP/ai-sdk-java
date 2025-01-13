@@ -47,6 +47,11 @@ The following table lists the required versions, based on the latest release:
 
 See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
 
+> [!WARNING]  
+> All classes under any of the `...model` packages are generated from an OpenAPI specification and marked as `@Beta`.
+> This means that these model classes are not guaranteed to be stable and may change with future releases.
+> They are safe to use, but may require updates even in minor releases.
+
 ## Getting Started
 
 ### What You'll Build
@@ -129,6 +134,8 @@ For more detailed information and advanced usage, please refer to the following:
 - [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
 - [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+
+For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
 
 ## FAQs
 

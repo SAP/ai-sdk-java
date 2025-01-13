@@ -13,6 +13,10 @@
 
 This guide provides examples on how to create and manage deployments in SAP AI Core using the SAP AI SDK for Java.
 
+> [!WARNING]  
+> The below examples rely on generated model classes.
+> Please be aware of the [implications described here](/README.md#general-requirements).
+
 ## Prerequisites
 
 Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements).
