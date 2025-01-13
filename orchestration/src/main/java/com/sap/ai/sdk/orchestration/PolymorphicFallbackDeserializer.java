@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 /**
@@ -24,7 +25,7 @@ import lombok.AllArgsConstructor;
  * @param <T> The base type for deserialization.
  */
 @Beta
-@AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
 
   @Nonnull private final Class<T> baseClass;
@@ -49,7 +50,7 @@ public class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
       candidates.add((Class<? extends T>) subType.value());
     }
 
-    return new PolymorphicFallbackDeserializer<>(baseClass, candidates);
+    return PolymorphicFallbackDeserializer.fromCandidates(baseClass, candidates);
   }
 
   /**
