@@ -59,7 +59,7 @@ We decide as follows:
 
 > 1. New AI SDK versions are released roughly every 2 weeks, shortly after new AI Core versions have been released to **all** landscapes.
 > 2. Any _publicly available release_ of the AI SDKs must only contain _public API_ for AI Core features available in **any** landscape under the service plan _extended_.
-> 3. E2E tests run automatically against canary EU12 only. Production EU10 can be used for manual test runs. 
+> 3. E2E tests run automatically against canary only (EU12 for Java and JS, EU10 for Python). Production EU10 can be used for manual test runs. 
 
 Further explanations and notes:
 
@@ -70,26 +70,25 @@ Further explanations and notes:
   - Public API in an unreleased SDK version for unreleased AI Core features.
     Notably, this will **block** the release of the SDK until the AI Core feature is released publicly.
   - Internal code in a released SDK version for unreleased AI Core features.
+- Testing against additional landscapes is possible, but requires maintaining test toggles.
 
 ### An Example Development Lifecycle Iteration
 
 The following depicts a development flow where the AI SDK development steps are performed as soon as possible. 
 
 1. A new AI Core feature is being developed.
-2. A PR is raised on the AI SDK with a corresponding implementation, but so far not E2E-tested.
-   - Potentially aided by unit tests based on test data manually copied from e.g. Bruno.
+   - (optional) A preview of the changes is created on-demand on the AI SDK.
    - Generated code is created from a development version of the relevant spec file.
-3. (+2 weeks later) The feature is released to EU12 canary landscape.
-4. The AI SDK PR is enhanced:
-   - With an updated spec file.
-   - With an E2E test against canary.
-5. The AI SDK PR is merged.
-6. (+1 week later) The feature is released to EU10 production landscape.
-7. The AI SDK is released publicly.
+   - Potentially aided by unit tests based on test data manually copied from e.g. Bruno.
+2. (+2 weeks later) The feature is released to EU12 canary landscape.
+3. An AI SDK PR is automatically raised with an updated spec file.
+   - If required, E2E tests are enhanced to cover the additional feature scope.
+4. The AI SDK PR is merged.
+5. (+1 week later) The feature is released to EU10 production landscape.
+6. The AI SDK is released publicly.
 
 In case of delays in the release process of AI Core:
 
-- If step (3) is delayed, the open PR may be closed and re-opened later
 - If step (6) is delayed, we consider 3 options:
   1. The PR is reverted, together with potentially other related PRs
   2. The AI SDK release is delayed equally
