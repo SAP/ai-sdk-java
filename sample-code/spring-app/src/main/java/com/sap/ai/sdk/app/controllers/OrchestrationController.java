@@ -46,9 +46,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.completion("HelloWorld!");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -96,9 +94,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.template("German");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -115,9 +111,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.messagesHistory("What is the capital of France?");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -153,9 +147,7 @@ class OrchestrationController {
     }
 
     if (accept.equals("application/json")) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok().body(response.getContent());
   }
@@ -185,9 +177,7 @@ class OrchestrationController {
     final var response = service.outputFiltering(policy);
     try {
       if (accept.equals("application/json")) {
-        return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(MAPPER.writeValueAsString(response));
+        return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
       }
       return ResponseEntity.ok().body(response.getContent());
     } catch (OrchestrationClientException e) {
@@ -214,9 +204,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.maskingAnonymization(DPIEntities.PERSON);
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -234,9 +222,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.completionWithResourceGroup(resourceGroup, "Hello world!");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -257,9 +243,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.maskingPseudonymization(DPIEntities.PERSON);
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -278,9 +262,7 @@ class OrchestrationController {
       throws JsonProcessingException {
     final var response = service.grounding("What does Joule do?");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,7 +66,7 @@ class DeploymentController {
       @RequestHeader(value = "accept", required = false) final String accept) {
     final var response = createAndDeleteDeploymentByConfigId(configId);
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+      return ResponseEntity.ok().body(response);
     }
     return ResponseEntity.ok("Deployment created and will be deleted.");
   }
@@ -98,7 +97,7 @@ class DeploymentController {
             .toList();
 
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(stoppedDeployments);
+      return ResponseEntity.ok().body(stoppedDeployments);
     }
     return ResponseEntity.ok("Deployments under the given config ID stopped.");
   }
@@ -126,7 +125,7 @@ class DeploymentController {
             .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
             .toList();
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(responseList);
+      return ResponseEntity.ok().body(responseList);
     }
     return ResponseEntity.ok("Deployments under the given config ID deleted.");
   }
@@ -144,7 +143,7 @@ class DeploymentController {
       @RequestHeader(value = "accept", required = false) final String accept) {
     final var deployments = getAllByConfigId(configId);
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(deployments);
+      return ResponseEntity.ok().body(deployments);
     }
     final var items =
         deployments.stream().map(AiDeployment::getId).collect(Collectors.joining(", "));
@@ -179,7 +178,7 @@ class DeploymentController {
       @RequestHeader(value = "accept", required = false) final String accept) {
     final var deployments = getAll();
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(deployments);
+      return ResponseEntity.ok().body(deployments);
     }
     final var items =
         deployments != null

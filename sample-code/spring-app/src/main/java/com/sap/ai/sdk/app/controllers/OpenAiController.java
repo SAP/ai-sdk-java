@@ -41,9 +41,7 @@ public class OpenAiController {
       throws JsonProcessingException {
     final var response = service.chatCompletion("Who is the prettiest");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -149,9 +147,7 @@ public class OpenAiController {
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -169,9 +165,7 @@ public class OpenAiController {
     final var response =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -185,9 +179,7 @@ public class OpenAiController {
   @Nonnull
   ResponseEntity<String> embedding() throws JsonProcessingException {
     final var response = service.embedding("Hello world");
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(MAPPER.writeValueAsString(response));
+    return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
   }
 
   /**
@@ -205,9 +197,7 @@ public class OpenAiController {
     final var response =
         service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
