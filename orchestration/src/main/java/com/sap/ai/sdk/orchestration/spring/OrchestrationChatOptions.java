@@ -28,7 +28,7 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Getter(AccessLevel.PUBLIC)
   @Setter(AccessLevel.PUBLIC)
   @Nonnull
-  OrchestrationModuleConfig config = new OrchestrationModuleConfig();
+  OrchestrationModuleConfig config;
 
   // region satisfy the ChatOptions interface, delegating to the LLM config
   @Nullable
@@ -87,8 +87,7 @@ public class OrchestrationChatOptions implements ChatOptions {
 
   @Override
   public OrchestrationChatOptions copy() {
-    var copy = new OrchestrationChatOptions();
-    copy.config = this.config;
+    var copy = new OrchestrationChatOptions(config);
     copy.templateParameters.putAll(this.templateParameters);
     return copy;
   }

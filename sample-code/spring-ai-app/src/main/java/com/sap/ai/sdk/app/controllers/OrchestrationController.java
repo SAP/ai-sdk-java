@@ -24,11 +24,14 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 @RequestMapping("/orchestration")
 class OrchestrationController {
 
-  ChatModel client = new OrchestrationChatModel(new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO));
+  ChatModel client = new OrchestrationChatModel();
+  private final OrchestrationModuleConfig config =
+  new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
 
   @GetMapping("/completion")
   ChatResponse completion() {
-    var prompt = new Prompt("What is the capital of France?");
+    var opts = new OrchestrationChatOptions(config);
+    var prompt = new Prompt("What is the capital of France?", opts);
 
     return client.call(prompt);
   }
@@ -59,8 +62,7 @@ class OrchestrationController {
         DpiMasking.anonymization()
             .withEntities(DPIEntities.EMAIL, DPIEntities.ADDRESS, DPIEntities.LOCATION);
 
-    var opts = new OrchestrationChatOptions();
-    opts.setConfig(new OrchestrationModuleConfig().withMaskingConfig(masking));
+    var opts = new OrchestrationChatOptions(config.withMaskingConfig(masking));
     var prompt =
         new Prompt(
             "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
