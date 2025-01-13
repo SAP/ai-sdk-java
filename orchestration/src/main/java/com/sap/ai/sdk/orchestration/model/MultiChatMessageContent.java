@@ -14,6 +14,7 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.google.common.annotations.Beta;
 
 /** MultiChatMessageContent */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
@@ -21,4 +22,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = ImageContent.class),
   @JsonSubTypes.Type(value = TextContent.class),
 })
+@Beta
 public interface MultiChatMessageContent {}
