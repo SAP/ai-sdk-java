@@ -21,6 +21,7 @@ The SDK simplifies the setup and interaction with SAP AI Core, allowing you to f
     - [Run the Application Locally](#run-the-application-locally)
     - [Explore Further Capabilities](#explore-further-capabilities)
 - [Documentation](#documentation)
+- [Build the Project](#build-the-project)
 - [FAQs](#faqs)
 - [Contribute, Support and Feedback](#contribute-support-and-feedback)
 - [Security / Disclosure](#security--disclosure)
@@ -136,6 +137,18 @@ For more detailed information and advanced usage, please refer to the following:
 - [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
 For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
+
+## Build the Project
+
+You can build the project using Maven:
+
+```shell
+mvn clean install -DskipTests -DskipFormatting
+```
+
+This will install the current `SNAPSHOT` version of the project into your local Maven repository.
+
+For SAP internal development, you can also use `SNAPSHOT` builds from the [internal](https://int.repositories.cloud.sap/ui/repos/tree/General/proxy-build-snapshots-cloudsdk/com/sap/ai/sdk) and [internet-facing](https://common.repositories.cloud.sap/artifactory/build-snapshots-cloudsdk/com/sap/ai/sdk/) Artifactory.
 
 ## FAQs
 
