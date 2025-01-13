@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AllArgsConstructor;
 
 /**
  * Handles polymorphic deserialization for a base class or interface.
@@ -23,16 +24,11 @@ import javax.annotation.Nonnull;
  * @param <T> The base type for deserialization.
  */
 @Beta
+@AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
 
-  @Nonnull private final List<Class<? extends T>> candidates;
   @Nonnull private final Class<T> baseClass;
-
-  private PolymorphicFallbackDeserializer(
-      @Nonnull final Class<T> baseClass, @Nonnull final List<Class<? extends T>> candidates) {
-    this.baseClass = baseClass;
-    this.candidates = candidates;
-  }
+  @Nonnull private final List<Class<? extends T>> candidates;
 
   /**
    * Constructs the deserializer using candidates inferred from the {@link JsonSubTypes} annotation.
