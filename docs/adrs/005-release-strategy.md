@@ -27,11 +27,12 @@ Since most new features will rely on generated code, the options for Java are li
 Testing can be performed against multiple landscapes and can vary based on the type of tests.
 
 - Unit tests may use test data from any landscape (including development landscapes) manually tested with e.g. Bruno.
-- E2E tests may use canary or production landscapes.
+- E2E tests may use integration, canary or production landscapes.
   In case of multiple landscapes:
    - GitHub matrix builds can be used to easily testing against multiple landscapes
    - For any differences between landscapes, test toggles need to be considered (e.g. `@EnabledIfSystemProperty`)
    - Such toggles come with a bit of additional maintenance cost, as they need to be removed once the feature is released to all landscapes
+   - Alternatively, E2E tests may be executed manually during development against any landscape
 
 ## Release
 
@@ -56,15 +57,15 @@ However, here there would be more freedom in when a feature toggle is enabled fo
 
 We decide as follows:
 
-> 1. New AI SDK versions are released roughly every 2 weeks, shortly after new AI Core versions have been released to _production EU10_.
-> 2. Any _publicly available release_ of the AI SDKs must only contain _public API_ for AI Core features available in _production EU10_ under the service plan _extended_.
-> 3. E2E tests run against canary EU12 and production EU10 using test toggles. 
+> 1. New AI SDK versions are released roughly every 2 weeks, shortly after new AI Core versions have been released to **all** landscapes.
+> 2. Any _publicly available release_ of the AI SDKs must only contain _public API_ for AI Core features available in **any** landscape under the service plan _extended_.
+> 3. E2E tests run automatically against canary EU12 only. Production EU10 can be used for manual test runs. 
 
 Further explanations and notes:
 
 - Any features released exclusively under the `sap-internal` plan are not supported.
-  Similarly, any features released only to specific landscapes (other than prod EU10) are not supported.
-- There will be no releases of the SDKs to internal artifactory.
+- There will be no stable releases of the SDKs to internal artifactory.
+  For Java, we deliver SNAPSHOT versions to the interhal artifactories, for JS we deliver canary releases to NPM.
 - Please note that the following is allowed:
   - Public API in an unreleased SDK version for unreleased AI Core features.
     Notably, this will **block** the release of the SDK until the AI Core feature is released publicly.
@@ -98,5 +99,5 @@ In case of delays in the release process of AI Core:
 ## Further Links
 
 - The single source of truth for all landscapes is in [mlf-gitops](https://github.tools.sap/MLF-prod/mlf-gitops-prod)
-  - In particular, we care about the [version of orchestration in Prod EU10](https://github.tools.sap/MLF-prod/mlf-gitops-prod/blob/aws.eu-central-1.prod-eu/current/services/llm-orchestration/source/Chart.yaml) 
+  - In particular, we care about the [version of orchestration](https://github.tools.sap/MLF-prod/mlf-gitops-prod/blob/aws.eu-central-1.prod-eu/current/services/llm-orchestration/source/Chart.yaml)
 - [This JIRA ticket](https://jira.tools.sap/browse/AI-44024) tracks releases
