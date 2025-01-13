@@ -8,7 +8,8 @@
 
 ### 🔧 Compatibility Notes
 
-- `ChatMessage`, as well as new `MultiChatMessage`, are now subtypes of new interface `ChatMessagesInner`. Most variables or methods previously typed as `ChatMessage` in `model` package are now typed as `ChatMessagesInner`. 
+- `ChatMessage`, as well as new `MultiChatMessage`, are now subtypes of new interface `ChatMessagesInner`.
+  Most variables or methods previously typed as `ChatMessage` in `model` package are now typed as `ChatMessagesInner`. 
 
 ### ✨ New Functionality
 
