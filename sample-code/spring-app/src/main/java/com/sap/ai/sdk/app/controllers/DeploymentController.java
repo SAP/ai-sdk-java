@@ -1,10 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
@@ -40,10 +36,6 @@ class DeploymentController {
 
   private static final DeploymentApi CLIENT = new DeploymentApi();
   private static final String RESOURCE_GROUP = "default";
-  private static final ObjectMapper MAPPER =
-      new ObjectMapper()
-          .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-          .registerModule(new JavaTimeModule());
 
   /**
    * Create and delete a deployment with the Java specific configuration ID.
@@ -70,7 +62,7 @@ class DeploymentController {
    * @return a response entity with a string representation of the deployment creation response
    */
   @GetMapping("/by-config/{id}/createDelete")
-  ResponseEntity<String> createAndDeleteDeploymentByConfigId(
+  ResponseEntity<Object> createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId,
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
@@ -78,7 +70,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(response));
+          .body(response);
     }
     return ResponseEntity.ok("Deployment created and will be deleted.");
   }
@@ -94,7 +86,7 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/stop")
   @Nonnull
-  ResponseEntity<String> stopByConfigId(
+  ResponseEntity<Object> stopByConfigId(
       @Nonnull @PathVariable("id") final String configId,
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
@@ -116,7 +108,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(stoppedDeployments));
+          .body(stoppedDeployments);
     }
     return ResponseEntity.ok("Deployments under the given config ID stopped.");
   }
@@ -132,7 +124,7 @@ class DeploymentController {
    */
   @GetMapping("/by-config/{id}/delete")
   @Nonnull
-  ResponseEntity<String> deleteByConfigId(
+  ResponseEntity<Object> deleteByConfigId(
       @Nonnull @PathVariable("id") final String configId,
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
@@ -147,7 +139,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(responseList));
+          .body(responseList);
     }
     return ResponseEntity.ok("Deployments under the given config ID deleted.");
   }
@@ -160,7 +152,7 @@ class DeploymentController {
    * @return a response entity with a string representation of the Java specific deployments
    */
   @GetMapping("/by-config/{id}/getAll")
-  ResponseEntity<String> getAllByConfigId(
+  ResponseEntity<Object> getAllByConfigId(
       @Nonnull @PathVariable("id") final String configId,
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
@@ -168,7 +160,7 @@ class DeploymentController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(deployments));
+          .body(deployments);
     }
     var items = deployments.stream().map(AiDeployment::getId).collect(Collectors.joining(", "));
     return ResponseEntity.ok(
@@ -198,14 +190,14 @@ class DeploymentController {
    */
   @GetMapping("/getAll")
   @Nonnull
-  ResponseEntity<String> getAll(
+  ResponseEntity<Object> getAll(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var deployments = getAll();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(deployments));
+          .body(deployments);
     }
     var items =
         deployments != null

@@ -1,10 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.client.ScenarioApi;
 import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.core.model.AiModelList;
@@ -24,10 +20,6 @@ import java.util.stream.Collectors;
 class ScenarioController {
 
   private static final ScenarioApi CLIENT = new ScenarioApi();
-  private static final ObjectMapper MAPPER =
-      new ObjectMapper()
-          .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-          .registerModule(new JavaTimeModule());
 
   /**
    * Get the list of available scenarios.
@@ -37,14 +29,14 @@ class ScenarioController {
    */
   @GetMapping("/scenarios")
   @Nonnull
-  ResponseEntity<String> getScenarios(
+  ResponseEntity<Object> getScenarios(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var scenarioList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(scenarioList));
+          .body(scenarioList);
     }
     var items =
         scenarioList.getResources().stream()
@@ -71,14 +63,14 @@ class ScenarioController {
    */
   @GetMapping("/models")
   @Nonnull
-  ResponseEntity<String> getModels(
+  ResponseEntity<Object> getModels(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var modelList = getModels();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(modelList));
+          .body(modelList);
     }
     var items = modelList.getResources().stream().map(AiModelBaseData::getModel).collect(Collectors.joining(", "));
     return ResponseEntity.ok("The following models are available: %s.".formatted(items));

@@ -1,10 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.model.AiConfiguration;
 import org.springframework.http.MediaType;
@@ -20,10 +16,6 @@ import java.util.stream.Collectors;
 class ConfigurationController {
 
   private static final ConfigurationApi CLIENT = new ConfigurationApi();
-  private static final ObjectMapper MAPPER =
-      new ObjectMapper()
-          .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-          .registerModule(new JavaTimeModule());
 
   /**
    * Get the list of configurations.
@@ -32,14 +24,14 @@ class ConfigurationController {
    * @return a response entity with a string representation of the list of configurations
    */
   @GetMapping("/configurations")
-  ResponseEntity<String> getConfigurations(
+  ResponseEntity<Object> getConfigurations(
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var configList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(MAPPER.writeValueAsString(configList));
+          .body(configList);
     }
     final var items =
         configList.getResources().stream()
