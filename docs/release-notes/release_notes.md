@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- Add missing `@Beta` annotations to all `com.sap.ai.sdk.core.client` and `com.sap.ai.sdk.core.model` classes.
 
 ### ✨ New Functionality
 
