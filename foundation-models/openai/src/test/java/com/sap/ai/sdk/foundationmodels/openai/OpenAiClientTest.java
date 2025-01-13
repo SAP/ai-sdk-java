@@ -207,7 +207,10 @@ class OpenAiClientTest {
         final var request =
             new CreateChatCompletionRequest()
                 .addMessagesItem(systemMessage)
-                .addMessagesItem(userMessage);
+                .addMessagesItem(userMessage)
+                .functions(null)
+                .tools(null)
+                .parallelToolCalls(null);
         return client.chatCompletion(request);
       },
       () ->
@@ -313,10 +316,7 @@ class OpenAiClientTest {
                                "role" : "user"
                              } ],
                              "logprobs" : false,
-                             "n" : 1,
-                             "parallel_tool_calls" : true,
-                             "tools" : [ ],
-                             "functions" : [ ]
+                             "n" : 1
                       }""")));
     }
   }
@@ -353,10 +353,7 @@ class OpenAiClientTest {
                              "role" : "user"
                            } ],
                            "logprobs" : false,
-                           "n" : 1,
-                           "parallel_tool_calls" : true,
-                           "tools" : [ ],
-                           "functions" : [ ]
+                           "n" : 1
                       }""")));
 
     client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
@@ -381,10 +378,7 @@ class OpenAiClientTest {
                              "role" : "user"
                            } ],
                            "logprobs" : false,
-                           "n" : 1,
-                           "parallel_tool_calls" : true,
-                           "tools" : [ ],
-                           "functions" : [ ]
+                           "n" : 1
                       }""")));
   }
 
