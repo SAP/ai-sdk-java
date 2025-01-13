@@ -31,7 +31,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @RequestMapping("/orchestration")
 class OrchestrationController {
   @Autowired private OrchestrationService service;
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
   /**
@@ -48,7 +48,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -98,7 +98,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -117,7 +117,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -155,7 +155,7 @@ class OrchestrationController {
     if (accept.equals("application/json")) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok().body(response.getContent());
   }
@@ -187,7 +187,7 @@ class OrchestrationController {
       if (accept.equals("application/json")) {
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .body(mapper.writeValueAsString(response));
+            .body(MAPPER.writeValueAsString(response));
       }
       return ResponseEntity.ok().body(response.getContent());
     } catch (OrchestrationClientException e) {
@@ -216,7 +216,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -236,7 +236,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -259,7 +259,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -280,7 +280,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
