@@ -14,7 +14,6 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 
 /** ChatMessagesInner */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
@@ -22,5 +21,4 @@ import com.google.common.annotations.Beta;
   @JsonSubTypes.Type(value = ChatMessage.class),
   @JsonSubTypes.Type(value = MultiChatMessage.class),
 })
-@Beta
 public interface ChatMessagesInner {}
