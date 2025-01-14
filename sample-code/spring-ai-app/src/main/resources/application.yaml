@@ -1,5 +1,0 @@
-com.sap.ai.sdk.orchestration:
-  test: "true"
-  model:
-    name: "gpt-35-turbo"
-    version: "latest"

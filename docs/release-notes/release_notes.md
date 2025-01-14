@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Integrated the Orchestration client in Spring AI.](../guides/ORCHESTRATION_CHAT_COMPLETION.md#spring-ai-integration)
 
 ### 📈 Improvements
 
