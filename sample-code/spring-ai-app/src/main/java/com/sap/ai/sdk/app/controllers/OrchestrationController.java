@@ -40,8 +40,7 @@ class OrchestrationController {
   @GetMapping("/template")
   ChatResponse template() {
     var template = new PromptTemplate("{input}");
-    var prompt =
-        template.create(Map.of("input", "Hello World!"), defaultOptions);
+    var prompt = template.create(Map.of("input", "Hello World!"), defaultOptions);
 
     return client.call(prompt);
   }
