@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.MetaCapabilities;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -24,6 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
+@Beta
 public class MetaApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
