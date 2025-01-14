@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.model.ChatResponse;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrchestrationTest {
 
