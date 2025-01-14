@@ -646,11 +646,8 @@ class OrchestrationUnitTest {
   @Test
   void testRequestWithMultiChatMessage() throws IOException {
 
-    var expectedJsonRequest =
-        new String(fileLoader.apply("multiChatMessageRequest.json").readAllBytes());
     stubFor(
         post("/completion")
-            .withRequestBody(equalToJson(expectedJsonRequest, true, false))
             .willReturn(
                 aResponse().withStatus(SC_OK).withBodyFile("multiChatMessageResponse.json")));
 
@@ -742,7 +739,12 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(928);
     assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(959);
 
-    verify(postRequestedFor(urlPathEqualTo("/completion")));
+    try (var requestInputStream = fileLoader.apply("multiChatMessageRequest.json")) {
+      final String requestBody = new String(requestInputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/completion"))
+              .withRequestBody(equalToJson(requestBody)));
+    }
   }
 
   @SneakyThrows
