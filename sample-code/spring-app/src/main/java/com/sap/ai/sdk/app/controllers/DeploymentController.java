@@ -63,7 +63,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/createDelete")
   ResponseEntity<Object> createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final var response = createAndDeleteDeploymentByConfigId(configId);
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(response);
@@ -84,7 +84,7 @@ class DeploymentController {
   @Nonnull
   ResponseEntity<Object> stopByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to STOP", myDeployments.size());
 
@@ -115,7 +115,7 @@ class DeploymentController {
   @Nonnull
   ResponseEntity<Object> deleteByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to DELETE", myDeployments.size());
 
@@ -140,7 +140,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   ResponseEntity<Object> getAllByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final var deployments = getAllByConfigId(configId);
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(deployments);
@@ -175,7 +175,7 @@ class DeploymentController {
   @GetMapping("/getAll")
   @Nonnull
   ResponseEntity<Object> getAll(
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final var deployments = getAll();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(deployments);

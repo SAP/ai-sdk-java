@@ -10,6 +10,7 @@ import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,7 +38,7 @@ public class OpenAiController {
   @GetMapping("/chatCompletion")
   @Nonnull
   ResponseEntity<String> chatCompletion(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.chatCompletion("Who is the prettiest");
     if ("application/json".equals(accept)) {
@@ -141,7 +142,7 @@ public class OpenAiController {
   @GetMapping("/chatCompletionImage")
   @Nonnull
   ResponseEntity<String> chatCompletionImage(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response =
         service.chatCompletionImage(
@@ -160,7 +161,7 @@ public class OpenAiController {
   @GetMapping("/chatCompletionTool")
   @Nonnull
   ResponseEntity<String> chatCompletionTools(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
@@ -191,7 +192,7 @@ public class OpenAiController {
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   ResponseEntity<String> chatCompletionWithResource(
-      @RequestHeader(value = "accept", required = false) final String accept,
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
       throws JsonProcessingException {
     final var response =

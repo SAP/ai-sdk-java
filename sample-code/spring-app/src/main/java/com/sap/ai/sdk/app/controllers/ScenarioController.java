@@ -6,6 +6,7 @@ import com.sap.ai.sdk.core.model.AiModelList;
 import com.sap.ai.sdk.core.model.AiScenario;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,7 +28,7 @@ class ScenarioController {
   @GetMapping("/scenarios")
   @Nonnull
   ResponseEntity<Object> getScenarios(
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final var scenarioList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(scenarioList);
@@ -58,7 +59,7 @@ class ScenarioController {
   @GetMapping("/models")
   @Nonnull
   ResponseEntity<Object> getModels(
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final var modelList = getModels();
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(modelList);

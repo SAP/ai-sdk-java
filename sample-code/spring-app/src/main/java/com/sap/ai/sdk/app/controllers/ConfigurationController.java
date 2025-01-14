@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.model.AiConfiguration;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,7 +24,7 @@ class ConfigurationController {
    */
   @GetMapping("/configurations")
   ResponseEntity<Object> getConfigurations(
-      @RequestHeader(value = "accept", required = false) final String accept) {
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final var configList = CLIENT.query("default");
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(configList);
