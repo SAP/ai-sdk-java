@@ -15,6 +15,7 @@ package com.sap.ai.sdk.core.model;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** TrckTagName */
-// CHECKSTYLE:OFF
+@Beta // CHECKSTYLE:OFF
 public class TrckTagName
 // CHECKSTYLE:ON
 {
