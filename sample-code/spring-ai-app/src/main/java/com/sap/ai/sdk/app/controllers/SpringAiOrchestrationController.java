@@ -3,7 +3,6 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
 
 import com.sap.ai.sdk.orchestration.DpiMasking;
-import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orchestration")
 class SpringAiOrchestrationController {
 
-  private final ChatModel client = new OrchestrationChatModel(new OrchestrationClient());
+  private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);

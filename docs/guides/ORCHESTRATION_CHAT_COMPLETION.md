@@ -276,7 +276,7 @@ OrchestrationAiModel customGPT4O =
 The Orchestration client is integrated in Spring AI classes:
 
 ```java
-ChatModel client = new OrchestrationChatModel(new OrchestrationClient());
+ChatModel client = new OrchestrationChatModel();
 OrchestrationModuleConfig config =
     new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);

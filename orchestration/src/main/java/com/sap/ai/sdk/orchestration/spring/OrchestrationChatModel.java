@@ -23,6 +23,11 @@ import org.springframework.ai.chat.prompt.Prompt;
 public class OrchestrationChatModel implements ChatModel {
   @Nonnull private OrchestrationClient client;
 
+  /** Default constructor. */
+  public OrchestrationChatModel() {
+    this.client = new OrchestrationClient();
+  }
+
   @Nonnull
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
