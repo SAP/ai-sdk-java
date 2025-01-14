@@ -5,9 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.model.ChatResponse;
 
-public class OrchestrationTest {
+public class SpringAiOrchestrationTest
+{
 
-  OrchestrationController controller = new OrchestrationController();
+  SpringAiOrchestrationController controller = new SpringAiOrchestrationController();
 
   @Test
   void testCompletion() {
