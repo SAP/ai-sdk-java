@@ -20,7 +20,7 @@
 
 This guide provides examples of how to use the Orchestration service in SAP AI Core for chat completion tasks using the SAP AI SDK for Java.
 
-# Prerequisites
+## Prerequisites
 
 Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements). 
 Additionally, include the necessary Maven dependency in your project.

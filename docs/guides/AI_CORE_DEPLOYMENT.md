@@ -66,7 +66,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
       ```
       </details>
 
-### Create a Deployment
+## Create a Deployment
 
 Use the following code snippet to create a deployment in SAP AI Core:
 
@@ -84,7 +84,7 @@ AiExecutionStatus status = deployment.getStatus();
 
 Refer to the [DeploymentController.java](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/DeploymentController.java) in our Spring Boot application for a complete example.
 
-### Delete a Deployment
+## Delete a Deployment
 
 ```java
 AiDeploymentCreationResponse deployment; // provided
