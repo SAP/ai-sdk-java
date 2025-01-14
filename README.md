@@ -143,7 +143,7 @@ For updating versions, please refer to the [**Release Notes**](docs/release-note
 You can build the project using Maven:
 
 ```shell
-mvn clean install -DskipTests -DskipFormatting
+mvn clean install -DskipTests
 ```
 
 This will install the current `SNAPSHOT` version of the project into your local Maven repository.
