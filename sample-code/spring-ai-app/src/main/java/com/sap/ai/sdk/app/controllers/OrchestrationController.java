@@ -1,6 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+
 import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
@@ -17,44 +20,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
-
 /** Endpoints for the Orchestration service */
 @RestController
 @RequestMapping("/orchestration")
 class OrchestrationController {
 
-  ChatModel client = new OrchestrationChatModel();
+  ChatModel client = new OrchestrationChatModel(new OrchestrationClient());
   private final OrchestrationModuleConfig config =
-  new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+  private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @GetMapping("/completion")
   ChatResponse completion() {
-    var opts = new OrchestrationChatOptions(config);
-    var prompt = new Prompt("What is the capital of France?", opts);
+    var prompt = new Prompt("What is the capital of France?", defaultOptions);
 
     return client.call(prompt);
   }
 
-  @GetMapping("/template/local")
-  ChatResponse templateLocal() {
-    var template = new PromptTemplate("input");
-    var prompt = template.create(Map.of("input", "Hello World!"));
+  @GetMapping("/template")
+  ChatResponse template() {
+    var template = new PromptTemplate("{input}");
+    var prompt =
+        template.create(Map.of("input", "Hello World!"), defaultOptions);
 
     return client.call(prompt);
   }
-//
-//  @GetMapping("/template/remote")
-//  ChatResponse templateRemote() {
-//    List<Message> messages = List.of(new UserMessage("{{?input}}"));
-//    var opts =
-//        new OrchestrationChatOptions()
-//            .withTemplate(messages)
-//            .withTemplateParameters(Map.of("input", "Hello World!"));
-//    var prompt = new Prompt(List.of(), opts);
-//
-//    return client.call(prompt);
-//  }
 
   @GetMapping("/masking")
   ChatResponse masking() {
@@ -76,9 +66,10 @@ class OrchestrationController {
     var memory = new InMemoryChatMemory();
     var advisor = new MessageChatMemoryAdvisor(memory);
     ChatClient cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
-    var prompt = new Prompt("Hello World!");
+    var prompt1 = new Prompt("What is the capital of France?", defaultOptions);
+    var prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
 
-    cl.prompt(prompt).call();
-    return cl.prompt(prompt).call().chatResponse();
+    cl.prompt(prompt1).call();
+    return cl.prompt(prompt2).call().chatResponse();
   }
 }

@@ -10,7 +10,8 @@
   <groupId>com.sap.ai.sdk.app</groupId>
   <artifactId>spring-ai-app</artifactId>
   <name>Spring AI Application</name>
-  <description>Spring AI sample application that tests AI clients when deployed in BTP.</description>
+  <description>End-to-end test application, also sample code for customers</description>
+
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -33,7 +34,6 @@
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>3.4.1</spring-boot.version>
-    <spring-ai.version>1.0.0-SNAPSHOT</spring-ai.version>
     <logback.version>1.5.16</logback.version>
     <cf-logging.version>3.8.4</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
@@ -42,6 +42,18 @@
     <enforcer.skipBanLoggingFrameworks>true</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>true</enforcer.skipEnforceScopeLoggerBridges>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-bom</artifactId>
+        <version>${spring-ai.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <!-- scope "compile" -->
     <dependency>
@@ -55,7 +67,6 @@
     <dependency>
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-core</artifactId>
-      <version>${spring-ai.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -140,7 +151,7 @@
       <scope>provided</scope>
     </dependency>
     <!-- scope "test" -->
-    <!--<dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
@@ -149,19 +160,8 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
-    </dependency>-->
+    </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.ai</groupId>
-        <artifactId>spring-ai-bom</artifactId>
-        <version>${spring-ai.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <repositories>
     <repository>
       <snapshots>
