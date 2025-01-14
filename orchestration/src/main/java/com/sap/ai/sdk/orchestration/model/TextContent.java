@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** GroundingModuleConfig */
+/** TextContent */
 @Beta // CHECKSTYLE:OFF
-public class GroundingModuleConfig
+public class TextContent implements MultiChatMessageContent
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */
   public enum TypeEnum {
-    /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
-    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
+    /** The TEXT option of this TextContent */
+    TEXT("text"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingModuleConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this TextContent */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class GroundingModuleConfig
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type GroundingModuleConfig
+     * @return The enum value of type TextContent
      */
     @JsonCreator
     @Nonnull
@@ -82,30 +82,30 @@ public class GroundingModuleConfig
           return b;
         }
       }
-      return null;
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("config")
-  private GroundingModuleConfigConfig config;
+  @JsonProperty("text")
+  private String text;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GroundingModuleConfig. */
-  protected GroundingModuleConfig() {}
+  /** Default constructor for TextContent. */
+  protected TextContent() {}
 
   /**
-   * Set the type of this {@link GroundingModuleConfig} instance and return the same instance.
+   * Set the type of this {@link TextContent} instance and return the same instance.
    *
-   * @param type The type of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
+   * @param type The type of this {@link TextContent}
+   * @return The same instance of this {@link TextContent} class
    */
   @Nonnull
-  public GroundingModuleConfig type(@Nullable final TypeEnum type) {
+  public TextContent type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -113,55 +113,55 @@ public class GroundingModuleConfig
   /**
    * Get type
    *
-   * @return type The type of this {@link GroundingModuleConfig} instance.
+   * @return type The type of this {@link TextContent} instance.
    */
-  @Nullable
+  @Nonnull
   public TypeEnum getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link GroundingModuleConfig} instance.
+   * Set the type of this {@link TextContent} instance.
    *
-   * @param type The type of this {@link GroundingModuleConfig}
+   * @param type The type of this {@link TextContent}
    */
-  public void setType(@Nullable final TypeEnum type) {
+  public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the config of this {@link GroundingModuleConfig} instance and return the same instance.
+   * Set the text of this {@link TextContent} instance and return the same instance.
    *
-   * @param config The config of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
+   * @param text The text of this {@link TextContent}
+   * @return The same instance of this {@link TextContent} class
    */
   @Nonnull
-  public GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config) {
-    this.config = config;
+  public TextContent text(@Nonnull final String text) {
+    this.text = text;
     return this;
   }
 
   /**
-   * Get config
+   * Get text
    *
-   * @return config The config of this {@link GroundingModuleConfig} instance.
+   * @return text The text of this {@link TextContent} instance.
    */
   @Nonnull
-  public GroundingModuleConfigConfig getConfig() {
-    return config;
+  public String getText() {
+    return text;
   }
 
   /**
-   * Set the config of this {@link GroundingModuleConfig} instance.
+   * Set the text of this {@link TextContent} instance.
    *
-   * @param config The config of this {@link GroundingModuleConfig}
+   * @param text The text of this {@link TextContent}
    */
-  public void setConfig(@Nonnull final GroundingModuleConfigConfig config) {
-    this.config = config;
+  public void setText(@Nonnull final String text) {
+    this.text = text;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GroundingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link TextContent}.
    *
    * @return The set of properties names
    */
@@ -172,7 +172,7 @@ public class GroundingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GroundingModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link TextContent} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,15 +181,14 @@ public class GroundingModuleConfig
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GroundingModuleConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TextContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link GroundingModuleConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TextContent} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -207,24 +206,24 @@ public class GroundingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, groundingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, groundingModuleConfig.type)
-        && Objects.equals(this.config, groundingModuleConfig.config);
+    final TextContent textContent = (TextContent) o;
+    return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
+        && Objects.equals(this.type, textContent.type)
+        && Objects.equals(this.text, textContent.text);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, text, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GroundingModuleConfig {\n");
+    sb.append("class TextContent {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -243,32 +242,32 @@ public class GroundingModuleConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfig}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link TextContent} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new GroundingModuleConfig().type(type).config(config);
+    return (type) -> (text) -> new TextContent().type(type).text(text);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link GroundingModuleConfig} instance.
+     * Set the type of this {@link TextContent} instance.
      *
-     * @param type The type of this {@link GroundingModuleConfig}
-     * @return The GroundingModuleConfig builder.
+     * @param type The type of this {@link TextContent}
+     * @return The TextContent builder.
      */
-    Builder1 type(@Nullable final TypeEnum type);
+    Builder1 type(@Nonnull final TypeEnum type);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the config of this {@link GroundingModuleConfig} instance.
+     * Set the text of this {@link TextContent} instance.
      *
-     * @param config The config of this {@link GroundingModuleConfig}
-     * @return The GroundingModuleConfig instance.
+     * @param text The text of this {@link TextContent}
+     * @return The TextContent instance.
      */
-    GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config);
+    TextContent text(@Nonnull final String text);
   }
 }
