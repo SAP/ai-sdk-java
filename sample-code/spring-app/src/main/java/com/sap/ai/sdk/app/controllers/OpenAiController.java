@@ -10,6 +10,7 @@ import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
   /**
@@ -37,13 +38,11 @@ public class OpenAiController {
   @GetMapping("/chatCompletion")
   @Nonnull
   ResponseEntity<String> chatCompletion(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.chatCompletion("Who is the prettiest");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -143,15 +142,13 @@ public class OpenAiController {
   @GetMapping("/chatCompletionImage")
   @Nonnull
   ResponseEntity<String> chatCompletionImage(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response =
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -164,14 +161,12 @@ public class OpenAiController {
   @GetMapping("/chatCompletionTool")
   @Nonnull
   ResponseEntity<String> chatCompletionTools(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -185,9 +180,7 @@ public class OpenAiController {
   @Nonnull
   ResponseEntity<String> embedding() throws JsonProcessingException {
     final var response = service.embedding("Hello world");
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(mapper.writeValueAsString(response));
+    return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
   }
 
   /**
@@ -199,15 +192,13 @@ public class OpenAiController {
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   ResponseEntity<String> chatCompletionWithResource(
-      @RequestHeader(value = "accept", required = false) final String accept,
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
       throws JsonProcessingException {
     final var response =
         service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
