@@ -13,6 +13,10 @@
 
 This guide provides examples on how to create and manage deployments in SAP AI Core using the SAP AI SDK for Java.
 
+> [!WARNING]  
+> The below examples rely on generated model classes.
+> Please be aware of the [implications described here](/README.md#general-requirements).
+
 ## Prerequisites
 
 Before using the AI Core module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements).
@@ -69,12 +73,12 @@ Use the following code snippet to create a deployment in SAP AI Core:
 ```java
 var api = new DeploymentApi();
 var resourceGroupId = "default";
+var configurationId = "12345-123-123-123-123456abcdefg";
 
-AiDeploymentCreationRequest request =
-    AiDeploymentCreationRequest.create().configurationId("12345-123-123-123-123456abcdefg");
-AiDeploymentCreationResponse deployment = api.create(resourceGroupId, request);
+var request = AiDeploymentCreationRequest.create().configurationId(configurationId);
+var deployment = api.create(resourceGroupId, request);
 
-var id = deployment.getId();
+String id = deployment.getId();
 AiExecutionStatus status = deployment.getStatus();
 ```
 

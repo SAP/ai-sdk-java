@@ -20,37 +20,26 @@ jobs:
   prerequisites:
     name: "Prerequisites"
     outputs:
-      release-version: ${{ steps.determine-branch-names.outputs.RELEASE_VERSION }}
-      release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
+      release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
-    permissions:
-      pull-requests: read
-      contents: read
+    permissions: write-all # contents and push are needed to see the draft release
     runs-on: ubuntu-latest
     steps:
       - name: "Determine Branch Names"
         id: determine-branch-names
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
-            echo "[DEBUG] Taking branch name from pull request event"
-            BRANCH_NAME=${{ github.event.pull_request.head.ref }}
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "[DEBUG] Taking branch name from workflow dispatch event"
-            BRANCH_NAME=$(gh pr view ${{ github.event.inputs.release_pr_number }} --repo "${{ github.repository }}" --json headRefName | jq -r '.headRefName')
-          else
-            echo "Cannot determine branch name from event '${{ github.event_name }}'"
-            exit 1
-          fi
+          CODE_BRANCH_NAME=$(gh pr view ${{github.event.inputs.release_pr_number}} --repo ${{github.repository}} --json headRefName --jq '.headRefName')
+          RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2)
+          RELEASE_TAG=rel/$RELEASE_VERSION
+          RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
           
-          RELEASE_VERSION=$(echo "$BRANCH_NAME" | cut -d '-' -f2) 
-
+          echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "RELEASE_TAG=rel/$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "CODE_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "RELEASE_COMMIT=$(gh release view "$RELEASE_TAG" --repo "${{ github.repository }}" --json targetCommitish | jq -r '.targetCommitish')" >> $GITHUB_OUTPUT
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
           
-          echo "[DEBUG] Current GITHUB_OUTPUT: '$(cat $GITHUB_OUTPUT)'"
+          echo -e "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
         env:
           GH_TOKEN: ${{ github.token }}
 

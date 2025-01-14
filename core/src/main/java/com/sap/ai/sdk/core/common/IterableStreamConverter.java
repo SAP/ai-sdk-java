@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.orchestration;
+package com.sap.ai.sdk.core.common;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Spliterator.NONNULL;
@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Spliterators;
 import java.util.concurrent.Callable;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -90,30 +91,32 @@ class IterableStreamConverter<T> implements Iterator<T> {
    * when an exception occurred.
    *
    * @param entity The HTTP entity object.
+   * @param exceptionType The type of the client exception to throw in case of an error.
    * @return A sequential Stream object.
-   * @throws OrchestrationClientException if the provided HTTP entity object is {@code null} or
-   *     empty.
+   * @throws ClientException if the provided HTTP entity object is {@code null} or empty.
    */
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
-  static Stream<String> lines(@Nullable final HttpEntity entity)
-      throws OrchestrationClientException {
+  static Stream<String> lines(
+      @Nullable final HttpEntity entity,
+      @Nonnull final BiFunction<String, Throwable, ? extends ClientException> exceptionType)
+      throws ClientException {
     if (entity == null) {
-      throw new OrchestrationClientException("Orchestration service response was empty.");
+      throw exceptionType.apply("Orchestration service response was empty.", null);
     }
 
     final InputStream inputStream;
     try {
       inputStream = entity.getContent();
     } catch (final IOException e) {
-      throw new OrchestrationClientException("Failed to read response content.", e);
+      throw exceptionType.apply("Failed to read response content.", e);
     }
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
     final Runnable closeHandler =
         () -> Try.run(reader::close).onFailure(e -> log.error("Could not close input stream", e));
     final Function<Exception, RuntimeException> errHandler =
-        e -> new OrchestrationClientException("Parsing response content was interrupted.", e);
+        e -> exceptionType.apply("Parsing response content was interrupted.", e);
 
     final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler, errHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);

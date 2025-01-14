@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.AiModelList;
 import com.sap.ai.sdk.core.model.AiScenario;
@@ -23,7 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.36.0.
+ * AI Core in version 2.37.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -32,6 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
+@Beta
 public class ScenarioApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */

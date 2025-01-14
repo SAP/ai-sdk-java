@@ -8,10 +8,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,7 +33,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @RequestMapping("/orchestration")
 class OrchestrationController {
   @Autowired private OrchestrationService service;
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
   /**
@@ -41,13 +44,11 @@ class OrchestrationController {
   @GetMapping("/completion")
   @Nonnull
   ResponseEntity<String> completion(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.completion("HelloWorld!");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -122,13 +123,11 @@ class OrchestrationController {
   @GetMapping("/template")
   @Nonnull
   ResponseEntity<Object> template(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.template("German");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -141,42 +140,84 @@ class OrchestrationController {
   @GetMapping("/messagesHistory")
   @Nonnull
   ResponseEntity<String> messagesHistory(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.messagesHistory("What is the capital of France?");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
 
   /**
-   * Apply both input and output filtering for a request to orchestration.
+   * Send an HTTP GET request for input filtering to the Orchestration service.
    *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
-   *     AI Core: Orchestration - Input Filtering</a>
+   *     * AI Core: Orchestration - Input Filtering</a>
+   * @param accept an optional HTTP header specifying the desired content type for the response.
+   * @param policy path variable specifying the {@link AzureFilterThreshold} the explicitness of
+   *     content that should be allowed through the filter
+   * @return a {@link ResponseEntity} containing the filtered input. The response is either in JSON
+   *     format if the "accept" header specifies "application/json" or in plain content format
+   *     otherwise.
+   * @throws JsonProcessingException if an error occurs while converting the response to JSON.
+   */
+  @GetMapping("/inputFiltering/{policy}")
+  @Nonnull
+  ResponseEntity<String> inputFiltering(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
+      throws JsonProcessingException {
+
+    final OrchestrationChatResponse response;
+    try {
+      response = service.inputFiltering(policy);
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok().body(response.getContent());
+  }
+
+  /**
+   * Send an HTTP GET request for output filtering to the Orchestration service.
+   *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy A high threshold is a loose filter, a low threshold is a strict filter
-   * @return a ResponseEntity with the response content
+   * @param accept an optional HTTP header specifying the desired content type for the response.
+   * @param policy a mandatory path variable specifying the {@link AzureFilterThreshold} the
+   *     explicitness of content that should be allowed through the filter
+   * @return a {@link ResponseEntity} containing the filtered output. The response is either in JSON
+   *     format if the "accept" header specifies "application/json" or in plain content format
+   *     otherwise.
+   * @throws OrchestrationClientException if the output filter filtered the LLM response.
+   * @throws JsonProcessingException if an error occurs while converting the response to JSON.
    */
-  @GetMapping("/filter/{policy}")
+  @GetMapping("/outputFiltering/{policy}")
   @Nonnull
-  ResponseEntity<String> filter(
-      @RequestHeader(value = "accept", required = false) final String accept,
+  ResponseEntity<String> outputFiltering(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
-      throws JsonProcessingException {
-    final var response = service.filter(policy, "the downtown area");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      throws JsonProcessingException, OrchestrationClientException {
+
+    final var response = service.outputFiltering(policy);
+    try {
+      if (accept.equals("application/json")) {
+        return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+      }
+      return ResponseEntity.ok().body(response.getContent());
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
     }
-    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -192,13 +233,11 @@ class OrchestrationController {
   @GetMapping("/maskingAnonymization")
   @Nonnull
   ResponseEntity<String> maskingAnonymization(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.maskingAnonymization(DPIEntities.PERSON);
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -211,14 +250,12 @@ class OrchestrationController {
   @GetMapping("/completion/{resourceGroup}")
   @Nonnull
   public ResponseEntity<String> completionWithResourceGroup(
-      @RequestHeader(value = "accept", required = false) final String accept,
-      @PathVariable("resourceGroup") @Nonnull final String resourceGroup)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
       throws JsonProcessingException {
     final var response = service.completionWithResourceGroup(resourceGroup, "Hello world!");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -235,13 +272,11 @@ class OrchestrationController {
   @GetMapping("/maskingPseudonymization")
   @Nonnull
   ResponseEntity<String> maskingPseudonymization(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.maskingPseudonymization(DPIEntities.PERSON);
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }
@@ -256,13 +291,11 @@ class OrchestrationController {
   @GetMapping("/grounding")
   @Nonnull
   ResponseEntity<String> grounding(
-      @RequestHeader(value = "accept", required = false) final String accept)
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response = service.grounding("What does Joule do?");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
     return ResponseEntity.ok(response.getContent());
   }

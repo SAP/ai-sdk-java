@@ -17,8 +17,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,13 +31,27 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
+import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.ImageContent;
+import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
+import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -47,6 +63,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -130,7 +147,7 @@ class OrchestrationUnitTest {
     assertThat(groundingData.get("grounding_result").toString())
         .startsWith("Joule is the AI copilot that truly understands your business.");
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
+    assertThat(((ChatMessage) result.getModuleResults().getTemplating().get(0)).getContent())
         .startsWith(
             "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
     assertThat(llmChoice.getMessage().getContent())
@@ -160,9 +177,16 @@ class OrchestrationUnitTest {
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getAllMessages().get(0).content())
+    final var messageList = result.getAllMessages();
+
+    assertThat(messageList.get(0).content()).isEqualTo("You are a multi language translator");
+    assertThat(messageList.get(0).role()).isEqualTo("system");
+    assertThat(messageList.get(1).content())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
+    assertThat(messageList.get(1).role()).isEqualTo("user");
+    assertThat(messageList.get(2).content()).isEqualTo("Orchestration Service funktioniert!");
+    assertThat(messageList.get(2).role()).isEqualTo("assistant");
+
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
@@ -172,7 +196,7 @@ class OrchestrationUnitTest {
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
+        .isEqualTo("Le service d'orchestration fonctionne!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
@@ -187,7 +211,7 @@ class OrchestrationUnitTest {
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
+        .isEqualTo("Le service d'orchestration fonctionne!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     usage = result.getTokenUsage();
@@ -576,10 +600,12 @@ class OrchestrationUnitTest {
         final var message0 = (Map<String, Object>) choices0.getCustomField("delta");
         assertThat(message0.get("role")).isEqualTo("");
         assertThat(message0.get("content")).isEqualTo("");
-        List<ChatMessage> templating = deltaList.get(0).getModuleResults().getTemplating();
+        final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
-        assertThat(templating.get(0).getRole()).isEqualTo("user");
-        assertThat(templating.get(0).getContent())
+
+        final var templateItem = (ChatMessage) templating.get(0);
+        assertThat(templateItem.getRole()).isEqualTo("user");
+        assertThat(templateItem.getContent())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
@@ -615,5 +641,136 @@ class OrchestrationUnitTest {
       }
       Mockito.verify(inputStream, times(1)).close();
     }
+  }
+
+  @Test
+  void testRequestWithMultiChatMessage() throws IOException {
+
+    stubFor(
+        post("/completion")
+            .willReturn(
+                aResponse().withStatus(SC_OK).withBodyFile("multiChatMessageResponse.json")));
+
+    var multiChatMessage =
+        MultiChatMessage.create()
+            .role("user")
+            .content(
+                List.of(
+                    TextContent.create()
+                        .type(TextContent.TypeEnum.TEXT)
+                        .text("Can you solve this captcha? Please help me prove my humanity!"),
+                    ImageContent.create()
+                        .type(ImageContent.TypeEnum.IMAGE_URL)
+                        .imageUrl(
+                            ImageContentImageUrl.create().url("https://sample.sap.com/image"))));
+
+    var llmWithImageSupportConfig =
+        LLMModuleConfig.create()
+            .modelName(GPT_4O_MINI.getName())
+            .modelParams(Map.of())
+            .modelVersion(GPT_4O_MINI.getVersion());
+
+    var templatingModuleConfig = Template.create().template(List.of(multiChatMessage));
+
+    CompletionPostRequest completionPostRequest =
+        CompletionPostRequest.create()
+            .orchestrationConfig(
+                OrchestrationConfig.create()
+                    .moduleConfigurations(
+                        ModuleConfigs.create()
+                            .llmModuleConfig(llmWithImageSupportConfig)
+                            .templatingModuleConfig(templatingModuleConfig)));
+
+    var response = client.executeRequest(completionPostRequest);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getRequestId()).isEqualTo("2547cb86-a143-4064-bf40-45461c6a7ed9");
+
+    assertThat(response.getModuleResults()).isNotNull();
+    assertThat(response.getModuleResults().getTemplating()).hasSize(1);
+
+    var multiChatMessageResponse =
+        (MultiChatMessage) response.getModuleResults().getTemplating().get(0);
+    assertThat(((TextContent) multiChatMessageResponse.getContent().get(0)).getText())
+        .isEqualTo("Can you solve this captcha? Please help me prove my humanity!");
+    assertThat(((TextContent) multiChatMessageResponse.getContent().get(0)).getType())
+        .isEqualTo(TextContent.TypeEnum.TEXT);
+    assertThat(((ImageContent) multiChatMessageResponse.getContent().get(1)).getType())
+        .isEqualTo(ImageContent.TypeEnum.IMAGE_URL);
+    assertThat(((ImageContent) multiChatMessageResponse.getContent().get(1)).getImageUrl().getUrl())
+        .isEqualTo("https://sample.sap.com/image");
+
+    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llmResults).isNotNull();
+    assertThat(llmResults.getId()).isEqualTo("chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE");
+    assertThat(llmResults.getObject()).isEqualTo("chat.completion");
+    assertThat(llmResults.getCreated()).isEqualTo(1736432623);
+    assertThat(llmResults.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(llmResults.getSystemFingerprint()).isEqualTo("fp_5154047bf2");
+
+    assertThat(llmResults.getChoices()).hasSize(1);
+    assertThat(llmResults.getChoices().get(0).getMessage().getContent())
+        .isEqualTo(
+            "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix");
+    assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
+
+    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(31);
+    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(928);
+    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(959);
+
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult).isNotNull();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1736432623);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_5154047bf2");
+    assertThat(orchestrationResult.getChoices()).hasSize(1);
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
+        .isEqualTo(
+            "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix");
+    assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
+        .isEqualTo("assistant");
+    assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
+    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(31);
+    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(928);
+    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(959);
+
+    try (var requestInputStream = fileLoader.apply("multiChatMessageRequest.json")) {
+      final String requestBody = new String(requestInputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/completion"))
+              .withRequestBody(equalToJson(requestBody)));
+    }
+  }
+
+  @SneakyThrows
+  @Test
+  void testOrchestrationChatResponseWithMultiChatMessage() {
+    var module = new SimpleModule();
+    module.setMixInAnnotation(LLMModuleResult.class, JacksonMixins.NoneTypeInfoMixin.class);
+    module.addDeserializer(
+        LLMModuleResult.class,
+        PolymorphicFallbackDeserializer.fromJsonSubTypes(LLMModuleResult.class));
+    module.setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
+    module.addDeserializer(
+        ChatMessagesInner.class,
+        PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class));
+
+    var orchestrationChatResponse =
+        new OrchestrationChatResponse(
+            new ObjectMapper()
+                .registerModule(module)
+                .readValue(
+                    new String(
+                        fileLoader.apply("__files/multiChatMessageResponse.json").readAllBytes()),
+                    CompletionPostResponse.class));
+
+    assertThatThrownBy(orchestrationChatResponse::getAllMessages)
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessage("Messages of MultiChatMessage type not supported by convenience API");
   }
 }
