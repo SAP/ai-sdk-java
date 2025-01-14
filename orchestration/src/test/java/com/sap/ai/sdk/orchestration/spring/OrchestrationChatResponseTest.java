@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;

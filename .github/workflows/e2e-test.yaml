@@ -38,7 +38,7 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
-      - name: "Run tests"
+      - name: "Run Spring Boot tests"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
           mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}"
@@ -46,18 +46,29 @@ jobs:
           # See "End-to-end test application instructions" on the README.md to update the secret
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
 
-      - name: "Start Application Locally"
+      - name: "Run Spring AI tests"
         run: |
-          cd sample-code/spring-app
-          mvn spring-boot:run &
-          timeout=15
-          while ! nc -z localhost 8080; do
-            sleep 1
-            timeout=$((timeout - 1))
-            if [ $timeout -le 0 ]; then
-              echo "Server did not start within 15 seconds."
-              exit 1
-            fi
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-ai-app -DskipTests=false"
+          mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}"
+        env:
+          # See "End-to-end test application instructions" on the README.md to update the secret
+          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
+
+      - name: "Start Applications Locally"
+        run: |
+          for project in spring-app spring-ai-app; do
+            cd sample-code/$project
+            mvn spring-boot:run &
+            timeout=15
+            while ! nc -z localhost 8080; do
+              sleep 1
+              timeout=$((timeout - 1))
+              if [ $timeout -le 0 ]; then
+                echo "Server did not start within 15 seconds."
+                exit 1
+              fi
+            done
+            cd ..
           done
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret

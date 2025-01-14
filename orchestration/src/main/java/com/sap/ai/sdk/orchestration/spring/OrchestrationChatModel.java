@@ -2,16 +2,13 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-
+import com.sap.ai.sdk.orchestration.SystemMessage;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.UserMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -24,13 +21,21 @@ import org.springframework.ai.chat.prompt.Prompt;
 @Slf4j
 @RequiredArgsConstructor
 public class OrchestrationChatModel implements ChatModel {
-  @Nonnull private final OrchestrationClient client = new OrchestrationClient();
+  @Nonnull private OrchestrationClient client;
 
+  @Nonnull
   @Override
-  public ChatResponse call(Prompt prompt) {
-    val orchestrationPrompt = toOrchestrationPrompt(prompt);
-    val response = client.chatCompletion(orchestrationPrompt, ((OrchestrationChatOptions) prompt.getOptions()).getConfig());
-    return OrchestrationChatResponse.fromOrchestrationResponse(response.getOriginalResponse());
+  public ChatResponse call(@Nonnull final Prompt prompt) {
+
+    if (prompt.getOptions() != null
+        && prompt.getOptions() instanceof OrchestrationChatOptions options) {
+
+      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val response = client.chatCompletion(orchestrationPrompt, options.getConfig());
+      return OrchestrationChatResponse.fromOrchestrationResponse(response.getOriginalResponse());
+    }
+    throw new IllegalArgumentException(
+        "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
   }
 
   @Nonnull

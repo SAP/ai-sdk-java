@@ -3,7 +3,6 @@ package com.sap.ai.sdk.orchestration.spring;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.HashMap;
 import java.util.List;
@@ -18,18 +17,18 @@ import org.springframework.ai.chat.metadata.DefaultUsage;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 
+/** Response from the orchestration service in a Spring AI {@link ChatResponse}. */
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationChatResponse extends ChatResponse {
 
   private OrchestrationChatResponse(
-      @Nonnull final List<Generation> generations,
-      @Nonnull final ChatResponseMetadata metadata) {
+      @Nonnull final List<Generation> generations, @Nonnull final ChatResponseMetadata metadata) {
     super(generations, metadata);
   }
 
   @Nonnull
-  public static OrchestrationChatResponse fromOrchestrationResponse(
+  static OrchestrationChatResponse fromOrchestrationResponse(
       @Nonnull final CompletionPostResponse response) {
     val result = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     val generations = toGenerations(result);
@@ -47,7 +46,7 @@ public class OrchestrationChatResponse extends ChatResponse {
 
   @Nonnull
   static AssistantMessage toAssistantMessage(@Nonnull final LLMChoice choice) {
-    Map<String, Object> metadata = new HashMap<>();
+    final Map<String, Object> metadata = new HashMap<>();
     metadata.put("finish_reason", choice.getFinishReason());
     metadata.put("index", choice.getIndex());
     if (!choice.getLogprobs().isEmpty()) {
@@ -59,7 +58,7 @@ public class OrchestrationChatResponse extends ChatResponse {
   @Nonnull
   static ChatResponseMetadata toChatResponseMetadata(
       @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
-    var metadataBuilder = ChatResponseMetadata.builder();
+    val metadataBuilder = ChatResponseMetadata.builder();
 
     metadataBuilder
         .id(orchestrationResult.getId())
