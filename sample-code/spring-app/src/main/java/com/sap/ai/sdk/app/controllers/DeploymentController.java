@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.core.model.AiDeploymentTargetStatus.STOPPED;
+
 import com.sap.ai.sdk.core.client.ConfigurationApi;
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
@@ -10,22 +12,24 @@ import com.sap.ai.sdk.core.model.AiDeploymentCreationResponse;
 import com.sap.ai.sdk.core.model.AiDeploymentDeletionResponse;
 import com.sap.ai.sdk.core.model.AiDeploymentList;
 import com.sap.ai.sdk.core.model.AiDeploymentModificationRequest;
-import com.sap.ai.sdk.core.model.AiDeploymentModificationResponse;
-import com.sap.ai.sdk.core.model.AiDeploymentTargetStatus;
 import com.sap.ai.sdk.core.model.AiParameterArgumentBinding;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoints for AI Core AiDeployment operations */
 @Slf4j
 @RestController
+@SuppressWarnings("unused")
 @RequestMapping("/deployments")
 class DeploymentController {
 
@@ -33,15 +37,13 @@ class DeploymentController {
   private static final String RESOURCE_GROUP = "default";
 
   /**
-   * Create and delete a deployment with the Java specific configuration ID
+   * Create and delete a deployment with the Java specific configuration ID.
    *
    * @param configId The configuration id.
    * @return the deployment deletion response
    */
-  @GetMapping("/by-config/{id}/createDelete")
   @Nullable
-  AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(
-      @Nonnull @PathVariable("id") final String configId) {
+  AiDeploymentDeletionResponse createAndDeleteDeploymentByConfigId(final String configId) {
     final var deployment =
         CLIENT.create(
             RESOURCE_GROUP, AiDeploymentCreationRequest.create().configurationId(configId));
@@ -52,62 +54,109 @@ class DeploymentController {
   }
 
   /**
-   * Stop all deployments with the Java specific configuration ID
+   * Create and delete a deployment with the Java specific configuration ID.
+   *
+   * @param configId The configuration id.
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the deployment creation response
+   */
+  @GetMapping("/by-config/{id}/createDelete")
+  ResponseEntity<Object> createAndDeleteDeploymentByConfigId(
+      @Nonnull @PathVariable("id") final String configId,
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
+    final var response = createAndDeleteDeploymentByConfigId(configId);
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(response);
+    }
+    return ResponseEntity.ok("Deployment created and will be deleted.");
+  }
+
+  /**
+   * Stop all deployments with the Java specific configuration ID.
    *
    * <p>Only RUNNING deployments can be STOPPED
    *
    * @param configId The configuration id.
-   * @return the deployment modification response
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the deployment modification response
    */
   @GetMapping("/by-config/{id}/stop")
   @Nonnull
-  @SuppressWarnings("unused") // debug method that doesn't need to be tested
-  List<AiDeploymentModificationResponse> stopByConfigId(
-      @Nonnull @PathVariable("id") final String configId) {
+  ResponseEntity<Object> stopByConfigId(
+      @Nonnull @PathVariable("id") final String configId,
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to STOP", myDeployments.size());
 
     // STOP my deployments
-    return myDeployments.stream()
-        .map(
-            deployment ->
-                CLIENT.modify(
-                    RESOURCE_GROUP,
-                    deployment.getId(),
-                    AiDeploymentModificationRequest.create()
-                        .targetStatus(AiDeploymentTargetStatus.STOPPED)))
-        .toList();
+    final var modificationRequest = AiDeploymentModificationRequest.create().targetStatus(STOPPED);
+    final var stoppedDeployments =
+        myDeployments.stream()
+            .map(AiDeployment::getId)
+            .map(id -> CLIENT.modify(RESOURCE_GROUP, id, modificationRequest))
+            .toList();
+
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(stoppedDeployments);
+    }
+    return ResponseEntity.ok("Deployments under the given config ID stopped.");
   }
 
   /**
-   * Delete all deployments with the Java specific configuration ID
+   * Delete all deployments with the Java specific configuration ID.
    *
    * <p>Only UNKNOWN and STOPPED deployments can be DELETED
    *
    * @param configId The configuration id.
-   * @return the deployment deletion response
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the deployment deletion response
    */
   @GetMapping("/by-config/{id}/delete")
   @Nonnull
-  @SuppressWarnings("unused") // debug method that doesn't need to be tested
-  List<AiDeploymentDeletionResponse> deleteByConfigId(
-      @Nonnull @PathVariable("id") final String configId) {
+  ResponseEntity<Object> deleteByConfigId(
+      @Nonnull @PathVariable("id") final String configId,
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to DELETE", myDeployments.size());
 
     // DELETE my deployments
-    return myDeployments.stream()
-        .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
-        .toList();
+    final var responseList =
+        myDeployments.stream()
+            .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
+            .toList();
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(responseList);
+    }
+    return ResponseEntity.ok("Deployments under the given config ID deleted.");
   }
 
   /**
-   * Get all deployments with the Java specific configuration ID
+   * Get all deployments with the Java specific configuration ID.
+   *
+   * @param configId The configuration id.
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the Java specific deployments
+   */
+  @GetMapping("/by-config/{id}/getAll")
+  ResponseEntity<Object> getAllByConfigId(
+      @Nonnull @PathVariable("id") final String configId,
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
+    final var deployments = getAllByConfigId(configId);
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(deployments);
+    }
+    final var items =
+        deployments.stream().map(AiDeployment::getId).collect(Collectors.joining(", "));
+    return ResponseEntity.ok(
+        "The following Java-specific deployments are available: %s.".formatted(items));
+  }
+
+  /**
+   * Get all deployments with the Java specific configuration ID.
    *
    * @param configId The configuration id.
    * @return the Java specific deployments
    */
-  @GetMapping("/by-config/{id}/getAll")
   @Nonnull
   List<AiDeployment> getAllByConfigId(@Nonnull @PathVariable("id") final String configId) {
     final AiDeploymentList deploymentList = CLIENT.query(RESOURCE_GROUP);
@@ -120,9 +169,31 @@ class DeploymentController {
   /**
    * Get all deployments, including non-Java specific deployments
    *
-   * @return the Java specific deployments
+   * @param accept The accept header.
+   * @return a response entity with a string representation of the Java specific deployments
    */
   @GetMapping("/getAll")
+  @Nonnull
+  ResponseEntity<Object> getAll(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
+    final var deployments = getAll();
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(deployments);
+    }
+    final var items =
+        deployments != null
+            ? deployments.getResources().stream()
+                .map(AiDeployment::getId)
+                .collect(Collectors.joining(", "))
+            : "";
+    return ResponseEntity.ok("The following deployments are available: %s.".formatted(items));
+  }
+
+  /**
+   * Get all deployments
+   *
+   * @return all deployments
+   */
   @Nullable
   AiDeploymentList getAll() {
     return CLIENT.query(RESOURCE_GROUP);

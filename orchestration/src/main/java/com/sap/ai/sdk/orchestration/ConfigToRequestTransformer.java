@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
@@ -32,7 +32,10 @@ final class ConfigToRequestTransformer {
             OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
         .messagesHistory(
-            prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList());
+            prompt.getMessagesHistory().stream()
+                .map(Message::createChatMessage)
+                .map(ChatMessagesInner.class::cast)
+                .toList());
   }
 
   @Nonnull
@@ -45,7 +48,7 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
+    val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessagesInner>of();
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(
         prompt.getMessages().stream().map(Message::createChatMessage).toList());

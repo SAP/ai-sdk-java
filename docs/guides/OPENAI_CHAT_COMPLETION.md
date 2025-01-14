@@ -90,7 +90,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 ### Simple chat completion
 
 ```java
-OpenAiChatCompletionOutput result =
+var result =
     OpenAiClient.forModel(GPT_35_TURBO)
         .withSystemPrompt("You are a helpful AI")
         .chatCompletion("Hello World! Why is this phrase so famous?");
@@ -117,8 +117,7 @@ var userMessage =
 var request =
     new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
-OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+var result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
 String resultMessage = result.getContent();
 ```
@@ -177,12 +176,12 @@ Any asynchronous library can be used, such as the classic Thread API.
 ```java
 var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatMessage.OpenAiChatUserMessage userMessage =
+var userMessage =
     new OpenAiChatMessage.OpenAiChatUserMessage().addText(message);
-OpenAiChatCompletionParameters requestParameters =
+var requestParameters =
     new OpenAiChatCompletionParameters().addMessages(userMessage);
 
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+var client = OpenAiClient.forModel(GPT_35_TURBO);
 var totalOutput = new OpenAiChatCompletionOutput();
 
 // Prepare the stream before starting the thread to handle any initialization exceptions
@@ -216,7 +215,7 @@ Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the
 Get the embeddings of a text input in list of float values:
 
 ```java
-OpenAiEmbeddingParameters request = new OpenAiEmbeddingParameters().setInput("Hello World");
+var request = new OpenAiEmbeddingParameters().setInput("Hello World");
 
 OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
 ```
