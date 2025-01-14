@@ -19,6 +19,22 @@ class PolymorphicFallbackDeserializerTest {
   private static String candidateAJson;
   private static String candidateBJson;
 
+  @JsonSubTypes({
+    @JsonSubTypes.Type(value = CandidateA.class),
+    @JsonSubTypes.Type(value = CandidateB.class)
+  })
+  interface AbstractParent {}
+
+  static class CandidateA implements AbstractParent {
+    @JsonProperty("content")
+    String content;
+  }
+
+  static class CandidateB implements AbstractParent {
+    @JsonProperty("content")
+    List<String> content;
+  }
+
   @BeforeEach
   void setUp() {
     candidateAJson =
@@ -97,22 +113,6 @@ class PolymorphicFallbackDeserializerTest {
 
     final var candidate = mapper.readValue(candidateAJson, AbstractParent.class);
     assertThat(candidate).isInstanceOf(CandidateA.class);
-  }
-
-  @JsonSubTypes({
-    @JsonSubTypes.Type(value = CandidateA.class),
-    @JsonSubTypes.Type(value = CandidateB.class)
-  })
-  interface AbstractParent {}
-
-  static class CandidateA implements AbstractParent {
-    @JsonProperty("content")
-    String content;
-  }
-
-  static class CandidateB implements AbstractParent {
-    @JsonProperty("content")
-    List<String> content;
   }
 
   @Test
