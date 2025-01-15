@@ -12,12 +12,10 @@ import lombok.With;
 /**
  * Large language models available in Orchestration.
  *
- * <p>
- * Please note that the template of models provided in this class might be outdated.
- * To check the latest availability of models in Orchestration, please refer to
- * <a href="https://me.sap.com/notes/3437766">SAP Availability of Generative AI Models </a>
- * and pay attention to the <i>Available in Orchestration</i> column.
- *
+ * <p>Please note that the template of models provided in this class might be outdated. To check the
+ * latest availability of models in Orchestration, please refer to <a
+ * href="https://me.sap.com/notes/3437766">SAP Availability of Generative AI Models </a> and pay
+ * attention to the <i>Available in Orchestration</i> column.
  */
 @Value
 @With
@@ -91,16 +89,15 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("amazon--titan-text-express");
 
   /** Amazon Nova Pro model */
-  public static final OrchestrationAiModel NOVA_PRO =
-          new OrchestrationAiModel("amazon--nova-pro");
+  public static final OrchestrationAiModel NOVA_PRO = new OrchestrationAiModel("amazon--nova-pro");
 
   /** Amazon Nova Lite model */
   public static final OrchestrationAiModel NOVA_LITE =
-          new OrchestrationAiModel("amazon--nova-lite");
+      new OrchestrationAiModel("amazon--nova-lite");
 
   /** Amazon Nova Micro model */
   public static final OrchestrationAiModel NOVA_MICRO =
-          new OrchestrationAiModel("amazon--nova-micro");
+      new OrchestrationAiModel("amazon--nova-micro");
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
@@ -111,7 +108,7 @@ public class OrchestrationAiModel {
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OrchestrationAiModel GPT_35_TURBO_0125 =
-          new OrchestrationAiModel("gpt-35-turbo-0125");
+      new OrchestrationAiModel("gpt-35-turbo-0125");
 
   /** Azure OpenAI GPT-4 chat completions model */
   public static final OrchestrationAiModel GPT_4 = new OrchestrationAiModel("gpt-4");
