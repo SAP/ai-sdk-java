@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.annotations.Beta;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,7 +32,7 @@ import javax.annotation.Nullable;
  * An ML Scenario consists of a number of executables. E.g., there can be one or several training
  * executables, an inference (deployment) executable. An ML Scenario is versioned.
  */
-// CHECKSTYLE:OFF
+@Beta // CHECKSTYLE:OFF
 public class AiScenario
 // CHECKSTYLE:ON
 {
