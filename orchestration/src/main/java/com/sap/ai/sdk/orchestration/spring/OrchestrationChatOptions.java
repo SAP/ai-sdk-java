@@ -178,7 +178,10 @@ public class OrchestrationChatOptions implements ChatOptions {
   }
 
   @SuppressWarnings("unchecked")
-  private void setLlmConfigParam(OrchestrationChatOptions copy, String param, Object value) {
+  private void setLlmConfigParam(
+      @Nonnull final OrchestrationChatOptions copy,
+      @Nonnull final String param,
+      @Nullable final Object value) {
     if (value != null) {
       ((Map<String, Object>) copy.getLlmConfigNonNull().getModelParams()).put(param, value);
     }
