@@ -25,87 +25,57 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** FilteringModuleConfig */
+/** DPIConfigMaskGroundingInput */
 @Beta // CHECKSTYLE:OFF
-public class FilteringModuleConfig
+public class DPIConfigMaskGroundingInput
 // CHECKSTYLE:ON
 {
-  @JsonProperty("input")
-  private InputFilteringConfig input;
-
-  @JsonProperty("output")
-  private OutputFilteringConfig output;
+  @JsonProperty("enabled")
+  private Boolean enabled = false;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for FilteringModuleConfig. */
-  protected FilteringModuleConfig() {}
+  /** Default constructor for DPIConfigMaskGroundingInput. */
+  protected DPIConfigMaskGroundingInput() {}
 
   /**
-   * Set the input of this {@link FilteringModuleConfig} instance and return the same instance.
+   * Set the enabled of this {@link DPIConfigMaskGroundingInput} instance and return the same
+   * instance.
    *
-   * @param input List of provider type and filters
-   * @return The same instance of this {@link FilteringModuleConfig} class
+   * @param enabled controls whether the input to the grounding module will be masked with the
+   *     configuration supplied in the masking module
+   * @return The same instance of this {@link DPIConfigMaskGroundingInput} class
    */
   @Nonnull
-  public FilteringModuleConfig input(@Nullable final InputFilteringConfig input) {
-    this.input = input;
+  public DPIConfigMaskGroundingInput enabled(@Nullable final Boolean enabled) {
+    this.enabled = enabled;
     return this;
   }
 
   /**
-   * List of provider type and filters
+   * controls whether the input to the grounding module will be masked with the configuration
+   * supplied in the masking module
    *
-   * @return input The input of this {@link FilteringModuleConfig} instance.
+   * @return enabled The enabled of this {@link DPIConfigMaskGroundingInput} instance.
    */
   @Nonnull
-  public InputFilteringConfig getInput() {
-    return input;
+  public Boolean isEnabled() {
+    return enabled;
   }
 
   /**
-   * Set the input of this {@link FilteringModuleConfig} instance.
+   * Set the enabled of this {@link DPIConfigMaskGroundingInput} instance.
    *
-   * @param input List of provider type and filters
+   * @param enabled controls whether the input to the grounding module will be masked with the
+   *     configuration supplied in the masking module
    */
-  public void setInput(@Nullable final InputFilteringConfig input) {
-    this.input = input;
+  public void setEnabled(@Nullable final Boolean enabled) {
+    this.enabled = enabled;
   }
 
   /**
-   * Set the output of this {@link FilteringModuleConfig} instance and return the same instance.
-   *
-   * @param output List of provider type and filters
-   * @return The same instance of this {@link FilteringModuleConfig} class
-   */
-  @Nonnull
-  public FilteringModuleConfig output(@Nullable final OutputFilteringConfig output) {
-    this.output = output;
-    return this;
-  }
-
-  /**
-   * List of provider type and filters
-   *
-   * @return output The output of this {@link FilteringModuleConfig} instance.
-   */
-  @Nonnull
-  public OutputFilteringConfig getOutput() {
-    return output;
-  }
-
-  /**
-   * Set the output of this {@link FilteringModuleConfig} instance.
-   *
-   * @param output List of provider type and filters
-   */
-  public void setOutput(@Nullable final OutputFilteringConfig output) {
-    this.output = output;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link FilteringModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link DPIConfigMaskGroundingInput}.
    *
    * @return The set of properties names
    */
@@ -116,7 +86,8 @@ public class FilteringModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link FilteringModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link DPIConfigMaskGroundingInput}
+   * instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -126,13 +97,13 @@ public class FilteringModuleConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "FilteringModuleConfig has no field with name '" + name + "'.");
+          "DPIConfigMaskGroundingInput has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link FilteringModuleConfig} instance. If the map
+   * Set an unrecognizable property of this {@link DPIConfigMaskGroundingInput} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -151,24 +122,23 @@ public class FilteringModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final FilteringModuleConfig filteringModuleConfig = (FilteringModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, filteringModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.input, filteringModuleConfig.input)
-        && Objects.equals(this.output, filteringModuleConfig.output);
+    final DPIConfigMaskGroundingInput dpIConfigMaskGroundingInput = (DPIConfigMaskGroundingInput) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, dpIConfigMaskGroundingInput.cloudSdkCustomFields)
+        && Objects.equals(this.enabled, dpIConfigMaskGroundingInput.enabled);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(input, output, cloudSdkCustomFields);
+    return Objects.hash(enabled, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class FilteringModuleConfig {\n");
-    sb.append("    input: ").append(toIndentedString(input)).append("\n");
-    sb.append("    output: ").append(toIndentedString(output)).append("\n");
+    sb.append("class DPIConfigMaskGroundingInput {\n");
+    sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -186,8 +156,8 @@ public class FilteringModuleConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link FilteringModuleConfig} instance. No arguments are required. */
-  public static FilteringModuleConfig create() {
-    return new FilteringModuleConfig();
+  /** Create a new {@link DPIConfigMaskGroundingInput} instance. No arguments are required. */
+  public static DPIConfigMaskGroundingInput create() {
+    return new DPIConfigMaskGroundingInput();
   }
 }
