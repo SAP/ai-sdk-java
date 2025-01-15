@@ -6,11 +6,11 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.PRESEN
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,7 +21,12 @@ import lombok.Setter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 
-/** Configuration to be used for orchestration requests. */
+/**
+ * Configuration to be used for orchestration requests.
+ *
+ * @since 1.2.0
+ */
+@Beta
 @Data
 @Getter(AccessLevel.NONE)
 @Setter(AccessLevel.NONE)
@@ -73,10 +78,6 @@ public class OrchestrationChatOptions implements ChatOptions {
     return getLlmConfigParam(FREQUENCY_PENALTY.getName());
   }
 
-  private void setFrequencyPenalty(@Nonnull final Double frequencyPenalty) {
-    setLlmConfigParam(FREQUENCY_PENALTY.getName(), frequencyPenalty);
-  }
-
   /**
    * Returns the maximum number of tokens to use for the chat.
    *
@@ -86,10 +87,6 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Override
   public Integer getMaxTokens() {
     return getLlmConfigParam(MAX_TOKENS.getName());
-  }
-
-  private void setMaxTokens(@Nonnull final Integer maxTokens) {
-    setLlmConfigParam(MAX_TOKENS.getName(), maxTokens);
   }
 
   /**
@@ -103,10 +100,6 @@ public class OrchestrationChatOptions implements ChatOptions {
     return getLlmConfigParam(PRESENCE_PENALTY.getName());
   }
 
-  private void setPresencePenalty(@Nonnull final Double presencePenalty) {
-    setLlmConfigParam(PRESENCE_PENALTY.getName(), presencePenalty);
-  }
-
   /**
    * Returns the stop sequences to use for the chat.
    *
@@ -116,10 +109,6 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Override
   public List<String> getStopSequences() {
     return getLlmConfigParam("stop_sequences");
-  }
-
-  private void setStopSequences(@Nonnull final List<String> stopSequences) {
-    setLlmConfigParam("stop_sequences", stopSequences);
   }
 
   /**
@@ -133,10 +122,6 @@ public class OrchestrationChatOptions implements ChatOptions {
     return getLlmConfigParam(TEMPERATURE.getName());
   }
 
-  private void setTemperature(@Nonnull final Double temperature) {
-    setLlmConfigParam(TEMPERATURE.getName(), temperature);
-  }
-
   /**
    * Returns the top K to use for the chat.
    *
@@ -148,10 +133,6 @@ public class OrchestrationChatOptions implements ChatOptions {
     return getLlmConfigParam("top_k");
   }
 
-  private void setTopK(@Nonnull final Integer topK) {
-    setLlmConfigParam("top_k", topK);
-  }
-
   /**
    * Returns the top P to use for the chat.
    *
@@ -161,10 +142,6 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Override
   public Double getTopP() {
     return getLlmConfigParam(TOP_P.getName());
-  }
-
-  private void setTopP(@Nonnull final Double topP) {
-    setLlmConfigParam(TOP_P.getName(), topP);
   }
 
   /**
@@ -180,25 +157,25 @@ public class OrchestrationChatOptions implements ChatOptions {
     copy.setModel(this.getModel());
     copy.setModelVersion(this.getModelVersion());
     if (getFrequencyPenalty() != null) {
-      copy.setFrequencyPenalty(this.getFrequencyPenalty());
+      copy.setLlmConfigParam(FREQUENCY_PENALTY.getName(), getFrequencyPenalty());
     }
     if (getMaxTokens() != null) {
-      copy.setMaxTokens(this.getMaxTokens());
+      copy.setLlmConfigParam(MAX_TOKENS.getName(), getMaxTokens());
     }
     if (getPresencePenalty() != null) {
-      copy.setPresencePenalty(this.getPresencePenalty());
+      copy.setLlmConfigParam(PRESENCE_PENALTY.getName(), getPresencePenalty());
     }
     if (getStopSequences() != null) {
-      copy.setStopSequences(new ArrayList<>(this.getStopSequences()));
+      copy.setLlmConfigParam("stop_sequences", getStopSequences());
     }
     if (getTemperature() != null) {
-      copy.setTemperature(this.getTemperature());
+      copy.setLlmConfigParam(TEMPERATURE.getName(), getTemperature());
     }
     if (getTopK() != null) {
-      copy.setTopK(this.getTopK());
+      copy.setLlmConfigParam("top_k", getTopK());
     }
     if (getTopP() != null) {
-      copy.setTopP(this.getTopP());
+      copy.setLlmConfigParam(TOP_P.getName(), getTopP());
     }
     return (T) copy;
   }
@@ -206,15 +183,15 @@ public class OrchestrationChatOptions implements ChatOptions {
   @SuppressWarnings("unchecked")
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
-    if (getLlmConfigNonNull().getModelParams() instanceof LinkedHashMap) {
-      return ((LinkedHashMap<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
+    if (getLlmConfigNonNull().getModelParams() instanceof Map) {
+      return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
     }
     return null;
   }
 
   @SuppressWarnings("unchecked")
-  private <T> void setLlmConfigParam(@Nonnull final String param, @Nonnull final T value) {
-    ((LinkedHashMap<String, T>) getLlmConfigNonNull().getModelParams()).put(param, value);
+  private void setLlmConfigParam(@Nonnull final String param, @Nonnull final Object value) {
+    ((Map<String, Object>) getLlmConfigNonNull().getModelParams()).put(param, value);
   }
 
   @Nonnull

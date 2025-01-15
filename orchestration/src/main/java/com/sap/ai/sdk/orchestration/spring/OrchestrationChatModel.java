@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
@@ -17,13 +18,22 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 
-/** Spring AI integration for the orchestration service. */
+/**
+ * Spring AI integration for the orchestration service.
+ *
+ * @since 1.2.0
+ */
+@Beta
 @Slf4j
 @RequiredArgsConstructor
 public class OrchestrationChatModel implements ChatModel {
   @Nonnull private OrchestrationClient client;
 
-  /** Default constructor. */
+  /**
+   * Default constructor.
+   *
+   * @since 1.2.0
+   */
   public OrchestrationChatModel() {
     this.client = new OrchestrationClient();
   }
@@ -32,8 +42,7 @@ public class OrchestrationChatModel implements ChatModel {
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
 
-    if (prompt.getOptions() != null
-        && prompt.getOptions() instanceof OrchestrationChatOptions options) {
+    if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response = client.chatCompletion(orchestrationPrompt, options.getConfig());
@@ -48,8 +57,6 @@ public class OrchestrationChatModel implements ChatModel {
     val messages = toOrchestrationMessages(prompt.getInstructions());
     return new OrchestrationPrompt(Map.of(), messages);
   }
-
-  // endregion
 
   @Nonnull
   private static com.sap.ai.sdk.orchestration.Message[] toOrchestrationMessages(
