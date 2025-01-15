@@ -421,7 +421,9 @@ class OpenAiClientTest {
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
-            .withRequestBody(equalToJson("""
+            .withRequestBody(
+                equalToJson(
+                    """
                       {"input": "Hello World" }""")));
   }
 
