@@ -224,12 +224,9 @@ class OrchestrationUnitTest {
         .isEqualTo("assistant");
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
 
-    try (var requestInputStream = fileLoader.apply("groundingREquest.json")) {
-      final String requestBody = new String(requestInputStream.readAllBytes());
-      verify(
-          postRequestedFor(urlPathEqualTo("/completion"))
-              .withRequestBody(equalToJson(requestBody)));
-    }
+    final String requestBody = new String(fileLoader.apply("groundingRequest.json").readAllBytes());
+    verify(
+        postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(requestBody)));
   }
 
   @Test
