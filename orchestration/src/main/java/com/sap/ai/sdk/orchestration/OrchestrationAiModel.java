@@ -81,12 +81,28 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel TITAN_TEXT_EXPRESS =
       new OrchestrationAiModel("amazon--titan-text-express");
 
+  /** Amazon Nova Pro model */
+  public static final OrchestrationAiModel NOVA_PRO =
+          new OrchestrationAiModel("amazon--nova-pro");
+
+  /** Amazon Nova Lite model */
+  public static final OrchestrationAiModel NOVA_LITE =
+          new OrchestrationAiModel("amazon--nova-lite");
+
+  /** Amazon Nova Micro model */
+  public static final OrchestrationAiModel NOVA_MICRO =
+          new OrchestrationAiModel("amazon--nova-micro");
+
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OrchestrationAiModel GPT_35_TURBO_16K =
       new OrchestrationAiModel("gpt-35-turbo-16k");
+
+  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  public static final OrchestrationAiModel GPT_35_TURBO_0125 =
+          new OrchestrationAiModel("gpt-35-turbo-0125");
 
   /** Azure OpenAI GPT-4 chat completions model */
   public static final OrchestrationAiModel GPT_4 = new OrchestrationAiModel("gpt-4");
