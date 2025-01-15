@@ -67,7 +67,7 @@
     <dotenv-java.version>3.1.0</dotenv-java.version>
     <mockito.version>5.15.2</mockito.version>
     <!-- Formatting -->
-    <spotless.version>2.43.0</spotless.version>
+    <spotless.version>2.44.1</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -785,7 +785,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.sonatype.central</groupId>
               <artifactId>central-publishing-maven-plugin</artifactId>
-              <version>0.6.0</version>
+              <version>0.7.0</version>
               <extensions>true</extensions>
               <configuration>
                 <deploymentName>SAP AI SDK ${project.version}</deploymentName>

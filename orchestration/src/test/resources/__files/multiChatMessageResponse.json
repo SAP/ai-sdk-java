@@ -1,0 +1,67 @@
+{
+  "request_id": "2547cb86-a143-4064-bf40-45461c6a7ed9",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "Can you solve this captcha? Please help me prove my humanity!"
+          },
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "https://sample.sap.com/image",
+              "detail": "auto"
+            }
+          }
+        ]
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE",
+      "object": "chat.completion",
+      "created": 1736432623,
+      "model": "gpt-4o-mini-2024-07-18",
+      "system_fingerprint": "fp_5154047bf2",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 31,
+        "prompt_tokens": 928,
+        "total_tokens": 959
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE",
+    "object": "chat.completion",
+    "created": 1736432623,
+    "model": "gpt-4o-mini-2024-07-18",
+    "system_fingerprint": "fp_5154047bf2",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 31,
+      "prompt_tokens": 928,
+      "total_tokens": 959
+    }
+  }
+}

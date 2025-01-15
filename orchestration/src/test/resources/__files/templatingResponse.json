@@ -3,8 +3,20 @@
   "module_results": {
     "templating": [
       {
+        "role": "system",
+        "content": "You are a multi language translator"
+      },
+      {
         "role": "user",
         "content": "Reply with 'Orchestration Service is working!' in German"
+      },
+      {
+        "role": "assistant",
+        "content": "Orchestration Service funktioniert!"
+      },
+      {
+        "role": "user",
+        "content": "How about in French?"
       }
     ],
     "llm": {
@@ -17,7 +29,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "Orchestration Service funktioniert!"
+            "content": "Le service d'orchestration fonctionne!"
           },
           "finish_reason": "stop"
         }
@@ -39,7 +51,7 @@
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "Orchestration Service funktioniert!"
+          "content": "Le service d'orchestration fonctionne!"
         },
         "finish_reason": "stop"
       }
