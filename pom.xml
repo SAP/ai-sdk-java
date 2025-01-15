@@ -194,11 +194,6 @@
         <artifactId>spring-app</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.sap.ai.sdk.app</groupId>
-        <artifactId>spring-ai-app</artifactId>
-        <version>${project.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -713,7 +708,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         </property>
       </activation>
       <modules>
-        <module>sample-code/spring-ai-app</module>
         <module>sample-code/spring-app</module>
       </modules>
     </profile>

@@ -285,7 +285,7 @@ Prompt prompt = new Prompt("What is the capital of France?", opts);
 ChatResponse response = client.call(prompt);
 ```
 
-Please find [an example in our Spring AI application](../../sample-code/spring-ai-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
 
 ## Using a Configuration from AI Launchpad
 
