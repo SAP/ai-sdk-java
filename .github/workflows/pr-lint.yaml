@@ -23,7 +23,7 @@ jobs:
             OpenAI
             Orchestration
             DevOps
-          headerPattern: '^(\w+): (?:\[(\w+)\] )?(.+)$'
+          headerPattern: '^(\w.+): (?:\[(\w.+)\] )?(.+)$'
           headerPatternCorrespondence: type, scope, subject
           # for available types, check:
           # https://github.com/commitizen/conventional-commit-types/blob/master/index.json
