@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoints for the Orchestration service */
 @RestController
-@RequestMapping("/orchestration")
+@RequestMapping("/spring-ai-orchestration")
 class SpringAiOrchestrationController {
 
   private final ChatModel client = new OrchestrationChatModel();
