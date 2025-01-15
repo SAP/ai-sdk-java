@@ -154,29 +154,17 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Override
   public <T extends ChatOptions> T copy() {
     val copy = new OrchestrationChatOptions(config);
+
     copy.setModel(this.getModel());
     copy.setModelVersion(this.getModelVersion());
-    if (getFrequencyPenalty() != null) {
-      copy.setLlmConfigParam(FREQUENCY_PENALTY.getName(), getFrequencyPenalty());
-    }
-    if (getMaxTokens() != null) {
-      copy.setLlmConfigParam(MAX_TOKENS.getName(), getMaxTokens());
-    }
-    if (getPresencePenalty() != null) {
-      copy.setLlmConfigParam(PRESENCE_PENALTY.getName(), getPresencePenalty());
-    }
-    if (getStopSequences() != null) {
-      copy.setLlmConfigParam("stop_sequences", getStopSequences());
-    }
-    if (getTemperature() != null) {
-      copy.setLlmConfigParam(TEMPERATURE.getName(), getTemperature());
-    }
-    if (getTopK() != null) {
-      copy.setLlmConfigParam("top_k", getTopK());
-    }
-    if (getTopP() != null) {
-      copy.setLlmConfigParam(TOP_P.getName(), getTopP());
-    }
+    setLlmConfigParam(copy, FREQUENCY_PENALTY.getName(), getFrequencyPenalty());
+    setLlmConfigParam(copy, MAX_TOKENS.getName(), getMaxTokens());
+    setLlmConfigParam(copy, PRESENCE_PENALTY.getName(), getPresencePenalty());
+    setLlmConfigParam(copy, "stop_sequences", getStopSequences());
+    setLlmConfigParam(copy, TEMPERATURE.getName(), getTemperature());
+    setLlmConfigParam(copy, "top_k", getTopK());
+    setLlmConfigParam(copy, TOP_P.getName(), getTopP());
+
     return (T) copy;
   }
 
@@ -190,8 +178,10 @@ public class OrchestrationChatOptions implements ChatOptions {
   }
 
   @SuppressWarnings("unchecked")
-  private void setLlmConfigParam(@Nonnull final String param, @Nonnull final Object value) {
-    ((Map<String, Object>) getLlmConfigNonNull().getModelParams()).put(param, value);
+  private void setLlmConfigParam(OrchestrationChatOptions copy, String param, Object value) {
+    if (value != null) {
+      ((Map<String, Object>) copy.getLlmConfigNonNull().getModelParams()).put(param, value);
+    }
   }
 
   @Nonnull
