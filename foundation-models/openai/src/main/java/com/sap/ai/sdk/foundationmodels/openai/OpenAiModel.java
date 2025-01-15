@@ -7,6 +7,11 @@ import javax.annotation.Nullable;
 /**
  * OpenAI models that are available in AI Core.
  *
+ * <p>
+ * Please note that the template of models provided in this class might be outdated.
+ * To check the latest availability of OpenAI models in AI Core, please refer to
+ * <a href="https://me.sap.com/notes/3437766">SAP Availability of Generative AI Models </a>.
+ *
  * @param name The name of the model.
  * @param version The version of the model (optional).
  */

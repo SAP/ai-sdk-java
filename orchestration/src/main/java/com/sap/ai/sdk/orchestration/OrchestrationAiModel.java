@@ -9,7 +9,16 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.With;
 
-/** Large language models available in Orchestration. */
+/**
+ * Large language models available in Orchestration.
+ *
+ * <p>
+ * Please note that the template of models provided in this class might be outdated.
+ * To check the latest availability of models in Orchestration, please refer to
+ * <a href="https://me.sap.com/notes/3437766">SAP Availability of Generative AI Models </a>
+ * and pay attention to the <i>Available in Orchestration</i> column.
+ *
+ */
 @Value
 @With
 @AllArgsConstructor
