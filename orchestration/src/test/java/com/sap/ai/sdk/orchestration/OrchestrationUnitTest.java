@@ -41,7 +41,11 @@ import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
+import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
@@ -129,34 +133,103 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGrounding() {
+  void testGrounding() throws IOException {
     stubFor(
-        post(anyUrl())
+        post(urlPathEqualTo("/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("groundingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    final var response = client.chatCompletion(prompt, config);
-    final var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
 
-    final var groundingData =
-        (Map<String, Object>) result.getModuleResults().getGrounding().getData();
-    assertThat(groundingData.get("grounding_query")).isEqualTo("grounding call");
-    assertThat(groundingData.get("grounding_result").toString())
-        .startsWith("Joule is the AI copilot that truly understands your business.");
-    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
-    assertThat(((ChatMessage) result.getModuleResults().getTemplating().get(0)).getContent())
-        .startsWith(
-            "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
-    assertThat(llmChoice.getMessage().getContent())
-        .startsWith(
-            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
-    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
-    assertThat(llmChoice.getMessage().getContent())
-        .startsWith(
-            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
+    final var databaseFilter =
+        DocumentGroundingFilter.create()
+            .id("arbitrary-user-defined-id")
+            .dataRepositoryType(DataRepositoryType.VECTOR);
+    final var groundingConfigConfig =
+        GroundingModuleConfigConfig.create()
+            .inputParams(List.of("query"))
+            .outputParam("results")
+            .addFiltersItem(databaseFilter);
+    final var groundingConfig =
+        GroundingModuleConfig.create()
+            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+            .config(groundingConfigConfig);
+    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+
+    final Map<String, String> inputParams =
+        Map.of("query", "String used for similarity search in database");
+    final var prompt =
+        new OrchestrationPrompt(
+            inputParams,
+            Message.system("Context message with embedded grounding results. {{?results}}"));
+
+    final var response = client.chatCompletion(prompt, configWithGrounding);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getOriginalResponse().getRequestId())
+        .isEqualTo("e5d2add4-408c-4da5-84ca-1d8b0fe350c8");
+
+    var moduleResults = response.getOriginalResponse().getModuleResults();
+    assertThat(moduleResults).isNotNull();
+
+    var groundingModule = moduleResults.getGrounding();
+    assertThat(groundingModule).isNotNull();
+    assertThat(groundingModule.getMessage()).isEqualTo("grounding result");
+    assertThat(groundingModule.getData()).isNotNull();
+    var groundingData =
+        Map.of(
+            "grounding_query",
+            "grounding call",
+            "grounding_result",
+            "First chunk```Second chunk```Last found chunk");
+    assertThat(groundingModule.getData()).isEqualTo(groundingData);
+
+    var systemMessage = (ChatMessage) moduleResults.getTemplating().get(0);
+    assertThat((systemMessage.getRole())).isEqualTo("system");
+    assertThat(systemMessage.getContent())
+        .isEqualTo(
+            "Context message with embedded grounding results. First chunk```Second chunk```Last found chunk");
+
+    var llmModule = (LLMModuleResultSynchronous) moduleResults.getLlm();
+    assertThat(llmModule).isNotNull();
+    assertThat(llmModule.getId()).isEqualTo("chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU");
+    assertThat(llmModule.getObject()).isEqualTo("chat.completion");
+    assertThat(llmModule.getCreated()).isEqualTo(1736952936);
+    assertThat(llmModule.getModel()).isEqualTo("gpt-4o-2024-08-06");
+    assertThat(llmModule.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
+    assertThat(llmModule.getChoices()).hasSize(1);
+    assertThat(llmModule.getChoices().get(0).getIndex()).isZero();
+    assertThat(llmModule.getChoices().get(0).getMessage().getContent())
+        .isEqualTo("Response that makes uses of grounding results in the context message.");
+    assertThat(llmModule.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(llmModule.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(llmModule.getUsage()).isNotNull();
+    assertThat(llmModule.getUsage().getCompletionTokens()).isEqualTo(163);
+    assertThat(llmModule.getUsage().getPromptTokens()).isEqualTo(217);
+    assertThat(llmModule.getUsage().getTotalTokens()).isEqualTo(380);
+
+    var orchestrationResult =
+        (LLMModuleResultSynchronous) response.getOriginalResponse().getOrchestrationResult();
+    assertThat(orchestrationResult).isNotNull();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1736952936);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-2024-08-06");
+    assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
+    assertThat(orchestrationResult.getChoices()).hasSize(1);
+    assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
+        .isEqualTo("Response that makes uses of grounding results in the context message.");
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
+        .isEqualTo("assistant");
+    assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+
+    try (var requestInputStream = fileLoader.apply("groundingREquest.json")) {
+      final String requestBody = new String(requestInputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/completion"))
+              .withRequestBody(equalToJson(requestBody)));
+    }
   }
 
   @Test
@@ -203,6 +276,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
+
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
