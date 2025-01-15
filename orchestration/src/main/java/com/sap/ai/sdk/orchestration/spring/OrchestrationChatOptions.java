@@ -186,6 +186,8 @@ public class OrchestrationChatOptions implements ChatOptions {
 
   @Nonnull
   private LLMModuleConfig getLlmConfigNonNull() {
-    return Objects.requireNonNull(config.getLlmConfig(), "LLM config is not set");
+    return Objects.requireNonNull(
+        config.getLlmConfig(),
+        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
   }
 }
