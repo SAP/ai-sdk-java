@@ -41,6 +41,8 @@ jobs:
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
+      compilation_result: ${{ steps.compile.outputs.compilation_result }}
+      test_result: ${{ steps.compile.outputs.test_result }}
     env:
       API_BASE_URL: "https://github.tools.sap/api/v3/repos"
       CHOICE: "orchestration" # TODO: replace with ${{ github.event.inputs.file }}
@@ -54,8 +56,15 @@ jobs:
 
       - name: "Checkout or Create Branch"
         id: branch
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
         run: |
           BRANCH="spec-update/$CHOICE/$REF"
+          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
+            echo "An open PR already exists for this branch. Please close the PR first before re-running the workflow."
+            exit 1
+          fi
+          
           if git ls-remote --exit-code origin refs/heads/$BRANCH >/dev/null 2>&1; then
             echo "Branch '$BRANCH' exists on remote, deleting it..."
             git push origin --delete $BRANCH
@@ -104,7 +113,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      - name: "Generate Client"
+      - name: "Generate"
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
@@ -120,7 +129,7 @@ jobs:
           git commit -m "Update $CHOICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
-      - name: "Create pull request"
+      - name: "Create PR"
         if: ${{ env.CREATE_PR && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
@@ -142,11 +151,20 @@ jobs:
           - [ ] Release notes updated
           "
 
-      - name: "Compile Client"
+      - name: "Compile and Test"
         id: compile
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }}
+          if mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+            echo "compilation_result=success" >> "$GITHUB_OUTPUT"
+            if mvn test ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+                echo "test_result=success" >> "$GITHUB_OUTPUT"
+            else
+                echo "test_result=failure" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "compilation_result=failure" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: "Handle failure"
         if: ${{ failure() }}
@@ -155,4 +173,5 @@ jobs:
           echo "File download outcome: ${{ steps.download.outcome }}"
           echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
           echo "Client generation outcome: ${{ steps.generate.outcome }}"
-          echo "Client compilation outcome: ${{ steps.compile.outcome }}"
+          echo "Client compilation outcome: ${{ steps.compile.output.compilation_result }}"
+          echo "Client test outcome: ${{ steps.compile.output.test_result }}"
