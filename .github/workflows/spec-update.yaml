@@ -118,7 +118,7 @@ jobs:
           git config --global user.name "SAP Cloud SDK Bot"
           git add .
           git commit -m "Update $CHOICE based on $REF"
-          git push --set-upstream origin $BRANCH
+          git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: "Create pull request"
         if: ${{ env.CREATE_PR }}
@@ -138,6 +138,6 @@ jobs:
         run: |
           echo "Failed to update $CHOICE specification file"
           echo "File download outcome: ${{ steps.download.outcome }}"
-          echo "Spec file contained changes: ${{ steps.spec_diff.output.spec_diff }}"
+          echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
           echo "Client generation outcome: ${{ steps.generate.outcome }}"
           echo "Client compilation outcome: ${{ steps.compile.outcome }}"
