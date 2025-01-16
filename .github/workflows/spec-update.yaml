@@ -59,7 +59,7 @@ jobs:
       - name: "Download specification file"
         id: download
         run: |
-          gh auth login --hostname github.tools.sap --with-token ${{ secrets.GH_TOOLS_TOKEN }}
+          echo "${{ secrets.GH_TOOLS_TOKEN }}" | gh auth login --hostname github.tools.sap --with-token
           
           case $CHOICE in
             core)
