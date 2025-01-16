@@ -1,0 +1,140 @@
+name: "Spec File Update Workflow"
+
+on:
+  push:
+    branches:
+      - chore/spec-update-job
+
+  workflow_dispatch:
+    inputs:
+      file:
+        description: "Which spec file to update"
+        type: choice
+        required: false
+        options:
+          - core
+          - grounding
+          - orchestration
+        default: orchestration
+      file-ref:
+        description: "Branch or tag to checkout the spec file from"
+        required: false
+        default: main
+        type: string
+      create-pr:
+        description: "Create a pull request after updating the spec file"
+        required: false
+        default: true
+        type: boolean
+
+env:
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
+  JAVA_VERSION: 17
+
+jobs:
+  generate:
+    name: "Download, Generate, Compile and Push"
+    runs-on: [ubuntu-latest]
+    permissions:
+      pull-requests: write
+      contents: write
+    outputs:
+      spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
+      branch: ${{ steps.push.outputs.branch }}
+    env:
+      API_BASE_URL: "https://github.tools.sap/api/v3/repos"
+      CHOICE: "orchestration" # TODO: replace with ${{ github.event.inputs.file }}
+      REF: "v0.48.2" # TODO: replace with ${{ github.event.inputs.file-ref }}
+      CREATE_PR: "true" # TODO: replace with ${{ github.event.inputs.create-pr }}
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+      - name: "Checkout or Create Branch"
+        id: branch
+        run: |
+          BRANCH="spec-update/$CHOICE/$REF"
+          git checkout -b $BRANCH
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          
+      - name: "Download specification file"
+        id: download
+        run: |
+          gh auth login --hostname github.tools.sap --with-token ${{ secrets.GH_TOOLS_TOKEN }}
+          
+          case $CHOICE in
+            core)
+              API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
+              FILE_PATH='core/src/main/resources/spec/aicore.yaml'
+              ;;
+            grounding)
+              # TODO
+              exit 1
+              ;;
+            orchestration)
+              API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
+              FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
+              ;;
+          esac
+          
+          echo "Downloading $CHOICE specification file from $API_URL ..."
+          
+          gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
+
+      - name: "Exit if there are no changes"
+        id: spec_diff
+        run: |
+          if [[ `git status --porcelain` ]]; then
+            echo "spec_diff=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "spec_diff=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "Setup java"
+        uses: actions/setup-java@v4
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Generate Client"
+        id: generate
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        run: |
+          echo "success=false" >> "$GITHUB_OUTPUT"
+          mvn process-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
+          echo "success=true" >> "$GITHUB_OUTPUT"
+
+      - name: "Compile Client"
+        id: compile
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        run: |
+          mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }}
+
+      - name: "Push changes"
+        id: push
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        run: |
+          # TODO: decide if timestamp is necessary
+          # TIME=$(date '+%d-%m--%H:%M')
+          
+          git add .
+          git commit -m "Update $CHOICE on $REF at $TIME"
+          git push origin $BRANCH
+
+      - name: "Create pull request"
+        if: ${{ env.CREATE_PR }}
+        run: |
+          gh pr create --base main --head ${{ steps.push.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification"
+
+      - name: "Handle failure"
+        if: ${{ failure() }}
+        run: |
+          echo "Failed to update $CHOICE specification file"
+          echo "File download outcome: ${{ steps.download.outcome }}"
+          echo "Spec file contained changes: ${{ steps.spec_diff.output.spec_diff }}"
+          echo "Client generation outcome: ${{ steps.generate.output.success }}"
+          echo "Client compilation outcome: ${{ steps.compile.outcome }}"
+          
+          # TODO: Delete branch? 
+          # git push origin --delete ${{ steps.push.outputs.branch }}
