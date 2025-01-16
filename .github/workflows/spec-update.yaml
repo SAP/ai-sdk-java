@@ -125,7 +125,22 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
         run: |
-          gh pr create --base main --head ${{ steps.branch.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification"
+          gh pr create --base main --head ${{ steps.branch.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification" --body "
+          ## Context
+          
+          Update $CHOICE specification file based on $REF.
+          
+          This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-java/actions/workflows/spec-update.yaml).
+          You can commit on top of this branch, but keep in mind that re-running the action will overwrite your changes.
+          
+          Before merging, make sure to update tests and release notes, if necessary.
+          
+          ## Definition of Done
+
+          - [ ] Spec update compiles
+          - [ ] Unit tests cover new classes
+          - [ ] Release notes updated
+          "
 
       - name: "Compile Client"
         id: compile
