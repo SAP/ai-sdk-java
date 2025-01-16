@@ -1,14 +1,19 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import static com.sap.ai.sdk.orchestration.ConfigToRequestTransformer.toModuleConfigs;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.FREQUENCY_PENALTY;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.PRESENCE_PENALTY;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
+import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +37,8 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 @Setter(AccessLevel.NONE)
 public class OrchestrationChatOptions implements ChatOptions {
 
+  private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
+
   @Getter(AccessLevel.PUBLIC)
   @Setter(AccessLevel.PUBLIC)
   @Nonnull
@@ -49,10 +56,6 @@ public class OrchestrationChatOptions implements ChatOptions {
     return getLlmConfigNonNull().getModelName();
   }
 
-  private void setModel(@Nonnull final String model) {
-    getLlmConfigNonNull().setModelName(model);
-  }
-
   /**
    * Returns the model version to use for the chat. "latest" by default.
    *
@@ -61,10 +64,6 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Nonnull
   public String getModelVersion() {
     return getLlmConfigNonNull().getModelVersion();
-  }
-
-  private void setModelVersion(@Nonnull final String modelVersion) {
-    getLlmConfigNonNull().setModelVersion(modelVersion);
   }
 
   /**
@@ -153,38 +152,30 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Nonnull
   @Override
   public <T extends ChatOptions> T copy() {
-    val copy = new OrchestrationChatOptions(config);
+    try {
+      val json = JACKSON.writeValueAsString(toModuleConfigs(config));
+      val copy = JACKSON.readValue(json, ModuleConfigs.class);
+      val copyConfig =
+          new OrchestrationModuleConfig()
+              .withTemplateConfig(copy.getTemplatingModuleConfig())
+              .withFilteringConfig(copy.getFilteringModuleConfig())
+              .withLlmConfig(copy.getLlmModuleConfig())
+              .withMaskingConfig(copy.getMaskingModuleConfig())
+              .withGroundingConfig(copy.getGroundingModuleConfig());
+      return (T) new OrchestrationChatOptions(copyConfig);
 
-    copy.setModel(this.getModel());
-    copy.setModelVersion(this.getModelVersion());
-    setLlmConfigParam(copy, FREQUENCY_PENALTY.getName(), getFrequencyPenalty());
-    setLlmConfigParam(copy, MAX_TOKENS.getName(), getMaxTokens());
-    setLlmConfigParam(copy, PRESENCE_PENALTY.getName(), getPresencePenalty());
-    setLlmConfigParam(copy, "stop_sequences", getStopSequences());
-    setLlmConfigParam(copy, TEMPERATURE.getName(), getTemperature());
-    setLlmConfigParam(copy, "top_k", getTopK());
-    setLlmConfigParam(copy, TOP_P.getName(), getTopP());
-
-    return (T) copy;
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") // getModelParams() returns Object, it should return Map
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
     if (getLlmConfigNonNull().getModelParams() instanceof Map) {
       return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
     }
     return null;
-  }
-
-  @SuppressWarnings("unchecked")
-  private void setLlmConfigParam(
-      @Nonnull final OrchestrationChatOptions copy,
-      @Nonnull final String param,
-      @Nullable final Object value) {
-    if (value != null) {
-      ((Map<String, Object>) copy.getLlmConfigNonNull().getModelParams()).put(param, value);
-    }
   }
 
   @Nonnull

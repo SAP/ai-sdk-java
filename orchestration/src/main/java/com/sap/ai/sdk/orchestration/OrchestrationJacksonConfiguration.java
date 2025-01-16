@@ -1,0 +1,50 @@
+package com.sap.ai.sdk.orchestration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
+import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+import javax.annotation.Nonnull;
+
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
+/** Internal utility class for getting a default object mapper with preset configuration. */
+@NoArgsConstructor(access = AccessLevel.NONE)
+public class OrchestrationJacksonConfiguration
+{
+
+  /**
+   * Default object mapper used for JSON de-/serialization. <b>Only intended for internal usage
+   * within this SDK</b>. Largely follows the defaults set by Spring.
+   *
+   * @return A new object mapper with the default configuration.
+   * @see <a
+   * href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html">Jackson2ObjectMapperBuilder</a>
+   */
+  @Nonnull
+  @Beta
+  public static ObjectMapper getOrchestrationObjectMapper() {
+
+    ObjectMapper JACKSON = getDefaultObjectMapper();
+
+    // Add mix-ins
+    JACKSON.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);
+    JACKSON.addMixIn(
+        ModuleResultsOutputUnmaskingInner.class,
+        JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
+
+    final var module =
+        new SimpleModule()
+            .addDeserializer(
+                ChatMessagesInner.class,
+                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class))
+            .setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
+    JACKSON.registerModule(module);
+    return JACKSON;
+  }
+}
