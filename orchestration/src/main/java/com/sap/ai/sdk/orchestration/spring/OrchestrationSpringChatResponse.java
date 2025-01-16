@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
@@ -18,34 +17,26 @@ import org.springframework.ai.chat.metadata.DefaultUsage;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 
-/**
- * Response from the orchestration service in a Spring AI {@link ChatResponse}.
- *
- * @since 1.2.0
- */
-@Beta
+/** Response from the orchestration service in a Spring AI {@link ChatResponse}. */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class OrchestrationChatResponse extends ChatResponse {
+class OrchestrationSpringChatResponse extends ChatResponse {
 
-  private OrchestrationChatResponse(
-      @Nonnull final List<Generation> generations, @Nonnull final ChatResponseMetadata metadata) {
-    super(generations, metadata);
-  }
+  OrchestrationChatResponse response;
 
-  @Nonnull
-  static OrchestrationChatResponse fromOrchestrationResponse(
-      @Nonnull final CompletionPostResponse response) {
-    val result = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-    val generations = toGenerations(result);
-    val metadata = toChatResponseMetadata(result);
-    return new OrchestrationChatResponse(generations, metadata);
+  OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse response) {
+    super(
+        toGenerations(
+            (LLMModuleResultSynchronous) response.getOriginalResponse().getOrchestrationResult()),
+        toChatResponseMetadata(
+            (LLMModuleResultSynchronous) response.getOriginalResponse().getOrchestrationResult()));
+    this.response = response;
   }
 
   @Nonnull
   static List<Generation> toGenerations(@Nonnull final LLMModuleResultSynchronous result) {
     return result.getChoices().stream()
-        .map(OrchestrationChatResponse::toAssistantMessage)
+        .map(OrchestrationSpringChatResponse::toAssistantMessage)
         .map(Generation::new)
         .toList();
   }

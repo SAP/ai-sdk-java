@@ -20,7 +20,7 @@ class OrchestrationChatResponseTest {
             .message(ChatMessage.create().role("assistant").content("Hello, world!"))
             .finishReason("stop");
 
-    AssistantMessage message = OrchestrationChatResponse.toAssistantMessage(choice);
+    AssistantMessage message = OrchestrationSpringChatResponse.toAssistantMessage(choice);
 
     assertThat(message.getContent()).isEqualTo("Hello, world!");
     assertThat(message.getMetadata()).containsEntry("finish_reason", "stop");
@@ -38,7 +38,7 @@ class OrchestrationChatResponseTest {
             .choices(List.of())
             .usage(TokenUsage.create().completionTokens(20).promptTokens(10).totalTokens(30));
 
-    var metadata = OrchestrationChatResponse.toChatResponseMetadata(moduleResult);
+    var metadata = OrchestrationSpringChatResponse.toChatResponseMetadata(moduleResult);
 
     assertThat(metadata.getId()).isEqualTo("test-id");
     assertThat(metadata.getModel()).isEqualTo("test-model");

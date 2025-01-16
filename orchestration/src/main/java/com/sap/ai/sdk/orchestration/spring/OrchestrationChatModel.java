@@ -46,7 +46,7 @@ public class OrchestrationChatModel implements ChatModel {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response = client.chatCompletion(orchestrationPrompt, options.getConfig());
-      return OrchestrationChatResponse.fromOrchestrationResponse(response.getOriginalResponse());
+      return new OrchestrationSpringChatResponse(response);
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
