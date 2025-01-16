@@ -123,6 +123,24 @@ jobs:
         run: |
           mvn process-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
 
+      - name: "Compile and Test"
+        id: compile
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        description: |
+          Compilation can easily fail e.g. from re-namings and has to be fixed manually.
+          Thus this action raises the PR anyway and only reports success or failure of compilation and testing.
+        run: |
+          if mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+            echo "compilation_result=success" >> "$GITHUB_OUTPUT"
+            if mvn test ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+                echo "test_result=success" >> "$GITHUB_OUTPUT"
+            else
+                echo "test_result=failure" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "compilation_result=failure" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: "Push changes"
         id: push
         if: steps.spec_diff.outputs.spec_diff == 'true'
@@ -146,32 +164,16 @@ jobs:
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-java/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
           
+          - Compilation outcome: ${{ steps.compile.output.test_result }}
+          - Test run outcome: ${{ steps.compile.output.test_result }}
+          
           Before merging, make sure to update tests and release notes, if necessary.
           
           ## Definition of Done
 
-          - [ ] Spec update compiles
           - [ ] Unit tests cover new classes
           - [ ] Release notes updated
           "
-
-      - name: "Compile and Test"
-        id: compile
-        if: steps.spec_diff.outputs.spec_diff == 'true'
-        description: |
-          Compilation can easily fail e.g. from re-namings and has to be fixed manually.
-          Thus this action raises the PR anyway and only reports success or failure of compilation and testing.
-        run: |
-          if mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
-            echo "compilation_result=success" >> "$GITHUB_OUTPUT"
-            if mvn test ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
-                echo "test_result=success" >> "$GITHUB_OUTPUT"
-            else
-                echo "test_result=failure" >> "$GITHUB_OUTPUT"
-            fi
-          else
-            echo "compilation_result=failure" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: "Print Summary"
         if: ${{ always() }}
