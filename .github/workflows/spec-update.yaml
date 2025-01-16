@@ -53,6 +53,10 @@ jobs:
         id: branch
         run: |
           BRANCH="spec-update/$CHOICE/$REF"
+          if git ls-remote --exit-code origin refs/heads/$BRANCH >/dev/null 2>&1; then
+            echo "Branch '$BRANCH' exists on remote, deleting it..."
+            git push origin --delete $BRANCH
+          fi
           git checkout -b $BRANCH
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
           
@@ -101,25 +105,14 @@ jobs:
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          echo "success=false" >> "$GITHUB_OUTPUT"
-          mvn process-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
-          echo "success=true" >> "$GITHUB_OUTPUT"
-
-      - name: "Compile Client"
-        id: compile
-        if: steps.spec_diff.outputs.spec_diff == 'true'
-        run: |
-          mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }}
+          mvn process-test-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
 
       - name: "Push changes"
         id: push
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          # TODO: decide if timestamp is necessary
-          # TIME=$(date '+%d-%m--%H:%M')
-          
           git add .
-          git commit -m "Update $CHOICE on $REF at $TIME"
+          git commit -m "Update $CHOICE based on $REF"
           git push origin $BRANCH
 
       - name: "Create pull request"
@@ -127,14 +120,17 @@ jobs:
         run: |
           gh pr create --base main --head ${{ steps.push.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification"
 
+      - name: "Compile Client"
+        id: compile
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        run: |
+          mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }}
+
       - name: "Handle failure"
         if: ${{ failure() }}
         run: |
           echo "Failed to update $CHOICE specification file"
           echo "File download outcome: ${{ steps.download.outcome }}"
           echo "Spec file contained changes: ${{ steps.spec_diff.output.spec_diff }}"
-          echo "Client generation outcome: ${{ steps.generate.output.success }}"
+          echo "Client generation outcome: ${{ steps.generate.outcome }}"
           echo "Client compilation outcome: ${{ steps.compile.outcome }}"
-          
-          # TODO: Delete branch? 
-          # git push origin --delete ${{ steps.push.outputs.branch }}
