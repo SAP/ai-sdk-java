@@ -8,10 +8,8 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import lombok.val;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -31,6 +29,7 @@ public class SpringAiOrchestrationService {
    *
    * @return the assistant response object
    */
+  @Nonnull
   public ChatResponse completion() {
     val prompt = new Prompt("What is the capital of France?", defaultOptions);
 
@@ -42,6 +41,7 @@ public class SpringAiOrchestrationService {
    *
    * @return the assistant response object
    */
+  @Nonnull
   public ChatResponse template() {
     val template = new PromptTemplate("{input}");
     val prompt = template.create(Map.of("input", "Hello World!"), defaultOptions);
@@ -59,6 +59,7 @@ public class SpringAiOrchestrationService {
    *     Core: Orchestration - Data Masking</a>
    * @return the assistant response object
    */
+  @Nonnull
   public ChatResponse masking() {
     val masking =
         DpiMasking.anonymization()
@@ -71,21 +72,5 @@ public class SpringAiOrchestrationService {
             opts);
 
     return client.call(prompt);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service using message history.
-   *
-   * @return the assistant response object
-   */
-  public ChatResponse chatMemory() {
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
-    val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
-    val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
-
-    cl.prompt(prompt1).call();
-    return cl.prompt(prompt2).call().chatResponse();
   }
 }

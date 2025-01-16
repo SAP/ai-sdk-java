@@ -30,11 +30,4 @@ public class SpringAiOrchestrationTest {
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
   }
-
-  @Test
-  void testChatMemory() {
-    ChatResponse response = service.chatMemory();
-    assertThat(response).isNotNull();
-    assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
-  }
 }
