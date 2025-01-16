@@ -2,37 +2,38 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.model.ChatResponse;
 
 public class SpringAiOrchestrationTest {
 
-  SpringAiOrchestrationController controller = new SpringAiOrchestrationController();
+  SpringAiOrchestrationService service = new SpringAiOrchestrationService();
 
   @Test
   void testCompletion() {
-    ChatResponse response = controller.completion();
+    ChatResponse response = service.completion();
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getContent()).contains("Paris");
   }
 
   @Test
   void testTemplate() {
-    ChatResponse response = controller.template();
+    ChatResponse response = service.template();
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
   }
 
   @Test
   void testMasking() {
-    ChatResponse response = controller.masking();
+    ChatResponse response = service.masking();
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
   }
 
   @Test
   void testChatMemory() {
-    ChatResponse response = controller.chatMemory();
+    ChatResponse response = service.chatMemory();
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
   }

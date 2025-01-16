@@ -1,74 +1,66 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
-import com.sap.ai.sdk.orchestration.DpiMasking;
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
-import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
+import javax.annotation.Nullable;
 import lombok.val;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Endpoints for the Orchestration service */
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/spring-ai-orchestration")
 class SpringAiOrchestrationController {
-
-  private final ChatModel client = new OrchestrationChatModel();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
-  private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
+  @Autowired private SpringAiOrchestrationService service;
+  private static final ObjectMapper MAPPER = getOrchestrationObjectMapper();
 
   @GetMapping("/completion")
-  ChatResponse completion() {
-    val prompt = new Prompt("What is the capital of France?", defaultOptions);
+  ResponseEntity<String> completion(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    val response = (OrchestrationSpringChatResponse) service.completion();
 
-    return client.call(prompt);
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .body(
+              MAPPER.writeValueAsString(response.getOrchestrationResponse().getOriginalResponse()));
+    }
+    return ResponseEntity.ok(response.getResult().getOutput().getContent());
   }
 
   @GetMapping("/template")
-  ChatResponse template() {
-    val template = new PromptTemplate("{input}");
-    val prompt = template.create(Map.of("input", "Hello World!"), defaultOptions);
+  ResponseEntity<String> template(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    val response = (OrchestrationSpringChatResponse) service.template();
 
-    return client.call(prompt);
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .body(
+              MAPPER.writeValueAsString(response.getOrchestrationResponse().getOriginalResponse()));
+    }
+    return ResponseEntity.ok(response.getResult().getOutput().getContent());
   }
 
   @GetMapping("/masking")
-  ChatResponse masking() {
-    val masking =
-        DpiMasking.anonymization()
-            .withEntities(DPIEntities.EMAIL, DPIEntities.ADDRESS, DPIEntities.LOCATION);
+  ResponseEntity<String> masking(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    val response = (OrchestrationSpringChatResponse) service.masking();
 
-    val opts = new OrchestrationChatOptions(config.withMaskingConfig(masking));
-    val prompt =
-        new Prompt(
-            "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
-            opts);
-
-    return client.call(prompt);
-  }
-
-  @GetMapping("/chatMemory")
-  ChatResponse chatMemory() {
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
-    val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
-    val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
-
-    cl.prompt(prompt1).call();
-    return cl.prompt(prompt2).call().chatResponse();
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok()
+          .body(
+              MAPPER.writeValueAsString(response.getOrchestrationResponse().getOriginalResponse()));
+    }
+    return ResponseEntity.ok(response.getResult().getOutput().getContent());
   }
 }

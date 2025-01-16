@@ -20,17 +20,19 @@ import org.springframework.ai.chat.model.Generation;
 /** Response from the orchestration service in a Spring AI {@link ChatResponse}. */
 @Value
 @EqualsAndHashCode(callSuper = true)
-class OrchestrationSpringChatResponse extends ChatResponse {
+public class OrchestrationSpringChatResponse extends ChatResponse {
 
-  OrchestrationChatResponse response;
+  OrchestrationChatResponse orchestrationResponse;
 
-  OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse response) {
+  OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse orchestrationResponse) {
     super(
         toGenerations(
-            (LLMModuleResultSynchronous) response.getOriginalResponse().getOrchestrationResult()),
+            (LLMModuleResultSynchronous)
+                orchestrationResponse.getOriginalResponse().getOrchestrationResult()),
         toChatResponseMetadata(
-            (LLMModuleResultSynchronous) response.getOriginalResponse().getOrchestrationResult()));
-    this.response = response;
+            (LLMModuleResultSynchronous)
+                orchestrationResponse.getOriginalResponse().getOrchestrationResult()));
+    this.orchestrationResponse = orchestrationResponse;
   }
 
   @Nonnull
