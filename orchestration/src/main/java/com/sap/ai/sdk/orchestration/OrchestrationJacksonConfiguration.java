@@ -11,6 +11,7 @@ import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.val;
 
 /** Internal utility class for getting a default object mapper with preset configuration. */
 @NoArgsConstructor(access = AccessLevel.NONE)
@@ -28,11 +29,11 @@ public class OrchestrationJacksonConfiguration {
   @Beta
   public static ObjectMapper getOrchestrationObjectMapper() {
 
-    ObjectMapper JACKSON = getDefaultObjectMapper();
+    val jackson = getDefaultObjectMapper();
 
     // Add mix-ins
-    JACKSON.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);
-    JACKSON.addMixIn(
+    jackson.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);
+    jackson.addMixIn(
         ModuleResultsOutputUnmaskingInner.class,
         JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
 
@@ -42,7 +43,7 @@ public class OrchestrationJacksonConfiguration {
                 ChatMessagesInner.class,
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class))
             .setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
-    JACKSON.registerModule(module);
-    return JACKSON;
+    jackson.registerModule(module);
+    return jackson;
   }
 }

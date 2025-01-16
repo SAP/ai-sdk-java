@@ -11,6 +11,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.get
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
@@ -165,7 +166,8 @@ public class OrchestrationChatOptions implements ChatOptions {
       return (T) new OrchestrationChatOptions(copyConfig);
 
     } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
+      throw new OrchestrationClientException(
+          "Orchestration module configuration not readable: " + config, e);
     }
   }
 
