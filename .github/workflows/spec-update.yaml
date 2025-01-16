@@ -1,10 +1,6 @@
 name: "Spec File Update Workflow"
 
 on:
-  push:
-    branches:
-      - chore/spec-update-job
-
   workflow_dispatch:
     inputs:
       file:
@@ -45,9 +41,9 @@ jobs:
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
       API_BASE_URL: "https://github.tools.sap/api/v3/repos"
-      CHOICE: "orchestration" # TODO: replace with ${{ github.event.inputs.file }}
-      REF: "v0.48.2" # TODO: replace with ${{ github.event.inputs.file-ref }}
-      CREATE_PR: "true" # TODO: replace with ${{ github.event.inputs.create-pr }}
+      CHOICE: ${{ github.event.inputs.file }}
+      REF: ${{ github.event.inputs.file-ref }}
+      CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -88,10 +84,9 @@ jobs:
           fi
 
       - name: "Checkout or Create Branch"
-        description: | 
-          Always create a new branch to ensure we generate from a clean state.
-          In case a PR exist we can't delete and re-create the branch (without closing the PR first).
-          So the workflow will exist in this case.
+        # Always create a new branch to ensure we generate from a clean state.
+        # In case a PR exist we can't delete and re-create the branch (without closing the PR first).
+        # So the workflow will exist in this case.
         id: branch
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
@@ -126,9 +121,8 @@ jobs:
       - name: "Compile and Test"
         id: compile
         if: steps.spec_diff.outputs.spec_diff == 'true'
-        description: |
-          Compilation can easily fail e.g. from re-namings and has to be fixed manually.
-          Thus this action raises the PR anyway and only reports success or failure of compilation and testing.
+        # Compilation can easily fail e.g. from re-namings and has to be fixed manually.
+        # Thus, this action raises the PR anyway and only reports success or failure of compilation and testing.
         run: |
           if mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "compilation_result=success" >> "$GITHUB_OUTPUT"
