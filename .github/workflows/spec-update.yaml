@@ -111,6 +111,8 @@ jobs:
         id: push
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "SAP Cloud SDK Bot"
           git add .
           git commit -m "Update $CHOICE based on $REF"
           git push origin $BRANCH
