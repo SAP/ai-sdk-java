@@ -16,11 +16,14 @@ import javax.annotation.Nullable;
  */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
+  /** Azure OpenAI dall-e-3 image generate model */
+  public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
+
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OpenAiModel GPT_35_TURBO = new OpenAiModel("gpt-35-turbo", null);
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
-  public static final OpenAiModel GPT_35_TURBO_0125 = new OpenAiModel("gpt-35-turbo-0125", null);
+  public static final OpenAiModel GPT_35_TURBO_1025 = new OpenAiModel("gpt-35-turbo-0125", null);
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OpenAiModel GPT_35_TURBO_16K = new OpenAiModel("gpt-35-turbo-16k", null);
