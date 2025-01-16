@@ -54,24 +54,6 @@ jobs:
         with:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
-      - name: "Checkout or Create Branch"
-        id: branch
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-        run: |
-          BRANCH="spec-update/$CHOICE/$REF"
-          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
-            echo "An open PR already exists for this branch. Please close the PR first before re-running the workflow."
-            exit 1
-          fi
-          
-          if git ls-remote --exit-code origin refs/heads/$BRANCH >/dev/null 2>&1; then
-            echo "Branch '$BRANCH' exists on remote, deleting it..."
-            git push origin --delete $BRANCH
-          fi
-          git checkout -b $BRANCH
-          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-          
       - name: "Download specification file"
         id: download
         env:
@@ -104,6 +86,28 @@ jobs:
           else
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: "Checkout or Create Branch"
+        description: | 
+          Always create a new branch to ensure we generate from a clean state.
+          In case a PR exist we can't delete and re-create the branch (without closing the PR first).
+          So the workflow will exist in this case.
+        id: branch
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+        run: |
+          BRANCH="spec-update/$CHOICE/$REF"
+          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
+            echo "An open PR already exists for this branch. Please close the PR first before re-running the workflow."
+            exit 1
+          fi
+
+          if git ls-remote --exit-code origin refs/heads/$BRANCH >/dev/null 2>&1; then
+            echo "Branch '$BRANCH' exists on remote, deleting it..."
+            git push origin --delete $BRANCH
+          fi
+          git checkout -b $BRANCH
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: "Setup java"
         uses: actions/setup-java@v4
@@ -140,7 +144,7 @@ jobs:
           Update $CHOICE specification file based on $REF.
           
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-java/actions/workflows/spec-update.yaml).
-          You can commit on top of this branch, but keep in mind that re-running the action will overwrite your changes.
+          You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
           
           Before merging, make sure to update tests and release notes, if necessary.
           
@@ -154,6 +158,9 @@ jobs:
       - name: "Compile and Test"
         id: compile
         if: steps.spec_diff.outputs.spec_diff == 'true'
+        description: |
+          Compilation can easily fail e.g. from re-namings and has to be fixed manually.
+          Thus this action raises the PR anyway and only reports success or failure of compilation and testing.
         run: |
           if mvn test-compile ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "compilation_result=success" >> "$GITHUB_OUTPUT"
@@ -166,10 +173,10 @@ jobs:
             echo "compilation_result=failure" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: "Handle failure"
-        if: ${{ failure() }}
+      - name: "Print Summary"
+        if: ${{ always() }}
         run: |
-          echo "Failed to update $CHOICE specification file"
+          echo "Branch creation: ${{ steps.branch.outcome }}"
           echo "File download outcome: ${{ steps.download.outcome }}"
           echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
           echo "Client generation outcome: ${{ steps.generate.outcome }}"
