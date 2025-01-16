@@ -68,7 +68,7 @@ jobs:
 
       - name: "Run Unit Tests"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:check"
           mvn $MVN_ARGS
 
       - name: "Slack Notification"
