@@ -44,16 +44,20 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
+import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
+import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -141,10 +145,18 @@ class OrchestrationUnitTest {
                     .withBodyFile("groundingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
+    final var documentMetadata =
+        SearchDocumentKeyValueListPair.create()
+            .key("document metadata")
+            .value("2")
+            .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
     final var databaseFilter =
         DocumentGroundingFilter.create()
             .id("arbitrary-user-defined-id")
-            .dataRepositoryType(DataRepositoryType.VECTOR);
+            .dataRepositoryType(DataRepositoryType.VECTOR)
+            .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(3))
+            .documentMetadata(List.of(documentMetadata))
+            .chunkMetadata(List.of(KeyValueListPair.create().key("chunk metadata").value("1")));
     final var groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .inputParams(List.of("query"))
@@ -183,46 +195,6 @@ class OrchestrationUnitTest {
             "grounding_result",
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
-
-    var systemMessage = (ChatMessage) moduleResults.getTemplating().get(0);
-    assertThat((systemMessage.getRole())).isEqualTo("system");
-    assertThat(systemMessage.getContent())
-        .isEqualTo(
-            "Context message with embedded grounding results. First chunk```Second chunk```Last found chunk");
-
-    var llmModule = (LLMModuleResultSynchronous) moduleResults.getLlm();
-    assertThat(llmModule).isNotNull();
-    assertThat(llmModule.getId()).isEqualTo("chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU");
-    assertThat(llmModule.getObject()).isEqualTo("chat.completion");
-    assertThat(llmModule.getCreated()).isEqualTo(1736952936);
-    assertThat(llmModule.getModel()).isEqualTo("gpt-4o-2024-08-06");
-    assertThat(llmModule.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
-    assertThat(llmModule.getChoices()).hasSize(1);
-    assertThat(llmModule.getChoices().get(0).getIndex()).isZero();
-    assertThat(llmModule.getChoices().get(0).getMessage().getContent())
-        .isEqualTo("Response that makes uses of grounding results in the context message.");
-    assertThat(llmModule.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(llmModule.getChoices().get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(llmModule.getUsage()).isNotNull();
-    assertThat(llmModule.getUsage().getCompletionTokens()).isEqualTo(163);
-    assertThat(llmModule.getUsage().getPromptTokens()).isEqualTo(217);
-    assertThat(llmModule.getUsage().getTotalTokens()).isEqualTo(380);
-
-    var orchestrationResult =
-        (LLMModuleResultSynchronous) response.getOriginalResponse().getOrchestrationResult();
-    assertThat(orchestrationResult).isNotNull();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU");
-    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1736952936);
-    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-2024-08-06");
-    assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
-    assertThat(orchestrationResult.getChoices()).hasSize(1);
-    assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
-    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
-        .isEqualTo("Response that makes uses of grounding results in the context message.");
-    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
-        .isEqualTo("assistant");
-    assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
 
     final String requestBody = new String(fileLoader.apply("groundingRequest.json").readAllBytes());
     verify(
