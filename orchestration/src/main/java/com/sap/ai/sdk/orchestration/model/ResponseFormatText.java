@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** GroundingModuleConfig */
+/** ResponseFormatText */
 @Beta // CHECKSTYLE:OFF
-public class GroundingModuleConfig
+public class ResponseFormatText implements TemplateResponseFormat
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  /** The type of response format being defined: &#x60;text&#x60; */
   public enum TypeEnum {
-    /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
-    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
+    /** The TEXT option of this ResponseFormatText */
+    TEXT("text"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingModuleConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatText */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class GroundingModuleConfig
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type GroundingModuleConfig
+     * @return The enum value of type ResponseFormatText
      */
     @JsonCreator
     @Nonnull
@@ -82,86 +82,52 @@ public class GroundingModuleConfig
           return b;
         }
       }
-      return null;
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("config")
-  private GroundingModuleConfigConfig config;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GroundingModuleConfig. */
-  protected GroundingModuleConfig() {}
+  /** Default constructor for ResponseFormatText. */
+  protected ResponseFormatText() {}
 
   /**
-   * Set the type of this {@link GroundingModuleConfig} instance and return the same instance.
+   * Set the type of this {@link ResponseFormatText} instance and return the same instance.
    *
-   * @param type The type of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
+   * @param type The type of response format being defined: &#x60;text&#x60;
+   * @return The same instance of this {@link ResponseFormatText} class
    */
   @Nonnull
-  public GroundingModuleConfig type(@Nullable final TypeEnum type) {
+  public ResponseFormatText type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * The type of response format being defined: &#x60;text&#x60;
    *
-   * @return type The type of this {@link GroundingModuleConfig} instance.
+   * @return type The type of this {@link ResponseFormatText} instance.
    */
-  @Nullable
+  @Nonnull
   public TypeEnum getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link GroundingModuleConfig} instance.
+   * Set the type of this {@link ResponseFormatText} instance.
    *
-   * @param type The type of this {@link GroundingModuleConfig}
+   * @param type The type of response format being defined: &#x60;text&#x60;
    */
-  public void setType(@Nullable final TypeEnum type) {
+  public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the config of this {@link GroundingModuleConfig} instance and return the same instance.
-   *
-   * @param config The config of this {@link GroundingModuleConfig}
-   * @return The same instance of this {@link GroundingModuleConfig} class
-   */
-  @Nonnull
-  public GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config) {
-    this.config = config;
-    return this;
-  }
-
-  /**
-   * Get config
-   *
-   * @return config The config of this {@link GroundingModuleConfig} instance.
-   */
-  @Nonnull
-  public GroundingModuleConfigConfig getConfig() {
-    return config;
-  }
-
-  /**
-   * Set the config of this {@link GroundingModuleConfig} instance.
-   *
-   * @param config The config of this {@link GroundingModuleConfig}
-   */
-  public void setConfig(@Nonnull final GroundingModuleConfigConfig config) {
-    this.config = config;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link GroundingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link ResponseFormatText}.
    *
    * @return The set of properties names
    */
@@ -172,7 +138,7 @@ public class GroundingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GroundingModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link ResponseFormatText} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,14 +147,13 @@ public class GroundingModuleConfig
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GroundingModuleConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ResponseFormatText has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link GroundingModuleConfig} instance. If the map
+   * Set an unrecognizable property of this {@link ResponseFormatText} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -207,24 +172,22 @@ public class GroundingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, groundingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, groundingModuleConfig.type)
-        && Objects.equals(this.config, groundingModuleConfig.config);
+    final ResponseFormatText responseFormatText = (ResponseFormatText) o;
+    return Objects.equals(this.cloudSdkCustomFields, responseFormatText.cloudSdkCustomFields)
+        && Objects.equals(this.type, responseFormatText.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GroundingModuleConfig {\n");
+    sb.append("class ResponseFormatText {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -243,32 +206,21 @@ public class GroundingModuleConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfig}
+   * Create a type-safe, fluent-api builder object to construct a new {@link ResponseFormatText}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new GroundingModuleConfig().type(type).config(config);
+    return (type) -> new ResponseFormatText().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link GroundingModuleConfig} instance.
+     * Set the type of this {@link ResponseFormatText} instance.
      *
-     * @param type The type of this {@link GroundingModuleConfig}
-     * @return The GroundingModuleConfig builder.
+     * @param type The type of response format being defined: &#x60;text&#x60;
+     * @return The ResponseFormatText instance.
      */
-    Builder1 type(@Nullable final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the config of this {@link GroundingModuleConfig} instance.
-     *
-     * @param config The config of this {@link GroundingModuleConfig}
-     * @return The GroundingModuleConfig instance.
-     */
-    GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config);
+    ResponseFormatText type(@Nonnull final TypeEnum type);
   }
 }
