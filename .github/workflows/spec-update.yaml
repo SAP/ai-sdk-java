@@ -49,6 +49,9 @@ jobs:
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
       - name: "Checkout or Create Branch"
         id: branch
         run: |
@@ -62,9 +65,9 @@ jobs:
           
       - name: "Download specification file"
         id: download
+        env:
+          GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
-          echo "${{ secrets.GH_TOOLS_TOKEN }}" | gh auth login --hostname github.tools.sap --with-token
-          
           case $CHOICE in
             core)
               API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
@@ -115,10 +118,12 @@ jobs:
           git config --global user.name "SAP Cloud SDK Bot"
           git add .
           git commit -m "Update $CHOICE based on $REF"
-          git push origin $BRANCH
+          git push --set-upstream origin $BRANCH
 
       - name: "Create pull request"
         if: ${{ env.CREATE_PR }}
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
         run: |
           gh pr create --base main --head ${{ steps.push.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification"
 
