@@ -121,11 +121,11 @@ jobs:
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: "Create pull request"
-        if: ${{ env.CREATE_PR }}
+        if: ${{ env.CREATE_PR && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
         run: |
-          gh pr create --base main --head ${{ steps.push.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification"
+          gh pr create --base main --head ${{ steps.branch.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification"
 
       - name: "Compile Client"
         id: compile
