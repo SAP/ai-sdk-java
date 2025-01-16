@@ -105,7 +105,7 @@ jobs:
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          mvn process-test-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
+          mvn process-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
 
       - name: "Push changes"
         id: push
