@@ -1,22 +1,20 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.Nonnull;
-
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
-
 /** Internal utility class for getting a default object mapper with preset configuration. */
 @NoArgsConstructor(access = AccessLevel.NONE)
-public class OrchestrationJacksonConfiguration
-{
+public class OrchestrationJacksonConfiguration {
 
   /**
    * Default object mapper used for JSON de-/serialization. <b>Only intended for internal usage
@@ -24,7 +22,7 @@ public class OrchestrationJacksonConfiguration
    *
    * @return A new object mapper with the default configuration.
    * @see <a
-   * href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html">Jackson2ObjectMapperBuilder</a>
+   *     href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html">Jackson2ObjectMapperBuilder</a>
    */
   @Nonnull
   @Beta
