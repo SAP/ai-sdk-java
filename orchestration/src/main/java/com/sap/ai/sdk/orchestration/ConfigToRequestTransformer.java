@@ -15,9 +15,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-/** Internal factory to create all data objects from an orchestration configuration. */
+/** Factory to create all data objects from an orchestration configuration. */
 @NoArgsConstructor(access = AccessLevel.NONE)
-public final class ConfigToRequestTransformer {
+final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
@@ -59,9 +59,8 @@ public final class ConfigToRequestTransformer {
     return Template.create().template(messagesWithPrompt);
   }
 
-  /** Internal method to convert the convenience configuration to the data objec configuration. */
   @Nonnull
-  public static ModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
+  static ModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
     val llmConfig =
         Option.of(config.getLlmConfig())
             .getOrElseThrow(() -> new IllegalStateException("LLM config is required."));

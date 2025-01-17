@@ -13,7 +13,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-/** Internal utility class for getting a default object mapper with preset configuration. */
+/**
+ * Internal utility class for getting a default object mapper with preset configuration.
+ *
+ * @since 1.2.0
+ */
+@Beta
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class OrchestrationJacksonConfiguration {
 

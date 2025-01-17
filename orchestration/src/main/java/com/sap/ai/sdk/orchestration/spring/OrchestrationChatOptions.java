@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import static com.sap.ai.sdk.orchestration.ConfigToRequestTransformer.toModuleConfigs;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.FREQUENCY_PENALTY;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.PRESENCE_PENALTY;
@@ -8,13 +7,10 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPER
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -153,22 +149,14 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Nonnull
   @Override
   public <T extends ChatOptions> T copy() {
-    try {
-      val json = JACKSON.writeValueAsString(toModuleConfigs(config));
-      val copy = JACKSON.readValue(json, ModuleConfigs.class);
-      val copyConfig =
-          new OrchestrationModuleConfig()
-              .withTemplateConfig(copy.getTemplatingModuleConfig())
-              .withFilteringConfig(copy.getFilteringModuleConfig())
-              .withLlmConfig(copy.getLlmModuleConfig())
-              .withMaskingConfig(copy.getMaskingModuleConfig())
-              .withGroundingConfig(copy.getGroundingModuleConfig());
-      return (T) new OrchestrationChatOptions(copyConfig);
-
-    } catch (JsonProcessingException e) {
-      throw new OrchestrationClientException(
-          "Orchestration module configuration not readable: " + config, e);
-    }
+    val copyConfig =
+        new OrchestrationModuleConfig()
+            .withTemplateConfig(config.getTemplateConfig())
+            .withFilteringConfig(config.getFilteringConfig())
+            .withLlmConfig(config.getLlmConfig())
+            .withMaskingConfig(config.getMaskingConfig())
+            .withGroundingConfig(config.getGroundingConfig());
+    return (T) new OrchestrationChatOptions(copyConfig);
   }
 
   @SuppressWarnings("unchecked") // getModelParams() returns Object, it should return Map
