@@ -19,7 +19,9 @@
             "role": "user",
             "content": "What is the typical food there?"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       }
     },
     "stream": false
