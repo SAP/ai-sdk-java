@@ -2,9 +2,9 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.ResponseChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ class OrchestrationChatResponseTest {
     var choice =
         LLMChoice.create()
             .index(0)
-            .message(ChatMessage.create().role("assistant").content("Hello, world!"))
+            .message(ResponseChatMessage.create().role("assistant").content("Hello, world!"))
             .finishReason("stop");
 
     AssistantMessage message = OrchestrationSpringChatResponse.toAssistantMessage(choice);

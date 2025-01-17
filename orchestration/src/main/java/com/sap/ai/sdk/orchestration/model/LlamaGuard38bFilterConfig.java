@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContent */
+/** LlamaGuard38bFilterConfig */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class LlamaGuard38bFilterConfig implements FilterConfig
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The IMAGE_URL option of this ImageContent */
-    IMAGE_URL("image_url"),
+    /** The LLAMA_GUARD_3_8B option of this LlamaGuard38bFilterConfig */
+    LLAMA_GUARD_3_8B("llama_guard_3_8b"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ImageContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this LlamaGuard38bFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class ImageContent implements MultiChatMessageContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ImageContent
+     * @return The enum value of type LlamaGuard38bFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -89,31 +89,31 @@ public class ImageContent implements MultiChatMessageContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("image_url")
-  private ImageContentImageUrl imageUrl;
+  @JsonProperty("config")
+  private LlamaGuard38b config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContent. */
-  protected ImageContent() {}
+  /** Default constructor for LlamaGuard38bFilterConfig. */
+  protected LlamaGuard38bFilterConfig() {}
 
   /**
-   * Set the type of this {@link ImageContent} instance and return the same instance.
+   * Set the type of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
    *
-   * @param type The type of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param type Name of the filter provider type
+   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
    */
   @Nonnull
-  public ImageContent type(@Nonnull final TypeEnum type) {
+  public LlamaGuard38bFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * Name of the filter provider type
    *
-   * @return type The type of this {@link ImageContent} instance.
+   * @return type The type of this {@link LlamaGuard38bFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -121,47 +121,47 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Set the type of this {@link ImageContent} instance.
+   * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
    *
-   * @param type The type of this {@link ImageContent}
+   * @param type Name of the filter provider type
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance and return the same instance.
+   * Set the config of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param config The config of this {@link LlamaGuard38bFilterConfig}
+   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
    */
   @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get imageUrl
+   * Get config
    *
-   * @return imageUrl The imageUrl of this {@link ImageContent} instance.
+   * @return config The config of this {@link LlamaGuard38bFilterConfig} instance.
    */
   @Nonnull
-  public ImageContentImageUrl getImageUrl() {
-    return imageUrl;
+  public LlamaGuard38b getConfig() {
+    return config;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance.
+   * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
+   * @param config The config of this {@link LlamaGuard38bFilterConfig}
    */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public void setConfig(@Nonnull final LlamaGuard38b config) {
+    this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ImageContent}.
+   * Get the names of the unrecognizable properties of the {@link LlamaGuard38bFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -172,7 +172,7 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContent} instance.
+   * Get the value of an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,14 +181,15 @@ public class ImageContent implements MultiChatMessageContent
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ImageContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "LlamaGuard38bFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -206,24 +207,24 @@ public class ImageContent implements MultiChatMessageContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContent imageContent = (ImageContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, imageContent.type)
-        && Objects.equals(this.imageUrl, imageContent.imageUrl);
+    final LlamaGuard38bFilterConfig llamaGuard38bFilterConfig = (LlamaGuard38bFilterConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, llamaGuard38bFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, llamaGuard38bFilterConfig.type)
+        && Objects.equals(this.config, llamaGuard38bFilterConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, imageUrl, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContent {\n");
+    sb.append("class LlamaGuard38bFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -242,20 +243,20 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * LlamaGuard38bFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (type) -> (config) -> new LlamaGuard38bFilterConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ImageContent} instance.
+     * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
      *
-     * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
+     * @param type Name of the filter provider type
+     * @return The LlamaGuard38bFilterConfig builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -263,11 +264,11 @@ public class ImageContent implements MultiChatMessageContent
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the imageUrl of this {@link ImageContent} instance.
+     * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
      *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
-     * @return The ImageContent instance.
+     * @param config The config of this {@link LlamaGuard38bFilterConfig}
+     * @return The LlamaGuard38bFilterConfig instance.
      */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config);
   }
 }

@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContent */
+/** ResponseFormatJsonObject */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class ResponseFormatJsonObject implements TemplateResponseFormat
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  /** The type of response format being defined: &#x60;json_object&#x60; */
   public enum TypeEnum {
-    /** The IMAGE_URL option of this ImageContent */
-    IMAGE_URL("image_url"),
+    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
+    JSON_OBJECT("json_object"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ImageContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class ImageContent implements MultiChatMessageContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ImageContent
+     * @return The enum value of type ResponseFormatJsonObject
      */
     @JsonCreator
     @Nonnull
@@ -89,31 +89,28 @@ public class ImageContent implements MultiChatMessageContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("image_url")
-  private ImageContentImageUrl imageUrl;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContent. */
-  protected ImageContent() {}
+  /** Default constructor for ResponseFormatJsonObject. */
+  protected ResponseFormatJsonObject() {}
 
   /**
-   * Set the type of this {@link ImageContent} instance and return the same instance.
+   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
    *
-   * @param type The type of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @return The same instance of this {@link ResponseFormatJsonObject} class
    */
   @Nonnull
-  public ImageContent type(@Nonnull final TypeEnum type) {
+  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * The type of response format being defined: &#x60;json_object&#x60;
    *
-   * @return type The type of this {@link ImageContent} instance.
+   * @return type The type of this {@link ResponseFormatJsonObject} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -121,47 +118,16 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Set the type of this {@link ImageContent} instance.
+   * Set the type of this {@link ResponseFormatJsonObject} instance.
    *
-   * @param type The type of this {@link ImageContent}
+   * @param type The type of response format being defined: &#x60;json_object&#x60;
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance and return the same instance.
-   *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
-   */
-  @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
-    return this;
-  }
-
-  /**
-   * Get imageUrl
-   *
-   * @return imageUrl The imageUrl of this {@link ImageContent} instance.
-   */
-  @Nonnull
-  public ImageContentImageUrl getImageUrl() {
-    return imageUrl;
-  }
-
-  /**
-   * Set the imageUrl of this {@link ImageContent} instance.
-   *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link ImageContent}.
+   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
    *
    * @return The set of properties names
    */
@@ -172,7 +138,7 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContent} instance.
+   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,14 +147,15 @@ public class ImageContent implements MultiChatMessageContent
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ImageContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "ResponseFormatJsonObject has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -206,24 +173,22 @@ public class ImageContent implements MultiChatMessageContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContent imageContent = (ImageContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, imageContent.type)
-        && Objects.equals(this.imageUrl, imageContent.imageUrl);
+    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
+    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
+        && Objects.equals(this.type, responseFormatJsonObject.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, imageUrl, cloudSdkCustomFields);
+    return Objects.hash(type, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContent {\n");
+    sb.append("class ResponseFormatJsonObject {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -242,32 +207,21 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * ResponseFormatJsonObject} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (type) -> new ResponseFormatJsonObject().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ImageContent} instance.
+     * Set the type of this {@link ResponseFormatJsonObject} instance.
      *
-     * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
+     * @param type The type of response format being defined: &#x60;json_object&#x60;
+     * @return The ResponseFormatJsonObject instance.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the imageUrl of this {@link ImageContent} instance.
-     *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
-     * @return The ImageContent instance.
-     */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
   }
 }

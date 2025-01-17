@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContent */
+/** ChatCompletionTool */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class ChatCompletionTool
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
   public enum TypeEnum {
-    /** The IMAGE_URL option of this ImageContent */
-    IMAGE_URL("image_url"),
+    /** The FUNCTION option of this ChatCompletionTool */
+    FUNCTION("function"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ImageContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionTool */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class ImageContent implements MultiChatMessageContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ImageContent
+     * @return The enum value of type ChatCompletionTool
      */
     @JsonCreator
     @Nonnull
@@ -89,31 +89,31 @@ public class ImageContent implements MultiChatMessageContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("image_url")
-  private ImageContentImageUrl imageUrl;
+  @JsonProperty("function")
+  private FunctionObject function;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContent. */
-  protected ImageContent() {}
+  /** Default constructor for ChatCompletionTool. */
+  protected ChatCompletionTool() {}
 
   /**
-   * Set the type of this {@link ImageContent} instance and return the same instance.
+   * Set the type of this {@link ChatCompletionTool} instance and return the same instance.
    *
-   * @param type The type of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * @return The same instance of this {@link ChatCompletionTool} class
    */
   @Nonnull
-  public ImageContent type(@Nonnull final TypeEnum type) {
+  public ChatCompletionTool type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * The type of the tool. Currently, only &#x60;function&#x60; is supported.
    *
-   * @return type The type of this {@link ImageContent} instance.
+   * @return type The type of this {@link ChatCompletionTool} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -121,47 +121,47 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Set the type of this {@link ImageContent} instance.
+   * Set the type of this {@link ChatCompletionTool} instance.
    *
-   * @param type The type of this {@link ImageContent}
+   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance and return the same instance.
+   * Set the function of this {@link ChatCompletionTool} instance and return the same instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param function The function of this {@link ChatCompletionTool}
+   * @return The same instance of this {@link ChatCompletionTool} class
    */
   @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public ChatCompletionTool function(@Nonnull final FunctionObject function) {
+    this.function = function;
     return this;
   }
 
   /**
-   * Get imageUrl
+   * Get function
    *
-   * @return imageUrl The imageUrl of this {@link ImageContent} instance.
+   * @return function The function of this {@link ChatCompletionTool} instance.
    */
   @Nonnull
-  public ImageContentImageUrl getImageUrl() {
-    return imageUrl;
+  public FunctionObject getFunction() {
+    return function;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance.
+   * Set the function of this {@link ChatCompletionTool} instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
+   * @param function The function of this {@link ChatCompletionTool}
    */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public void setFunction(@Nonnull final FunctionObject function) {
+    this.function = function;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ImageContent}.
+   * Get the names of the unrecognizable properties of the {@link ChatCompletionTool}.
    *
    * @return The set of properties names
    */
@@ -172,7 +172,7 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContent} instance.
+   * Get the value of an unrecognizable property of this {@link ChatCompletionTool} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,14 +181,14 @@ public class ImageContent implements MultiChatMessageContent
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ImageContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ChatCompletionTool has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ChatCompletionTool} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -206,24 +206,24 @@ public class ImageContent implements MultiChatMessageContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContent imageContent = (ImageContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, imageContent.type)
-        && Objects.equals(this.imageUrl, imageContent.imageUrl);
+    final ChatCompletionTool chatCompletionTool = (ChatCompletionTool) o;
+    return Objects.equals(this.cloudSdkCustomFields, chatCompletionTool.cloudSdkCustomFields)
+        && Objects.equals(this.type, chatCompletionTool.type)
+        && Objects.equals(this.function, chatCompletionTool.function);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, imageUrl, cloudSdkCustomFields);
+    return Objects.hash(type, function, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContent {\n");
+    sb.append("class ChatCompletionTool {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+    sb.append("    function: ").append(toIndentedString(function)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -242,20 +242,20 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link ChatCompletionTool}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (type) -> (function) -> new ChatCompletionTool().type(type).function(function);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ImageContent} instance.
+     * Set the type of this {@link ChatCompletionTool} instance.
      *
-     * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
+     * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+     * @return The ChatCompletionTool builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -263,11 +263,11 @@ public class ImageContent implements MultiChatMessageContent
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the imageUrl of this {@link ImageContent} instance.
+     * Set the function of this {@link ChatCompletionTool} instance.
      *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
-     * @return The ImageContent instance.
+     * @param function The function of this {@link ChatCompletionTool}
+     * @return The ChatCompletionTool instance.
      */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    ChatCompletionTool function(@Nonnull final FunctionObject function);
   }
 }

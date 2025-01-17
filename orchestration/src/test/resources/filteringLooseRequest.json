@@ -19,7 +19,9 @@
             "role": "user",
             "content": "Hello World! Why is this phrase so famous?"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "filtering_module_config": {
         "input": {
@@ -31,6 +33,12 @@
                 "SelfHarm": 4,
                 "Sexual": 4,
                 "Violence": 4
+              }
+            },
+            {
+              "type": "llama_guard_3_8b",
+              "config": {
+                "self_harm": true
               }
             }
           ]

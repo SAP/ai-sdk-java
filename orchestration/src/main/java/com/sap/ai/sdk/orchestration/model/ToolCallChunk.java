@@ -27,17 +27,23 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContent */
+/** ToolCallChunk */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class ToolCallChunk
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
-  public enum TypeEnum {
-    /** The IMAGE_URL option of this ImageContent */
-    IMAGE_URL("image_url"),
+  @JsonProperty("index")
+  private Integer index;
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ImageContent */
+  @JsonProperty("id")
+  private String id;
+
+  /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
+  public enum TypeEnum {
+    /** The FUNCTION option of this ToolCallChunk */
+    FUNCTION("function"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ToolCallChunk */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +78,7 @@ public class ImageContent implements MultiChatMessageContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ImageContent
+     * @return The enum value of type ToolCallChunk
      */
     @JsonCreator
     @Nonnull
@@ -89,31 +95,93 @@ public class ImageContent implements MultiChatMessageContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("image_url")
-  private ImageContentImageUrl imageUrl;
+  @JsonProperty("function")
+  private ToolCallChunkFunction function;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContent. */
-  protected ImageContent() {}
+  /** Default constructor for ToolCallChunk. */
+  protected ToolCallChunk() {}
 
   /**
-   * Set the type of this {@link ImageContent} instance and return the same instance.
+   * Set the index of this {@link ToolCallChunk} instance and return the same instance.
    *
-   * @param type The type of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param index The index of this {@link ToolCallChunk}
+   * @return The same instance of this {@link ToolCallChunk} class
    */
   @Nonnull
-  public ImageContent type(@Nonnull final TypeEnum type) {
+  public ToolCallChunk index(@Nonnull final Integer index) {
+    this.index = index;
+    return this;
+  }
+
+  /**
+   * Get index
+   *
+   * @return index The index of this {@link ToolCallChunk} instance.
+   */
+  @Nonnull
+  public Integer getIndex() {
+    return index;
+  }
+
+  /**
+   * Set the index of this {@link ToolCallChunk} instance.
+   *
+   * @param index The index of this {@link ToolCallChunk}
+   */
+  public void setIndex(@Nonnull final Integer index) {
+    this.index = index;
+  }
+
+  /**
+   * Set the id of this {@link ToolCallChunk} instance and return the same instance.
+   *
+   * @param id The ID of the tool call.
+   * @return The same instance of this {@link ToolCallChunk} class
+   */
+  @Nonnull
+  public ToolCallChunk id(@Nullable final String id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * The ID of the tool call.
+   *
+   * @return id The id of this {@link ToolCallChunk} instance.
+   */
+  @Nonnull
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * Set the id of this {@link ToolCallChunk} instance.
+   *
+   * @param id The ID of the tool call.
+   */
+  public void setId(@Nullable final String id) {
+    this.id = id;
+  }
+
+  /**
+   * Set the type of this {@link ToolCallChunk} instance and return the same instance.
+   *
+   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * @return The same instance of this {@link ToolCallChunk} class
+   */
+  @Nonnull
+  public ToolCallChunk type(@Nullable final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * The type of the tool. Currently, only &#x60;function&#x60; is supported.
    *
-   * @return type The type of this {@link ImageContent} instance.
+   * @return type The type of this {@link ToolCallChunk} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -121,47 +189,47 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Set the type of this {@link ImageContent} instance.
+   * Set the type of this {@link ToolCallChunk} instance.
    *
-   * @param type The type of this {@link ImageContent}
+   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
    */
-  public void setType(@Nonnull final TypeEnum type) {
+  public void setType(@Nullable final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance and return the same instance.
+   * Set the function of this {@link ToolCallChunk} instance and return the same instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param function The function of this {@link ToolCallChunk}
+   * @return The same instance of this {@link ToolCallChunk} class
    */
   @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public ToolCallChunk function(@Nullable final ToolCallChunkFunction function) {
+    this.function = function;
     return this;
   }
 
   /**
-   * Get imageUrl
+   * Get function
    *
-   * @return imageUrl The imageUrl of this {@link ImageContent} instance.
+   * @return function The function of this {@link ToolCallChunk} instance.
    */
   @Nonnull
-  public ImageContentImageUrl getImageUrl() {
-    return imageUrl;
+  public ToolCallChunkFunction getFunction() {
+    return function;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance.
+   * Set the function of this {@link ToolCallChunk} instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
+   * @param function The function of this {@link ToolCallChunk}
    */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public void setFunction(@Nullable final ToolCallChunkFunction function) {
+    this.function = function;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ImageContent}.
+   * Get the names of the unrecognizable properties of the {@link ToolCallChunk}.
    *
    * @return The set of properties names
    */
@@ -172,7 +240,7 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContent} instance.
+   * Get the value of an unrecognizable property of this {@link ToolCallChunk} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,13 +249,13 @@ public class ImageContent implements MultiChatMessageContent
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ImageContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ToolCallChunk has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContent} instance. If the map previously
+   * Set an unrecognizable property of this {@link ToolCallChunk} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -206,24 +274,28 @@ public class ImageContent implements MultiChatMessageContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContent imageContent = (ImageContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, imageContent.type)
-        && Objects.equals(this.imageUrl, imageContent.imageUrl);
+    final ToolCallChunk toolCallChunk = (ToolCallChunk) o;
+    return Objects.equals(this.cloudSdkCustomFields, toolCallChunk.cloudSdkCustomFields)
+        && Objects.equals(this.index, toolCallChunk.index)
+        && Objects.equals(this.id, toolCallChunk.id)
+        && Objects.equals(this.type, toolCallChunk.type)
+        && Objects.equals(this.function, toolCallChunk.function);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, imageUrl, cloudSdkCustomFields);
+    return Objects.hash(index, id, type, function, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContent {\n");
+    sb.append("class ToolCallChunk {\n");
+    sb.append("    index: ").append(toIndentedString(index)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+    sb.append("    function: ").append(toIndentedString(function)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -242,32 +314,21 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContent} instance
+   * Create a type-safe, fluent-api builder object to construct a new {@link ToolCallChunk} instance
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (index) -> new ToolCallChunk().index(index);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ImageContent} instance.
+     * Set the index of this {@link ToolCallChunk} instance.
      *
-     * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
+     * @param index The index of this {@link ToolCallChunk}
+     * @return The ToolCallChunk instance.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the imageUrl of this {@link ImageContent} instance.
-     *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
-     * @return The ImageContent instance.
-     */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    ToolCallChunk index(@Nonnull final Integer index);
   }
 }

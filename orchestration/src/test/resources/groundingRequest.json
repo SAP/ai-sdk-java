@@ -17,7 +17,9 @@
         "template" : [ {
           "role" : "system",
           "content" : "Context message with embedded grounding results. {{?results}}"
-        } ]
+        } ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "grounding_module_config" : {
         "type" : "document_grounding_service",

@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContent */
+/** ResponseFormatJsonSchema */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class ResponseFormatJsonSchema implements TemplateResponseFormat
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  /** The type of response format being defined: &#x60;json_schema&#x60; */
   public enum TypeEnum {
-    /** The IMAGE_URL option of this ImageContent */
-    IMAGE_URL("image_url"),
+    /** The JSON_SCHEMA option of this ResponseFormatJsonSchema */
+    JSON_SCHEMA("json_schema"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ImageContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonSchema */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -72,7 +72,7 @@ public class ImageContent implements MultiChatMessageContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ImageContent
+     * @return The enum value of type ResponseFormatJsonSchema
      */
     @JsonCreator
     @Nonnull
@@ -89,31 +89,31 @@ public class ImageContent implements MultiChatMessageContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("image_url")
-  private ImageContentImageUrl imageUrl;
+  @JsonProperty("json_schema")
+  private ResponseFormatJsonSchemaJsonSchema jsonSchema;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContent. */
-  protected ImageContent() {}
+  /** Default constructor for ResponseFormatJsonSchema. */
+  protected ResponseFormatJsonSchema() {}
 
   /**
-   * Set the type of this {@link ImageContent} instance and return the same instance.
+   * Set the type of this {@link ResponseFormatJsonSchema} instance and return the same instance.
    *
-   * @param type The type of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param type The type of response format being defined: &#x60;json_schema&#x60;
+   * @return The same instance of this {@link ResponseFormatJsonSchema} class
    */
   @Nonnull
-  public ImageContent type(@Nonnull final TypeEnum type) {
+  public ResponseFormatJsonSchema type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * The type of response format being defined: &#x60;json_schema&#x60;
    *
-   * @return type The type of this {@link ImageContent} instance.
+   * @return type The type of this {@link ResponseFormatJsonSchema} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -121,47 +121,49 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Set the type of this {@link ImageContent} instance.
+   * Set the type of this {@link ResponseFormatJsonSchema} instance.
    *
-   * @param type The type of this {@link ImageContent}
+   * @param type The type of response format being defined: &#x60;json_schema&#x60;
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance and return the same instance.
+   * Set the jsonSchema of this {@link ResponseFormatJsonSchema} instance and return the same
+   * instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param jsonSchema The jsonSchema of this {@link ResponseFormatJsonSchema}
+   * @return The same instance of this {@link ResponseFormatJsonSchema} class
    */
   @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public ResponseFormatJsonSchema jsonSchema(
+      @Nonnull final ResponseFormatJsonSchemaJsonSchema jsonSchema) {
+    this.jsonSchema = jsonSchema;
     return this;
   }
 
   /**
-   * Get imageUrl
+   * Get jsonSchema
    *
-   * @return imageUrl The imageUrl of this {@link ImageContent} instance.
+   * @return jsonSchema The jsonSchema of this {@link ResponseFormatJsonSchema} instance.
    */
   @Nonnull
-  public ImageContentImageUrl getImageUrl() {
-    return imageUrl;
+  public ResponseFormatJsonSchemaJsonSchema getJsonSchema() {
+    return jsonSchema;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance.
+   * Set the jsonSchema of this {@link ResponseFormatJsonSchema} instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
+   * @param jsonSchema The jsonSchema of this {@link ResponseFormatJsonSchema}
    */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public void setJsonSchema(@Nonnull final ResponseFormatJsonSchemaJsonSchema jsonSchema) {
+    this.jsonSchema = jsonSchema;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ImageContent}.
+   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonSchema}.
    *
    * @return The set of properties names
    */
@@ -172,7 +174,7 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContent} instance.
+   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonSchema} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -181,14 +183,15 @@ public class ImageContent implements MultiChatMessageContent
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ImageContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "ResponseFormatJsonSchema has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ResponseFormatJsonSchema} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -206,24 +209,24 @@ public class ImageContent implements MultiChatMessageContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContent imageContent = (ImageContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, imageContent.type)
-        && Objects.equals(this.imageUrl, imageContent.imageUrl);
+    final ResponseFormatJsonSchema responseFormatJsonSchema = (ResponseFormatJsonSchema) o;
+    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonSchema.cloudSdkCustomFields)
+        && Objects.equals(this.type, responseFormatJsonSchema.type)
+        && Objects.equals(this.jsonSchema, responseFormatJsonSchema.jsonSchema);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, imageUrl, cloudSdkCustomFields);
+    return Objects.hash(type, jsonSchema, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContent {\n");
+    sb.append("class ResponseFormatJsonSchema {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+    sb.append("    jsonSchema: ").append(toIndentedString(jsonSchema)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -242,20 +245,21 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * ResponseFormatJsonSchema} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (type) ->
+        (jsonSchema) -> new ResponseFormatJsonSchema().type(type).jsonSchema(jsonSchema);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ImageContent} instance.
+     * Set the type of this {@link ResponseFormatJsonSchema} instance.
      *
-     * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
+     * @param type The type of response format being defined: &#x60;json_schema&#x60;
+     * @return The ResponseFormatJsonSchema builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -263,11 +267,12 @@ public class ImageContent implements MultiChatMessageContent
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the imageUrl of this {@link ImageContent} instance.
+     * Set the jsonSchema of this {@link ResponseFormatJsonSchema} instance.
      *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
-     * @return The ImageContent instance.
+     * @param jsonSchema The jsonSchema of this {@link ResponseFormatJsonSchema}
+     * @return The ResponseFormatJsonSchema instance.
      */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    ResponseFormatJsonSchema jsonSchema(
+        @Nonnull final ResponseFormatJsonSchemaJsonSchema jsonSchema);
   }
 }

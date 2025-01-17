@@ -17,10 +17,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -28,71 +25,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MaskingModuleConfig */
+/** SingleChatMessage */
 @Beta // CHECKSTYLE:OFF
-public class MaskingModuleConfig
+public class SingleChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
-  @JsonProperty("masking_providers")
-  private List<MaskingProviderConfig> maskingProviders = new ArrayList<>();
+  @JsonProperty("role")
+  private String role;
+
+  @JsonProperty("content")
+  private String content;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MaskingModuleConfig. */
-  protected MaskingModuleConfig() {}
+  /** Default constructor for SingleChatMessage. */
+  protected SingleChatMessage() {}
 
   /**
-   * Set the maskingProviders of this {@link MaskingModuleConfig} instance and return the same
-   * instance.
+   * Set the role of this {@link SingleChatMessage} instance and return the same instance.
    *
-   * @param maskingProviders List of masking service providers
-   * @return The same instance of this {@link MaskingModuleConfig} class
+   * @param role The role of this {@link SingleChatMessage}
+   * @return The same instance of this {@link SingleChatMessage} class
    */
   @Nonnull
-  public MaskingModuleConfig maskingProviders(
-      @Nonnull final List<MaskingProviderConfig> maskingProviders) {
-    this.maskingProviders = maskingProviders;
+  public SingleChatMessage role(@Nonnull final String role) {
+    this.role = role;
     return this;
   }
 
   /**
-   * Add one maskingProviders instance to this {@link MaskingModuleConfig}.
+   * Get role
    *
-   * @param maskingProvidersItem The maskingProviders that should be added
-   * @return The same instance of type {@link MaskingModuleConfig}
+   * @return role The role of this {@link SingleChatMessage} instance.
    */
   @Nonnull
-  public MaskingModuleConfig addMaskingProvidersItem(
-      @Nonnull final MaskingProviderConfig maskingProvidersItem) {
-    if (this.maskingProviders == null) {
-      this.maskingProviders = new ArrayList<>();
-    }
-    this.maskingProviders.add(maskingProvidersItem);
+  public String getRole() {
+    return role;
+  }
+
+  /**
+   * Set the role of this {@link SingleChatMessage} instance.
+   *
+   * @param role The role of this {@link SingleChatMessage}
+   */
+  public void setRole(@Nonnull final String role) {
+    this.role = role;
+  }
+
+  /**
+   * Set the content of this {@link SingleChatMessage} instance and return the same instance.
+   *
+   * @param content The content of this {@link SingleChatMessage}
+   * @return The same instance of this {@link SingleChatMessage} class
+   */
+  @Nonnull
+  public SingleChatMessage content(@Nonnull final String content) {
+    this.content = content;
     return this;
   }
 
   /**
-   * List of masking service providers
+   * Get content
    *
-   * @return maskingProviders The maskingProviders of this {@link MaskingModuleConfig} instance.
+   * @return content The content of this {@link SingleChatMessage} instance.
    */
   @Nonnull
-  public List<MaskingProviderConfig> getMaskingProviders() {
-    return maskingProviders;
+  public String getContent() {
+    return content;
   }
 
   /**
-   * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
+   * Set the content of this {@link SingleChatMessage} instance.
    *
-   * @param maskingProviders List of masking service providers
+   * @param content The content of this {@link SingleChatMessage}
    */
-  public void setMaskingProviders(@Nonnull final List<MaskingProviderConfig> maskingProviders) {
-    this.maskingProviders = maskingProviders;
+  public void setContent(@Nonnull final String content) {
+    this.content = content;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link MaskingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link SingleChatMessage}.
    *
    * @return The set of properties names
    */
@@ -103,7 +116,7 @@ public class MaskingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MaskingModuleConfig} instance.
+   * Get the value of an unrecognizable property of this {@link SingleChatMessage} instance.
    *
    * @param name The name of the property
    * @return The value of the property
@@ -112,14 +125,13 @@ public class MaskingModuleConfig
   @Nullable
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "MaskingModuleConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SingleChatMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Set an unrecognizable property of this {@link MaskingModuleConfig} instance. If the map
+   * Set an unrecognizable property of this {@link SingleChatMessage} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -138,22 +150,24 @@ public class MaskingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MaskingModuleConfig maskingModuleConfig = (MaskingModuleConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, maskingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.maskingProviders, maskingModuleConfig.maskingProviders);
+    final SingleChatMessage singleChatMessage = (SingleChatMessage) o;
+    return Objects.equals(this.cloudSdkCustomFields, singleChatMessage.cloudSdkCustomFields)
+        && Objects.equals(this.role, singleChatMessage.role)
+        && Objects.equals(this.content, singleChatMessage.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(maskingProviders, cloudSdkCustomFields);
+    return Objects.hash(role, content, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MaskingModuleConfig {\n");
-    sb.append("    maskingProviders: ").append(toIndentedString(maskingProviders)).append("\n");
+    sb.append("class SingleChatMessage {\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
+    sb.append("    content: ").append(toIndentedString(content)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -172,33 +186,32 @@ public class MaskingModuleConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link MaskingModuleConfig}
+   * Create a type-safe, fluent-api builder object to construct a new {@link SingleChatMessage}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (maskingProviders) -> new MaskingModuleConfig().maskingProviders(maskingProviders);
+    return (role) -> (content) -> new SingleChatMessage().role(role).content(content);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
+     * Set the role of this {@link SingleChatMessage} instance.
      *
-     * @param maskingProviders List of masking service providers
-     * @return The MaskingModuleConfig instance.
+     * @param role The role of this {@link SingleChatMessage}
+     * @return The SingleChatMessage builder.
      */
-    MaskingModuleConfig maskingProviders(
-        @Nonnull final List<MaskingProviderConfig> maskingProviders);
+    Builder1 role(@Nonnull final String role);
+  }
 
+  /** Builder helper class. */
+  public interface Builder1 {
     /**
-     * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
+     * Set the content of this {@link SingleChatMessage} instance.
      *
-     * @param maskingProviders List of masking service providers
-     * @return The MaskingModuleConfig instance.
+     * @param content The content of this {@link SingleChatMessage}
+     * @return The SingleChatMessage instance.
      */
-    default MaskingModuleConfig maskingProviders(
-        @Nonnull final MaskingProviderConfig... maskingProviders) {
-      return maskingProviders(Arrays.asList(maskingProviders));
-    }
+    SingleChatMessage content(@Nonnull final String content);
   }
 }

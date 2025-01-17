@@ -37,7 +37,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -53,11 +52,14 @@ import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.LlamaGuard38bFilterConfig;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -300,14 +302,22 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var filter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
             .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-    client.chatCompletion(prompt, config.withInputFiltering(filter).withOutputFiltering(filter));
+    final ContentFilter llamaFilter =
+        () ->
+            LlamaGuard38bFilterConfig.create()
+                .type(LlamaGuard38bFilterConfig.TypeEnum.LLAMA_GUARD_3_8B)
+                .config(LlamaGuard38b.create().selfHarm(true));
+
+    client.chatCompletion(
+        prompt,
+        config.withInputFiltering(azureFilter, llamaFilter).withOutputFiltering(azureFilter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -645,7 +655,7 @@ class OrchestrationUnitTest {
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
-        final var templateItem = (ChatMessage) templating.get(0);
+        final var templateItem = (SingleChatMessage) templating.get(0);
         assertThat(templateItem.getRole()).isEqualTo("user");
         assertThat(templateItem.getContent())
             .isEqualTo("Hello world! Why is this phrase so famous?");
@@ -797,10 +807,9 @@ class OrchestrationUnitTest {
     module.addDeserializer(
         LLMModuleResult.class,
         PolymorphicFallbackDeserializer.fromJsonSubTypes(LLMModuleResult.class));
-    module.setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
+    module.setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
     module.addDeserializer(
-        ChatMessagesInner.class,
-        PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class));
+        ChatMessage.class, PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class));
 
     var orchestrationChatResponse =
         new OrchestrationChatResponse(
