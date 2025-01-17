@@ -1,0 +1,54 @@
+{
+  "orchestration_config" : {
+    "module_configurations" : {
+      "llm_module_config" : {
+        "model_name" : "gpt-35-turbo-16k",
+        "model_params" : {
+          "max_tokens" : 50,
+          "temperature" : 0.1,
+          "frequency_penalty" : 0,
+          "presence_penalty" : 0,
+          "top_p" : 1,
+          "n" : 1
+        },
+        "model_version" : "latest"
+      },
+      "templating_module_config" : {
+        "template" : [ {
+          "role" : "system",
+          "content" : "Context message with embedded grounding results. {{?results}}"
+        } ]
+      },
+      "grounding_module_config" : {
+        "type" : "document_grounding_service",
+        "config" : {
+          "filters" : [ {
+            "id" : "arbitrary-user-defined-id",
+            "search_config" : {
+              "max_chunk_count" : 3
+            },
+            "data_repositories" : [ "*" ],
+            "data_repository_type" : "vector",
+            "data_repository_metadata" : [ ],
+            "document_metadata" : [ {
+              "key" : "document metadata",
+              "value" : [ "2" ],
+              "select_mode" : [ "ignoreIfKeyAbsent" ]
+            } ],
+            "chunk_metadata" : [ {
+              "key" : "chunk metadata",
+              "value" : [ "1" ]
+            } ]
+          } ],
+          "input_params" : [ "query" ],
+          "output_param" : "results"
+        }
+      }
+    },
+    "stream" : false
+  },
+  "input_params" : {
+    "query" : "String used for similarity search in database"
+  },
+  "messages_history" : [ ]
+}

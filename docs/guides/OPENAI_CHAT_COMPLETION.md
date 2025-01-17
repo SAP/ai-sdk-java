@@ -87,7 +87,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
       </details>
 
-### Simple chat completion
+## Simple chat completion
 
 ```java
 var result =
@@ -98,7 +98,7 @@ var result =
 String resultMessage = result.getContent();
 ```
 
-### Using a Custom Resource Group
+## Using a Custom Resource Group
 
 ```java
 var destination = new AiCoreService()
@@ -107,7 +107,7 @@ var destination = new AiCoreService()
 OpenAiClient.withCustomDestination(destination);
 ```
 
-### Message history
+## Message history
 
 ```java
 var systemMessage =
@@ -124,7 +124,7 @@ String resultMessage = result.getContent();
 
 See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat Completion with Specific Model Version
+## Chat Completion with Specific Model Version
 
 By default, when no version is specified, the system selects one of the available deployments of the specified model, regardless of its version.
 To target a specific version, you can specify the model version along with the model.
@@ -134,7 +134,7 @@ OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO.withVersion("1106")).chatCompletion(request);
 ```
 
-### Chat completion with Custom Model
+## Chat completion with Custom Model
 
 You can also use a custom OpenAI model for chat completion by creating an `OpenAiModel` object. 
 
@@ -145,11 +145,11 @@ OpenAiChatCompletionOutput result =
 
 Ensure that the custom model is deployed in SAP AI Core.
 
-### Stream chat completion
+## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
-#### Asynchronous Streaming
+### Asynchronous Streaming
 
 This is a blocking example for streaming and printing directly to the console:
 
@@ -168,7 +168,7 @@ try (Stream<String> stream = client.streamChatCompletion(msg)) {
 }
 ```
 
-#### Aggregating Total Output
+### Aggregating Total Output
 
 The following example is non-blocking and demonstrates how to aggregate the complete response.
 Any asynchronous library can be used, such as the classic Thread API.
@@ -205,12 +205,10 @@ Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
 System.out.println("Tokens used: " + tokensUsed);
 ```
 
-#### Spring Boot example
-
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java). It shows the usage of Spring
 Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
-### Embedding
+## Embedding
 
 Get the embeddings of a text input in list of float values:
 

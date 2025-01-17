@@ -15,6 +15,7 @@
 ### ✨ New Functionality
 
 - New Orchestration features:
+  - [Spring AI integration](../guides/ORCHESTRATION_CHAT_COMPLETION.md#spring-ai-integration)
   - Images are now supported as input in newly introduced `MultiChatMessage`.
   - `MultiChatMessage` also allows for multiple content items (text or image) in one object.
   - Grounding input can be masked with `DPIConfig`.

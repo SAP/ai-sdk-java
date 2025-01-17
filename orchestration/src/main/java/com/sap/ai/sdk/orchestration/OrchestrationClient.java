@@ -1,11 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -16,9 +15,7 @@ import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -60,6 +57,7 @@ public class OrchestrationClient {
             .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
     JACKSON.registerModule(module);
   }
+  static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   @Nonnull private final Supplier<HttpDestination> destinationSupplier;
 
