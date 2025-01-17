@@ -131,11 +131,11 @@ Please refer to [this documentation](docs/guides/ORCHESTRATION_CHAT_COMPLETION.m
 
 For more detailed information and advanced usage, please refer to the following:
 
-- [Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
-- [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
-- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
-- [Spring AI Integration](docs/guides/SPRING_AI_INTEGRATION.md)
-- [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/BTP_Cockpit.png"/> Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/Orchestration-Logo.png" width="16"/> Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
+- [<img src="https://platform.openai.com/favicon-docs.svg" width="16"/> OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
+- [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](docs/guides/SPRING_AI_INTEGRATION.md)
+- [🧰 AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
 For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
 
@@ -153,7 +153,7 @@ For SAP internal development, you can also use `SNAPSHOT` builds from the [inter
 
 ## FAQs
 
-### _"How to add a custom header to AI Core requests?"_
+### _"How to add a custom header to AI Core requests?"_[Overview - gen-ai-hub-sdk < AI Core Potsdam - SAP BTP Cockpit.crwebloc](../../Desktop/Overview%20-%20gen-ai-hub-sdk%20%3C%20AI%20Core%20Potsdam%20-%20SAP%20BTP%20Cockpit.crwebloc)
 
 Create a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders).
 
