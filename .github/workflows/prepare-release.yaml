@@ -144,7 +144,7 @@ jobs:
         run: |
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ needs.bump-version.outputs.release-commit }}
           
-          PR_URL=$(gh pr create --title "Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
+          PR_URL=$(gh pr create --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
           - [ ] Review the [Draft Release](${{ needs.create-release.outputs.release-url }})
           - [ ] Review **and approve** this PR
