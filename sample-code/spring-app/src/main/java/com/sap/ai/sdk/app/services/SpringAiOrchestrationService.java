@@ -44,7 +44,7 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public ChatResponse template() {
     val template = new PromptTemplate("{input}");
-    val prompt = template.create(Map.of("input", "Hello World!"), defaultOptions);
+    val prompt = template.create(Map.of("input", "What is the capital of France?"), defaultOptions);
 
     return client.call(prompt);
   }
