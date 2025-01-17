@@ -17,6 +17,7 @@
 - Orchestration supports images as input in newly introduced `MultiChatMessage`.
 - `MultiChatMessage` also allows for multiple content items (text or image) in one object.
 - Grounding input can be masked with `DPIConfig`.
+- [Integrate the Orchestration client in Spring AI.](../guides/ORCHESTRATION_CHAT_COMPLETION.md#spring-ai-integration)
 
 ### 📈 Improvements
 
