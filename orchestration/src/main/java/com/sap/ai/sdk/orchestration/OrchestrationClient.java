@@ -13,7 +13,7 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
@@ -55,9 +55,9 @@ public class OrchestrationClient {
     final var module =
         new SimpleModule()
             .addDeserializer(
-                ChatMessagesInner.class,
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class))
-            .setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
+                ChatMessage.class,
+                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class))
+            .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
     JACKSON.registerModule(module);
   }
 
