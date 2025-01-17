@@ -153,7 +153,7 @@ For SAP internal development, you can also use `SNAPSHOT` builds from the [inter
 
 ## FAQs
 
-### _"How to add a custom header to AI Core requests?"_[Overview - gen-ai-hub-sdk < AI Core Potsdam - SAP BTP Cockpit.crwebloc](../../Desktop/Overview%20-%20gen-ai-hub-sdk%20%3C%20AI%20Core%20Potsdam%20-%20SAP%20BTP%20Cockpit.crwebloc)
+### _"How to add a custom header to AI Core requests?"_
 
 Create a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders).
 
