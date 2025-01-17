@@ -57,6 +57,7 @@ public class OrchestrationClient {
             .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
     JACKSON.registerModule(module);
   }
+
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   @Nonnull private final Supplier<HttpDestination> destinationSupplier;
