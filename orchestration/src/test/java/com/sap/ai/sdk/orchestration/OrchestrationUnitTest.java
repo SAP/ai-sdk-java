@@ -309,7 +309,7 @@ class OrchestrationUnitTest {
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
             .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-    ContentFilter llamaFilter =
+    final ContentFilter llamaFilter =
         () ->
             LlamaGuard38bFilterConfig.create()
                 .type(LlamaGuard38bFilterConfig.TypeEnum.LLAMA_GUARD_3_8B)

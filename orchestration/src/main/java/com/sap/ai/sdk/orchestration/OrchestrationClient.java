@@ -12,7 +12,6 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
@@ -38,25 +37,6 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
 
-  static final ObjectMapper JACKSON;
-
-  static {
-    JACKSON = getDefaultObjectMapper();
-
-    // Add mix-ins
-    JACKSON.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);
-    JACKSON.addMixIn(
-        ModuleResultsOutputUnmaskingInner.class,
-        JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
-
-    final var module =
-        new SimpleModule()
-            .addDeserializer(
-                ChatMessage.class,
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class))
-            .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
-    JACKSON.registerModule(module);
-  }
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   @Nonnull private final Supplier<HttpDestination> destinationSupplier;

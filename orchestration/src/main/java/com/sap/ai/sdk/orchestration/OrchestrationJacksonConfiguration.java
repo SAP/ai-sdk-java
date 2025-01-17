@@ -5,7 +5,7 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
 import javax.annotation.Nonnull;
@@ -45,9 +45,9 @@ public class OrchestrationJacksonConfiguration {
     final var module =
         new SimpleModule()
             .addDeserializer(
-                ChatMessagesInner.class,
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class))
-            .setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
+                ChatMessage.class,
+                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class))
+            .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
     jackson.registerModule(module);
     return jackson;
   }
