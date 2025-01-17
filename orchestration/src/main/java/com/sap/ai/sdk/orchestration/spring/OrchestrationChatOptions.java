@@ -149,6 +149,7 @@ public class OrchestrationChatOptions implements ChatOptions {
   @Nonnull
   @Override
   public <T extends ChatOptions> T copy() {
+    // note: this is a shallow copy
     val copyConfig =
         new OrchestrationModuleConfig()
             .withTemplateConfig(config.getTemplateConfig())
