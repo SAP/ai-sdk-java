@@ -9,13 +9,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class JacksonMixins {
-
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  interface CreateChatCompletionStreamResponseMixIn {}
-
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  interface CreateChatCompletionResponseMixIn {}
-
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
       property = "object",

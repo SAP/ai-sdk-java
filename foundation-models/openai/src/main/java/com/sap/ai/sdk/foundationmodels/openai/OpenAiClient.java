@@ -19,7 +19,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -50,13 +49,8 @@ public final class OpenAiClient {
 
   static {
     JACKSON
-        .addMixIn(
-            CreateChatCompletionResponse.class,
-            JacksonMixins.CreateChatCompletionResponseMixIn.class)
-        .addMixIn(
-            CreateChatCompletionStreamResponse.class,
-            JacksonMixins.CreateChatCompletionStreamResponseMixIn.class)
-        .addMixIn(
+    
+    .addMixIn(
             ChatCompletionsCreate200Response.class,
             JacksonMixins.ChatCompletionCreate200ResponseMixIn.class);
   }
