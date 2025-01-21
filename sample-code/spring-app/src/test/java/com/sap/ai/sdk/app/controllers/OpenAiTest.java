@@ -7,8 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,9 +48,7 @@ class OpenAiTest {
   @Test
   void streamChatCompletion() {
     final var userMessage =
-        new ChatCompletionRequestUserMessage()
-            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-            .content(ChatCompletionRequestUserMessageContent.create("Who is the prettiest?"));
+        OpenAiMessage.user("Who is the prettiest?").createDTO();
     final var request =
         new CreateChatCompletionRequest()
             .addMessagesItem(userMessage)

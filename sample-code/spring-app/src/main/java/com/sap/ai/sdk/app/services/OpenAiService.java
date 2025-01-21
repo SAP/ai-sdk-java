@@ -11,6 +11,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionReques
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImage;
@@ -58,10 +59,7 @@ public class OpenAiService {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final String message) {
-    final var userMessage =
-        new ChatCompletionRequestUserMessage()
-            .role(USER)
-            .content(ChatCompletionRequestUserMessageContent.create(message));
+    final var userMessage = OpenAiMessage.user(message).createDTO();
     final var request =
         new CreateChatCompletionRequest().addMessagesItem(userMessage).functions(null).tools(null);
 
@@ -126,10 +124,7 @@ public class OpenAiService {
     final var function = new FunctionObject().name("fibonacci").description(prompt).parameters(par);
     final var tool =
         new ChatCompletionTool().type(ChatCompletionTool.TypeEnum.FUNCTION).function(function);
-    final var userMessage =
-        new ChatCompletionRequestUserMessage()
-            .role(USER)
-            .content(ChatCompletionRequestUserMessageContent.create(question));
+    final var userMessage = OpenAiMessage.user(question).createDTO();
     final var toolChoice =
         ChatCompletionToolChoiceOption.create(
             new ChatCompletionNamedToolChoice()

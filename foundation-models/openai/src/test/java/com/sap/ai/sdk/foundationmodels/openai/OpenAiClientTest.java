@@ -21,10 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterChoiceResults;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
@@ -194,16 +190,9 @@ class OpenAiClientTest {
   private static Callable<?>[] chatCompletionCalls() {
     return new Callable[] {
       () -> {
-        final var systemMessage =
-            new ChatCompletionRequestSystemMessage()
-                .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
-                .content(ChatCompletionRequestSystemMessageContent.create("You are a helpful AI"));
+        final var systemMessage = OpenAiMessage.system("You are a helpful AI").createDTO();
         final var userMessage =
-            new ChatCompletionRequestUserMessage()
-                .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-                .content(
-                    ChatCompletionRequestUserMessageContent.create(
-                        "Hello World! Why is this phrase so famous?"));
+            OpenAiMessage.user("Hello World! Why is this phrase so famous?").createDTO();
         final var request =
             new CreateChatCompletionRequest()
                 .addMessagesItem(systemMessage)
@@ -461,11 +450,8 @@ class OpenAiClientTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var userMessage =
-          new ChatCompletionRequestUserMessage()
-              .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-              .content(
-                  ChatCompletionRequestUserMessageContent.create(
-                      "Can you give me the first 100 numbers of the Fibonacci sequence?"));
+          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?")
+              .createDTO();
       final var request = new CreateChatCompletionRequest().addMessagesItem(userMessage);
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
@@ -495,11 +481,8 @@ class OpenAiClientTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var userMessage =
-          new ChatCompletionRequestUserMessage()
-              .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-              .content(
-                  ChatCompletionRequestUserMessageContent.create(
-                      "Can you give me the first 100 numbers of the Fibonacci sequence?"));
+          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?")
+              .createDTO();
       final var request = new CreateChatCompletionRequest().addMessagesItem(userMessage);
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {

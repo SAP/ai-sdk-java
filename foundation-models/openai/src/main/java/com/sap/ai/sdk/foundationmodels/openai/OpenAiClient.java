@@ -142,16 +142,10 @@ public final class OpenAiClient {
     final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
 
     if (systemPrompt != null) {
-      parameters.addMessagesItem(
-          new ChatCompletionRequestSystemMessage()
-              .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
-              .content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
+      parameters.addMessagesItem(OpenAiMessage.system(systemPrompt).createDTO());
     }
     parameters
-        .addMessagesItem(
-            new ChatCompletionRequestUserMessage()
-                .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-                .content(ChatCompletionRequestUserMessageContent.create(prompt)))
+        .addMessagesItem(OpenAiMessage.user(prompt).createDTO())
         .functions(null)
         .tools(null)
         .parallelToolCalls(null);
@@ -203,15 +197,9 @@ public final class OpenAiClient {
     final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
 
     if (systemPrompt != null) {
-      parameters.addMessagesItem(
-          new ChatCompletionRequestSystemMessage()
-              .role(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM)
-              .content(ChatCompletionRequestSystemMessageContent.create(systemPrompt)));
+      parameters.addMessagesItem(OpenAiMessage.system(systemPrompt).createDTO());
     }
-    final var userMessage =
-        new ChatCompletionRequestUserMessage()
-            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-            .content(ChatCompletionRequestUserMessageContent.create(prompt));
+    final var userMessage = OpenAiMessage.user(prompt).createDTO();
     parameters.addMessagesItem(userMessage).tools(null).functions(null).parallelToolCalls(null);
 
     return streamChatCompletionDeltas(parameters)
