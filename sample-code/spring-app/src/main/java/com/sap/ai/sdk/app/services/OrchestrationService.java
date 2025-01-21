@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -8,11 +9,13 @@ import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.MultiMessageImageContent;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -35,7 +38,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -55,44 +58,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
-    final var prompt = new OrchestrationPrompt(Map.of());
-    final var configJsonImage =
-        """
-        {
-          "module_configurations": {
-            "templating_module_config": {
-              "template": [
-                {
-                  "role": "user",
-                  "content": [
-                    {
-                      "type": "text",
-                      "text": "What’s in this image?"
-                    },
-                    {
-                      "type": "image_url",
-                      "image_url": {
-                        "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
-                        "detail": "low"
-                      }
-                    }
-                  ]
-                }
-              ]
-            },
-            "llm_module_config": {
-              "model_name": "gpt-4o",
-              "model_params": {
-                "max_tokens": 50,
-                "temperature": 0.1,
-                "frequency_penalty": 0,
-                "presence_penalty": 0
-              }
-            }
-          }
-        }
-        """;
-    return client.executeRequestFromJsonModuleConfig(prompt, configJsonImage);
+    var multiMessage =
+        new UserMessage()
+            .addTextMessages("What is in this image?")
+            .addImage(pathToImage, MultiMessageImageContent.DetailLevel.low);
+    var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
   }
 
   /**
@@ -102,42 +73,10 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
-    final var prompt = new OrchestrationPrompt(Map.of());
-    final var configJson =
-        """
-{
-    "module_configurations": {
-      "templating_module_config": {
-        "template": [
-          {
-            "role":"user",
-            "content":[
-              {
-                "type": "text",
-                "text": "%s"
-              },
-              {
-                "type": "text",
-                "text": "%s"
-              }
-            ]
-          }
-        ]
-      },
-      "llm_module_config": {
-        "model_name": "gpt-4o",
-        "model_params": {
-          "max_tokens": 50,
-          "temperature": 0.1,
-          "frequency_penalty": 0,
-          "presence_penalty": 0
-        }
-      }
-    }
-  }
-"""
-            .formatted(questions.get(0), questions.get(1));
-    return client.executeRequestFromJsonModuleConfig(prompt, configJson);
+    var multiMessage = new UserMessage().addTextMessages(questions.get(0));
+    var prompt =
+        new OrchestrationPrompt(multiMessage.addTextMessages(questions.get(1), questions.get(2)));
+    return client.chatCompletion(prompt, config);
   }
 
   /**

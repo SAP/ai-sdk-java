@@ -14,4 +14,9 @@ public class AssistantMessage implements Message {
 
   /** The content of the message. */
   @Nonnull String content;
+
+  @Override
+  public MessageContent getContent() {
+    return new MessageContentSingle("------------Placeholder---------");
+  }
 }

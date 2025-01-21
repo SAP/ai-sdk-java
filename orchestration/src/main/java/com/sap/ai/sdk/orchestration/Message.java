@@ -2,6 +2,13 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
+import com.sap.ai.sdk.orchestration.model.ImageContent;
+import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
+import com.sap.ai.sdk.orchestration.model.TextContent;
+import org.apache.commons.lang3.NotImplementedException;
+
 import javax.annotation.Nonnull;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
@@ -46,8 +53,39 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    * @return the corresponding {@code ChatMessage} object.
    */
   @Nonnull
-  default ChatMessage createChatMessage() {
-    return ChatMessage.create().role(role()).content(content());
+  default ChatMessagesInner createChatMessage() {
+    if (this.getContent() instanceof MessageContentSingle) {
+      return ChatMessage.create().role(role()).content(content());
+    } else if (this.getContent() instanceof MessageContentMulti mCMulti) {
+      return MultiChatMessage.create()
+          .role(role())
+          .content(
+              mCMulti.multiContentList().stream()
+                  .map(
+                      multiMessageContent -> {
+                        if (multiMessageContent instanceof MultiMessageTextContent mMTContent) {
+                          return TextContent.create()
+                              .type(TextContent.TypeEnum.TEXT)
+                              .text(mMTContent.text());
+                        } else if (multiMessageContent
+                            instanceof MultiMessageImageContent mMIContent) {
+                          return ImageContent.create()
+                              .type(ImageContent.TypeEnum.IMAGE_URL)
+                              .imageUrl(
+                                  ImageContentImageUrl.create()
+                                      .url(mMIContent.imageUrl())
+                                      .detail(mMIContent.detailLevel().toString()));
+                        } else {
+                          throw new NotImplementedException(
+                              "Unknown subtype of MultiMessageContent: "
+                                  + multiMessageContent.getClass());
+                        }
+                      })
+                  .toList());
+    } else {
+      throw new NotImplementedException(
+          "Unknown content type: " + this.getContent().getClass());
+    }
   }
 
   /**
@@ -66,4 +104,6 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   @Nonnull
   @Beta
   String content();
+
+  MessageContent getContent();
 }

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import com.sap.ai.sdk.orchestration.Message;
 
 /** Endpoints for the Orchestration service */
 @RestController
@@ -62,11 +63,17 @@ class OrchestrationController {
         service.imageInput(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    var strBuilder = new StringBuilder("All the messages of this response:\n\n");
+    var messages = response.getAllMessages();
+    for (Message m : messages) {
+      String role = m.role();
+      String content = m.content();
+      strBuilder.append("[%s] %s%n".formatted(role, content));
+    }
+    return ResponseEntity.ok(strBuilder.toString());
+    //    return ResponseEntity.ok(response.getContent());
   }
 
   @GetMapping("/multiString")
@@ -75,13 +82,22 @@ class OrchestrationController {
       @RequestHeader(value = "accept", required = false) final String accept)
       throws JsonProcessingException {
     final var response =
-        service.multiStringInput(List.of("What is the capital of France?", "What is Chess about?"));
+        service.multiStringInput(
+            List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"));
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+          .body(MAPPER.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getContent());
+    //    return ResponseEntity.ok(response.getContent());
+    var strBuilder = new StringBuilder("All the messages of this response:\n\n");
+    var messages = response.getAllMessages();
+    for (Message m : messages) {
+      String role = m.role();
+      String content = m.content();
+      strBuilder.append("[%s] %s%n".formatted(role, content));
+    }
+    return ResponseEntity.ok(strBuilder.toString());
   }
 
   /**
