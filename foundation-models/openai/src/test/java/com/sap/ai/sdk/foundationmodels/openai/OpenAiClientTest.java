@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionResponseMessageRole.ASSISTANT;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterSeverityResult.SeverityEnum.SAFE;
-import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse.ObjectEnum.UNKNOWN_DEFAULT_OPEN_API;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.STOP;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse.ObjectEnum.CHAT_COMPLETION_CHUNK;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +30,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamR
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
+import com.sap.ai.sdk.foundationmodels.openai.model2.PromptFilterResult;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -488,15 +489,11 @@ class OpenAiClientTest {
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 
         final List<OpenAiChatCompletionDelta> deltaList = stream.toList();
-        final var delta0 = (CreateChatCompletionResponse) deltaList.get(0).getOriginalResponse();
-        final var delta1 =
-            (CreateChatCompletionStreamResponse) deltaList.get(1).getOriginalResponse();
-        final var delta2 =
-            (CreateChatCompletionStreamResponse) deltaList.get(2).getOriginalResponse();
-        final var delta3 =
-            (CreateChatCompletionStreamResponse) deltaList.get(3).getOriginalResponse();
-        final var delta4 =
-            (CreateChatCompletionStreamResponse) deltaList.get(4).getOriginalResponse();
+        final var delta0 = deltaList.get(0).getOriginalResponse();
+        final var delta1 = deltaList.get(1).getOriginalResponse();
+        final var delta2 = deltaList.get(2).getOriginalResponse();
+        final var delta3 = deltaList.get(3).getOriginalResponse();
+        final var delta4 = deltaList.get(4).getOriginalResponse();
 
         assertThat(deltaList).hasSize(5);
         // the first two and the last delta don't have any content
@@ -512,7 +509,8 @@ class OpenAiClientTest {
         assertThat(delta3.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
         assertThat(delta4.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
-        assertThat(delta0.getUsage()).isNull();
+        assertThatThrownBy(() -> delta0.getCustomField("usage"))
+            .isInstanceOf(NoSuchElementException.class);
         assertThat(delta1.getCustomField("usage")).isNull();
         assertThat(delta2.getCustomField("usage")).isNull();
         assertThat(delta3.getCustomField("usage")).isNull();
@@ -528,15 +526,20 @@ class OpenAiClientTest {
         assertThat(delta0.getId()).isEqualTo("");
         assertThat(delta0.getCreated()).isEqualTo(0);
         assertThat(delta0.getModel()).isEqualTo("");
-        assertThat(delta0.getObject()).isEqualTo(UNKNOWN_DEFAULT_OPEN_API);
-        assertThat(delta0.getUsage()).isNull();
+        assertThat(delta0.getObject())
+            .isEqualTo(CreateChatCompletionStreamResponse.ObjectEnum.UNKNOWN_DEFAULT_OPEN_API);
+
         assertThat(delta0.getChoices()).isEmpty();
-        // prompt filter results are only present in delta 0
-        assertThat(delta0.getPromptFilterResults()).isNotNull();
-        assertThat(delta0.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
-        final var promptFilter0 = delta0.getPromptFilterResults().get(0).getContentFilterResults();
-        assertThat(promptFilter0).isNotNull();
-        assertFilter(promptFilter0);
+
+        var promptFilterResults = (List<?>) delta0.getCustomField("prompt_filter_results");
+        var promptFilter =
+            MAPPER.convertValue(promptFilterResults.get(0), PromptFilterResult.class);
+
+        assertThat(promptFilter).isNotNull();
+        assertThat(promptFilter.getPromptIndex()).isEqualTo(0);
+        final var contentFilterResults = promptFilter.getContentFilterResults();
+        assertThat(contentFilterResults).isNotNull();
+        assertFilter(contentFilterResults);
 
         // delta 1
         assertThat(delta1.getChoices()).hasSize(1);

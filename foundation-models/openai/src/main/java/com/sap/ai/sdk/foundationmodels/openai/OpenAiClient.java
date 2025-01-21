@@ -11,10 +11,6 @@ import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
@@ -48,11 +44,9 @@ public final class OpenAiClient {
   @Nonnull private final Destination destination;
 
   static {
-    JACKSON
-    
-    .addMixIn(
-            ChatCompletionsCreate200Response.class,
-            JacksonMixins.ChatCompletionCreate200ResponseMixIn.class);
+    JACKSON.addMixIn(
+        ChatCompletionsCreate200Response.class,
+        JacksonMixins.DefaultChatCompletionCreate200ResponseMixIn.class);
   }
 
   /**
