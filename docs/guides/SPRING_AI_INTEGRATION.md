@@ -11,6 +11,32 @@
 This guide provides examples of how to use our Spring AI integration with our clients in SAP AI Core
 for chat completion tasks using the SAP AI SDK for Java.
 
+First, add the Spring AI dependency to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.ai</groupId>
+    <artifactId>spring-ai-core</artifactId>
+    <version>1.0.0-M5</version>
+</dependency>
+...
+<repository>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+    <id>spring-milestones</id>
+    <name>Spring Milestones</name>
+    <url>https://repo.spring.io/milestone</url>
+</repository>
+```
+
+:::note Spring AI Milestone Version
+Note that currently no stable version of Spring AI exists just yet.
+The AI SDK currently uses the [M5 milestone](https://spring.io/blog/2024/12/23/spring-ai-1-0-0-m5-released).
+
+Please be aware that future versions of the AI SDK may increase the Spring AI version.
+:::
+
 ## Orchestration Chat Completion
 
 The Orchestration client is integrated in Spring AI classes:
