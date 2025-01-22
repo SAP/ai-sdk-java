@@ -50,8 +50,7 @@ Prompt prompt = new Prompt("What is the capital of France?", opts);
 ChatResponse response = client.call(prompt);
 ```
 
-Please
-find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
 
 ## Orchestration Masking
 
@@ -76,3 +75,27 @@ ChatResponse response = client.call(prompt);
 
 Please
 find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
+
+## Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend
+to the frontend in real-time.
+
+```java
+ChatModel client = new OrchestrationChatModel();
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+
+Prompt prompt =
+    new Prompt(
+        "Can you give me the first 100 numbers of the Fibonacci sequence?", opts);
+Flux<ChatResponse> flux = client.stream(prompt);
+
+// also possible to keep only the chat completion text
+Flux<String> responseFlux = 
+    flux.map(chatResponse -> chatResponse.getResult().getOutput().getContent());
+```
+
+_Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
