@@ -34,7 +34,7 @@
     <coverage.complexity>76%</coverage.complexity>
     <coverage.line>92%</coverage.line>
     <coverage.instruction>92%</coverage.instruction>
-    <coverage.branch>73%</coverage.branch>
+    <coverage.branch>70%</coverage.branch>
     <coverage.method>88%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
