@@ -38,6 +38,19 @@ public class SpringAiOrchestrationService {
   }
 
   /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return a stream of assistant message responses
+   */
+  @Nonnull
+  public Flux<ChatResponse> streamChatCompletion() {
+    val prompt =
+        new Prompt(
+            "Can you give me the first 100 numbers of the Fibonacci sequence?", defaultOptions);
+    return client.stream(prompt);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
    * @return the assistant response object
@@ -73,18 +86,5 @@ public class SpringAiOrchestrationService {
             opts);
 
     return client.call(prompt);
-  }
-
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return a stream of assistant message responses
-   */
-  @Nonnull
-  public Flux<ChatResponse> streamChatCompletion() {
-    val prompt =
-        new Prompt(
-            "Can you give me the first 100 numbers of the Fibonacci sequence?", defaultOptions);
-    return client.stream(prompt);
   }
 }
