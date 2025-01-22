@@ -152,7 +152,7 @@ public class OrchestrationChatModelTest {
       assertThat(deltaList.get(1).getResult().getOutput().getContent()).isEqualTo("Sure");
       assertThat(deltaList.get(2).getResult().getOutput().getContent()).isEqualTo("!");
 
-      assertThat(deltaList.get(1).getResult().getMetadata().getFinishReason()).isEqualTo("");
+      assertThat(deltaList.get(0).getResult().getMetadata().getFinishReason()).isEqualTo("");
       assertThat(deltaList.get(1).getResult().getMetadata().getFinishReason()).isEqualTo("");
       assertThat(deltaList.get(2).getResult().getMetadata().getFinishReason()).isEqualTo("stop");
 
