@@ -51,13 +51,12 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
 
   // will be fixed once the generated code add a discriminator which will allow this class to extend
   // CompletionPostResponseStreaming
-  @SuppressWarnings("unchecked")
+  @Nonnull
   private static String getContent(@Nonnull final LLMChoice choice) {
-    val message = (Map<String, Object>) choice.getCustomField("delta");
-    if (message != null && message.get("content") != null) {
-      return message.get("content").toString();
-    }
-    return "";
+    return choice.getCustomField("delta") instanceof Map<?, ?> delta
+            && delta.get("content") instanceof String content
+        ? content
+        : "";
   }
 
   @Nonnull
