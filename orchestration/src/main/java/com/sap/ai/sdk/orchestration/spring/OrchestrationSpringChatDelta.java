@@ -1,11 +1,12 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -25,24 +26,17 @@ import org.springframework.ai.chat.model.Generation;
 @Beta
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class OrchestrationSpringChatResponse extends ChatResponse {
+public class OrchestrationSpringChatDelta extends ChatResponse {
 
-  OrchestrationChatResponse orchestrationResponse;
-
-  OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse orchestrationResponse) {
+  OrchestrationSpringChatDelta(@Nonnull final OrchestrationChatCompletionDelta delta) {
     super(
-        toGenerations(
-            (LLMModuleResultSynchronous)
-                orchestrationResponse.getOriginalResponse().getOrchestrationResult()),
-        toChatResponseMetadata(
-            (LLMModuleResultSynchronous)
-                orchestrationResponse.getOriginalResponse().getOrchestrationResult()));
-    this.orchestrationResponse = orchestrationResponse;
+        toGenerations((LLMModuleResultSynchronous) delta.getOrchestrationResult()),
+        toChatResponseMetadata((LLMModuleResultSynchronous) delta.getOrchestrationResult()));
   }
 
   @Nonnull
   static List<Generation> toGenerations(@Nonnull final LLMModuleResultSynchronous result) {
-    return result.getChoices().stream().map(OrchestrationSpringChatResponse::toGeneration).toList();
+    return result.getChoices().stream().map(OrchestrationSpringChatDelta::toGeneration).toList();
   }
 
   @Nonnull
@@ -52,8 +46,15 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
     if (!choice.getLogprobs().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs());
     }
-    val message = new AssistantMessage(choice.getMessage().getContent());
-    return new Generation(message, metadata.build());
+    return new Generation(new AssistantMessage(getContent(choice)), metadata.build());
+  }
+
+  @Nonnull
+  private static String getContent(@Nonnull final LLMChoice choice) {
+    return choice.getCustomField("delta") instanceof Map<?, ?> delta
+            && delta.get("content") instanceof String content
+        ? content
+        : "";
   }
 
   @Nonnull
@@ -65,9 +66,10 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
         .id(orchestrationResult.getId())
         .model(orchestrationResult.getModel())
         .keyValue("object", orchestrationResult.getObject())
-        .keyValue("created", orchestrationResult.getCreated())
-        .usage(toDefaultUsage(orchestrationResult.getUsage()));
-
+        .keyValue("created", orchestrationResult.getCreated());
+    if (orchestrationResult.getUsage() != null) {
+      metadataBuilder.usage(toDefaultUsage(orchestrationResult.getUsage()));
+    }
     return metadataBuilder.build();
   }
 
