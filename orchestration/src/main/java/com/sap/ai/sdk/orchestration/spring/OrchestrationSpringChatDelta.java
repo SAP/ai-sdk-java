@@ -28,13 +28,10 @@ import org.springframework.ai.chat.model.Generation;
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationSpringChatDelta extends ChatResponse {
 
-  OrchestrationChatCompletionDelta delta;
-
   OrchestrationSpringChatDelta(@Nonnull final OrchestrationChatCompletionDelta delta) {
     super(
         toGenerations((LLMModuleResultSynchronous) delta.getOrchestrationResult()),
         toChatResponseMetadata((LLMModuleResultSynchronous) delta.getOrchestrationResult()));
-    this.delta = delta;
   }
 
   @Nonnull
