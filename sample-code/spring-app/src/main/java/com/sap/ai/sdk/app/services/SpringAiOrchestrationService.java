@@ -15,6 +15,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 /** Service class for the Orchestration service */
 @Service
@@ -72,5 +73,18 @@ public class SpringAiOrchestrationService {
             opts);
 
     return client.call(prompt);
+  }
+
+  /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return a stream of assistant message responses
+   */
+  @Nonnull
+  public Flux<ChatResponse> streamChatCompletion() {
+    val prompt =
+        new Prompt(
+            "Can you give me the first 100 numbers of the Fibonacci sequence?", defaultOptions);
+    return client.stream(prompt);
   }
 }

@@ -1,8 +1,12 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
+import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
@@ -17,6 +21,7 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+import reactor.core.publisher.Flux;
 
 /**
  * Spring AI integration for the orchestration service.
@@ -50,6 +55,41 @@ public class OrchestrationChatModel implements ChatModel {
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
+  }
+
+  @Override
+  @Nonnull
+  public Flux<ChatResponse> stream(@Nonnull final Prompt prompt) {
+
+    if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
+
+      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
+      val stream =
+          client
+              .streamChatCompletionDeltas(request)
+              .peek(OrchestrationChatModel::throwOnContentFilter)
+              .map(OrchestrationSpringChatDelta::new);
+      return Flux.generate(
+          stream::iterator,
+          (iterator, sink) -> {
+            if (iterator.hasNext()) {
+              sink.next(iterator.next());
+            } else {
+              sink.complete();
+            }
+            return iterator;
+          });
+    }
+    throw new IllegalArgumentException(
+        "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
+  }
+
+  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
+    final String finishReason = delta.getFinishReason();
+    if (finishReason != null && finishReason.equals("content_filter")) {
+      throw new OrchestrationClientException("Content filter filtered the output.");
+    }
   }
 
   @Nonnull

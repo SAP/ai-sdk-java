@@ -49,6 +49,19 @@ public class OrchestrationService {
   }
 
   /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return a stream of assistant message responses
+   */
+  @Nonnull
+  public Stream<String> streamChatCompletion(@Nonnull final String topic) {
+    final var prompt =
+        new OrchestrationPrompt(
+            "Please create a small story about " + topic + " with around 700 words.");
+    return client.streamChatCompletion(prompt, config);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
@@ -244,18 +257,5 @@ public class OrchestrationService {
     final var configWithGrounding = config.withGroundingConfig(groundingConfig);
 
     return client.chatCompletion(prompt, configWithGrounding);
-  }
-
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
-  @Nonnull
-  public Stream<String> streamChatCompletion(@Nonnull final String topic) {
-    final var prompt =
-        new OrchestrationPrompt(
-            "Please create a small story about " + topic + " with around 700 words.");
-    return client.streamChatCompletion(prompt, config);
   }
 }
