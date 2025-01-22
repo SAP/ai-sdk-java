@@ -49,8 +49,6 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
     return new Generation(new AssistantMessage(getContent(choice)), metadata.build());
   }
 
-  // will be fixed once the generated code add a discriminator which will allow this class to extend
-  // CompletionPostResponseStreaming
   @Nonnull
   private static String getContent(@Nonnull final LLMChoice choice) {
     return choice.getCustomField("delta") instanceof Map<?, ?> delta
