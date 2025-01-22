@@ -13,7 +13,7 @@ import org.springframework.ai.chat.model.Generation;
 class OrchestrationChatResponseTest {
 
   @Test
-  void testToAssistantMessage() {
+  void testToGeneration() {
     var choice =
         LLMChoice.create()
             .index(0)
