@@ -24,7 +24,9 @@
               }
             ]
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       }
     },
     "stream": false

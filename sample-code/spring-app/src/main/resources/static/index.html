@@ -139,12 +139,15 @@
 
 <!-- API endpoints in containers -->
 <div class="container-fluid py-4">
-    <h1 class="mb-4 text-center">Java AI SDK Application</h1>
+    <div class="d-flex align-items-center mb-4 justify-content-center">
+        <img src="AI-SDK-Logo.svg" alt="AI SDK Logo" width="50" class="me-3">
+        <h1 class="text-center">Java AI SDK Application</h1>
+    </div>
     <div class="row justify-content-center">
         <div class="col-xl-4 max-width-container">
             <div class="card endpoint-card">
                 <div class="card-header">
-                    <h2>AI Core</h2>
+                    <h2>🧰 AI Core</h2>
                     The AI Core API provides tools to manage the lifecycle of your own AI scenarios, including artifacts, pipeline execution, and scalable deployments for training and inference.
                     For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-ai-core-overview" target="_blank">AI Core documentation</a>.
                 </div>
@@ -243,9 +246,12 @@
         <div class="col-xl-4 max-width-container">
             <div class="card endpoint-card">
                 <div class="card-header">
-                    <h2>Orchestration</h2>
+                    <div class="d-flex align-items-center">
+                        <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35" class="me-1 mb-2">
+                        <h2>Orchestration</h2>
+                    </div>
                     The Orchestration API offers functionality for enhancing your LLM calls with Templating, Filtering, Data Masking, Grounding and more.
-                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration" target="_blank">Orchestration documentation</a>.
+                    For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration" target="_blank">Orchestration documentation</a>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
@@ -342,12 +348,15 @@
         <div class="col-xl-4 max-width-container">
             <div class="card endpoint-card">
                 <div class="card-header">
-                    <h2>Foundation Models</h2>
+                    <h2>🧑‍🔬 Foundation Models</h2>
                     The Foundation Models API offers functionality for directly calling a foundation model and using the features provided by its own API.
                     For more information, check the <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-generative-ai-models-using-sap-ai-core" target="_blank">Foundation Models documentation</a>.
                 </div>
                 <div class="card-body">
-                    <h5>OpenAI</h5>
+                    <div class="d-flex align-items-center">
+                        <img src="Open-AI-Logo.svg" alt="AI SDK Logo" class="me-1 mb-1">
+                        <h5 class="mb-1">OpenAI</h5>
+                    </div>
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
@@ -409,6 +418,71 @@
                                    href="/chatCompletion/ai-sdk-java-e2e"><code>/chatCompletion/resourceGroup</code></a>
                                 <div class="tooltip-content">
                                     Chat request to OpenAI filtering by resource group.
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 max-width-container">
+            <div class="card endpoint-card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <img src="https://spring.io/favicon-32x32.png" alt="Spring Logo"  class="me-2 mb-2">
+                        <h2>Spring AI</h2>
+                    </div>
+                    Our clients are <a href="https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#spring-ai-integration" target="_blank">integrated</a> within the Spring AI framework
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="32" class="me-1 mb-2">
+                        <h5 class="mb-1">Orchestration Integration</h5>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/spring-ai-orchestration/completion"><code>/spring-ai-orchestration/completion</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/spring-ai-orchestration/streamChatCompletion"><code>/spring-ai-orchestration/streamChatCompletion</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/spring-ai-orchestration/template"><code>/spring-ai-orchestration/template</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/spring-ai-orchestration/masking"><code>/spring-ai-orchestration/masking</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI.
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="info-tooltip">
+                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
+                                   href="/spring-ai-orchestration/chatMemory"><code>/spring-ai-orchestration/chatMemory</code></a>
+                                <div class="tooltip-content">
+                                    Chat request to OpenAI.
                                 </div>
                             </div>
                         </li>

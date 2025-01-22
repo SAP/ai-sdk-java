@@ -7,7 +7,9 @@
             "role": "user",
             "content": "{{?input}}"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "llm_module_config": {
         "model_name": "gpt-35-turbo-16k",

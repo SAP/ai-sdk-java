@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import javax.annotation.Nonnull;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
@@ -47,7 +48,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   default ChatMessage createChatMessage() {
-    return ChatMessage.create().role(role()).content(content());
+    return SingleChatMessage.create().role(role()).content(content());
   }
 
   /**
