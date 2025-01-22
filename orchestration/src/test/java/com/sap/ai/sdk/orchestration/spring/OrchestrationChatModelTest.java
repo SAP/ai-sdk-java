@@ -103,7 +103,6 @@ public class OrchestrationChatModelTest {
         .hasMessageContaining("LLM config is required");
   }
 
-  @Disabled
   @Test
   void streamChatCompletionOutputFilterErrorHandling() throws IOException {
     try (var inputStream = spy(fileLoader.apply("streamChatCompletionOutputFilter.txt"))) {

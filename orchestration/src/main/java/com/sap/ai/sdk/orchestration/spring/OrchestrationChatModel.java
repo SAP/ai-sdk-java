@@ -13,6 +13,7 @@ import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,29 +66,35 @@ public class OrchestrationChatModel implements ChatModel {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
-      val stream =
-          client
-              .streamChatCompletionDeltas(request)
-              .peek(OrchestrationChatModel::throwOnContentFilter)
-              .map(OrchestrationSpringChatDelta::new);
-      return Flux.generate(
-          stream::iterator,
-          (iterator, sink) -> {
-            if (iterator.hasNext()) {
-              sink.next(iterator.next());
-            } else {
-              sink.complete();
-            }
-            return iterator;
+      val stream = client.streamChatCompletionDeltas(request);
+
+      final Flux<OrchestrationChatCompletionDelta> flux =
+          Flux.generate(
+              stream::iterator,
+              (iterator, sink) -> {
+                if (iterator.hasNext()) {
+                  sink.next(iterator.next());
+                } else {
+                  sink.complete();
+                }
+                return iterator;
+              });
+      return flux.map(
+          delta -> {
+            throwOnContentFilter(stream, delta);
+            return new OrchestrationSpringChatDelta(delta);
           });
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
   }
 
-  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
+  private static void throwOnContentFilter(
+      @Nonnull final Stream<OrchestrationChatCompletionDelta> stream,
+      @Nonnull final OrchestrationChatCompletionDelta delta) {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
+      stream.close();
       throw new OrchestrationClientException("Content filter filtered the output.");
     }
   }
