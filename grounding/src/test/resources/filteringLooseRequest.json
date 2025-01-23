@@ -1,0 +1,58 @@
+{
+  "orchestration_config": {
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo-16k",
+        "model_params": {
+          "temperature": 0.1,
+          "max_tokens": 50,
+          "frequency_penalty": 0,
+          "presence_penalty": 0,
+          "top_p" : 1,
+          "n" : 1
+        },
+        "model_version": "latest"
+      },
+      "templating_module_config": {
+        "template": [
+          {
+            "role": "user",
+            "content": "Hello World! Why is this phrase so famous?"
+          }
+        ]
+      },
+      "filtering_module_config": {
+        "input": {
+          "filters": [
+            {
+              "type": "azure_content_safety",
+              "config": {
+                "Hate": 4,
+                "SelfHarm": 4,
+                "Sexual": 4,
+                "Violence": 4
+              }
+            }
+          ]
+        },
+        "output": {
+          "filters": [
+            {
+              "type": "azure_content_safety",
+              "config": {
+                "Hate": 4,
+                "SelfHarm": 4,
+                "Sexual": 4,
+                "Violence": 4
+              }
+            }
+          ]
+        }
+      }
+    },
+    "stream": false
+  },
+  "input_params": {
+  },
+  "messages_history": []
+}
