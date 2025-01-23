@@ -1,17 +1,11 @@
 package com.sap.ai.sdk.orchestration;
 
-import javax.annotation.Nonnull;
-
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
+import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.NotImplementedException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /** Represents a chat message as 'user' to the orchestration service. */
 @Value
@@ -34,33 +28,13 @@ public class UserMessage implements Message {
     //    TODO: Ask in PR:
     //     Maybe we want this to be called "contentAsString()" and have an actual getter instead?
     //     Right now, this version avoids a breaking change.
-    if (content instanceof MessageContentSingle mCSingle) {
-      return mCSingle.content();
-    } else if (content instanceof MessageContentMulti mCMulti) {
-      var strBuilder = new StringBuilder();
-      mCMulti
-          .multiContentList()
-          .forEach(
-              multiContent -> {
-                if (multiContent instanceof MultiMessageTextContent mMText) {
-                  strBuilder.append(mMText.text());
-                } else if (multiContent instanceof MultiMessageImageContent mMImage) {
-                  strBuilder.append(mMImage.imageUrl());
-                } else {
-                  throw new NotImplementedException(
-                      "Unknown subtype of MultiChatMessageContent: " + multiContent.getClass());
-                }
-              });
-      return strBuilder.toString();
-    } else {
-      throw new NotImplementedException("Unknown subtype of MessageContent: " + content.getClass());
-    }
+    return MessageContent.toString(content);
   }
 
-  //  Not the best, just a placeholder for the actual getter of content
   @Override
+  @Nonnull
   public MessageContent getContent() {
-    return content;
+    return content != null ? content : new MessageContentSingle("");
   }
 
   //  TODO: mention in PR
@@ -77,36 +51,55 @@ public class UserMessage implements Message {
   }
 
   public UserMessage(List<MultiChatMessageContent> multiChatMessageContentList) {
+    //    List<MultiMessageContent> newContentList = new java.util.ArrayList<>(List.of());
+    //    for (var chatMessageContent : multiChatMessageContentList ) {
+    //      if (chatMessageContent instanceof TextContent textContent) {
+    //        newContentList.add(new MultiMessageTextContent(textContent.getText()));
+    //      } else if (chatMessageContent instanceof ImageContent imageContent) {
+    //        var imageUrl = imageContent.getImageUrl();
+    //        newContentList.add(new MultiMessageImageContent(
+    //                imageUrl.getUrl(),
+    // MultiMessageImageContent.DetailLevel.fromString(imageUrl.getDetail())));
+    //      } else {
+    //        throw new NotImplementedException("Unknown subtype of MultiChatMessageContent: " +
+    // chatMessageContent.getClass());
+    //      }
+    //    }
+    //    content = new MessageContentMulti(newContentList);
     content =
         new MessageContentMulti(
             multiChatMessageContentList.toArray(MultiChatMessageContent[]::new));
   }
 
+  @Nonnull
   public UserMessage addTextMessages(@Nonnull String... messages) {
-    if(content == null && messages.length == 1) {
-//      this.content will be of type MessageContentSingle only here
-      return new UserMessage(messages[0]);
-    }
-    var multiContentList =
-        new LinkedList<MultiMessageContent>(
-            (Arrays.stream(messages).map(MultiMessageTextContent::new)).toList());
-    if (content instanceof MessageContentSingle mCSingle) {
-      multiContentList.addFirst(new MultiMessageTextContent(mCSingle.content()));
-    } else if (content instanceof MessageContentMulti mCMulti) {
-      multiContentList.addAll(0, mCMulti.multiContentList());
-    }
-    return new UserMessage(new MessageContentMulti(multiContentList));
+    //    if (content == null && messages.length == 1) {
+    //      //      this.content will be of type MessageContentSingle only here
+    //      return new UserMessage(messages[0]);
+    //    }
+    //    var multiContentList = new ArrayList<MultiMessageContent>();
+    //    if (content instanceof MessageContentSingle mCSingle) {
+    //      multiContentList.add(new MultiMessageTextContent(mCSingle.content()));
+    //    } else {
+    //      multiContentList.addAll(((MessageContentMulti) content).multiContentList());
+    //    }
+    //
+    // multiContentList.addAll((Arrays.stream(messages).map(MultiMessageTextContent::new)).toList());
+    //    return new UserMessage(new MessageContentMulti(multiContentList));
+    return ((UserMessage) Message.addTextMessages(content, role, messages));
   }
 
+  @Nonnull
   public UserMessage addImage(
       @Nonnull String imageUrl, MultiMessageImageContent.DetailLevel detailLevel) {
-    var multiContentList = new ArrayList<MultiMessageContent>();
-    if (content instanceof MessageContentSingle mCSingle) {
-      multiContentList.add(new MultiMessageTextContent(mCSingle.content()));
-    } else {
-      multiContentList.addAll(((MessageContentMulti) content).multiContentList());
-    }
-    multiContentList.add(new MultiMessageImageContent(imageUrl, detailLevel));
-    return new UserMessage(new MessageContentMulti(multiContentList));
+    //    var multiContentList = new ArrayList<MultiMessageContent>();
+    //    if (content instanceof MessageContentSingle mCSingle) {
+    //      multiContentList.add(new MultiMessageTextContent(mCSingle.content()));
+    //    } else {
+    //      multiContentList.addAll(((MessageContentMulti) content).multiContentList());
+    //    }
+    //    multiContentList.add(new MultiMessageImageContent(imageUrl, detailLevel));
+    //    return new UserMessage(new MessageContentMulti(multiContentList));
+    return ((UserMessage) Message.addImage(content, role, imageUrl, detailLevel));
   }
 }

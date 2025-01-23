@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -13,10 +15,42 @@ public class SystemMessage implements Message {
   @Nonnull String role = "system";
 
   /** The content of the message. */
-  @Nonnull String content;
+  MessageContent content;
+
+  @Nonnull
+  @Override
+  public String content() {
+    return MessageContent.toString(content);
+  }
 
   @Override
+  @Nonnull
   public MessageContent getContent() {
-    return new MessageContentSingle("------------Placeholder---------");
+    return content != null ? content : new MessageContentSingle("");
+  }
+
+  public SystemMessage(String singleMessage) {
+    content = new MessageContentSingle(singleMessage);
+  }
+
+  public SystemMessage(MessageContent messageContent) {
+    content = messageContent;
+  }
+
+  public SystemMessage(List<MultiChatMessageContent> multiChatMessageContentList) {
+    content =
+        new MessageContentMulti(
+            multiChatMessageContentList.toArray(MultiChatMessageContent[]::new));
+  }
+
+  @Nonnull
+  public AssistantMessage addTextMessages(@Nonnull String... messages) {
+    return ((AssistantMessage) Message.addTextMessages(content, role, messages));
+  }
+
+  @Nonnull
+  public AssistantMessage addImage(
+      @Nonnull String imageUrl, MultiMessageImageContent.DetailLevel detailLevel) {
+    return ((AssistantMessage) Message.addImage(content, role, imageUrl, detailLevel));
   }
 }
