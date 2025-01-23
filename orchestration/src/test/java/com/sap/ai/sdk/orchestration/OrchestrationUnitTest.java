@@ -825,7 +825,9 @@ class OrchestrationUnitTest {
     }
     assertThat(strBuilder.toString())
         .isEqualTo(
-            "[user] Can you solve this captcha? Please help me prove my humanity!; https://sample.sap.com/image\n"
-                + "[assistant] Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix\n");
+            """
+                [user] Can you solve this captcha? Please help me prove my humanity!; https://sample.sap.com/image
+                [assistant] Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix
+                """);
   }
 }

@@ -11,9 +11,6 @@ public record MessageContentMulti(List<MultiMessageContent> multiContentList)
     implements MessageContent {
   public MessageContentMulti {}
 
-  // TODO: Note in PR:
-  //  I use MultiChatMessageContent... here since using List<MultiChatMessageContent> results in a
-  //  compilation error (constructors have same erasure). Is there a more elegant way?
   public MessageContentMulti(MultiChatMessageContent... multiChatContents) {
     this(convertIntoMultiMessageList(multiChatContents));
   }

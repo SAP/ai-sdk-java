@@ -50,7 +50,6 @@ final class ConfigToRequestTransformer {
      */
     val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessagesInner>of();
     val messagesWithPrompt = new ArrayList<>(messages);
-//    TODO: Here createChatMessage is used to convert Message to ChatMessage
     messagesWithPrompt.addAll(
         prompt.getMessages().stream().map(Message::createChatMessage).toList());
     if (messagesWithPrompt.isEmpty()) {

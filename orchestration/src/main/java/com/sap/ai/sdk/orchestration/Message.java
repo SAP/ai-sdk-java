@@ -89,9 +89,6 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
     }
   }
 
-  //  TODO: ask in PR:
-  //    Is there a better way to distribute the logic of the `add...` methods between the Message
-  //    interface and its implementing classes?
   static Message addTextMessages(
       @Nullable MessageContent oldContent, @Nonnull String role, @Nonnull String... messages) {
     if (oldContent == null && messages.length == 1) {

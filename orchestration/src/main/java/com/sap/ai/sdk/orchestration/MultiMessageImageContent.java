@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
-public record MultiMessageImageContent(String imageUrl, DetailLevel detailLevel) implements MultiMessageContent {
+public record MultiMessageImageContent(String imageUrl, DetailLevel detailLevel)
+    implements MultiMessageContent {
   private static final String type = "image_url";
 
   public String type() {
@@ -21,4 +22,3 @@ public record MultiMessageImageContent(String imageUrl, DetailLevel detailLevel)
     }
   }
 }
-

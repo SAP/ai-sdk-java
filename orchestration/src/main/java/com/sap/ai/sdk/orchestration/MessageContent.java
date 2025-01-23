@@ -2,9 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 public sealed interface MessageContent permits MessageContentSingle, MessageContentMulti {
 
-  //  TODO: Ask in PR: This is to turn the message content into a string.
-  //      Is there a more elegant way/place to do this? Also, I put a semicolon between multiple
-  //       messages. Is that okay? Or just a space?
   static String toString(MessageContent content) {
     if (content instanceof MessageContentSingle mCSingle) {
       return mCSingle.content();
