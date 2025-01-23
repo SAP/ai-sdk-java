@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
  * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
  *     Core: Orchestration - Grounding</a>
  */
+@FunctionalInterface
 public interface GroundingProvider {
 
   /**
