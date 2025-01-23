@@ -70,6 +70,17 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
           mvn $MVN_ARGS
 
+      - name: "Generate Coverage Report"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:report"
+          mvn $MVN_ARGS
+
+      - name: "Upload Coverage Report"
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: target/site/jacoco
+
       - name: "Coverage Report"
         run: |
           git fetch origin main:main
