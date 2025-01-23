@@ -5,11 +5,9 @@ import static lombok.AccessLevel.PACKAGE;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.TextContent;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +52,11 @@ public class OrchestrationChatResponse {
   /**
    * Get all messages. This can be used for subsequent prompts as a message history.
    *
-   * @throws UnsupportedOperationException if the MultiChatMessage type message in chat.
+   * @throws IllegalArgumentException if the MultiChatMessage type message in chat.
    * @return A list of all messages.
    */
   @Nonnull
-  public List<Message> getAllMessages() throws UnsupportedOperationException {
+  public List<Message> getAllMessages() throws IllegalArgumentException {
     final var messages = new ArrayList<Message>();
 
     for (final ChatMessagesInner chatMessage :
@@ -69,13 +67,14 @@ public class OrchestrationChatResponse {
               case "user" -> new UserMessage(simpleMsg.getContent());
               case "assistant" -> new AssistantMessage(simpleMsg.getContent());
               case "system" -> new SystemMessage(simpleMsg.getContent());
-              default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
+              default ->
+                  throw new IllegalArgumentException("Unexpected role: " + simpleMsg.getRole());
             };
         messages.add(message);
       } else if (chatMessage instanceof MultiChatMessage mCMessage) {
         messages.add(new UserMessage(mCMessage.getContent()));
       } else {
-        throw new UnsupportedOperationException(
+        throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
     }

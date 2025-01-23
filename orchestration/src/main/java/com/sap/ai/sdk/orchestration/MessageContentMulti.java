@@ -5,8 +5,6 @@ import static com.sap.ai.sdk.orchestration.MultiMessageImageContent.DetailLevel;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
-import org.apache.commons.lang3.NotImplementedException;
-
 import java.util.List;
 
 public record MessageContentMulti(List<MultiMessageContent> multiContentList)
@@ -32,7 +30,8 @@ public record MessageContentMulti(List<MultiMessageContent> multiContentList)
             new MultiMessageImageContent(
                 imageUrl.getUrl(), DetailLevel.fromString(imageUrl.getDetail())));
       } else {
-        throw new NotImplementedException("Unknown subtype of MultiChatMessageContent: " + multiChatContent.getClass());
+        throw new IllegalArgumentException(
+            "Unknown subtype of MultiChatMessageContent: " + multiChatContent.getClass());
       }
     }
     return multiContentList;
