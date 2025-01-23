@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # triggered by the prepare-release workflow
 
 env:
-  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1
+  MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   MVN_SKIP_CI_PLUGINS: -DskipFormatting -Denforcer.skip -Djacoco.skip -Dmdep.analyze.skip
   JAVA_VERSION: 17
 
@@ -67,17 +67,8 @@ jobs:
 
       - name: "Run Unit Tests"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:check@default-check"
           mvn $MVN_ARGS
-      - name: "Generate Coverage Report"
-        run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:report"
-          mvn $MVN_ARGS
-      - name: "Upload Coverage Report"
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: core/target/site/jacoco
 
       - name: "Slack Notification"
         if: ${{ github.ref == 'refs/heads/main' && failure() }}
