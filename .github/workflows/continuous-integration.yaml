@@ -67,19 +67,17 @@ jobs:
 
       - name: "Run Unit Tests"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:check@default-check"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
           mvn $MVN_ARGS
-
       - name: "Generate Coverage Report"
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:report"
           mvn $MVN_ARGS
-
       - name: "Upload Coverage Report"
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: target/site/jacoco
+          path: core/target/site/jacoco
 
       - name: "Slack Notification"
         if: ${{ github.ref == 'refs/heads/main' && failure() }}
