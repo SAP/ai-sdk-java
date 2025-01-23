@@ -9,10 +9,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiArtifactArgumentBinding;
-import com.sap.ai.sdk.core.client.model.AiConfiguration;
-import com.sap.ai.sdk.core.client.model.AiConfigurationBaseData;
-import com.sap.ai.sdk.core.client.model.AiParameterArgumentBinding;
+import com.sap.ai.sdk.core.model.AiArtifactArgumentBinding;
+import com.sap.ai.sdk.core.model.AiConfiguration;
+import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
+import com.sap.ai.sdk.core.model.AiParameterArgumentBinding;
 import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ class ConfigurationUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val configurationList = new ConfigurationApi(client).query("default");
+    val configurationList = new ConfigurationApi(aiCoreService).query("default");
 
     assertThat(configurationList).isNotNull();
     assertThat(configurationList.getCount()).isEqualTo(1);
@@ -103,7 +103,8 @@ class ConfigurationUnitTest extends WireMockTestServer {
             .executableId("aicore-nvidia")
             .scenarioId("foundation-models")
             .addInputArtifactBindingsItem(inputArtifactBindingsItem);
-    val configuration = new ConfigurationApi(client).create("default", configurationBaseData);
+    val configuration =
+        new ConfigurationApi(aiCoreService).create("default", configurationBaseData);
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getId()).isEqualTo("f88e7581-ade7-45c6-94e9-807889b523ec");
@@ -139,11 +140,9 @@ class ConfigurationUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        3
-                        """)));
+                    .withBody("3")));
 
-    val configurationCount = new ConfigurationApi(client).count("default");
+    val configurationCount = new ConfigurationApi(aiCoreService).count("default");
 
     assertThat(configurationCount).isEqualTo(3);
   }
@@ -181,7 +180,7 @@ class ConfigurationUnitTest extends WireMockTestServer {
                         """)));
 
     val configuration =
-        new ConfigurationApi(client).get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
+        new ConfigurationApi(aiCoreService).get("default", "6ff6cb80-87db-45f0-b718-4e1d96e66332");
 
     assertThat(configuration).isNotNull();
     assertThat(configuration.getCreatedAt()).isEqualTo("2024-09-11T09:14:31Z");

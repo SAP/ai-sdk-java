@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@Beta
 public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
     implements DeltaAggregatable<OpenAiChatCompletionDelta> {
   /** List of result candidates. */
@@ -40,20 +42,14 @@ public class OpenAiChatCompletionOutput extends OpenAiCompletionOutput
    */
   @Nonnull
   public String getContent() throws OpenAiClientException {
-    if (getChoices().isEmpty()) {
-      return "";
-    }
+    //    We expect choices to be defined and never empty.
     if ("content_filter".equals(getChoices().get(0).getFinishReason())) {
       throw new OpenAiClientException("Content filter filtered the output.");
     }
     return Objects.requireNonNullElse(getChoices().get(0).getMessage().getContent(), "");
   }
 
-  /**
-   * Add a streamed delta to the total output.
-   *
-   * @param delta the delta to add.
-   */
+  @Override
   public void addDelta(@Nonnull final OpenAiChatCompletionDelta delta) {
     super.addDelta(delta);
 

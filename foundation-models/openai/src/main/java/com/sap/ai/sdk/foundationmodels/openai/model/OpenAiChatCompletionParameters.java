@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@Beta
 public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   /** A list of messages comprising the conversation so far. */
   @JsonProperty("messages")
@@ -83,18 +85,6 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   @Setter(AccessLevel.NONE)
   @Nullable
   private ToolChoice toolChoice;
-
-  /**
-   * <b>NOTE:</b> This method is currently not supported. Therefore, it stays protected.<br>
-   * <br>
-   * The configuration entries for Azure OpenAI chat extensions that use them. This additional
-   * specification is only compatible with Azure OpenAI.
-   */
-  @JsonProperty("data_sources")
-  @Setter(onParam_ = @Nullable, value = AccessLevel.PROTECTED)
-  private List<Object> dataSources; // TODO for implementation details, please find
-
-  // https://github.com/Azure/azure-rest-api-specs/blob/3cb1b51638616435470fc10ea00de92512186ece/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-02-01/inference.json#L1223
 
   /** "response_format": { "type": "json_object" } */
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)

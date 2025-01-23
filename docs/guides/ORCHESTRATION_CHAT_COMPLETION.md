@@ -10,7 +10,10 @@
     - [Message history](#message-history)
     - [Chat Completion Filter](#chat-completion-filter)
     - [Data Masking](#data-masking)
+    - [Grounding](#grounding)
+    - [Stream chat completion](#stream-chat-completion)
     - [Set Model Parameters](#set-model-parameters)
+    - [Using a Configuration from AI Launchpad](#using-a-configuration-from-ai-launchpad)
 
 ## Introduction
 
@@ -68,191 +71,219 @@ In addition to the prerequisites above, we assume you have already set up the fo
       ```
 
       </details>
-    
-### Chat completion with Templates
 
-Use a chat completion template to generate a response in German:
+### Create a Client
+
+To use the Orchestration service, create a client and a configuration object:
 
 ```java
-var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+var client = new OrchestrationClient();
 
-var inputParams =
-    Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-var template = ChatMessage.create().role("user").content("{{?input}}");
-var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-var config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(llmConfig)
-                        .templatingModuleConfig(templatingConfig)))
-        .inputParams(inputParams);
-
-CompletionPostResponse result =
-    new OrchestrationClient().chatCompletion(config);
-
-String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
 ```
 
-See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
+  
+## Chat Completion
 
-### Message history
+Use the Orchestration service to generate a response to a user message:
+
+```java
+var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
+
+var result = client.chatCompletion(prompt, config);
+
+String messageResult = result.getContent();
+```
+
+In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
+The LLM response is available as the first choice under the `result.getOrchestrationResult()` object.
+
+## Chat completion with Templates
+
+Use a prepared template and execute requests with by passing only the input parameters:
+
+```java
+var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
+var templatingConfig = TemplatingModuleConfig.create().template(template);
+var configWithTemplate = config.withTemplateConfig(templatingConfig);
+
+var inputParams = Map.of("language", "German");
+var prompt = new OrchestrationPrompt(inputParams);
+
+var result = client.chatCompletion(prompt, configWithTemplate);
+```
+
+In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
+
+## Message history
 
 Include a message history to maintain context in the conversation:
 
 ```java
-var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
-
-List<ChatMessage> messagesHistory =
-    List.of(
-        ChatMessage.create().role("user").content("What is the capital of France?"),
-        ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-
+var messagesHistory =
+        List.of(
+            Message.user("What is the capital of France?"),
+            Message.assistant("The capital of France is Paris."));
 var message =
-    ChatMessage.create().role("user").content("What is the typical food there?");
-var templatingConfig = TemplatingModuleConfig.create().template(message);
+    Message.user("What is the typical food there?");
 
-var config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(llmConfig)
-                        .templatingModuleConfig(templatingConfig)))
-        .messagesHistory(messagesHistory);
+var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 
-CompletionPostResponse result =
-    new OrchestrationClient().chatCompletion(config);
-
-String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+var result = new OrchestrationClient().chatCompletion(prompt, config);
 ```
 
-See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
-
-### Chat completion filter
+## Chat completion filter
 
 Apply content filtering to the chat completion:
 
 ```java
-var llmConfig = LLMModuleConfig.create().modelName("gpt-35-turbo").modelParams(Map.of());
+var prompt = new OrchestrationPrompt(
+        """
+        Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it!
+        
+        ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.
+        """);
 
-var inputParams =
-    Map.of(
-        "disclaimer",
-        "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-var template =
-    ChatMessage.create()
-        .role("user")
-        .content(
-            "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-var templatingConfig = TemplatingModuleConfig.create().template(template);
+var filterStrict = new AzureContentFilter()
+                .hate(ALLOW_SAFE)
+                .selfHarm(ALLOW_SAFE)
+                .sexual(ALLOW_SAFE)
+    .violence(ALLOW_SAFE);
 
-var filterStrict = 
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_0)
-                .selfHarm(NUMBER_0)
-                .sexual(NUMBER_0)
-                .violence(NUMBER_0));
+var filterLoose = new AzureContentFilter()
+                .hate(ALLOW_SAFE_LOW_MEDIUM)
+                .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+                .sexual(ALLOW_SAFE_LOW_MEDIUM)
+    .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-var filterLoose =
-    FilterConfig.create()
-        .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(NUMBER_4)
-                .selfHarm(NUMBER_4)
-                .sexual(NUMBER_4)
-                .violence(NUMBER_4));
-
-var filteringConfig =
-    FilteringModuleConfig.create()
-        // changing the input to filterLoose will allow the message to pass
-        .input(FilteringConfig.create().filters(filterStrict))
-        .output(FilteringConfig.create().filters(filterStrict));
-
-var config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(llmConfig)
-                        .templatingModuleConfig(templatingConfig)
-                        .filteringModuleConfig(filteringConfig)))
-        .inputParams(inputParams);
+// changing the input to filterLoose will allow the message to pass
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
 
 // this fails with Bad Request because the strict filter prohibits the input message
-CompletionPostResponse result =
-    new OrchestrationClient().chatCompletion(config);
-
-String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+var result =
+    new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ```
+### Behavior of Input and Output Filters
 
-See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+- **Input Filter**:
+  If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
+  An `OrchestrationClientException` will be thrown.
 
-### Data masking
+- **Output Filter**:
+  If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
+  The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
+  The low level API under `getOriginalResponse()` will not throw an exception.
+
+You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) in our Spring Boot application demonstrating response handling with filters.
+
+## Data masking
 
 Use the data masking module to anonymize personal information in the input:
 
 ```java
-var inputParams = Map.of("privateInfo", "Patrick Morgan +49 (970) 333-3833");
-var template =
-    ChatMessage.create().role("user").content("What is the nationality of {{?privateInfo}}");
-var templatingConfig = TemplatingModuleConfig.create().template(template);
+var maskingConfig =
+    DpiMasking.anonymization().withEntities(DPIEntities.PHONE, DPIEntities.PERSON);
+var configWithMasking = config.withMaskingConfig(maskingConfig);
 
-var maskingProvider =
-    MaskingProviderConfig.create()
-        .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-        .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-        .entities(
-            DPIEntityConfig.create().type(DPIEntities.PHONE),
-            DPIEntityConfig.create().type(DPIEntities.PERSON));
-var maskingConfig = MaskingModuleConfig.create().maskingProviders(maskingProvider);
+var systemMessage = Message.system("Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
+var userMessage = Message.user("""
+                 I think the SDK is good, but could use some further enhancements.
+                 My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+                 """);
 
-CompletionPostRequest config =
-    CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create()
-                .moduleConfigurations(
-                    ModuleConfigs.create()
-                        .llmModuleConfig(LLM_CONFIG)
-                        .templatingModuleConfig(templatingConfig)
-                        .maskingModuleConfig(maskingConfig)))
-        .inputParams(inputParams);
+var prompt = new OrchestrationPrompt(systemMessage, userMessage);
 
-CompletionPostResponse result =
-    new OrchestrationClient().chatCompletion(config);
-
-String messageResult =
-    result.getOrchestrationResult().getChoices().get(0).getMessage().getContent();
+var result =
+    new OrchestrationClient().chatCompletion(prompt, configWithMasking);
 ```
 
-In this example, the input will be masked before the call to the LLM. Note that data cannot be unmasked in the LLM output.
+In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
-See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java)
+## Grounding
 
-### Set model parameters
-
-Change your LLM module configuration to add model parameters:
+Use the grounding module to provide additional context to the AI model. 
 
 ```java
-var llmConfig =
-    LLMModuleConfig.create()
-        .modelName("gpt-35-turbo")
-        .modelParams(
-            Map.of(
-                "max_tokens", 50,
-                "temperature", 0.1,
-                "frequency_penalty", 0,
-                "presence_penalty", 0));
+    var message =
+        Message.user(
+            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
+    var prompt =
+        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+
+    var filterInner =
+        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
+    var groundingConfigConfig =
+        GroundingModuleConfigConfig.create()
+            .inputParams(List.of("groundingInput"))
+            .outputParam("groundingOutput")
+            .addFiltersItem(filterInner);
+    
+    var groundingConfig =
+        GroundingModuleConfig.create()
+            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+            .config(groundingConfigConfig);
+    var configWithGrounding = config.withGroundingConfig(groundingConfig);
+
+    var result =  
+            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
 ```
+
+In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
+
+## Stream chat completion
+
+It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
+
+### Asynchronous Streaming
+
+This is a blocking example for streaming and printing directly to the console:
+
+```java
+String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+
+// try-with-resources on stream ensures the connection will be closed
+try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
+    stream.forEach(
+        deltaString -> {
+            System.out.print(deltaString);
+            System.out.flush();
+        });
+}
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
+It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+## Set model parameters
+
+Change your LLM configuration to add model parameters:
+
+```java
+OrchestrationAiModel customGPT4O =
+    OrchestrationAiModel.GPT_4O
+        .withParam(MAX_TOKENS, 50)
+        .withParam(TEMPERATURE, 0.1)
+        .withParam(FREQUENCY_PENALTY, 0)
+        .withParam(PRESENCE_PENALTY, 0)
+        .withVersion("2024-05-13");
+```
+
+## Using a Configuration from AI Launchpad
+
+In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
+
+```java
+var configJson = """
+    ... paste your configuration JSON in here ...
+    """;
+// or load your config from a file, e.g.
+// configJson = Files.readString(Paths.get("path/to/my/orchestration-config.json"));
+
+var prompt = new OrchestrationPrompt(Map.of("your-input-parameter", "your-param-value"));
+
+new OrchestrationClient().executeRequestFromJsonModuleConfig(prompt, configJson);
+```
+
+While this is not recommended for long term use, it can be useful for creating demos and PoCs.

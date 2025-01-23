@@ -7,7 +7,9 @@
             "role": "user",
             "content": "{{?input}}"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "llm_module_config": {
         "model_name": "gpt-35-turbo-16k",
@@ -15,14 +17,17 @@
           "max_tokens": 50,
           "temperature": 0.1,
           "frequency_penalty": 0,
-          "presence_penalty": 0
+          "presence_penalty": 0,
+          "top_p" : 1,
+          "n" : 1
         },
         "model_version": "latest"
       }
     },
-    "stream" : false
+    "stream": false
   },
   "input_params": {
     "input": "Reply with 'Orchestration Service is working!' in German"
-  }
+  },
+  "messages_history": []
 }

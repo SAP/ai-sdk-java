@@ -7,7 +7,9 @@
           "temperature": 0.1,
           "max_tokens": 50,
           "frequency_penalty": 0,
-          "presence_penalty": 0
+          "presence_penalty": 0,
+          "top_p" : 1,
+          "n" : 1
         },
         "model_version": "latest"
       },
@@ -15,9 +17,11 @@
         "template": [
           {
             "role": "user",
-            "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}"
+            "content": "Hello World! Why is this phrase so famous?"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "filtering_module_config": {
         "input": {
@@ -29,6 +33,12 @@
                 "SelfHarm": 4,
                 "Sexual": 4,
                 "Violence": 4
+              }
+            },
+            {
+              "type": "llama_guard_3_8b",
+              "config": {
+                "self_harm": true
               }
             }
           ]
@@ -48,9 +58,9 @@
         }
       }
     },
-    "stream" : false
+    "stream": false
   },
   "input_params": {
-    "disclaimer": "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
-  }
+  },
+  "messages_history": []
 }

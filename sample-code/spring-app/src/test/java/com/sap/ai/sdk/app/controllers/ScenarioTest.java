@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiModelBaseData;
+import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,12 +11,12 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ScenarioTest {
+class ScenarioTest {
 
   @Test
   @DisplayName("Declared OpenAI models must match AI Core's available OpenAI models")
   @SneakyThrows
-  public void openAiModelAvailability() {
+  void openAiModelAvailability() {
 
     // Gather AI Core's list of available OpenAI models
     final var aiModelList = new ScenarioController().getModels().getResources();

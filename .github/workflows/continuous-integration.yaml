@@ -4,6 +4,7 @@ on:
     branches: [ "*" ]
   push:
     branches: [ "main" ]
+  workflow_dispatch: # triggered by the prepare-release workflow
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -13,7 +14,6 @@ env:
 jobs:
 
   continuous-integration:
-    # https://wiki.one.int.sap/wiki/display/DevFw/SUGAR
     runs-on: ubuntu-latest
     steps:
 
@@ -22,16 +22,17 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: "Setup java"
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
       - name: "REUSE Compliance Check"
-        uses: fsfe/reuse-action@v4
+        uses: fsfe/reuse-action@v5
 
       - name: "Format code"
         run: |
@@ -101,12 +102,11 @@ jobs:
 
       - name: "Slack Notification"
         if: ${{ github.ref == 'refs/heads/main' && failure() }}
-        uses: slackapi/slack-github-action@v1.27.0
+        uses: slackapi/slack-github-action@v2.0.0
         with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
           payload: |
             {
               "text": "🚨 Main Build Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

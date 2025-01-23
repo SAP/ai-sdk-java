@@ -1,11 +1,11 @@
 package com.sap.ai.sdk.core.client;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.client.model.TrckDeleteMetricsResponse;
-import com.sap.ai.sdk.core.client.model.TrckExecutionId;
-import com.sap.ai.sdk.core.client.model.TrckGetMetricResourceList;
-import com.sap.ai.sdk.core.client.model.TrckMetricResource;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.model.TrckDeleteMetricsResponse;
+import com.sap.ai.sdk.core.model.TrckExecutionId;
+import com.sap.ai.sdk.core.model.TrckGetMetricResourceList;
+import com.sap.ai.sdk.core.model.TrckMetricResource;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
@@ -23,7 +23,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.35.0.
+ * AI Core in version 2.37.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -32,25 +32,21 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
+@Beta
 public class MetricsApi extends AbstractOpenApiService {
-  /**
-   * Instantiates this API class to invoke operations on the AI Core.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public MetricsApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+
+  /** Instantiates this API class to invoke operations on the AI Core */
+  public MetricsApi() {
+    super(new AiCoreService().getApiClient());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the AI Core based on a given {@link
-   * ApiClient}.
+   * Instantiates this API class to invoke operations on the AI Core
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  @Beta
-  public MetricsApi(@Nonnull final ApiClient apiClient) {
-    super(apiClient);
+  public MetricsApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
   }
 
   /**

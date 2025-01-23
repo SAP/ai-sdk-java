@@ -1,119 +1,97 @@
 package com.sap.ai.sdk.core;
 
-import static com.google.common.collect.Iterables.tryFind;
 import static com.sap.cloud.sdk.cloudplatform.connectivity.OnBehalfOf.TECHNICAL_USER_PROVIDER;
-import static com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions.forService;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingAccessor;
-import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingBuilder;
+import com.sap.cloud.environment.servicebinding.api.ServiceBinding;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingMerger;
 import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
+import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationLoader;
-import java.util.HashMap;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ServiceBindingDestinationOptions;
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Utility class to resolve the destination pointing to the AI Core service. */
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PRIVATE) // utility class should not be instantiated
+@AllArgsConstructor
 class DestinationResolver {
-  static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
-  static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
+  private static final String AI_CLIENT_TYPE_KEY = "URL.headers.AI-Client-Type";
+  private static final String AI_CLIENT_TYPE_VALUE = "AI SDK Java";
 
-  @Getter(AccessLevel.PROTECTED)
-  @Nonnull
-  private static ServiceBindingAccessor accessor = DefaultServiceBindingAccessor.getInstance();
+  private static final String BASE_PATH = "/v2/";
 
-  /**
-   * <b>For testing only</b>
-   *
-   * <p>Get a destination pointing to the AI Core service.
-   *
-   * @param serviceKey The service key in JSON format.
-   * @return a destination pointing to the AI Core service.
-   */
+  @Nonnull private final ServiceBindingAccessor accessor;
+
+  DestinationResolver() {
+    this(
+        new ServiceBindingMerger(
+            List.of(DefaultServiceBindingAccessor.getInstance(), new AiCoreServiceKeyAccessor()),
+            ServiceBindingMerger.KEEP_EVERYTHING));
+  }
+
   @SuppressWarnings("UnstableApiUsage")
-  static HttpDestination getDestination(@Nullable final String serviceKey) {
-    final Predicate<Object> aiCore = Optional.of(ServiceIdentifier.AI_CORE)::equals;
-    val serviceBindings = accessor.getServiceBindings();
-    val aiCoreBinding = tryFind(serviceBindings, b -> aiCore.test(b.getServiceIdentifier()));
-
-    val serviceKeyPresent = serviceKey != null;
-    if (!aiCoreBinding.isPresent() && serviceKeyPresent) {
-      addServiceBinding(serviceKey);
-    }
+  @Nonnull
+  HttpDestination getDestination() {
+    val binding =
+        accessor.getServiceBindings().stream()
+            .filter(DestinationResolver::isAiCoreService)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new ServiceBindingAccessException(
+                        "Could not find any matching service bindings for service identifier "
+                            + ServiceIdentifier.AI_CORE));
 
     // get a destination pointing to the AI Core service
     val opts =
-        (aiCoreBinding.isPresent()
-                ? forService(aiCoreBinding.get())
-                : forService(ServiceIdentifier.AI_CORE))
+        ServiceBindingDestinationOptions.forService(binding)
             .onBehalfOf(TECHNICAL_USER_PROVIDER)
             .build();
 
-    return ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(opts);
+    val destination = ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(opts);
+    return setBasePath(addClientTypeHeader(destination));
   }
 
-  /**
-   * Set the AI Core service key as the service binding. This is used for local testing.
-   *
-   * @param serviceKey The service key in JSON format.
-   * @throws AiCoreCredentialsInvalidException if the JSON service key cannot be parsed.
-   */
-  private static void addServiceBinding(@Nonnull final String serviceKey) {
-    log.info(
-        """
-                  Found a service key in environment variable "AICORE_SERVICE_KEY".
-                  Using a service key is recommended for local testing only.
-                  Bind the AI Core service to the application for productive usage.""");
-
-    var credentials = new HashMap<String, Object>();
-    try {
-      credentials = new ObjectMapper().readValue(serviceKey, new TypeReference<>() {});
-    } catch (JsonProcessingException e) {
-      throw new AiCoreCredentialsInvalidException(
-          "Error in parsing service key from the \"AICORE_SERVICE_KEY\" environment variable.", e);
+  @Nonnull
+  static HttpDestination fromCustomBaseDestination(@Nonnull final HttpDestination destination) {
+    val enhancedBaseDestination = addClientTypeHeader(destination);
+    val path = enhancedBaseDestination.getUri().getPath();
+    if (path == null || path.isEmpty() || path.equals("/")) {
+      return setBasePath(enhancedBaseDestination);
     }
-
-    val binding =
-        new DefaultServiceBindingBuilder()
-            .withServiceIdentifier(ServiceIdentifier.AI_CORE)
-            .withCredentials(credentials)
-            .build();
-    val newAccessor =
-        new ServiceBindingMerger(
-            List.of(accessor, () -> List.of(binding)), ServiceBindingMerger.KEEP_EVERYTHING);
-    DefaultServiceBindingAccessor.setInstance(newAccessor);
-  }
-
-  /** Exception thrown when the JSON AI Core service key is invalid. */
-  static class AiCoreCredentialsInvalidException extends RuntimeException {
-    public AiCoreCredentialsInvalidException(
-        @Nonnull final String message, @Nonnull final Throwable cause) {
-      super(message, cause);
+    if (path.endsWith("/")) {
+      return enhancedBaseDestination;
     }
+    val urlWithTrailingSlash = URI.create(enhancedBaseDestination.getUri() + "/");
+
+    return DefaultHttpDestination.fromDestination(enhancedBaseDestination)
+        .uri(urlWithTrailingSlash)
+        .build();
   }
 
-  /**
-   * For testing set the accessor to be used for service binding resolution.
-   *
-   * @param accessor The accessor to be used for service binding resolution.
-   */
-  static void setAccessor(@Nullable final ServiceBindingAccessor accessor) {
-    DestinationResolver.accessor =
-        accessor == null ? DefaultServiceBindingAccessor.getInstance() : accessor;
+  @Nonnull
+  private static HttpDestination setBasePath(@Nonnull final HttpDestination destination) {
+    return DefaultHttpDestination.fromDestination(destination)
+        .uri(destination.getUri().resolve(BASE_PATH))
+        .build();
+  }
+
+  @Nonnull
+  private static HttpDestination addClientTypeHeader(@Nonnull final HttpDestination destination) {
+    return DefaultHttpDestination.fromDestination(destination)
+        .property(AI_CLIENT_TYPE_KEY, AI_CLIENT_TYPE_VALUE)
+        .build();
+  }
+
+  private static boolean isAiCoreService(@Nonnull final ServiceBinding binding) {
+    return ServiceIdentifier.AI_CORE.equals(binding.getServiceIdentifier().orElse(null));
   }
 }

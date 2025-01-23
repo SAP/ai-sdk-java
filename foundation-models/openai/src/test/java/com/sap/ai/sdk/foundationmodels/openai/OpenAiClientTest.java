@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -73,7 +74,9 @@ class OpenAiClientTest {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
 
-    verify(exactly(1), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
+    verify(
+        exactly(1),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
     Try.of(
         () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionParameters()));
@@ -84,7 +87,9 @@ class OpenAiClientTest {
             "withApiVersion should return a new object, the sut object should remain unchanged")
         .isNotSameAs(client.withApiVersion("fooBar"));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionParameters()));
-    verify(exactly(2), postRequestedFor(anyUrl()).withoutQueryParam("api-version"));
+    verify(
+        exactly(2),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
   }
 
   private static Runnable[] errorHandlingCalls() {
@@ -196,7 +201,11 @@ class OpenAiClientTest {
     try (var inputStream = fileLoader.apply("__files/chatCompletionResponse.json")) {
 
       final String response = new String(inputStream.readAllBytes());
-      stubFor(post("/chat/completions").willReturn(okJson(response)));
+      // with query parameter api-version=2024-02-01
+      stubFor(
+          post(urlPathEqualTo("/chat/completions"))
+              .withQueryParam("api-version", equalTo("2024-02-01"))
+              .willReturn(okJson(response)));
 
       final OpenAiChatCompletionOutput result = request.call();
 
@@ -241,7 +250,7 @@ class OpenAiClientTest {
           .isEqualTo(
               "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
       assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
-      assertThat(choice.getMessage().getTool_calls()).isNull();
+      assertThat(choice.getMessage().getToolCalls()).isNull();
 
       OpenAiContentFilterPromptResults contentFilterResults = choice.getContentFilterResults();
       assertThat(contentFilterResults).isNotNull();
@@ -263,6 +272,7 @@ class OpenAiClientTest {
 
       verify(
           postRequestedFor(urlPathEqualTo("/chat/completions"))
+              .withQueryParam("api-version", equalTo("2024-02-01"))
               .withRequestBody(
                   equalToJson(
                       """
@@ -363,14 +373,30 @@ class OpenAiClientTest {
     assertThat(embeddingData.getEmbedding())
         .isNotNull()
         .isNotEmpty()
-        .containsExactly(-0.0000000070958645d, 2.123e-300d, -0.0069813123d, -3.385849e-05d)
-        // ensure double precision
-        .hasToString("[-7.0958645E-9, 2.123E-300, -0.0069813123, -3.385849E-5]");
+        .isEqualTo(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
-            .withRequestBody(equalToJson("""
+            .withRequestBody(
+                equalToJson(
+                    """
                       {"input":["Hello World"]}""")));
+  }
+
+  @Test
+  void testThrowsOnContentFilter() {
+    var mock = mock(OpenAiClient.class);
+    when(mock.streamChatCompletion(any())).thenCallRealMethod();
+
+    var deltaWithContentFilter = mock(OpenAiChatCompletionDelta.class);
+    when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+
+    // this must not throw, since the stream is lazily evaluated
+    var stream = mock.streamChatCompletion("");
+    assertThatThrownBy(stream::toList)
+        .isInstanceOf(OpenAiClientException.class)
+        .hasMessageContaining("Content filter");
   }
 
   @Test
@@ -398,8 +424,7 @@ class OpenAiClientTest {
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .isInstanceOf(OpenAiClientException.class)
-            .hasMessage(
-                "Failed to parse response from OpenAI model and error message: 'exceeded token rate limit'");
+            .hasMessage("Failed to parse response and error message: 'exceeded token rate limit'");
       }
 
       Mockito.verify(inputStream, times(1)).close();
@@ -492,7 +517,7 @@ class OpenAiClientTest {
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(choices2.getMessage().getRole()).isEqualTo("assistant");
         assertThat(choices2.getMessage().getContent()).isEqualTo("Sure");
-        assertThat(choices2.getMessage().getTool_calls()).isNull();
+        assertThat(choices2.getMessage().getToolCalls()).isNull();
         final var filter2 = choices2.getContentFilterResults();
         assertFilter(filter2);
 
@@ -505,7 +530,7 @@ class OpenAiClientTest {
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(delta4Choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(delta4Choice.getMessage().getContent()).isNull();
-        assertThat(delta4Choice.getMessage().getTool_calls()).isNull();
+        assertThat(delta4Choice.getMessage().getToolCalls()).isNull();
         assertThat(totalOutput.getChoices()).hasSize(1);
         final var choice = totalOutput.getChoices().get(0);
         assertThat(choice.getFinishReason()).isEqualTo("stop");
@@ -514,7 +539,7 @@ class OpenAiClientTest {
         assertThat(choice.getMessage()).isNotNull();
         assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
         assertThat(choice.getMessage().getContent()).isEqualTo("Sure!");
-        assertThat(choice.getMessage().getTool_calls()).isNull();
+        assertThat(choice.getMessage().getToolCalls()).isNull();
         assertThat(totalOutput.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(totalOutput.getCreated()).isEqualTo(1724825677);
         assertThat(totalOutput.getModel()).isEqualTo("gpt-35-turbo");

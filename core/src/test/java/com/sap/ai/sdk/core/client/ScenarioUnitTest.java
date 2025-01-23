@@ -6,8 +6,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiModelVersion;
-import com.sap.ai.sdk.core.client.model.AiScenarioLabel;
+import com.sap.ai.sdk.core.model.AiModelVersion;
+import com.sap.ai.sdk.core.model.AiScenarioLabel;
 import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val scenarioList = new ScenarioApi(client).query("default");
+    val scenarioList = new ScenarioApi(aiCoreService).query("default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);
@@ -87,7 +87,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val versionList = new ScenarioApi(client).queryVersions("default", "foundation-models");
+    val versionList = new ScenarioApi(aiCoreService).queryVersions("default", "foundation-models");
 
     assertThat(versionList).isNotNull();
     assertThat(versionList.getCount()).isEqualTo(1);
@@ -127,7 +127,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val scenario = new ScenarioApi(client).get("default", "foundation-models");
+    val scenario = new ScenarioApi(aiCoreService).get("default", "foundation-models");
 
     assertThat(scenario).isNotNull();
     assertThat(scenario.getCreatedAt()).isEqualTo("2023-11-03T14:02:46+00:00");
@@ -172,7 +172,7 @@ class ScenarioUnitTest extends WireMockTestServer {
                             }
                             """)));
 
-    val scenarioList = new ScenarioApi(client).queryModels("foundation-models", "default");
+    val scenarioList = new ScenarioApi(aiCoreService).queryModels("foundation-models", "default");
 
     assertThat(scenarioList).isNotNull();
     assertThat(scenarioList.getCount()).isEqualTo(1);

@@ -13,11 +13,13 @@ Before you can run the sample app, you need to install the AI SDK into your loca
 
 > [!NOTE]  
 > The sample app uses the latest state of the SDK, so make sure to install the SDK after pulling a new version via Git.
-> Alternatively, you check out one of the release tags of the repository, e.g. `git fetch --all --tags && git checkout rel/0.1.0`. 
+> Alternatively, you check out one of the release tags of the repository, e.g. `git fetch --all --tags && git checkout rel/1.1.0`. 
 
 Next, you'll need to set up credentials for the AI Core service: 
 
-* Follow [these instructions](../../README.md#option-1-set-credentials-as-environment-variable) to configure the credentials via environment variables.
+* Follow [these instructions](/docs/guides/CONNECTING_TO_AICORE.md) to create a service key for the AI Core service.
+
+  ⚠️ Put the `.env` file in the sample app directory.
 
 Finally, you can start the sample app:
  
@@ -27,4 +29,4 @@ Head to http://localhost:8080 in your browser to see all available endpoints.
 
 ## Run the E2E Test
 
-Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-java/actions/workflows/e2e-test.yml).
+Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-java/actions/workflows/e2e-test.yaml).

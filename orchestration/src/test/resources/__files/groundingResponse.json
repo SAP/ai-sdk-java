@@ -1,0 +1,62 @@
+{
+  "request_id": "e5d2add4-408c-4da5-84ca-1d8b0fe350c8",
+  "module_results": {
+    "grounding": {
+      "message": "grounding result",
+      "data": {
+        "grounding_query": "grounding call",
+        "grounding_result": "First chunk```Second chunk```Last found chunk"
+      }
+    },
+    "templating": [
+      {
+        "role": "system",
+        "content": "Context message with embedded grounding results. First chunk```Second chunk```Last found chunk"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU",
+      "object": "chat.completion",
+      "created": 1736952936,
+      "model": "gpt-4o-2024-08-06",
+      "system_fingerprint": "fp_f3927aa00d",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Response that makes uses of grounding results in the context message."
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 163,
+        "prompt_tokens": 217,
+        "total_tokens": 380
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU",
+    "object": "chat.completion",
+    "created": 1736952936,
+    "model": "gpt-4o-2024-08-06",
+    "system_fingerprint": "fp_f3927aa00d",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Response that makes uses of grounding results in the context message."
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 163,
+      "prompt_tokens": 217,
+      "total_tokens": 380
+    }
+  }
+}

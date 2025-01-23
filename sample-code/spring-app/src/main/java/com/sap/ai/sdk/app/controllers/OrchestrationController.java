@@ -1,269 +1,270 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.client.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.client.model.AzureThreshold;
-import com.sap.ai.sdk.orchestration.client.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.client.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.client.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilterConfig;
-import com.sap.ai.sdk.orchestration.client.model.FilteringModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.LLMModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingModuleConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig;
-import com.sap.ai.sdk.orchestration.client.model.MaskingProviderConfig.MethodEnum;
-import com.sap.ai.sdk.orchestration.client.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.client.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.client.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.client.model.TemplatingModuleConfig;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Stream;
+import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sap.ai.sdk.app.services.OrchestrationService;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 /** Endpoints for the Orchestration service */
 @RestController
+@Slf4j
+@SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
-
-  private static final OrchestrationClient CLIENT = new OrchestrationClient();
-
-  static final String MODEL = "gpt-35-turbo";
-
-  private static final LLMModuleConfig LLM_CONFIG =
-      LLMModuleConfig.create().modelName(MODEL).modelParams(Map.of());
-
-  private static final Function<TemplatingModuleConfig, CompletionPostRequest> TEMPLATE_CONFIG =
-      (TemplatingModuleConfig templatingModuleConfig) ->
-          CompletionPostRequest.create()
-              .orchestrationConfig(
-                  OrchestrationConfig.create()
-                      .moduleConfigurations(
-                          ModuleConfigs.create()
-                              .llmModuleConfig(LLM_CONFIG)
-                              .templatingModuleConfig(templatingModuleConfig)));
+  @Autowired private OrchestrationService service;
+  private static final ObjectMapper MAPPER =
+      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
   /**
-   * Creates a config from a filter threshold. The config includes a template and has input and
-   * output filters
-   */
-  private static final Function<AzureThreshold, CompletionPostRequest> FILTERING_CONFIG =
-      (AzureThreshold filterThreshold) -> {
-        final var inputParams =
-            Map.of(
-                "disclaimer",
-                "```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent.");
-        final var template =
-            ChatMessage.create()
-                .role("user")
-                .content(
-                    "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! {{?disclaimer}}");
-        final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-        final var filter =
-            FilterConfig.create()
-                .type(FilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-                .config(
-                    AzureContentSafety.create()
-                        .hate(filterThreshold)
-                        .selfHarm(filterThreshold)
-                        .sexual(filterThreshold)
-                        .violence(filterThreshold));
-
-        final var filteringConfig =
-            FilteringModuleConfig.create()
-                .input(InputFilteringConfig.create().filters(List.of(filter)))
-                .output(OutputFilteringConfig.create().filters(List.of(filter)));
-
-        return CompletionPostRequest.create()
-            .orchestrationConfig(
-                OrchestrationConfig.create()
-                    .moduleConfigurations(
-                        ModuleConfigs.create()
-                            .llmModuleConfig(LLM_CONFIG)
-                            .templatingModuleConfig(templatingConfig)
-                            .filteringModuleConfig(filteringConfig)))
-            .inputParams(inputParams);
-      };
-
-  private static final List<DPIEntityConfig> ALL_DPI_ENTITIES =
-      Stream.of(DPIEntities.values())
-          .filter(entity -> entity != DPIEntities.UNKNOWN_DEFAULT_OPEN_API)
-          .map(entity -> DPIEntityConfig.create().type(entity))
-          .toList();
-
-  /**
-   * Creates a config from a masking type (anonymization or pseudonymization). The config includes a
-   * template.
-   */
-  private static final Function<MaskingProviderConfig.MethodEnum, CompletionPostRequest>
-      MASKING_CONFIG =
-          (MaskingProviderConfig.MethodEnum maskingType) -> {
-            final var inputParams =
-                Map.of(
-                    "orgCV",
-                    """
-            Patrick Morgan
-             +49 (970) 333-3833
-             patric.morgan@hotmail.com
-
-             Highlights
-             - Strategic and financial planning expert
-             - Accurate forecasting
-             - Process implementation
-             - Staff leadership and development
-             - Business performance improvement
-             - Proficient in SAP,  Excel VBA
-
-             Education
-             Master of Science: Finance - 2014
-             Harvard University, Boston
-
-             Bachelor of Science: Finance - 2011
-             Harvard University, Boston
-
-
-             Certifications
-             Certified Management Accountant
-
-
-             Summary
-             Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management.
-
-
-             Experience
-             Finance Manager - 09/2016 to 05/2018
-             M&K Group, York
-             - Manage the modelling, planning, and execution of all financial processes.
-             - Carry short and long-term custom comprehensive financial strategies to reach company goals.
-             - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
-             - Employed advanced deal analysis, including hands-on negotiations with potential investors.
-             - Research market trends and surveys and use information to stimulate business.
-
-             Finance Manager - 09/2013 to 05/2016
-             Ago Group, Chicago
-             - Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities.
-             - Recommended innovative alternatives to generate revenue and reduce unnecessary costs.
-             - Employed advanced deal analysis, including hands-on negotiations with potential investors.
-             - Analysed market trends and surveys and used information to revenue growth.""");
-            final var template =
-                ChatMessage.create()
-                    .role("user")
-                    .content("Summarize the following CV in 10 sentences: {{?orgCV}}");
-            final var templatingConfig = TemplatingModuleConfig.create().template(template);
-
-            final var maskingProvider =
-                MaskingProviderConfig.create()
-                    .type(MaskingProviderConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
-                    .method(MaskingProviderConfig.MethodEnum.ANONYMIZATION)
-                    .entities(ALL_DPI_ENTITIES);
-            final var maskingConfig =
-                MaskingModuleConfig.create().maskingProviders(maskingProvider);
-
-            return CompletionPostRequest.create()
-                .orchestrationConfig(
-                    OrchestrationConfig.create()
-                        .moduleConfigurations(
-                            ModuleConfigs.create()
-                                .llmModuleConfig(LLM_CONFIG)
-                                .templatingModuleConfig(templatingConfig)
-                                .maskingModuleConfig(maskingConfig)))
-                .inputParams(inputParams);
-          };
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template
+   * Chat request to an LLM through the Orchestration service with a simple prompt.
    *
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
+   */
+  @GetMapping("/completion")
+  @Nonnull
+  ResponseEntity<String> completion(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.completion("HelloWorld!");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
+  }
+
+  /**
+   * Asynchronous stream of an LLM chat request
+   *
+   * @return the emitter that streams the assistant message response
+   */
+  @GetMapping("/streamChatCompletion")
+  @Nonnull
+  ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
+    final var stream = service.streamChatCompletion("developing a software project");
+    final var emitter = new ResponseBodyEmitter();
+    final Runnable consumeStream =
+        () -> {
+          try (stream) {
+            stream.forEach(
+                deltaMessage -> {
+                  log.info("Service: {}", deltaMessage);
+                  send(emitter, deltaMessage);
+                });
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  /**
+   * Chat request to an LLM through the Orchestration service with a template.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/template")
   @Nonnull
-  public CompletionPostResponse template() {
-
-    final var template = ChatMessage.create().role("user").content("{{?input}}");
-    final var inputParams =
-        Map.of("input", "Reply with 'Orchestration Service is working!' in German");
-
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(template))
-            .inputParams(inputParams);
-
-    return CLIENT.chatCompletion(config);
+  ResponseEntity<Object> template(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.template("German");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a violent template and both input
-   * and output filters.
+   * Chat request to an LLM through the Orchestration service using message history.
    *
-   * @param threshold A high threshold is a loose filter, a low threshold is a strict filter
-   * @return the assistant message response
-   */
-  @GetMapping("/filter/{threshold}")
-  @Nonnull
-  public CompletionPostResponse filter(@Nonnull @PathVariable("threshold") final String threshold) {
-
-    final var config =
-        FILTERING_CONFIG.apply(AzureThreshold.fromValue(Integer.parseInt(threshold)));
-
-    return CLIENT.chatCompletion(config);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template
-   *
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/messagesHistory")
   @Nonnull
-  public CompletionPostResponse messagesHistory() {
-    final List<ChatMessage> messagesHistory =
-        List.of(
-            ChatMessage.create().role("user").content("What is the capital of France?"),
-            ChatMessage.create().role("assistant").content("The capital of France is Paris."));
-    final var message =
-        ChatMessage.create().role("user").content("What is the typical food there?");
-
-    final var config =
-        TEMPLATE_CONFIG
-            .apply(TemplatingModuleConfig.create().template(message))
-            .messagesHistory(messagesHistory);
-
-    return CLIENT.chatCompletion(config);
+  ResponseEntity<String> messagesHistory(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.messagesHistory("What is the capital of France?");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with an anonymization masking template
+   * Send an HTTP GET request for input filtering to the Orchestration service.
    *
-   * @return the assistant message response
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     * AI Core: Orchestration - Input Filtering</a>
+   * @param accept an optional HTTP header specifying the desired content type for the response.
+   * @param policy path variable specifying the {@link AzureFilterThreshold} the explicitness of
+   *     content that should be allowed through the filter
+   * @return a {@link ResponseEntity} containing the filtered input. The response is either in JSON
+   *     format if the "accept" header specifies "application/json" or in plain content format
+   *     otherwise.
+   * @throws JsonProcessingException if an error occurs while converting the response to JSON.
+   */
+  @GetMapping("/inputFiltering/{policy}")
+  @Nonnull
+  ResponseEntity<String> inputFiltering(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
+      throws JsonProcessingException {
+
+    final OrchestrationChatResponse response;
+    try {
+      response = service.inputFiltering(policy);
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok().body(response.getContent());
+  }
+
+  /**
+   * Send an HTTP GET request for output filtering to the Orchestration service.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * @param accept an optional HTTP header specifying the desired content type for the response.
+   * @param policy a mandatory path variable specifying the {@link AzureFilterThreshold} the
+   *     explicitness of content that should be allowed through the filter
+   * @return a {@link ResponseEntity} containing the filtered output. The response is either in JSON
+   *     format if the "accept" header specifies "application/json" or in plain content format
+   *     otherwise.
+   * @throws OrchestrationClientException if the output filter filtered the LLM response.
+   * @throws JsonProcessingException if an error occurs while converting the response to JSON.
+   */
+  @GetMapping("/outputFiltering/{policy}")
+  @Nonnull
+  ResponseEntity<String> outputFiltering(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy)
+      throws JsonProcessingException, OrchestrationClientException {
+
+    final var response = service.outputFiltering(policy);
+    try {
+      if (accept.equals("application/json")) {
+        return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+      }
+      return ResponseEntity.ok().body(response.getContent());
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+  }
+
+  /**
+   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
+   * user. Anonymize any names given as they are not relevant for judging the sentiment of the
+   * feedback.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/maskingAnonymization")
   @Nonnull
-  public CompletionPostResponse maskingAnonymization() {
-    final var config = MASKING_CONFIG.apply(MaskingProviderConfig.MethodEnum.ANONYMIZATION);
-
-    return CLIENT.chatCompletion(config);
+  ResponseEntity<String> maskingAnonymization(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.maskingAnonymization(DPIEntities.PERSON);
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a pseudonymization masking
-   * template
+   * Chat request to an LLM through the Orchestration deployment under a specific resource group.
    *
-   * @return the assistant message response
+   * @return a ResponseEntity with the response content
+   */
+  @GetMapping("/completion/{resourceGroup}")
+  @Nonnull
+  public ResponseEntity<String> completionWithResourceGroup(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
+      throws JsonProcessingException {
+    final var response = service.completionWithResourceGroup(resourceGroup, "Hello world!");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
+  }
+
+  /**
+   * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
+   * SDK. Pseudonymize the user's name and location to protect their privacy.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return a ResponseEntity with the response content
    */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
-  public CompletionPostResponse maskingPseudonymization() {
-    final var config = MASKING_CONFIG.apply(MethodEnum.PSEUDONYMIZATION);
+  ResponseEntity<String> maskingPseudonymization(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.maskingPseudonymization(DPIEntities.PERSON);
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
+  }
 
-    return CLIENT.chatCompletion(config);
+  /**
+   * Using grounding to provide additional context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @return a ResponseEntity with the response content
+   */
+  @GetMapping("/grounding")
+  @Nonnull
+  ResponseEntity<String> grounding(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
+      throws JsonProcessingException {
+    final var response = service.grounding("What does Joule do?");
+    if ("application/json".equals(accept)) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok(response.getContent());
   }
 }

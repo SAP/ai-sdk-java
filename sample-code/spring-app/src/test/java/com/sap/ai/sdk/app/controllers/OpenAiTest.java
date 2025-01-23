@@ -3,19 +3,28 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
 class OpenAiTest {
+  OpenAiService service;
+
+  @BeforeEach
+  void setUp() {
+    service = new OpenAiService();
+  }
+
   @Test
   void chatCompletion() {
-    final var completion = OpenAiController.chatCompletion();
+    final var completion = service.chatCompletion("Who is the prettiest");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -24,7 +33,9 @@ class OpenAiTest {
 
   @Test
   void chatCompletionImage() {
-    final var completion = OpenAiController.chatCompletionImage();
+    final var completion =
+        service.chatCompletionImage(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -64,21 +75,31 @@ class OpenAiTest {
 
   @Test
   void chatCompletionTools() {
-    final var completion = OpenAiController.chatCompletionTools();
+    final var completion =
+        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
-    assertThat(message.getTool_calls()).isNotNull();
-    assertThat(message.getTool_calls().get(0).getFunction().getName()).isEqualTo("fibonacci");
+    assertThat(message.getToolCalls()).isNotNull();
+    assertThat(message.getToolCalls().get(0).getFunction().getName()).isEqualTo("fibonacci");
   }
 
   @Test
   void embedding() {
-    final var embedding = OpenAiController.embedding();
+    final var embedding = service.embedding("Hello world");
 
-    // {"object":"list","model":"ada","data":[{"object":"embedding","embedding":[-0.0070958645....,-0.0014557659],"index":0}],"usage":{"completion_tokens":null,"prompt_tokens":2,"total_tokens":2}}
     assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
     assertThat(embedding.getModel()).isEqualTo("ada");
     assertThat(embedding.getObject()).isEqualTo("list");
+  }
+
+  @Test
+  void chatCompletionWithResource() {
+    final var completion =
+        service.chatCompletionWithResource("ai-sdk-java-e2e", "Where is the nearest coffee shop?");
+
+    final var message = completion.getChoices().get(0).getMessage();
+    assertThat(message.getRole()).isEqualTo("assistant");
+    assertThat(message.getContent()).isNotEmpty();
   }
 }

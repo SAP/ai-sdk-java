@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
+@Beta
 public class OpenAiEmbeddingData {
   /** Embedding object. */
   @JsonProperty("object")
@@ -21,7 +22,7 @@ public class OpenAiEmbeddingData {
   /** Array of size `1536` (OpenAI's embedding size) containing embedding vector. */
   @JsonProperty("embedding")
   @Getter(onMethod_ = @Nonnull)
-  private List<Double> embedding;
+  private float[] embedding;
 
   /** Index of choice. */
   @JsonProperty("index")

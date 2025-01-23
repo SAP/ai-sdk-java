@@ -47,6 +47,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
     - Refer
       to [How to deploy a model to AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
       for setup instructions.
+    - In case the model is deployed in a custom resource group, refer to [this section](#using-a-custom-resource-group).
     - <details>
       <summary>Example deployed model from the AI Core <code>/deployments</code> endpoint</summary>
 
@@ -65,12 +66,10 @@ In addition to the prerequisites above, we assume you have already set up the fo
         "ttl": null,
         "details": {
           "scaling": {
-            "backendDetails": null,
-            "backend_details": {}
+            "backendDetails": {}
           },
           "resources": {
-            "backendDetails": null,
-            "backend_details": {
+            "backendDetails": {
               "model": {
                 "name": "gpt-35-turbo",
                 "version": "latest"
@@ -88,10 +87,10 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
       </details>
 
-### Simple chat completion
+## Simple chat completion
 
 ```java
-OpenAiChatCompletionOutput result =
+var result =
     OpenAiClient.forModel(GPT_35_TURBO)
         .withSystemPrompt("You are a helpful AI")
         .chatCompletion("Hello World! Why is this phrase so famous?");
@@ -99,7 +98,16 @@ OpenAiChatCompletionOutput result =
 String resultMessage = result.getContent();
 ```
 
-### Message history
+## Using a Custom Resource Group
+
+```java
+var destination = new AiCoreService()
+    .getInferenceDestination("custom-rg")
+    .forModel(GPT_4O);
+OpenAiClient.withCustomDestination(destination);
+```
+
+## Message history
 
 ```java
 var systemMessage =
@@ -109,15 +117,14 @@ var userMessage =
 var request =
     new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
-OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+var result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 
 String resultMessage = result.getContent();
 ```
 
 See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
 
-### Chat Completion with Specific Model Version
+## Chat Completion with Specific Model Version
 
 By default, when no version is specified, the system selects one of the available deployments of the specified model, regardless of its version.
 To target a specific version, you can specify the model version along with the model.
@@ -127,7 +134,7 @@ OpenAiChatCompletionOutput result =
     OpenAiClient.forModel(GPT_35_TURBO.withVersion("1106")).chatCompletion(request);
 ```
 
-### Chat completion with Custom Model
+## Chat completion with Custom Model
 
 You can also use a custom OpenAI model for chat completion by creating an `OpenAiModel` object. 
 
@@ -138,11 +145,11 @@ OpenAiChatCompletionOutput result =
 
 Ensure that the custom model is deployed in SAP AI Core.
 
-### Stream chat completion
+## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
-#### Asynchronous Streaming
+### Asynchronous Streaming
 
 This is a blocking example for streaming and printing directly to the console:
 
@@ -161,7 +168,7 @@ try (Stream<String> stream = client.streamChatCompletion(msg)) {
 }
 ```
 
-#### Aggregating Total Output
+### Aggregating Total Output
 
 The following example is non-blocking and demonstrates how to aggregate the complete response.
 Any asynchronous library can be used, such as the classic Thread API.
@@ -169,12 +176,12 @@ Any asynchronous library can be used, such as the classic Thread API.
 ```java
 var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiChatMessage.OpenAiChatUserMessage userMessage =
+var userMessage =
     new OpenAiChatMessage.OpenAiChatUserMessage().addText(message);
-OpenAiChatCompletionParameters requestParameters =
+var requestParameters =
     new OpenAiChatCompletionParameters().addMessages(userMessage);
 
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+var client = OpenAiClient.forModel(GPT_35_TURBO);
 var totalOutput = new OpenAiChatCompletionOutput();
 
 // Prepare the stream before starting the thread to handle any initialization exceptions
@@ -198,7 +205,17 @@ Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
 System.out.println("Tokens used: " + tokensUsed);
 ```
 
-#### Spring Boot example
-
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java). It shows the usage of Spring
 Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+## Embedding
+
+Get the embeddings of a text input in list of float values:
+
+```java
+var request = new OpenAiEmbeddingParameters().setInput("Hello World");
+
+OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+```
+
+See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)

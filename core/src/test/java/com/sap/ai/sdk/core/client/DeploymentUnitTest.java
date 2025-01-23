@@ -12,16 +12,16 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.client.model.AiDeployment;
-import com.sap.ai.sdk.core.client.model.AiDeploymentBulkModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentCreationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequest;
-import com.sap.ai.sdk.core.client.model.AiDeploymentModificationRequestWithIdentifier;
-import com.sap.ai.sdk.core.client.model.AiDeploymentResponseWithDetails;
-import com.sap.ai.sdk.core.client.model.AiDeploymentStatus;
-import com.sap.ai.sdk.core.client.model.AiDeploymentTargetStatus;
-import com.sap.ai.sdk.core.client.model.AiExecutionStatus;
-import com.sap.ai.sdk.core.client.model.RTALogCommonResultItem;
+import com.sap.ai.sdk.core.model.AiDeployment;
+import com.sap.ai.sdk.core.model.AiDeploymentBulkModificationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationRequestWithIdentifier;
+import com.sap.ai.sdk.core.model.AiDeploymentResponseWithDetails;
+import com.sap.ai.sdk.core.model.AiDeploymentStatus;
+import com.sap.ai.sdk.core.model.AiDeploymentTargetStatus;
+import com.sap.ai.sdk.core.model.AiExecutionStatus;
+import com.sap.ai.sdk.core.model.RTALogCommonResultItem;
 import java.util.Map;
 import java.util.Set;
 import lombok.val;
@@ -62,8 +62,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                               "ttl": null,
                               "details": {
                                 "scaling": {
-                                  "backendDetails": {},
-                                  "backend_details": {}
+                                  "backendDetails": {}
                                 },
                                 "resources": {
                                   "backendDetails": {
@@ -90,7 +89,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val deploymentList = new DeploymentApi(client).query("default");
+    val deploymentList = new DeploymentApi(aiCoreService).query("default");
 
     assertThat(deploymentList).isNotNull();
     assertThat(deploymentList.getCount()).isEqualTo(1);
@@ -104,7 +103,6 @@ class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d889e3a61050c085");
-    // Response contains key "backend_details" while spec (mistakenly) defines key "backendDetails".
     val expected = Map.of("model", Map.of("name", "gpt-4-32k", "version", "latest"));
     assertThat(deployment.getDetails().getResources().getBackendDetails()).isEqualTo(expected);
     assertThat(deployment.getDetails().getScaling().getBackendDetails()).isEqualTo(Map.of());
@@ -141,7 +139,7 @@ class DeploymentUnitTest extends WireMockTestServer {
     val deploymentCreationRequest =
         AiDeploymentCreationRequest.create()
             .configurationId("7652a231-ba9b-4fcc-b473-2c355cb21b61");
-    val deployment = new DeploymentApi(client).create("default", deploymentCreationRequest);
+    val deployment = new DeploymentApi(aiCoreService).create("default", deploymentCreationRequest);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getDeploymentUrl()).isEmpty();
@@ -180,7 +178,7 @@ class DeploymentUnitTest extends WireMockTestServer {
     val configModification =
         AiDeploymentModificationRequest.create().targetStatus(AiDeploymentTargetStatus.STOPPED);
     val deployment =
-        new DeploymentApi(client).modify("default", "d19b998f347341aa", configModification);
+        new DeploymentApi(aiCoreService).modify("default", "d19b998f347341aa", configModification);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -217,7 +215,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val deployment = new DeploymentApi(client).delete("default", "d5b764fe55b3e87c");
+    val deployment = new DeploymentApi(aiCoreService).delete("default", "d5b764fe55b3e87c");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
@@ -243,12 +241,12 @@ class DeploymentUnitTest extends WireMockTestServer {
                            "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467",
                            "details": {
                              "resources": {
-                               "backend_details": {},
-                               "backendDetails": {}
+                               "backendDetails": {},
+                               "backend_details": {}
                              },
                              "scaling": {
-                               "backend_details": {},
-                               "backendDetails": {}
+                               "backendDetails": {},
+                               "backend_details": {}
                              }
                            },
                            "id": "db1d64d9f06be467",
@@ -263,7 +261,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                         }
                         """)));
 
-    val deployment = new DeploymentApi(client).get("default", "db1d64d9f06be467");
+    val deployment = new DeploymentApi(aiCoreService).get("default", "db1d64d9f06be467");
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getConfigurationId()).isEqualTo("dd80625e-ad86-426a-b1a7-1494c083428f");
@@ -272,8 +270,12 @@ class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment.getDeploymentUrl())
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
-    assertThat(deployment.getDetails().getResources().getBackendDetails()).isNotNull();
-    assertThat(deployment.getDetails().getScaling().getBackendDetails()).isNotNull();
+    assertThat(deployment.getDetails().getResources().getBackendDetails()).isEqualTo(Map.of());
+    assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
+        .isEqualTo(Map.of());
+    assertThat(deployment.getDetails().getScaling().getBackendDetails()).isEqualTo(Map.of());
+    assertThat(deployment.getDetails().getScaling().getCustomField("backend_details"))
+        .isEqualTo(Map.of());
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
         .isEqualTo(AiDeploymentResponseWithDetails.LastOperationEnum.CREATE);
@@ -307,7 +309,7 @@ class DeploymentUnitTest extends WireMockTestServer {
         AiDeploymentModificationRequest.create()
             .configurationId("6ff6cb80-87db-45f0-b718-4e1d96e66332");
     val deployment =
-        new DeploymentApi(client).modify("default", "d03050a2ab7055cc", configModification);
+        new DeploymentApi(aiCoreService).modify("default", "d03050a2ab7055cc", configModification);
 
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d03050a2ab7055cc");
@@ -335,11 +337,9 @@ class DeploymentUnitTest extends WireMockTestServer {
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
                     .withHeader("content-type", "application/json")
-                    .withBody("""
-                        1
-                        """)));
+                    .withBody("1")));
 
-    val count = new DeploymentApi(client).count("default");
+    val count = new DeploymentApi(aiCoreService).count("default");
 
     assertThat(count).isEqualTo(1);
   }
@@ -348,7 +348,8 @@ class DeploymentUnitTest extends WireMockTestServer {
   void getDeploymentLogs() {
     wireMockServer.stubFor(
         get(urlPathEqualTo("/v2/lm/deployments/d19b998f347341aa/logs"))
-            .withHeader("AI-Resource-Group", equalTo("default"))
+            // TODO: The spec does not define the header
+            // .withHeader("AI-Resource-Group", equalTo("default"))
             .willReturn(
                 aResponse()
                     .withStatus(HttpStatus.SC_OK)
@@ -369,11 +370,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                          }
                         """)));
 
-    // `Ai-Resource-Group` header needs explicit inclusion as kubesubmitV4DeploymentsGetLogs missed
-    // to include the header on the request.
-    val logs =
-        new DeploymentApi(client.addDefaultHeader("Ai-Resource-Group", "default"))
-            .getLogs("d19b998f347341aa");
+    val logs = new DeploymentApi(aiCoreService).getLogs("d19b998f347341aa");
 
     assertThat(logs).isNotNull();
     assertThat(logs.getData().getResult()).hasSize(1);
@@ -422,7 +419,7 @@ class DeploymentUnitTest extends WireMockTestServer {
                             AiDeploymentModificationRequestWithIdentifier.TargetStatusEnum
                                 .STOPPED)));
     val bulkModificationResponse =
-        new DeploymentApi(client).batchModify("default", bulkModificationRequest);
+        new DeploymentApi(aiCoreService).batchModify("default", bulkModificationRequest);
 
     assertThat(bulkModificationResponse).isNotNull();
     assertThat(bulkModificationResponse.getDeployments()).hasSize(1);
