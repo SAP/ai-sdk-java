@@ -131,10 +131,11 @@ Please refer to [this documentation](docs/guides/ORCHESTRATION_CHAT_COMPLETION.m
 
 For more detailed information and advanced usage, please refer to the following:
 
-- [Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
-- [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
-- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
-- [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/BTP-Cockpit-Logo.png"/> Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/Orchestration-Logo.png" width="16"/> Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/Open-AI-Logo.svg" width="16"/> OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
+- [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](docs/guides/SPRING_AI_INTEGRATION.md)
+- [🧰 AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
 For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
 

@@ -1,11 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -13,12 +12,9 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
-import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -41,25 +37,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
 
-  static final ObjectMapper JACKSON;
-
-  static {
-    JACKSON = getDefaultObjectMapper();
-
-    // Add mix-ins
-    JACKSON.addMixIn(LLMModuleResult.class, JacksonMixins.LLMModuleResultMixIn.class);
-    JACKSON.addMixIn(
-        ModuleResultsOutputUnmaskingInner.class,
-        JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
-
-    final var module =
-        new SimpleModule()
-            .addDeserializer(
-                ChatMessagesInner.class,
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessagesInner.class))
-            .setMixInAnnotation(ChatMessagesInner.class, JacksonMixins.NoneTypeInfoMixin.class);
-    JACKSON.registerModule(module);
-  }
+  static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   @Nonnull private final Supplier<HttpDestination> destinationSupplier;
 

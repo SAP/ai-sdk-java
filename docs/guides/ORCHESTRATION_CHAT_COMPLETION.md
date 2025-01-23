@@ -85,7 +85,7 @@ var config = new OrchestrationModuleConfig()
 
 Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
   
-### Chat Completion
+## Chat Completion
 
 Use the Orchestration service to generate a response to a user message:
 
@@ -100,7 +100,7 @@ String messageResult = result.getContent();
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
 The LLM response is available as the first choice under the `result.getOrchestrationResult()` object.
 
-### Chat completion with Templates
+## Chat completion with Templates
 
 Use a prepared template and execute requests with by passing only the input parameters:
 
@@ -117,7 +117,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
-### Message history
+## Message history
 
 Include a message history to maintain context in the conversation:
 
@@ -134,7 +134,7 @@ var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 var result = new OrchestrationClient().chatCompletion(prompt, config);
 ```
 
-### Chat completion filter
+## Chat completion filter
 
 Apply content filtering to the chat completion:
 
@@ -165,7 +165,7 @@ var configWithFilter = config.withInputFiltering(filterStrict).withOutputFilteri
 var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ```
-#### Behavior of Input and Output Filters
+### Behavior of Input and Output Filters
 
 - **Input Filter**:
   If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
@@ -178,7 +178,7 @@ var result =
 
 You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) in our Spring Boot application demonstrating response handling with filters.
 
-### Data masking
+## Data masking
 
 Use the data masking module to anonymize personal information in the input:
 
@@ -201,7 +201,7 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
-### Grounding
+## Grounding
 
 Use the grounding module to provide additional context to the AI model. 
 
@@ -232,11 +232,11 @@ Use the grounding module to provide additional context to the AI model.
 
 In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
 
-### Stream chat completion
+## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
-#### Asynchronous Streaming
+### Asynchronous Streaming
 
 This is a blocking example for streaming and printing directly to the console:
 
@@ -253,12 +253,10 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 }
 ```
 
-#### Spring Boot example
-
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
-### Set model parameters
+## Set model parameters
 
 Change your LLM configuration to add model parameters:
 
@@ -272,7 +270,7 @@ OrchestrationAiModel customGPT4O =
         .withVersion("2024-05-13");
 ```
 
-### Using a Configuration from AI Launchpad
+## Using a Configuration from AI Launchpad
 
 In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
 

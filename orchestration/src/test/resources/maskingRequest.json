@@ -19,7 +19,9 @@
             "role": "user",
             "content": "Hello World! Why is this phrase so famous?"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "masking_module_config": {
         "masking_providers": [
