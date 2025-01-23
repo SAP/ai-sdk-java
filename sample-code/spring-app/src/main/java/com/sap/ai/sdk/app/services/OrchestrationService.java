@@ -7,6 +7,7 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
@@ -14,10 +15,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
-import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
-import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
-import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +22,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.stereotype.Service;
 
 /** Service class for the Orchestration service */
@@ -238,23 +236,9 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse grounding(@Nonnull final String groundingInput) {
-    final var message =
-        Message.user(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    final var prompt = new OrchestrationPrompt(Map.of("groundingInput", groundingInput), message);
-
-    final var filterInner =
-        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
-    final var groundingConfigConfig =
-        GroundingModuleConfigConfig.create()
-            .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput")
-            .addFiltersItem(filterInner);
-    final var groundingConfig =
-        GroundingModuleConfig.create()
-            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
-            .config(groundingConfigConfig);
-    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+    val groundingConfig = Grounding.create();
+    val prompt = groundingConfig.createGroundingPrompt(groundingInput);
+    val configWithGrounding = config.withGrounding(groundingConfig);
 
     return client.chatCompletion(prompt, configWithGrounding);
   }
