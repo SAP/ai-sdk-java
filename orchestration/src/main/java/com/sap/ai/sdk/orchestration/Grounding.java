@@ -26,14 +26,14 @@ import lombok.val;
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {
 
-  private String id = "someID";
+  private String id = "";
   private DataRepositoryType dataRepositoryType = DataRepositoryType.VECTOR;
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**
    * Create a new default grounding provider.
    *
-   * <p>It is by default a document grounding service with a vector data repository and id "someID".
+   * <p>It is by default a document grounding service with a vector data repository.
    *
    * @return The grounding provider.
    */

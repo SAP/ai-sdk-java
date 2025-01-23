@@ -145,7 +145,7 @@ class OrchestrationModuleConfigTest {
     List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
     assertThat(filters).hasSize(1);
     DocumentGroundingFilter filter = (DocumentGroundingFilter) filters.get(0);
-    assertThat(filter.getId()).isEqualTo("someID");
+    assertThat(filter.getId()).isEqualTo("");
     assertThat(filter.getDataRepositoryType()).isEqualTo(VECTOR);
   }
 

@@ -215,7 +215,7 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 
 In this example, the AI model is provided with additional context in the form of grounding information.
 
-`Grounding.create()` is by default a document grounding service with a vector data repository and id `"someID"`.
+`Grounding.create()` is by default a document grounding service with a vector data repository.
 
 ## Stream chat completion
 
