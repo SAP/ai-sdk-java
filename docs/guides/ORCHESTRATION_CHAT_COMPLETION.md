@@ -206,31 +206,16 @@ In this example, the input will be masked before the call to the LLM and will re
 Use the grounding module to provide additional context to the AI model. 
 
 ```java
-    var message =
-        Message.user(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    var prompt =
-        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+var groundingConfig = Grounding.create();
+var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var configWithGrounding = config.withGrounding(groundingConfig);
 
-    var filterInner =
-        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
-    var groundingConfigConfig =
-        GroundingModuleConfigConfig.create()
-            .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput")
-            .addFiltersItem(filterInner);
-    
-    var groundingConfig =
-        GroundingModuleConfig.create()
-            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
-            .config(groundingConfigConfig);
-    var configWithGrounding = config.withGroundingConfig(groundingConfig);
-
-    var result =  
-            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
+var result = client.chatCompletion(prompt, configWithGrounding);
 ```
 
-In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
+In this example, the AI model is provided with additional context in the form of grounding information.
+
+`Grounding.create()` is by default a document grounding service with a vector data repository and id `"someID"`.
 
 ## Stream chat completion
 
