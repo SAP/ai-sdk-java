@@ -37,7 +37,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 /** Client for interacting with OpenAI models. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class OpenAiClient {
+public final class OpenAiClient implements OpenAiClientWithSystemPrompt {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON = getDefaultObjectMapper();
   @Nullable private String systemPrompt = null;
@@ -113,18 +113,12 @@ public final class OpenAiClient {
    * @return the client
    */
   @Nonnull
-  public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
+  public OpenAiClientWithSystemPrompt withSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;
     return this;
   }
 
-  /**
-   * Generate a completion for the given user prompt.
-   *
-   * @param prompt a text message.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   */
+  @Override
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
@@ -146,35 +140,10 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
     return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
-  /**
-   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of text
-   * chunks. To access more details about the individual chunks, use {@link
-   * #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
-   *
-   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
-   * HTTP connection is closed.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * try (var stream = client.streamChatCompletion("...")) {
-   *       stream.forEach(System.out::println);
-   * }
-   * }</pre>
-   *
-   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
-   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
-   * Stream#parallel()} on this stream is not supported.
-   *
-   * @param prompt a text message.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @see #streamChatCompletionDeltas(OpenAiChatCompletionParameters)
-   */
+  @Override
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
@@ -225,16 +194,8 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
     parameters.enableStreaming();
     return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
-  }
-
-  private void warnIfUnsupportedUsage() {
-    if (systemPrompt != null) {
-      log.warn(
-          "Previously set messages will be ignored, set it as an argument of this method instead.");
-    }
   }
 
   /**
