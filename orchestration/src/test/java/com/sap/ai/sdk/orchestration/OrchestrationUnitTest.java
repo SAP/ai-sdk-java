@@ -739,8 +739,6 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(928);
     assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(959);
 
-//    assertThat(response.getModuleResults())
-
     try (var requestInputStream = fileLoader.apply("multiChatMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
       verify(
@@ -771,9 +769,10 @@ class OrchestrationUnitTest {
                         fileLoader.apply("__files/multiChatMessageResponse.json").readAllBytes()),
                     CompletionPostResponse.class));
 
-    assertThatThrownBy(orchestrationChatResponse::getAllMessages)
-        .isInstanceOf(UnsupportedOperationException.class)
-        .hasMessage("Messages of MultiChatMessage type not supported by convenience API");
+    assertThat(orchestrationChatResponse.getAllMessages()).hasSize(2);
+    //    assertThatThrownBy(orchestrationChatResponse::getAllMessages)
+    //        .isInstanceOf(UnsupportedOperationException.class)
+    //        .hasMessage("Messages of MultiChatMessage type not supported by convenience API");
   }
 
   @Test
@@ -813,18 +812,20 @@ class OrchestrationUnitTest {
                             .llmModuleConfig(llmWithImageSupportConfig)
                             .templatingModuleConfig(templatingModuleConfig)));
 
-//    var response = new OrchestrationChatResponse(client.executeRequest(completionPostRequest));
     var multiMessage = new UserMessage().addTextMessages("Message 1", "Message 2");
-//    TODO: the following two lines probably don't work as expected, fix and turn into e2e test.
     var multiPrompt = new OrchestrationPrompt(multiMessage);
     var response = client.chatCompletion(multiPrompt, config);
 
-//    assertThat(response.getAllMessages()).isEqualTo("");
+    var strBuilder = new StringBuilder();
     var messages = response.getAllMessages();
-    for( Message m : messages ) {
+    for (Message m : messages) {
       String role = m.role();
       Object content = m.content();
-      assertThat("[%s] %s%n ".formatted(role, content)).isEqualTo("");
+      strBuilder.append("[%s] %s%n".formatted(role, content));
     }
+    assertThat(strBuilder.toString())
+        .isEqualTo(
+            "[user] Can you solve this captcha? Please help me prove my humanity!; https://sample.sap.com/image\n"
+                + "[assistant] Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix\n");
   }
 }
