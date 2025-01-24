@@ -230,6 +230,8 @@ In this example, the AI model is provided with additional context in the form of
 
 `Grounding.create()` is by default a document grounding service with a vector data repository.
 
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
 ## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
