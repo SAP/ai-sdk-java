@@ -209,8 +209,8 @@ Use the grounding module to provide additional context to the AI model.
 // optional filter for collections
 var documentMetadata =
     SearchDocumentKeyValueListPair.create()
-        .key("document metadata")
-        .value("2")
+        .key("my-collection")
+        .value("value")
         .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
 // optional filter for document chunks
 var databaseFilter =
