@@ -15,6 +15,12 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
+import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
+import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
+import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
+import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +48,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
-    final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     return client.chatCompletion(prompt, config);
   }
 
@@ -53,7 +59,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String topic) {
-    final var prompt =
+    val prompt =
         new OrchestrationPrompt(
             "Please create a small story about " + topic + " with around 700 words.");
     return client.streamChatCompletion(prompt, config);
@@ -68,13 +74,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
-    final var template =
-        Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    final var templatingConfig = Template.create().template(List.of(template.createChatMessage()));
-    final var configWithTemplate = config.withTemplateConfig(templatingConfig);
+    val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
+    val templatingConfig = Template.create().template(List.of(template.createChatMessage()));
+    val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
-    final var inputParams = Map.of("language", language);
-    final var prompt = new OrchestrationPrompt(inputParams);
+    val inputParams = Map.of("language", language);
+    val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
   }
@@ -86,12 +91,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
-    final var prompt = new OrchestrationPrompt(Message.user(prevMessage));
+    val prompt = new OrchestrationPrompt(Message.user(prevMessage));
 
-    final var result = client.chatCompletion(prompt, config);
+    val result = client.chatCompletion(prompt, config);
 
     // Let's presume a user asks the following follow-up question
-    final var nextPrompt =
+    val nextPrompt =
         new OrchestrationPrompt(Message.user("What is the typical food there?"))
             .messageHistory(result.getAllMessages());
 
@@ -111,12 +116,12 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
-    final var prompt =
+    val prompt =
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
-    final var filterConfig =
+    val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
-    final var configWithFilter = config.withInputFiltering(filterConfig);
+    val configWithFilter = config.withInputFiltering(filterConfig);
 
     return client.chatCompletion(prompt, configWithFilter);
   }
@@ -133,16 +138,16 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
 
-    final var systemMessage = Message.system("Give three paraphrases for the following sentence");
+    val systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
     // is difficult. The prompt below may be rendered ineffective in the future.
-    final var prompt =
+    val prompt =
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
             .messageHistory(List.of(systemMessage));
-    final var filterConfig =
+    val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
-    final var configWithFilter = config.withOutputFiltering(filterConfig);
+    val configWithFilter = config.withOutputFiltering(filterConfig);
     return client.chatCompletion(prompt, configWithFilter);
   }
 
@@ -158,19 +163,19 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse maskingAnonymization(@Nonnull final DPIEntities entity) {
-    final var systemMessage =
+    val systemMessage =
         Message.system(
             "Please evaluate the following user feedback and judge if the sentiment is positive or negative.");
-    final var userMessage =
+    val userMessage =
         Message.user(
             """
                             I think the SDK is good, but could use some further enhancements.
                             My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                             """);
 
-    final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig = DpiMasking.anonymization().withEntities(entity);
-    final var configWithMasking = config.withMaskingConfig(maskingConfig);
+    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val maskingConfig = DpiMasking.anonymization().withEntities(entity);
+    val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
   }
@@ -183,11 +188,11 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completionWithResourceGroup(
       @Nonnull final String resourceGroup, @Nonnull final String famousPhrase) {
-    final var destination =
+    val destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
-    final var clientWithResourceGroup = new OrchestrationClient(destination);
+    val clientWithResourceGroup = new OrchestrationClient(destination);
 
-    final var prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
 
     return clientWithResourceGroup.chatCompletion(prompt, config);
   }
@@ -203,13 +208,13 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse maskingPseudonymization(@Nonnull final DPIEntities entity) {
-    final var systemMessage =
+    val systemMessage =
         Message.system(
             """
                             Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
                             Please make sure to address the user in person and end with "Best regards, the AI SDK team".
                             """);
-    final var userMessage =
+    val userMessage =
         Message.user(
             """
                             Username: Mallory
@@ -220,9 +225,9 @@ public class OrchestrationService {
                             My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                             """);
 
-    final var prompt = new OrchestrationPrompt(systemMessage, userMessage);
-    final var maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
-    final var configWithMasking = config.withMaskingConfig(maskingConfig);
+    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
+    val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
   }
@@ -232,12 +237,28 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse grounding(@Nonnull final String groundingInput) {
-    val groundingConfig = Grounding.create();
-    val prompt = groundingConfig.createGroundingPrompt(groundingInput);
+  public OrchestrationChatResponse grounding(@Nonnull final String userMessage) {
+    // optional filter for collections
+    val documentMetadata =
+        SearchDocumentKeyValueListPair.create()
+            .key("document metadata")
+            .value("2")
+            .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
+    // optional filter for document chunks
+    val databaseFilter =
+        DocumentGroundingFilter.create()
+            .id("")
+            .dataRepositoryType(DataRepositoryType.VECTOR)
+            .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
+            .documentMetadata(List.of(documentMetadata))
+            .chunkMetadata(List.of(KeyValueListPair.create().key("index").value("1")));
+
+    val groundingConfig = Grounding.create().filter(databaseFilter);
+    val prompt = groundingConfig.createGroundingPrompt(userMessage);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
     return client.chatCompletion(prompt, configWithGrounding);

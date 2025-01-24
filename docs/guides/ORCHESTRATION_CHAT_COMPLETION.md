@@ -206,7 +206,22 @@ In this example, the input will be masked before the call to the LLM and will re
 Use the grounding module to provide additional context to the AI model. 
 
 ```java
-var groundingConfig = Grounding.create();
+// optional filter for collections
+var documentMetadata =
+    SearchDocumentKeyValueListPair.create()
+        .key("document metadata")
+        .value("2")
+        .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
+// optional filter for document chunks
+var databaseFilter =
+    DocumentGroundingFilter.create()
+        .id("")
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+        .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
+        .documentMetadata(List.of(documentMetadata))
+        .chunkMetadata(List.of(KeyValueListPair.create().key("index").value("1")));
+
+var groundingConfig = Grounding.create().filter(databaseFilter);
 var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
 var configWithGrounding = config.withGrounding(groundingConfig);
 

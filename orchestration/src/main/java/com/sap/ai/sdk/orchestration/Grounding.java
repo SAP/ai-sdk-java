@@ -26,8 +26,8 @@ import lombok.val;
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {
 
-  private String id = "";
-  private DataRepositoryType dataRepositoryType = DataRepositoryType.VECTOR;
+  private DocumentGroundingFilter filter =
+      DocumentGroundingFilter.create().id("").dataRepositoryType(DataRepositoryType.VECTOR);
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**
@@ -45,8 +45,8 @@ public class Grounding implements GroundingProvider {
   /**
    * Create a prompt with grounding parameters included in the message.
    *
-   * <p>It uses the inputParams {@code groundingInput} for the user message and {@code
-   * groundingOutput} for the grounding context.
+   * <p>It uses the inputParams {@code userMessage} for the user message and {@code
+   * groundingContext} for the grounding context.
    *
    * @param message The user message.
    * @return The prompt with grounding.
@@ -54,21 +54,19 @@ public class Grounding implements GroundingProvider {
   @Nonnull
   public OrchestrationPrompt createGroundingPrompt(@Nonnull final String message) {
     return new OrchestrationPrompt(
-        Map.of("groundingInput", message),
+        Map.of("userMessage", message),
         Message.user(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}"));
+            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"));
   }
 
   @Nonnull
   @Override
   public GroundingModuleConfig createConfig() {
-    val filterInner =
-        DocumentGroundingFilter.create().id(id).dataRepositoryType(dataRepositoryType);
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
-            .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput")
-            .addFiltersItem(filterInner);
+            .inputParams(List.of("userMessage"))
+            .outputParam("groundingContext")
+            .addFiltersItem(filter);
     return GroundingModuleConfig.create()
         .type(documentGroundingService)
         .config(groundingConfigConfig);
