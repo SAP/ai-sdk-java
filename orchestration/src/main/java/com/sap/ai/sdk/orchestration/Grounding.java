@@ -6,8 +6,10 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,12 +24,15 @@ import lombok.val;
  *     Core: Orchestration - Grounding</a>
  */
 @Beta
-@Setter(onMethod_ = {@Nonnull})
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {
 
-  private DocumentGroundingFilter filter =
+  private static final GroundingModuleConfigConfigFiltersInner DEFAULT_FILTER =
       DocumentGroundingFilter.create().id("").dataRepositoryType(DataRepositoryType.VECTOR);
+
+  private List<GroundingModuleConfigConfigFiltersInner> filters;
+
+  @Setter(onMethod_ = {@Nonnull})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**
@@ -40,6 +45,20 @@ public class Grounding implements GroundingProvider {
   @Nonnull
   public static Grounding create() {
     return new Grounding();
+  }
+
+  /**
+   * Set filters for grounding.
+   *
+   * @param filters List of filters to set.
+   * @return The modified grounding configuration.
+   */
+  @Nonnull
+  public Grounding filters(@Nonnull final GroundingModuleConfigConfigFiltersInner... filters) {
+    if (filters.length != 0) {
+      this.filters = List.of(filters);
+    }
+    return this;
   }
 
   /**
@@ -65,8 +84,10 @@ public class Grounding implements GroundingProvider {
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .inputParams(List.of("userMessage"))
-            .outputParam("groundingContext")
-            .addFiltersItem(filter);
+            .outputParam("groundingContext");
+    groundingConfigConfig.setFilters(
+        Objects.requireNonNullElseGet(filters, () -> List.of(DEFAULT_FILTER)));
+
     return GroundingModuleConfig.create()
         .type(documentGroundingService)
         .config(groundingConfigConfig);

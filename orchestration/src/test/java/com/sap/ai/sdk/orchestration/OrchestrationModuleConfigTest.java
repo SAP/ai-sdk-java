@@ -150,6 +150,21 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
+  void testGroundingConfigWithFilters() {
+    var filter1 = DocumentGroundingFilter.create().id("123").dataRepositoryType(VECTOR);
+    var filter2 = DocumentGroundingFilter.create().id("234").dataRepositoryType(VECTOR);
+    var groundingConfig = Grounding.create().filters(filter1, filter2);
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+
+    assertThat(config.getGroundingConfig()).isNotNull();
+    var configConfig = config.getGroundingConfig().getConfig();
+    assertThat(configConfig).isNotNull();
+
+    assertThat(config.getGroundingConfig().getConfig().getFilters()).hasSize(2);
+  }
+
+  @Test
   void testGroundingPrompt() {
     var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
     assertThat(prompt.getMessages()).hasSize(1);

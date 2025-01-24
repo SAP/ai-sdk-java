@@ -255,7 +255,7 @@ public class OrchestrationService {
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
             .documentMetadata(List.of(documentMetadata));
 
-    val groundingConfig = Grounding.create().filter(databaseFilter);
+    val groundingConfig = Grounding.create().filters(databaseFilter);
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
