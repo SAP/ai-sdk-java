@@ -37,6 +37,7 @@ jobs:
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
+      pr_url: ${{ steps.create-pr.outputs.pr_url }}
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
@@ -49,6 +50,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
+      - name: "Checkout or Create Branch"
+        id: branch
+        # Checkout branch if it exists, otherwise create it
+        run: |
+          BRANCH="spec-update/$CHOICE/$REF"
+          git fetch origin $BRANCH || true
+          git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: "Download specification file"
         id: download
@@ -83,27 +93,6 @@ jobs:
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: "Checkout or Create Branch"
-        # Always create a new branch to ensure we generate from a clean state.
-        # In case a PR exist we can't delete and re-create the branch (without closing the PR first).
-        # So the workflow will exist in this case.
-        id: branch
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-        run: |
-          BRANCH="spec-update/$CHOICE/$REF"
-          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
-            echo "An open PR already exists for this branch. Please close the PR first before re-running the workflow."
-            exit 1
-          fi
-
-          if git ls-remote --exit-code origin refs/heads/$BRANCH >/dev/null 2>&1; then
-            echo "Branch '$BRANCH' exists on remote, deleting it..."
-            git push origin --delete $BRANCH
-          fi
-          git checkout -b $BRANCH
-          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-
       - name: "Setup java"
         uses: actions/setup-java@v4
         if: steps.spec_diff.outputs.spec_diff == 'true'
@@ -133,6 +122,7 @@ jobs:
             fi
           else
             echo "compilation_result=failure" >> "$GITHUB_OUTPUT"
+            echo "test_result=skipped" >> "$GITHUB_OUTPUT"
           fi
 
       - name: "Push changes"
@@ -141,16 +131,24 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
-          git add .
+          git add --all
+          git status
           git commit -m "Update $CHOICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: "Create PR"
-        if: ${{ env.CREATE_PR && steps.spec_diff.outputs.spec_diff == 'true'}}
+        id: create-pr
+        if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
         run: |
-          gh pr create --base main --head ${{ steps.branch.outputs.branch }} --title "feat: [DevOps] Update $CHOICE Specification" --body "
+          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
+            echo "An open PR already exists for this branch. Skipping PR creation."
+            exit 0
+          fi
+          
+          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: [DevOps] Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -158,8 +156,8 @@ jobs:
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-java/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
           
-          - Compilation outcome: ${{ steps.compile.output.test_result }}
-          - Test run outcome: ${{ steps.compile.output.test_result }}
+          - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
+          - Test run outcome: ${{ steps.compile.outputs.test_result }}
           
           Before merging, make sure to update tests and release notes, if necessary.
           
@@ -167,14 +165,26 @@ jobs:
 
           - [ ] Unit tests cover new classes
           - [ ] Release notes updated
-          "
+          ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
-      - name: "Print Summary"
+      - name: Generate Job Summary
         if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          PR_URL: ${{ steps.create-pr.outputs.pr_url }}
         run: |
-          echo "Branch creation: ${{ steps.branch.outcome }}"
-          echo "File download outcome: ${{ steps.download.outcome }}"
-          echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
-          echo "Client generation outcome: ${{ steps.generate.outcome }}"
-          echo "Client compilation outcome: ${{ steps.compile.output.compilation_result }}"
-          echo "Client test outcome: ${{ steps.compile.output.test_result }}"
+          DIFF_URL="https://github.com/SAP/ai-sdk-java/compare/main...$BRANCH"
+          echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          
+          if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
+            echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Pull Request Creation | ${{env.CREATE_PR == 'false' && '⏩ skipped' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' }}" >> $GITHUB_STEP_SUMMARY
+          fi
