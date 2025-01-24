@@ -217,9 +217,7 @@ var databaseFilter =
     DocumentGroundingFilter.create()
         .id("")
         .dataRepositoryType(DataRepositoryType.VECTOR)
-        .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
-        .documentMetadata(List.of(documentMetadata))
-        .chunkMetadata(List.of(KeyValueListPair.create().key("index").value("1")));
+        .documentMetadata(List.of(documentMetadata));
 
 var groundingConfig = Grounding.create().filter(databaseFilter);
 var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");

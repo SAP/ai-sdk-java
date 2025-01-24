@@ -18,7 +18,6 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
-import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -254,8 +253,7 @@ public class OrchestrationService {
             .id("")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
-            .documentMetadata(List.of(documentMetadata))
-            .chunkMetadata(List.of(KeyValueListPair.create().key("index").value("1")));
+            .documentMetadata(List.of(documentMetadata));
 
     val groundingConfig = Grounding.create().filter(databaseFilter);
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
