@@ -5,8 +5,12 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
-/** Client for interacting with OpenAI models. Allows for convenient string prompts only. */
-public interface OpenAiClientWithSystemPrompt {
+/**
+ * Client for interacting with OpenAI models. Allows for convenient string prompts only.
+ *
+ * @since 1.2.0
+ */
+public interface ChatCompletionString {
 
   /**
    * Generate a completion for the given user prompt.

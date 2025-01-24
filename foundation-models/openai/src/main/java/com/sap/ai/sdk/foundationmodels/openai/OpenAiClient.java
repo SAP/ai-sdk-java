@@ -37,7 +37,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 /** Client for interacting with OpenAI models. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class OpenAiClient implements OpenAiClientWithSystemPrompt {
+public final class OpenAiClient implements ChatCompletionString {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON = getDefaultObjectMapper();
   @Nullable private String systemPrompt = null;
@@ -113,7 +113,7 @@ public final class OpenAiClient implements OpenAiClientWithSystemPrompt {
    * @return the client
    */
   @Nonnull
-  public OpenAiClientWithSystemPrompt withSystemPrompt(@Nonnull final String systemPrompt) {
+  public ChatCompletionString withSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;
     return this;
   }
