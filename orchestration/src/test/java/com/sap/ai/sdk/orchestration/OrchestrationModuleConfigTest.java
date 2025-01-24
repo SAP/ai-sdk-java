@@ -139,8 +139,8 @@ class OrchestrationModuleConfigTest {
 
     GroundingModuleConfigConfig configConfig = config.getGroundingConfig().getConfig();
     assertThat(configConfig).isNotNull();
-    assertThat(configConfig.getInputParams()).containsExactly("groundingInput");
-    assertThat(configConfig.getOutputParam()).isEqualTo("groundingOutput");
+    assertThat(configConfig.getInputParams()).containsExactly("userMessage");
+    assertThat(configConfig.getOutputParam()).isEqualTo("groundingContext");
 
     List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
     assertThat(filters).hasSize(1);
@@ -156,6 +156,6 @@ class OrchestrationModuleConfigTest {
     var message = prompt.getMessages().get(0);
     assertThat(message.content())
         .isEqualTo(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
+            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
   }
 }
