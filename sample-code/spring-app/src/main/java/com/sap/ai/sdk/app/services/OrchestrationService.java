@@ -246,14 +246,14 @@ public class OrchestrationService {
         SearchDocumentKeyValueListPair.create()
             .key("document metadata")
             .value("2")
-            .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
+            .addSelectModeItem(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT);
     // optional filter for document chunks
     val databaseFilter =
         DocumentGroundingFilter.create()
             .id("")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
-            .documentMetadata(List.of(documentMetadata));
+            .addDocumentMetadataItem(documentMetadata);
 
     val groundingConfig = Grounding.create().filters(databaseFilter);
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
