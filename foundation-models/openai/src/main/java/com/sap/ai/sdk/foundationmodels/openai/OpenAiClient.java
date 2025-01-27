@@ -10,7 +10,6 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
@@ -39,7 +38,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON = getDefaultObjectMapper();
-  @Nullable private String systemPrompt = null;
+  @Nullable private OpenAiMessage systemPrompt = null;
 
   @Nonnull private final Destination destination;
 
@@ -111,6 +110,18 @@ public final class OpenAiClient {
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
 
+  @Nonnull
+  public static CreateChatCompletionRequest toCreateChatCompletionRequest(
+      @Nonnull final OpenAiChatCompletionRequest config) {
+    var payload = new CreateChatCompletionRequest();
+
+    config.getMessages().stream().map(OpenAiMessage::createDTO).forEach(payload::addMessagesItem);
+    // TODO: what if tools, functions, parallelToolCalls are not null?
+    payload.functions(null).tools(null).parallelToolCalls(null);
+
+    return payload;
+  }
+
   /**
    * Add a system prompt before user prompts.
    *
@@ -119,7 +130,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
-    this.systemPrompt = systemPrompt;
+    this.systemPrompt = OpenAiMessage.system(systemPrompt);
     return this;
   }
 
@@ -131,19 +142,23 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public CreateChatCompletionResponse chatCompletion(@Nonnull final String prompt)
+  public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
+    var userPrompt = OpenAiMessage.user(prompt);
 
-    if (systemPrompt != null) {
-      parameters.addMessagesItem(OpenAiMessage.system(systemPrompt).createDTO());
-    }
-    parameters
-        .addMessagesItem(OpenAiMessage.user(prompt).createDTO())
-        .functions(null)
-        .tools(null)
-        .parallelToolCalls(null);
+    OpenAiChatCompletionRequest parameters =
+        (systemPrompt != null)
+            ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
+            : new OpenAiChatCompletionRequest(userPrompt);
+
     return chatCompletion(parameters);
+  }
+
+  @Nonnull
+  public OpenAiChatCompletionResponse chatCompletion(
+      @Nonnull final OpenAiChatCompletionRequest parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    return chatCompletion(toCreateChatCompletionRequest(parameters));
   }
 
   /**
@@ -154,10 +169,10 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public CreateChatCompletionResponse chatCompletion(
+  public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return execute("/chat/completions", parameters, CreateChatCompletionResponse.class);
+    return new OpenAiChatCompletionResponse(
+        execute("/chat/completions", parameters, CreateChatCompletionResponse.class));
   }
 
   /**
@@ -188,13 +203,7 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    final CreateChatCompletionRequest parameters = new CreateChatCompletionRequest();
-
-    if (systemPrompt != null) {
-      parameters.addMessagesItem(OpenAiMessage.system(systemPrompt).createDTO());
-    }
-    final var userMessage = OpenAiMessage.user(prompt).createDTO();
-    parameters.addMessagesItem(userMessage).tools(null).functions(null).parallelToolCalls(null);
+    var parameters = new OpenAiChatCompletionRequest(prompt);
 
     return streamChatCompletionDeltas(parameters)
         .map(OpenAiChatCompletionDelta.class::cast)
@@ -240,7 +249,6 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CreateChatCompletionRequest parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
     parameters.stream(true).streamOptions(new ChatCompletionStreamOptions().includeUsage(true));
     return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
   }
@@ -320,5 +328,12 @@ public final class OpenAiClient {
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
+  }
+
+  @Nonnull
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
+      @Nonnull final OpenAiChatCompletionRequest parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    return streamChatCompletionDeltas(toCreateChatCompletionRequest(parameters));
   }
 }

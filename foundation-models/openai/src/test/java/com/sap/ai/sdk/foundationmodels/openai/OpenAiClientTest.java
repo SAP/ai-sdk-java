@@ -21,11 +21,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterChoiceResults;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
@@ -81,36 +77,29 @@ class OpenAiClientTest {
     ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
-  @Test
-  void apiVersion() {
-    stubFor(post(anyUrl()).willReturn(okJson("{}")));
-    Try.of(() -> client.chatCompletion(new CreateChatCompletionRequest()));
-
-    verify(
-        exactly(1),
-        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
-
-    Try.of(() -> client.withApiVersion("fooBar").chatCompletion(new CreateChatCompletionRequest()));
-    verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
-
-    assertThat(client)
-        .describedAs(
-            "withApiVersion should return a new object, the sut object should remain unchanged")
-        .isNotSameAs(client.withApiVersion("fooBar"));
-    Try.of(() -> client.chatCompletion(new CreateChatCompletionRequest()));
-    verify(
-        exactly(2),
-        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
-  }
-
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
-      () -> client.chatCompletion(new CreateChatCompletionRequest()),
+      () -> client.chatCompletion(new OpenAiChatCompletionRequest()),
       () ->
           client
-              .streamChatCompletionDeltas(new CreateChatCompletionRequest())
+              .streamChatCompletionDeltas(new OpenAiChatCompletionRequest())
               // the stream needs to be consumed to parse the response
               .forEach(System.out::println)
+    };
+  }
+
+  private static Callable<?>[] chatCompletionCalls() {
+    return new Callable[] {
+      () -> {
+        final var systemMessage = OpenAiMessage.system("You are a helpful AI");
+        final var userMessage = OpenAiMessage.user("Hello World! Why is this phrase so famous?");
+        final var request = new OpenAiChatCompletionRequest(systemMessage, userMessage);
+        return client.chatCompletion(request);
+      },
+      () ->
+          client
+              .withSystemPrompt("You are a helpful AI")
+              .chatCompletion("Hello World! Why is this phrase so famous?")
     };
   }
 
@@ -188,59 +177,61 @@ class OpenAiClientTest {
     softly.assertAll();
   }
 
-  private static Callable<?>[] chatCompletionCalls() {
-    return new Callable[] {
-      () -> {
-        final var systemMessage = OpenAiMessage.system("You are a helpful AI").createDTO();
-        final var userMessage =
-            OpenAiMessage.user("Hello World! Why is this phrase so famous?").createDTO();
-        final var request =
-            new CreateChatCompletionRequest()
-                .addMessagesItem(systemMessage)
-                .addMessagesItem(userMessage)
-                .functions(null)
-                .tools(null)
-                .parallelToolCalls(null);
-        return client.chatCompletion(request);
-      },
-      () ->
-          client
-              .withSystemPrompt("You are a helpful AI")
-              .chatCompletion("Hello World! Why is this phrase so famous?")
-    };
+  @Test
+  void apiVersion() {
+    stubFor(post(anyUrl()).willReturn(okJson("{}")));
+    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest()));
+
+    verify(
+        exactly(1),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
+
+    Try.of(() -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionRequest()));
+    verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
+
+    assertThat(client)
+        .describedAs(
+            "withApiVersion should return a new object, the sut object should remain unchanged")
+        .isNotSameAs(client.withApiVersion("fooBar"));
+    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest()));
+    verify(
+        exactly(2),
+        postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
   }
 
   @SneakyThrows
   @ParameterizedTest
   @MethodSource("chatCompletionCalls")
-  void chatCompletion(@Nonnull final Callable<CreateChatCompletionResponse> request) {
+  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionResponse> request) {
     try (var inputStream = fileLoader.apply("__files/chatCompletionResponse.json")) {
 
-      final String response = new String(inputStream.readAllBytes());
+      final String expectedResponse = new String(inputStream.readAllBytes());
       // with query parameter api-version=2024-02-01
       stubFor(
           post(urlPathEqualTo("/chat/completions"))
               .withQueryParam("api-version", equalTo("2024-02-01"))
-              .willReturn(okJson(response)));
+              .willReturn(okJson(expectedResponse)));
 
-      final CreateChatCompletionResponse result = request.call();
+      final OpenAiChatCompletionResponse response = request.call();
 
-      assertThat(result).isNotNull();
-      assertThat(result.getCreated()).isEqualTo(1727436279);
-      assertThat(result.getId()).isEqualTo("chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf");
-      assertThat(result.getModel()).isEqualTo("gpt-35-turbo");
-      assertThat(result.getObject().getValue()).isEqualTo("chat.completion");
-      assertThat(result.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
+      var originalResponse = response.getOriginalResponse();
+      assertThat(originalResponse).isNotNull();
+      assertThat(originalResponse.getCreated()).isEqualTo(1727436279);
+      assertThat(originalResponse.getId()).isEqualTo("chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf");
+      assertThat(originalResponse.getModel()).isEqualTo("gpt-35-turbo");
+      assertThat(originalResponse.getObject().getValue()).isEqualTo("chat.completion");
+      assertThat(originalResponse.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
-      assertThat(result.getUsage()).isNotNull();
-      assertThat(result.getUsage().getCompletionTokens()).isEqualTo(20);
-      assertThat(result.getUsage().getPromptTokens()).isEqualTo(13);
-      assertThat(result.getUsage().getTotalTokens()).isEqualTo(33);
+      var usage = response.getTokenUsage();
+      assertThat(usage).isNotNull();
+      assertThat(usage.getCompletionTokens()).isEqualTo(20);
+      assertThat(usage.getPromptTokens()).isEqualTo(13);
+      assertThat(usage.getTotalTokens()).isEqualTo(33);
 
-      assertThat(result.getPromptFilterResults()).hasSize(1);
-      assertThat(result.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
-      ContentFilterPromptResults promptFilterResults =
-          result.getPromptFilterResults().get(0).getContentFilterResults();
+      assertThat(originalResponse.getPromptFilterResults()).hasSize(1);
+      assertThat(originalResponse.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
+      var promptFilterResults =
+          originalResponse.getPromptFilterResults().get(0).getContentFilterResults();
       assertThat(promptFilterResults).isNotNull();
       assertThat(promptFilterResults.getSexual()).isNotNull();
       assertThat(promptFilterResults.getSexual().isFiltered()).isFalse();
@@ -258,17 +249,18 @@ class OpenAiClientTest {
       assertThat(promptFilterResults.getError()).isNull();
       assertThat(promptFilterResults.getJailbreak()).isNull();
 
-      assertThat(result.getChoices()).hasSize(1);
-      CreateChatCompletionResponseChoicesInner choice = result.getChoices().get(0);
-      assertThat(choice.getFinishReason()).isEqualTo(STOP);
-      assertThat(choice.getIndex()).isEqualTo(0);
+      assertThat(originalResponse.getChoices()).hasSize(1);
+
+      var choice = response.getChoice();
+      assertThat(response.getChoice().getFinishReason()).isEqualTo(STOP);
+      assertThat(choice.getIndex()).isZero();
       assertThat(choice.getMessage().getContent())
           .isEqualTo(
               "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
       assertThat(choice.getMessage().getRole()).isEqualTo(ASSISTANT);
       assertThat(choice.getMessage().getToolCalls()).isNull();
 
-      ContentFilterChoiceResults contentFilterResults = choice.getContentFilterResults();
+      var contentFilterResults = choice.getContentFilterResults();
       assertThat(contentFilterResults).isNotNull();
       assertThat(contentFilterResults.getSexual()).isNotNull();
       assertThat(contentFilterResults.getSexual().isFiltered()).isFalse();
@@ -284,7 +276,6 @@ class OpenAiClientTest {
       assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
       assertThat(contentFilterResults.getProfanity()).isNull();
       assertThat(contentFilterResults.getError()).isNull();
-      // assertThat(contentFilterResults.getJailbreak()).isNull();
 
       verify(
           postRequestedFor(urlPathEqualTo("/chat/completions"))
@@ -420,12 +411,13 @@ class OpenAiClientTest {
   @Test
   void testThrowsOnContentFilter() {
     var mock = mock(OpenAiClient.class);
-    when(mock.streamChatCompletion(any())).thenCallRealMethod();
+    when(mock.streamChatCompletion((String) any())).thenCallRealMethod();
 
     var deltaWithContentFilter =
         mock(com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
-    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+    when(mock.streamChatCompletionDeltas((OpenAiChatCompletionRequest) any()))
+        .thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion("");
@@ -451,9 +443,8 @@ class OpenAiClientTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var userMessage =
-          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?")
-              .createDTO();
-      final var request = new CreateChatCompletionRequest().addMessagesItem(userMessage);
+          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?");
+      final var request = new OpenAiChatCompletionRequest(userMessage);
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
@@ -482,9 +473,8 @@ class OpenAiClientTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var userMessage =
-          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?")
-              .createDTO();
-      final var request = new CreateChatCompletionRequest().addMessagesItem(userMessage);
+          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?");
+      final var request = new OpenAiChatCompletionRequest(userMessage);
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 

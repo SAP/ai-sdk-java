@@ -45,7 +45,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -67,7 +67,7 @@ public class OpenAiController {
           try (stream) {
             stream.forEach(
                 delta -> {
-                  final var usage = delta.getCompletionUsage(mapper);
+                  final var usage = delta.getCompletionUsage(MAPPER);
                   totalOutput.compareAndExchange(null, usage);
                   send(emitter, delta.getDeltaContent());
                 });
@@ -140,7 +140,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -158,7 +158,7 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
@@ -190,6 +190,6 @@ public class OpenAiController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
-    return ResponseEntity.ok(response.getChoices().get(0).getMessage().getContent());
+    return ResponseEntity.ok(response.getContent());
   }
 }

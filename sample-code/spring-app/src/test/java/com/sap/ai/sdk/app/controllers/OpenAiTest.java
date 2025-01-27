@@ -6,10 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +28,9 @@ class OpenAiTest {
   @Test
   void chatCompletion() {
     final var completion = service.chatCompletion("Who is the prettiest");
-
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo(ASSISTANT);
-    assertThat(message.getContent()).isNotEmpty();
+    
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
+    assertThat(completion.getContent()).isNotEmpty();
   }
 
   @Test
@@ -40,21 +39,16 @@ class OpenAiTest {
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
-    final var message = completion.getChoices().get(0).getMessage();
+    final var message = completion.getChoice().getMessage();
     assertThat(message.getRole()).isEqualTo(ASSISTANT);
     assertThat(message.getContent()).isNotEmpty();
   }
 
   @Test
   void streamChatCompletion() {
-    final var userMessage =
-        OpenAiMessage.user("Who is the prettiest?").createDTO();
+    final var userMessage = OpenAiMessage.user("Who is the prettiest?");
     final var request =
-        new CreateChatCompletionRequest()
-            .addMessagesItem(userMessage)
-            .tools(null)
-            .functions(null)
-            .parallelToolCalls(null);
+        new OpenAiChatCompletionRequest(userMessage);
 
     final var totalOutput = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
@@ -86,7 +80,7 @@ class OpenAiTest {
     final var completion =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
 
-    final var message = completion.getChoices().get(0).getMessage();
+    final var message = completion.getChoice().getMessage();
     assertThat(message.getRole()).isEqualTo(ASSISTANT);
     assertThat(message.getToolCalls()).isNotNull();
     assertThat(message.getToolCalls().get(0).getFunction().getName()).isEqualTo("fibonacci");
@@ -106,8 +100,7 @@ class OpenAiTest {
     final var completion =
         service.chatCompletionWithResource("ai-sdk-java-e2e", "Where is the nearest coffee shop?");
 
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo(ASSISTANT);
-    assertThat(message.getContent()).isNotEmpty();
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
+    assertThat(completion.getContent()).isNotEmpty();
   }
 }
