@@ -9,7 +9,6 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -27,10 +26,10 @@ import lombok.val;
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {
 
-  private static final GroundingModuleConfigConfigFiltersInner DEFAULT_FILTER =
-      DocumentGroundingFilter.create().id("").dataRepositoryType(DataRepositoryType.VECTOR);
-
-  private List<GroundingModuleConfigConfigFiltersInner> filters;
+  @Nonnull
+  private List<GroundingModuleConfigConfigFiltersInner> filters =
+      List.of(
+          DocumentGroundingFilter.create().id("").dataRepositoryType(DataRepositoryType.VECTOR));
 
   @Setter(onMethod_ = {@Nonnull})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
@@ -84,9 +83,8 @@ public class Grounding implements GroundingProvider {
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .inputParams(List.of("userMessage"))
-            .outputParam("groundingContext");
-    groundingConfigConfig.setFilters(
-        Objects.requireNonNullElseGet(filters, () -> List.of(DEFAULT_FILTER)));
+            .outputParam("groundingContext")
+            .filters(filters);
 
     return GroundingModuleConfig.create()
         .type(documentGroundingService)
