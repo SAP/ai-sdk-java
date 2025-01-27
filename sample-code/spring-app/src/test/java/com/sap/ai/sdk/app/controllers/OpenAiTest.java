@@ -28,7 +28,7 @@ class OpenAiTest {
   @Test
   void chatCompletion() {
     final var completion = service.chatCompletion("Who is the prettiest");
-    
+
     assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(completion.getContent()).isNotEmpty();
   }
@@ -47,8 +47,7 @@ class OpenAiTest {
   @Test
   void streamChatCompletion() {
     final var userMessage = OpenAiMessage.user("Who is the prettiest?");
-    final var request =
-        new OpenAiChatCompletionRequest(userMessage);
+    final var request = new OpenAiChatCompletionRequest(userMessage);
 
     final var totalOutput = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
