@@ -197,4 +197,18 @@ public class OrchestrationModuleConfig {
 
     return this.withFilteringConfig(newFilteringConfig);
   }
+
+  /**
+   * Creates a new configuration with the given grounding configuration.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @param groundingProvider The grounding configuration to use.
+   * @return A new configuration with the given grounding configuration.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withGrounding(
+      @Nonnull final GroundingProvider groundingProvider) {
+    return this.withGroundingConfig(groundingProvider.createConfig());
+  }
 }
