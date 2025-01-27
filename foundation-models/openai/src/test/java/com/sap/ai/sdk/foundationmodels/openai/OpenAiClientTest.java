@@ -79,10 +79,10 @@ class OpenAiClientTest {
 
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
-      () -> client.chatCompletion(new OpenAiChatCompletionRequest()),
+      () -> client.chatCompletion(new OpenAiChatCompletionRequest("")),
       () ->
           client
-              .streamChatCompletionDeltas(new OpenAiChatCompletionRequest())
+              .streamChatCompletionDeltas(new OpenAiChatCompletionRequest(""))
               // the stream needs to be consumed to parse the response
               .forEach(System.out::println)
     };
@@ -180,20 +180,21 @@ class OpenAiClientTest {
   @Test
   void apiVersion() {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
-    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest()));
+    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")));
 
     verify(
         exactly(1),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
-    Try.of(() -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionRequest()));
+    Try.of(
+        () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionRequest("")));
     verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
 
     assertThat(client)
         .describedAs(
             "withApiVersion should return a new object, the sut object should remain unchanged")
         .isNotSameAs(client.withApiVersion("fooBar"));
-    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest()));
+    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")));
     verify(
         exactly(2),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
