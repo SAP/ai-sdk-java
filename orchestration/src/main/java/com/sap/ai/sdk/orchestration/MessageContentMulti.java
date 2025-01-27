@@ -13,7 +13,6 @@ import java.util.List;
 
 public record MessageContentMulti(List<MultiMessageContent> multiContentList)
     implements MessageContent {
-  public MessageContentMulti {}
 
   public MessageContentMulti(MultiChatMessageContent... multiChatContents) {
     this(convertIntoMultiMessageList(multiChatContents));

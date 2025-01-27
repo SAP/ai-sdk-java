@@ -28,14 +28,8 @@ public class UserMessage implements Message {
     content = new MessageContentSingle(singleMessage);
   }
 
-  public UserMessage(MessageContent messageContent) {
+  UserMessage(MessageContent messageContent) {
     content = messageContent;
-  }
-
-  public UserMessage(List<MultiChatMessageContent> multiChatMessageContentList) {
-    content =
-        new MessageContentMulti(
-            multiChatMessageContentList.toArray(MultiChatMessageContent[]::new));
   }
 
   @Nonnull

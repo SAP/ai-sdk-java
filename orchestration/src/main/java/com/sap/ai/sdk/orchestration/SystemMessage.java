@@ -18,8 +18,7 @@ public class SystemMessage implements Message {
   @Nonnull String role = "system";
 
   /** The content of the message. */
-  @Nonnull
-  MessageContent content;
+  @Nonnull MessageContent content;
 
   @Override
   @Nonnull
@@ -31,22 +30,16 @@ public class SystemMessage implements Message {
     content = new MessageContentSingle(singleMessage);
   }
 
-  public SystemMessage(MessageContent messageContent) {
+  SystemMessage(MessageContent messageContent) {
+    if (!(messageContent instanceof MessageContentSingle)) {
+      ((MessageContentMulti) messageContent).multiContentList().stream()
+          .filter(mCMC -> !(mCMC instanceof MultiMessageTextContent))
+          .findAny()
+          .ifPresent(mCMC -> {
+            throw new IllegalArgumentException("Only TextContent is supported for SystemMessage");
+          });
+    }
     content = messageContent;
-  }
-
-  public SystemMessage(List<MultiChatMessageContent> multiChatMessageContentList) {
-  var contentArray = multiChatMessageContentList.stream()
-      .map(mCMC -> {
-        if (mCMC instanceof TextContent) {
-          return (TextContent) mCMC;
-        } else {
-          throw new IllegalArgumentException("Only TextContent is supported for SystemMessage");
-        }
-      })
-      .toArray(TextContent[]::new);
-    content =
-        new MessageContentMulti(contentArray);
   }
 
   @Nonnull

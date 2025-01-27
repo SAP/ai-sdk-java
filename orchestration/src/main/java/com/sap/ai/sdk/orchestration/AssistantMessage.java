@@ -25,8 +25,4 @@ public class AssistantMessage implements Message {
   public AssistantMessage(String singleMessage) {
     content = new MessageContentSingle(singleMessage);
   }
-
-  public AssistantMessage(MessageContentSingle messageContent) {
-    content = messageContent;
-  }
 }

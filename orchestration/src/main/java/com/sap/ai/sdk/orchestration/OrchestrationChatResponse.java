@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,22 +65,32 @@ public class OrchestrationChatResponse {
       if (chatMessage instanceof ChatMessage simpleMsg) {
         final var message =
             switch (simpleMsg.getRole()) {
-              case "user" -> new UserMessage(simpleMsg.getContent());
-              case "assistant" -> new AssistantMessage(simpleMsg.getContent());
-              case "system" -> new SystemMessage(simpleMsg.getContent());
+              case "user" -> Message.user(simpleMsg.getContent());
+              case "assistant" -> Message.assistant(simpleMsg.getContent());
+              case "system" -> Message.system(simpleMsg.getContent());
               default ->
-                  throw new IllegalArgumentException("Unexpected role: " + simpleMsg.getRole());
+                  throw new IllegalArgumentException(
+                      "Unexpected role: "
+                          + simpleMsg.getRole()
+                          + ". Only 'user', 'assistant' and 'system' are supported.");
             };
         messages.add(message);
       } else if (chatMessage instanceof MultiChatMessage mCMessage) {
-        messages.add(new UserMessage(mCMessage.getContent()));
+          messages.add(
+              switch (mCMessage.getRole()) {
+                case "user" -> Message.user(new MessageContentMulti(mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
+                case "system" -> Message.system(new MessageContentMulti(mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
+                default ->
+                    throw new IllegalArgumentException("Unexpected role using MultiChatMessage: " + mCMessage.getRole() + ". Only 'user' and 'system' are supported.");
+              }
+          );
       } else {
         throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
     }
 
-    messages.add(new AssistantMessage(getChoice().getMessage().getContent()));
+    messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
   }
 

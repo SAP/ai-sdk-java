@@ -24,6 +24,20 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   }
 
   /**
+   * A convenience method to create a user message.
+   *
+   * @param msg the message content.
+   * @return the user message.
+   */
+  @Nonnull
+  static UserMessage user(@Nonnull final MessageContent msg) {
+    return new UserMessage(msg);
+  }
+
+//  TODO: discuss whether we want a static AssistantMessage user(@Nonnull final MessageContent msg)
+//    pro: consistency
+//    con: Only works if exactly one string is in there
+  /**
    * A convenience method to create an assistant message.
    *
    * @param msg the message content.
@@ -42,6 +56,17 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   static SystemMessage system(@Nonnull final String msg) {
+    return new SystemMessage(msg);
+  }
+
+  /**
+   * A convenience method to create a system message.
+   *
+   * @param msg the message content.
+   * @return the system message.
+   */
+  @Nonnull
+  static SystemMessage system(@Nonnull final MessageContent msg) {
     return new SystemMessage(msg);
   }
 
