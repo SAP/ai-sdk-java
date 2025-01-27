@@ -151,7 +151,7 @@ public final class OpenAiClient {
             ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
             : new OpenAiChatCompletionRequest(userPrompt);
 
-    return chatCompletion(parameters);
+    return chatCompletion(toCreateChatCompletionRequest(parameters));
   }
 
   @Nonnull
@@ -205,7 +205,7 @@ public final class OpenAiClient {
       throws OpenAiClientException {
     var parameters = new OpenAiChatCompletionRequest(prompt);
 
-    return streamChatCompletionDeltas(parameters)
+    return streamChatCompletionDeltas(toCreateChatCompletionRequest(parameters))
         .map(OpenAiChatCompletionDelta.class::cast)
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
@@ -218,7 +218,14 @@ public final class OpenAiClient {
       throw new OpenAiClientException("Content filter filtered the output.");
     }
   }
-
+  
+  @Nonnull
+  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
+      @Nonnull final OpenAiChatCompletionRequest parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    return streamChatCompletionDeltas(toCreateChatCompletionRequest(parameters));
+  }
+  
   /**
    * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of delta
    * objects. To simply stream the text chunks use {@link #streamChatCompletion(String)}
@@ -328,12 +335,5 @@ public final class OpenAiClient {
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
-  }
-
-  @Nonnull
-  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final OpenAiChatCompletionRequest parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return streamChatCompletionDeltas(toCreateChatCompletionRequest(parameters));
   }
 }
