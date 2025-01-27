@@ -1,9 +1,14 @@
 package com.sap.ai.sdk.core;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -63,17 +68,30 @@ class AiCoreServiceTest {
 
   @Test
   void testGetInferenceDestination() {
-    var builder = service.getInferenceDestination();
+    // default resource group destination
+    val builder = service.getInferenceDestination();
     assertThatThrownBy(() -> builder.forScenario("doesn't exist"))
         .isExactlyInstanceOf(DeploymentResolutionException.class);
 
+    // custom resource group destination
     val destination = service.getInferenceDestination("foo").usingDeploymentId("123");
-
     assertThat(destination.getUri())
         .hasHost("api.ai.com")
         .hasPath("/v2/inference/deployments/123/");
-
     assertThat(destination.getHeaders()).containsExactly(new Header("AI-Resource-Group", "foo"));
+
+    // scenario-based destination
+    val d = "{\"count\":1,\"resources\":[{\"id\":\"0123456789abcdef\",\"scenarioId\":\"foobar\"}]}";
+    val server = new WireMockServer(wireMockConfig().dynamicPort());
+    server.start();
+    server.stubFor(get(urlEqualTo("/v2/lm/deployments")).willReturn(okJson(d)));
+    HttpDestination foobar =
+        service
+            .withBaseDestination(DefaultHttpDestination.builder(server.baseUrl() + "/v2/").build())
+            .getInferenceDestination()
+            .forScenario("foobar");
+    assertThat(foobar.getUri()).hasPath("/v2/inference/deployments/0123456789abcdef/");
+    server.stop();
   }
 
   @Test

@@ -211,13 +211,13 @@ var documentMetadata =
     SearchDocumentKeyValueListPair.create()
         .key("my-collection")
         .value("value")
-        .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
+        .addSelectModeItem(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT);
 // optional filter for document chunks
 var databaseFilter =
     DocumentGroundingFilter.create()
         .id("")
         .dataRepositoryType(DataRepositoryType.VECTOR)
-        .documentMetadata(List.of(documentMetadata));
+        .addDocumentMetadataItem(documentMetadata);
 
 var groundingConfig = Grounding.create().filter(databaseFilter);
 var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
