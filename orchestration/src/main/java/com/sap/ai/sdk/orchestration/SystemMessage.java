@@ -50,7 +50,7 @@ public class SystemMessage implements Message {
   }
 
   @Nonnull
-  public SystemMessage addTextMessages(@Nonnull String... messages) {
+  public SystemMessage addText(@Nonnull String... messages) {
     return new SystemMessage(
         new MessageContentMulti(
             Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));

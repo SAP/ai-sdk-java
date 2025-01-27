@@ -812,7 +812,7 @@ class OrchestrationUnitTest {
                             .llmModuleConfig(llmWithImageSupportConfig)
                             .templatingModuleConfig(templatingModuleConfig)));
 
-    var multiMessage = new UserMessage("Message 1").addTextMessages("Message 2");
+    var multiMessage = new UserMessage("Message 1").addText("Message 2");
     var multiPrompt = new OrchestrationPrompt(multiMessage);
     var response = client.chatCompletion(multiPrompt, config);
 

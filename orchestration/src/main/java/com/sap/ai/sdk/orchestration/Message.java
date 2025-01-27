@@ -101,16 +101,4 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   @Nonnull
   @Beta
   Object content();
-
-//  @Nonnull
-//  @Beta
-//  MessageContent getContent();
-
-//  @Nonnull
-//  @Beta
-//  Message addTextMessages(@Nonnull String... messages);
-
-//  @Nonnull
-//  @Beta
-//  Message addImage(@Nonnull String imageUrl, MultiMessageImageContent.DetailLevel detailLevel);
 }

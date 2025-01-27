@@ -74,7 +74,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     var multiMessage = new UserMessage(questions.get(0));
     var prompt =
-        new OrchestrationPrompt(multiMessage.addTextMessages(questions.get(1), questions.get(2)));
+        new OrchestrationPrompt(multiMessage.addText(questions.get(1), questions.get(2)));
     return client.chatCompletion(prompt, config);
   }
 

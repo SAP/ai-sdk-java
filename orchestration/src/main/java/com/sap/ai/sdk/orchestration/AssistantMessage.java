@@ -1,8 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
-import java.util.List;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -32,17 +29,4 @@ public class AssistantMessage implements Message {
   public AssistantMessage(MessageContentSingle messageContent) {
     content = messageContent;
   }
-
-//  TODO: Do we need addText() for AssistantMessage?
-//  @Nonnull
-//  public SystemMessage addTextMessages(@Nonnull String... messages) {
-//    return new SystemMessage(
-//        new MessageContentMulti(
-//            Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));
-//  }
-//  @Nonnull
-//  public AssistantMessage addTextMessages(@Nonnull String... messages) {
-//    return ((AssistantMessage) Message.addTextMessages(content, role, messages));
-//  }
-
 }

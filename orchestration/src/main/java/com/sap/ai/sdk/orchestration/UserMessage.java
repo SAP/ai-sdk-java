@@ -39,7 +39,7 @@ public class UserMessage implements Message {
   }
 
   @Nonnull
-  public UserMessage addTextMessages(@Nonnull String... messages) {
+  public UserMessage addText(@Nonnull String... messages) {
     return new UserMessage(
         new MessageContentMulti(
             Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));
