@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.MessageContent;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -69,11 +70,10 @@ class OrchestrationController {
     var messages = response.getAllMessages();
     for (Message m : messages) {
       String role = m.role();
-      String content = m.content();
+      String content = MessageContent.toString((MessageContent) m.content());
       strBuilder.append("[%s] %s%n".formatted(role, content));
     }
     return ResponseEntity.ok(strBuilder.toString());
-    //    return ResponseEntity.ok(response.getContent());
   }
 
   @GetMapping("/multiString")
@@ -94,7 +94,7 @@ class OrchestrationController {
     var messages = response.getAllMessages();
     for (Message m : messages) {
       String role = m.role();
-      String content = m.content();
+      String content = MessageContent.toString((MessageContent) m.content());
       strBuilder.append("[%s] %s%n".formatted(role, content));
     }
     return ResponseEntity.ok(strBuilder.toString());

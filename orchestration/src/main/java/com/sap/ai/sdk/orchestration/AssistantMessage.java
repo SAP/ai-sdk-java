@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -15,42 +16,33 @@ public class AssistantMessage implements Message {
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  MessageContent content;
-
   @Nonnull
-  @Override
-  public String content() {
-    return MessageContent.toString(content);
-  }
+  MessageContentSingle content;
 
   @Override
   @Nonnull
-  public MessageContent getContent() {
-    return content != null ? content : new MessageContentSingle("");
+  public MessageContent content() {
+    return content;
   }
 
   public AssistantMessage(String singleMessage) {
     content = new MessageContentSingle(singleMessage);
   }
 
-  public AssistantMessage(MessageContent messageContent) {
+  public AssistantMessage(MessageContentSingle messageContent) {
     content = messageContent;
   }
 
-  public AssistantMessage(List<MultiChatMessageContent> multiChatMessageContentList) {
-    content =
-        new MessageContentMulti(
-            multiChatMessageContentList.toArray(MultiChatMessageContent[]::new));
-  }
+//  TODO: Do we need addText() for AssistantMessage?
+//  @Nonnull
+//  public SystemMessage addTextMessages(@Nonnull String... messages) {
+//    return new SystemMessage(
+//        new MessageContentMulti(
+//            Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));
+//  }
+//  @Nonnull
+//  public AssistantMessage addTextMessages(@Nonnull String... messages) {
+//    return ((AssistantMessage) Message.addTextMessages(content, role, messages));
+//  }
 
-  @Nonnull
-  public AssistantMessage addTextMessages(@Nonnull String... messages) {
-    return ((AssistantMessage) Message.addTextMessages(content, role, messages));
-  }
-
-  @Nonnull
-  public AssistantMessage addImage(
-      @Nonnull String imageUrl, MultiMessageImageContent.DetailLevel detailLevel) {
-    return ((AssistantMessage) Message.addImage(content, role, imageUrl, detailLevel));
-  }
 }

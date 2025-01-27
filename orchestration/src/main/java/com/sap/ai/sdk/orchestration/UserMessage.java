@@ -2,33 +2,26 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
 /** Represents a chat message as 'user' to the orchestration service. */
 @Value
 @Accessors(fluent = true)
-@NoArgsConstructor(force = true)
 public class UserMessage implements Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "user";
 
   /** The content of the message. */
-  MessageContent content;
-
-  @Nonnull
-  @Override
-  public String content() {
-    return MessageContent.toString(content);
-  }
+  @Nonnull MessageContent content;
 
   @Override
   @Nonnull
-  public MessageContent getContent() {
-    return content != null ? content : new MessageContentSingle("");
+  public MessageContent content() {
+    return content;
   }
 
   public UserMessage(String singleMessage) {
@@ -47,12 +40,16 @@ public class UserMessage implements Message {
 
   @Nonnull
   public UserMessage addTextMessages(@Nonnull String... messages) {
-    return ((UserMessage) Message.addTextMessages(content, role, messages));
+    return new UserMessage(
+        new MessageContentMulti(
+            Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));
   }
 
   @Nonnull
   public UserMessage addImage(
       @Nonnull String imageUrl, MultiMessageImageContent.DetailLevel detailLevel) {
-    return ((UserMessage) Message.addImage(content, role, imageUrl, detailLevel));
+    return new UserMessage(
+        new MessageContentMulti(
+            List.of(new MultiMessageImageContent(imageUrl, detailLevel)), content));
   }
 }

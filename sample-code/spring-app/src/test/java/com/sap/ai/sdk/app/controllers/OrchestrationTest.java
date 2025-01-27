@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.MessageContentSingle;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
@@ -66,7 +67,7 @@ class OrchestrationTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
-    assertThat(result.getAllMessages().get(0).content())
+    assertThat(((MessageContentSingle) result.getAllMessages().get(0).content()).content())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();

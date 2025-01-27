@@ -179,12 +179,12 @@ class OrchestrationUnitTest {
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     final var messageList = result.getAllMessages();
 
-    assertThat(messageList.get(0).content()).isEqualTo("You are a multi language translator");
+    assertThat(((MessageContentSingle) messageList.get(0).content()).content()).isEqualTo("You are a multi language translator");
     assertThat(messageList.get(0).role()).isEqualTo("system");
-    assertThat(messageList.get(1).content())
+    assertThat(((MessageContentSingle) messageList.get(1).content()).content())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(messageList.get(1).role()).isEqualTo("user");
-    assertThat(messageList.get(2).content()).isEqualTo("Orchestration Service funktioniert!");
+    assertThat(((MessageContentSingle) messageList.get(2).content()).content()).isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
@@ -812,7 +812,7 @@ class OrchestrationUnitTest {
                             .llmModuleConfig(llmWithImageSupportConfig)
                             .templatingModuleConfig(templatingModuleConfig)));
 
-    var multiMessage = new UserMessage().addTextMessages("Message 1", "Message 2");
+    var multiMessage = new UserMessage("Message 1").addTextMessages("Message 2");
     var multiPrompt = new OrchestrationPrompt(multiMessage);
     var response = client.chatCompletion(multiPrompt, config);
 
@@ -820,7 +820,7 @@ class OrchestrationUnitTest {
     var messages = response.getAllMessages();
     for (Message m : messages) {
       String role = m.role();
-      Object content = m.content();
+      String content = MessageContent.toString((MessageContent) m.content());
       strBuilder.append("[%s] %s%n".formatted(role, content));
     }
     assertThat(strBuilder.toString())
