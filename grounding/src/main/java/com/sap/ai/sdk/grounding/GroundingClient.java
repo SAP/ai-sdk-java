@@ -1,52 +1,33 @@
 package com.sap.ai.sdk.grounding;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
-import com.sap.ai.sdk.core.common.ClientResponseHandler;
-import com.sap.ai.sdk.core.common.ClientStreamingHandler;
-import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiError;
+import com.sap.ai.sdk.grounding.api.PipelinesApi;
 import com.sap.ai.sdk.grounding.api.VectorApi;
-import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import com.sap.ai.sdk.grounding.api.RetrievalApi;
+import com.sap.ai.sdk.grounding.model.Collection;
+import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
+import com.sap.ai.sdk.grounding.model.DataRepositories;
+import com.sap.ai.sdk.grounding.model.DataRepository;
+import com.sap.ai.sdk.grounding.model.DocumentResponse;
+import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
+import com.sap.ai.sdk.grounding.model.Documents;
+import com.sap.ai.sdk.grounding.model.Pipeline;
+import com.sap.ai.sdk.grounding.model.Pipelines;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.stream.Stream;
-
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 /** Client for interacting with OpenAI models. */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GroundingClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  static final ObjectMapper JACKSON = getDefaultObjectMapper();
-  @Nullable private String systemPrompt = null;
-
-  @Nonnull private final Destination destination;
+  //static final ObjectMapper JACKSON = getDefaultObjectMapper();
+  // @Nonnull private final Destination destination;
 
   /**
    * Create a new OpenAI client for the given foundation model, using the default resource group.
@@ -57,261 +38,45 @@ public final class GroundingClient {
    *     default resource group.
    */
   @Nonnull
-  public static GroundingClient forModel(@Nonnull final OpenAiModel foundationModel)
+  public static void main(String[] args)
       throws DeploymentResolutionException {
+    String RESOURCE_GROUP = "default";
 
     ApiClient apiClient = new AiCoreService().getApiClient();
     apiClient.setBasePath(apiClient.getBasePath()+"lm/document-grounding/");
+
+
+    PipelinesApi pipelinesApi = new PipelinesApi(apiClient);
+    Pipelines allPipelines = pipelinesApi.getAllPipelines(RESOURCE_GROUP, 10, 0, true);
+    for (Pipeline pipeline : allPipelines.getResources()) {
+      System.out.println(pipeline);
+    }
+
+    RetrievalApi retrievalApi = new RetrievalApi(apiClient);
+    DataRepositories repositories = retrievalApi.getDataRepositories(RESOURCE_GROUP);
+    for (DataRepository repository : repositories.getResources()) {
+      System.out.println(repository);
+      DataRepository repoById = retrievalApi.getDataRepositoryById(RESOURCE_GROUP, repository.getId());
+      System.out.println(repoById);
+    }
+    System.out.println(repositories);
+
+
     VectorApi vectorApi = new VectorApi(apiClient);
+    CollectionsListResponse allCollections = vectorApi.getAllCollections(RESOURCE_GROUP);
+    for (Collection documentCollection : allCollections.getResources()) {
+      System.out.println(documentCollection);
+      Documents documents = vectorApi.getAllDocuments(RESOURCE_GROUP, documentCollection.getId(), 10, 0, true);
+      System.out.println(documents);
+      System.out.println();
 
-    final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
-
-    final var client = new GroundingClient(destination);
-    return client.withApiVersion(DEFAULT_API_VERSION);
-  }
-
-  /**
-   * Create a new OpenAI client targeting the specified API version.
-   *
-   * @param apiVersion the API version to target.
-   * @return a new client.
-   */
-  @Beta
-  @Nonnull
-  public GroundingClient withApiVersion(@Nonnull final String apiVersion) {
-    final var newDestination =
-        DefaultHttpDestination.fromDestination(this.destination)
-            // set the API version as URL query parameter
-            .property("URL.queries.api-version", apiVersion)
-            .build();
-    return new GroundingClient(newDestination);
-  }
-
-  /**
-   * Create a new OpenAI client with a custom destination, allowing for a custom resource group or
-   * otherwise custom destination. The destination needs to be configured with a URL pointing to an
-   * OpenAI model deployment. Typically, such a destination should be obtained using {@link
-   * AiCoreService#getInferenceDestination(String)}.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * var destination = new AiCoreService().getInferenceDestination("custom-rg").forModel(GPT_4O);
-   * OpenAiClient.withCustomDestination(destination);
-   * }</pre>
-   *
-   * @param destination The specific {@link HttpDestination} to use.
-   * @see AiCoreService#getInferenceDestination(String)
-   */
-  @Beta
-  @Nonnull
-  public static GroundingClient withCustomDestination(@Nonnull final Destination destination) {
-    final GroundingClient client = new GroundingClient(destination);
-
-    if (destination.get("URL.queries.api-version").isDefined()) {
-      return client;
+      for (DocumentWithoutChunks aDefault1Resource : documents.getResources()) {
+        DocumentResponse document = vectorApi.getDocumentById(RESOURCE_GROUP, documentCollection.getId(), aDefault1Resource.getId());
+        System.out.println(document);
+        System.out.println();
+      }
     }
+    System.out.println(allCollections);
 
-    return client.withApiVersion(DEFAULT_API_VERSION);
-  }
-
-  /**
-   * Add a system prompt before user prompts.
-   *
-   * @param systemPrompt the system prompt
-   * @return the client
-   */
-  @Nonnull
-  public GroundingClient withSystemPrompt(@Nonnull final String systemPrompt) {
-    this.systemPrompt = systemPrompt;
-    return this;
-  }
-
-  /**
-   * Generate a completion for the given user prompt.
-   *
-   * @param prompt a text message.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   */
-  @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
-      throws OpenAiClientException {
-    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
-    if (systemPrompt != null) {
-      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
-    }
-    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
-    return chatCompletion(parameters);
-  }
-
-  /**
-   * Generate a completion for the given prompt.
-   *
-   * @param parameters the prompt, including messages and other parameters.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   */
-  @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
-  }
-
-  /**
-   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of text
-   * chunks. To access more details about the individual chunks, use {@link
-   * #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
-   *
-   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
-   * HTTP connection is closed.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * try (var stream = client.streamChatCompletion("...")) {
-   *       stream.forEach(System.out::println);
-   * }
-   * }</pre>
-   *
-   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
-   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
-   * Stream#parallel()} on this stream is not supported.
-   *
-   * @param prompt a text message.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @see #streamChatCompletionDeltas(OpenAiChatCompletionParameters)
-   */
-  @Nonnull
-  public Stream<String> streamChatCompletion(@Nonnull final String prompt)
-      throws OpenAiClientException {
-    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
-    if (systemPrompt != null) {
-      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
-    }
-    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
-    return streamChatCompletionDeltas(parameters)
-        .peek(GroundingClient::throwOnContentFilter)
-        .map(OpenAiChatCompletionDelta::getDeltaContent);
-  }
-
-  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
-    final String finishReason = delta.getFinishReason();
-    if (finishReason != null && finishReason.equals("content_filter")) {
-      throw new OpenAiClientException("Content filter filtered the output.");
-    }
-  }
-
-  /**
-   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of delta
-   * objects. To simply stream the text chunks use {@link #streamChatCompletion(String)}
-   *
-   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
-   * HTTP connection is closed.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * try (var stream = client.streamChatCompletionDeltas(params)) {
-   *       stream
-   *           .peek(delta -> System.out.println(delta.getUsage()))
-   *           .map(OpenAiChatCompletionDelta::getDeltaContent)
-   *           .forEach(System.out::println);
-   * }
-   * }</pre>
-   *
-   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
-   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
-   * Stream#parallel()} on this stream is not supported.
-   *
-   * @param parameters The prompt, including messages and other parameters.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @see #streamChatCompletion(String)
-   */
-  @Nonnull
-  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    parameters.enableStreaming();
-    return executeStream("/chat/completions", parameters, OpenAiChatCompletionDelta.class);
-  }
-
-  private void warnIfUnsupportedUsage() {
-    if (systemPrompt != null) {
-      log.warn(
-          "Previously set messages will be ignored, set it as an argument of this method instead.");
-    }
-  }
-
-  /**
-   * Get a vector representation of a given input that can be easily consumed by machine learning
-   * models and algorithms.
-   *
-   * @param parameters the input text.
-   * @return the embedding output
-   * @throws OpenAiClientException if the request fails
-   */
-  @Nonnull
-  public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
-      throws OpenAiClientException {
-    return execute("/embeddings", parameters, OpenAiEmbeddingOutput.class);
-  }
-
-  @Nonnull
-  private <T> T execute(
-      @Nonnull final String path,
-      @Nonnull final Object payload,
-      @Nonnull final Class<T> responseType) {
-    final var request = new HttpPost(path);
-    serializeAndSetHttpEntity(request, payload);
-    return executeRequest(request, responseType);
-  }
-
-  @Nonnull
-  private <D extends StreamedDelta> Stream<D> executeStream(
-      @Nonnull final String path,
-      @Nonnull final Object payload,
-      @Nonnull final Class<D> deltaType) {
-    final var request = new HttpPost(path);
-    serializeAndSetHttpEntity(request, payload);
-    return streamRequest(request, deltaType);
-  }
-
-  private static void serializeAndSetHttpEntity(
-      @Nonnull final BasicClassicHttpRequest request, @Nonnull final Object payload) {
-    try {
-      final var json = JACKSON.writeValueAsString(payload);
-      request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-    } catch (final JsonProcessingException e) {
-      throw new OpenAiClientException("Failed to serialize request parameters", e);
-    }
-  }
-
-  @Nonnull
-  private <T> T executeRequest(
-      final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
-    try {
-      final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return client.execute(
-          request,
-          new ClientResponseHandler<>(responseType, OpenAiError.class, OpenAiClientException::new));
-    } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed", e);
-    }
-  }
-
-  @Nonnull
-  private <D extends StreamedDelta> Stream<D> streamRequest(
-      final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
-    try {
-      final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return new ClientStreamingHandler<>(deltaType, OpenAiError.class, OpenAiClientException::new)
-          .handleStreamingResponse(client.executeOpen(null, request, null));
-    } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed", e);
-    }
   }
 }
