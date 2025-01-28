@@ -118,10 +118,6 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-    </dependency>
     <!-- scope "runtime" -->
     <dependency>
       <groupId>ch.qos.logback</groupId>

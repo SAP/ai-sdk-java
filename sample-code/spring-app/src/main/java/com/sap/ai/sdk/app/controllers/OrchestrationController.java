@@ -29,7 +29,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 class OrchestrationController {
   @Autowired private OrchestrationService service;
 
-  /** Chat request to an LLM through the Orchestration service with a simple prompt. */
   @GetMapping("/completion")
   Object completion(@Nullable @RequestParam(value = "view", required = false) final String view) {
     final var response = service.completion("HelloWorld!");
@@ -39,11 +38,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Asynchronous stream of an LLM chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
   @GetMapping("/streamChatCompletion")
   ResponseEntity<ResponseBodyEmitter> streamChatCompletion() {
     final var stream = service.streamChatCompletion("developing a software project");
@@ -67,12 +61,6 @@ class OrchestrationController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  /**
-   * Chat request to an LLM through the Orchestration service with a template.
-   *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
-   *     AI Core: Orchestration - Templating</a>
-   */
   @GetMapping("/template")
   Object template(@Nullable @RequestParam(value = "view", required = false) final String view) {
     final var response = service.template("German");
@@ -82,7 +70,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /** Chat request to an LLM through the Orchestration service using message history. */
   @GetMapping("/messagesHistory")
   @Nonnull
   Object messagesHistory(
@@ -94,19 +81,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Send an HTTP GET request for input filtering to the Orchestration service.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
-   *     * AI Core: Orchestration - Input Filtering</a>
-   * @param view an optional HTTP header specifying the desired content type for the response.
-   * @param policy path variable specifying the {@link AzureFilterThreshold} the explicitness of
-   *     content that should be allowed through the filter
-   * @return a {@link ResponseEntity} containing the filtered input. The response is either in JSON
-   *     format if the "accept" header specifies "application/json" or in plain content format
-   *     otherwise.
-   */
   @GetMapping("/inputFiltering/{policy}")
   @Nonnull
   Object inputFiltering(
@@ -128,19 +102,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Send an HTTP GET request for output filtering to the Orchestration service.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
-   *     AI Core: Orchestration - Output Filtering</a>
-   * @param view an optional HTTP header specifying the desired content type for the response.
-   * @param policy a mandatory path variable specifying the {@link AzureFilterThreshold} the
-   *     explicitness of content that should be allowed through the filter
-   * @return a {@link ResponseEntity} containing the filtered output. The response is either in JSON
-   *     format if the "accept" header specifies "application/json" or in plain content format
-   *     otherwise.
-   */
   @GetMapping("/outputFiltering/{policy}")
   @Nonnull
   Object outputFiltering(
@@ -162,15 +123,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
-   * user. Anonymize any names given as they are not relevant for judging the sentiment of the
-   * feedback.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-   *     Core: Orchestration - Data Masking</a>
-   */
   @GetMapping("/maskingAnonymization")
   @Nonnull
   Object maskingAnonymization(
@@ -182,9 +134,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Chat request to an LLM through the Orchestration deployment under a specific resource group.
-   */
   @GetMapping("/completion/{resourceGroup}")
   @Nonnull
   Object completionWithResourceGroup(
@@ -197,14 +146,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
-   * SDK. Pseudonymize the user's name and location to protect their privacy.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-   *     Core: Orchestration - Data Masking</a>
-   */
   @GetMapping("/maskingPseudonymization")
   @Nonnull
   Object maskingPseudonymization(
@@ -216,12 +157,6 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  /**
-   * Using grounding to provide additional context to the AI model.
-   *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
-   *     AI Core: Orchestration - Grounding</a>
-   */
   @GetMapping("/grounding")
   @Nonnull
   Object grounding(@Nullable @RequestParam(value = "view", required = false) final String view) {

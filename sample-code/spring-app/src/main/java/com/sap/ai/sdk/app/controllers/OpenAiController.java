@@ -26,7 +26,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 public class OpenAiController {
   @Autowired private OpenAiService service;
 
-  /** Chat request to OpenAI */
   @GetMapping("/chatCompletion")
   @Nonnull
   Object chatCompletion(
@@ -38,7 +37,6 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  /** Asynchronous stream of an OpenAI chat request */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
@@ -65,7 +63,6 @@ public class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  /** Asynchronous stream of an OpenAI chat request */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
@@ -117,7 +114,6 @@ public class OpenAiController {
     }
   }
 
-  /** Chat request to OpenAI with an image */
   @GetMapping("/chatCompletionImage")
   @Nonnull
   Object chatCompletionImage(
@@ -131,7 +127,6 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  /** Chat request to OpenAI with a tool. */
   @GetMapping("/chatCompletionTool")
   @Nonnull
   Object chatCompletionTools(
@@ -144,14 +139,12 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  /** Get the embedding of a text */
   @GetMapping("/embedding")
   @Nonnull
   Object embedding() {
     return service.embedding("Hello world");
   }
 
-  /** Chat request to OpenAI filtering by resource group */
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   Object chatCompletionWithResource(
