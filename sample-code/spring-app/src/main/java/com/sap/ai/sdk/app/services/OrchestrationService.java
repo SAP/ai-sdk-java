@@ -59,7 +59,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
     var multiMessage =
-        new UserMessage("What is in this image?")
+        Message.user("What is in this image?")
             .addImage(pathToImage, MultiMessageImageContent.DetailLevel.low);
     var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
@@ -72,9 +72,8 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
-    var multiMessage = new UserMessage(questions.get(0));
-    var prompt =
-        new OrchestrationPrompt(multiMessage.addText(questions.get(1), questions.get(2)));
+    var multiMessage = Message.user(questions.get(0));
+    var prompt = new OrchestrationPrompt(multiMessage.addText(questions.get(1), questions.get(2)));
     return client.chatCompletion(prompt, config);
   }
 
