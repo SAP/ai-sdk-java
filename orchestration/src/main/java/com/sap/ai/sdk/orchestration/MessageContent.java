@@ -1,29 +1,73 @@
 package com.sap.ai.sdk.orchestration;
 
-public sealed interface MessageContent permits MessageContentSingle, MessageContentMulti {
+import com.sap.ai.sdk.orchestration.model.ImageContent;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 
-  static String toString(MessageContent content) {
-    if (content instanceof MessageContentSingle mCSingle) {
-      return mCSingle.content();
-    } else if (content instanceof MessageContentMulti mCMulti) {
-      var strBuilder = new StringBuilder();
-      mCMulti
-          .multiContentList()
-          .forEach(
-              multiContent -> {
-                if (multiContent instanceof MultiMessageTextContent mMText) {
-                  strBuilder.append(mMText.text()).append("; ");
-                } else if (multiContent instanceof MultiMessageImageContent mMImage) {
-                  strBuilder.append(mMImage.imageUrl());
-                } else {
-                  throw new IllegalArgumentException(
-                      "Unknown subtype of MultiChatMessageContent: " + multiContent.getClass());
-                }
-              });
-      return strBuilder.toString();
-    } else {
-      throw new IllegalArgumentException(
-          "Unknown subtype of MessageContent: " + content.getClass());
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
+public record MessageContent(List<ContentItem> contentItemList) {
+
+  public static String toString(MessageContent content) {
+    var strBuilder = new StringBuilder();
+    content.contentItemList.forEach(
+        multiContent -> {
+          if (multiContent instanceof TextItem mMText) {
+            strBuilder.append(mMText.text()).append("; ");
+          } else if (multiContent instanceof ImageItem mMImage) {
+            strBuilder.append(mMImage.imageUrl());
+          } else {
+            throw new IllegalArgumentException(
+                "Unknown subtype of MultiChatMessageContent: " + multiContent.getClass());
+          }
+        });
+    return strBuilder.toString();
+  }
+
+  MessageContent(String singleMessage) {
+    this(List.of(new TextItem(singleMessage)));
+  }
+
+  public MessageContent(MultiChatMessageContent... multiChatContents) {
+    this(convertIntoMultiMessageList(multiChatContents));
+  }
+
+  private static List<ContentItem> convertIntoMultiMessageList(
+      MultiChatMessageContent... multiChatContents) {
+    List<ContentItem> multiContentList = new java.util.ArrayList<>(List.of());
+    for (MultiChatMessageContent multiChatContent : multiChatContents) {
+      if (multiChatContent instanceof TextContent textContent) {
+        multiContentList.add(new TextItem(textContent.getText()));
+      } else if (multiChatContent instanceof ImageContent imageContent) {
+        var imageUrl = imageContent.getImageUrl();
+        multiContentList.add(
+            new ImageItem(
+                imageUrl.getUrl(), ImageItem.DetailLevel.fromString(imageUrl.getDetail())));
+      } else {
+        throw new IllegalArgumentException(
+            "Unknown subtype of MultiChatMessageContent: " + multiChatContent.getClass());
+      }
     }
+    return multiContentList;
+  }
+
+  MessageContent(
+      @Nonnull List<? extends ContentItem> newContent,
+      @Nullable MessageContent oldContent) {
+    this(mergeContent(newContent, oldContent));
+  }
+
+  private static List<ContentItem> mergeContent(
+      @Nonnull List<? extends ContentItem> newContent,
+      @Nullable MessageContent oldContent) {
+    var multiContentList = new ArrayList<ContentItem>();
+    if (oldContent != null) {
+      multiContentList.addAll(oldContent.contentItemList);
+    }
+    multiContentList.addAll(newContent);
+    return multiContentList;
   }
 }

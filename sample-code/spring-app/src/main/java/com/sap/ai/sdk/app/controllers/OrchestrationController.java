@@ -70,7 +70,7 @@ class OrchestrationController {
     var messages = response.getAllMessages();
     for (Message m : messages) {
       String role = m.role();
-      String content = MessageContent.toString((MessageContent) m.content());
+      String content = MessageContent.toString( m.content());
       strBuilder.append("[%s] %s%n".formatted(role, content));
     }
     return ResponseEntity.ok(strBuilder.toString());

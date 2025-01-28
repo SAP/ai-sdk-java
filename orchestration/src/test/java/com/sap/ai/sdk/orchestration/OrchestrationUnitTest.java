@@ -179,13 +179,13 @@ class OrchestrationUnitTest {
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     final var messageList = result.getAllMessages();
 
-    assertThat(((MessageContentSingle) messageList.get(0).content()).content())
+    assertThat(((TextItem) messageList.get(0).content().contentItemList().get(0)).text())
         .isEqualTo("You are a multi language translator");
     assertThat(messageList.get(0).role()).isEqualTo("system");
-    assertThat(((MessageContentSingle) messageList.get(1).content()).content())
+    assertThat(((TextItem) messageList.get(1).content().contentItemList().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(messageList.get(1).role()).isEqualTo("user");
-    assertThat(((MessageContentSingle) messageList.get(2).content()).content())
+    assertThat(((TextItem) messageList.get(2).content().contentItemList().get(0)).text())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
@@ -822,14 +822,14 @@ class OrchestrationUnitTest {
     var messages = response.getAllMessages();
     for (Message m : messages) {
       String role = m.role();
-      String content = MessageContent.toString((MessageContent) m.content());
+      String content = MessageContent.toString(m.content());
       strBuilder.append("[%s] %s%n".formatted(role, content));
     }
     assertThat(strBuilder.toString())
         .isEqualTo(
             """
                 [user] Can you solve this captcha? Please help me prove my humanity!; https://sample.sap.com/image
-                [assistant] Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix
+                [assistant] Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix;\s
                 """);
   }
 }

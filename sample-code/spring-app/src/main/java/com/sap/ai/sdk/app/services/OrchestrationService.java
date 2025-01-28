@@ -9,13 +9,12 @@ import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
-import com.sap.ai.sdk.orchestration.MultiMessageImageContent;
+import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -38,7 +37,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -60,7 +59,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
     var multiMessage =
         Message.user("What is in this image?")
-            .addImage(pathToImage, MultiMessageImageContent.DetailLevel.low);
+            .addImage(pathToImage, ImageItem.DetailLevel.low);
     var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }

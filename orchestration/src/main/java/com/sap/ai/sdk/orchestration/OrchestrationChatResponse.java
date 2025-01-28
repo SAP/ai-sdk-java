@@ -80,11 +80,11 @@ public class OrchestrationChatResponse {
             switch (mCMessage.getRole()) {
               case "user" ->
                   Message.user(
-                      new MessageContentMulti(
+                      new MessageContent(
                           mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
               case "system" ->
                   Message.system(
-                      new MessageContentMulti(
+                      new MessageContent(
                           mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
               default ->
                   throw new IllegalArgumentException(

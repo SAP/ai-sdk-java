@@ -23,28 +23,26 @@ public class SystemMessage implements Message {
   }
 
   public SystemMessage(String singleMessage) {
-    content = new MessageContentSingle(singleMessage);
+    content = new MessageContent(singleMessage);
   }
 
   SystemMessage(MessageContent messageContent) {
-    if (!(messageContent instanceof MessageContentSingle)) {
-      ((MessageContentMulti) messageContent)
-          .multiContentList().stream()
-              .filter(mCMC -> !(mCMC instanceof MultiMessageTextContent))
+      messageContent
+          .contentItemList().stream()
+              .filter(contentItem -> !(contentItem instanceof TextItem))
               .findAny()
               .ifPresent(
                   mCMC -> {
                     throw new IllegalArgumentException(
                         "Only TextContent is supported for SystemMessage");
                   });
-    }
     content = messageContent;
   }
 
   @Nonnull
   public SystemMessage addText(@Nonnull String... messages) {
     return new SystemMessage(
-        new MessageContentMulti(
-            Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));
+        new MessageContent(
+            Stream.of(messages).map(TextItem::new).toList(), content));
   }
 }

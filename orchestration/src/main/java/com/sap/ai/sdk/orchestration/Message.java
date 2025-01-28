@@ -74,38 +74,30 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   default ChatMessagesInner createChatMessage() {
-    if (this.content() instanceof MessageContentSingle) {
-      return ChatMessage.create()
-          .role(role())
-          .content(((MessageContentSingle) content()).content());
-    } else if (this.content() instanceof MessageContentMulti mCMulti) {
+    var itemList = this.content().contentItemList();
+    if (itemList.size() == 1 && itemList.get(0) instanceof TextItem textItem) {
+      return ChatMessage.create().role(role()).content(textItem.text());
+    } else {
       return MultiChatMessage.create()
           .role(role())
           .content(
-              mCMulti.multiContentList().stream()
+              itemList.stream()
                   .map(
-                      multiMessageContent -> {
-                        if (multiMessageContent instanceof MultiMessageTextContent mMTContent) {
-                          return TextContent.create()
-                              .type(TextContent.TypeEnum.TEXT)
-                              .text(mMTContent.text());
-                        } else if (multiMessageContent
-                            instanceof MultiMessageImageContent mMIContent) {
+                      contentItem -> {
+                        if (contentItem instanceof ImageItem imageItem) {
                           return ImageContent.create()
                               .type(ImageContent.TypeEnum.IMAGE_URL)
                               .imageUrl(
                                   ImageContentImageUrl.create()
-                                      .url(mMIContent.imageUrl())
-                                      .detail(mMIContent.detailLevel().toString()));
+                                      .url(imageItem.imageUrl())
+                                      .detail(imageItem.detailLevel().toString()));
                         } else {
-                          throw new IllegalArgumentException(
-                              "Unknown subtype of MultiMessageContent: "
-                                  + multiMessageContent.getClass());
+                          return TextContent.create()
+                              .type(TextContent.TypeEnum.TEXT)
+                              .text(((TextItem) contentItem).text());
                         }
                       })
                   .toList());
-    } else {
-      throw new IllegalArgumentException("Unknown content type: " + this.content().getClass());
     }
   }
 
@@ -124,5 +116,5 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   @Beta
-  Object content();
+  MessageContent content();
 }

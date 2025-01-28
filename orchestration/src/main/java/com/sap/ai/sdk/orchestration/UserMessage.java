@@ -24,7 +24,7 @@ public class UserMessage implements Message {
   }
 
   public UserMessage(String singleMessage) {
-    content = new MessageContentSingle(singleMessage);
+    content = new MessageContent(singleMessage);
   }
 
   UserMessage(MessageContent messageContent) {
@@ -34,15 +34,15 @@ public class UserMessage implements Message {
   @Nonnull
   public UserMessage addText(@Nonnull String... messages) {
     return new UserMessage(
-        new MessageContentMulti(
-            Stream.of(messages).map(MultiMessageTextContent::new).toList(), content));
+        new MessageContent(
+            Stream.of(messages).map(TextItem::new).toList(), content));
   }
 
   @Nonnull
   public UserMessage addImage(
-      @Nonnull String imageUrl, MultiMessageImageContent.DetailLevel detailLevel) {
+      @Nonnull String imageUrl, ImageItem.DetailLevel detailLevel) {
     return new UserMessage(
-        new MessageContentMulti(
-            List.of(new MultiMessageImageContent(imageUrl, detailLevel)), content));
+        new MessageContent(
+            List.of(new ImageItem(imageUrl, detailLevel)), content));
   }
 }

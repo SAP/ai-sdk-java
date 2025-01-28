@@ -13,7 +13,7 @@ public class AssistantMessage implements Message {
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull MessageContentSingle content;
+  @Nonnull MessageContent content;
 
   @Override
   @Nonnull
@@ -22,6 +22,6 @@ public class AssistantMessage implements Message {
   }
 
   public AssistantMessage(String singleMessage) {
-    content = new MessageContentSingle(singleMessage);
+    content = new MessageContent(singleMessage);
   }
 }
