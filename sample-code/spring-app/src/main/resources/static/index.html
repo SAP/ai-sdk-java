@@ -17,6 +17,7 @@
         code {
             font-family: Courier, monospace;
             font-size: 95%;
+            color: #0d6efd;
             padding: 0.2em;
             padding-left: 0.4em;
             padding-right: 0.4em;
@@ -65,11 +66,27 @@
             justify-content: center;
             flex: 1;
         }
+        .endpoint {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            text-decoration: underline;
+            cursor: pointer;
+            text-align: left;
+        }
+        #content-container pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 500px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
 
 <!-- API endpoints in containers -->
+<form method="get" action="" id="endpoint-form">
 <div class="container-fluid py-4">
     <div class="d-flex align-items-center mb-4 justify-content-center">
         <img src="AI-SDK-Logo.svg" alt="AI SDK Logo" width="50" class="me-3">
@@ -88,8 +105,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete"><code>/deployments/by-config/[...]/createDelete</code></a>
+                                <button type="submit" formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/deployments/by-config/[...]/createDelete</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Create and delete a deployment with the Java specific configuration ID.
                                 </div>
@@ -97,8 +115,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop"><code>/deployments/by-config/[...]/stop</code></a>
+                                <button type="submit" formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/deployments/by-config/[...]/stop</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Stop all deployments with the Java specific configuration ID. Only RUNNING deployments can be STOPPED.
                                 </div>
@@ -106,8 +125,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/delete"><code>/deployments/by-config/[...]/delete</code></a>
+                                <button type="submit" formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/delete" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/deployments/by-config/[...]/delete</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Delete all deployments with the Java specific configuration ID. Only UNKNOWN and STOPPED deployments can be DELETED
                                 </div>
@@ -115,8 +135,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll"><code>/deployments/by-config/[...]/getAll</code></a>
+                                <button type="submit" formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/deployments/by-config/[...]/getAll</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Get all deployments with the Java specific configuration ID.
                                 </div>
@@ -128,8 +149,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/deployments/getAll"><code>/deployments/getAll</code></a>
+                                <button type="submit" formaction="/deployments/getAll" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/deployments/getAll</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Get all deployments, including non-Java specific deployments.
                                 </div>
@@ -141,8 +163,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/scenarios"><code>/scenarios</code></a>
+                                <button type="submit" formaction="/scenarios" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/scenarios</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Get the list of available scenarios.
                                 </div>
@@ -150,8 +173,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/models"><code>/models</code></a>
+                                <button type="submit" formaction="/models" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/models</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Get the list of available models.
                                 </div>
@@ -163,8 +187,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/configurations"><code>/configurations</code></a>
+                                <button type="submit" formaction="/configurations" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/configurations</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Get the list of configurations.
                                 </div>
@@ -189,8 +214,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/completion"><code>/orchestration/completion</code></a>
+                                <button type="submit" formaction="/orchestration/completion" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/completion</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to an LLM through the Orchestration service with a simple prompt.
                                 </div>
@@ -198,8 +224,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/streamChatCompletion"><code>/orchestration/streamChatCompletion</code></a>
+                                <button type="submit" formaction="/orchestration/streamChatCompletion" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/streamChatCompletion</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Asynchronous stream of an LLM chat request.
                                 </div>
@@ -207,8 +234,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/template"><code>/orchestration/template</code></a>
+                                <button type="submit" formaction="/orchestration/template" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/template</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to an LLM through the Orchestration service with a template.
                                 </div>
@@ -216,8 +244,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/messagesHistory"><code>/orchestration/messageHistory</code></a>
+                                <button type="submit" formaction="/orchestration/messagesHistory" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/messageHistory</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to an LLM through the Orchestration service using message history.
                                 </div>
@@ -226,8 +255,9 @@
 
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/inputFiltering/ALLOW_ALL"><code>/orchestration/inputFiltering/ALLOW_ALL</code></a>
+                                <button type="submit" formaction="/orchestration/inputFiltering/ALLOW_ALL" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/inputFiltering/ALLOW_ALL</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Apply lenient input filtering for a request to orchestration.
                                 </div>
@@ -235,8 +265,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/outputFiltering/ALLOW_ALL"><code>/orchestration/outputFiltering/ALLOW_ALL</code></a>
+                                <button type="submit" formaction="/orchestration/outputFiltering/ALLOW_ALL" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/outputFiltering/ALLOW_ALL</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Apply lenient output filtering for a request to orchestration.
                                 </div>
@@ -244,8 +275,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/maskingAnonymization"><code>/orchestration/maskingAnonymization</code></a>
+                                <button type="submit" formaction="/orchestration/maskingAnonymization" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/maskingAnonymization</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
                                     user. Anonymize any names given as they are not relevant for judging the sentiment of the
@@ -255,8 +287,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/maskingPseudonymization"><code>/orchestration/maskingPseudonymization</code></a>
+                                <button type="submit" formaction="/orchestration/maskingPseudonymization" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/maskingPseudonymization</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Let the orchestration service a response to a hypothetical user who provided feedback on the AI
                                     SDK. Pseudonymize the user's name and location to protect their privacy.
@@ -265,10 +298,11 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/orchestration/grounding"><code>/orchestration/grounding</code></a>
+                                <button type="submit" formaction="/orchestration/grounding" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/orchestration/grounding</code>
+                                </button>
                                 <div class="tooltip-content">
-                                   Using grounding to provide additional context to the AI model.
+                                    Using grounding to provide additional context to the AI model.
                                 </div>
                             </div>
                         </li>
@@ -292,8 +326,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/chatCompletion"><code>/chatCompletion</code></a>
+                                <button type="submit" formaction="/chatCompletion" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/chatCompletion</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to OpenAI.
                                 </div>
@@ -301,8 +336,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/streamChatCompletion"><code>/streamChatCompletion</code></a>
+                                <button type="submit" formaction="/streamChatCompletion" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/streamChatCompletion</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Asynchronous stream of an OpenAI chat request.
                                 </div>
@@ -310,8 +346,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/streamChatCompletionDeltas"><code>/streamChatCompletionDeltas</code></a>
+                                <button type="submit" formaction="/streamChatCompletionDeltas" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/streamChatCompletionDeltas</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Asynchronous stream of an OpenAI chat request and provision of complete response.
                                 </div>
@@ -319,8 +356,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/chatCompletionTool"><code>/chatCompletionTool</code></a>
+                                <button type="submit" formaction="/chatCompletionTool" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/chatCompletionTool</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to OpenAI with a tool.
                                 </div>
@@ -328,8 +366,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/chatCompletionImage"><code>/chatCompletionImage</code></a>
+                                <button type="submit" formaction="/chatCompletionImage" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/chatCompletionImage</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to OpenAI with an image.
                                 </div>
@@ -337,8 +376,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/embedding"><code>/embedding</code></a>
+                                <button type="submit" formaction="/embedding" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/embedding</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Get the embedding of a text.
                                 </div>
@@ -346,8 +386,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/chatCompletion/ai-sdk-java-e2e"><code>/chatCompletion/resourceGroup</code></a>
+                                <button type="submit" formaction="/chatCompletion/ai-sdk-java-e2e" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/chatCompletion/resourceGroup</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to OpenAI filtering by resource group.
                                 </div>
@@ -375,8 +416,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/spring-ai-orchestration/completion"><code>/spring-ai-orchestration/completion</code></a>
+                                <button type="submit" formaction="/spring-ai-orchestration/completion" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/spring-ai-orchestration/completion</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to an LLM through the Orchestration service with a simple prompt.
                                 </div>
@@ -384,8 +426,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/spring-ai-orchestration/streamChatCompletion"><code>/spring-ai-orchestration/streamChatCompletion</code></a>
+                                <button type="submit" formaction="/spring-ai-orchestration/streamChatCompletion" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/spring-ai-orchestration/streamChatCompletion</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Asynchronous stream of an LLM chat request through the Orchestration service.
                                 </div>
@@ -393,8 +436,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/spring-ai-orchestration/template"><code>/spring-ai-orchestration/template</code></a>
+                                <button type="submit" formaction="/spring-ai-orchestration/template" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/spring-ai-orchestration/template</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Chat request to an LLM through the Orchestration service with a Spring AI template.
                                 </div>
@@ -402,8 +446,9 @@
                         </li>
                         <li class="list-group-item">
                             <div class="info-tooltip">
-                                <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                   href="/spring-ai-orchestration/masking"><code>/spring-ai-orchestration/masking</code></a>
+                                <button type="submit" formaction="/spring-ai-orchestration/masking" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <code>/spring-ai-orchestration/masking</code>
+                                </button>
                                 <div class="tooltip-content">
                                     Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
                                     user. Anonymize any names given as they are not relevant for judging the sentiment of the
@@ -419,6 +464,12 @@
 </div>
 
 <footer class="footer">
+    <div>
+        <input type="radio" name="view" value="json" id="json-view" checked>
+        <label for="json-view">JSON</label>
+        <input type="radio" name="view" value="message" id="message-view">
+        <label for="message-view">Message</label>
+    </div>
     <div class="footer-links">
         <a href="https://github.com/SAP/ai-sdk-java">GitHub</a>
     </div>
@@ -430,6 +481,7 @@
         </div>
     </div>
 </footer>
+</form>
 
 </body>
 </html>
