@@ -18,6 +18,8 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
+import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -115,10 +117,26 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
-    val prompt =
-        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
-    val filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+    val prompt = new OrchestrationPrompt("what is hello world");
+    val filter = false;
+    val b =
+        LlamaGuard38b.create()
+            .violentCrimes(filter)
+            .nonViolentCrimes(filter)
+            .sexCrimes(filter)
+            .childExploitation(filter)
+            .defamation(filter)
+            .specializedAdvice(filter)
+            .privacy(filter)
+            .intellectualProperty(filter)
+            .indiscriminateWeapons(filter)
+            .hate(filter)
+            .selfHarm(filter)
+            .sexualContent(filter)
+            .elections(filter)
+            .codeInterpreterAbuse(filter);
+
+    val filterConfig = new LlamaGuardFilter().config(b);
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 
