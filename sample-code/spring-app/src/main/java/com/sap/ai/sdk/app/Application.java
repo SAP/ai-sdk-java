@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.app;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration;
 import javax.annotation.Nonnull;
@@ -29,7 +27,7 @@ public class Application {
   @SuppressWarnings("unused")
   @Nonnull
   public ObjectMapper objectMapper() {
-    return new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    return OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
   }
 
   /**
