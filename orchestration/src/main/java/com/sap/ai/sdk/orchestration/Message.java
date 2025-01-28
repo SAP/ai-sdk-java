@@ -34,9 +34,6 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
     return new UserMessage(msg);
   }
 
-//  TODO: discuss whether we want a static AssistantMessage user(@Nonnull final MessageContent msg)
-//    pro: consistency
-//    con: Only works if exactly one string is in there
   /**
    * A convenience method to create an assistant message.
    *
@@ -78,7 +75,9 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   @Nonnull
   default ChatMessagesInner createChatMessage() {
     if (this.content() instanceof MessageContentSingle) {
-      return ChatMessage.create().role(role()).content(((MessageContentSingle) content()).content());
+      return ChatMessage.create()
+          .role(role())
+          .content(((MessageContentSingle) content()).content());
     } else if (this.content() instanceof MessageContentMulti mCMulti) {
       return MultiChatMessage.create()
           .role(role())

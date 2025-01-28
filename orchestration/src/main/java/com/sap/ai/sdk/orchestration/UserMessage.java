@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;

@@ -76,14 +76,22 @@ public class OrchestrationChatResponse {
             };
         messages.add(message);
       } else if (chatMessage instanceof MultiChatMessage mCMessage) {
-          messages.add(
-              switch (mCMessage.getRole()) {
-                case "user" -> Message.user(new MessageContentMulti(mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
-                case "system" -> Message.system(new MessageContentMulti(mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
-                default ->
-                    throw new IllegalArgumentException("Unexpected role using MultiChatMessage: " + mCMessage.getRole() + ". Only 'user' and 'system' are supported.");
-              }
-          );
+        messages.add(
+            switch (mCMessage.getRole()) {
+              case "user" ->
+                  Message.user(
+                      new MessageContentMulti(
+                          mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
+              case "system" ->
+                  Message.system(
+                      new MessageContentMulti(
+                          mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
+              default ->
+                  throw new IllegalArgumentException(
+                      "Unexpected role using MultiChatMessage: "
+                          + mCMessage.getRole()
+                          + ". Only 'user' and 'system' are supported.");
+            });
       } else {
         throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");

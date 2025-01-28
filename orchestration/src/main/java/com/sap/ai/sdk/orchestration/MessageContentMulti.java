@@ -5,11 +5,10 @@ import static com.sap.ai.sdk.orchestration.MultiMessageImageContent.DetailLevel;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public record MessageContentMulti(List<MultiMessageContent> multiContentList)
     implements MessageContent {
