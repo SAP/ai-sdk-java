@@ -6,14 +6,12 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,24 +77,10 @@ public class OrchestrationChatModel implements ChatModel {
                 }
                 return iterator;
               });
-      return flux.map(
-          delta -> {
-            throwOnContentFilter(stream, delta);
-            return new OrchestrationSpringChatDelta(delta);
-          });
+      return flux.map(OrchestrationSpringChatDelta::new);
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
-  }
-
-  private static void throwOnContentFilter(
-      @Nonnull final Stream<OrchestrationChatCompletionDelta> stream,
-      @Nonnull final OrchestrationChatCompletionDelta delta) {
-    final String finishReason = delta.getFinishReason();
-    if (finishReason != null && finishReason.equals("content_filter")) {
-      stream.close();
-      throw new OrchestrationClientException("Content filter filtered the output.");
-    }
   }
 
   @Nonnull
