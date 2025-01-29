@@ -19,7 +19,6 @@ public class Application {
   /**
    * Temporary workaround to fix the issue with the Orchestration spec.
    *
-   * @see OrchestrationJacksonConfiguration#getOrchestrationObjectMapper()
    * @return a modified object mapper that works for Orchestration.
    */
   @Bean
