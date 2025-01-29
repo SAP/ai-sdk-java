@@ -52,9 +52,9 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/createDelete")
   Object createAndDeleteDeploymentByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = createAndDeleteDeploymentByConfigId(configId);
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return ResponseEntity.ok("Deployment created and will be deleted.");
@@ -68,7 +68,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/stop")
   Object stopByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to STOP", myDeployments.size());
 
@@ -80,7 +80,7 @@ class DeploymentController {
             .map(id -> CLIENT.modify(RESOURCE_GROUP, id, modificationRequest))
             .toList();
 
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return stoppedDeployments;
     }
     return "Deployments under the given config ID stopped.";
@@ -94,7 +94,7 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/delete")
   Object deleteByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final List<AiDeployment> myDeployments = getAllByConfigId(configId);
     log.info("Found {} deployments to DELETE", myDeployments.size());
 
@@ -103,7 +103,7 @@ class DeploymentController {
         myDeployments.stream()
             .map(deployment -> CLIENT.delete(RESOURCE_GROUP, deployment.getId()))
             .toList();
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return responseList;
     }
     return "Deployments under the given config ID deleted.";
@@ -113,9 +113,9 @@ class DeploymentController {
   @GetMapping("/by-config/{id}/getAll")
   Object getAllByConfigId(
       @Nonnull @PathVariable("id") final String configId,
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var deployments = getAllByConfigId(configId);
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return deployments;
     }
     final var items =
@@ -134,9 +134,9 @@ class DeploymentController {
 
   /** Get all deployments, including non-Java specific deployments */
   @GetMapping("/getAll")
-  Object getAll(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object getAll(@Nullable @RequestParam(value = "format", required = false) final String format) {
     final var deployments = getAll();
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return deployments;
     }
     final var items =

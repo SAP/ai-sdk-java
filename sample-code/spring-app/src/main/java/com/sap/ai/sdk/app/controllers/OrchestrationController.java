@@ -30,9 +30,10 @@ class OrchestrationController {
   @Autowired private OrchestrationService service;
 
   @GetMapping("/completion")
-  Object completion(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object completion(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.completion("HelloWorld!");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -62,9 +63,9 @@ class OrchestrationController {
   }
 
   @GetMapping("/template")
-  Object template(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object template(@Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.template("German");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -73,9 +74,9 @@ class OrchestrationController {
   @GetMapping("/messagesHistory")
   @Nonnull
   Object messagesHistory(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.messagesHistory("What is the capital of France?");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -84,7 +85,7 @@ class OrchestrationController {
   @GetMapping("/inputFiltering/{policy}")
   @Nonnull
   Object inputFiltering(
-      @Nullable @RequestParam(value = "view", required = false) final String view,
+      @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
     final OrchestrationChatResponse response;
@@ -96,7 +97,7 @@ class OrchestrationController {
       return ResponseEntity.internalServerError().body(msg);
     }
 
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -105,7 +106,7 @@ class OrchestrationController {
   @GetMapping("/outputFiltering/{policy}")
   @Nonnull
   Object outputFiltering(
-      @Nullable @RequestParam(value = "view", required = false) final String view,
+      @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
     final OrchestrationChatResponse response;
@@ -117,7 +118,7 @@ class OrchestrationController {
       return ResponseEntity.internalServerError().body(msg);
     }
 
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -126,9 +127,9 @@ class OrchestrationController {
   @GetMapping("/maskingAnonymization")
   @Nonnull
   Object maskingAnonymization(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.maskingAnonymization(DPIEntities.PERSON);
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -137,10 +138,10 @@ class OrchestrationController {
   @GetMapping("/completion/{resourceGroup}")
   @Nonnull
   Object completionWithResourceGroup(
-      @Nullable @RequestParam(value = "view", required = false) final String view,
+      @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
     final var response = service.completionWithResourceGroup(resourceGroup, "Hello world!");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -149,9 +150,9 @@ class OrchestrationController {
   @GetMapping("/maskingPseudonymization")
   @Nonnull
   Object maskingPseudonymization(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.maskingPseudonymization(DPIEntities.PERSON);
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -159,9 +160,10 @@ class OrchestrationController {
 
   @GetMapping("/grounding")
   @Nonnull
-  Object grounding(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object grounding(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.grounding("What does Joule do?");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();

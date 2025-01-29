@@ -20,9 +20,10 @@ class ScenarioController {
 
   @GetMapping("/scenarios")
   @Nonnull
-  Object getScenarios(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object getScenarios(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var scenarioList = CLIENT.query("default");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return scenarioList;
     }
     final var items =
@@ -39,9 +40,10 @@ class ScenarioController {
 
   @GetMapping("/models")
   @Nonnull
-  Object getModels(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object getModels(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var modelList = getModels();
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return modelList;
     }
     final var items =

@@ -17,9 +17,9 @@ class ConfigurationController {
 
   @GetMapping("/configurations")
   Object getConfigurations(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var configList = CLIENT.query("default");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return configList;
     }
     final var items =

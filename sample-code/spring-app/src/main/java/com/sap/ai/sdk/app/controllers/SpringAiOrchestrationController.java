@@ -19,10 +19,11 @@ class SpringAiOrchestrationController {
   @Autowired private SpringAiOrchestrationService service;
 
   @GetMapping("/completion")
-  Object completion(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object completion(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     val response = (OrchestrationSpringChatResponse) service.completion();
 
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response.getOrchestrationResponse().getOriginalResponse();
     }
     return response.getResult().getOutput().getContent();
@@ -37,20 +38,20 @@ class SpringAiOrchestrationController {
   }
 
   @GetMapping("/template")
-  Object template(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object template(@Nullable @RequestParam(value = "format", required = false) final String format) {
     val response = (OrchestrationSpringChatResponse) service.template();
 
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response.getOrchestrationResponse().getOriginalResponse();
     }
     return response.getResult().getOutput().getContent();
   }
 
   @GetMapping("/masking")
-  Object masking(@Nullable @RequestParam(value = "view", required = false) final String view) {
+  Object masking(@Nullable @RequestParam(value = "format", required = false) final String format) {
     val response = (OrchestrationSpringChatResponse) service.masking();
 
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response.getOrchestrationResponse().getOriginalResponse();
     }
     return response.getResult().getOutput().getContent();

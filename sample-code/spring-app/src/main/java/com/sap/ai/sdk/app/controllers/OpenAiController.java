@@ -29,9 +29,9 @@ public class OpenAiController {
   @GetMapping("/chatCompletion")
   @Nonnull
   Object chatCompletion(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.chatCompletion("Who is the prettiest");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -117,11 +117,11 @@ public class OpenAiController {
   @GetMapping("/chatCompletionImage")
   @Nonnull
   Object chatCompletionImage(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response =
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -130,10 +130,10 @@ public class OpenAiController {
   @GetMapping("/chatCompletionTool")
   @Nonnull
   Object chatCompletionTools(
-      @Nullable @RequestParam(value = "view", required = false) final String view) {
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
@@ -148,11 +148,11 @@ public class OpenAiController {
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   Object chatCompletionWithResource(
-      @Nullable @RequestParam(value = "view", required = false) final String view,
+      @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
     final var response =
         service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
-    if ("json".equals(view)) {
+    if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
