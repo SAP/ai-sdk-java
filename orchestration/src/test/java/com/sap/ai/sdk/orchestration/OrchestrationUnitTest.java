@@ -53,7 +53,7 @@ import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.LlamaGuard38bFilterConfig;
+import com.sap.ai.sdk.orchestration.model.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
@@ -309,11 +309,7 @@ class OrchestrationUnitTest {
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
             .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-    final ContentFilter llamaFilter =
-        () ->
-            LlamaGuard38bFilterConfig.create()
-                .type(LlamaGuard38bFilterConfig.TypeEnum.LLAMA_GUARD_3_8B)
-                .config(LlamaGuard38b.create().selfHarm(true));
+    final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
     client.chatCompletion(
         prompt,
