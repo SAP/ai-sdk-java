@@ -22,6 +22,7 @@
   - Grounding input can be masked with `DPIConfig`.
   - LLama Guard can now be used for content filtering.
   - Support for tool calling and response format
+  - Updated the list for supported models (e.g., added amazon nova models).
 
 ### 📈 Improvements
 
