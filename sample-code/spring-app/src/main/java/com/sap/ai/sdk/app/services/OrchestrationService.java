@@ -165,7 +165,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
       throws OrchestrationClientException {
-    val prompt = new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
+    val prompt =
+        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
 
     // values not set are disabled by default
     val config =
