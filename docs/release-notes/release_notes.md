@@ -20,7 +20,7 @@
   - Images are now supported as input in newly introduced `MultiChatMessage`.
   - `MultiChatMessage` also allows for multiple content items (text or image) in one object.
   - Grounding input can be masked with `DPIConfig`.
-  - LLama Guard can now be used for content filtering.
+  - [LLama Guard can now be used for content filtering.](../guides/ORCHESTRATION_CHAT_COMPLETION.md#chat-completion-filter)
   - Support for tool calling and response format
 
 ### 📈 Improvements
