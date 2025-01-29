@@ -117,26 +117,10 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
-    val prompt = new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
-    val filter = true;
-    val b =
-        LlamaGuard38b.create()
-            .violentCrimes(filter)
-            .nonViolentCrimes(filter)
-            .sexCrimes(filter)
-            .childExploitation(filter)
-            .defamation(filter)
-            .specializedAdvice(filter)
-            .privacy(filter)
-            .intellectualProperty(filter)
-            .indiscriminateWeapons(filter)
-            .hate(filter)
-            .selfHarm(filter)
-            .sexualContent(filter)
-            .elections(filter)
-            .codeInterpreterAbuse(filter);
-
-    val filterConfig = new LlamaGuardFilter().config(b);
+    val prompt =
+        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
+    val filterConfig =
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 
@@ -165,6 +149,46 @@ public class OrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
+    return client.chatCompletion(prompt, configWithFilter);
+  }
+
+  /**
+   * Apply the Llama Guard filter.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @throws OrchestrationClientException if input filter filters the prompt
+   * @param filter enable or disable the filter
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
+      throws OrchestrationClientException {
+    val prompt = new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
+
+    // values not set are disabled by default
+    val config =
+        LlamaGuard38b.create()
+            .violentCrimes(filter)
+            .nonViolentCrimes(filter)
+            .sexCrimes(filter)
+            .childExploitation(filter)
+            .defamation(filter)
+            .specializedAdvice(filter)
+            .privacy(filter)
+            .intellectualProperty(filter)
+            .indiscriminateWeapons(filter)
+            .hate(filter)
+            .selfHarm(filter)
+            .sexualContent(filter)
+            .elections(filter)
+            .codeInterpreterAbuse(filter);
+
+    val filterConfig = new LlamaGuardFilter().config(config);
+
+    val configWithFilter = this.config.withInputFiltering(filterConfig);
+
     return client.chatCompletion(prompt, configWithFilter);
   }
 

@@ -228,4 +228,24 @@ class OrchestrationTest {
     var filterResult = response.getOriginalResponse().getModuleResults().getOutputFiltering();
     assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
   }
+
+  @Test
+  void testLlamaGuardEnabled() {
+    assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
+  }
+
+  @Test
+  void testLlamaGuardDisabled() {
+    var response = service.llamaGuardInputFilter(false);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
 }

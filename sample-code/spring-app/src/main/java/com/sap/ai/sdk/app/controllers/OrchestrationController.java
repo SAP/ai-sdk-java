@@ -188,6 +188,28 @@ class OrchestrationController {
     }
   }
 
+  @GetMapping("/llamaGuardFilter/{enabled}")
+  @Nonnull
+  ResponseEntity<String> llamaGuardInputFiltering(
+      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
+      @PathVariable("enabled") final boolean enabled)
+      throws JsonProcessingException {
+
+    final OrchestrationChatResponse response;
+    try {
+      response = service.llamaGuardInputFilter(enabled);
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+
+    if (accept.equals("application/json")) {
+      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    }
+    return ResponseEntity.ok().body(response.getContent());
+  }
+
   /**
    * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
    * user. Anonymize any names given as they are not relevant for judging the sentiment of the
