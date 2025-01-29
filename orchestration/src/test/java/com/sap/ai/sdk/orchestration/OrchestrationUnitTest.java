@@ -53,7 +53,6 @@ import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;

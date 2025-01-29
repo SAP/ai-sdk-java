@@ -1,8 +1,9 @@
-package com.sap.ai.sdk.orchestration.model;
+package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.model.LlamaGuard38bFilterConfig.TypeEnum.LLAMA_GUARD_3_8B;
 
-import com.sap.ai.sdk.orchestration.ContentFilter;
+import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.LlamaGuard38bFilterConfig;
 import javax.annotation.Nonnull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
