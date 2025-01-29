@@ -122,7 +122,7 @@ var result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
 String resultMessage = result.getContent();
 ```
 
-See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiService.java)
 
 ## Chat Completion with Specific Model Version
 
@@ -205,7 +205,7 @@ Integer tokensUsed = totalOutput.getUsage().getCompletionTokens();
 System.out.println("Tokens used: " + tokensUsed);
 ```
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java). It shows the usage of Spring
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiService.java). It shows the usage of Spring
 Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Embedding
@@ -218,4 +218,4 @@ var request = new OpenAiEmbeddingParameters().setInput("Hello World");
 OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
 ```
 
-See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OpenAiController.java)
+See [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OpenAiService.java)
