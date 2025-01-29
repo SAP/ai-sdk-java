@@ -117,8 +117,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
-    val prompt = new OrchestrationPrompt("what is hello world");
-    val filter = false;
+    val prompt = new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
+    val filter = true;
     val b =
         LlamaGuard38b.create()
             .violentCrimes(filter)
