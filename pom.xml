@@ -697,7 +697,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
             <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
             <licenseMerge>Eclipse Public License v2.0|EPL 2.0</licenseMerge>
-            <licenseMerge>Public Domain|Public Domain, per Creative Commons CC0</licenseMerge>
+            <licenseMerge>Public Domain|Public Domain, per Creative Commons CC0|The JSON License</licenseMerge>
           </licenseMerges>
         </configuration>
         <executions>
