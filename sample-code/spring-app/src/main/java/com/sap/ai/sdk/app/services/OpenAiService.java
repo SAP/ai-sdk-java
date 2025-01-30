@@ -7,12 +7,14 @@ import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionReques
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImageImageUrl.DetailEnum.HIGH;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage.RoleEnum.USER;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool.TypeEnum.*;
 
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionConfig;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionOutput;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionPrompt;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImage;
@@ -47,7 +49,7 @@ public class OpenAiService {
    * @return the assistant message response
    */
   @Nonnull
-  public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt) {
+  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt) {
     return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(prompt);
   }
 
@@ -61,12 +63,13 @@ public class OpenAiService {
       @Nonnull final String message) {
     final var request =
         new CreateChatCompletionRequest()
-            .addMessagesItem(
-                new ChatCompletionRequestUserMessage()
-                    .content(
-                        ChatCompletionRequestUserMessageContent.create(
-                            List.of(
-                                new ChatCompletionRequestMessageContentPartText().text(message)))));
+                .addMessagesItem(
+                    new ChatCompletionRequestUserMessage()
+                        .content(
+                            ChatCompletionRequestUserMessageContent.create(
+                                List.of(
+                                    new ChatCompletionRequestMessageContentPartText()
+                                        .text(message)))));
 
     return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
   }
@@ -90,7 +93,7 @@ public class OpenAiService {
    * @return the assistant message response
    */
   @Nonnull
-  public OpenAiChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
+  public OpenAiChatCompletionOutput chatCompletionImage(@Nonnull final String linkToImage) {
     final var partText =
         new ChatCompletionRequestMessageContentPartText()
             .type(TEXT)
@@ -118,32 +121,34 @@ public class OpenAiService {
   /**
    * Chat request to OpenAI with a tool.
    *
-   * @param prompt The prompt to send to the assistant
+   * @param description of the function to be sent to the assistant
    * @return the assistant message response
    */
   @Nonnull
-  public OpenAiChatCompletionResponse chatCompletionTools(@Nonnull final String prompt) {
-    final var question =
-        "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?";
-    final var par = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
-    final var function = new FunctionObject().name("fibonacci").description(prompt).parameters(par);
-    final var tool =
-        new ChatCompletionTool().type(ChatCompletionTool.TypeEnum.FUNCTION).function(function);
-    final var userMessage = OpenAiMessage.user(question).createDTO();
-    final var toolChoice =
+  public OpenAiChatCompletionOutput chatCompletionTools(@Nonnull final String description) {
+    var function =
+        new FunctionObject()
+            .name("fibonacci")
+            .description(description)
+            .parameters(
+                Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
+
+    var tool =
+        new ChatCompletionTool().type(FUNCTION).function(function);
+
+    var toolChoice =
         ChatCompletionToolChoiceOption.create(
             new ChatCompletionNamedToolChoice()
                 .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
                 .function(new ChatCompletionNamedToolChoiceFunction().name("fibonacci")));
-    final var request =
-        new CreateChatCompletionRequest()
-            .addMessagesItem(userMessage)
-            .tools(List.of(tool))
-            .toolChoice(toolChoice)
-            .functions(null)
-            .parallelToolCalls(null);
 
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+    var config = new OpenAiChatCompletionConfig().tools(List.of(tool)).toolChoice(toolChoice);
+
+    var prompt =
+        OpenAiChatCompletionPrompt.create(
+            "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?");
+
+    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(prompt, config);
   }
 
   /**
@@ -168,7 +173,7 @@ public class OpenAiService {
    * @return the assistant message response
    */
   @Nonnull
-  public OpenAiChatCompletionResponse chatCompletionWithResource(
+  public OpenAiChatCompletionOutput chatCompletionWithResource(
       @Nonnull final String resourceGroup, @Nonnull final String prompt) {
 
     final var destination =

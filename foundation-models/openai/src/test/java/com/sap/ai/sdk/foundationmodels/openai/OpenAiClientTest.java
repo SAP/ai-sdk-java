@@ -22,6 +22,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
@@ -79,10 +80,10 @@ class OpenAiClientTest {
 
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
-      () -> client.chatCompletion(new OpenAiChatCompletionRequest("")),
+      () -> client.chatCompletion(OpenAiChatCompletionPrompt.create("")),
       () ->
           client
-              .streamChatCompletionDeltas(new OpenAiChatCompletionRequest(""))
+              .streamChatCompletionDeltas(OpenAiChatCompletionPrompt.create(""))
               // the stream needs to be consumed to parse the response
               .forEach(System.out::println)
     };
@@ -93,8 +94,8 @@ class OpenAiClientTest {
       () -> {
         final var systemMessage = OpenAiMessage.system("You are a helpful AI");
         final var userMessage = OpenAiMessage.user("Hello World! Why is this phrase so famous?");
-        final var request = new OpenAiChatCompletionRequest(systemMessage, userMessage);
-        return client.chatCompletion(request);
+        final var prompt = OpenAiChatCompletionPrompt.create(systemMessage, userMessage);
+        return client.chatCompletion(prompt);
       },
       () ->
           client
@@ -180,21 +181,22 @@ class OpenAiClientTest {
   @Test
   void apiVersion() {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
-    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")));
+    Try.of(() -> client.chatCompletion(OpenAiChatCompletionPrompt.create("")));
 
     verify(
         exactly(1),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
     Try.of(
-        () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionRequest("")));
+        () ->
+            client.withApiVersion("fooBar").chatCompletion(OpenAiChatCompletionPrompt.create("")));
     verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
 
     assertThat(client)
         .describedAs(
             "withApiVersion should return a new object, the sut object should remain unchanged")
         .isNotSameAs(client.withApiVersion("fooBar"));
-    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")));
+    Try.of(() -> client.chatCompletion(OpenAiChatCompletionPrompt.create("")));
     verify(
         exactly(2),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
@@ -203,7 +205,7 @@ class OpenAiClientTest {
   @SneakyThrows
   @ParameterizedTest
   @MethodSource("chatCompletionCalls")
-  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionResponse> request) {
+  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionOutput> request) {
     try (var inputStream = fileLoader.apply("__files/chatCompletionResponse.json")) {
 
       final String expectedResponse = new String(inputStream.readAllBytes());
@@ -213,7 +215,7 @@ class OpenAiClientTest {
               .withQueryParam("api-version", equalTo("2024-02-01"))
               .willReturn(okJson(expectedResponse)));
 
-      final OpenAiChatCompletionResponse response = request.call();
+      final OpenAiChatCompletionOutput response = request.call();
 
       var originalResponse = response.getOriginalResponse();
       assertThat(originalResponse).isNotNull();
@@ -338,7 +340,12 @@ class OpenAiClientTest {
                            "n" : 1
                       }""")));
 
-    client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
+    var response = client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
+
+    assertThat(response.getContent()).isNotNull();
+    assertThat(response.getContent())
+        .isEqualTo(
+            "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
 
     verify(
         exactly(1),
@@ -412,12 +419,11 @@ class OpenAiClientTest {
   @Test
   void testThrowsOnContentFilter() {
     var mock = mock(OpenAiClient.class);
-    when(mock.streamChatCompletion((String) any())).thenCallRealMethod();
+    when(mock.streamChatCompletion(any())).thenCallRealMethod();
 
-    var deltaWithContentFilter =
-        mock(com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta.class);
+    var deltaWithContentFilter = mock(OpenAiChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
-    when(mock.streamChatCompletionDeltas((OpenAiChatCompletionRequest) any()))
+    when(mock.streamChatCompletionDeltas((CreateChatCompletionRequest) any()))
         .thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
@@ -445,9 +451,9 @@ class OpenAiClientTest {
 
       final var userMessage =
           OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?");
-      final var request = new OpenAiChatCompletionRequest(userMessage);
+      final var prompt = OpenAiChatCompletionPrompt.create(userMessage);
 
-      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(prompt)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .isInstanceOf(OpenAiClientException.class)
             .hasMessage("Failed to parse response and error message: 'exceeded token rate limit'");
@@ -473,18 +479,13 @@ class OpenAiClientTest {
       // Configure the HttpClient mock to return the mock response
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
-      final var userMessage =
-          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?");
-      final var request = new OpenAiChatCompletionRequest(userMessage);
+      final var prompt =
+          OpenAiChatCompletionPrompt.create(
+              "Can you give me the first 100 numbers of the Fibonacci sequence?");
 
-      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(prompt)) {
 
         final List<OpenAiChatCompletionDelta> deltaList = stream.toList();
-        final var delta0 = deltaList.get(0).getOriginalResponse();
-        final var delta1 = deltaList.get(1).getOriginalResponse();
-        final var delta2 = deltaList.get(2).getOriginalResponse();
-        final var delta3 = deltaList.get(3).getOriginalResponse();
-        final var delta4 = deltaList.get(4).getOriginalResponse();
 
         assertThat(deltaList).hasSize(5);
         // the first two and the last delta don't have any content
@@ -493,6 +494,15 @@ class OpenAiClientTest {
         assertThat(deltaList.get(2).getDeltaContent()).isEqualTo("Sure");
         assertThat(deltaList.get(3).getDeltaContent()).isEqualTo("!");
         assertThat(deltaList.get(4).getDeltaContent()).isEqualTo("");
+
+        assertThat(deltaList.get(3).getFinishReason()).isNull();
+        assertThat(deltaList.get(4).getFinishReason()).isEqualTo(STOP.getValue());
+
+        final var delta0 = deltaList.get(0).getOriginalResponse();
+        final var delta1 = deltaList.get(1).getOriginalResponse();
+        final var delta2 = deltaList.get(2).getOriginalResponse();
+        final var delta3 = deltaList.get(3).getOriginalResponse();
+        final var delta4 = deltaList.get(4).getOriginalResponse();
 
         assertThat(delta0.getSystemFingerprint()).isNull();
         assertThat(delta1.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
@@ -503,6 +513,8 @@ class OpenAiClientTest {
         assertThatThrownBy(() -> delta0.getCustomField("usage"))
             .isInstanceOf(NoSuchElementException.class);
         assertThat(delta1.getCustomField("usage")).isNull();
+        assertThat(delta1.getCustomField("usage"))
+            .isEqualTo(deltaList.get(1).getCompletionUsage(MAPPER));
         assertThat(delta2.getCustomField("usage")).isNull();
         assertThat(delta3.getCustomField("usage")).isNull();
         final Map<?, ?> delta4UsageRaw = (Map<?, ?>) delta4.getCustomField("usage");
@@ -511,6 +523,7 @@ class OpenAiClientTest {
         assertThat(delta4Usage.getCompletionTokens()).isEqualTo(607);
         assertThat(delta4Usage.getPromptTokens()).isEqualTo(21);
         assertThat(delta4Usage.getTotalTokens()).isEqualTo(628);
+        assertThat(delta4Usage).isEqualTo(deltaList.get(4).getCompletionUsage(MAPPER));
 
         // delta 0
 

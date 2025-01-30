@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 /**
- * OpenAI chat completion output delta for streaming.
+ * Represents an OpenAI chat completion output delta for streaming.
  *
  * @since 1.3.0
  */
@@ -22,8 +22,14 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator)
 public class OpenAiChatCompletionDelta implements StreamedDelta {
+  /** The original response from the chat completion stream. */
   CreateChatCompletionStreamResponse originalResponse;
 
+  /**
+   * Retrieves the delta content from the original response.
+   *
+   * @return The delta content as a string, or an empty string if not available.
+   */
   @Nonnull
   @Override
   public String getDeltaContent() {
@@ -35,6 +41,11 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
     return "";
   }
 
+  /**
+   * Retrieves the finish reason from the original response.
+   *
+   * @return The finish reason as a string, or null if not available.
+   */
   @Nullable
   @Override
   public String getFinishReason() {
@@ -47,7 +58,7 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
   }
 
   /**
-   * Get the completion usage from the response, or null if it is not available.
+   * Retrieves the completion usage from the response, or null if it is not available.
    *
    * @param objectMapper The object mapper to use for conversion.
    * @return The completion usage or null.
