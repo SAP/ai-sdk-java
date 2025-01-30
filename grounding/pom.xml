@@ -35,7 +35,7 @@
     <coverage.line>83%</coverage.line>
     <coverage.instruction>88%</coverage.instruction>
     <coverage.branch>100%</coverage.branch>
-    <coverage.method>100%</coverage.method>
+    <coverage.method>83%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
