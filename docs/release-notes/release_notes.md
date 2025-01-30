@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Add Orchestration `LlamaGuardFilter`](../guides/ORCHESTRATION_CHAT_COMPLETION.md#chat-completion-filter).
 
 ### 📈 Improvements
 

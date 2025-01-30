@@ -1,7 +1,10 @@
 package com.sap.ai.sdk.app;
 
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration;
 import javax.annotation.Nonnull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,16 +20,16 @@ import org.springframework.context.annotation.Primary;
 public class Application {
 
   /**
-   * Temporary workaround to fix the issue with the Orchestration spec.
+   * Changes Spring Boot's default object mapper to fix serialization issues.
    *
-   * @return a modified object mapper that works for Orchestration.
+   * @return a modified object mapper
    */
   @Bean
   @Primary
   @SuppressWarnings("unused")
   @Nonnull
   public ObjectMapper objectMapper() {
-    return OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
+    return getDefaultObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
   }
 
   /**
