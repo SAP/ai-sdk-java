@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** TextOnlyBaseChunk */
 @Beta // CHECKSTYLE:OFF
-public class TextOnlyBaseChunk extends HashMap<String, Object>
+public class TextOnlyBaseChunk 
 // CHECKSTYLE:ON
 {
   @JsonProperty("content")

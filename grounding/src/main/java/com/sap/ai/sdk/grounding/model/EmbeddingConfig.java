@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** EmbeddingConfig */
 @Beta // CHECKSTYLE:OFF
-public class EmbeddingConfig extends HashMap<String, Object>
+public class EmbeddingConfig 
 // CHECKSTYLE:ON
 {
   @JsonProperty("modelName")

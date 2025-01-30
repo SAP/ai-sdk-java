@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** SearchFilter */
 @Beta // CHECKSTYLE:OFF
-public class SearchFilter extends HashMap<String, Object>
+public class SearchFilter 
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")

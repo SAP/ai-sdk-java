@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** PipelinePostRequstConfigurationSharePointSite */
 @Beta // CHECKSTYLE:OFF
-public class PipelinePostRequstConfigurationSharePointSite extends HashMap<String, Object>
+public class PipelinePostRequstConfigurationSharePointSite 
 // CHECKSTYLE:ON
 {
   @JsonProperty("name")

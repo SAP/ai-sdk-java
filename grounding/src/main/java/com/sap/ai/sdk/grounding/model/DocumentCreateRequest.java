@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** A create request containing one or more new documents to create and store in a collection. */
 @Beta // CHECKSTYLE:OFF
-public class DocumentCreateRequest extends HashMap<String, Object>
+public class DocumentCreateRequest 
 // CHECKSTYLE:ON
 {
   @JsonProperty("documents")

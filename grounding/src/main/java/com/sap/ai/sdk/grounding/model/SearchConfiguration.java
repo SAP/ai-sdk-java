@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** SearchConfiguration */
 @Beta // CHECKSTYLE:OFF
-public class SearchConfiguration extends HashMap<String, Object>
+public class SearchConfiguration 
 // CHECKSTYLE:ON
 {
   @JsonProperty("maxChunkCount")

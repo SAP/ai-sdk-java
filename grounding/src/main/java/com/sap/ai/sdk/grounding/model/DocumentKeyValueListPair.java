@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 
 /** DocumentKeyValueListPair */
 @Beta // CHECKSTYLE:OFF
-public class DocumentKeyValueListPair extends HashMap<String, Object>
+public class DocumentKeyValueListPair 
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")

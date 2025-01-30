@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** A request for creating a new, single collection. */
 @Beta // CHECKSTYLE:OFF
-public class CollectionRequest extends HashMap<String, Object>
+public class CollectionRequest 
 // CHECKSTYLE:ON
 {
   @JsonProperty("title")

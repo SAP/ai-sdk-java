@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 /** A single document stored in a collection by ID. */
 @Beta // CHECKSTYLE:OFF
-public class DocumentInput extends HashMap<String, Object>
+public class DocumentInput 
 // CHECKSTYLE:ON
 {
   @JsonProperty("chunks")

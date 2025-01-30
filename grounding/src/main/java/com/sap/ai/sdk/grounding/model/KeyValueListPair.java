@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** KeyValueListPair */
 @Beta // CHECKSTYLE:OFF
-public class KeyValueListPair extends HashMap<String, Object>
+public class KeyValueListPair 
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")

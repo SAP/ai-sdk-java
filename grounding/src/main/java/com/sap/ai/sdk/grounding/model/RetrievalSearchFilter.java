@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** Limit scope of search to certain DataRepositories, Documents or Chunks. */
 @Beta // CHECKSTYLE:OFF
-public class RetrievalSearchFilter extends HashMap<String, Object>
+public class RetrievalSearchFilter 
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")

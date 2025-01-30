@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** Base class for documents, document requests and responses. */
 @Beta // CHECKSTYLE:OFF
-public class BaseDocument extends HashMap<String, Object>
+public class BaseDocument 
 // CHECKSTYLE:ON
 {
   @JsonProperty("chunks")

@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
  * by ID.
  */
 @Beta // CHECKSTYLE:OFF
-public class DocumentUpdateRequest extends HashMap<String, Object>
+public class DocumentUpdateRequest 
 // CHECKSTYLE:ON
 {
   @JsonProperty("documents")

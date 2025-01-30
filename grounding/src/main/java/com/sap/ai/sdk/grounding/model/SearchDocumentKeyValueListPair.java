@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** SearchDocumentKeyValueListPair */
 @Beta // CHECKSTYLE:OFF
-public class SearchDocumentKeyValueListPair extends HashMap<String, Object>
+public class SearchDocumentKeyValueListPair 
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")

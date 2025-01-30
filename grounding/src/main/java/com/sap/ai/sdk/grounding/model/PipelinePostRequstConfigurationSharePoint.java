@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** PipelinePostRequstConfigurationSharePoint */
 @Beta // CHECKSTYLE:OFF
-public class PipelinePostRequstConfigurationSharePoint extends HashMap<String, Object>
+public class PipelinePostRequstConfigurationSharePoint 
 // CHECKSTYLE:ON
 {
   @JsonProperty("site")

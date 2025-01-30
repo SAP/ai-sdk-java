@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** RetrievalSearchInput */
 @Beta // CHECKSTYLE:OFF
-public class RetrievalSearchInput extends HashMap<String, Object>
+public class RetrievalSearchInput 
 // CHECKSTYLE:ON
 {
   @JsonProperty("query")

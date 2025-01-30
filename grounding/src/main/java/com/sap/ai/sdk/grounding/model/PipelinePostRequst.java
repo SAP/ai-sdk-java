@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** PipelinePostRequst */
 @Beta // CHECKSTYLE:OFF
-public class PipelinePostRequst extends HashMap<String, Object>
+public class PipelinePostRequst 
 // CHECKSTYLE:ON
 {
   @JsonProperty("type")

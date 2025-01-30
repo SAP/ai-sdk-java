@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** TextSearchRequest */
 @Beta // CHECKSTYLE:OFF
-public class TextSearchRequest extends HashMap<String, Object>
+public class TextSearchRequest 
 // CHECKSTYLE:ON
 {
   @JsonProperty("query")
