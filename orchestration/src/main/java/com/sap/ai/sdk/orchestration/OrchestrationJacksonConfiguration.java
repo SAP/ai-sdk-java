@@ -2,6 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.annotations.Beta;
@@ -49,6 +51,7 @@ public class OrchestrationJacksonConfiguration {
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class))
             .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
     jackson.registerModule(module);
+    jackson.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
     return jackson;
   }
 }

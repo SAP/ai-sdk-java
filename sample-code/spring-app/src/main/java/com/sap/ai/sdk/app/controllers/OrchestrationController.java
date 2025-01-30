@@ -126,10 +126,9 @@ class OrchestrationController {
 
   @GetMapping("/llamaGuardFilter/{enabled}")
   @Nonnull
-  ResponseEntity<String> llamaGuardInputFiltering(
+  Object llamaGuardInputFiltering(
       @Nullable @RequestParam(value = "format", required = false) final String format,
-      @PathVariable("enabled") final boolean enabled)
-      throws JsonProcessingException {
+      @PathVariable("enabled") final boolean enabled) {
 
     final OrchestrationChatResponse response;
     try {
