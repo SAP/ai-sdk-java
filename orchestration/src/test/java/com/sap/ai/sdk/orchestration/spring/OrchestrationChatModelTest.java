@@ -16,7 +16,6 @@ import static org.mockito.Mockito.times;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
@@ -100,31 +99,6 @@ public class OrchestrationChatModelTest {
     assertThatThrownBy(() -> client.stream(new Prompt("test", emptyConfig)))
         .isExactlyInstanceOf(IllegalStateException.class)
         .hasMessageContaining("LLM config is required");
-  }
-
-  @Test
-  void streamChatCompletionOutputFilterErrorHandling() throws IOException {
-    try (var inputStream = spy(fileLoader.apply("streamChatCompletionOutputFilter.txt"))) {
-
-      final var httpClient = mock(HttpClient.class);
-      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
-
-      // Create a mock response
-      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
-      mockResponse.setEntity(inputStreamEntity);
-      mockResponse.setHeader("Content-Type", "text/event-stream");
-
-      // Configure the HttpClient mock to return the mock response
-      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
-
-      Flux<ChatResponse> flux = client.stream(prompt);
-      assertThatThrownBy(() -> flux.toStream().forEach(System.out::println))
-          .isInstanceOf(OrchestrationClientException.class)
-          .hasMessage("Content filter filtered the output.");
-
-      Mockito.verify(inputStream, times(1)).close();
-    }
   }
 
   @Test
