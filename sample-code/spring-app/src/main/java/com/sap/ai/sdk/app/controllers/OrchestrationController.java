@@ -124,6 +124,27 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/llamaGuardFilter/{enabled}")
+  @Nonnull
+  Object llamaGuardInputFiltering(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @PathVariable("enabled") final boolean enabled) {
+
+    final OrchestrationChatResponse response;
+    try {
+      response = service.llamaGuardInputFilter(enabled);
+    } catch (OrchestrationClientException e) {
+      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+      log.debug(msg, e);
+      return ResponseEntity.internalServerError().body(msg);
+    }
+
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/maskingAnonymization")
   @Nonnull
   Object maskingAnonymization(
