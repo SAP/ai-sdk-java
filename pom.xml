@@ -55,7 +55,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cloud-sdk.version>5.15.0</cloud-sdk.version>
+    <cloud-sdk.version>5.16.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.4</junit-jupiter.version>
     <wiremock.version>3.10.0</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
@@ -70,6 +70,7 @@
     <mockito.version>5.15.2</mockito.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
+    <json.version>20210307</json.version>
     <!-- Formatting -->
     <spotless.version>2.44.2</spotless.version>
     <spotless.skip>false</spotless.skip>
@@ -148,6 +149,11 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
         <version>${springframework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>${json.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
@@ -691,7 +697,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
             <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
             <licenseMerge>Eclipse Public License v2.0|EPL 2.0</licenseMerge>
-            <licenseMerge>Public Domain|Public Domain, per Creative Commons CC0</licenseMerge>
+            <licenseMerge>Public Domain|Public Domain, per Creative Commons CC0|The JSON License</licenseMerge>
           </licenseMerges>
         </configuration>
         <executions>
