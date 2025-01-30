@@ -262,7 +262,6 @@ public final class OpenAiClient {
             ? OpenAiChatCompletionPrompt.create(systemPrompt, userPrompt)
             : OpenAiChatCompletionPrompt.create(userPrompt);
 
-    // TODO: Is the flow same for accessing both apis (with string and prompt)?
     return streamChatCompletionDeltas(
             toCreateChatCompletionRequest(openAiPrompt, new OpenAiChatCompletionConfig()))
         .peek(OpenAiClient::throwOnContentFilter)
@@ -301,9 +300,7 @@ public final class OpenAiClient {
       @Nonnull final OpenAiChatCompletionPrompt prompt) throws OpenAiClientException {
     return streamChatCompletionDeltas(prompt, new OpenAiChatCompletionConfig());
   }
-
-  // TODO: Keep it public and when does it throw ?
-
+  
   /**
    * Stream a completion for the given prompt and configuration. Returns a <b>lazily</b> populated
    * stream of delta objects. To simply stream the text chunks use {@link
