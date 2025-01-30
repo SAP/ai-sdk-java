@@ -173,6 +173,7 @@
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <removeEnumValuePrefix>true</removeEnumValuePrefix>
                   </additionalProperties>
                 </configuration>
               </execution>
