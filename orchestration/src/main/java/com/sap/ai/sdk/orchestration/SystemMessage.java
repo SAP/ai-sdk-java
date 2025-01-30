@@ -45,4 +45,14 @@ public class SystemMessage implements Message {
         new MessageContent(
             Stream.of(messages).map(TextItem::new).toList(), content));
   }
+
+  public SystemMessage add(@Nonnull MessageContent... messageContents) {
+//    TODO: What about images here? Also, see above in line 29.
+    return new SystemMessage(
+        new MessageContent(
+            Stream.of(messageContents)
+                .flatMap(contentItem -> contentItem.contentItemList().stream())
+                .toList(),
+            content));
+  }
 }

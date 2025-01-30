@@ -7,6 +7,7 @@ import com.sap.ai.sdk.orchestration.model.TextContent;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public record MessageContent(List<ContentItem> contentItemList) {
@@ -33,6 +34,18 @@ public record MessageContent(List<ContentItem> contentItemList) {
 
   public MessageContent(MultiChatMessageContent... multiChatContents) {
     this(convertIntoMultiMessageList(multiChatContents));
+  }
+
+  public static MessageContent image(String imageUrl, ImageItem.DetailLevel detailLevel) {
+    return new MessageContent(List.of(new ImageItem(imageUrl, detailLevel)));
+  }
+
+  public static MessageContent text(String text) {
+    return new MessageContent(List.of(new TextItem(text)));
+  }
+
+  public static MessageContent text(String... texts) {
+    return new MessageContent(Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
   }
 
   private static List<ContentItem> convertIntoMultiMessageList(

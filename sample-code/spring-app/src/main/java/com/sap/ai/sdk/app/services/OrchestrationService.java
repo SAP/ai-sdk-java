@@ -10,6 +10,7 @@ import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.ImageItem;
+import com.sap.ai.sdk.orchestration.MessageContent;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -61,6 +62,9 @@ public class OrchestrationService {
         Message.user("What is in this image?")
             .addImage(pathToImage, ImageItem.DetailLevel.low);
     var prompt = new OrchestrationPrompt(multiMessage);
+    var imageOnlyMessage = Message.user(MessageContent.image(pathToImage, ImageItem.DetailLevel.low));
+    var sameMultiMessage = Message.user(MessageContent.image(pathToImage, ImageItem.DetailLevel.low)).add(MessageContent.text("What is in this image?"));
+//    var imageOnlyMessage = Message.user(MessageContent.audio(urlString, detailLevel)).addImage(awkj);
     return client.chatCompletion(prompt, config);
   }
 
