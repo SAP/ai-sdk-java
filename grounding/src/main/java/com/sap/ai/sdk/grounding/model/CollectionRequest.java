@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ import javax.annotation.Nullable;
 
 /** A request for creating a new, single collection. */
 @Beta // CHECKSTYLE:OFF
-public class CollectionRequest 
+public class CollectionRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("title")
@@ -211,8 +210,7 @@ public class CollectionRequest
     return Objects.equals(this.cloudSdkCustomFields, collectionRequest.cloudSdkCustomFields)
         && Objects.equals(this.title, collectionRequest.title)
         && Objects.equals(this.embeddingConfig, collectionRequest.embeddingConfig)
-        && Objects.equals(this.metadata, collectionRequest.metadata)
-        && super.equals(o);
+        && Objects.equals(this.metadata, collectionRequest.metadata);
   }
 
   @Override

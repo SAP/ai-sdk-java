@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** RetrievalSearchInput */
 @Beta // CHECKSTYLE:OFF
-public class RetrievalSearchInput 
+public class RetrievalSearchInput
 // CHECKSTYLE:ON
 {
   @JsonProperty("query")
@@ -175,8 +174,7 @@ public class RetrievalSearchInput
     final RetrievalSearchInput retrievalSearchInput = (RetrievalSearchInput) o;
     return Objects.equals(this.cloudSdkCustomFields, retrievalSearchInput.cloudSdkCustomFields)
         && Objects.equals(this.query, retrievalSearchInput.query)
-        && Objects.equals(this.filters, retrievalSearchInput.filters)
-        && super.equals(o);
+        && Objects.equals(this.filters, retrievalSearchInput.filters);
   }
 
   @Override

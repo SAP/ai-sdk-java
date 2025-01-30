@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** TextSearchRequest */
 @Beta // CHECKSTYLE:OFF
-public class TextSearchRequest 
+public class TextSearchRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("query")
@@ -174,8 +173,7 @@ public class TextSearchRequest
     final TextSearchRequest textSearchRequest = (TextSearchRequest) o;
     return Objects.equals(this.cloudSdkCustomFields, textSearchRequest.cloudSdkCustomFields)
         && Objects.equals(this.query, textSearchRequest.query)
-        && Objects.equals(this.filters, textSearchRequest.filters)
-        && super.equals(o);
+        && Objects.equals(this.filters, textSearchRequest.filters);
   }
 
   @Override

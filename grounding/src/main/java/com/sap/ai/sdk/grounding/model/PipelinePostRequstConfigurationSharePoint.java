@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** PipelinePostRequstConfigurationSharePoint */
 @Beta // CHECKSTYLE:OFF
-public class PipelinePostRequstConfigurationSharePoint 
+public class PipelinePostRequstConfigurationSharePoint
 // CHECKSTYLE:ON
 {
   @JsonProperty("site")
@@ -130,8 +129,7 @@ public class PipelinePostRequstConfigurationSharePoint
     return Objects.equals(
             this.cloudSdkCustomFields,
             pipelinePostRequstConfigurationSharePoint.cloudSdkCustomFields)
-        && Objects.equals(this.site, pipelinePostRequstConfigurationSharePoint.site)
-        && super.equals(o);
+        && Objects.equals(this.site, pipelinePostRequstConfigurationSharePoint.site);
   }
 
   @Override

@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** Base class for documents, document requests and responses. */
 @Beta // CHECKSTYLE:OFF
-public class BaseDocument 
+public class BaseDocument
 // CHECKSTYLE:ON
 {
   @JsonProperty("chunks")
@@ -189,8 +188,7 @@ public class BaseDocument
     final BaseDocument baseDocument = (BaseDocument) o;
     return Objects.equals(this.cloudSdkCustomFields, baseDocument.cloudSdkCustomFields)
         && Objects.equals(this.chunks, baseDocument.chunks)
-        && Objects.equals(this.metadata, baseDocument.metadata)
-        && super.equals(o);
+        && Objects.equals(this.metadata, baseDocument.metadata);
   }
 
   @Override

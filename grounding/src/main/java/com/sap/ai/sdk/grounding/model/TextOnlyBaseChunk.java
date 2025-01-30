@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** TextOnlyBaseChunk */
 @Beta // CHECKSTYLE:OFF
-public class TextOnlyBaseChunk 
+public class TextOnlyBaseChunk
 // CHECKSTYLE:ON
 {
   @JsonProperty("content")
@@ -174,8 +173,7 @@ public class TextOnlyBaseChunk
     final TextOnlyBaseChunk textOnlyBaseChunk = (TextOnlyBaseChunk) o;
     return Objects.equals(this.cloudSdkCustomFields, textOnlyBaseChunk.cloudSdkCustomFields)
         && Objects.equals(this.content, textOnlyBaseChunk.content)
-        && Objects.equals(this.metadata, textOnlyBaseChunk.metadata)
-        && super.equals(o);
+        && Objects.equals(this.metadata, textOnlyBaseChunk.metadata);
   }
 
   @Override

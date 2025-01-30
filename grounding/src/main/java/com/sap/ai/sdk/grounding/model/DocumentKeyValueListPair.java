@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ import javax.annotation.Nullable;
 
 /** DocumentKeyValueListPair */
 @Beta // CHECKSTYLE:OFF
-public class DocumentKeyValueListPair 
+public class DocumentKeyValueListPair
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -270,8 +269,7 @@ public class DocumentKeyValueListPair
     return Objects.equals(this.cloudSdkCustomFields, documentKeyValueListPair.cloudSdkCustomFields)
         && Objects.equals(this.key, documentKeyValueListPair.key)
         && Objects.equals(this.value, documentKeyValueListPair.value)
-        && Objects.equals(this.matchMode, documentKeyValueListPair.matchMode)
-        && super.equals(o);
+        && Objects.equals(this.matchMode, documentKeyValueListPair.matchMode);
   }
 
   @Override

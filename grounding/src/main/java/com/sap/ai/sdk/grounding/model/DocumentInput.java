@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ import javax.annotation.Nullable;
 
 /** A single document stored in a collection by ID. */
 @Beta // CHECKSTYLE:OFF
-public class DocumentInput 
+public class DocumentInput
 // CHECKSTYLE:ON
 {
   @JsonProperty("chunks")
@@ -225,8 +224,7 @@ public class DocumentInput
     return Objects.equals(this.cloudSdkCustomFields, documentInput.cloudSdkCustomFields)
         && Objects.equals(this.chunks, documentInput.chunks)
         && Objects.equals(this.metadata, documentInput.metadata)
-        && Objects.equals(this.id, documentInput.id)
-        && super.equals(o);
+        && Objects.equals(this.id, documentInput.id);
   }
 
   @Override

@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** EmbeddingConfig */
 @Beta // CHECKSTYLE:OFF
-public class EmbeddingConfig 
+public class EmbeddingConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("modelName")
@@ -121,8 +120,7 @@ public class EmbeddingConfig
     }
     final EmbeddingConfig embeddingConfig = (EmbeddingConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, embeddingConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modelName, embeddingConfig.modelName)
-        && super.equals(o);
+        && Objects.equals(this.modelName, embeddingConfig.modelName);
   }
 
   @Override

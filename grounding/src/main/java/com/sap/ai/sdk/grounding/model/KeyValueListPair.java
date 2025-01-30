@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** KeyValueListPair */
 @Beta // CHECKSTYLE:OFF
-public class KeyValueListPair 
+public class KeyValueListPair
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -174,8 +173,7 @@ public class KeyValueListPair
     final KeyValueListPair keyValueListPair = (KeyValueListPair) o;
     return Objects.equals(this.cloudSdkCustomFields, keyValueListPair.cloudSdkCustomFields)
         && Objects.equals(this.key, keyValueListPair.key)
-        && Objects.equals(this.value, keyValueListPair.value)
-        && super.equals(o);
+        && Objects.equals(this.value, keyValueListPair.value);
   }
 
   @Override

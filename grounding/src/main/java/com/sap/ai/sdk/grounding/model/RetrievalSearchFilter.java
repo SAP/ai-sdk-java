@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** Limit scope of search to certain DataRepositories, Documents or Chunks. */
 @Beta // CHECKSTYLE:OFF
-public class RetrievalSearchFilter 
+public class RetrievalSearchFilter
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -423,8 +422,7 @@ public class RetrievalSearchFilter
         && Objects.equals(this.dataRepositoryType, retrievalSearchFilter.dataRepositoryType)
         && Objects.equals(this.dataRepositoryMetadata, retrievalSearchFilter.dataRepositoryMetadata)
         && Objects.equals(this.documentMetadata, retrievalSearchFilter.documentMetadata)
-        && Objects.equals(this.chunkMetadata, retrievalSearchFilter.chunkMetadata)
-        && super.equals(o);
+        && Objects.equals(this.chunkMetadata, retrievalSearchFilter.chunkMetadata);
   }
 
   @Override

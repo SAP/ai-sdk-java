@@ -32,35 +32,35 @@
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
     <coverage.complexity>76%</coverage.complexity>
-    <coverage.line>90%</coverage.line>
-    <coverage.instruction>91%</coverage.instruction>
-    <coverage.branch>69%</coverage.branch>
-    <coverage.method>70%</coverage.method>
+    <coverage.line>83%</coverage.line>
+    <coverage.instruction>88%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
   <dependencies>
+    <!-- used by generated API classes -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
     <!-- scope "compile" -->
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>core</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
-      <artifactId>connectivity-apache-httpclient5</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.core5</groupId>
-      <artifactId>httpcore5</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5</artifactId>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -69,18 +69,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.vavr</groupId>
-      <artifactId>vavr</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -112,16 +100,6 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <profiles>
@@ -144,6 +122,7 @@
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
               <compileScope>COMPILE</compileScope>
               <deleteOutputDirectory>true</deleteOutputDirectory>
+              <skip>true</skip>
             </configuration>
             <executions>
               <execution>

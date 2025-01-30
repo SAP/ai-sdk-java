@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** SearchDocumentKeyValueListPair */
 @Beta // CHECKSTYLE:OFF
-public class SearchDocumentKeyValueListPair 
+public class SearchDocumentKeyValueListPair
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -234,8 +233,7 @@ public class SearchDocumentKeyValueListPair
             this.cloudSdkCustomFields, searchDocumentKeyValueListPair.cloudSdkCustomFields)
         && Objects.equals(this.key, searchDocumentKeyValueListPair.key)
         && Objects.equals(this.value, searchDocumentKeyValueListPair.value)
-        && Objects.equals(this.selectMode, searchDocumentKeyValueListPair.selectMode)
-        && super.equals(o);
+        && Objects.equals(this.selectMode, searchDocumentKeyValueListPair.selectMode);
   }
 
   @Override

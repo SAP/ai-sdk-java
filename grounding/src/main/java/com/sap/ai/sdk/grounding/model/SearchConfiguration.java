@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** SearchConfiguration */
 @Beta // CHECKSTYLE:OFF
-public class SearchConfiguration 
+public class SearchConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("maxChunkCount")
@@ -168,8 +167,7 @@ public class SearchConfiguration
     final SearchConfiguration searchConfiguration = (SearchConfiguration) o;
     return Objects.equals(this.cloudSdkCustomFields, searchConfiguration.cloudSdkCustomFields)
         && Objects.equals(this.maxChunkCount, searchConfiguration.maxChunkCount)
-        && Objects.equals(this.maxDocumentCount, searchConfiguration.maxDocumentCount)
-        && super.equals(o);
+        && Objects.equals(this.maxDocumentCount, searchConfiguration.maxDocumentCount);
   }
 
   @Override

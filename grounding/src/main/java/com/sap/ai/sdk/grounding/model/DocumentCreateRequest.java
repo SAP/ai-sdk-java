@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** A create request containing one or more new documents to create and store in a collection. */
 @Beta // CHECKSTYLE:OFF
-public class DocumentCreateRequest 
+public class DocumentCreateRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("documents")
@@ -140,8 +139,7 @@ public class DocumentCreateRequest
     }
     final DocumentCreateRequest documentCreateRequest = (DocumentCreateRequest) o;
     return Objects.equals(this.cloudSdkCustomFields, documentCreateRequest.cloudSdkCustomFields)
-        && Objects.equals(this.documents, documentCreateRequest.documents)
-        && super.equals(o);
+        && Objects.equals(this.documents, documentCreateRequest.documents);
   }
 
   @Override

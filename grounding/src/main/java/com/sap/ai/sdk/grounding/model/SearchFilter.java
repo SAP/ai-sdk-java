@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** SearchFilter */
 @Beta // CHECKSTYLE:OFF
-public class SearchFilter 
+public class SearchFilter
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -369,8 +368,7 @@ public class SearchFilter
         && Objects.equals(this._configuration, searchFilter._configuration)
         && Objects.equals(this.collectionMetadata, searchFilter.collectionMetadata)
         && Objects.equals(this.documentMetadata, searchFilter.documentMetadata)
-        && Objects.equals(this.chunkMetadata, searchFilter.chunkMetadata)
-        && super.equals(o);
+        && Objects.equals(this.chunkMetadata, searchFilter.chunkMetadata);
   }
 
   @Override

@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ import javax.annotation.Nullable;
  * by ID.
  */
 @Beta // CHECKSTYLE:OFF
-public class DocumentUpdateRequest 
+public class DocumentUpdateRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("documents")
@@ -143,8 +142,7 @@ public class DocumentUpdateRequest
     }
     final DocumentUpdateRequest documentUpdateRequest = (DocumentUpdateRequest) o;
     return Objects.equals(this.cloudSdkCustomFields, documentUpdateRequest.cloudSdkCustomFields)
-        && Objects.equals(this.documents, documentUpdateRequest.documents)
-        && super.equals(o);
+        && Objects.equals(this.documents, documentUpdateRequest.documents);
   }
 
   @Override

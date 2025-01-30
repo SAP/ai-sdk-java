@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** PipelinePostRequst */
 @Beta // CHECKSTYLE:OFF
-public class PipelinePostRequst 
+public class PipelinePostRequst
 // CHECKSTYLE:ON
 {
   @JsonProperty("type")
@@ -158,8 +157,7 @@ public class PipelinePostRequst
     final PipelinePostRequst pipelinePostRequst = (PipelinePostRequst) o;
     return Objects.equals(this.cloudSdkCustomFields, pipelinePostRequst.cloudSdkCustomFields)
         && Objects.equals(this.type, pipelinePostRequst.type)
-        && Objects.equals(this._configuration, pipelinePostRequst._configuration)
-        && super.equals(o);
+        && Objects.equals(this._configuration, pipelinePostRequst._configuration);
   }
 
   @Override
