@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import lombok.val;
 import org.springframework.ai.chat.model.ChatModel;
@@ -32,7 +33,8 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse completion() {
-    val prompt = new Prompt("What is the capital of France?", defaultOptions);
+    defaultOptions.setFunctions(Set.of("getWeather"));
+    val prompt = new Prompt("What is the weather in Potsdam?", defaultOptions);
 
     return client.call(prompt);
   }

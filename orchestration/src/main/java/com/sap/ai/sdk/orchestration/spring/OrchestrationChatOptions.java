@@ -10,10 +10,15 @@ import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.get
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
+import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
+import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -22,6 +27,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.model.function.FunctionCallback;
+import org.springframework.ai.model.function.FunctionCallingOptions;
 
 /**
  * Configuration to be used for orchestration requests.
@@ -32,9 +39,10 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 @Data
 @Getter(AccessLevel.NONE)
 @Setter(AccessLevel.NONE)
-public class OrchestrationChatOptions implements ChatOptions {
+public class OrchestrationChatOptions implements FunctionCallingOptions {
 
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
+  private Set<String> functions = Set.of();
 
   @Getter(AccessLevel.PUBLIC)
   @Setter(AccessLevel.PUBLIC)
@@ -175,4 +183,43 @@ public class OrchestrationChatOptions implements ChatOptions {
         config.getLlmConfig(),
         "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
   }
+
+  @Override
+  public List<FunctionCallback> getFunctionCallbacks() {
+    return List.of();
+  }
+
+  @Override
+  public void setFunctionCallbacks(List<FunctionCallback> functionCallbacks) {}
+
+  @Override
+  public Set<String> getFunctions() {
+    return functions;
+  }
+
+  @Override
+  public void setFunctions(Set<String> functionNames) {
+    this.functions = functionNames;
+    Template template =
+        Objects.requireNonNullElse(
+            (Template) config.getTemplateConfig(), Template.create().template());
+    config =
+        config.withTemplateConfig(
+            template.tools(
+                functionNames.stream()
+                    .map(
+                        functionName ->
+                            ChatCompletionTool.create()
+                                .type(TypeEnum.FUNCTION)
+                                .function(FunctionObject.create().name(functionName)))
+                    .toList()));
+  }
+
+  @Override
+  public Map<String, Object> getToolContext() {
+    return Map.of();
+  }
+
+  @Override
+  public void setToolContext(Map<String, Object> tooContext) {}
 }

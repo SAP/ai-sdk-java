@@ -8,7 +8,6 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -21,7 +20,7 @@ final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    val template = toTemplateModuleConfig(prompt, config.getTemplateConfig());
+    val template = toTemplateModuleConfig(prompt, (Template) config.getTemplateConfig());
     // note that the config is immutable and implicitly copied here
     // copying is required here, to not alter the original config object, which might be reused for
     // subsequent requests
@@ -40,7 +39,7 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static TemplatingModuleConfig toTemplateModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig template) {
+      @Nonnull final OrchestrationPrompt prompt, @Nullable final Template template) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
      * This works around the limitation that the template config is required.
@@ -48,7 +47,7 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
+    val messages = template.getTemplate();
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(
         prompt.getMessages().stream().map(Message::createChatMessage).toList());
@@ -56,7 +55,7 @@ final class ConfigToRequestTransformer {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return Template.create().template(messagesWithPrompt);
+    return Template.create().template(messagesWithPrompt).tools(template.getTools());
   }
 
   @Nonnull
