@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** Information about the content filtering results. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ContentFilterResultsBase
 // CHECKSTYLE:ON
 {

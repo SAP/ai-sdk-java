@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 
 /** FunctionObject */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class FunctionObject
 // CHECKSTYLE:ON
 {

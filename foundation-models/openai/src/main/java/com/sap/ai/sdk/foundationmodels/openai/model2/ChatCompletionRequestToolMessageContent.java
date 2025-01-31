@@ -19,6 +19,7 @@ package com.sap.ai.sdk.foundationmodels.openai.model2;
 import java.util.List;
 
 /** The contents of the tool message. */
+@com.google.common.annotations.Beta
 public interface ChatCompletionRequestToolMessageContent {
   /**
    * Helper class to create a String that implements {@link

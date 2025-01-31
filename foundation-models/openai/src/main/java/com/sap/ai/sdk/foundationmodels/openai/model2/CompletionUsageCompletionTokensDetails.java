@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** Breakdown of tokens used in a completion. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class CompletionUsageCompletionTokensDetails
 // CHECKSTYLE:ON
 {

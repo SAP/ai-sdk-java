@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionRequestMessageContentPartImageImageUrl */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ChatCompletionRequestMessageContentPartImageImageUrl
 // CHECKSTYLE:ON
 {

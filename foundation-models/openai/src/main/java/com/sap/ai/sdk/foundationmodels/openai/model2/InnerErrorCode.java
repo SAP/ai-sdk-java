@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
 /** Error codes for the inner error object. */
+@com.google.common.annotations.Beta
 public enum InnerErrorCode {
   RESPONSIBLE_AI_POLICY_VIOLATION("ResponsibleAIPolicyViolation");
 

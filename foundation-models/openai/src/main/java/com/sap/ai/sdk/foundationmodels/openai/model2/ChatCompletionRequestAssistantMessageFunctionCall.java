@@ -36,6 +36,7 @@ import javax.annotation.Nullable;
  */
 @Deprecated
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ChatCompletionRequestAssistantMessageFunctionCall
 // CHECKSTYLE:ON
 {

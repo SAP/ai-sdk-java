@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
  * forces the model to call that function.
  */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ChatCompletionFunctionCallOption
 // CHECKSTYLE:ON
 {

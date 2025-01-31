@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /** Log probability information for the choice. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class CreateChatCompletionResponseChoicesInnerLogprobs
 // CHECKSTYLE:ON
 {

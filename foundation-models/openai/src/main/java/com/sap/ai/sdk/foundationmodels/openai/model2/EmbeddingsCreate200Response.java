@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /** EmbeddingsCreate200Response */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class EmbeddingsCreate200Response
 // CHECKSTYLE:ON
 {

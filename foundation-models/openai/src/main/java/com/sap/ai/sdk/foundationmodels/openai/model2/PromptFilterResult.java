@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** Content filtering results for a single prompt in the request. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class PromptFilterResult
 // CHECKSTYLE:ON
 {

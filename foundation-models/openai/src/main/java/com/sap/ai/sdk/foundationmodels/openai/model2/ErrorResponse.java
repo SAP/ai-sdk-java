@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** ErrorResponse */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ErrorResponse
 // CHECKSTYLE:ON
 {

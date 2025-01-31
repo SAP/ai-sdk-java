@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** EmbeddingsCreateRequest */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class EmbeddingsCreateRequest
 // CHECKSTYLE:ON
 {

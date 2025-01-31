@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** ErrorBase */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ErrorBase
 // CHECKSTYLE:ON
 {

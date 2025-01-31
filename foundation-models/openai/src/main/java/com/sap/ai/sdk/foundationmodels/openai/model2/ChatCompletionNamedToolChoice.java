@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /** Specifies a tool the model should use. Use to force the model to call a specific function. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ChatCompletionNamedToolChoice
 // CHECKSTYLE:ON
 {

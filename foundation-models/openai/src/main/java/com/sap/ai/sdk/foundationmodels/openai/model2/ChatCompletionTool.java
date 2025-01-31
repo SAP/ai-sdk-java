@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionTool */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ChatCompletionTool
 // CHECKSTYLE:ON
 {

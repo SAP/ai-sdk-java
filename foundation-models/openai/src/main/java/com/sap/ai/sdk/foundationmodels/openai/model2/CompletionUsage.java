@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 
 /** Usage statistics for the completion request. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class CompletionUsage
 // CHECKSTYLE:ON
 {

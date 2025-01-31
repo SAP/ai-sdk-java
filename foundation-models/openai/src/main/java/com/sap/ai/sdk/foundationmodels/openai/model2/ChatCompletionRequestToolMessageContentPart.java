@@ -24,4 +24,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
   @JsonSubTypes.Type(value = ChatCompletionRequestMessageContentPartText.class),
 })
+@com.google.common.annotations.Beta
 public interface ChatCompletionRequestToolMessageContentPart {}

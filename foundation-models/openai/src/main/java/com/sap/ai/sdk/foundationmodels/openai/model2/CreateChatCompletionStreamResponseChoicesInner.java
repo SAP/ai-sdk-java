@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /** CreateChatCompletionStreamResponseChoicesInner */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class CreateChatCompletionStreamResponseChoicesInner
 // CHECKSTYLE:ON
 {

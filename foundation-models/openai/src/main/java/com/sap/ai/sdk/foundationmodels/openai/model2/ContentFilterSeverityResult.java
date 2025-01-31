@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /** ContentFilterSeverityResult */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ContentFilterSeverityResult
 // CHECKSTYLE:ON
 {

@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 
 /** Represents a chat completion response returned by model, based on the provided input. */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class CreateChatCompletionResponse implements ChatCompletionsCreate200Response
 // CHECKSTYLE:ON
 {

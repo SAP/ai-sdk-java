@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
 /** The role of the author of the response message. */
+@com.google.common.annotations.Beta
 public enum ChatCompletionResponseMessageRole {
   ASSISTANT("assistant");
 

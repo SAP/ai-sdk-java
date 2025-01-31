@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionTokenLogprob */
 // CHECKSTYLE:OFF
+@com.google.common.annotations.Beta
 public class ChatCompletionTokenLogprob
 // CHECKSTYLE:ON
 {

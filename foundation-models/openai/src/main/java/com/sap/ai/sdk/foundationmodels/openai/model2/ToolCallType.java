@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
 /** The type of the tool call, in this case &#x60;function&#x60;. */
+@com.google.common.annotations.Beta
 public enum ToolCallType {
   FUNCTION("function");
 

@@ -24,6 +24,7 @@ import java.util.List;
  * Unless you are embedding code, we suggest replacing newlines (\\n) in your input with a single
  * space, as we have observed inferior results when newlines are present.
  */
+@com.google.common.annotations.Beta
 public interface EmbeddingsCreateRequestInput {
   /** Helper class to create a String that implements {@link EmbeddingsCreateRequestInput}. */
   class InnerString implements EmbeddingsCreateRequestInput {
