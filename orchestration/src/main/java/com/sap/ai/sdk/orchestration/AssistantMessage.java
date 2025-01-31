@@ -21,6 +21,11 @@ public class AssistantMessage implements Message {
     return content;
   }
 
+  /**
+   * Creates a new assistant message with the given single message.
+   *
+   * @param singleMessage the single message.
+   */
   public AssistantMessage(String singleMessage) {
     content = new MessageContent(singleMessage);
   }

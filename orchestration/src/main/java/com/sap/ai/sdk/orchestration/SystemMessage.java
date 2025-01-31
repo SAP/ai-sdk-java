@@ -23,14 +23,30 @@ public class SystemMessage implements Message {
     return content;
   }
 
+  /**
+   * Creates a new system message with the given single message.
+   *
+   * @param singleMessage the single message.
+   */
   public SystemMessage(String singleMessage) {
     content = new MessageContent(singleMessage);
   }
 
+  /**
+   * Creates a new system message with the given message content.
+   *
+   * @param messageContent the message content.
+   */
   public SystemMessage(MessageContent messageContent) {
     content = messageContent;
   }
 
+  /**
+   * Add text to the message.
+   *
+   * @param messages the text to add.
+   * @return the new message.
+   */
   @Nonnull
   public SystemMessage addText(@Nonnull String... messages) {
     return new SystemMessage(
@@ -40,6 +56,13 @@ public class SystemMessage implements Message {
                 .toList()));
   }
 
+  /**
+   * Add content to the message. The content will be added to the end of the message.
+   * As of now, only TextItem will be successfully consumed by an AI.
+   *
+   * @param messageContents the content to add.
+   * @return the new message.
+   */
   public SystemMessage add(@Nonnull MessageContent... messageContents) {
     List<ContentItem> combinedItems =
         Stream.concat(

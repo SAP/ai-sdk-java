@@ -6,25 +6,62 @@ import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.Arrays;
 import java.util.List;
 
+/** Represents the content of a chat message. */
 public record MessageContent(List<ContentItem> contentItemList) {
 
   MessageContent(String singleMessage) {
     this(List.of(new TextItem(singleMessage)));
   }
 
+  /**
+   * Creates a new message content containing one {@link ImageItem} with the given image URL and detail
+   * level.
+   *
+   * @param imageUrl the URL of the image
+   * @param detailLevel the detail level of the image
+   * @return the new message content
+   */
   public static MessageContent image(String imageUrl, ImageItem.DetailLevel detailLevel) {
     return new MessageContent(List.of(new ImageItem(imageUrl, detailLevel)));
   }
 
+  /**
+   * Creates a new message content containing one {@link ImageItem} with the given image URL.
+   *
+   * @param imageUrl the URL of the image
+   * @return the new message content
+   */
+  public static MessageContent image(String imageUrl) {
+    return new MessageContent(List.of(new ImageItem(imageUrl)));
+  }
+
+  /**
+   * Creates a new message content containing one {@link TextItem} with the given text.
+   *
+   * @param text the text of the message
+   * @return the new message content
+   */
   public static MessageContent text(String text) {
     return new MessageContent(List.of(new TextItem(text)));
   }
 
+  /**
+   * Creates a new message content containing multiple {@link TextItem}s with the given texts.
+   *
+   * @param texts the texts of the messages
+   * @return the new message content
+   */
   public static MessageContent text(String... texts) {
     return new MessageContent(
         Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
   }
 
+  /**
+   * Creates a new message content containing multiple {@link ContentItem}s.
+   *
+   * @param multiChatContents the content items
+   * @return the new message content
+   */
   public MessageContent(MultiChatMessageContent... multiChatContents) {
     this(convertIntoMultiMessageList(multiChatContents));
   }

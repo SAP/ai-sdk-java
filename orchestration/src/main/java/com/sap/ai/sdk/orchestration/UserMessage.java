@@ -23,14 +23,30 @@ public class UserMessage implements Message {
     return content;
   }
 
+  /**
+   * Creates a new user message with the given single message.
+   *
+   * @param singleMessage the single message.
+   */
   public UserMessage(String singleMessage) {
     content = new MessageContent(singleMessage);
   }
 
+  /**
+   * Creates a new user message with the given message content.
+   *
+   * @param messageContent the message content.
+   */
   public UserMessage(MessageContent messageContent) {
     content = messageContent;
   }
 
+  /**
+   * Add text to the message.
+   *
+   * @param messages the text to add.
+   * @return the new message.
+   */
   @Nonnull
   public UserMessage addText(@Nonnull String... messages) {
     return new UserMessage(
@@ -40,6 +56,13 @@ public class UserMessage implements Message {
                 Stream.of(messages).map(TextItem::new)).toList()));
   }
 
+  /**
+   * Add an image to the message with the given image URL and detail level.
+   *
+   * @param imageUrl the URL of the image.
+   * @param detailLevel the detail level of the image.
+   * @return the new message.
+   */
   @Nonnull
   public UserMessage addImage(
       @Nonnull String imageUrl, ImageItem.DetailLevel detailLevel) {
@@ -50,6 +73,28 @@ public class UserMessage implements Message {
                 Stream.of(new ImageItem(imageUrl, detailLevel))).toList()));
   }
 
+  /**
+   * Add an image to the message with the given image URL.
+   *
+   * @param imageUrl the URL of the image.
+   * @return the new message.
+   */
+  @Nonnull
+  public UserMessage addImage(
+      @Nonnull String imageUrl) {
+    return new UserMessage(
+        new MessageContent(
+            Stream.concat(
+                content.contentItemList().stream(),
+                Stream.of(new ImageItem(imageUrl))).toList()));
+  }
+
+  /**
+   * Add content in the form of {@link MessageContent} objects to the message.
+   *
+   * @param messageContents the content to add.
+   * @return the new message.
+   */
   public UserMessage add(@Nonnull MessageContent... messageContents) {
     List<ContentItem> combinedItems = Stream.concat(
         Stream.of(messageContents).flatMap(contentItem -> contentItem.contentItemList().stream()),
