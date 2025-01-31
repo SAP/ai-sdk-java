@@ -55,6 +55,15 @@ public class RTAModelVersion
   @JsonProperty("capabilities")
   private List<String> capabilities = new ArrayList<>();
 
+  @JsonProperty("metadata")
+  private List<Map<String, String>> metadata = new ArrayList<>();
+
+  @JsonProperty("cost")
+  private List<Map<String, String>> cost = new ArrayList<>();
+
+  @JsonProperty("suggestedReplacements")
+  private List<String> suggestedReplacements = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -309,6 +318,147 @@ public class RTAModelVersion
   }
 
   /**
+   * Set the metadata of this {@link RTAModelVersion} instance and return the same instance.
+   *
+   * @param metadata List of metadata supported by the model
+   * @return The same instance of this {@link RTAModelVersion} class
+   */
+  @Nonnull
+  public RTAModelVersion metadata(@Nullable final List<Map<String, String>> metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+  /**
+   * Add one metadata instance to this {@link RTAModelVersion}.
+   *
+   * @param metadataItem The metadata that should be added
+   * @return The same instance of type {@link RTAModelVersion}
+   */
+  @Nonnull
+  public RTAModelVersion addMetadataItem(@Nonnull final Map<String, String> metadataItem) {
+    if (this.metadata == null) {
+      this.metadata = new ArrayList<>();
+    }
+    this.metadata.add(metadataItem);
+    return this;
+  }
+
+  /**
+   * List of metadata supported by the model
+   *
+   * @return metadata The metadata of this {@link RTAModelVersion} instance.
+   */
+  @Nonnull
+  public List<Map<String, String>> getMetadata() {
+    return metadata;
+  }
+
+  /**
+   * Set the metadata of this {@link RTAModelVersion} instance.
+   *
+   * @param metadata List of metadata supported by the model
+   */
+  public void setMetadata(@Nullable final List<Map<String, String>> metadata) {
+    this.metadata = metadata;
+  }
+
+  /**
+   * Set the cost of this {@link RTAModelVersion} instance and return the same instance.
+   *
+   * @param cost List of costs associated with the model
+   * @return The same instance of this {@link RTAModelVersion} class
+   */
+  @Nonnull
+  public RTAModelVersion cost(@Nullable final List<Map<String, String>> cost) {
+    this.cost = cost;
+    return this;
+  }
+
+  /**
+   * Add one cost instance to this {@link RTAModelVersion}.
+   *
+   * @param costItem The cost that should be added
+   * @return The same instance of type {@link RTAModelVersion}
+   */
+  @Nonnull
+  public RTAModelVersion addCostItem(@Nonnull final Map<String, String> costItem) {
+    if (this.cost == null) {
+      this.cost = new ArrayList<>();
+    }
+    this.cost.add(costItem);
+    return this;
+  }
+
+  /**
+   * List of costs associated with the model
+   *
+   * @return cost The cost of this {@link RTAModelVersion} instance.
+   */
+  @Nonnull
+  public List<Map<String, String>> getCost() {
+    return cost;
+  }
+
+  /**
+   * Set the cost of this {@link RTAModelVersion} instance.
+   *
+   * @param cost List of costs associated with the model
+   */
+  public void setCost(@Nullable final List<Map<String, String>> cost) {
+    this.cost = cost;
+  }
+
+  /**
+   * Set the suggestedReplacements of this {@link RTAModelVersion} instance and return the same
+   * instance.
+   *
+   * @param suggestedReplacements List of suggested replacements for the model
+   * @return The same instance of this {@link RTAModelVersion} class
+   */
+  @Nonnull
+  public RTAModelVersion suggestedReplacements(@Nullable final List<String> suggestedReplacements) {
+    this.suggestedReplacements = suggestedReplacements;
+    return this;
+  }
+
+  /**
+   * Add one suggestedReplacements instance to this {@link RTAModelVersion}.
+   *
+   * @param suggestedReplacementsItem The suggestedReplacements that should be added
+   * @return The same instance of type {@link RTAModelVersion}
+   */
+  @Nonnull
+  public RTAModelVersion addSuggestedReplacementsItem(
+      @Nonnull final String suggestedReplacementsItem) {
+    if (this.suggestedReplacements == null) {
+      this.suggestedReplacements = new ArrayList<>();
+    }
+    this.suggestedReplacements.add(suggestedReplacementsItem);
+    return this;
+  }
+
+  /**
+   * List of suggested replacements for the model
+   *
+   * @return suggestedReplacements The suggestedReplacements of this {@link RTAModelVersion}
+   *     instance.
+   */
+  @Nonnull
+  public List<String> getSuggestedReplacements() {
+    return suggestedReplacements;
+  }
+
+  /**
+   * Set the suggestedReplacements of this {@link RTAModelVersion} instance.
+   *
+   * @param suggestedReplacements List of suggested replacements for the model
+   */
+  public void setSuggestedReplacements(@Nullable final List<String> suggestedReplacements) {
+    this.suggestedReplacements = suggestedReplacements;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link RTAModelVersion}.
    *
    * @return The set of properties names
@@ -362,7 +512,10 @@ public class RTAModelVersion
         && Objects.equals(this.retirementDate, rtAModelVersion.retirementDate)
         && Objects.equals(this.contextLength, rtAModelVersion.contextLength)
         && Objects.equals(this.inputTypes, rtAModelVersion.inputTypes)
-        && Objects.equals(this.capabilities, rtAModelVersion.capabilities);
+        && Objects.equals(this.capabilities, rtAModelVersion.capabilities)
+        && Objects.equals(this.metadata, rtAModelVersion.metadata)
+        && Objects.equals(this.cost, rtAModelVersion.cost)
+        && Objects.equals(this.suggestedReplacements, rtAModelVersion.suggestedReplacements);
   }
 
   @Override
@@ -375,6 +528,9 @@ public class RTAModelVersion
         contextLength,
         inputTypes,
         capabilities,
+        metadata,
+        cost,
+        suggestedReplacements,
         cloudSdkCustomFields);
   }
 
@@ -390,6 +546,11 @@ public class RTAModelVersion
     sb.append("    contextLength: ").append(toIndentedString(contextLength)).append("\n");
     sb.append("    inputTypes: ").append(toIndentedString(inputTypes)).append("\n");
     sb.append("    capabilities: ").append(toIndentedString(capabilities)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    cost: ").append(toIndentedString(cost)).append("\n");
+    sb.append("    suggestedReplacements: ")
+        .append(toIndentedString(suggestedReplacements))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
