@@ -68,11 +68,7 @@ public class OrchestrationChatResponse {
               case "user" -> Message.user(simpleMsg.getContent());
               case "assistant" -> Message.assistant(simpleMsg.getContent());
               case "system" -> Message.system(simpleMsg.getContent());
-              default ->
-                  throw new IllegalArgumentException(
-                      "Unexpected role: "
-                          + simpleMsg.getRole()
-                          + ". Only 'user', 'assistant' and 'system' are supported.");
+              default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
             };
         messages.add(message);
       } else if (chatMessage instanceof MultiChatMessage mCMessage) {
@@ -87,10 +83,8 @@ public class OrchestrationChatResponse {
                       new MessageContent(
                           mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
               default ->
-                  throw new IllegalArgumentException(
-                      "Unexpected role using MultiChatMessage: "
-                          + mCMessage.getRole()
-                          + ". Only 'user' and 'system' are supported.");
+                  throw new IllegalStateException(
+                      "Unexpected role with complex message: " + mCMessage.getRole());
             });
       } else {
         throw new IllegalArgumentException(

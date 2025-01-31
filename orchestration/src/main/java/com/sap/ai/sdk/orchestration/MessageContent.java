@@ -16,10 +16,10 @@ public record MessageContent(List<ContentItem> contentItemList) {
     var strBuilder = new StringBuilder();
     content.contentItemList.forEach(
         multiContent -> {
-          if (multiContent instanceof TextItem mMText) {
-            strBuilder.append(mMText.text()).append("; ");
-          } else if (multiContent instanceof ImageItem mMImage) {
-            strBuilder.append(mMImage.imageUrl());
+          if (multiContent instanceof TextItem textItem) {
+            strBuilder.append(textItem.text()).append("; ");
+          } else if (multiContent instanceof ImageItem imageItem) {
+            strBuilder.append(imageItem.imageUrl());
           } else {
             throw new IllegalArgumentException(
                 "Unknown subtype of MultiChatMessageContent: " + multiContent.getClass());

@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Value;
@@ -27,15 +28,6 @@ public class SystemMessage implements Message {
   }
 
   SystemMessage(MessageContent messageContent) {
-      messageContent
-          .contentItemList().stream()
-              .filter(contentItem -> !(contentItem instanceof TextItem))
-              .findAny()
-              .ifPresent(
-                  mCMC -> {
-                    throw new IllegalArgumentException(
-                        "Only TextContent is supported for SystemMessage");
-                  });
     content = messageContent;
   }
 
@@ -47,12 +39,10 @@ public class SystemMessage implements Message {
   }
 
   public SystemMessage add(@Nonnull MessageContent... messageContents) {
-//    TODO: What about images here? Also, see above in line 29.
-    return new SystemMessage(
-        new MessageContent(
-            Stream.of(messageContents)
-                .flatMap(contentItem -> contentItem.contentItemList().stream())
-                .toList(),
-            content));
+    List<ContentItem> combinedItems = Stream.concat(
+        Stream.of(messageContents).flatMap(contentItem -> contentItem.contentItemList().stream()),
+        content.contentItemList().stream()
+    ).toList();
+    return new SystemMessage(new MessageContent(combinedItems));
   }
 }

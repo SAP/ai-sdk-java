@@ -47,12 +47,10 @@ public class UserMessage implements Message {
   }
 
   public UserMessage add(@Nonnull MessageContent... messageContents) {
-//    TODO: Can this be imolemeted in a more readable way?
-    return new UserMessage(
-        new MessageContent(
-            Stream.of(messageContents)
-                .flatMap(contentItem -> contentItem.contentItemList().stream())
-                .toList(),
-            content));
+    List<ContentItem> combinedItems = Stream.concat(
+        Stream.of(messageContents).flatMap(contentItem -> contentItem.contentItemList().stream()),
+        content.contentItemList().stream()
+    ).toList();
+    return new UserMessage(new MessageContent(combinedItems));
   }
 }
