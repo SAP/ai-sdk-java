@@ -13,6 +13,7 @@ import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequestAllOfStop;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
@@ -122,6 +123,7 @@ public final class OpenAiClient {
       @Nonnull final OpenAiChatCompletionConfig config) {
     final var request = new CreateChatCompletionRequest();
     prompt.messages().forEach(message -> request.addMessagesItem(message.createDTO()));
+    request.stop(CreateChatCompletionRequestAllOfStop.create(prompt.stop()));
 
     request.temperature(config.temperature());
     request.topP(config.topP());
@@ -141,8 +143,8 @@ public final class OpenAiClient {
     request.responseFormat(config.responseFormat());
     request.tools(config.tools());
     request.toolChoice(config.toolChoice());
-    request.functionCall(config.functionCall());
-    request.functions(config.functions());
+    request.functionCall(null);
+    request.functions(null);
     return request;
   }
 
@@ -202,7 +204,7 @@ public final class OpenAiClient {
    * @param prompt The prompt, includes a list of messages from the conversation.
    * @param config The configuration for the chat completion.
    * @return the response from the OpenAI model
-   * @throws OpenAiClientException
+   * @throws OpenAiClientException if the request fails
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
@@ -300,7 +302,7 @@ public final class OpenAiClient {
       @Nonnull final OpenAiChatCompletionPrompt prompt) throws OpenAiClientException {
     return streamChatCompletionDeltas(prompt, new OpenAiChatCompletionConfig());
   }
-  
+
   /**
    * Stream a completion for the given prompt and configuration. Returns a <b>lazily</b> populated
    * stream of delta objects. To simply stream the text chunks use {@link

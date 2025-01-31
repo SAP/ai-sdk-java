@@ -3,10 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -16,7 +13,7 @@ import lombok.experimental.Accessors;
 public class OpenAiChatCompletionPrompt {
   @Nonnull private final List<OpenAiMessage> messages = new ArrayList<>();
 
-  @Nullable private List<String> stop;
+  @Nonnull private final List<String> stop = new ArrayList<>();
 
   private OpenAiChatCompletionPrompt(@Nonnull final String message) {
     this.messages.add(OpenAiMessage.user(message));
@@ -63,7 +60,6 @@ public class OpenAiChatCompletionPrompt {
    */
   @Nonnull
   public static OpenAiChatCompletionPrompt create(@Nonnull final List<OpenAiMessage> messages) {
-    // TODO: Enforce null removal?
     return new OpenAiChatCompletionPrompt(messages);
   }
 
@@ -74,8 +70,11 @@ public class OpenAiChatCompletionPrompt {
    * @return the current OpenAiChatCompletionPrompt instance
    */
   @Nonnull
-  public OpenAiChatCompletionPrompt stop(@Nonnull final String... values) {
-    this.stop = Stream.of(values).filter(Objects::nonNull).toList();
+  public OpenAiChatCompletionPrompt stop(
+      @Nonnull final String value, @Nonnull final String... values) {
+    this.stop.add(value);
+    this.stop.addAll(Arrays.asList(values));
+
     return this;
   }
 }

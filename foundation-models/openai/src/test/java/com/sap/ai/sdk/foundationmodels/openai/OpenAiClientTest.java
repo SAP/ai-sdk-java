@@ -290,6 +290,7 @@ class OpenAiClientTest {
                              "temperature" : 1,
                              "top_p" : 1,
                              "stream" : false,
+                             "stop" : [ ],
                              "presence_penalty" : 0,
                              "frequency_penalty" : 0,
                              "messages" : [ {
@@ -327,6 +328,7 @@ class OpenAiClientTest {
                            "temperature" : 1,
                            "top_p" : 1,
                            "stream" : false,
+                           "stop" : [ ],
                            "presence_penalty" : 0,
                            "frequency_penalty" : 0,
                            "messages" : [ {
@@ -357,6 +359,7 @@ class OpenAiClientTest {
                            "temperature" : 1,
                            "top_p" : 1,
                            "stream" : false,
+                           "stop" : [ ],
                            "presence_penalty" : 0,
                            "frequency_penalty" : 0,
                            "messages" : [ {

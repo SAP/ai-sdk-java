@@ -1,10 +1,8 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionFunctions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionToolChoiceOption;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequestAllOfFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequestAllOfResponseFormat;
 import java.math.BigDecimal;
 import java.util.List;
@@ -71,11 +69,4 @@ public class OpenAiChatCompletionConfig {
 
   /** Tool choice option for the completion. */
   @Nullable private ChatCompletionToolChoiceOption toolChoice;
-
-  // TODO: Leave them here or remove deprecated out of convenience?
-  /** Deprecated: Function call for the completion. */
-  @Nullable private CreateChatCompletionRequestAllOfFunctionCall functionCall;
-
-  /** List of functions for the completion. */
-  @Nullable private List<ChatCompletionFunctions> functions;
 }
