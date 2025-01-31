@@ -50,6 +50,9 @@ public class RTAModelBaseData
   @JsonProperty("accessType")
   private String accessType;
 
+  @JsonProperty("provider")
+  private String provider;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -258,6 +261,37 @@ public class RTAModelBaseData
   }
 
   /**
+   * Set the provider of this {@link RTAModelBaseData} instance and return the same instance.
+   *
+   * @param provider Provider of the model
+   * @return The same instance of this {@link RTAModelBaseData} class
+   */
+  @Nonnull
+  public RTAModelBaseData provider(@Nullable final String provider) {
+    this.provider = provider;
+    return this;
+  }
+
+  /**
+   * Provider of the model
+   *
+   * @return provider The provider of this {@link RTAModelBaseData} instance.
+   */
+  @Nonnull
+  public String getProvider() {
+    return provider;
+  }
+
+  /**
+   * Set the provider of this {@link RTAModelBaseData} instance.
+   *
+   * @param provider Provider of the model
+   */
+  public void setProvider(@Nullable final String provider) {
+    this.provider = provider;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link RTAModelBaseData}.
    *
    * @return The set of properties names
@@ -310,13 +344,21 @@ public class RTAModelBaseData
         && Objects.equals(this.description, rtAModelBaseData.description)
         && Objects.equals(this.versions, rtAModelBaseData.versions)
         && Objects.equals(this.displayName, rtAModelBaseData.displayName)
-        && Objects.equals(this.accessType, rtAModelBaseData.accessType);
+        && Objects.equals(this.accessType, rtAModelBaseData.accessType)
+        && Objects.equals(this.provider, rtAModelBaseData.provider);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        model, executableId, description, versions, displayName, accessType, cloudSdkCustomFields);
+        model,
+        executableId,
+        description,
+        versions,
+        displayName,
+        accessType,
+        provider,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -330,6 +372,7 @@ public class RTAModelBaseData
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
     sb.append("    accessType: ").append(toIndentedString(accessType)).append("\n");
+    sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

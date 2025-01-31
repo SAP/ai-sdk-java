@@ -70,7 +70,7 @@
     <mockito.version>5.15.2</mockito.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
-    <json.version>20210307</json.version>
+    <json.version>20250107</json.version>
     <!-- Formatting -->
     <spotless.version>2.44.2</spotless.version>
     <spotless.skip>false</spotless.skip>
