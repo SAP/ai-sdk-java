@@ -12,22 +12,6 @@ import java.util.List;
 
 public record MessageContent(List<ContentItem> contentItemList) {
 
-  public static String toString(MessageContent content) {
-    var strBuilder = new StringBuilder();
-    content.contentItemList.forEach(
-        multiContent -> {
-          if (multiContent instanceof TextItem textItem) {
-            strBuilder.append(textItem.text()).append("; ");
-          } else if (multiContent instanceof ImageItem imageItem) {
-            strBuilder.append(imageItem.imageUrl());
-          } else {
-            throw new IllegalArgumentException(
-                "Unknown subtype of MultiChatMessageContent: " + multiContent.getClass());
-          }
-        });
-    return strBuilder.toString();
-  }
-
   MessageContent(String singleMessage) {
     this(List.of(new TextItem(singleMessage)));
   }

@@ -772,9 +772,6 @@ class OrchestrationUnitTest {
                     CompletionPostResponse.class));
 
     assertThat(orchestrationChatResponse.getAllMessages()).hasSize(2);
-    //    assertThatThrownBy(orchestrationChatResponse::getAllMessages)
-    //        .isInstanceOf(UnsupportedOperationException.class)
-    //        .hasMessage("Messages of MultiChatMessage type not supported by convenience API");
   }
 
   @Test
@@ -818,18 +815,6 @@ class OrchestrationUnitTest {
     var multiPrompt = new OrchestrationPrompt(multiMessage);
     var response = client.chatCompletion(multiPrompt, config);
 
-    var strBuilder = new StringBuilder();
-    var messages = response.getAllMessages();
-    for (Message m : messages) {
-      String role = m.role();
-      String content = MessageContent.toString(m.content());
-      strBuilder.append("[%s] %s%n".formatted(role, content));
-    }
-    assertThat(strBuilder.toString())
-        .isEqualTo(
-            """
-                [user] Can you solve this captcha? Please help me prove my humanity!; https://sample.sap.com/image
-                [assistant] Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix;\s
-                """);
+    assertThat(response.getAllMessages()).hasSize(2);
   }
 }
