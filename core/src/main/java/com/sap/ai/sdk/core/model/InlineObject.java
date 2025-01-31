@@ -30,7 +30,7 @@ public class InlineObject
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private AiApiError error;
+  private DSetError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -45,7 +45,7 @@ public class InlineObject
    * @return The same instance of this {@link InlineObject} class
    */
   @Nonnull
-  public InlineObject error(@Nullable final AiApiError error) {
+  public InlineObject error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -56,7 +56,7 @@ public class InlineObject
    * @return error The error of this {@link InlineObject} instance.
    */
   @Nonnull
-  public AiApiError getError() {
+  public DSetError getError() {
     return error;
   }
 
@@ -65,7 +65,7 @@ public class InlineObject
    *
    * @param error The error of this {@link InlineObject}
    */
-  public void setError(@Nullable final AiApiError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 

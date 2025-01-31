@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -35,6 +36,9 @@ public class BckndGenericSecretDetails
   @JsonProperty("createdAt")
   private String createdAt;
 
+  @JsonProperty("resourceGroupSecretsSyncStatus")
+  private Map<String, Boolean> resourceGroupSecretsSyncStatus = new HashMap<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -48,7 +52,7 @@ public class BckndGenericSecretDetails
    * @return The same instance of this {@link BckndGenericSecretDetails} class
    */
   @Nonnull
-  public BckndGenericSecretDetails name(@Nullable final String name) {
+  public BckndGenericSecretDetails name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
@@ -68,7 +72,7 @@ public class BckndGenericSecretDetails
    *
    * @param name Name of the secret
    */
-  public void setName(@Nullable final String name) {
+  public void setName(@Nonnull final String name) {
     this.name = name;
   }
 
@@ -80,7 +84,7 @@ public class BckndGenericSecretDetails
    * @return The same instance of this {@link BckndGenericSecretDetails} class
    */
   @Nonnull
-  public BckndGenericSecretDetails createdAt(@Nullable final String createdAt) {
+  public BckndGenericSecretDetails createdAt(@Nonnull final String createdAt) {
     this.createdAt = createdAt;
     return this;
   }
@@ -100,8 +104,64 @@ public class BckndGenericSecretDetails
    *
    * @param createdAt Timestamp at which secret was created
    */
-  public void setCreatedAt(@Nullable final String createdAt) {
+  public void setCreatedAt(@Nonnull final String createdAt) {
     this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the resourceGroupSecretsSyncStatus of this {@link BckndGenericSecretDetails} instance and
+   * return the same instance.
+   *
+   * @param resourceGroupSecretsSyncStatus Sync status of the replicated secrets in all resource
+   *     groups of the tenant
+   * @return The same instance of this {@link BckndGenericSecretDetails} class
+   */
+  @Nonnull
+  public BckndGenericSecretDetails resourceGroupSecretsSyncStatus(
+      @Nullable final Map<String, Boolean> resourceGroupSecretsSyncStatus) {
+    this.resourceGroupSecretsSyncStatus = resourceGroupSecretsSyncStatus;
+    return this;
+  }
+
+  /**
+   * Put one resourceGroupSecretsSyncStatus instance to this {@link BckndGenericSecretDetails}
+   * instance.
+   *
+   * @param key The String key of this resourceGroupSecretsSyncStatus instance
+   * @param resourceGroupSecretsSyncStatusItem The resourceGroupSecretsSyncStatus that should be
+   *     added under the given key
+   * @return The same instance of type {@link BckndGenericSecretDetails}
+   */
+  @Nonnull
+  public BckndGenericSecretDetails putresourceGroupSecretsSyncStatusItem(
+      @Nonnull final String key, @Nonnull final Boolean resourceGroupSecretsSyncStatusItem) {
+    if (this.resourceGroupSecretsSyncStatus == null) {
+      this.resourceGroupSecretsSyncStatus = new HashMap<>();
+    }
+    this.resourceGroupSecretsSyncStatus.put(key, resourceGroupSecretsSyncStatusItem);
+    return this;
+  }
+
+  /**
+   * Sync status of the replicated secrets in all resource groups of the tenant
+   *
+   * @return resourceGroupSecretsSyncStatus The resourceGroupSecretsSyncStatus of this {@link
+   *     BckndGenericSecretDetails} instance.
+   */
+  @Nonnull
+  public Map<String, Boolean> getResourceGroupSecretsSyncStatus() {
+    return resourceGroupSecretsSyncStatus;
+  }
+
+  /**
+   * Set the resourceGroupSecretsSyncStatus of this {@link BckndGenericSecretDetails} instance.
+   *
+   * @param resourceGroupSecretsSyncStatus Sync status of the replicated secrets in all resource
+   *     groups of the tenant
+   */
+  public void setResourceGroupSecretsSyncStatus(
+      @Nullable final Map<String, Boolean> resourceGroupSecretsSyncStatus) {
+    this.resourceGroupSecretsSyncStatus = resourceGroupSecretsSyncStatus;
   }
 
   /**
@@ -154,12 +214,15 @@ public class BckndGenericSecretDetails
     final BckndGenericSecretDetails bckndGenericSecretDetails = (BckndGenericSecretDetails) o;
     return Objects.equals(this.cloudSdkCustomFields, bckndGenericSecretDetails.cloudSdkCustomFields)
         && Objects.equals(this.name, bckndGenericSecretDetails.name)
-        && Objects.equals(this.createdAt, bckndGenericSecretDetails.createdAt);
+        && Objects.equals(this.createdAt, bckndGenericSecretDetails.createdAt)
+        && Objects.equals(
+            this.resourceGroupSecretsSyncStatus,
+            bckndGenericSecretDetails.resourceGroupSecretsSyncStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, createdAt, cloudSdkCustomFields);
+    return Objects.hash(name, createdAt, resourceGroupSecretsSyncStatus, cloudSdkCustomFields);
   }
 
   @Override
@@ -169,6 +232,9 @@ public class BckndGenericSecretDetails
     sb.append("class BckndGenericSecretDetails {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    resourceGroupSecretsSyncStatus: ")
+        .append(toIndentedString(resourceGroupSecretsSyncStatus))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -186,8 +252,33 @@ public class BckndGenericSecretDetails
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link BckndGenericSecretDetails} instance. No arguments are required. */
-  public static BckndGenericSecretDetails create() {
-    return new BckndGenericSecretDetails();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * BckndGenericSecretDetails} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (name) -> (createdAt) -> new BckndGenericSecretDetails().name(name).createdAt(createdAt);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the name of this {@link BckndGenericSecretDetails} instance.
+     *
+     * @param name Name of the secret
+     * @return The BckndGenericSecretDetails builder.
+     */
+    Builder1 name(@Nonnull final String name);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the createdAt of this {@link BckndGenericSecretDetails} instance.
+     *
+     * @param createdAt Timestamp at which secret was created
+     * @return The BckndGenericSecretDetails instance.
+     */
+    BckndGenericSecretDetails createdAt(@Nonnull final String createdAt);
   }
 }
