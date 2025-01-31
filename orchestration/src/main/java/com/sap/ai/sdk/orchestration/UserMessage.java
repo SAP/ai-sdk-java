@@ -27,7 +27,7 @@ public class UserMessage implements Message {
     content = new MessageContent(singleMessage);
   }
 
-  UserMessage(MessageContent messageContent) {
+  public UserMessage(MessageContent messageContent) {
     content = messageContent;
   }
 

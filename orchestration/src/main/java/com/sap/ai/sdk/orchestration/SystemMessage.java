@@ -27,7 +27,7 @@ public class SystemMessage implements Message {
     content = new MessageContent(singleMessage);
   }
 
-  SystemMessage(MessageContent messageContent) {
+  public SystemMessage(MessageContent messageContent) {
     content = messageContent;
   }
 

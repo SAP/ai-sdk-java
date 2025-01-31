@@ -3,10 +3,6 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,10 +10,6 @@ public record MessageContent(List<ContentItem> contentItemList) {
 
   MessageContent(String singleMessage) {
     this(List.of(new TextItem(singleMessage)));
-  }
-
-  public MessageContent(MultiChatMessageContent... multiChatContents) {
-    this(convertIntoMultiMessageList(multiChatContents));
   }
 
   public static MessageContent image(String imageUrl, ImageItem.DetailLevel detailLevel) {
@@ -29,7 +21,12 @@ public record MessageContent(List<ContentItem> contentItemList) {
   }
 
   public static MessageContent text(String... texts) {
-    return new MessageContent(Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
+    return new MessageContent(
+        Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
+  }
+
+  public MessageContent(MultiChatMessageContent... multiChatContents) {
+    this(convertIntoMultiMessageList(multiChatContents));
   }
 
   private static List<ContentItem> convertIntoMultiMessageList(
