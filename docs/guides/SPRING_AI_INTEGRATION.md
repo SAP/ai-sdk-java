@@ -50,7 +50,7 @@ Prompt prompt = new Prompt("What is the capital of France?", opts);
 ChatResponse response = client.call(prompt);
 ```
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
 ## Orchestration Masking
 
@@ -74,7 +74,7 @@ ChatResponse response = client.call(prompt);
 ```
 
 Please
-find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
+find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
 ## Stream chat completion
 
@@ -98,4 +98,4 @@ Flux<String> responseFlux =
 
 _Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/SpringAiOrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).

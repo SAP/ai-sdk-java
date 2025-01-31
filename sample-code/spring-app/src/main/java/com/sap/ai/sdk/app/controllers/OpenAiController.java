@@ -1,15 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
@@ -28,8 +22,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
-  private static final ObjectMapper MAPPER =
-      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
   /**
    * Chat request to OpenAI
@@ -38,14 +30,13 @@ public class OpenAiController {
    */
   @GetMapping("/chatCompletion")
   @Nonnull
-  ResponseEntity<String> chatCompletion(
-      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
+  Object chatCompletion(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.chatCompletion("Who is the prettiest");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 
   /**
@@ -62,17 +53,10 @@ public class OpenAiController {
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
-          final var totalOutput = new AtomicReference<CompletionUsage>();
           // try-with-resources ensures the stream is closed
           try (stream) {
-            stream.forEach(
-                delta -> {
-                  final var usage = delta.getCompletionUsage(MAPPER);
-                  totalOutput.compareAndExchange(null, usage);
-                  send(emitter, delta.getDeltaContent());
-                });
+            stream.forEach(delta -> send(emitter, delta.getDeltaContent()));
           } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + totalOutput);
             emitter.complete();
           }
         };
@@ -131,16 +115,15 @@ public class OpenAiController {
    */
   @GetMapping("/chatCompletionImage")
   @Nonnull
-  ResponseEntity<String> chatCompletionImage(
-      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
+  Object chatCompletionImage(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response =
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 
   /**
@@ -150,15 +133,14 @@ public class OpenAiController {
    */
   @GetMapping("/chatCompletionTool")
   @Nonnull
-  ResponseEntity<String> chatCompletionTools(
-      @Nullable @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
+  Object chatCompletionTools(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response =
         service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 
   /**
@@ -168,9 +150,8 @@ public class OpenAiController {
    */
   @GetMapping("/embedding")
   @Nonnull
-  ResponseEntity<String> embedding() throws JsonProcessingException {
-    final var response = service.embedding("Hello world");
-    return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+  Object embedding() {
+    return service.embedding("Hello world");
   }
 
   /**
@@ -181,15 +162,14 @@ public class OpenAiController {
    */
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
-  ResponseEntity<String> chatCompletionWithResource(
-      @Nullable @RequestHeader(value = "accept", required = false) final String accept,
-      @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
-      throws JsonProcessingException {
+  Object chatCompletionWithResource(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
     final var response =
         service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 }

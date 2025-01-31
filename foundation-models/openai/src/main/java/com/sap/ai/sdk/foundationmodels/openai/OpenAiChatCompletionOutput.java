@@ -1,22 +1,22 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.CONTENT_FILTER;
-import static lombok.AccessLevel.PACKAGE;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 
 /** Represents the output of an OpenAI chat completion. */
-@Value
-@RequiredArgsConstructor(access = PACKAGE)
+@Data
+@RequiredArgsConstructor(access = PROTECTED)
 public class OpenAiChatCompletionOutput {
   /** The original response from the OpenAI API. */
-  @Nonnull CreateChatCompletionResponse originalResponse;
+  @Nonnull final CreateChatCompletionResponse originalResponse;
 
   /**
    * Gets the token usage from the original response.

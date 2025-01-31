@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 class ControllerExceptionHandler {
   /** Exceptions thrown by the Spring Boot controllers are turned into a readable text response. */
   @ExceptionHandler(Exception.class)
-  ResponseEntity<String> handleError(final Exception ex) {
+  Object handleError(final Exception ex) {
     final var headers = new HttpHeaders();
     headers.setContentType(MediaType.TEXT_PLAIN);
 

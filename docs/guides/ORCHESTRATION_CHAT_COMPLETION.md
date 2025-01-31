@@ -83,7 +83,7 @@ var config = new OrchestrationModuleConfig()
         .withLlmConfig(OrchestrationAiModel.GPT_4O);
 ```
 
-Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
+Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for this and all following code examples.
   
 ## Chat Completion
 
@@ -158,8 +158,11 @@ var filterLoose = new AzureContentFilter()
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
     .violence(ALLOW_SAFE_LOW_MEDIUM);
 
+// choose Llama Guard filter or/and Azure filter
+var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+
 // changing the input to filterLoose will allow the message to pass
-var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict, llamaGuardFilter);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
@@ -176,7 +179,7 @@ var result =
   The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
 
-You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) in our Spring Boot application demonstrating response handling with filters.
+You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 
 ## Data masking
 
@@ -206,31 +209,31 @@ In this example, the input will be masked before the call to the LLM and will re
 Use the grounding module to provide additional context to the AI model. 
 
 ```java
-    var message =
-        Message.user(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    var prompt =
-        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+// optional filter for collections
+var documentMetadata =
+    SearchDocumentKeyValueListPair.create()
+        .key("my-collection")
+        .value("value")
+        .addSelectModeItem(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT);
+// optional filter for document chunks
+var databaseFilter =
+    DocumentGroundingFilter.create()
+        .id("")
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+        .addDocumentMetadataItem(documentMetadata);
 
-    var filterInner =
-        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
-    var groundingConfigConfig =
-        GroundingModuleConfigConfig.create()
-            .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput")
-            .addFiltersItem(filterInner);
-    
-    var groundingConfig =
-        GroundingModuleConfig.create()
-            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
-            .config(groundingConfigConfig);
-    var configWithGrounding = config.withGroundingConfig(groundingConfig);
+var groundingConfig = Grounding.create().filter(databaseFilter);
+var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var configWithGrounding = config.withGrounding(groundingConfig);
 
-    var result =  
-            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
+var result = client.chatCompletion(prompt, configWithGrounding);
 ```
 
-In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
+In this example, the AI model is provided with additional context in the form of grounding information.
+
+`Grounding.create()` is by default a document grounding service with a vector data repository.
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
 ## Stream chat completion
 
@@ -253,7 +256,7 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 }
 ```
 
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
 ## Set model parameters

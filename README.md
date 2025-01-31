@@ -1,7 +1,7 @@
 ![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg?branch=main)
 ![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
-[![Fosstars security rating](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_report.md)
+[![Fosstars security rating](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_report.md)
 
 # <img src="https://sap.github.io/cloud-sdk/img/logo.svg" alt="SAP Cloud SDK" width="30"/> SAP Cloud SDK for AI (for Java)
 
