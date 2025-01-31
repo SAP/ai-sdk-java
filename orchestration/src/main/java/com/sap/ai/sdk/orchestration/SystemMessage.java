@@ -35,14 +35,18 @@ public class SystemMessage implements Message {
   public SystemMessage addText(@Nonnull String... messages) {
     return new SystemMessage(
         new MessageContent(
-            Stream.of(messages).map(TextItem::new).toList(), content));
+            Stream.concat(
+                    content.contentItemList().stream(), Stream.of(messages).map(TextItem::new))
+                .toList()));
   }
 
   public SystemMessage add(@Nonnull MessageContent... messageContents) {
-    List<ContentItem> combinedItems = Stream.concat(
-        Stream.of(messageContents).flatMap(contentItem -> contentItem.contentItemList().stream()),
-        content.contentItemList().stream()
-    ).toList();
+    List<ContentItem> combinedItems =
+        Stream.concat(
+                Stream.of(messageContents)
+                    .flatMap(contentItem -> contentItem.contentItemList().stream()),
+                content.contentItemList().stream())
+            .toList();
     return new SystemMessage(new MessageContent(combinedItems));
   }
 }

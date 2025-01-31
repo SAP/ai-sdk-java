@@ -35,7 +35,9 @@ public class UserMessage implements Message {
   public UserMessage addText(@Nonnull String... messages) {
     return new UserMessage(
         new MessageContent(
-            Stream.of(messages).map(TextItem::new).toList(), content));
+            Stream.concat(
+                content.contentItemList().stream(),
+                Stream.of(messages).map(TextItem::new)).toList()));
   }
 
   @Nonnull
@@ -43,7 +45,9 @@ public class UserMessage implements Message {
       @Nonnull String imageUrl, ImageItem.DetailLevel detailLevel) {
     return new UserMessage(
         new MessageContent(
-            List.of(new ImageItem(imageUrl, detailLevel)), content));
+            Stream.concat(
+                content.contentItemList().stream(),
+                Stream.of(new ImageItem(imageUrl, detailLevel))).toList()));
   }
 
   public UserMessage add(@Nonnull MessageContent... messageContents) {

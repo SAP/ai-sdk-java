@@ -66,21 +66,4 @@ public record MessageContent(List<ContentItem> contentItemList) {
     }
     return multiContentList;
   }
-
-  MessageContent(
-      @Nonnull List<? extends ContentItem> newContent,
-      @Nullable MessageContent oldContent) {
-    this(mergeContent(newContent, oldContent));
-  }
-
-  private static List<ContentItem> mergeContent(
-      @Nonnull List<? extends ContentItem> newContent,
-      @Nullable MessageContent oldContent) {
-    var multiContentList = new ArrayList<ContentItem>();
-    if (oldContent != null) {
-      multiContentList.addAll(oldContent.contentItemList);
-    }
-    multiContentList.addAll(newContent);
-    return multiContentList;
-  }
 }
