@@ -7,9 +7,8 @@ import com.sap.ai.sdk.core.model.AiScenario;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoint for Scenario operations */
@@ -19,55 +18,38 @@ class ScenarioController {
 
   private static final ScenarioApi CLIENT = new ScenarioApi();
 
-  /**
-   * Get the list of available scenarios.
-   *
-   * @param accept the accept header
-   * @return a response entity with a string representation of the list of available scenarios
-   */
   @GetMapping("/scenarios")
   @Nonnull
-  ResponseEntity<Object> getScenarios(
-      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
+  Object getScenarios(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var scenarioList = CLIENT.query("default");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().body(scenarioList);
+    if ("json".equals(format)) {
+      return scenarioList;
     }
     final var items =
         scenarioList.getResources().stream()
             .map(AiScenario::getName)
             .collect(Collectors.joining(", "));
-    return ResponseEntity.ok("The following scenarios are available: %s.".formatted(items));
+    return "The following scenarios are available: %s.".formatted(items);
   }
 
-  /**
-   * Get the list of available models.
-   *
-   * @return the list of available models
-   */
   @Nonnull
   AiModelList getModels() {
     return CLIENT.queryModels("foundation-models", "default");
   }
 
-  /**
-   * Get the list of available models.
-   *
-   * @param accept the accept header
-   * @return a response entity with a string representation of the list of available models
-   */
   @GetMapping("/models")
   @Nonnull
-  ResponseEntity<Object> getModels(
-      @Nullable @RequestHeader(value = "accept", required = false) final String accept) {
+  Object getModels(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var modelList = getModels();
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok().body(modelList);
+    if ("json".equals(format)) {
+      return modelList;
     }
     final var items =
         modelList.getResources().stream()
             .map(AiModelBaseData::getModel)
             .collect(Collectors.joining(", "));
-    return ResponseEntity.ok("The following models are available: %s.".formatted(items));
+    return "The following models are available: %s.".formatted(items);
   }
 }

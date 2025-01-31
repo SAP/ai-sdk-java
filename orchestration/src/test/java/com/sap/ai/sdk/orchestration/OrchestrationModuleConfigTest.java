@@ -3,11 +3,17 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
+import static com.sap.ai.sdk.orchestration.model.DataRepositoryType.VECTOR;
+import static com.sap.ai.sdk.orchestration.model.GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -120,5 +126,51 @@ class OrchestrationModuleConfigTest {
     assertThat(GPT_4O.getVersion())
         .withFailMessage("Static models should be unchanged")
         .isEqualTo("latest");
+  }
+
+  @Test
+  void testGroundingConfig() {
+    var groundingConfig = Grounding.create();
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+
+    assertThat(config.getGroundingConfig()).isNotNull();
+    assertThat(config.getGroundingConfig().getType()).isEqualTo(DOCUMENT_GROUNDING_SERVICE);
+
+    GroundingModuleConfigConfig configConfig = config.getGroundingConfig().getConfig();
+    assertThat(configConfig).isNotNull();
+    assertThat(configConfig.getInputParams()).containsExactly("userMessage");
+    assertThat(configConfig.getOutputParam()).isEqualTo("groundingContext");
+
+    List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
+    assertThat(filters).hasSize(1);
+    DocumentGroundingFilter filter = (DocumentGroundingFilter) filters.get(0);
+    assertThat(filter.getId()).isEqualTo("");
+    assertThat(filter.getDataRepositoryType()).isEqualTo(VECTOR);
+  }
+
+  @Test
+  void testGroundingConfigWithFilters() {
+    var filter1 = DocumentGroundingFilter.create().id("123").dataRepositoryType(VECTOR);
+    var filter2 = DocumentGroundingFilter.create().id("234").dataRepositoryType(VECTOR);
+    var groundingConfig = Grounding.create().filters(filter1, filter2);
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+
+    assertThat(config.getGroundingConfig()).isNotNull();
+    var configConfig = config.getGroundingConfig().getConfig();
+    assertThat(configConfig).isNotNull();
+
+    assertThat(config.getGroundingConfig().getConfig().getFilters()).hasSize(2);
+  }
+
+  @Test
+  void testGroundingPrompt() {
+    var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
+    assertThat(prompt.getMessages()).hasSize(1);
+    var message = prompt.getMessages().get(0);
+    assertThat(message.content())
+        .isEqualTo(
+            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
   }
 }
