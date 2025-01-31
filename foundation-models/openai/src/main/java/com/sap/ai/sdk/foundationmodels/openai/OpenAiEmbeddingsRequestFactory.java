@@ -20,7 +20,8 @@ public class OpenAiEmbeddingsRequestFactory {
    * @param input the list of input strings
    * @return an EmbeddingsCreateRequest with the provided input
    */
-  public static EmbeddingsCreateRequest fromList(@Nonnull List<String> input) {
+  @Nonnull
+  public static EmbeddingsCreateRequest fromList(@Nonnull final List<String> input) {
     return new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create(input));
   }
 
@@ -31,9 +32,10 @@ public class OpenAiEmbeddingsRequestFactory {
    * @param inputs additional input strings
    * @return an EmbeddingsCreateRequest with the combined input strings
    */
+  @Nonnull
   public static EmbeddingsCreateRequest fromStrings(
-      @Nonnull String input, @Nonnull String... inputs) {
-    var inputList = new ArrayList<String>();
+      @Nonnull final String input, @Nonnull final String... inputs) {
+    final var inputList = new ArrayList<String>();
 
     inputList.add(input);
     inputList.addAll(List.of(inputs));
