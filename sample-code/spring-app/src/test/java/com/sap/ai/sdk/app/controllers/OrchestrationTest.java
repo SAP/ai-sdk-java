@@ -14,8 +14,12 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +73,8 @@ class OrchestrationTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
-    assertThat(((TextItem) result.getAllMessages().get(0).content().contentItemList().get(0)).text())
+    assertThat(
+            ((TextItem) result.getAllMessages().get(0).content().contentItemList().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
@@ -118,6 +123,25 @@ class OrchestrationTest {
             .imageInput(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
             .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testImageInputBase64() {
+    String dataUrl = "";
+    try {
+      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
+      try (InputStream inputStream = url.openStream()) {
+        byte[] imageBytes = inputStream.readAllBytes();
+        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
+        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+        dataUrl = "data:image/jpeg;base64," + encodedString;
+      }
+    } catch (Exception e) {
+      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
+    }
+    final var result = service.imageInput(dataUrl).getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
