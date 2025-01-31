@@ -64,10 +64,16 @@ public class OpenAiService {
         new CreateChatCompletionRequest()
             .addMessagesItem(
                 new ChatCompletionRequestUserMessage()
+                    .role(USER)
                     .content(
                         ChatCompletionRequestUserMessageContent.create(
                             List.of(
-                                new ChatCompletionRequestMessageContentPartText().text(message)))));
+                                new ChatCompletionRequestMessageContentPartText()
+                                    .text(message)
+                                    .type(TEXT)))))
+            .tools(null)
+            .functions(null)
+            .parallelToolCalls(null);
 
     return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
   }
