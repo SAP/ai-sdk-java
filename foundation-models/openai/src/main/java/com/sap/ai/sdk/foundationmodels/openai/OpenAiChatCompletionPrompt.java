@@ -15,10 +15,6 @@ public class OpenAiChatCompletionPrompt {
 
   @Nonnull private final List<String> stop = new ArrayList<>();
 
-  private OpenAiChatCompletionPrompt(@Nonnull final String message) {
-    this.messages.add(OpenAiMessage.user(message));
-  }
-
   private OpenAiChatCompletionPrompt(@Nonnull final List<OpenAiMessage> messages) {
     this.messages.addAll(messages);
   }
@@ -31,7 +27,7 @@ public class OpenAiChatCompletionPrompt {
    */
   @Nonnull
   public static OpenAiChatCompletionPrompt create(@Nonnull final String message) {
-    return new OpenAiChatCompletionPrompt(message);
+    return create(OpenAiMessage.user(message));
   }
 
   /**
