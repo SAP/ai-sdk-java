@@ -63,13 +63,12 @@ public class OpenAiService {
       @Nonnull final String message) {
     final var request =
         new CreateChatCompletionRequest()
-                .addMessagesItem(
-                    new ChatCompletionRequestUserMessage()
-                        .content(
-                            ChatCompletionRequestUserMessageContent.create(
-                                List.of(
-                                    new ChatCompletionRequestMessageContentPartText()
-                                        .text(message)))));
+            .addMessagesItem(
+                new ChatCompletionRequestUserMessage()
+                    .content(
+                        ChatCompletionRequestUserMessageContent.create(
+                            List.of(
+                                new ChatCompletionRequestMessageContentPartText().text(message)))));
 
     return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
   }
@@ -133,8 +132,7 @@ public class OpenAiService {
             .parameters(
                 Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
 
-    var tool =
-        new ChatCompletionTool().type(FUNCTION).function(function);
+    var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
     var toolChoice =
         ChatCompletionToolChoiceOption.create(
