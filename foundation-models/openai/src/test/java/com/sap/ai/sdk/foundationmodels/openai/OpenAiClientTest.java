@@ -25,8 +25,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponseChoicesInner;
-import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.model2.PromptFilterResult;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
@@ -383,8 +381,7 @@ class OpenAiClientTest {
                     .withBodyFile("embeddingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var request =
-        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create("Hello World"));
+    final var request = OpenAiEmbeddingsRequestFactory.fromStrings("Hello World");
     final var result = client.embedding(request);
 
     assertThat(result).isNotNull();
@@ -416,7 +413,7 @@ class OpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {"input": "Hello World" }""")));
+                      {"input": [ "Hello World" ]}""")));
   }
 
   @Test
@@ -452,9 +449,9 @@ class OpenAiClientTest {
       // Configure the HttpClient mock to return the mock response
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
-      final var userMessage =
-          OpenAiMessage.user("Can you give me the first 100 numbers of the Fibonacci sequence?");
-      final var prompt = OpenAiChatCompletionPrompt.create(userMessage);
+      final var prompt =
+          OpenAiChatCompletionPrompt.create(
+              "Can you give me the first 100 numbers of the Fibonacci sequence?");
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(prompt)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))

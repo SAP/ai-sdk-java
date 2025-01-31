@@ -15,6 +15,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionPrompt;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingsRequestFactory;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImage;
@@ -26,8 +27,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
-import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.model2.FunctionObject;
 import java.net.URI;
 import java.util.List;
@@ -63,13 +62,12 @@ public class OpenAiService {
       @Nonnull final String message) {
     final var request =
         new CreateChatCompletionRequest()
-                .addMessagesItem(
-                    new ChatCompletionRequestUserMessage()
-                        .content(
-                            ChatCompletionRequestUserMessageContent.create(
-                                List.of(
-                                    new ChatCompletionRequestMessageContentPartText()
-                                        .text(message)))));
+            .addMessagesItem(
+                new ChatCompletionRequestUserMessage()
+                    .content(
+                        ChatCompletionRequestUserMessageContent.create(
+                            List.of(
+                                new ChatCompletionRequestMessageContentPartText().text(message)))));
 
     return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
   }
@@ -133,8 +131,7 @@ public class OpenAiService {
             .parameters(
                 Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
 
-    var tool =
-        new ChatCompletionTool().type(FUNCTION).function(function);
+    var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
     var toolChoice =
         ChatCompletionToolChoiceOption.create(
@@ -159,8 +156,7 @@ public class OpenAiService {
    */
   @Nonnull
   public EmbeddingsCreate200Response embedding(@Nonnull final String input) {
-    final var request =
-        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create(input));
+    final var request = OpenAiEmbeddingsRequestFactory.fromStrings(input);
 
     return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
   }

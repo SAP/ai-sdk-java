@@ -348,7 +348,7 @@ public final class OpenAiClient {
           "Previously set messages will be ignored, set it as an argument of this method instead.");
     }
   }
-
+  
   /**
    * Get a vector representation of a given input that can be easily consumed by machine learning
    * models and algorithms.
