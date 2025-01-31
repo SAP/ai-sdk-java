@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = PROTECTED)
 public class OpenAiChatCompletionOutput {
   /** The original response from the OpenAI API. */
-  @Nonnull CreateChatCompletionResponse originalResponse;
+  @Nonnull final CreateChatCompletionResponse originalResponse;
 
   /**
    * Gets the token usage from the original response.

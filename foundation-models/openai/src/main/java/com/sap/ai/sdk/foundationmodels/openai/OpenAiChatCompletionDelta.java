@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 
 /**
  * Represents an OpenAI chat completion output delta for streaming.
@@ -19,11 +19,11 @@ import lombok.Value;
  * @since 1.3.0
  */
 @Beta
-@Value
+@Data
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator)
 public class OpenAiChatCompletionDelta implements StreamedDelta {
   /** The original response from the chat completion stream. */
-  CreateChatCompletionStreamResponse originalResponse;
+  @Nonnull final CreateChatCompletionStreamResponse originalResponse;
 
   /**
    * Retrieves the delta content from the original response.
