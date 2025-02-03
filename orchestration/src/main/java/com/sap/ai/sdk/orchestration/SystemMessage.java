@@ -28,7 +28,7 @@ public class SystemMessage implements Message {
    *
    * @param singleMessage the single message.
    */
-  public SystemMessage(@Nonnull String singleMessage) {
+  public SystemMessage(@Nonnull final String singleMessage) {
     content = new MessageContent(singleMessage);
   }
 
@@ -37,7 +37,7 @@ public class SystemMessage implements Message {
    *
    * @param messageContent the message content.
    */
-  public SystemMessage(@Nonnull MessageContent messageContent) {
+  public SystemMessage(@Nonnull final MessageContent messageContent) {
     content = messageContent;
   }
 
@@ -48,7 +48,7 @@ public class SystemMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public SystemMessage addText(@Nonnull String... messages) {
+  public SystemMessage addText(@Nonnull final String... messages) {
     return new SystemMessage(
         new MessageContent(
             Stream.concat(
@@ -64,8 +64,8 @@ public class SystemMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public SystemMessage add(@Nonnull MessageContent... messageContents) {
-    List<ContentItem> combinedItems =
+  public SystemMessage add(@Nonnull final MessageContent... messageContents) {
+    final List<ContentItem> combinedItems =
         Stream.concat(
                 Stream.of(messageContents)
                     .flatMap(contentItem -> contentItem.contentItemList().stream()),

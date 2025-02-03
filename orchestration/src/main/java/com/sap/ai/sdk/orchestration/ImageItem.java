@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,7 +29,7 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
    *
    * @param imageUrl the URL of the image
    */
-  public ImageItem(@Nonnull String imageUrl) {
+  public ImageItem(@Nonnull final String imageUrl) {
     this(imageUrl, DetailLevel.auto);
   }
 
@@ -48,9 +49,9 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
      * @return the detail level
      */
     @Nonnull
-    static DetailLevel fromString(@Nonnull String str) {
+    static DetailLevel fromString(@Nonnull final String str) {
       try {
-        return DetailLevel.valueOf(str.toLowerCase());
+        return DetailLevel.valueOf(str.toLowerCase(Locale.ENGLISH));
       } catch (IllegalArgumentException e) {
         return DetailLevel.auto;
       }

@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
  */
 public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
 
-  MessageContent(@Nonnull String singleMessage) {
+  MessageContent(@Nonnull final String singleMessage) {
     this(List.of(new TextItem(singleMessage)));
   }
 
@@ -29,7 +29,7 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
    */
   @Nonnull
   public static MessageContent image(
-      @Nonnull String imageUrl, @Nullable ImageItem.DetailLevel detailLevel) {
+      @Nonnull final String imageUrl, @Nullable final ImageItem.DetailLevel detailLevel) {
     return new MessageContent(List.of(new ImageItem(imageUrl, detailLevel)));
   }
 
@@ -40,7 +40,7 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
    * @return the new message content
    */
   @Nonnull
-  public static MessageContent image(@Nonnull String imageUrl) {
+  public static MessageContent image(@Nonnull final String imageUrl) {
     return new MessageContent(List.of(new ImageItem(imageUrl)));
   }
 
@@ -51,7 +51,7 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
    * @return the new message content
    */
   @Nonnull
-  public static MessageContent text(@Nonnull String text) {
+  public static MessageContent text(@Nonnull final String text) {
     return new MessageContent(List.of(new TextItem(text)));
   }
 
@@ -62,7 +62,7 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
    * @return the new message content
    */
   @Nonnull
-  public static MessageContent text(@Nonnull String... texts) {
+  public static MessageContent text(@Nonnull final String... texts) {
     return new MessageContent(
         Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
   }
@@ -72,19 +72,19 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
    *
    * @param multiChatContents the content items
    */
-  public MessageContent(@Nonnull MultiChatMessageContent... multiChatContents) {
+  public MessageContent(@Nonnull final MultiChatMessageContent... multiChatContents) {
     this(convertIntoMultiMessageList(multiChatContents));
   }
 
   @Nonnull
   private static List<ContentItem> convertIntoMultiMessageList(
-      @Nonnull MultiChatMessageContent... multiChatContents) {
-    List<ContentItem> multiContentList = new java.util.ArrayList<>(List.of());
-    for (MultiChatMessageContent multiChatContent : multiChatContents) {
+      @Nonnull final MultiChatMessageContent... multiChatContents) {
+    final List<ContentItem> multiContentList = new java.util.ArrayList<>(List.of());
+    for (final MultiChatMessageContent multiChatContent : multiChatContents) {
       if (multiChatContent instanceof TextContent textContent) {
         multiContentList.add(new TextItem(textContent.getText()));
       } else if (multiChatContent instanceof ImageContent imageContent) {
-        var imageUrl = imageContent.getImageUrl();
+        final var imageUrl = imageContent.getImageUrl();
         multiContentList.add(
             new ImageItem(
                 imageUrl.getUrl(), ImageItem.DetailLevel.fromString(imageUrl.getDetail())));
