@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionPrompt;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
@@ -47,7 +47,7 @@ class OpenAiTest {
   @Test
   void streamChatCompletion() {
     final var userMessage = OpenAiMessage.user("Who is the prettiest?");
-    final var prompt = new OpenAiChatCompletionPrompt(userMessage);
+    final var prompt = new OpenAiChatCompletionRequest(userMessage);
 
     final var totalOutput = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);

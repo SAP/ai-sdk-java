@@ -13,7 +13,6 @@ import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequestAllOfStop;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
@@ -118,39 +117,9 @@ public final class OpenAiClient {
     }
   }
 
-  private static CreateChatCompletionRequest toCreateChatCompletionRequest(
-      @Nonnull final OpenAiChatCompletionPrompt prompt,
-      @Nonnull final OpenAiChatCompletionConfig config) {
-    final var request = new CreateChatCompletionRequest();
-    prompt.messages().forEach(message -> request.addMessagesItem(message.createDTO()));
-    request.stop(CreateChatCompletionRequestAllOfStop.create(prompt.stop()));
-
-    request.temperature(config.temperature());
-    request.topP(config.topP());
-    request.stream(config.stream());
-    request.maxTokens(config.maxTokens());
-    request.maxCompletionTokens(config.maxCompletionTokens());
-    request.presencePenalty(config.presencePenalty());
-    request.frequencyPenalty(config.frequencyPenalty());
-    request.logitBias(config.logitBias());
-    request.user(config.user());
-    request.logprobs(config.logprobs());
-    request.topLogprobs(config.topLogprobs());
-    request.n(config.n());
-    request.parallelToolCalls(config.parallelToolCalls());
-    request.seed(config.seed());
-    request.streamOptions(config.streamOptions());
-    request.responseFormat(config.responseFormat());
-    request.tools(config.tools());
-    request.toolChoice(config.toolChoice());
-    request.functionCall(null);
-    request.functions(null);
-    return request;
-  }
-
   /**
    * Use this method to set a system prompt that should be used across multiple chat completions
-   * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionPrompt)}.
+   * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)}.
    *
    * <p>Note: The system prompt will be ignored on chat completions invoked with
    * OpenAiChatCompletionPrompt.
@@ -172,47 +141,30 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
+  public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
     final var userPrompt = OpenAiMessage.user(prompt);
 
-    final var openAiPrompt =
+    final var request =
         (systemPrompt != null)
-            ? new OpenAiChatCompletionPrompt(systemPrompt, userPrompt)
-            : new OpenAiChatCompletionPrompt(userPrompt);
+            ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
+            : new OpenAiChatCompletionRequest(userPrompt);
 
-    return chatCompletion(
-        toCreateChatCompletionRequest(openAiPrompt, new OpenAiChatCompletionConfig()));
+    return chatCompletion(request.toCreateChatCompletionRequest());
   }
 
   /**
-   * Generate a completion for the given conversation.
+   * Generate a completion for the given conversation and other request parameters.
    *
-   * @param prompt The prompt, includes a list of messages from the conversation.
+   * @param request the completion request.
    * @return the completion output
-   * @throws OpenAiClientException
-   */
-  @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final OpenAiChatCompletionPrompt prompt)
-      throws OpenAiClientException {
-    return chatCompletion(prompt, new OpenAiChatCompletionConfig());
-  }
-
-  /**
-   * Generate a completion for the given conversation and configuration.
-   *
-   * @param prompt The prompt, includes a list of messages from the conversation.
-   * @param config The configuration for the chat completion.
-   * @return the response from the OpenAI model
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(
-      @Nonnull final OpenAiChatCompletionPrompt prompt,
-      @Nonnull final OpenAiChatCompletionConfig config)
-      throws OpenAiClientException {
+  public OpenAiChatCompletionResponse chatCompletion(
+      @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     warnIfUnsupportedUsage();
-    return chatCompletion(toCreateChatCompletionRequest(prompt, config));
+    return chatCompletion(request.toCreateChatCompletionRequest());
   }
 
   /**
@@ -223,16 +175,17 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(
+  public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
-    return new OpenAiChatCompletionOutput(
+    return new OpenAiChatCompletionResponse(
         execute("/chat/completions", request, CreateChatCompletionResponse.class));
   }
 
   /**
-   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of text
-   * chunks. To access more details about the individual chunks, use {@link
-   * #streamChatCompletionDeltas(OpenAiChatCompletionPrompt)}.
+   * Stream a completion for the given string prompt as user.
+   *
+   * <p>Returns a <b>lazily</b> populated stream of text chunks. To access more details about the
+   * individual chunks, use {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)}.
    *
    * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
    * HTTP connection is closed.
@@ -252,27 +205,28 @@ public final class OpenAiClient {
    * @param prompt a text message.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @see #streamChatCompletionDeltas(OpenAiChatCompletionPrompt)
+   * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest)
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
     final var userPrompt = OpenAiMessage.user(prompt);
 
-    final var openAiPrompt =
+    final var request =
         systemPrompt != null
-            ? new OpenAiChatCompletionPrompt(systemPrompt, userPrompt)
-            : new OpenAiChatCompletionPrompt(userPrompt);
+            ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
+            : new OpenAiChatCompletionRequest(userPrompt);
 
-    return streamChatCompletionDeltas(
-            toCreateChatCompletionRequest(openAiPrompt, new OpenAiChatCompletionConfig()))
+    return streamChatCompletionDeltas(request.toCreateChatCompletionRequest())
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
   }
 
   /**
-   * Stream a completion for the given prompt. Returns a <b>lazily</b> populated stream of delta
-   * objects. To simply stream the text chunks use {@link #streamChatCompletion(String)}
+   * Stream a completion for the given conversation and other request parameters.
+   *
+   * <p>Returns a <b>lazily</b> populated stream of delta objects. To simply stream the text chunks
+   * use {@link #streamChatCompletion(String)}
    *
    * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
    * HTTP connection is closed.
@@ -292,54 +246,30 @@ public final class OpenAiClient {
    * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
    * Stream#parallel()} on this stream is not supported.
    *
-   * @param prompt The prompt, including a list of messages.
+   * @param request The prompt, including a list of messages.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    * @see #streamChatCompletion(String)
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final OpenAiChatCompletionPrompt prompt) throws OpenAiClientException {
-    return streamChatCompletionDeltas(prompt, new OpenAiChatCompletionConfig());
+      @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
+    return streamChatCompletionDeltas(request.toCreateChatCompletionRequest());
   }
 
   /**
-   * Stream a completion for the given prompt and configuration. Returns a <b>lazily</b> populated
-   * stream of delta objects. To simply stream the text chunks use {@link
-   * #streamChatCompletion(String)}
+   * Stream a completion for the given low-level request object. Returns a <b>lazily</b> populated
+   * stream of delta objects.
    *
-   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
-   * HTTP connection is closed.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * try (var stream = client.streamChatCompletionDeltas(prompt, config)) {
-   *      stream
-   *      .peek(delta -> System.out.println(delta.getUsage()))
-   *      .map(OpenAiChatCompletionDelta::getDeltaContent)
-   *      .forEach(System.out::println);
-   *      }
-   *
-   * }</pre>
-   *
-   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
-   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
-   * Stream#parallel()} on this stream is not supported.
-   *
-   * @param prompt The prompt, including a list of messages.
-   * @param config The configuration for the chat completion.
+   * @param request The completion request.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @see #streamChatCompletion(String)
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final OpenAiChatCompletionPrompt prompt,
-      @Nonnull final OpenAiChatCompletionConfig config)
-      throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return streamChatCompletionDeltas(toCreateChatCompletionRequest(prompt, config));
+      @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
+    request.stream(true).streamOptions(new ChatCompletionStreamOptions().includeUsage(true));
+    return executeStream("/chat/completions", request, OpenAiChatCompletionDelta.class);
   }
 
   private void warnIfUnsupportedUsage() {
@@ -417,20 +347,5 @@ public final class OpenAiClient {
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
-  }
-
-  /**
-   * Stream a completion for the given low-level request object. Returns a <b>lazily</b> populated
-   * stream of delta objects.
-   *
-   * @param request The completion request.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   */
-  @Nonnull
-  public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
-    request.stream(true).streamOptions(new ChatCompletionStreamOptions().includeUsage(true));
-    return executeStream("/chat/completions", request, OpenAiChatCompletionDelta.class);
   }
 }

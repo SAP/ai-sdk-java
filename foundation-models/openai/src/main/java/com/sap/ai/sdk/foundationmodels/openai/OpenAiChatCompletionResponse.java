@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 /** Represents the output of an OpenAI chat completion. */
 @Data
 @RequiredArgsConstructor(access = PROTECTED)
-public class OpenAiChatCompletionOutput {
+public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
   @Nonnull final CreateChatCompletionResponse originalResponse;
 
