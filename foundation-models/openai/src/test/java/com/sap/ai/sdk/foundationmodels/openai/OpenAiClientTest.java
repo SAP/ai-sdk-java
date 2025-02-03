@@ -25,6 +25,8 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponseChoicesInner;
+import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
+import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.model2.PromptFilterResult;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
@@ -381,7 +383,8 @@ class OpenAiClientTest {
                     .withBodyFile("embeddingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var request = OpenAiEmbeddingsRequestFactory.fromStrings("Hello World");
+    final var request =
+        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create("Hello World"));
     final var result = client.embedding(request);
 
     assertThat(result).isNotNull();
@@ -413,7 +416,7 @@ class OpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {"input": [ "Hello World" ]}""")));
+                      {"input": "Hello World"}""")));
   }
 
   @Test
