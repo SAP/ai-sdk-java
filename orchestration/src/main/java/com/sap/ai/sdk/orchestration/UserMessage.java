@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -28,7 +29,7 @@ public class UserMessage implements Message {
    *
    * @param singleMessage the single message.
    */
-  public UserMessage(String singleMessage) {
+  public UserMessage(@Nonnull String singleMessage) {
     content = new MessageContent(singleMessage);
   }
 
@@ -37,7 +38,7 @@ public class UserMessage implements Message {
    *
    * @param messageContent the message content.
    */
-  public UserMessage(MessageContent messageContent) {
+  public UserMessage(@Nonnull MessageContent messageContent) {
     content = messageContent;
   }
 
@@ -64,7 +65,8 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage addImage(@Nonnull String imageUrl, ImageItem.DetailLevel detailLevel) {
+  public UserMessage addImage(
+      @Nonnull String imageUrl, @Nullable ImageItem.DetailLevel detailLevel) {
     return new UserMessage(
         new MessageContent(
             Stream.concat(
@@ -93,6 +95,7 @@ public class UserMessage implements Message {
    * @param messageContents the content to add.
    * @return the new message.
    */
+  @Nonnull
   public UserMessage add(@Nonnull MessageContent... messageContents) {
     List<ContentItem> combinedItems =
         Stream.concat(

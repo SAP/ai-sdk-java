@@ -5,15 +5,17 @@ import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Represents the content of a chat message.
  *
  * @param contentItemList a list of the content items
  */
-public record MessageContent(List<ContentItem> contentItemList) {
+public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
 
-  MessageContent(String singleMessage) {
+  MessageContent(@Nonnull String singleMessage) {
     this(List.of(new TextItem(singleMessage)));
   }
 
@@ -25,7 +27,9 @@ public record MessageContent(List<ContentItem> contentItemList) {
    * @param detailLevel the detail level of the image
    * @return the new message content
    */
-  public static MessageContent image(String imageUrl, ImageItem.DetailLevel detailLevel) {
+  @Nonnull
+  public static MessageContent image(
+      @Nonnull String imageUrl, @Nullable ImageItem.DetailLevel detailLevel) {
     return new MessageContent(List.of(new ImageItem(imageUrl, detailLevel)));
   }
 
@@ -35,7 +39,8 @@ public record MessageContent(List<ContentItem> contentItemList) {
    * @param imageUrl the URL of the image
    * @return the new message content
    */
-  public static MessageContent image(String imageUrl) {
+  @Nonnull
+  public static MessageContent image(@Nonnull String imageUrl) {
     return new MessageContent(List.of(new ImageItem(imageUrl)));
   }
 
@@ -45,7 +50,8 @@ public record MessageContent(List<ContentItem> contentItemList) {
    * @param text the text of the message
    * @return the new message content
    */
-  public static MessageContent text(String text) {
+  @Nonnull
+  public static MessageContent text(@Nonnull String text) {
     return new MessageContent(List.of(new TextItem(text)));
   }
 
@@ -55,7 +61,8 @@ public record MessageContent(List<ContentItem> contentItemList) {
    * @param texts the texts of the messages
    * @return the new message content
    */
-  public static MessageContent text(String... texts) {
+  @Nonnull
+  public static MessageContent text(@Nonnull String... texts) {
     return new MessageContent(
         Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
   }
@@ -64,14 +71,14 @@ public record MessageContent(List<ContentItem> contentItemList) {
    * Creates a new message content containing multiple {@link ContentItem}s.
    *
    * @param multiChatContents the content items
-   * @return the new message content
    */
-  public MessageContent(MultiChatMessageContent... multiChatContents) {
+  public MessageContent(@Nonnull MultiChatMessageContent... multiChatContents) {
     this(convertIntoMultiMessageList(multiChatContents));
   }
 
+  @Nonnull
   private static List<ContentItem> convertIntoMultiMessageList(
-      MultiChatMessageContent... multiChatContents) {
+      @Nonnull MultiChatMessageContent... multiChatContents) {
     List<ContentItem> multiContentList = new java.util.ArrayList<>(List.of());
     for (MultiChatMessageContent multiChatContent : multiChatContents) {
       if (multiChatContent instanceof TextContent textContent) {

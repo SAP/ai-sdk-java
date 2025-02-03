@@ -28,7 +28,7 @@ public class SystemMessage implements Message {
    *
    * @param singleMessage the single message.
    */
-  public SystemMessage(String singleMessage) {
+  public SystemMessage(@Nonnull String singleMessage) {
     content = new MessageContent(singleMessage);
   }
 
@@ -37,7 +37,7 @@ public class SystemMessage implements Message {
    *
    * @param messageContent the message content.
    */
-  public SystemMessage(MessageContent messageContent) {
+  public SystemMessage(@Nonnull MessageContent messageContent) {
     content = messageContent;
   }
 
@@ -63,6 +63,7 @@ public class SystemMessage implements Message {
    * @param messageContents the content to add.
    * @return the new message.
    */
+  @Nonnull
   public SystemMessage add(@Nonnull MessageContent... messageContents) {
     List<ContentItem> combinedItems =
         Stream.concat(

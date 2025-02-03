@@ -17,7 +17,7 @@ public record ImageItem(@Nonnull String imageUrl, @Nullable DetailLevel detailLe
    *
    * @param imageUrl the URL of the image
    */
-  public ImageItem(String imageUrl) {
+  public ImageItem(@Nonnull String imageUrl) {
     this(imageUrl, DetailLevel.auto);
   }
 
@@ -36,11 +36,12 @@ public record ImageItem(@Nonnull String imageUrl, @Nullable DetailLevel detailLe
      * @param str the string to convert
      * @return the detail level
      */
-    static DetailLevel fromString(String str) {
+    @Nonnull
+    static DetailLevel fromString(@Nonnull String str) {
       try {
         return DetailLevel.valueOf(str.toLowerCase());
       } catch (IllegalArgumentException e) {
-        return DetailLevel.low;
+        return DetailLevel.auto;
       }
     }
   }

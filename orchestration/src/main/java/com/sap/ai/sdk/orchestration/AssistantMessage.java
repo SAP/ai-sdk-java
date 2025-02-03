@@ -26,7 +26,7 @@ public class AssistantMessage implements Message {
    *
    * @param singleMessage the single message.
    */
-  public AssistantMessage(String singleMessage) {
+  public AssistantMessage(@Nonnull String singleMessage) {
     content = new MessageContent(singleMessage);
   }
 }
