@@ -158,8 +158,11 @@ var filterLoose = new AzureContentFilter()
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
     .violence(ALLOW_SAFE_LOW_MEDIUM);
 
+// choose Llama Guard filter or/and Azure filter
+var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+
 // changing the input to filterLoose will allow the message to pass
-var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict, llamaGuardFilter);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =

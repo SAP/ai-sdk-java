@@ -50,6 +50,9 @@ public class AiModelBaseData
   @JsonProperty("accessType")
   private String accessType;
 
+  @JsonProperty("provider")
+  private String provider;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -258,6 +261,37 @@ public class AiModelBaseData
   }
 
   /**
+   * Set the provider of this {@link AiModelBaseData} instance and return the same instance.
+   *
+   * @param provider Provider of the model
+   * @return The same instance of this {@link AiModelBaseData} class
+   */
+  @Nonnull
+  public AiModelBaseData provider(@Nullable final String provider) {
+    this.provider = provider;
+    return this;
+  }
+
+  /**
+   * Provider of the model
+   *
+   * @return provider The provider of this {@link AiModelBaseData} instance.
+   */
+  @Nonnull
+  public String getProvider() {
+    return provider;
+  }
+
+  /**
+   * Set the provider of this {@link AiModelBaseData} instance.
+   *
+   * @param provider Provider of the model
+   */
+  public void setProvider(@Nullable final String provider) {
+    this.provider = provider;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link AiModelBaseData}.
    *
    * @return The set of properties names
@@ -310,13 +344,21 @@ public class AiModelBaseData
         && Objects.equals(this.description, aiModelBaseData.description)
         && Objects.equals(this.versions, aiModelBaseData.versions)
         && Objects.equals(this.displayName, aiModelBaseData.displayName)
-        && Objects.equals(this.accessType, aiModelBaseData.accessType);
+        && Objects.equals(this.accessType, aiModelBaseData.accessType)
+        && Objects.equals(this.provider, aiModelBaseData.provider);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        model, executableId, description, versions, displayName, accessType, cloudSdkCustomFields);
+        model,
+        executableId,
+        description,
+        versions,
+        displayName,
+        accessType,
+        provider,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -330,6 +372,7 @@ public class AiModelBaseData
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
     sb.append("    accessType: ").append(toIndentedString(accessType)).append("\n");
+    sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
