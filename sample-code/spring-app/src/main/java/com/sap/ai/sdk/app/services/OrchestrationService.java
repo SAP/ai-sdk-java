@@ -1,16 +1,22 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.FREQUENCY_PENALTY;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.N;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.PRESENCE_PENALTY;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
-import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.ImageItem;
+import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.MessageContent;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -58,14 +64,21 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
-    var multiMessage =
-        Message.user("What is in this image?")
-            .addImage(pathToImage, ImageItem.DetailLevel.low);
-    var prompt = new OrchestrationPrompt(multiMessage);
-    var imageOnlyMessage = Message.user(MessageContent.image(pathToImage, ImageItem.DetailLevel.low));
-    var sameMultiMessage = Message.user(MessageContent.image(pathToImage, ImageItem.DetailLevel.low)).add(MessageContent.text("What is in this image?"));
-//    var imageOnlyMessage = Message.user(MessageContent.audio(urlString, detailLevel)).addImage(awkj);
-    return client.chatCompletion(prompt, config);
+    final OrchestrationAiModel customGpt4o =
+        GPT_4O_MINI
+            .withParam(MAX_TOKENS, 50)
+            .withParam(TEMPERATURE, 0.1)
+            .withParam(FREQUENCY_PENALTY, 0)
+            .withParam(PRESENCE_PENALTY, 0)
+            .withParam(TOP_P, 1)
+            .withParam(N, 1);
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(customGpt4o);
+
+    final var multiMessage =
+        Message.user("What is in this image?").addImage(pathToImage, ImageItem.DetailLevel.low);
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, llmWithImageSupportConfig);
   }
 
   /**
@@ -75,8 +88,11 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
-    var multiMessage = Message.user(questions.get(0));
-    var prompt = new OrchestrationPrompt(multiMessage.addText(questions.get(1), questions.get(2)));
+    final var multiMessage =
+        Message.user(questions.get(0))
+            .addText(questions.get(1))
+            .add(MessageContent.text(questions.get(2)));
+    final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }
 

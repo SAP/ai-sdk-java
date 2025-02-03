@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
-import com.sap.ai.sdk.orchestration.MessageContent;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-import com.sap.ai.sdk.orchestration.Message;
 
 /** Endpoints for the Orchestration service */
 @RestController
@@ -66,14 +64,7 @@ class OrchestrationController {
     if ("application/json".equals(accept)) {
       return ResponseEntity.ok().body(MAPPER.writeValueAsString(response));
     }
-    var strBuilder = new StringBuilder("All the messages of this response:\n\n");
-    var messages = response.getAllMessages();
-    for (Message m : messages) {
-      String role = m.role();
-      String content = MessageContent.toString( m.content());
-      strBuilder.append("[%s] %s%n".formatted(role, content));
-    }
-    return ResponseEntity.ok(strBuilder.toString());
+    return ResponseEntity.ok(response.getContent());
   }
 
   @GetMapping("/multiString")
@@ -89,15 +80,7 @@ class OrchestrationController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(MAPPER.writeValueAsString(response));
     }
-    //    return ResponseEntity.ok(response.getContent());
-    var strBuilder = new StringBuilder("All the messages of this response:\n\n");
-    var messages = response.getAllMessages();
-    for (Message m : messages) {
-      String role = m.role();
-      String content = MessageContent.toString((MessageContent) m.content());
-      strBuilder.append("[%s] %s%n".formatted(role, content));
-    }
-    return ResponseEntity.ok(strBuilder.toString());
+    return ResponseEntity.ok(response.getContent());
   }
 
   /**
