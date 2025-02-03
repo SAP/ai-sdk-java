@@ -48,6 +48,9 @@
     }, {
       "type" : "text",
       "text" : "Start the first sentence with the word 'Well'."
+    }, {
+      "type" : "text",
+      "text" : "And the second with 'By the way'."
     } ]
   } ]
 }

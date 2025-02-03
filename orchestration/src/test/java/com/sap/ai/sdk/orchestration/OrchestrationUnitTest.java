@@ -694,9 +694,12 @@ class OrchestrationUnitTest {
             .withParam(N, 1);
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(customGpt4o);
 
-    var messageWithTwoTexts =
+    var messageWithThreeTexts =
         Message.system("Please answer in exactly two sentences.")
-            .addText("Start the first sentence with the word 'Well'.");
+            .add(
+                MessageContent.text(
+                    "Start the first sentence with the word 'Well'.",
+                    "And the second with 'By the way'."));
 
     var messageWithImage =
         Message.user("What is in this image?")
@@ -705,24 +708,27 @@ class OrchestrationUnitTest {
             .addImage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     var prompt =
-        new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithTwoTexts));
+        new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithThreeTexts));
 
     var result = client.chatCompletion(prompt, llmWithImageSupportConfig);
     var response = result.getOriginalResponse();
 
     assertThat(result.getContent())
         .isEqualTo(
-            "Well, the image features the letters \"SAP\" prominently displayed. The main color is a gradient of blue, transitioning from light to dark.");
+            "Well, the image features the logo of SAP, which consists of three letters: S, A, and P. By the way, the main color of the logo is a gradient of blue.");
     assertThat(result.getAllMessages()).hasSize(3);
     var systemMessage = result.getAllMessages().get(0);
     assertThat(systemMessage.role()).isEqualTo("system");
-    assertThat(systemMessage.content().contentItemList()).hasSize(2);
+    assertThat(systemMessage.content().contentItemList()).hasSize(3);
     assertThat(systemMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) systemMessage.content().contentItemList().get(0)).text())
         .isEqualTo("Please answer in exactly two sentences.");
     assertThat(systemMessage.content().contentItemList().get(1)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) systemMessage.content().contentItemList().get(1)).text())
         .isEqualTo("Start the first sentence with the word 'Well'.");
+    assertThat(systemMessage.content().contentItemList().get(2)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) systemMessage.content().contentItemList().get(2)).text())
+        .isEqualTo("And the second with 'By the way'.");
     var userMessage = result.getAllMessages().get(1);
     assertThat(userMessage.role()).isEqualTo("user");
     assertThat(userMessage.content().contentItemList()).hasSize(4);
@@ -745,49 +751,49 @@ class OrchestrationUnitTest {
     assertThat(assistantMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) assistantMessage.content().contentItemList().get(0)).text())
         .isEqualTo(
-            "Well, the image features the letters \"SAP\" prominently displayed. The main color is a gradient of blue, transitioning from light to dark.");
+            "Well, the image features the logo of SAP, which consists of three letters: S, A, and P. By the way, the main color of the logo is a gradient of blue.");
 
     assertThat(response).isNotNull();
-    assertThat(response.getRequestId()).isEqualTo("5096fa88-da4a-4b79-82e9-9cede037ad2a");
+    assertThat(response.getRequestId()).isEqualTo("3330c0df-2811-4849-9855-c40b170424bd");
     assertThat(response.getModuleResults()).isNotNull();
     assertThat(response.getModuleResults().getTemplating()).hasSize(2);
 
     var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
-    assertThat(llmResults.getId()).isEqualTo("chatcmpl-AwrjTYcLP1LyQgyGXz3HVdjSONxRf");
+    assertThat(llmResults.getId()).isEqualTo("chatcmpl-AwtHVWwArgAtB81ankVnNASpTMYKU");
     assertThat(llmResults.getObject()).isEqualTo("chat.completion");
-    assertThat(llmResults.getCreated()).isEqualTo(1738592935);
+    assertThat(llmResults.getCreated()).isEqualTo(1738598889);
     assertThat(llmResults.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
     assertThat(llmResults.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
-            "Well, the image features the letters \"SAP\" prominently displayed. The main color is a gradient of blue, transitioning from light to dark.");
+            "Well, the image features the logo of SAP, which consists of three letters: S, A, and P. By the way, the main color of the logo is a gradient of blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
-    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(28);
-    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(256);
-    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(284);
+    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(39);
+    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(265);
+    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(304);
 
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult).isNotNull();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AwrjTYcLP1LyQgyGXz3HVdjSONxRf");
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AwtHVWwArgAtB81ankVnNASpTMYKU");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1738592935);
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1738598889);
     assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
     assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
-            "Well, the image features the letters \"SAP\" prominently displayed. The main color is a gradient of blue, transitioning from light to dark.");
+            "Well, the image features the logo of SAP, which consists of three letters: S, A, and P. By the way, the main color of the logo is a gradient of blue.");
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
         .isEqualTo("assistant");
     assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
-    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(28);
-    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(256);
-    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(284);
+    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(39);
+    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(265);
+    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(304);
 
     try (var requestInputStream = fileLoader.apply("multiChatMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
@@ -795,5 +801,30 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/completion"))
               .withRequestBody(equalToJson(requestBody)));
     }
+  }
+
+  @Test
+  void testMessageConstruction() {
+    var userMessageTwoTextsAddText = Message.user("Text 1").addText("Text 2");
+    var userMessageTwoTextsAdd = Message.user("Text 1").add(MessageContent.text("Text 2"));
+    var userMessageTwoTextsContent = Message.user(MessageContent.text("Text 1", "Text 2"));
+    assertThat(userMessageTwoTextsAddText).isEqualTo(userMessageTwoTextsAdd);
+    assertThat(userMessageTwoTextsAdd).isEqualTo(userMessageTwoTextsContent);
+
+    var userMessageWithImageAddImage = Message.user("Text 1").addImage("url");
+    var userMessageWithImageAdd = Message.user("Text 1").add(MessageContent.image("url"));
+    assertThat(userMessageWithImageAddImage).isEqualTo(userMessageWithImageAdd);
+
+    var userMessageWithImageDetailAddImage =
+        Message.user("Text 1").addImage("url", ImageItem.DetailLevel.low);
+    var userMessageWithImageDetailAdd =
+        Message.user("Text 1").add(MessageContent.image("url", ImageItem.DetailLevel.low));
+    assertThat(userMessageWithImageDetailAddImage).isEqualTo(userMessageWithImageDetailAdd);
+
+    var systemMessageTwoTextsAddText = Message.system("Text 1").addText("Text 2");
+    var systemMessageTwoTextsAdd = Message.system("Text 1").add(MessageContent.text("Text 2"));
+    var systemMessageTwoTextsContent = Message.system(MessageContent.text("Text 1", "Text 2"));
+    assertThat(systemMessageTwoTextsAddText).isEqualTo(systemMessageTwoTextsAdd);
+    assertThat(systemMessageTwoTextsAdd).isEqualTo(systemMessageTwoTextsContent);
   }
 }
