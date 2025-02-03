@@ -99,9 +99,9 @@ public class UserMessage implements Message {
   public UserMessage add(@Nonnull final MessageContent... messageContents) {
     final List<ContentItem> combinedItems =
         Stream.concat(
+                content.contentItemList().stream(),
                 Stream.of(messageContents)
-                    .flatMap(contentItem -> contentItem.contentItemList().stream()),
-                content.contentItemList().stream())
+                    .flatMap(contentItem -> contentItem.contentItemList().stream()))
             .toList();
     return new UserMessage(new MessageContent(combinedItems));
   }

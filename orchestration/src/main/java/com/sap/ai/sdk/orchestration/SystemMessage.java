@@ -67,9 +67,9 @@ public class SystemMessage implements Message {
   public SystemMessage add(@Nonnull final MessageContent... messageContents) {
     final List<ContentItem> combinedItems =
         Stream.concat(
+                content.contentItemList().stream(),
                 Stream.of(messageContents)
-                    .flatMap(contentItem -> contentItem.contentItemList().stream()),
-                content.contentItemList().stream())
+                    .flatMap(contentItem -> contentItem.contentItemList().stream()))
             .toList();
     return new SystemMessage(new MessageContent(combinedItems));
   }
