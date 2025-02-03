@@ -6,7 +6,11 @@ import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.Arrays;
 import java.util.List;
 
-/** Represents the content of a chat message. */
+/**
+ * Represents the content of a chat message.
+ *
+ * @param contentItemList a list of the content items
+ */
 public record MessageContent(List<ContentItem> contentItemList) {
 
   MessageContent(String singleMessage) {
@@ -14,8 +18,8 @@ public record MessageContent(List<ContentItem> contentItemList) {
   }
 
   /**
-   * Creates a new message content containing one {@link ImageItem} with the given image URL and detail
-   * level.
+   * Creates a new message content containing one {@link ImageItem} with the given image URL and
+   * detail level.
    *
    * @param imageUrl the URL of the image
    * @param detailLevel the detail level of the image

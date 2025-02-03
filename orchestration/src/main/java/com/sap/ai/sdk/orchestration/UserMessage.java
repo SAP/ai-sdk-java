@@ -52,8 +52,8 @@ public class UserMessage implements Message {
     return new UserMessage(
         new MessageContent(
             Stream.concat(
-                content.contentItemList().stream(),
-                Stream.of(messages).map(TextItem::new)).toList()));
+                    content.contentItemList().stream(), Stream.of(messages).map(TextItem::new))
+                .toList()));
   }
 
   /**
@@ -64,13 +64,13 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage addImage(
-      @Nonnull String imageUrl, ImageItem.DetailLevel detailLevel) {
+  public UserMessage addImage(@Nonnull String imageUrl, ImageItem.DetailLevel detailLevel) {
     return new UserMessage(
         new MessageContent(
             Stream.concat(
-                content.contentItemList().stream(),
-                Stream.of(new ImageItem(imageUrl, detailLevel))).toList()));
+                    content.contentItemList().stream(),
+                    Stream.of(new ImageItem(imageUrl, detailLevel)))
+                .toList()));
   }
 
   /**
@@ -80,13 +80,11 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage addImage(
-      @Nonnull String imageUrl) {
+  public UserMessage addImage(@Nonnull String imageUrl) {
     return new UserMessage(
         new MessageContent(
-            Stream.concat(
-                content.contentItemList().stream(),
-                Stream.of(new ImageItem(imageUrl))).toList()));
+            Stream.concat(content.contentItemList().stream(), Stream.of(new ImageItem(imageUrl)))
+                .toList()));
   }
 
   /**
@@ -96,10 +94,12 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   public UserMessage add(@Nonnull MessageContent... messageContents) {
-    List<ContentItem> combinedItems = Stream.concat(
-        Stream.of(messageContents).flatMap(contentItem -> contentItem.contentItemList().stream()),
-        content.contentItemList().stream()
-    ).toList();
+    List<ContentItem> combinedItems =
+        Stream.concat(
+                Stream.of(messageContents)
+                    .flatMap(contentItem -> contentItem.contentItemList().stream()),
+                content.contentItemList().stream())
+            .toList();
     return new UserMessage(new MessageContent(combinedItems));
   }
 }

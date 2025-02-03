@@ -57,8 +57,8 @@ public class SystemMessage implements Message {
   }
 
   /**
-   * Add content to the message. The content will be added to the end of the message.
-   * As of now, only TextItem will be successfully consumed by an AI.
+   * Add content to the message. The content will be added to the end of the message. As of now,
+   * only TextItem will be successfully consumed by an AI.
    *
    * @param messageContents the content to add.
    * @return the new message.

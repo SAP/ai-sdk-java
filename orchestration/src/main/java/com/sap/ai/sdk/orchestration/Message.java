@@ -57,8 +57,8 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   }
 
   /**
-   * A convenience method to create a system message.
-   * As of now, only text content is supported for system messages by most AIs.
+   * A convenience method to create a system message. As of now, only text content is supported for
+   * system messages by most AIs.
    *
    * @param msg the message content.
    * @return the system message.

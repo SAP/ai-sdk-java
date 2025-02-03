@@ -1,7 +1,17 @@
 package com.sap.ai.sdk.orchestration;
 
-/** Represents an image item in a {@link MessageContent} object. */
-public record ImageItem(String imageUrl, DetailLevel detailLevel) implements ContentItem {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+/**
+ * Represents an image item in a {@link MessageContent} object.
+ *
+ * @param imageUrl the URL of the image
+ * @param detailLevel the detail level of the image (optional
+ */
+public record ImageItem(@Nonnull String imageUrl, @Nullable DetailLevel detailLevel)
+    implements ContentItem {
+
   /**
    * Creates a new image item with the given image URL.
    *
@@ -13,8 +23,11 @@ public record ImageItem(String imageUrl, DetailLevel detailLevel) implements Con
 
   /** The detail level of the image. */
   public enum DetailLevel {
+    /** Low detail level. */
     low,
+    /** High detail level. */
     high,
+    /** Automatic detail level. */
     auto;
 
     /**
