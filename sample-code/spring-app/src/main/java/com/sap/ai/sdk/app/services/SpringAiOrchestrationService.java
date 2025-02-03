@@ -7,14 +7,15 @@ import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import lombok.val;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -33,7 +34,14 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse completion() {
-    defaultOptions.setFunctions(Set.of("getWeather"));
+    defaultOptions.setFunctionCallbacks(
+        List.of(
+            FunctionCallback.builder()
+                .function(
+                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+                .description("Get the weather in location") // (2) function description
+                .inputType(MockWeatherService.Request.class) // (3) function input type
+                .build()));
     val prompt = new Prompt("What is the weather in Potsdam?", defaultOptions);
 
     return client.call(prompt);

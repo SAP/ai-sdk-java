@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
+import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,12 @@ import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.ai.chat.model.AbstractToolCallSupport;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.function.FunctionCallback;
+import org.springframework.ai.model.function.FunctionCallingOptions;
 import reactor.core.publisher.Flux;
 
 /**
@@ -40,31 +42,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
    * @since 1.2.0
    */
   public OrchestrationChatModel() {
-    super(name -> new FunctionCallback() {
-      @Override
-      public String getName()
-      {
-        return "getWeather";
-      }
-
-      @Override
-      public String getDescription()
-      {
-        return "Get the weather in location";
-      }
-
-      @Override
-      public String getInputTypeSchema()
-      {
-        return "location";
-      }
-
-      @Override
-      public String call( String functionInput )
-      {
-        return "The weather is sunny in " + functionInput;
-      }
-    });
+    super(null);
     this.client = new OrchestrationClient();
   }
 
@@ -87,6 +65,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
   public ChatResponse internalCall(Prompt prompt, ChatResponse previousChatResponse) {
 
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
+      runtimeFunctionCallbackConfigurations(FunctionCallingOptions.builder().functionCallbacks(options.getFunctionCallbacks()).build());
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
@@ -151,7 +130,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
               case ASSISTANT:
                 yield new AssistantMessage(msg.getText());
               case TOOL:
-                throw new IllegalArgumentException("Tool messages are not supported");
+                yield new ToolMessage((ToolResponseMessage) msg);
             };
     return messages.stream().map(mapper).toArray(com.sap.ai.sdk.orchestration.Message[]::new);
   }

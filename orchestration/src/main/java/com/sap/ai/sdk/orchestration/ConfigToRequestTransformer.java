@@ -20,7 +20,7 @@ final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    val template = toTemplateModuleConfig(prompt, (Template) config.getTemplateConfig());
+    val template = toTemplateModuleConfig(prompt, config.getTemplateConfig());
     // note that the config is immutable and implicitly copied here
     // copying is required here, to not alter the original config object, which might be reused for
     // subsequent requests
@@ -39,7 +39,7 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static TemplatingModuleConfig toTemplateModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt, @Nullable final Template template) {
+      @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig config) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
      * This works around the limitation that the template config is required.
@@ -47,6 +47,7 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
+    val template = config instanceof Template t ? t : Template.create().template();
     val messages = template.getTemplate();
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(

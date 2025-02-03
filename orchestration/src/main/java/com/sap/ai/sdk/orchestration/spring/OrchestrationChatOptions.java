@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.ai.model.function.FunctionCallingOptions;
 
@@ -48,6 +49,9 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
   @Setter(AccessLevel.PUBLIC)
   @Nonnull
   OrchestrationModuleConfig config;
+
+  @Getter(AccessLevel.PUBLIC)
+  List<FunctionCallback> functionCallbacks;
 
   /**
    * Returns the model to use for the chat.
@@ -185,12 +189,28 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
   }
 
   @Override
-  public List<FunctionCallback> getFunctionCallbacks() {
-    return List.of();
+  public void setFunctionCallbacks(List<FunctionCallback> functionCallbacks) {
+    this.functionCallbacks = functionCallbacks;
+    Template template =
+        Objects.requireNonNullElse(
+            (Template) config.getTemplateConfig(), Template.create().template());
+    config =
+        config.withTemplateConfig(
+            template.tools(
+                functionCallbacks.stream()
+                    .map(
+                        functionCallback ->
+                            ChatCompletionTool.create()
+                                .type(TypeEnum.FUNCTION)
+                                .function(
+                                    FunctionObject.create()
+                                        .name(functionCallback.getName())
+                                        .description(functionCallback.getDescription())
+                                        .parameters(
+                                            ModelOptionsUtils.jsonToMap(
+                                                functionCallback.getInputTypeSchema()))))
+                    .toList()));
   }
-
-  @Override
-  public void setFunctionCallbacks(List<FunctionCallback> functionCallbacks) {}
 
   @Override
   public Set<String> getFunctions() {
