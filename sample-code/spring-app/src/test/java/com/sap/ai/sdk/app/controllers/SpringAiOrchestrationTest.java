@@ -23,6 +23,14 @@ public class SpringAiOrchestrationTest {
   @Test
   void testStreamChatCompletion() {
     final var stream = service.streamChatCompletion().toStream();
+    String q = "aa";
+    // iterate over string
+    for( char a : q.toCharArray()) {
+      // print each character
+      System.out.println(a);
+    }
+    Integer[] x = new Integer[3];
+    x[1] = 2;
 
     final var filledDeltaCount = new AtomicInteger(0);
     stream

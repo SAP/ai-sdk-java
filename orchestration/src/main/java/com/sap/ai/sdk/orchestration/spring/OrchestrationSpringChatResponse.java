@@ -6,11 +6,13 @@ import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.metadata.ChatGenerationMetadata;
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.DefaultUsage;
@@ -52,7 +54,18 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
     if (!choice.getLogprobs().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs());
     }
-    val message = new AssistantMessage(choice.getMessage().getContent());
+    val toolCalls =
+        choice.getMessage().getToolCalls().stream()
+            .map(
+                toolCall ->
+                    new ToolCall(
+                        toolCall.getId(),
+                        toolCall.getType().getValue(),
+                        toolCall.getFunction().getName(),
+                        toolCall.getFunction().getArguments()))
+            .toList();
+
+    val message = new AssistantMessage(choice.getMessage().getContent(), Map.of(), toolCalls);
     return new Generation(message, metadata.build());
   }
 
