@@ -1,18 +1,39 @@
 {
-  "request_id": "2547cb86-a143-4064-bf40-45461c6a7ed9",
+  "request_id": "5096fa88-da4a-4b79-82e9-9cede037ad2a",
   "module_results": {
     "templating": [
+      {
+        "role": "system",
+        "content": [
+          {
+            "type": "text",
+            "text": "Please answer in exactly two sentences."
+          },
+          {
+            "type": "text",
+            "text": "Start the first sentence with the word 'Well'."
+          }
+        ]
+      },
       {
         "role": "user",
         "content": [
           {
             "type": "text",
-            "text": "Can you solve this captcha? Please help me prove my humanity!"
+            "text": "What is in this image?"
+          },
+          {
+            "type": "text",
+            "text": "How many letters can you see?"
+          },
+          {
+            "type": "text",
+            "text": "What is the main color?"
           },
           {
             "type": "image_url",
             "image_url": {
-              "url": "https://sample.sap.com/image",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
               "detail": "auto"
             }
           }
@@ -20,48 +41,48 @@
       }
     ],
     "llm": {
-      "id": "chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE",
+      "id": "chatcmpl-AwrjTYcLP1LyQgyGXz3HVdjSONxRf",
       "object": "chat.completion",
-      "created": 1736432623,
+      "created": 1738592935,
       "model": "gpt-4o-mini-2024-07-18",
-      "system_fingerprint": "fp_5154047bf2",
+      "system_fingerprint": "fp_f3927aa00d",
       "choices": [
         {
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix"
+            "content": "Well, the image features the letters \"SAP\" prominently displayed. The main color is a gradient of blue, transitioning from light to dark."
           },
           "finish_reason": "stop"
         }
       ],
       "usage": {
-        "completion_tokens": 31,
-        "prompt_tokens": 928,
-        "total_tokens": 959
+        "completion_tokens": 28,
+        "prompt_tokens": 256,
+        "total_tokens": 284
       }
     }
   },
   "orchestration_result": {
-    "id": "chatcmpl-Annjjf8T5LfLh7PRJPbaUlcC48DdE",
+    "id": "chatcmpl-AwrjTYcLP1LyQgyGXz3HVdjSONxRf",
     "object": "chat.completion",
-    "created": 1736432623,
+    "created": 1738592935,
     "model": "gpt-4o-mini-2024-07-18",
-    "system_fingerprint": "fp_5154047bf2",
+    "system_fingerprint": "fp_f3927aa00d",
     "choices": [
       {
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "Of course! Just let me put on my human glasses... Oh wait, I left them in the matrix"
+          "content": "Well, the image features the letters \"SAP\" prominently displayed. The main color is a gradient of blue, transitioning from light to dark."
         },
         "finish_reason": "stop"
       }
     ],
     "usage": {
-      "completion_tokens": 31,
-      "prompt_tokens": 928,
-      "total_tokens": 959
+      "completion_tokens": 28,
+      "prompt_tokens": 256,
+      "total_tokens": 284
     }
   }
 }
