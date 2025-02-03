@@ -94,7 +94,7 @@ jobs:
       - name: "Setup java"
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
@@ -144,11 +144,11 @@ jobs:
         run: |
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ needs.bump-version.outputs.release-commit }}
           
-          PR_URL=$(gh pr create --title "Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
+          PR_URL=$(gh pr create --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
           - [ ] Review the [Draft Release](${{ needs.create-release.outputs.release-url }})
           - [ ] Review **and approve** this PR
-          - [ ] Trigger the [Perform Release Workflow](${{ github.event.repository.html_url }}/actions/workflows/perform-release.yml)
+          - [ ] Trigger the [Perform Release Workflow](${{ github.event.repository.html_url }}/actions/workflows/perform-release.yaml)
           - [ ] Once the `Perform Release` workflow is through, head over to the [Central Sonatype](https://central.sonatype.com/publishing/deployments) and log in with the credentials in the Team Password Safe. There should be a published release.")
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
         env:

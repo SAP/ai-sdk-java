@@ -1,7 +1,7 @@
 ![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg?branch=main)
 ![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
-[![Fosstars security rating](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/cloud-sdk-java/blob/fosstars-report/fosstars_report.md)
+[![Fosstars security rating](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_report.md)
 
 # <img src="https://sap.github.io/cloud-sdk/img/logo.svg" alt="SAP Cloud SDK" width="30"/> SAP Cloud SDK for AI (for Java)
 
@@ -21,6 +21,7 @@ The SDK simplifies the setup and interaction with SAP AI Core, allowing you to f
     - [Run the Application Locally](#run-the-application-locally)
     - [Explore Further Capabilities](#explore-further-capabilities)
 - [Documentation](#documentation)
+- [Build the Project](#build-the-project)
 - [FAQs](#faqs)
 - [Contribute, Support and Feedback](#contribute-support-and-feedback)
 - [Security / Disclosure](#security--disclosure)
@@ -130,12 +131,25 @@ Please refer to [this documentation](docs/guides/ORCHESTRATION_CHAT_COMPLETION.m
 
 For more detailed information and advanced usage, please refer to the following:
 
-- [Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
-- [Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
-- [OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
-- [AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/BTP-Cockpit-Logo.png"/> Connecting to AI Core](docs/guides/CONNECTING_TO_AICORE.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/Orchestration-Logo.png" width="16"/> Orchestration Chat Completion](docs/guides/ORCHESTRATION_CHAT_COMPLETION.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/Open-AI-Logo.svg" width="16"/> OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
+- [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](docs/guides/SPRING_AI_INTEGRATION.md)
+- [🧰 AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
 
 For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
+
+## Build the Project
+
+You can build the project using Maven:
+
+```shell
+mvn clean install -DskipTests
+```
+
+This will install the current `SNAPSHOT` version of the project into your local Maven repository.
+
+For SAP internal development, you can also use `SNAPSHOT` builds from the [internal](https://int.repositories.cloud.sap/ui/repos/tree/General/proxy-build-snapshots-cloudsdk/com/sap/ai/sdk) and [internet-facing](https://common.repositories.cloud.sap/artifactory/build-snapshots-cloudsdk/com/sap/ai/sdk/) Artifactory.
 
 ## FAQs
 

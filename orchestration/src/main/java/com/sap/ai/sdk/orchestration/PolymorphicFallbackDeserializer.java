@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
  */
 @Beta
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
+class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
 
   @Nonnull private final Class<T> baseClass;
   @Nonnull private final List<Class<? extends T>> candidates;

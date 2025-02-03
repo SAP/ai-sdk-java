@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
   </parent>
   <artifactId>orchestration</artifactId>
   <name>Orchestration client</name>
@@ -31,11 +31,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>70%</coverage.complexity>
-    <coverage.line>87%</coverage.line>
-    <coverage.instruction>88%</coverage.instruction>
-    <coverage.branch>65%</coverage.branch>
-    <coverage.method>65%</coverage.method>
+    <coverage.complexity>77%</coverage.complexity>
+    <coverage.line>92%</coverage.line>
+    <coverage.instruction>92%</coverage.instruction>
+    <coverage.branch>70%</coverage.branch>
+    <coverage.method>92%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -54,7 +54,16 @@
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>connectivity-apache-httpclient5</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents.core5</groupId>
       <artifactId>httpcore5</artifactId>
@@ -164,6 +173,7 @@
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <removeEnumValuePrefix>true</removeEnumValuePrefix>
                   </additionalProperties>
                 </configuration>
               </execution>

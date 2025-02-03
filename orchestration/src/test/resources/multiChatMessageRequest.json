@@ -32,7 +32,9 @@
               "detail" : "auto"
             }
           } ]
-        } ]
+        } ],
+        "defaults" : { },
+        "tools" : [ ]
       }
     },
     "stream" : false

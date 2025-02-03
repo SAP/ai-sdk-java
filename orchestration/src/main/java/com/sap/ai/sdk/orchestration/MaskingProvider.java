@@ -12,9 +12,9 @@ import javax.annotation.Nonnull;
 public interface MaskingProvider {
 
   /**
-   * Create a masking provider for the configuration.
+   * Create a masking configuration.
    *
-   * @return the masking provider
+   * @return the masking configuration
    */
   @Nonnull
   MaskingProviderConfig createConfig();

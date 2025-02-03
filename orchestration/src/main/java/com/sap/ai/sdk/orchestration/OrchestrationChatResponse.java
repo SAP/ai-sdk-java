@@ -3,10 +3,10 @@ package com.sap.ai.sdk.orchestration;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
@@ -60,9 +60,8 @@ public class OrchestrationChatResponse {
   public List<Message> getAllMessages() throws IllegalArgumentException {
     final var messages = new ArrayList<Message>();
 
-    for (final ChatMessagesInner chatMessage :
-        originalResponse.getModuleResults().getTemplating()) {
-      if (chatMessage instanceof ChatMessage simpleMsg) {
+    for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
+      if (chatMessage instanceof SingleChatMessage simpleMsg) {
         final var message =
             switch (simpleMsg.getRole()) {
               case "user" -> Message.user(simpleMsg.getContent());

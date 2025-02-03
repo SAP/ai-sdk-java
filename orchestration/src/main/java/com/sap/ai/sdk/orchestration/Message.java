@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessagesInner;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
@@ -77,7 +78,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   default ChatMessagesInner createChatMessage() {
     final var itemList = this.content().contentItemList();
     if (itemList.size() == 1 && itemList.get(0) instanceof TextItem textItem) {
-      return ChatMessage.create().role(role()).content(textItem.text());
+      return SingleChatMessage.create().role(role()).content(textItem.text());
     } else {
       return MultiChatMessage.create()
           .role(role())

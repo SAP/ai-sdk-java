@@ -1,56 +1,118 @@
 package com.sap.ai.sdk.orchestration;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.util.List;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PolymorphicFallbackDeserializerTest {
 
-  @SneakyThrows
-  @Test
-  void testValueTypeResolutionFailure() {
+  private static String candidateAJson;
+  private static String candidateBJson;
 
-    interface AbstractParent {}
+  @JsonSubTypes({
+    @JsonSubTypes.Type(value = CandidateA.class),
+    @JsonSubTypes.Type(value = CandidateB.class)
+  })
+  interface AbstractParent {}
 
-    class KnownCandidate implements AbstractParent {
-      String content;
-    }
+  static class CandidateA implements AbstractParent {
+    @JsonProperty("content")
+    String content;
+  }
 
-    class UnknownCandidate implements AbstractParent {
-      List<String> content;
-    }
+  static class CandidateB implements AbstractParent {
+    @JsonProperty("content")
+    List<String> content;
+  }
 
-    final String unknownCandidateJson =
+  @BeforeEach
+  void setUp() {
+    candidateAJson =
         """
         {
-          "content": [
-            "Sentence one",
-            "Sentence two"
-          ]
+          "content": "I am candidate A"
         }
         """;
 
+    candidateBJson =
+        """
+        {
+          "content": [
+            "I am candidate B"
+          ]
+        }
+        """;
+  }
+
+  @SneakyThrows
+  @Test
+  void testValueTypesResolutionSuccess() {
+
+    final var fullCandidateList = List.of(CandidateA.class, CandidateB.class);
     final var module =
         new SimpleModule()
             .addDeserializer(
                 AbstractParent.class,
                 PolymorphicFallbackDeserializer.fromCandidates(
-                    AbstractParent.class, List.of(KnownCandidate.class)));
+                    AbstractParent.class, fullCandidateList));
 
     final var mapper = new JsonMapper().registerModule(module);
 
-    assertThatThrownBy(() -> mapper.readValue(unknownCandidateJson, AbstractParent.class))
+    final var candidateA = mapper.readValue(candidateAJson, AbstractParent.class);
+    assertThat(candidateA).isInstanceOf(CandidateA.class);
+
+    final var candidateB = mapper.readValue(candidateBJson, AbstractParent.class);
+    assertThat(candidateB).isInstanceOf(CandidateB.class);
+  }
+
+  @SneakyThrows
+  @Test
+  void testValueTypeResolutionFailure() {
+
+    final List<Class<? extends AbstractParent>> incompleteCandidateList = List.of(CandidateA.class);
+
+    final var moduleWithoutCandidateB =
+        new SimpleModule()
+            .addDeserializer(
+                AbstractParent.class,
+                PolymorphicFallbackDeserializer.fromCandidates(
+                    AbstractParent.class, incompleteCandidateList));
+
+    final var mapper = new JsonMapper().registerModule(moduleWithoutCandidateB);
+
+    assertThatThrownBy(() -> mapper.readValue(candidateBJson, AbstractParent.class))
         .isInstanceOf(JsonMappingException.class)
         .hasMessageContaining(
             "PolymorphicFallbackDeserializer failed to deserialize "
                 + AbstractParent.class.getName()
                 + ". Attempted candidates: "
-                + List.of(KnownCandidate.class.getName()));
+                + List.of(CandidateA.class.getName()));
+  }
+
+  @SneakyThrows
+  @Test
+  void testSubtypeAnnotationSuccess() {
+
+    final var module =
+        new SimpleModule()
+            .addDeserializer(
+                AbstractParent.class,
+                PolymorphicFallbackDeserializer.fromJsonSubTypes(AbstractParent.class));
+
+    ObjectMapper mapper = new ObjectMapper().registerModule(module);
+
+    final var candidate = mapper.readValue(candidateAJson, AbstractParent.class);
+    assertThat(candidate).isInstanceOf(CandidateA.class);
   }
 
   @Test

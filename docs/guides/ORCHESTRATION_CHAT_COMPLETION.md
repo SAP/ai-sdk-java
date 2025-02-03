@@ -83,9 +83,9 @@ var config = new OrchestrationModuleConfig()
         .withLlmConfig(OrchestrationAiModel.GPT_4O);
 ```
 
-Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
+Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for this and all following code examples.
   
-### Chat Completion
+## Chat Completion
 
 Use the Orchestration service to generate a response to a user message:
 
@@ -100,7 +100,7 @@ String messageResult = result.getContent();
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
 The LLM response is available as the first choice under the `result.getOrchestrationResult()` object.
 
-### Chat completion with Templates
+## Chat completion with Templates
 
 Use a prepared template and execute requests with by passing only the input parameters:
 
@@ -117,7 +117,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
-### Message history
+## Message history
 
 Include a message history to maintain context in the conversation:
 
@@ -134,7 +134,7 @@ var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 var result = new OrchestrationClient().chatCompletion(prompt, config);
 ```
 
-### Chat completion filter
+## Chat completion filter
 
 Apply content filtering to the chat completion:
 
@@ -158,14 +158,17 @@ var filterLoose = new AzureContentFilter()
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
     .violence(ALLOW_SAFE_LOW_MEDIUM);
 
+// choose Llama Guard filter or/and Azure filter
+var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+
 // changing the input to filterLoose will allow the message to pass
-var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict, llamaGuardFilter);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ```
-#### Behavior of Input and Output Filters
+### Behavior of Input and Output Filters
 
 - **Input Filter**:
   If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
@@ -176,9 +179,9 @@ var result =
   The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
   The low level API under `getOriginalResponse()` will not throw an exception.
 
-You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) in our Spring Boot application demonstrating response handling with filters.
+You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
 
-### Data masking
+## Data masking
 
 Use the data masking module to anonymize personal information in the input:
 
@@ -201,42 +204,42 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
-### Grounding
+## Grounding
 
 Use the grounding module to provide additional context to the AI model. 
 
 ```java
-    var message =
-        Message.user(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    var prompt =
-        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+// optional filter for collections
+var documentMetadata =
+    SearchDocumentKeyValueListPair.create()
+        .key("my-collection")
+        .value("value")
+        .addSelectModeItem(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT);
+// optional filter for document chunks
+var databaseFilter =
+    DocumentGroundingFilter.create()
+        .id("")
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+        .addDocumentMetadataItem(documentMetadata);
 
-    var filterInner =
-        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
-    var groundingConfigConfig =
-        GroundingModuleConfigConfig.create()
-            .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput")
-            .addFiltersItem(filterInner);
-    
-    var groundingConfig =
-        GroundingModuleConfig.create()
-            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
-            .config(groundingConfigConfig);
-    var configWithGrounding = config.withGroundingConfig(groundingConfig);
+var groundingConfig = Grounding.create().filter(databaseFilter);
+var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var configWithGrounding = config.withGrounding(groundingConfig);
 
-    var result =  
-            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
+var result = client.chatCompletion(prompt, configWithGrounding);
 ```
 
-In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
+In this example, the AI model is provided with additional context in the form of grounding information.
 
-### Stream chat completion
+`Grounding.create()` is by default a document grounding service with a vector data repository.
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
-#### Asynchronous Streaming
+### Asynchronous Streaming
 
 This is a blocking example for streaming and printing directly to the console:
 
@@ -253,12 +256,10 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 }
 ```
 
-#### Spring Boot example
-
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
-### Set model parameters
+## Set model parameters
 
 Change your LLM configuration to add model parameters:
 
@@ -272,7 +273,7 @@ OrchestrationAiModel customGPT4O =
         .withVersion("2024-05-13");
 ```
 
-### Using a Configuration from AI Launchpad
+## Using a Configuration from AI Launchpad
 
 In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
 
