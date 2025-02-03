@@ -80,10 +80,10 @@ class OpenAiClientTest {
 
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
-      () -> client.chatCompletion(OpenAiChatCompletionPrompt.create("")),
+      () -> client.chatCompletion(new OpenAiChatCompletionPrompt("")),
       () ->
           client
-              .streamChatCompletionDeltas(OpenAiChatCompletionPrompt.create(""))
+              .streamChatCompletionDeltas(new OpenAiChatCompletionPrompt(""))
               // the stream needs to be consumed to parse the response
               .forEach(System.out::println)
     };
@@ -94,7 +94,7 @@ class OpenAiClientTest {
       () -> {
         final var systemMessage = OpenAiMessage.system("You are a helpful AI");
         final var userMessage = OpenAiMessage.user("Hello World! Why is this phrase so famous?");
-        final var prompt = OpenAiChatCompletionPrompt.create(systemMessage, userMessage);
+        final var prompt = new OpenAiChatCompletionPrompt(systemMessage, userMessage);
         return client.chatCompletion(prompt);
       },
       () ->
@@ -181,7 +181,7 @@ class OpenAiClientTest {
   @Test
   void apiVersion() {
     stubFor(post(anyUrl()).willReturn(okJson("{}")));
-    Try.of(() -> client.chatCompletion(OpenAiChatCompletionPrompt.create("")));
+    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionPrompt("")));
 
     verify(
         exactly(1),
@@ -189,14 +189,14 @@ class OpenAiClientTest {
 
     Try.of(
         () ->
-            client.withApiVersion("fooBar").chatCompletion(OpenAiChatCompletionPrompt.create("")));
+            client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionPrompt("")));
     verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
 
     assertThat(client)
         .describedAs(
             "withApiVersion should return a new object, the sut object should remain unchanged")
         .isNotSameAs(client.withApiVersion("fooBar"));
-    Try.of(() -> client.chatCompletion(OpenAiChatCompletionPrompt.create("")));
+    Try.of(() -> client.chatCompletion(new OpenAiChatCompletionPrompt("")));
     verify(
         exactly(2),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
@@ -453,7 +453,7 @@ class OpenAiClientTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var prompt =
-          OpenAiChatCompletionPrompt.create(
+          new OpenAiChatCompletionPrompt(
               "Can you give me the first 100 numbers of the Fibonacci sequence?");
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(prompt)) {
@@ -483,7 +483,7 @@ class OpenAiClientTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       final var prompt =
-          OpenAiChatCompletionPrompt.create(
+          new OpenAiChatCompletionPrompt(
               "Can you give me the first 100 numbers of the Fibonacci sequence?");
 
       try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(prompt)) {

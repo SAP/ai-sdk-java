@@ -178,8 +178,8 @@ public final class OpenAiClient {
 
     final var openAiPrompt =
         (systemPrompt != null)
-            ? OpenAiChatCompletionPrompt.create(systemPrompt, userPrompt)
-            : OpenAiChatCompletionPrompt.create(userPrompt);
+            ? new OpenAiChatCompletionPrompt(systemPrompt, userPrompt)
+            : new OpenAiChatCompletionPrompt(userPrompt);
 
     return chatCompletion(
         toCreateChatCompletionRequest(openAiPrompt, new OpenAiChatCompletionConfig()));
@@ -261,8 +261,8 @@ public final class OpenAiClient {
 
     final var openAiPrompt =
         systemPrompt != null
-            ? OpenAiChatCompletionPrompt.create(systemPrompt, userPrompt)
-            : OpenAiChatCompletionPrompt.create(userPrompt);
+            ? new OpenAiChatCompletionPrompt(systemPrompt, userPrompt)
+            : new OpenAiChatCompletionPrompt(userPrompt);
 
     return streamChatCompletionDeltas(
             toCreateChatCompletionRequest(openAiPrompt, new OpenAiChatCompletionConfig()))

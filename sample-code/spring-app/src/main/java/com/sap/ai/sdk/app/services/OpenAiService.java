@@ -149,7 +149,7 @@ public class OpenAiService {
     var config = new OpenAiChatCompletionConfig().tools(List.of(tool)).toolChoice(toolChoice);
 
     var prompt =
-        OpenAiChatCompletionPrompt.create(
+        new OpenAiChatCompletionPrompt(
             "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?");
 
     return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(prompt, config);

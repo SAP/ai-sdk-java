@@ -47,7 +47,7 @@ class OpenAiTest {
   @Test
   void streamChatCompletion() {
     final var userMessage = OpenAiMessage.user("Who is the prettiest?");
-    final var prompt = OpenAiChatCompletionPrompt.create(userMessage);
+    final var prompt = new OpenAiChatCompletionPrompt(userMessage);
 
     final var totalOutput = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);

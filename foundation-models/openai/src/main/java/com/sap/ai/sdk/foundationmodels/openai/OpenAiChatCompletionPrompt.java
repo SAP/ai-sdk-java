@@ -15,10 +15,6 @@ public class OpenAiChatCompletionPrompt {
 
   @Nonnull private final List<String> stop = new ArrayList<>();
 
-  private OpenAiChatCompletionPrompt(@Nonnull final List<OpenAiMessage> messages) {
-    this.messages.addAll(messages);
-  }
-
   /**
    * Creates an OpenAiChatCompletionPrompt with a single message.
    *
@@ -26,8 +22,8 @@ public class OpenAiChatCompletionPrompt {
    * @return a new OpenAiChatCompletionPrompt instance
    */
   @Nonnull
-  public static OpenAiChatCompletionPrompt create(@Nonnull final String message) {
-    return create(OpenAiMessage.user(message));
+  public OpenAiChatCompletionPrompt(@Nonnull final String message) {
+    messages.add(OpenAiMessage.user(message));
   }
 
   /**
@@ -38,25 +34,10 @@ public class OpenAiChatCompletionPrompt {
    * @return a new OpenAiChatCompletionPrompt instance
    */
   @Nonnull
-  public static OpenAiChatCompletionPrompt create(
+  public OpenAiChatCompletionPrompt(
       @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
-    final var messagesList = new ArrayList<OpenAiMessage>();
-
-    messagesList.add(message);
-    messagesList.addAll(Arrays.asList(messages));
-
-    return create(messagesList);
-  }
-
-  /**
-   * Creates an OpenAiChatCompletionPrompt with a list of messages.
-   *
-   * @param messages the list of messages to be added to the prompt
-   * @return a new OpenAiChatCompletionPrompt instance
-   */
-  @Nonnull
-  public static OpenAiChatCompletionPrompt create(@Nonnull final List<OpenAiMessage> messages) {
-    return new OpenAiChatCompletionPrompt(messages);
+    this.messages.add(message);
+    this.messages.addAll(Arrays.asList(messages));
   }
 
   /**
