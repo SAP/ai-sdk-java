@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,16 +20,17 @@ public final class AssistantMessage implements Message {
   /** The content of the message. */
   @Nonnull String content;
 
-  // TODO: replace Spring AI ToolCall with it's individual fields
   @Nullable ToolCall toolCalls = null;
+
+  public record ToolCall(String id, String type, String name, String arguments) {}
 
   public AssistantMessage(@Nonnull final String content) {
     this.content = content;
   }
 
-  public AssistantMessage(@Nonnull final List<ToolCall> toolCalls) {
+  public AssistantMessage(@Nonnull final ToolCall toolCall) {
     content = "";
-    this.toolCalls = toolCalls.get(0);
+    this.toolCalls = toolCall;
   }
 
   @Nonnull
