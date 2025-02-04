@@ -681,8 +681,7 @@ class OrchestrationUnitTest {
   void testMultiMessage() throws IOException {
     stubFor(
         post("/completion")
-            .willReturn(
-                aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
+            .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
     OrchestrationAiModel customGpt4o =
         GPT_4O_MINI
