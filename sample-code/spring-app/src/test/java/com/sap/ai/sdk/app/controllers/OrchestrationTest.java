@@ -115,47 +115,6 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
-  @Test
-  void testImageInput() {
-    final var result =
-        service
-            .imageInput(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
-            .getOriginalResponse();
-    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-  }
-
-  @Test
-  void testImageInputBase64() {
-    String dataUrl = "";
-    try {
-      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
-      try (InputStream inputStream = url.openStream()) {
-        byte[] imageBytes = inputStream.readAllBytes();
-        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
-        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
-        dataUrl = "data:image/jpeg;base64," + encodedString;
-      }
-    } catch (Exception e) {
-      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
-    }
-    final var result = service.imageInput(dataUrl).getOriginalResponse();
-    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-  }
-
-  @Test
-  void testMultiStringInput() {
-    final var result =
-        service
-            .multiStringInput(
-                List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
-            .getOriginalResponse();
-    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-  }
-
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingAnonymization() {
@@ -295,5 +254,46 @@ class OrchestrationTest {
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
     assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testImageInput() {
+    final var result =
+        service
+            .imageInput(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testImageInputBase64() {
+    String dataUrl = "";
+    try {
+      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
+      try (InputStream inputStream = url.openStream()) {
+        byte[] imageBytes = inputStream.readAllBytes();
+        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
+        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+        dataUrl = "data:image/jpeg;base64," + encodedString;
+      }
+    } catch (Exception e) {
+      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
+    }
+    final var result = service.imageInput(dataUrl).getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testMultiStringInput() {
+    final var result =
+        service
+            .multiStringInput(
+                List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }
