@@ -106,7 +106,7 @@
     <profile>
       <id>generate</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
         <property>
           <name>generate</name>
         </property>
@@ -122,7 +122,6 @@
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
               <compileScope>COMPILE</compileScope>
               <deleteOutputDirectory>true</deleteOutputDirectory>
-              <skip>true</skip>
             </configuration>
             <executions>
               <execution>
@@ -134,8 +133,6 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/grounding.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.grounding.api</apiPackage>
-                  <generateApis>true</generateApis>
-                  <!-- TODO will change -->
                   <modelPackage>com.sap.ai.sdk.grounding.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
