@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,7 +22,7 @@ public final class AssistantMessage implements Message {
   @Nonnull String content;
 
   /** Tool call if there is any. */
-  @Nullable ToolCall toolCall = null;
+  @Nullable List<ToolCall> toolCalls = null;
 
   /**
    * Represents a tool call.
@@ -43,24 +44,33 @@ public final class AssistantMessage implements Message {
   }
 
   /**
-   * Creates a new assistant message with the given tool call.
+   * Creates a new assistant message with the given tool calls.
    *
-   * @param toolCall the tool call object
+   * @param toolCalls list of tool call objects
    */
-  public AssistantMessage(@Nonnull final ToolCall toolCall) {
+  public AssistantMessage(@Nonnull final List<ToolCall> toolCalls) {
     content = "";
-    this.toolCall = toolCall;
+    this.toolCalls = toolCalls;
   }
 
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    if (toolCall() != null) {
-      val function = Map.of("name", toolCall().name(), "arguments", toolCall().arguments());
-      val toolCallMap = Map.of("id", toolCall().id(), toolCall().type(), function);
+    if (toolCalls() != null) {
+      final List<Map<String, Object>> toolCallList =
+          toolCalls().stream()
+              .map(
+                  toolCall -> {
+                    val function =
+                        Map.of("name", toolCall.name(), "arguments", toolCall.arguments());
+                    return Map.of(
+                        "id", toolCall.id(), "type", toolCall.type(), toolCall.type(), function);
+                  })
+              .toList();
 
-      val message = SingleChatMessage.create().role(role).content(""); // content shouldn't be set
-      message.setCustomField("tool_calls", toolCallMap);
+      // content shouldn't be required for tool calls 🤷
+      val message = SingleChatMessage.create().role(role).content("");
+      message.setCustomField("tool_calls", toolCallList);
       return message;
     }
     return Message.super.createChatMessage();

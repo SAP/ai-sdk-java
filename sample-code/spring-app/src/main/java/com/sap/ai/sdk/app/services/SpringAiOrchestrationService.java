@@ -42,7 +42,7 @@ public class SpringAiOrchestrationService {
                 .description("Get the weather in location") // (2) function description
                 .inputType(MockWeatherService.Request.class) // (3) function input type
                 .build()));
-    val prompt = new Prompt("What is the weather in Potsdam?", defaultOptions);
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
 
     return client.call(prompt);
   }

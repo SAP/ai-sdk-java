@@ -123,28 +123,42 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
   @Nonnull
   private static com.sap.ai.sdk.orchestration.Message[] toOrchestrationMessages(
       @Nonnull final List<Message> messages) {
-    final Function<Message, com.sap.ai.sdk.orchestration.Message> mapper =
+    final Function<Message, List<com.sap.ai.sdk.orchestration.Message>> mapper =
         msg ->
             switch (msg.getMessageType()) {
               case SYSTEM:
-                yield new SystemMessage(msg.getText());
+                yield List.of(new SystemMessage(msg.getText()));
               case USER:
-                yield new UserMessage(msg.getText());
+                yield List.of(new UserMessage(msg.getText()));
               case ASSISTANT:
                 final List<ToolCall> toolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
                 if (toolCalls != null) {
-                  val toolCall = toolCalls.get(0);
-                  yield new AssistantMessage(
-                      new AssistantMessage.ToolCall(
-                          toolCall.id(), toolCall.type(), toolCall.name(), toolCall.arguments()));
+                  final List<AssistantMessage.ToolCall> toolCallList =
+                      toolCalls.stream()
+                          .map(
+                              toolCall ->
+                                  new AssistantMessage.ToolCall(
+                                      toolCall.id(),
+                                      toolCall.type(),
+                                      toolCall.name(),
+                                      toolCall.arguments()))
+                          .toList();
+                  yield List.of(new AssistantMessage(toolCallList));
                 }
-                yield new AssistantMessage(msg.getText());
+                yield List.of(new AssistantMessage(msg.getText()));
               case TOOL:
-                val responses = ((ToolResponseMessage) msg).getResponses();
-                val response = responses.get(0);
-                yield new ToolMessage(response.id(), response.responseData());
+                val toolResponses = ((ToolResponseMessage) msg).getResponses();
+                yield toolResponses.stream()
+                    .map(
+                        r ->
+                            (com.sap.ai.sdk.orchestration.Message)
+                                new ToolMessage(r.id(), r.responseData()))
+                    .toList();
             };
-    return messages.stream().map(mapper).toArray(com.sap.ai.sdk.orchestration.Message[]::new);
+    return messages.stream()
+        .map(mapper)
+        .flatMap(List::stream)
+        .toArray(com.sap.ai.sdk.orchestration.Message[]::new);
   }
 }
