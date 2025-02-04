@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
@@ -38,20 +37,19 @@ import org.springframework.ai.model.function.FunctionCallingOptions;
  */
 @Beta
 @Data
-@Getter(AccessLevel.NONE)
-@Setter(AccessLevel.NONE)
+@Getter(AccessLevel.PUBLIC)
 public class OrchestrationChatOptions implements FunctionCallingOptions {
 
+  @Getter(AccessLevel.NONE)
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
+
   private Set<String> functions = Set.of();
 
-  @Getter(AccessLevel.PUBLIC)
-  @Setter(AccessLevel.PUBLIC)
-  @Nonnull
-  OrchestrationModuleConfig config;
+  @Nonnull private OrchestrationModuleConfig config;
 
-  @Getter(AccessLevel.PUBLIC)
-  List<FunctionCallback> functionCallbacks;
+  private List<FunctionCallback> functionCallbacks;
+
+  private Map<String, Object> toolContext;
 
   /**
    * Returns the model to use for the chat.
@@ -208,12 +206,6 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
     config = config.withTemplateConfig(template.tools(tools));
   }
 
-  @Nonnull
-  @Override
-  public Set<String> getFunctions() {
-    return functions;
-  }
-
   @Override
   public void setFunctions(@Nonnull final Set<String> functionNames) {
     this.functions = functionNames;
@@ -234,9 +226,11 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
   @Nonnull
   @Override
   public Map<String, Object> getToolContext() {
-    return Map.of();
+    return toolContext;
   }
 
   @Override
-  public void setToolContext(@Nonnull final Map<String, Object> tooContext) {}
+  public void setToolContext(@Nonnull final Map<String, Object> toolContext) {
+    this.toolContext = toolContext;
+  }
 }
