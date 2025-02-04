@@ -5,6 +5,7 @@ import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -45,26 +46,21 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
   }
 
   /**
-   * Creates a new message content containing one {@link TextItem} with the given text.
+   * Creates a new message content containing one or more {@link TextItem}s with the given texts.
    *
-   * @param text the text of the message
+   * @param firstInput the first text of the message
+   * @param moreInputs additional texts of the message
    * @return the new message content
    */
   @Nonnull
-  public static MessageContent text(@Nonnull final String text) {
-    return new MessageContent(List.of(new TextItem(text)));
-  }
-
-  /**
-   * Creates a new message content containing multiple {@link TextItem}s with the given texts.
-   *
-   * @param texts the texts of the messages
-   * @return the new message content
-   */
-  @Nonnull
-  public static MessageContent text(@Nonnull final String... texts) {
+  public static MessageContent text(
+      @Nonnull final String firstInput, @Nullable final String... moreInputs) {
     return new MessageContent(
-        Arrays.stream(texts).map(text -> ((ContentItem) new TextItem(text))).toList());
+        Stream.concat(
+                Stream.of(firstInput),
+                moreInputs == null ? Stream.empty() : Arrays.stream(moreInputs))
+            .map(text -> (ContentItem) new TextItem(text))
+            .toList());
   }
 
   /**

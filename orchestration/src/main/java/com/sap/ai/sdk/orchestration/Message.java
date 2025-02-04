@@ -8,64 +8,68 @@ import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
 public sealed interface Message permits UserMessage, AssistantMessage, SystemMessage {
 
   /**
-   * A convenience method to create a user message.
+   * A convenience method to create a user message from one or more strings.
    *
-   * @param msg the message content.
+   * @param message the message content.
+   * @param additionalMessages the additional messages.
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(@Nonnull final String msg) {
-    return new UserMessage(msg);
+  static UserMessage user(
+      @Nonnull final String message, @Nullable final String... additionalMessages) {
+    return new UserMessage(message, additionalMessages);
   }
 
   /**
    * A convenience method to create a user message.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(@Nonnull final MessageContent msg) {
-    return new UserMessage(msg);
+  static UserMessage user(@Nonnull final MessageContent message) {
+    return new UserMessage(message);
   }
 
   /**
    * A convenience method to create an assistant message.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the assistant message.
    */
   @Nonnull
-  static AssistantMessage assistant(@Nonnull final String msg) {
-    return new AssistantMessage(msg);
+  static AssistantMessage assistant(@Nonnull final String message) {
+    return new AssistantMessage(message);
   }
 
   /**
-   * A convenience method to create a system message.
+   * A convenience method to create a system message from one or more strings.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the system message.
    */
   @Nonnull
-  static SystemMessage system(@Nonnull final String msg) {
-    return new SystemMessage(msg);
+  static SystemMessage system(
+      @Nonnull final String message, @Nullable final String... additionalMessages) {
+    return new SystemMessage(message, additionalMessages);
   }
 
   /**
    * A convenience method to create a system message. As of now, only text content is supported for
    * system messages by most AIs.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the system message.
    */
   @Nonnull
-  static SystemMessage system(@Nonnull final MessageContent msg) {
-    return new SystemMessage(msg);
+  static SystemMessage system(@Nonnull final MessageContent message) {
+    return new SystemMessage(message);
   }
 
   /**

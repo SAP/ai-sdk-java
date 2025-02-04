@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -24,12 +25,14 @@ public class SystemMessage implements Message {
   }
 
   /**
-   * Creates a new system message with the given single message.
+   * Creates a new system message from one or more strings.
    *
-   * @param singleMessage the single message.
+   * @param message the first message.
+   * @param additionalMessages the additional messages.
    */
-  public SystemMessage(@Nonnull final String singleMessage) {
-    content = new MessageContent(singleMessage);
+  public SystemMessage(
+      @Nonnull final String message, @Nullable final String... additionalMessages) {
+    content = MessageContent.text(message, additionalMessages);
   }
 
   /**

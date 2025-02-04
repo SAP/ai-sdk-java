@@ -25,12 +25,13 @@ public class UserMessage implements Message {
   }
 
   /**
-   * Creates a new user message with the given single message.
+   * Creates a new user message from one or more strings.
    *
-   * @param singleMessage the single message.
+   * @param message the first message.
+   * @param additionalMessages the additional messages.
    */
-  public UserMessage(@Nonnull final String singleMessage) {
-    content = new MessageContent(singleMessage);
+  public UserMessage(@Nonnull final String message, @Nullable final String... additionalMessages) {
+    content = MessageContent.text(message, additionalMessages);
   }
 
   /**

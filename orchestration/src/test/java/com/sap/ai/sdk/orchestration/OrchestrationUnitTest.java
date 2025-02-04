@@ -681,8 +681,7 @@ class OrchestrationUnitTest {
   void testMultiMessage() throws IOException {
     stubFor(
         post("/completion")
-            .willReturn(
-                aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
+            .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
     OrchestrationAiModel customGpt4o =
         GPT_4O_MINI
@@ -791,9 +790,11 @@ class OrchestrationUnitTest {
 
   @Test
   void testMessageConstruction() {
+    var userMessageTwoTexts = Message.user("Text 1", "Text 2");
     var userMessageTwoTextsAddText = Message.user("Text 1").addText("Text 2");
     var userMessageTwoTextsAdd = Message.user("Text 1").add(MessageContent.text("Text 2"));
     var userMessageTwoTextsContent = Message.user(MessageContent.text("Text 1", "Text 2"));
+    assertThat(userMessageTwoTexts).isEqualTo(userMessageTwoTextsAddText);
     assertThat(userMessageTwoTextsAddText).isEqualTo(userMessageTwoTextsAdd);
     assertThat(userMessageTwoTextsAdd).isEqualTo(userMessageTwoTextsContent);
 
@@ -807,9 +808,11 @@ class OrchestrationUnitTest {
         Message.user("Text 1").add(MessageContent.image("url", ImageItem.DetailLevel.low));
     assertThat(userMessageWithImageDetailAddImage).isEqualTo(userMessageWithImageDetailAdd);
 
+    var systemMessageTwoTexts = Message.system("Text 1", "Text 2");
     var systemMessageTwoTextsAddText = Message.system("Text 1").addText("Text 2");
     var systemMessageTwoTextsAdd = Message.system("Text 1").add(MessageContent.text("Text 2"));
     var systemMessageTwoTextsContent = Message.system(MessageContent.text("Text 1", "Text 2"));
+    assertThat(systemMessageTwoTexts).isEqualTo(systemMessageTwoTextsAddText);
     assertThat(systemMessageTwoTextsAddText).isEqualTo(systemMessageTwoTextsAdd);
     assertThat(systemMessageTwoTextsAdd).isEqualTo(systemMessageTwoTextsContent);
   }
