@@ -15,12 +15,6 @@ public class AssistantMessage implements Message {
   /** The content of the message. */
   @Nonnull MessageContent content;
 
-  @Override
-  @Nonnull
-  public MessageContent content() {
-    return content;
-  }
-
   /**
    * Creates a new assistant message with the given single message.
    *

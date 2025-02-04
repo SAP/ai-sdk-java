@@ -18,12 +18,6 @@ public class SystemMessage implements Message {
   /** The content of the message. */
   @Nonnull MessageContent content;
 
-  @Override
-  @Nonnull
-  public MessageContent content() {
-    return content;
-  }
-
   /**
    * Creates a new system message from one or more strings.
    *
