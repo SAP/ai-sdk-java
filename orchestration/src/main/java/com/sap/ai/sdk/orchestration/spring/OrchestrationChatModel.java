@@ -17,8 +17,10 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
+import org.springframework.ai.chat.messages.ToolResponseMessage.ToolResponse;
 import org.springframework.ai.chat.model.AbstractToolCallSupport;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -59,13 +61,11 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
   @Nonnull
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
-    return internalCall(prompt, null);
-  }
-
-  public ChatResponse internalCall(Prompt prompt, ChatResponse previousChatResponse) {
-
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
-      runtimeFunctionCallbackConfigurations(FunctionCallingOptions.builder().functionCallbacks(options.getFunctionCallbacks()).build());
+      runtimeFunctionCallbackConfigurations(
+          FunctionCallingOptions.builder()
+              .functionCallbacks(options.getFunctionCallbacks())
+              .build());
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
@@ -76,7 +76,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
         var toolCallConversation = handleToolCalls(prompt, response);
         // Recursively call the call method with the tool call message
         // conversation that contains the call responses.
-        return internalCall(new Prompt(toolCallConversation, prompt.getOptions()), response);
+        return call(new Prompt(toolCallConversation, prompt.getOptions()));
       }
       return response;
     }
@@ -128,9 +128,16 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
               case USER:
                 yield new UserMessage(msg.getText());
               case ASSISTANT:
+                final List<ToolCall> toolCalls =
+                    ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
+                if(toolCalls != null) {
+                  yield new AssistantMessage(toolCalls);
+                }
                 yield new AssistantMessage(msg.getText());
               case TOOL:
-                yield new ToolMessage((ToolResponseMessage) msg);
+                val responses = ((ToolResponseMessage) msg).getResponses();
+                ToolResponse response = responses.get(0);
+                yield new ToolMessage(response.id(), response.responseData());
             };
     return messages.stream().map(mapper).toArray(com.sap.ai.sdk.orchestration.Message[]::new);
   }

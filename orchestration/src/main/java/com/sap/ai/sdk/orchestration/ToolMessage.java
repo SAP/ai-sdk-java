@@ -1,29 +1,28 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
-import org.springframework.ai.chat.messages.ToolResponseMessage;
 
-import javax.annotation.Nonnull;
-
-/** Represents a chat message as 'system' to the orchestration service. */
+/** Represents a chat message as 'tool' to the orchestration service. */
 @Value
 @Accessors(fluent = true)
 public class ToolMessage implements Message {
 
   /** The role of the assistant. */
-  @Nonnull
-  String role = "tool";
+  @Nonnull String role = "tool";
 
-  /** The content of the message. */
-  @Nonnull
-  ToolResponseMessage message;
+  @Nonnull String id;
+
+  @Nonnull String content;
 
   @Nonnull
   @Override
-  public String content()
-  {
-    return "";
+  public ChatMessage createChatMessage() {
+    SingleChatMessage message = SingleChatMessage.create().role(role()).content(content);
+    message.setCustomField("tool_call_id", id);
+    return message;
   }
 }
-
