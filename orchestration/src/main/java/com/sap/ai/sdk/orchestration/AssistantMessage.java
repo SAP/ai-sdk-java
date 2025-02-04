@@ -21,7 +21,7 @@ public final class AssistantMessage implements Message {
   /** The content of the message. */
   @Nonnull String content;
 
-  //TODO: replace Spring AI ToolCall with it's individual fields
+  // TODO: replace Spring AI ToolCall with it's individual fields
   @Nullable ToolCall toolCalls = null;
 
   public AssistantMessage(@Nonnull final String content) {

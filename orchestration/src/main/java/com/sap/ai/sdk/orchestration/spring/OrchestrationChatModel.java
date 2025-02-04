@@ -130,7 +130,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
               case ASSISTANT:
                 final List<ToolCall> toolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
-                if(toolCalls != null) {
+                if (toolCalls != null) {
                   yield new AssistantMessage(toolCalls);
                 }
                 yield new AssistantMessage(msg.getText());
