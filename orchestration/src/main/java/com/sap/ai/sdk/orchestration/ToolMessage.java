@@ -21,7 +21,7 @@ public class ToolMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    SingleChatMessage message = SingleChatMessage.create().role(role()).content(content);
+    final SingleChatMessage message = SingleChatMessage.create().role(role()).content(content);
     message.setCustomField("tool_call_id", id);
     return message;
   }

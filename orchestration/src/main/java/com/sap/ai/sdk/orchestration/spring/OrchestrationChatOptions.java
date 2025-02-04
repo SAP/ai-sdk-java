@@ -172,13 +172,10 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
     return (T) new OrchestrationChatOptions(copyConfig);
   }
 
-  @SuppressWarnings("unchecked") // getModelParams() returns Object, it should return Map
+  @SuppressWarnings("unchecked")
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
-    if (getLlmConfigNonNull().getModelParams() instanceof Map) {
-      return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
-    }
-    return null;
+    return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
   }
 
   @Nonnull
@@ -189,57 +186,57 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
   }
 
   @Override
-  public void setFunctionCallbacks(List<FunctionCallback> functionCallbacks) {
+  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> functionCallbacks) {
     this.functionCallbacks = functionCallbacks;
-    Template template =
+    final Template template =
         Objects.requireNonNullElse(
             (Template) config.getTemplateConfig(), Template.create().template());
-    config =
-        config.withTemplateConfig(
-            template.tools(
-                functionCallbacks.stream()
-                    .map(
-                        functionCallback ->
-                            ChatCompletionTool.create()
-                                .type(TypeEnum.FUNCTION)
-                                .function(
-                                    FunctionObject.create()
-                                        .name(functionCallback.getName())
-                                        .description(functionCallback.getDescription())
-                                        .parameters(
-                                            ModelOptionsUtils.jsonToMap(
-                                                functionCallback.getInputTypeSchema()))))
-                    .toList()));
+    val tools =
+        functionCallbacks.stream()
+            .map(
+                functionCallback ->
+                    ChatCompletionTool.create()
+                        .type(TypeEnum.FUNCTION)
+                        .function(
+                            FunctionObject.create()
+                                .name(functionCallback.getName())
+                                .description(functionCallback.getDescription())
+                                .parameters(
+                                    ModelOptionsUtils.jsonToMap(
+                                        functionCallback.getInputTypeSchema()))))
+            .toList();
+    config = config.withTemplateConfig(template.tools(tools));
   }
 
+  @Nonnull
   @Override
   public Set<String> getFunctions() {
     return functions;
   }
 
   @Override
-  public void setFunctions(Set<String> functionNames) {
+  public void setFunctions(@Nonnull final Set<String> functionNames) {
     this.functions = functionNames;
-    Template template =
+    val template =
         Objects.requireNonNullElse(
             (Template) config.getTemplateConfig(), Template.create().template());
-    config =
-        config.withTemplateConfig(
-            template.tools(
-                functionNames.stream()
-                    .map(
-                        functionName ->
-                            ChatCompletionTool.create()
-                                .type(TypeEnum.FUNCTION)
-                                .function(FunctionObject.create().name(functionName)))
-                    .toList()));
+    val tools =
+        functionNames.stream()
+            .map(
+                functionName ->
+                    ChatCompletionTool.create()
+                        .type(TypeEnum.FUNCTION)
+                        .function(FunctionObject.create().name(functionName)))
+            .toList();
+    config = config.withTemplateConfig(template.tools(tools));
   }
 
+  @Nonnull
   @Override
   public Map<String, Object> getToolContext() {
     return Map.of();
   }
 
   @Override
-  public void setToolContext(Map<String, Object> tooContext) {}
+  public void setToolContext(@Nonnull final Map<String, Object> tooContext) {}
 }

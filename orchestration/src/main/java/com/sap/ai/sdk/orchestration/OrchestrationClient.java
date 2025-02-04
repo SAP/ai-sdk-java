@@ -221,7 +221,6 @@ public class OrchestrationClient {
                   OrchestrationError.class,
                   OrchestrationClientException::new)
               .objectMapper(JACKSON);
-      System.out.println(JACKSON.writerWithDefaultPrettyPrinter().writeValueAsString(request));
       return client.execute(postRequest, handler);
     } catch (DeploymentResolutionException
         | DestinationAccessException

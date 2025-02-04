@@ -20,7 +20,6 @@ import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
-import org.springframework.ai.chat.messages.ToolResponseMessage.ToolResponse;
 import org.springframework.ai.chat.model.AbstractToolCallSupport;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -36,7 +35,7 @@ import reactor.core.publisher.Flux;
 @Beta
 @Slf4j
 public class OrchestrationChatModel extends AbstractToolCallSupport implements ChatModel {
-  @Nonnull private OrchestrationClient client;
+  @Nonnull private final OrchestrationClient client;
 
   /**
    * Default constructor.
@@ -53,7 +52,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
    *
    * @since 1.2.0
    */
-  public OrchestrationChatModel(OrchestrationClient client) {
+  public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
     super(null);
     this.client = client;
   }
@@ -77,7 +76,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
 
       if (!isProxyToolCalls(prompt, options)
           && isToolCall(response, Set.of("tool_calls", "stop"))) {
-        var toolCallConversation = handleToolCalls(prompt, response);
+        val toolCallConversation = handleToolCalls(prompt, response);
         // Recursively call the call method with the tool call message
         // conversation that contains the call responses.
         return call(new Prompt(toolCallConversation, prompt.getOptions()));
@@ -143,7 +142,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
                 yield new AssistantMessage(msg.getText());
               case TOOL:
                 val responses = ((ToolResponseMessage) msg).getResponses();
-                ToolResponse response = responses.get(0);
+                val response = responses.get(0);
                 yield new ToolMessage(response.id(), response.responseData());
             };
     return messages.stream().map(mapper).toArray(com.sap.ai.sdk.orchestration.Message[]::new);
