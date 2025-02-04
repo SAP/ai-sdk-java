@@ -62,10 +62,14 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
-      runtimeFunctionCallbackConfigurations(
-          FunctionCallingOptions.builder()
-              .functionCallbacks(options.getFunctionCallbacks())
-              .build());
+
+      if (options.getFunctionCallbacks() != null) {
+        runtimeFunctionCallbackConfigurations(
+            FunctionCallingOptions.builder()
+                .functionCallbacks(options.getFunctionCallbacks())
+                .build());
+      }
+
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
@@ -131,7 +135,10 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
                 final List<ToolCall> toolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
                 if (toolCalls != null) {
-                  yield new AssistantMessage(toolCalls);
+                  val toolCall = toolCalls.get(0);
+                  yield new AssistantMessage(
+                      new AssistantMessage.ToolCall(
+                          toolCall.id(), toolCall.type(), toolCall.name(), toolCall.arguments()));
                 }
                 yield new AssistantMessage(msg.getText());
               case TOOL:
