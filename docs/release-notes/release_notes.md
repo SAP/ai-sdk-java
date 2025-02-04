@@ -8,11 +8,12 @@
 
 ### 🔧 Compatibility Notes
 
--
+- `Message.content()` returns a `ContentItem` now instead of a `String`. Use `((TextItem) Message.content().contentItemList().get(0)).text()` if the corresponding `ContentItem` is a `TextItem` and the string representation is needed.
 
 ### ✨ New Functionality
 
 - [Add Orchestration `LlamaGuardFilter`](../guides/ORCHESTRATION_CHAT_COMPLETION.md#chat-completion-filter).
+- [Convenient methods to create messages containing images and multiple text inputs](../guides/ORCHESTRATION_CHAT_COMPLETION.md#add-images-and-multiple-text-inputs-to-a-message)
 
 ### 📈 Improvements
 
