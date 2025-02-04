@@ -22,8 +22,10 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -34,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.model.function.FunctionCallback;
 import reactor.core.publisher.Flux;
 
 @WireMockTest
@@ -43,7 +46,7 @@ public class OrchestrationChatModelTest {
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   private static OrchestrationChatModel client;
-  private static OrchestrationModuleConfig config;
+  private static OrchestrationChatOptions defaultOptions;
   private static Prompt prompt;
 
   @BeforeEach
@@ -51,10 +54,10 @@ public class OrchestrationChatModelTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationChatModel(new OrchestrationClient(destination));
-    config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO_16K);
-    prompt =
-        new Prompt(
-            "Hello World! Why is this phrase so famous?", new OrchestrationChatOptions(config));
+    defaultOptions =
+        new OrchestrationChatOptions(
+            new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO_16K));
+    prompt = new Prompt("Hello World! Why is this phrase so famous?", defaultOptions);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -72,7 +75,7 @@ public class OrchestrationChatModelTest {
                 aResponse()
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    final var result = client.call(prompt);
+    val result = client.call(prompt);
 
     assertThat(result).isNotNull();
     assertThat(result.getResult().getOutput().getContent()).isNotEmpty();
@@ -103,14 +106,14 @@ public class OrchestrationChatModelTest {
 
   @Test
   void testStreamCompletion() throws IOException {
-    try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
+    try (val inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
 
-      final var httpClient = mock(HttpClient.class);
+      val httpClient = mock(HttpClient.class);
       ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
 
       // Create a mock response
-      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      val mockResponse = new BasicClassicHttpResponse(200, "OK");
+      val inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
       mockResponse.setEntity(inputStreamEntity);
       mockResponse.setHeader("Content-Type", "text/event-flux");
 
@@ -118,7 +121,7 @@ public class OrchestrationChatModelTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       Flux<ChatResponse> flux = client.stream(prompt);
-      var deltaList = flux.toStream().toList();
+      val deltaList = flux.toStream().toList();
 
       assertThat(deltaList).hasSize(3);
       // the first delta doesn't have any content
@@ -132,5 +135,30 @@ public class OrchestrationChatModelTest {
 
       Mockito.verify(inputStream, times(1)).close();
     }
+  }
+
+  @Test
+  void testToolCalls() {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("toolCallsResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    defaultOptions.setFunctionCallbacks(
+            List.of(
+                FunctionCallback.builder()
+                    .function(
+                        "CurrentWeather",
+                        new MockWeatherService()) // (1) function name and instance
+                    .description("Get the weather in location") // (2) function description
+                    .inputType(MockWeatherService.Request.class) // (3) function input type
+                    .build()));
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
+    val result = client.call(prompt);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getResult().getOutput().getContent()).isNotEmpty();
   }
 }

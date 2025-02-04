@@ -1,0 +1,91 @@
+{
+  "request_id": "dd5a4011-e6df-4067-9ae5-35a4ee285e16",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "What is the weather in Potsdam and in Toulouse?"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-AxBvM7udqBsWt5Yn29JmfaXwiNzVn",
+      "object": "chat.completion",
+      "created": 1738670552,
+      "model": "gpt-3.5-turbo-1106",
+      "system_fingerprint": "fp_0165350fbb",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "call_YoECwOgdcbJWKpWMScu3071x",
+                "type": "function",
+                "function": {
+                  "name": "CurrentWeather",
+                  "arguments": "{\"location\": \"Potsdam\", \"unit\": \"C\"}"
+                }
+              },
+              {
+                "id": "call_FlegKYTGkfWU1Drzee77qiLV",
+                "type": "function",
+                "function": {
+                  "name": "CurrentWeather",
+                  "arguments": "{\"location\": \"Toulouse\", \"unit\": \"C\"}"
+                }
+              }
+            ]
+          },
+          "finish_reason": "tool_calls"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 54,
+        "prompt_tokens": 67,
+        "total_tokens": 121
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-AxBvM7udqBsWt5Yn29JmfaXwiNzVn",
+    "object": "chat.completion",
+    "created": 1738670552,
+    "model": "gpt-3.5-turbo-1106",
+    "system_fingerprint": "fp_0165350fbb",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_YoECwOgdcbJWKpWMScu3071x",
+              "type": "function",
+              "function": {
+                "name": "CurrentWeather",
+                "arguments": "{\"location\": \"Potsdam\", \"unit\": \"C\"}"
+              }
+            },
+            {
+              "id": "call_FlegKYTGkfWU1Drzee77qiLV",
+              "type": "function",
+              "function": {
+                "name": "CurrentWeather",
+                "arguments": "{\"location\": \"Toulouse\", \"unit\": \"C\"}"
+              }
+            }
+          ]
+        },
+        "finish_reason": "tool_calls"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 54,
+      "prompt_tokens": 67,
+      "total_tokens": 121
+    }
+  }
+}
