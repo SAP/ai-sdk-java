@@ -1,6 +1,9 @@
 package com.sap.ai.sdk.orchestration;
 
 import javax.annotation.Nonnull;
+
+import com.google.common.annotations.Beta;
+import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -13,7 +16,9 @@ public class AssistantMessage implements Message {
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull MessageContent content;
+  @Nonnull
+  @Getter(onMethod_ = @Beta)
+  MessageContent content;
 
   /**
    * Creates a new assistant message with the given single message.

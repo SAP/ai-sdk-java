@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.Beta;
+import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -16,7 +19,9 @@ public class UserMessage implements Message {
   @Nonnull String role = "user";
 
   /** The content of the message. */
-  @Nonnull MessageContent content;
+  @Nonnull
+  @Getter(onMethod_ = @Beta)
+  MessageContent content;
 
   /**
    * Creates a new user message from one or more strings.
