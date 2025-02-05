@@ -10,12 +10,17 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
+import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -110,13 +115,6 @@ public final class OpenAiClient {
     return client.withApiVersion(DEFAULT_API_VERSION);
   }
 
-  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
-    final String finishReason = delta.getFinishReason();
-    if (finishReason != null && finishReason.equals("content_filter")) {
-      throw new OpenAiClientException("Content filter filtered the output.");
-    }
-  }
-
   /**
    * Use this method to set a system prompt that should be used across multiple chat completions
    * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)}.
@@ -153,18 +151,11 @@ public final class OpenAiClient {
     return chatCompletion(request.toCreateChatCompletionRequest());
   }
 
-  /**
-   * Generate a completion for the given conversation and other request parameters.
-   *
-   * @param request the completion request.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   */
-  @Nonnull
-  public OpenAiChatCompletionResponse chatCompletion(
-      @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return chatCompletion(request.toCreateChatCompletionRequest());
+  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
+    final String finishReason = delta.getFinishReason();
+    if (finishReason != null && finishReason.equals("content_filter")) {
+      throw new OpenAiClientException("Content filter filtered the output.");
+    }
   }
 
   /**
@@ -179,6 +170,20 @@ public final class OpenAiClient {
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
     return new OpenAiChatCompletionResponse(
         execute("/chat/completions", request, CreateChatCompletionResponse.class));
+  }
+
+  /**
+   * Generate a completion for the given conversation and request parameters.
+   *
+   * @param request the completion request.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public OpenAiChatCompletionResponse chatCompletion(
+      @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    return chatCompletion(request.toCreateChatCompletionRequest());
   }
 
   /**
@@ -223,7 +228,23 @@ public final class OpenAiClient {
   }
 
   /**
-   * Stream a completion for the given conversation and other request parameters.
+   * Generate a completion for the given conversation and request parameters.
+   *
+   * @param parameters the completion request.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
+   */
+  @Deprecated(since = "1.3.0")
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletion(
+      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
+  }
+
+  /**
+   * Stream a completion for the given conversation and request parameters.
    *
    * <p>Returns a <b>lazily</b> populated stream of delta objects. To simply stream the text chunks
    * use {@link #streamChatCompletion(String)}
@@ -272,11 +293,82 @@ public final class OpenAiClient {
     return executeStream("/chat/completions", request, OpenAiChatCompletionDelta.class);
   }
 
+  /**
+   * Stream a completion for the given conversation and request parameters.
+   *
+   * <p>Returns a <b>lazily</b> populated stream of delta objects. To simply stream the text chunks
+   * use {@link #streamChatCompletion(String)}
+   *
+   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
+   * HTTP connection is closed.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * try (var stream = client.streamChatCompletionDeltas(prompt)) {
+   *       stream
+   *           .peek(delta -> System.out.println(delta.getUsage()))
+   *           .map(com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta::getDeltaContent)
+   *           .forEach(System.out::println);
+   * }
+   * }</pre>
+   *
+   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
+   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
+   * Stream#parallel()} on this stream is not supported.
+   *
+   * @param parameters The prompt, including a list of messages.
+   * @return A stream of message deltas
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @deprecated Use {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)} instead.
+   */
+  @Deprecated(since = "1.3.0")
+  @Nonnull
+  public Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta>
+      streamChatCompletionDeltas(@Nonnull final OpenAiChatCompletionParameters parameters)
+          throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    parameters.enableStreaming();
+    return executeStream(
+        "/chat/completions",
+        parameters,
+        com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta.class);
+  }
+
   private void warnIfUnsupportedUsage() {
     if (systemPrompt != null) {
       log.warn(
           "Previously set messages will be ignored, set it as an argument of this method instead.");
     }
+  }
+
+  /**
+   * Get a vector representation of a given string input that can be easily consumed by machine
+   * learning models and algorithms.
+   *
+   * @param input the input text.
+   * @return the embedding output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public EmbeddingsCreate200Response embedding(@Nonnull final String input)
+      throws OpenAiClientException {
+    return embedding(
+        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create(input)));
+  }
+
+  /**
+   * Get a vector representation of a given request with input that can be easily consumed by
+   * machine learning models and algorithms.
+   *
+   * @param request the request with input text.
+   * @return the embedding output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest request)
+      throws OpenAiClientException {
+    return execute("/embeddings", request, EmbeddingsCreate200Response.class);
   }
 
   /**
@@ -288,9 +380,9 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
-  public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest parameters)
+  public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
       throws OpenAiClientException {
-    return execute("/embeddings", parameters, EmbeddingsCreate200Response.class);
+    return execute("/embeddings", parameters, OpenAiEmbeddingOutput.class);
   }
 
   @Nonnull
