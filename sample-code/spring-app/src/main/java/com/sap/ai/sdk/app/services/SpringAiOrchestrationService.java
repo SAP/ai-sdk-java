@@ -34,16 +34,7 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse completion() {
-    final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
-    options.setFunctionCallbacks(
-        List.of(
-            FunctionCallback.builder()
-                .function(
-                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
-                .description("Get the weather in location") // (2) function description
-                .inputType(MockWeatherService.Request.class) // (3) function input type
-                .build()));
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    val prompt = new Prompt("What is the capital of France?", defaultOptions);
 
     return client.call(prompt);
   }
@@ -95,6 +86,29 @@ public class SpringAiOrchestrationService {
         new Prompt(
             "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
             opts);
+
+    return client.call(prompt);
+  }
+
+  /**
+   * Register a function that will be called when the user asks for the weather. <a
+   * href="https://docs.spring.io/spring-ai/reference/api/chat/functions/openai-chat-functions.html#_registercall_functions_with_prompt_options">Spring
+   * AI Function Calling</a>
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public ChatResponse functionCalling() {
+    final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
+    options.setFunctionCallbacks(
+        List.of(
+            FunctionCallback.builder()
+                .function(
+                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+                .description("Get the weather in location") // (2) function description
+                .inputType(MockWeatherService.Request.class) // (3) function input type
+                .build()));
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
     return client.call(prompt);
   }

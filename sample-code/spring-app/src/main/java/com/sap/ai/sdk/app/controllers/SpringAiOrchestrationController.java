@@ -21,10 +21,12 @@ class SpringAiOrchestrationController {
   @GetMapping("/completion")
   Object completion(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = (OrchestrationSpringChatResponse) service.completion();
+    val response = service.completion();
 
     if ("json".equals(format)) {
-      return response.getOrchestrationResponse().getOriginalResponse();
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
     }
     return response.getResult().getOutput().getContent();
   }
@@ -39,20 +41,37 @@ class SpringAiOrchestrationController {
 
   @GetMapping("/template")
   Object template(@Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = (OrchestrationSpringChatResponse) service.template();
+    val response = service.template();
 
     if ("json".equals(format)) {
-      return response.getOrchestrationResponse().getOriginalResponse();
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
     }
     return response.getResult().getOutput().getContent();
   }
 
   @GetMapping("/masking")
   Object masking(@Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = (OrchestrationSpringChatResponse) service.masking();
+    val response = service.masking();
 
     if ("json".equals(format)) {
-      return response.getOrchestrationResponse().getOriginalResponse();
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
+    }
+    return response.getResult().getOutput().getContent();
+  }
+
+  @GetMapping("/functionCalling")
+  Object functionCalling(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    val response = service.functionCalling();
+
+    if ("json".equals(format)) {
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
     }
     return response.getResult().getOutput().getContent();
   }

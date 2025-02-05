@@ -144,6 +144,7 @@ public class OrchestrationChatModelTest {
 
   @Test
   void testToolCalls() throws IOException {
+    // https://platform.openai.com/docs/guides/function-calling
     stubFor(
         post(urlPathEqualTo("/completion"))
             .inScenario("Tool Calls")
