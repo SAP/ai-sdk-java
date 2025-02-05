@@ -1,11 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.google.common.annotations.Beta;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -49,7 +48,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage addText(@Nonnull final String... messages) {
+  public UserMessage andText(@Nonnull final String... messages) {
     return new UserMessage(
         new MessageContent(
             Stream.concat(
@@ -65,7 +64,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage addImage(
+  public UserMessage andImage(
       @Nonnull final String imageUrl, @Nullable final ImageItem.DetailLevel detailLevel) {
     return new UserMessage(
         new MessageContent(
@@ -82,7 +81,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage addImage(@Nonnull final String imageUrl) {
+  public UserMessage andImage(@Nonnull final String imageUrl) {
     return new UserMessage(
         new MessageContent(
             Stream.concat(content.contentItemList().stream(), Stream.of(new ImageItem(imageUrl)))
@@ -96,7 +95,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage add(@Nonnull final MessageContent... messageContents) {
+  public UserMessage and(@Nonnull final MessageContent... messageContents) {
     final List<ContentItem> combinedItems =
         Stream.concat(
                 content.contentItemList().stream(),

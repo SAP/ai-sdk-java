@@ -81,7 +81,7 @@ public class OrchestrationService {
         new OrchestrationModuleConfig().withLlmConfig(customGpt4o);
 
     final var multiMessage =
-        Message.user("What is in this image?").addImage(pathToImage, ImageItem.DetailLevel.low);
+        Message.user("What is in this image?").andImage(pathToImage, ImageItem.DetailLevel.low);
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, llmWithImageSupportConfig);
   }
@@ -95,8 +95,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     final var multiMessage =
         Message.user(questions.get(0))
-            .addText(questions.get(1))
-            .add(MessageContent.text(questions.get(2)));
+            .andText(questions.get(1))
+            .and(MessageContent.text(questions.get(2)));
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }

@@ -1,8 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
-import javax.annotation.Nonnull;
-
 import com.google.common.annotations.Beta;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;

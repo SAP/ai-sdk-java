@@ -695,11 +695,11 @@ class OrchestrationUnitTest {
 
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
-            .addText("Start the first sentence with the word 'Well'.");
+            .andText("Start the first sentence with the word 'Well'.");
 
     var messageWithImage =
         Message.user("What is in this image?")
-            .addImage(
+            .andImage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     var prompt =
         new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithTwoTexts));
@@ -791,26 +791,26 @@ class OrchestrationUnitTest {
   @Test
   void testMessageConstruction() {
     var userMessageTwoTexts = Message.user("Text 1", "Text 2");
-    var userMessageTwoTextsAddText = Message.user("Text 1").addText("Text 2");
-    var userMessageTwoTextsAdd = Message.user("Text 1").add(MessageContent.text("Text 2"));
+    var userMessageTwoTextsAddText = Message.user("Text 1").andText("Text 2");
+    var userMessageTwoTextsAdd = Message.user("Text 1").and(MessageContent.text("Text 2"));
     var userMessageTwoTextsContent = Message.user(MessageContent.text("Text 1", "Text 2"));
     assertThat(userMessageTwoTexts).isEqualTo(userMessageTwoTextsAddText);
     assertThat(userMessageTwoTextsAddText).isEqualTo(userMessageTwoTextsAdd);
     assertThat(userMessageTwoTextsAdd).isEqualTo(userMessageTwoTextsContent);
 
-    var userMessageWithImageAddImage = Message.user("Text 1").addImage("url");
-    var userMessageWithImageAdd = Message.user("Text 1").add(MessageContent.image("url"));
+    var userMessageWithImageAddImage = Message.user("Text 1").andImage("url");
+    var userMessageWithImageAdd = Message.user("Text 1").and(MessageContent.image("url"));
     assertThat(userMessageWithImageAddImage).isEqualTo(userMessageWithImageAdd);
 
     var userMessageWithImageDetailAddImage =
-        Message.user("Text 1").addImage("url", ImageItem.DetailLevel.low);
+        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.low);
     var userMessageWithImageDetailAdd =
-        Message.user("Text 1").add(MessageContent.image("url", ImageItem.DetailLevel.low));
+        Message.user("Text 1").and(MessageContent.image("url", ImageItem.DetailLevel.low));
     assertThat(userMessageWithImageDetailAddImage).isEqualTo(userMessageWithImageDetailAdd);
 
     var systemMessageTwoTexts = Message.system("Text 1", "Text 2");
-    var systemMessageTwoTextsAddText = Message.system("Text 1").addText("Text 2");
-    var systemMessageTwoTextsAdd = Message.system("Text 1").add(MessageContent.text("Text 2"));
+    var systemMessageTwoTextsAddText = Message.system("Text 1").andText("Text 2");
+    var systemMessageTwoTextsAdd = Message.system("Text 1").and(MessageContent.text("Text 2"));
     var systemMessageTwoTextsContent = Message.system(MessageContent.text("Text 1", "Text 2"));
     assertThat(systemMessageTwoTexts).isEqualTo(systemMessageTwoTextsAddText);
     assertThat(systemMessageTwoTextsAddText).isEqualTo(systemMessageTwoTextsAdd);

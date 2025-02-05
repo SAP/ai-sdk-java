@@ -1,11 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.google.common.annotations.Beta;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -50,7 +49,7 @@ public class SystemMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public SystemMessage addText(@Nonnull final String... messages) {
+  public SystemMessage andText(@Nonnull final String... messages) {
     return new SystemMessage(
         new MessageContent(
             Stream.concat(
@@ -66,7 +65,7 @@ public class SystemMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public SystemMessage add(@Nonnull final MessageContent... messageContents) {
+  public SystemMessage and(@Nonnull final MessageContent... messageContents) {
     final List<ContentItem> combinedItems =
         Stream.concat(
                 content.contentItemList().stream(),

@@ -269,7 +269,7 @@ It's possible to add images and multiple text inputs to a message.
 An image can be added to an existing message as follows.
 
 ```java
-message.addImage("https://url.to/image.jpg");
+var newMessage = message.andImage("https://url.to/image.jpg");
 ```
 
 You can also construct a message with an image directly, using the `MessageContent` class.
@@ -281,7 +281,7 @@ var message = Message.user(MessageContent.image("https://url.to/image.jpg"));
 Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
 
 ```java
-message.addImage("https://url.to/image.jpg", ImageItem.DetailLevel.low);
+var newMessage = message.andImage("https://url.to/image.jpg", ImageItem.DetailLevel.low);
 ```
 Note, that currently only user messages are supported for image attachments.
 
@@ -296,7 +296,7 @@ var message = Message.user("What is chess about?", "Answer in two sentences.");
 Or you can add additional text inputs to an existing message.
 
 ```java
-message.addText("Please use many emojis in your answer.");
+var newMessage = message.andText("Please use many emojis in your answer.");
 ```
 
 Note, that only user and system messages are supported for multiple text inputs.
