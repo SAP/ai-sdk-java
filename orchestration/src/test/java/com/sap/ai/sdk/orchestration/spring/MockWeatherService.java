@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import javax.annotation.Nonnull;
 import java.util.function.Function;
+import javax.annotation.Nonnull;
 
 /** Function for tool calls in Spring AI */
 public class MockWeatherService
