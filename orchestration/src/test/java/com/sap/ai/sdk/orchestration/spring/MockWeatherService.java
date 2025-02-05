@@ -1,20 +1,44 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import javax.annotation.Nonnull;
 import java.util.function.Function;
 
+/** Function for tool calls in Spring AI */
 public class MockWeatherService
     implements Function<MockWeatherService.Request, MockWeatherService.Response> {
 
+  /** Unit of temperature */
   public enum Unit {
+    /** Celsius */
     C,
+    /** Fahrenheit */
     F
   }
 
+  /**
+   * Request for the weather
+   *
+   * @param location the city
+   * @param unit the unit of temperature
+   */
   public record Request(String location, Unit unit) {}
 
+  /**
+   * Response for the weather
+   *
+   * @param temp the temperature
+   * @param unit the unit of temperature
+   */
   public record Response(double temp, Unit unit) {}
 
-  public Response apply(Request request) {
+  /**
+   * Apply the function
+   *
+   * @param request the request
+   * @return the response
+   */
+  @Nonnull
+  public Response apply(@Nonnull Request request) {
     return new Response(30.0, Unit.C);
   }
 }

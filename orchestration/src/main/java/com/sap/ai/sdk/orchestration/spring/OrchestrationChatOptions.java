@@ -49,7 +49,7 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
 
   private List<FunctionCallback> functionCallbacks;
 
-  private Map<String, Object> toolContext;
+  private Map<String, Object> toolContext = Map.of();
 
   /**
    * Returns the model to use for the chat.
@@ -208,29 +208,23 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
 
   @Override
   public void setFunctions(@Nonnull final Set<String> functionNames) {
-    this.functions = functionNames;
-    val template =
-        Objects.requireNonNullElse(
-            (Template) config.getTemplateConfig(), Template.create().template());
-    val tools =
-        functionNames.stream()
-            .map(
-                functionName ->
-                    ChatCompletionTool.create()
-                        .type(TypeEnum.FUNCTION)
-                        .function(FunctionObject.create().name(functionName)))
-            .toList();
-    config = config.withTemplateConfig(template.tools(tools));
-  }
-
-  @Nonnull
-  @Override
-  public Map<String, Object> getToolContext() {
-    return toolContext;
+    //    val template =
+    //        Objects.requireNonNullElse(
+    //            (Template) config.getTemplateConfig(), Template.create().template());
+    //    val tools =
+    //        functionNames.stream()
+    //            .map(
+    //                functionName ->
+    //                    ChatCompletionTool.create()
+    //                        .type(TypeEnum.FUNCTION)
+    //                        .function(FunctionObject.create().name(functionName)))
+    //            .toList();
+    //    config = config.withTemplateConfig(template.tools(tools));
+    throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public void setToolContext(@Nonnull final Map<String, Object> toolContext) {
-    this.toolContext = toolContext;
+    throw new UnsupportedOperationException("Not implemented yet");
   }
 }
