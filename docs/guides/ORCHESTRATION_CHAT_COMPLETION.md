@@ -266,28 +266,40 @@ It's possible to add images and multiple text inputs to a message.
 
 ### Add images to a message
 
-There are multiple ways to add an image to a user message as detailed below. Note, that currently only user messages are supported for image attachments.
+An image can be added to an existing message as follows.
 
 ```java
-var message1 = Message.user("What is in this image?").addImage("https://url.to/image.jpg");
-var message2 = Message.user("And what is in this image?").add(MessageContent.image("https://url.to/image.jpg"));
+message.addImage("https://url.to/image.jpg");
 ```
+
+You can also construct a message with an image directly, using the `MessageContent` class.
+
+```java
+var message = Message.user(MessageContent.image("https://url.to/image.jpg"));
+```
+
 Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
 
 ```java
 message.addImage("https://url.to/image.jpg", ImageItem.DetailLevel.low);
 ```
+Note, that currently only user messages are supported for image attachments.
 
 ### Add multiple text inputs to a message
 
-It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model.
-There are multiple ways to do this as detailed below. Note, that only user and system messages are supported for multiple text inputs.
+It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can construct a message with multiple text inputs as follows.
 
 ```java
-var message1 = Message.user("What is chess about?", "Answer in two sentences.");
-var message2 = Message.user("What is chess about?").addText("Answer in two sentences.");
-var message3 = Message.user("What is chess about?").add(MessageContent.text("Answer in two sentences."));
+var message = Message.user("What is chess about?", "Answer in two sentences.");
 ```
+
+Or you can add additional text inputs to an existing message.
+
+```java
+message.addText("Please use many emojis in your answer.");
+```
+
+Note, that only user and system messages are supported for multiple text inputs.
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
