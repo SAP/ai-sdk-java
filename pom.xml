@@ -31,6 +31,7 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
+    <module>grounding</module>
     <module>foundation-models/openai</module>
   </modules>
   <scm>
@@ -724,7 +725,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         </property>
       </activation>
       <modules>
-        <module>grounding</module>
         <module>sample-code/spring-app</module>
       </modules>
     </profile>
