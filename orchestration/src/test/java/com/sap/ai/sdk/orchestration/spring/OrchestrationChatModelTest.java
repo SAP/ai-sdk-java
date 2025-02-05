@@ -1,9 +1,13 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -138,27 +142,39 @@ public class OrchestrationChatModelTest {
   }
 
   @Test
-  void testToolCalls() {
+  void testToolCalls() throws IOException {
     stubFor(
         post(urlPathEqualTo("/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("toolCallsResponse.json")
+                    .withHeader("Content-Type", "application/json"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("toolCallsResponse2.json")
                     .withHeader("Content-Type", "application/json")));
 
     defaultOptions.setFunctionCallbacks(
-            List.of(
-                FunctionCallback.builder()
-                    .function(
-                        "CurrentWeather",
-                        new MockWeatherService()) // (1) function name and instance
-                    .description("Get the weather in location") // (2) function description
-                    .inputType(MockWeatherService.Request.class) // (3) function input type
-                    .build()));
+        List.of(
+            FunctionCallback.builder()
+                .function(
+                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+                .description("Get the weather in location") // (2) function description
+                .inputType(MockWeatherService.Request.class) // (3) function input type
+                .build()));
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
     val result = client.call(prompt);
 
-    assertThat(result).isNotNull();
-    assertThat(result.getResult().getOutput().getContent()).isNotEmpty();
+    assertThat(result.getResult().getOutput().getContent())
+        .isEqualTo("The current temperature in Potsdam is 30°C and in Toulouse 30°C.");
+
+    try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
+      try (var request2InputStream = fileLoader.apply("toolCallsRequest2.json")) {
+        final String request1 = new String(request1InputStream.readAllBytes());
+        final String request2 = new String(request2InputStream.readAllBytes());
+        verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request1)));
+        verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request2)));
+      }
+    }
   }
 }

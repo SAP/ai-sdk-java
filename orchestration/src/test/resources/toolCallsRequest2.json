@@ -1,0 +1,81 @@
+{
+  "orchestration_config": {
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo-16k",
+        "model_params": {},
+        "model_version": "latest"
+      },
+      "templating_module_config": {
+        "template": [
+          {
+            "role": "user",
+            "content": "What is the weather in Potsdam and in Toulouse?"
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "function": {
+                  "name": "CurrentWeather",
+                  "arguments": "{\"location\": \"Potsdam\", \"unit\": \"C\"}"
+                },
+                "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
+                "type": "function"
+              },
+              {
+                "function": {
+                  "name": "CurrentWeather",
+                  "arguments": "{\"location\": \"Toulouse\", \"unit\": \"C\"}"
+                },
+                "id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
+                "type": "function"
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "content": "{\"temp\":30.0,\"unit\":\"C\"}",
+            "tool_call_id": "call_LOyP7EVdeqFlGEmVzmPdCVey"
+          },
+          {
+            "role": "tool",
+            "content": "{\"temp\":30.0,\"unit\":\"C\"}",
+            "tool_call_id": "call_bwFjnXCfCO4N3f0bMtFMlNSg"
+          }
+        ],
+        "defaults": {},
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "description": "Get the weather in location",
+              "name": "CurrentWeather",
+              "parameters": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "C",
+                      "F"
+                    ]
+                  }
+                }
+              },
+              "strict": false
+            }
+          }
+        ]
+      }
+    },
+    "stream": false
+  },
+  "input_params": {},
+  "messages_history": []
+}
