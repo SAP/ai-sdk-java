@@ -50,11 +50,7 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
      */
     @Nonnull
     static DetailLevel fromString(@Nonnull final String str) {
-      try {
-        return DetailLevel.valueOf(str.toLowerCase(Locale.ENGLISH));
-      } catch (IllegalArgumentException e) {
-        return DetailLevel.auto;
-      }
+      return DetailLevel.valueOf(str.toLowerCase(Locale.ENGLISH));
     }
   }
 }

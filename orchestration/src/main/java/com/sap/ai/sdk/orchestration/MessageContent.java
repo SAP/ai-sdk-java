@@ -5,6 +5,7 @@ import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -79,13 +80,10 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
         content -> {
           if (content instanceof TextContent text) {
             return new TextItem(text.getText());
-          } else if (content instanceof ImageContent image) {
-            val imageUrl = image.getImageUrl();
+          } else {
+            final var imageUrl = ((ImageContent) content).getImageUrl();
             return new ImageItem(
                 imageUrl.getUrl(), ImageItem.DetailLevel.fromString(imageUrl.getDetail()));
-          } else {
-            throw new IllegalArgumentException(
-                "Unknown subtype of MultiChatMessageContent: " + content.getClass());
           }
         };
     return Arrays.stream(multiChatContents).map(convertMultiChatContent).toList();
