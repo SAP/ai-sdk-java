@@ -75,20 +75,19 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
   @Nonnull
   private static List<ContentItem> convertIntoMultiMessageList(
       @Nonnull final MultiChatMessageContent... multiChatContents) {
-    final List<ContentItem> multiContentList = new java.util.ArrayList<>(List.of());
-    for (final MultiChatMessageContent multiChatContent : multiChatContents) {
-      if (multiChatContent instanceof TextContent textContent) {
-        multiContentList.add(new TextItem(textContent.getText()));
-      } else if (multiChatContent instanceof ImageContent imageContent) {
-        final var imageUrl = imageContent.getImageUrl();
-        multiContentList.add(
-            new ImageItem(
-                imageUrl.getUrl(), ImageItem.DetailLevel.fromString(imageUrl.getDetail())));
-      } else {
-        throw new IllegalArgumentException(
-            "Unknown subtype of MultiChatMessageContent: " + multiChatContent.getClass());
-      }
-    }
-    return multiContentList;
+    final Function<MultiChatMessageContent, ContentItem> convertMultiChatContent =
+        content -> {
+          if (content instanceof TextContent text) {
+            return new TextItem(text.getText());
+          } else if (content instanceof ImageContent image) {
+            val imageUrl = image.getImageUrl();
+            return new ImageItem(
+                imageUrl.getUrl(), ImageItem.DetailLevel.fromString(imageUrl.getDetail()));
+          } else {
+            throw new IllegalArgumentException(
+                "Unknown subtype of MultiChatMessageContent: " + content.getClass());
+          }
+        };
+    return Arrays.stream(multiChatContents).map(convertMultiChatContent).toList();
   }
 }
