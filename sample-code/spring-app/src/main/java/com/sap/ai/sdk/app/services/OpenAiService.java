@@ -24,6 +24,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMe
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.EmbeddingsCreateRequestInput;
@@ -97,7 +98,7 @@ public class OpenAiService {
    * @return the assistant message response
    */
   @Nonnull
-  public OpenAiChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
+  public CreateChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
     final var partText =
         new ChatCompletionRequestMessageContentPartText()
             .type(TEXT)

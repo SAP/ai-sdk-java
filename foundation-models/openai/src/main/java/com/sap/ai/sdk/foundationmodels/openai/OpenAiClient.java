@@ -148,7 +148,8 @@ public final class OpenAiClient {
             ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
             : new OpenAiChatCompletionRequest(userPrompt);
 
-    return chatCompletion(request.toCreateChatCompletionRequest());
+    return new OpenAiChatCompletionResponse(
+        chatCompletion(request.toCreateChatCompletionRequest()));
   }
 
   private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
@@ -156,20 +157,6 @@ public final class OpenAiClient {
     if (finishReason != null && finishReason.equals("content_filter")) {
       throw new OpenAiClientException("Content filter filtered the output.");
     }
-  }
-
-  /**
-   * Generate a completion for the given low-level request object.
-   *
-   * @param request the completion request.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   */
-  @Nonnull
-  public OpenAiChatCompletionResponse chatCompletion(
-      @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
-    return new OpenAiChatCompletionResponse(
-        execute("/chat/completions", request, CreateChatCompletionResponse.class));
   }
 
   /**
@@ -183,7 +170,21 @@ public final class OpenAiClient {
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     warnIfUnsupportedUsage();
-    return chatCompletion(request.toCreateChatCompletionRequest());
+    return new OpenAiChatCompletionResponse(
+        chatCompletion(request.toCreateChatCompletionRequest()));
+  }
+
+  /**
+   * Generate a completion for the given low-level request object.
+   *
+   * @param request the completion request.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   */
+  @Nonnull
+  public CreateChatCompletionResponse chatCompletion(
+      @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
+    return execute("/chat/completions", request, CreateChatCompletionResponse.class);
   }
 
   /**
