@@ -34,7 +34,8 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse completion() {
-    defaultOptions.setFunctionCallbacks(
+    final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
+    options.setFunctionCallbacks(
         List.of(
             FunctionCallback.builder()
                 .function(
@@ -42,7 +43,7 @@ public class SpringAiOrchestrationService {
                 .description("Get the weather in location") // (2) function description
                 .inputType(MockWeatherService.Request.class) // (3) function input type
                 .build()));
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
     return client.call(prompt);
   }

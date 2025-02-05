@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -145,10 +146,18 @@ public class OrchestrationChatModelTest {
   void testToolCalls() throws IOException {
     stubFor(
         post(urlPathEqualTo("/completion"))
+            .inScenario("Tool Calls")
+            .whenScenarioStateIs(STARTED)
             .willReturn(
                 aResponse()
                     .withBodyFile("toolCallsResponse.json")
                     .withHeader("Content-Type", "application/json"))
+            .willSetStateTo("Second Call"));
+
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .inScenario("Tool Calls")
+            .whenScenarioStateIs("Second Call")
             .willReturn(
                 aResponse()
                     .withBodyFile("toolCallsResponse2.json")
