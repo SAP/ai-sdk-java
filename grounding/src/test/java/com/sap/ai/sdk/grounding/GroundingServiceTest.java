@@ -19,16 +19,14 @@ import com.sap.ai.sdk.grounding.model.Pipelines;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class GroundingServiceTest {
 
   @RegisterExtension
-  private static WireMockExtension WM = WireMockExtension.newInstance()
-      .options(wireMockConfig().dynamicPort())
-      .build();
+  private static WireMockExtension WM =
+      WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
   private final HttpDestination DESTINATION = DefaultHttpDestination.builder(WM.baseUrl()).build();
   private final AiCoreService SERVICE = new AiCoreService().withBaseDestination(DESTINATION);
