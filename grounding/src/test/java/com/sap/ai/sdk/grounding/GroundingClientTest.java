@@ -22,7 +22,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class GroundingServiceTest {
+public class GroundingClientTest {
 
   @RegisterExtension
   private static WireMockExtension WM =
@@ -33,7 +33,7 @@ public class GroundingServiceTest {
 
   @Test
   void testPipelines() {
-    final PipelinesApi api = GroundingService.create(SERVICE).pipelines();
+    final PipelinesApi api = GroundingClient.create(SERVICE).pipelines();
 
     final Pipelines allPipelines = api.getAllPipelines("reosurceGroup");
     assertThat(allPipelines).isNotNull();
@@ -42,7 +42,7 @@ public class GroundingServiceTest {
 
   @Test
   void testVector() {
-    final VectorApi api = GroundingService.create(SERVICE).vector();
+    final VectorApi api = GroundingClient.create(SERVICE).vector();
 
     final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
     assertThat(collections).isNotNull();
@@ -107,7 +107,7 @@ public class GroundingServiceTest {
 
   @Test
   void testRetrieval() {
-    final RetrievalApi api = GroundingService.create(SERVICE).retrieval();
+    final RetrievalApi api = GroundingClient.create(SERVICE).retrieval();
 
     DataRepositories repositories = api.getDataRepositories("reosurceGroup");
     assertThat(repositories).isNotNull();

@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Beta
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroundingService {
+public class GroundingClient {
 
   final AiCoreService aiCoreService;
   final String basePath;
@@ -29,7 +29,7 @@ public class GroundingService {
    * @return A new instance of the GroundingService.
    */
   @Nonnull
-  public static GroundingService create() {
+  public static GroundingClient create() {
     return create(new AiCoreService());
   }
 
@@ -40,7 +40,7 @@ public class GroundingService {
    * @return A new instance of the GroundingService.
    */
   @Nonnull
-  public static GroundingService create(@Nonnull final AiCoreService aiCoreService) {
+  public static GroundingClient create(@Nonnull final AiCoreService aiCoreService) {
     return create(aiCoreService, DEFAULT_BASE_PATH);
   }
 
@@ -52,9 +52,9 @@ public class GroundingService {
    * @return A new instance of the GroundingService.
    */
   @Nonnull
-  public static GroundingService create(
+  public static GroundingClient create(
       @Nonnull final AiCoreService aiCoreService, @Nonnull final String basePath) {
-    return new GroundingService(aiCoreService, basePath);
+    return new GroundingClient(aiCoreService, basePath);
   }
 
   /**
