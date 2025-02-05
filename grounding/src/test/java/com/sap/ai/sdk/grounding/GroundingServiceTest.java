@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.grounding;
 
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.grounding.api.PipelinesApi;
 import com.sap.ai.sdk.grounding.api.RetrievalApi;
@@ -19,17 +19,23 @@ import com.sap.ai.sdk.grounding.model.Pipelines;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
-import javax.annotation.Nonnull;
-import org.junit.jupiter.api.Test;
 
-@WireMockTest
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+
 public class GroundingServiceTest {
 
+  @RegisterExtension
+  private static WireMockExtension WM = WireMockExtension.newInstance()
+      .options(wireMockConfig().dynamicPort())
+      .build();
+
+  private final HttpDestination DESTINATION = DefaultHttpDestination.builder(WM.baseUrl()).build();
+  private final AiCoreService SERVICE = new AiCoreService().withBaseDestination(DESTINATION);
+
   @Test
-  void testPipelines(@Nonnull final WireMockRuntimeInfo server) {
-    final HttpDestination dest = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    final AiCoreService service = new AiCoreService().withBaseDestination(dest);
-    final PipelinesApi api = GroundingService.create(service).pipelines();
+  void testPipelines() {
+    final PipelinesApi api = GroundingService.create(SERVICE).pipelines();
 
     final Pipelines allPipelines = api.getAllPipelines("reosurceGroup");
     assertThat(allPipelines).isNotNull();
@@ -37,10 +43,8 @@ public class GroundingServiceTest {
   }
 
   @Test
-  void testVector(@Nonnull final WireMockRuntimeInfo server) {
-    final HttpDestination dest = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    final AiCoreService service = new AiCoreService().withBaseDestination(dest);
-    final VectorApi api = GroundingService.create(service).vector();
+  void testVector() {
+    final VectorApi api = GroundingService.create(SERVICE).vector();
 
     final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
     assertThat(collections).isNotNull();
@@ -104,10 +108,8 @@ public class GroundingServiceTest {
   }
 
   @Test
-  void testRetrieval(@Nonnull final WireMockRuntimeInfo server) {
-    final HttpDestination dest = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    final AiCoreService service = new AiCoreService().withBaseDestination(dest);
-    final RetrievalApi api = GroundingService.create(service).retrieval();
+  void testRetrieval() {
+    final RetrievalApi api = GroundingService.create(SERVICE).retrieval();
 
     DataRepositories repositories = api.getDataRepositories("reosurceGroup");
     assertThat(repositories).isNotNull();
