@@ -18,5 +18,3 @@ Please provide a short description of what your change does and why it is needed
 - [ ] ~Aligned changes with the JavaScript SDK~
 - [ ] Documentation updated
 - [ ] Release notes updated
-- [ ] For release: corresponding [release notes](https://github.com/SAP/ai-sdk-java/blob/main/docs/release-notes/release-notes-0-to-14.md) 
-  copied to [GitHub Releases](https://github.com/SAP/ai-sdk-java/releases)
