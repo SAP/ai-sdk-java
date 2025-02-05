@@ -187,6 +187,22 @@ public final class OpenAiClient {
   }
 
   /**
+   * Generate a completion for the given conversation and request parameters.
+   *
+   * @param parameters the completion request.
+   * @return the completion output
+   * @throws OpenAiClientException if the request fails
+   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
+   */
+  @Deprecated(since = "1.3.0")
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletion(
+      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
+    warnIfUnsupportedUsage();
+    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
+  }
+
+  /**
    * Stream a completion for the given string prompt as user.
    *
    * <p>Returns a <b>lazily</b> populated stream of text chunks. To access more details about the
@@ -208,7 +224,7 @@ public final class OpenAiClient {
    * Stream#parallel()} on this stream is not supported.
    *
    * @param prompt a text message.
-   * @return A stream of message deltas
+   * @return A stream of text chunks
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest)
    */
@@ -225,22 +241,6 @@ public final class OpenAiClient {
     return streamChatCompletionDeltas(request.toCreateChatCompletionRequest())
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
-  }
-
-  /**
-   * Generate a completion for the given conversation and request parameters.
-   *
-   * @param parameters the completion request.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
-   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
-   */
-  @Deprecated(since = "1.3.0")
-  @Nonnull
-  public OpenAiChatCompletionOutput chatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
   /**
@@ -285,6 +285,7 @@ public final class OpenAiClient {
    * @param request The completion request.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
@@ -305,7 +306,7 @@ public final class OpenAiClient {
    * <p>Example:
    *
    * <pre>{@code
-   * try (var stream = client.streamChatCompletionDeltas(prompt)) {
+   * try (var stream = client.streamChatCompletionDeltas(request)) {
    *       stream
    *           .peek(delta -> System.out.println(delta.getUsage()))
    *           .map(com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta::getDeltaContent)
