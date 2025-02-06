@@ -13,25 +13,44 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptRes
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 class OldOpenAiClientTest extends BaseOpenAiClientTest {
 
-  @Test
-  void chatCompletion() {
+  private static Callable<?>[] chatCompletionCalls() {
+    return new Callable[] {
+      () -> {
+        final var systemMessage =
+            new OpenAiChatMessage.OpenAiChatSystemMessage().setContent("You are a helpful AI");
+        final var userMessage =
+            new OpenAiChatMessage.OpenAiChatUserMessage()
+                .addText("Hello World! Why is this phrase so famous?");
+        final var request =
+            new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
+        return client.chatCompletion(request);
+      },
+      () ->
+          client
+              .withSystemPrompt("You are a helpful AI")
+              .chatCompletion("Hello World! Why is this phrase so famous?")
+    };
+  }
+
+  @SneakyThrows
+  @ParameterizedTest
+  @MethodSource("chatCompletionCalls")
+  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionOutput> request) {
 
     stubForChatCompletion();
 
-    final var systemMessage =
-        new OpenAiChatMessage.OpenAiChatSystemMessage().setContent("You are a helpful AI");
-    final var userMessage =
-        new OpenAiChatMessage.OpenAiChatUserMessage()
-            .addText("Hello World! Why is this phrase so famous?");
-    final var request =
-        new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
-    final var result = client.chatCompletion(request);
+    var result = request.call();
 
     assertThat(result).isNotNull();
     assertThat(result.getCreated()).isEqualTo(1727436279);

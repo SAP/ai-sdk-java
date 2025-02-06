@@ -12,6 +12,8 @@ import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
@@ -43,7 +45,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
   static final ObjectMapper JACKSON = getDefaultObjectMapper();
-  @Nullable private OpenAiMessage systemPrompt = null;
+  @Nullable private String systemPrompt = null;
 
   @Nonnull private final Destination destination;
 
@@ -119,7 +121,7 @@ public final class OpenAiClient {
    * Use this method to set a system prompt that should be used across multiple chat completions
    * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)}.
    *
-   * <p>Note: The system prompt will be ignored on chat completions invoked with
+   * <p>Note: The system prompt is ignored on chat completions invoked with
    * OpenAiChatCompletionPrompt.
    *
    * @param systemPrompt the system prompt
@@ -127,7 +129,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
-    this.systemPrompt = OpenAiMessage.system(systemPrompt);
+    this.systemPrompt = systemPrompt;
     return this;
   }
 
@@ -138,25 +140,16 @@ public final class OpenAiClient {
    * @return the completion output
    * @throws OpenAiClientException if the request fails
    */
+  @Deprecated(since = "1.3.0")
   @Nonnull
-  public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt)
+  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
-    final var userPrompt = OpenAiMessage.user(prompt);
-
-    final var request =
-        (systemPrompt != null)
-            ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
-            : new OpenAiChatCompletionRequest(userPrompt);
-
-    return new OpenAiChatCompletionResponse(
-        chatCompletion(request.toCreateChatCompletionRequest()));
-  }
-
-  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
-    final String finishReason = delta.getFinishReason();
-    if (finishReason != null && finishReason.equals("content_filter")) {
-      throw new OpenAiClientException("Content filter filtered the output.");
+    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
+    if (systemPrompt != null) {
+      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
     }
+    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
+    return chatCompletion(parameters);
   }
 
   /**
@@ -236,12 +229,19 @@ public final class OpenAiClient {
 
     final var request =
         systemPrompt != null
-            ? new OpenAiChatCompletionRequest(systemPrompt, userPrompt)
+            ? new OpenAiChatCompletionRequest(OpenAiMessage.system(systemPrompt), userPrompt)
             : new OpenAiChatCompletionRequest(userPrompt);
 
     return streamChatCompletionDeltas(request.toCreateChatCompletionRequest())
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
+  }
+
+  private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {
+    final String finishReason = delta.getFinishReason();
+    if (finishReason != null && finishReason.equals("content_filter")) {
+      throw new OpenAiClientException("Content filter filtered the output.");
+    }
   }
 
   /**

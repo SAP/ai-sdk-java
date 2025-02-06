@@ -30,7 +30,6 @@ import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.PromptFilterResult;
 import io.vavr.control.Try;
@@ -42,7 +41,6 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -175,14 +173,15 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
   }
 
-  @SneakyThrows
-  @ParameterizedTest
-  @MethodSource("chatCompletionCalls")
-  void chatCompletion(@Nonnull final Callable<OpenAiChatCompletionResponse> request) {
+  @Test
+  void chatCompletion() {
 
     stubForChatCompletion();
 
-    final var result = (CreateChatCompletionResponse) request.call().getOriginalResponse();
+    final var systemMessage = OpenAiMessage.system("You are a helpful AI");
+    final var userMessage = OpenAiMessage.user("Hello World! Why is this phrase so famous?");
+    final var prompt = new OpenAiChatCompletionRequest(systemMessage, userMessage);
+    final var result = client.chatCompletion(prompt).getOriginalResponse();
 
     assertThat(result).isNotNull();
     assertThat(result.getCreated()).isEqualTo(1727436279);
@@ -272,7 +271,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                     .withBodyFile("chatCompletionResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    client.withSystemPrompt("system prompt").chatCompletion("chat completion 1");
+    client.chatCompletion(new OpenAiChatCompletionRequest("First message"));
 
     verify(
         exactly(1),
@@ -281,16 +280,13 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                 equalToJson(
                     """
                       {
-                           "messages" : [ {
-                             "content" : "system prompt",
-                             "role" : "system"
-                           }, {
-                             "content" : "chat completion 1",
+                           "messages" : [{
+                             "content" : "First message",
                              "role" : "user"
                            } ]
                       }""")));
 
-    var response = client.withSystemPrompt("system prompt").chatCompletion("chat completion 2");
+    var response = client.chatCompletion(new OpenAiChatCompletionRequest("Second message"));
 
     assertThat(response.getContent()).isNotNull();
     assertThat(response.getContent())
@@ -304,11 +300,8 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                 equalToJson(
                     """
                       {
-                           "messages" : [ {
-                             "content" : "system prompt",
-                             "role" : "system"
-                           }, {
-                             "content" : "chat completion 2",
+                           "messages" : [{
+                             "content" : "Second message",
                              "role" : "user"
                            } ]
                       }""")));
