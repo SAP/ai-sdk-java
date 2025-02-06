@@ -1,9 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,6 +23,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 public class OpenAiController {
   @Autowired private OpenAiService service;
 
+  /**
+   * Chat request to OpenAI
+   *
+   * @return a ResponseEntity with the response content
+   */
   @GetMapping("/chatCompletion")
   @Nonnull
   Object chatCompletion(
@@ -37,6 +39,11 @@ public class OpenAiController {
     return response.getContent();
   }
 
+  /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return the emitter that streams the assistant message response
+   */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
@@ -46,14 +53,10 @@ public class OpenAiController {
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
-          final var totalOutput = new OpenAiChatCompletionOutput();
           // try-with-resources ensures the stream is closed
           try (stream) {
-            stream
-                .peek(totalOutput::addDelta)
-                .forEach(delta -> send(emitter, delta.getDeltaContent()));
+            stream.forEach(delta -> send(emitter, delta.getDeltaContent()));
           } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
             emitter.complete();
           }
         };
@@ -63,6 +66,11 @@ public class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
+  /**
+   * Asynchronous stream of an OpenAI chat request
+   *
+   * @return the emitter that streams the assistant message response
+   */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
@@ -101,19 +109,10 @@ public class OpenAiController {
   }
 
   /**
-   * Convert an object to JSON
+   * Chat request to OpenAI with an image
    *
-   * @param obj The object to convert
-   * @return The JSON representation of the object
+   * @return a ResponseEntity with the response content
    */
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
-    }
-  }
-
   @GetMapping("/chatCompletionImage")
   @Nonnull
   Object chatCompletionImage(
@@ -124,9 +123,14 @@ public class OpenAiController {
     if ("json".equals(format)) {
       return response;
     }
-    return response.getContent();
+    return response.getChoices().get(0).getMessage();
   }
 
+  /**
+   * Chat request to OpenAI with a tool.
+   *
+   * @return a ResponseEntity with the response content
+   */
   @GetMapping("/chatCompletionTool")
   @Nonnull
   Object chatCompletionTools(
@@ -139,12 +143,23 @@ public class OpenAiController {
     return response.getContent();
   }
 
+  /**
+   * Get the embedding of a text
+   *
+   * @return a ResponseEntity with the response content
+   */
   @GetMapping("/embedding")
   @Nonnull
   Object embedding() {
     return service.embedding("Hello world");
   }
 
+  /**
+   * Chat request to OpenAI filtering by resource group
+   *
+   * @param resourceGroup The resource group to use
+   * @return a ResponseEntity with the response content
+   */
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   Object chatCompletionWithResource(
