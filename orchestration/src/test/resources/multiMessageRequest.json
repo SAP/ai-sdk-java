@@ -3,14 +3,7 @@
     "module_configurations" : {
       "llm_module_config" : {
         "model_name" : "gpt-4o-mini",
-        "model_params" : {
-          "max_tokens" : 50,
-          "temperature" : 0.1,
-          "frequency_penalty" : 0,
-          "presence_penalty" : 0,
-          "top_p" : 1,
-          "n" : 1
-        },
+        "model_params" : { },
         "model_version" : "latest"
       },
       "templating_module_config" : {

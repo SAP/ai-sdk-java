@@ -2,12 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.FREQUENCY_PENALTY;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.N;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.PRESENCE_PENALTY;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
@@ -18,7 +13,6 @@ import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.MessageContent;
-import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -69,16 +63,8 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
-    final OrchestrationAiModel customGpt4o =
-        GPT_4O_MINI
-            .withParam(MAX_TOKENS, 50)
-            .withParam(TEMPERATURE, 0.1)
-            .withParam(FREQUENCY_PENALTY, 0)
-            .withParam(PRESENCE_PENALTY, 0)
-            .withParam(TOP_P, 1)
-            .withParam(N, 1);
     final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(customGpt4o);
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     final var multiMessage =
         Message.user("What is in this image?").andImage(pathToImage, ImageItem.DetailLevel.low);

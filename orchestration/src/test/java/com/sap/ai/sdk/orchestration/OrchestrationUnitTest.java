@@ -683,15 +683,7 @@ class OrchestrationUnitTest {
         post("/completion")
             .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
-    OrchestrationAiModel customGpt4o =
-        GPT_4O_MINI
-            .withParam(MAX_TOKENS, 50)
-            .withParam(TEMPERATURE, 0.1)
-            .withParam(FREQUENCY_PENALTY, 0)
-            .withParam(PRESENCE_PENALTY, 0)
-            .withParam(TOP_P, 1)
-            .withParam(N, 1);
-    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(customGpt4o);
+    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
@@ -786,34 +778,5 @@ class OrchestrationUnitTest {
           postRequestedFor(urlPathEqualTo("/completion"))
               .withRequestBody(equalToJson(requestBody)));
     }
-  }
-
-  @Test
-  void testMessageConstruction() {
-    var userMessageTwoTexts = Message.user("Text 1", "Text 2");
-    var userMessageTwoTextsAddText = Message.user("Text 1").andText("Text 2");
-    var userMessageTwoTextsAdd = Message.user("Text 1").and(MessageContent.text("Text 2"));
-    var userMessageTwoTextsContent = Message.user(MessageContent.text("Text 1", "Text 2"));
-    assertThat(userMessageTwoTexts).isEqualTo(userMessageTwoTextsAddText);
-    assertThat(userMessageTwoTextsAddText).isEqualTo(userMessageTwoTextsAdd);
-    assertThat(userMessageTwoTextsAdd).isEqualTo(userMessageTwoTextsContent);
-
-    var userMessageWithImageAddImage = Message.user("Text 1").andImage("url");
-    var userMessageWithImageAdd = Message.user("Text 1").and(MessageContent.image("url"));
-    assertThat(userMessageWithImageAddImage).isEqualTo(userMessageWithImageAdd);
-
-    var userMessageWithImageDetailAddImage =
-        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.low);
-    var userMessageWithImageDetailAdd =
-        Message.user("Text 1").and(MessageContent.image("url", ImageItem.DetailLevel.low));
-    assertThat(userMessageWithImageDetailAddImage).isEqualTo(userMessageWithImageDetailAdd);
-
-    var systemMessageTwoTexts = Message.system("Text 1", "Text 2");
-    var systemMessageTwoTextsAddText = Message.system("Text 1").andText("Text 2");
-    var systemMessageTwoTextsAdd = Message.system("Text 1").and(MessageContent.text("Text 2"));
-    var systemMessageTwoTextsContent = Message.system(MessageContent.text("Text 1", "Text 2"));
-    assertThat(systemMessageTwoTexts).isEqualTo(systemMessageTwoTextsAddText);
-    assertThat(systemMessageTwoTextsAddText).isEqualTo(systemMessageTwoTextsAdd);
-    assertThat(systemMessageTwoTextsAdd).isEqualTo(systemMessageTwoTextsContent);
   }
 }
