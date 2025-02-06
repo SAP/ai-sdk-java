@@ -35,28 +35,38 @@ import javax.annotation.Nullable;
 public class ChatCompletionsRequestCommon
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("temperature")
   private BigDecimal temperature = new BigDecimal("1");
+
   @JsonProperty("top_p")
   private BigDecimal topP = new BigDecimal("1");
+
   @JsonProperty("stream")
   private Boolean stream = false;
+
   @JsonProperty("stop")
   private ChatCompletionsRequestCommonStop stop = null;
+
   @JsonProperty("max_tokens")
   private Integer maxTokens = 4096;
+
   @JsonProperty("max_completion_tokens")
   private Integer maxCompletionTokens;
+
   @JsonProperty("presence_penalty")
   private BigDecimal presencePenalty = new BigDecimal("0");
+
   @JsonProperty("frequency_penalty")
   private BigDecimal frequencyPenalty = new BigDecimal("0");
+
   @JsonProperty("logit_bias")
   private Object logitBias;
+
   @JsonProperty("user")
   private String user;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the temperature of this {@link ChatCompletionsRequestCommon} instance and return the same

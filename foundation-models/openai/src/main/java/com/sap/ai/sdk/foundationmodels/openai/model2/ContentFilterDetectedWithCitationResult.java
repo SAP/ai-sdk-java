@@ -34,14 +34,17 @@ import javax.annotation.Nullable;
 public class ContentFilterDetectedWithCitationResult
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("filtered")
   private Boolean filtered;
+
   @JsonProperty("detected")
   private Boolean detected;
+
   @JsonProperty("citation")
   private ContentFilterDetectedWithCitationResultAllOfCitation citation;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the filtered of this {@link ContentFilterDetectedWithCitationResult} instance and return

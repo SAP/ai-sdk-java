@@ -22,6 +22,12 @@ import java.util.List;
 @com.google.common.annotations.Beta
 public interface CreateChatCompletionRequestAllOfStop {
   /**
+   * Helper class to create a String that implements {@link CreateChatCompletionRequestAllOfStop}.
+   */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
+      implements CreateChatCompletionRequestAllOfStop {}
+
+  /**
    * Creator to enable deserialization of a String.
    *
    * @param val the value to use
@@ -33,6 +39,13 @@ public interface CreateChatCompletionRequestAllOfStop {
   }
 
   /**
+   * Helper class to create a list of String that implements {@link
+   * CreateChatCompletionRequestAllOfStop}.
+   */
+  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue List<String> values)
+      implements CreateChatCompletionRequestAllOfStop {}
+
+  /**
    * Creator to enable deserialization of a list of String.
    *
    * @param val the value to use
@@ -42,17 +55,4 @@ public interface CreateChatCompletionRequestAllOfStop {
   static InnerStrings create(List<String> val) {
     return new InnerStrings(val);
   }
-
-  /**
-   * Helper class to create a String that implements {@link CreateChatCompletionRequestAllOfStop}.
-   */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
-      implements CreateChatCompletionRequestAllOfStop {}
-
-  /**
-   * Helper class to create a list of String that implements {@link
-   * CreateChatCompletionRequestAllOfStop}.
-   */
-  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue List<String> values)
-      implements CreateChatCompletionRequestAllOfStop {}
 }

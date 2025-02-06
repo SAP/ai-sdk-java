@@ -36,21 +36,26 @@ import javax.annotation.Nullable;
 public class ChatCompletionResponseMessage
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("role")
   private ChatCompletionResponseMessageRole role;
+
   @JsonProperty("refusal")
   private String refusal;
+
   @JsonProperty("content")
   private String content;
+
   @JsonProperty("tool_calls")
   private List<ChatCompletionMessageToolCall> toolCalls = new ArrayList<>();
 
-  // @JsonProperty("context") // TODO: add context
-  // private AzureChatExtensionsMessageContext context;
   @JsonProperty("function_call")
   private ChatCompletionFunctionCall functionCall;
+
+  // @JsonProperty("context") // TODO: add context
+  // private AzureChatExtensionsMessageContext context;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the role of this {@link ChatCompletionResponseMessage} instance and return the same

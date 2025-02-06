@@ -34,20 +34,26 @@ import javax.annotation.Nullable;
 public class ContentFilterResultsBase
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("sexual")
   private ContentFilterSeverityResult sexual;
+
   @JsonProperty("violence")
   private ContentFilterSeverityResult violence;
+
   @JsonProperty("hate")
   private ContentFilterSeverityResult hate;
+
   @JsonProperty("self_harm")
   private ContentFilterSeverityResult selfHarm;
+
   @JsonProperty("profanity")
   private ContentFilterDetectedResult profanity;
+
   @JsonProperty("error")
   private ErrorBase error;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the sexual of this {@link ContentFilterResultsBase} instance and return the same instance.

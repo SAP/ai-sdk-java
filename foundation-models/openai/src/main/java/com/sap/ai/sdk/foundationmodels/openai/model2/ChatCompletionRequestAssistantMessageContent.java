@@ -25,6 +25,13 @@ import java.util.List;
 @com.google.common.annotations.Beta
 public interface ChatCompletionRequestAssistantMessageContent {
   /**
+   * Helper class to create a String that implements {@link
+   * ChatCompletionRequestAssistantMessageContent}.
+   */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
+      implements ChatCompletionRequestAssistantMessageContent {}
+
+  /**
    * Creator to enable deserialization of a String.
    *
    * @param val the value to use
@@ -34,6 +41,15 @@ public interface ChatCompletionRequestAssistantMessageContent {
   static InnerString create(String val) {
     return new InnerString(val);
   }
+
+  /**
+   * Helper class to create a list of ChatCompletionRequestAssistantMessageContentPart that
+   * implements {@link ChatCompletionRequestAssistantMessageContent}.
+   */
+  record InnerChatCompletionRequestAssistantMessageContentParts(
+      @com.fasterxml.jackson.annotation.JsonValue
+          List<ChatCompletionRequestAssistantMessageContentPart> values)
+      implements ChatCompletionRequestAssistantMessageContent {}
 
   /**
    * Creator to enable deserialization of a list of
@@ -47,20 +63,4 @@ public interface ChatCompletionRequestAssistantMessageContent {
       List<ChatCompletionRequestAssistantMessageContentPart> val) {
     return new InnerChatCompletionRequestAssistantMessageContentParts(val);
   }
-
-  /**
-   * Helper class to create a String that implements {@link
-   * ChatCompletionRequestAssistantMessageContent}.
-   */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
-      implements ChatCompletionRequestAssistantMessageContent {}
-
-  /**
-   * Helper class to create a list of ChatCompletionRequestAssistantMessageContentPart that
-   * implements {@link ChatCompletionRequestAssistantMessageContent}.
-   */
-  record InnerChatCompletionRequestAssistantMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue
-          List<ChatCompletionRequestAssistantMessageContentPart> values)
-      implements ChatCompletionRequestAssistantMessageContent {}
 }

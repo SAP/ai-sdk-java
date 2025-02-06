@@ -36,17 +36,89 @@ import javax.annotation.Nullable;
 public class CreateChatCompletionStreamResponseChoicesInner
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("delta")
   private ChatCompletionStreamResponseDelta delta;
+
   @JsonProperty("logprobs")
   private CreateChatCompletionResponseChoicesInnerLogprobs logprobs;
+
+  /**
+   * The reason the model stopped generating tokens. This will be &#x60;stop&#x60; if the model hit
+   * a natural stop point or a provided stop sequence, &#x60;length&#x60; if the maximum number of
+   * tokens specified in the request was reached, &#x60;content_filter&#x60; if content was omitted
+   * due to a flag from our content filters, &#x60;tool_calls&#x60; if the model called a tool, or
+   * &#x60;function_call&#x60; (deprecated) if the model called a function.
+   */
+  public enum FinishReasonEnum {
+    /** The STOP option of this CreateChatCompletionStreamResponseChoicesInner */
+    STOP("stop"),
+
+    /** The LENGTH option of this CreateChatCompletionStreamResponseChoicesInner */
+    LENGTH("length"),
+
+    /** The TOOL_CALLS option of this CreateChatCompletionStreamResponseChoicesInner */
+    TOOL_CALLS("tool_calls"),
+
+    /** The CONTENT_FILTER option of this CreateChatCompletionStreamResponseChoicesInner */
+    CONTENT_FILTER("content_filter"),
+
+    /** The FUNCTION_CALL option of this CreateChatCompletionStreamResponseChoicesInner */
+    FUNCTION_CALL("function_call");
+
+    private String value;
+
+    FinishReasonEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type CreateChatCompletionStreamResponseChoicesInner
+     */
+    @JsonCreator
+    @Nonnull
+    public static FinishReasonEnum fromValue(@Nonnull final String value) {
+      for (FinishReasonEnum b : FinishReasonEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("finish_reason")
   private FinishReasonEnum finishReason;
 
   @JsonProperty("index")
   private Integer index;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the delta of this {@link CreateChatCompletionStreamResponseChoicesInner} instance and
@@ -290,74 +362,5 @@ public class CreateChatCompletionStreamResponseChoicesInner
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /**
-   * The reason the model stopped generating tokens. This will be &#x60;stop&#x60; if the model hit
-   * a natural stop point or a provided stop sequence, &#x60;length&#x60; if the maximum number of
-   * tokens specified in the request was reached, &#x60;content_filter&#x60; if content was omitted
-   * due to a flag from our content filters, &#x60;tool_calls&#x60; if the model called a tool, or
-   * &#x60;function_call&#x60; (deprecated) if the model called a function.
-   */
-  public enum FinishReasonEnum {
-    /** The STOP option of this CreateChatCompletionStreamResponseChoicesInner */
-    STOP("stop"),
-
-    /** The LENGTH option of this CreateChatCompletionStreamResponseChoicesInner */
-    LENGTH("length"),
-
-    /** The TOOL_CALLS option of this CreateChatCompletionStreamResponseChoicesInner */
-    TOOL_CALLS("tool_calls"),
-
-    /** The CONTENT_FILTER option of this CreateChatCompletionStreamResponseChoicesInner */
-    CONTENT_FILTER("content_filter"),
-
-    /** The FUNCTION_CALL option of this CreateChatCompletionStreamResponseChoicesInner */
-    FUNCTION_CALL("function_call");
-
-    private String value;
-
-    FinishReasonEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type CreateChatCompletionStreamResponseChoicesInner
-     */
-    @JsonCreator
-    @Nonnull
-    public static FinishReasonEnum fromValue(@Nonnull final String value) {
-      for (FinishReasonEnum b : FinishReasonEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

@@ -34,18 +34,23 @@ import javax.annotation.Nullable;
 public class Error
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("param")
   private String param;
+
   @JsonProperty("type")
   private String type;
+
   @JsonProperty("inner_error")
   private InnerError innerError;
+
   @JsonProperty("code")
   private String code;
+
   @JsonProperty("message")
   private String message;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the param of this {@link Error} instance and return the same instance.

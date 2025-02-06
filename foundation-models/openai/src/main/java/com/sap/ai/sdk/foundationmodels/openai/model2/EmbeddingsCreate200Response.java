@@ -36,16 +36,20 @@ import javax.annotation.Nullable;
 public class EmbeddingsCreate200Response
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("object")
   private String _object;
+
   @JsonProperty("model")
   private String model;
+
   @JsonProperty("data")
   private List<EmbeddingsCreate200ResponseDataInner> data = new ArrayList<>();
+
   @JsonProperty("usage")
   private EmbeddingsCreate200ResponseUsage usage;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the _object of this {@link EmbeddingsCreate200Response} instance and return the same

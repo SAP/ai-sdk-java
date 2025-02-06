@@ -22,6 +22,13 @@ import java.util.List;
 @com.google.common.annotations.Beta
 public interface ChatCompletionRequestSystemMessageContent {
   /**
+   * Helper class to create a String that implements {@link
+   * ChatCompletionRequestSystemMessageContent}.
+   */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
+      implements ChatCompletionRequestSystemMessageContent {}
+
+  /**
    * Creator to enable deserialization of a String.
    *
    * @param val the value to use
@@ -31,6 +38,15 @@ public interface ChatCompletionRequestSystemMessageContent {
   static InnerString create(String val) {
     return new InnerString(val);
   }
+
+  /**
+   * Helper class to create a list of ChatCompletionRequestSystemMessageContentPart that implements
+   * {@link ChatCompletionRequestSystemMessageContent}.
+   */
+  record InnerChatCompletionRequestSystemMessageContentParts(
+      @com.fasterxml.jackson.annotation.JsonValue
+          List<ChatCompletionRequestSystemMessageContentPart> values)
+      implements ChatCompletionRequestSystemMessageContent {}
 
   /**
    * Creator to enable deserialization of a list of ChatCompletionRequestSystemMessageContentPart.
@@ -43,20 +59,4 @@ public interface ChatCompletionRequestSystemMessageContent {
       List<ChatCompletionRequestSystemMessageContentPart> val) {
     return new InnerChatCompletionRequestSystemMessageContentParts(val);
   }
-
-  /**
-   * Helper class to create a String that implements {@link
-   * ChatCompletionRequestSystemMessageContent}.
-   */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
-      implements ChatCompletionRequestSystemMessageContent {}
-
-  /**
-   * Helper class to create a list of ChatCompletionRequestSystemMessageContentPart that implements
-   * {@link ChatCompletionRequestSystemMessageContent}.
-   */
-  record InnerChatCompletionRequestSystemMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue
-          List<ChatCompletionRequestSystemMessageContentPart> values)
-      implements ChatCompletionRequestSystemMessageContent {}
 }

@@ -40,14 +40,17 @@ import javax.annotation.Nullable;
 public class ChatCompletionFunctions
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("description")
   private String description;
+
   @JsonProperty("name")
   private String name;
+
   @JsonProperty("parameters")
   private Map<String, Object> parameters = new HashMap<>();
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the description of this {@link ChatCompletionFunctions} instance and return the same

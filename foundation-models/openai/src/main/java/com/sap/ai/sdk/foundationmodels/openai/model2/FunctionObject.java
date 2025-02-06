@@ -35,16 +35,20 @@ import javax.annotation.Nullable;
 public class FunctionObject
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("description")
   private String description;
+
   @JsonProperty("name")
   private String name;
+
   @JsonProperty("parameters")
   private Map<String, Object> parameters = new HashMap<>();
+
   @JsonProperty("strict")
   private Boolean strict = false;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the description of this {@link FunctionObject} instance and return the same instance.

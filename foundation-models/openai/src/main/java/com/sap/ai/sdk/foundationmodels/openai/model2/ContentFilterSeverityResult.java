@@ -36,12 +36,74 @@ import javax.annotation.Nullable;
 public class ContentFilterSeverityResult
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("filtered")
   private Boolean filtered;
+
+  /** Gets or Sets severity */
+  public enum SeverityEnum {
+    /** The SAFE option of this ContentFilterSeverityResult */
+    SAFE("safe"),
+
+    /** The LOW option of this ContentFilterSeverityResult */
+    LOW("low"),
+
+    /** The MEDIUM option of this ContentFilterSeverityResult */
+    MEDIUM("medium"),
+
+    /** The HIGH option of this ContentFilterSeverityResult */
+    HIGH("high");
+
+    private String value;
+
+    SeverityEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ContentFilterSeverityResult
+     */
+    @JsonCreator
+    @Nonnull
+    public static SeverityEnum fromValue(@Nonnull final String value) {
+      for (SeverityEnum b : SeverityEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("severity")
   private SeverityEnum severity;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the filtered of this {@link ContentFilterSeverityResult} instance and return the same
@@ -189,65 +251,5 @@ public class ContentFilterSeverityResult
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** Gets or Sets severity */
-  public enum SeverityEnum {
-    /** The SAFE option of this ContentFilterSeverityResult */
-    SAFE("safe"),
-
-    /** The LOW option of this ContentFilterSeverityResult */
-    LOW("low"),
-
-    /** The MEDIUM option of this ContentFilterSeverityResult */
-    MEDIUM("medium"),
-
-    /** The HIGH option of this ContentFilterSeverityResult */
-    HIGH("high");
-
-    private String value;
-
-    SeverityEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ContentFilterSeverityResult
-     */
-    @JsonCreator
-    @Nonnull
-    public static SeverityEnum fromValue(@Nonnull final String value) {
-      for (SeverityEnum b : SeverityEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

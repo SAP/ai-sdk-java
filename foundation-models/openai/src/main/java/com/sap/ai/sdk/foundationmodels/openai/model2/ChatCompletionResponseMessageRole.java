@@ -32,22 +32,6 @@ public enum ChatCompletionResponseMessageRole {
   }
 
   /**
-   * Converts the given value to its enum representation.
-   *
-   * @param value The input value.
-   * @return The enum representation of the given value.
-   */
-  @JsonCreator
-  public static ChatCompletionResponseMessageRole fromValue(@Nonnull final String value) {
-    for (final ChatCompletionResponseMessageRole b : ChatCompletionResponseMessageRole.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
-    }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
-
-  /**
    * @return The enum value.
    */
   @JsonValue
@@ -62,5 +46,21 @@ public enum ChatCompletionResponseMessageRole {
   @Nonnull
   public String toString() {
     return String.valueOf(value);
+  }
+
+  /**
+   * Converts the given value to its enum representation.
+   *
+   * @param value The input value.
+   * @return The enum representation of the given value.
+   */
+  @JsonCreator
+  public static ChatCompletionResponseMessageRole fromValue(@Nonnull final String value) {
+    for (final ChatCompletionResponseMessageRole b : ChatCompletionResponseMessageRole.values()) {
+      if (b.value.equals(value)) {
+        return b;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
 }

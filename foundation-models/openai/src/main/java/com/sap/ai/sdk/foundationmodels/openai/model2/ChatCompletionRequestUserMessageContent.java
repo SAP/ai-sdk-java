@@ -22,6 +22,13 @@ import java.util.List;
 @com.google.common.annotations.Beta
 public interface ChatCompletionRequestUserMessageContent {
   /**
+   * Helper class to create a String that implements {@link
+   * ChatCompletionRequestUserMessageContent}.
+   */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
+      implements ChatCompletionRequestUserMessageContent {}
+
+  /**
    * Creator to enable deserialization of a String.
    *
    * @param val the value to use
@@ -31,6 +38,15 @@ public interface ChatCompletionRequestUserMessageContent {
   static InnerString create(String val) {
     return new InnerString(val);
   }
+
+  /**
+   * Helper class to create a list of ChatCompletionRequestUserMessageContentPart that implements
+   * {@link ChatCompletionRequestUserMessageContent}.
+   */
+  record InnerChatCompletionRequestUserMessageContentParts(
+      @com.fasterxml.jackson.annotation.JsonValue
+          List<ChatCompletionRequestUserMessageContentPart> values)
+      implements ChatCompletionRequestUserMessageContent {}
 
   /**
    * Creator to enable deserialization of a list of ChatCompletionRequestUserMessageContentPart.
@@ -43,20 +59,4 @@ public interface ChatCompletionRequestUserMessageContent {
       List<ChatCompletionRequestUserMessageContentPart> val) {
     return new InnerChatCompletionRequestUserMessageContentParts(val);
   }
-
-  /**
-   * Helper class to create a String that implements {@link
-   * ChatCompletionRequestUserMessageContent}.
-   */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
-      implements ChatCompletionRequestUserMessageContent {}
-
-  /**
-   * Helper class to create a list of ChatCompletionRequestUserMessageContentPart that implements
-   * {@link ChatCompletionRequestUserMessageContent}.
-   */
-  record InnerChatCompletionRequestUserMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue
-          List<ChatCompletionRequestUserMessageContentPart> values)
-      implements ChatCompletionRequestUserMessageContent {}
 }

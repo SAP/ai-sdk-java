@@ -37,16 +37,20 @@ import javax.annotation.Nullable;
 public class ChatCompletionTokenLogprob
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("token")
   private String token;
+
   @JsonProperty("logprob")
   private BigDecimal logprob;
+
   @JsonProperty("bytes")
   private List<Integer> bytes;
+
   @JsonProperty("top_logprobs")
   private List<ChatCompletionTokenLogprobTopLogprobsInner> topLogprobs = new ArrayList<>();
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the token of this {@link ChatCompletionTokenLogprob} instance and return the same instance.

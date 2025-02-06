@@ -34,14 +34,17 @@ import javax.annotation.Nullable;
 public class ChatCompletionMessageToolCall
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("id")
   private String id;
+
   @JsonProperty("type")
   private ToolCallType type;
+
   @JsonProperty("function")
   private ChatCompletionMessageToolCallFunction function;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the id of this {@link ChatCompletionMessageToolCall} instance and return the same instance.

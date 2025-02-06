@@ -37,13 +37,65 @@ public class ChatCompletionRequestMessageContentPartRefusal
     implements ChatCompletionRequestAssistantMessageContentPart
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  /** The type of the content part. */
+  public enum TypeEnum {
+    /** The REFUSAL option of this ChatCompletionRequestMessageContentPartRefusal */
+    REFUSAL("refusal");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ChatCompletionRequestMessageContentPartRefusal
+     */
+    @JsonCreator
+    @Nonnull
+    public static TypeEnum fromValue(@Nonnull final String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("type")
   private TypeEnum type;
 
   @JsonProperty("refusal")
   private String refusal;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the type of this {@link ChatCompletionRequestMessageContentPartRefusal} instance and return
@@ -197,56 +249,5 @@ public class ChatCompletionRequestMessageContentPartRefusal
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** The type of the content part. */
-  public enum TypeEnum {
-    /** The REFUSAL option of this ChatCompletionRequestMessageContentPartRefusal */
-    REFUSAL("refusal");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ChatCompletionRequestMessageContentPartRefusal
-     */
-    @JsonCreator
-    @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

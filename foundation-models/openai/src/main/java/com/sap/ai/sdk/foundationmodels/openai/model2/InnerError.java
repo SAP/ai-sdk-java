@@ -34,12 +34,14 @@ import javax.annotation.Nullable;
 public class InnerError
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("code")
   private InnerErrorCode code;
+
   @JsonProperty("content_filter_results")
   private ContentFilterPromptResults contentFilterResults;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the code of this {@link InnerError} instance and return the same instance.

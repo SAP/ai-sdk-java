@@ -34,18 +34,23 @@ import javax.annotation.Nullable;
 public class EmbeddingsCreateRequest
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("input")
   private EmbeddingsCreateRequestInput input;
+
   @JsonProperty("user")
   private String user;
+
   @JsonProperty("input_type")
   private String inputType;
+
   @JsonProperty("encoding_format")
   private String encodingFormat;
+
   @JsonProperty("dimensions")
   private Integer dimensions;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the input of this {@link EmbeddingsCreateRequest} instance and return the same instance.

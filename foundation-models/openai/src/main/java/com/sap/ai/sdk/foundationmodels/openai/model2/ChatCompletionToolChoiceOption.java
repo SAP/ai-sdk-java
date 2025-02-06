@@ -31,6 +31,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @com.google.common.annotations.Beta
 public interface ChatCompletionToolChoiceOption {
   /**
+   * Helper class to create a ChatCompletionNamedToolChoice that implements {@link
+   * ChatCompletionToolChoiceOption}.
+   */
+  record InnerChatCompletionNamedToolChoice(@JsonValue ChatCompletionNamedToolChoice value)
+      implements ChatCompletionToolChoiceOption {}
+
+  /**
    * Creator to enable deserialization of a ChatCompletionNamedToolChoice.
    *
    * @param val the value to use
@@ -40,6 +47,9 @@ public interface ChatCompletionToolChoiceOption {
   static InnerChatCompletionNamedToolChoice create(ChatCompletionNamedToolChoice val) {
     return new InnerChatCompletionNamedToolChoice(val);
   }
+
+  /** Helper class to create a String that implements {@link ChatCompletionToolChoiceOption}. */
+  record InnerString(@JsonValue String value) implements ChatCompletionToolChoiceOption {}
 
   /**
    * Creator to enable deserialization of a String.
@@ -51,14 +61,4 @@ public interface ChatCompletionToolChoiceOption {
   static InnerString create(String val) {
     return new InnerString(val);
   }
-
-  /**
-   * Helper class to create a ChatCompletionNamedToolChoice that implements {@link
-   * ChatCompletionToolChoiceOption}.
-   */
-  record InnerChatCompletionNamedToolChoice(@JsonValue ChatCompletionNamedToolChoice value)
-      implements ChatCompletionToolChoiceOption {}
-
-  /** Helper class to create a String that implements {@link ChatCompletionToolChoiceOption}. */
-  record InnerString(@JsonValue String value) implements ChatCompletionToolChoiceOption {}
 }

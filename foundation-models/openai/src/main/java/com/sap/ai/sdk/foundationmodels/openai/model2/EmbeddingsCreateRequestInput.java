@@ -26,6 +26,15 @@ import java.util.List;
  */
 @com.google.common.annotations.Beta
 public interface EmbeddingsCreateRequestInput {
+  /** Helper class to create a String that implements {@link EmbeddingsCreateRequestInput}. */
+  class InnerString implements EmbeddingsCreateRequestInput {
+    @com.fasterxml.jackson.annotation.JsonValue String value;
+
+    InnerString(String value) {
+      this.value = value;
+    }
+  }
+
   /**
    * Creator to enable deserialization of a String.
    *
@@ -38,6 +47,12 @@ public interface EmbeddingsCreateRequestInput {
   }
 
   /**
+   * Helper class to create a list of String that implements {@link EmbeddingsCreateRequestInput}.
+   */
+  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue List<String> values)
+      implements EmbeddingsCreateRequestInput {}
+
+  /**
    * Creator to enable deserialization of a list of String.
    *
    * @param val the value to use
@@ -47,19 +62,4 @@ public interface EmbeddingsCreateRequestInput {
   static InnerStrings create(List<String> val) {
     return new InnerStrings(val);
   }
-
-  /** Helper class to create a String that implements {@link EmbeddingsCreateRequestInput}. */
-  class InnerString implements EmbeddingsCreateRequestInput {
-    @com.fasterxml.jackson.annotation.JsonValue String value;
-
-    InnerString(String value) {
-      this.value = value;
-    }
-  }
-
-  /**
-   * Helper class to create a list of String that implements {@link EmbeddingsCreateRequestInput}.
-   */
-  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue List<String> values)
-      implements EmbeddingsCreateRequestInput {}
 }

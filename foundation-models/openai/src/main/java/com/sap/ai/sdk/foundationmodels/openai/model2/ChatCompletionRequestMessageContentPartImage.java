@@ -37,13 +37,65 @@ public class ChatCompletionRequestMessageContentPartImage
     implements ChatCompletionRequestUserMessageContentPart
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  /** The type of the content part. */
+  public enum TypeEnum {
+    /** The IMAGE_URL option of this ChatCompletionRequestMessageContentPartImage */
+    IMAGE_URL("image_url");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ChatCompletionRequestMessageContentPartImage
+     */
+    @JsonCreator
+    @Nonnull
+    public static TypeEnum fromValue(@Nonnull final String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("type")
   private TypeEnum type;
 
   @JsonProperty("image_url")
   private ChatCompletionRequestMessageContentPartImageImageUrl imageUrl;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the type of this {@link ChatCompletionRequestMessageContentPartImage} instance and return
@@ -199,56 +251,5 @@ public class ChatCompletionRequestMessageContentPartImage
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** The type of the content part. */
-  public enum TypeEnum {
-    /** The IMAGE_URL option of this ChatCompletionRequestMessageContentPartImage */
-    IMAGE_URL("image_url");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ChatCompletionRequestMessageContentPartImage
-     */
-    @JsonCreator
-    @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

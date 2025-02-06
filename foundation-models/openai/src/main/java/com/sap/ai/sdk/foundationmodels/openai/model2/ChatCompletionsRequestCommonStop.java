@@ -21,6 +21,10 @@ import java.util.List;
 /** Up to 4 sequences where the API will stop generating further tokens. */
 @com.google.common.annotations.Beta
 public interface ChatCompletionsRequestCommonStop {
+  /** Helper class to create a String that implements {@link ChatCompletionsRequestCommonStop}. */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
+      implements ChatCompletionsRequestCommonStop {}
+
   /**
    * Creator to enable deserialization of a String.
    *
@@ -33,6 +37,13 @@ public interface ChatCompletionsRequestCommonStop {
   }
 
   /**
+   * Helper class to create a list of String that implements {@link
+   * ChatCompletionsRequestCommonStop}.
+   */
+  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue List<String> values)
+      implements ChatCompletionsRequestCommonStop {}
+
+  /**
    * Creator to enable deserialization of a list of String.
    *
    * @param val the value to use
@@ -42,15 +53,4 @@ public interface ChatCompletionsRequestCommonStop {
   static InnerStrings create(List<String> val) {
     return new InnerStrings(val);
   }
-
-  /** Helper class to create a String that implements {@link ChatCompletionsRequestCommonStop}. */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
-      implements ChatCompletionsRequestCommonStop {}
-
-  /**
-   * Helper class to create a list of String that implements {@link
-   * ChatCompletionsRequestCommonStop}.
-   */
-  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue List<String> values)
-      implements ChatCompletionsRequestCommonStop {}
 }

@@ -34,12 +34,14 @@ import javax.annotation.Nullable;
 public class ErrorBase
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("code")
   private String code;
+
   @JsonProperty("message")
   private String message;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the code of this {@link ErrorBase} instance and return the same instance.

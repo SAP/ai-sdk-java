@@ -37,12 +37,74 @@ import javax.annotation.Nullable;
 public class ChatCompletionRequestMessageContentPartImageImageUrl
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("url")
   private URI url;
+
+  /**
+   * Specifies the detail level of the image. Learn more in the [Vision
+   * guide](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/gpt-with-vision?tabs&#x3D;rest%2Csystem-assigned%2Cresource#detail-parameter-settings-in-image-processing-low-high-auto).
+   */
+  public enum DetailEnum {
+    /** The AUTO option of this ChatCompletionRequestMessageContentPartImageImageUrl */
+    AUTO("auto"),
+
+    /** The LOW option of this ChatCompletionRequestMessageContentPartImageImageUrl */
+    LOW("low"),
+
+    /** The HIGH option of this ChatCompletionRequestMessageContentPartImageImageUrl */
+    HIGH("high");
+
+    private String value;
+
+    DetailEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ChatCompletionRequestMessageContentPartImageImageUrl
+     */
+    @JsonCreator
+    @Nonnull
+    public static DetailEnum fromValue(@Nonnull final String value) {
+      for (DetailEnum b : DetailEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("detail")
   private DetailEnum detail = DetailEnum.AUTO;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the url of this {@link ChatCompletionRequestMessageContentPartImageImageUrl} instance and
@@ -205,65 +267,5 @@ public class ChatCompletionRequestMessageContentPartImageImageUrl
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /**
-   * Specifies the detail level of the image. Learn more in the [Vision
-   * guide](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/gpt-with-vision?tabs&#x3D;rest%2Csystem-assigned%2Cresource#detail-parameter-settings-in-image-processing-low-high-auto).
-   */
-  public enum DetailEnum {
-    /** The AUTO option of this ChatCompletionRequestMessageContentPartImageImageUrl */
-    AUTO("auto"),
-
-    /** The LOW option of this ChatCompletionRequestMessageContentPartImageImageUrl */
-    LOW("low"),
-
-    /** The HIGH option of this ChatCompletionRequestMessageContentPartImageImageUrl */
-    HIGH("high");
-
-    private String value;
-
-    DetailEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ChatCompletionRequestMessageContentPartImageImageUrl
-     */
-    @JsonCreator
-    @Nonnull
-    public static DetailEnum fromValue(@Nonnull final String value) {
-      for (DetailEnum b : DetailEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }
