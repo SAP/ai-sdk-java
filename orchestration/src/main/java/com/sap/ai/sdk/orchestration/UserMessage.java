@@ -65,7 +65,7 @@ public class UserMessage implements Message {
    */
   @Nonnull
   public UserMessage andImage(
-      @Nonnull final String imageUrl, @Nullable final ImageItem.DetailLevel detailLevel) {
+      @Nonnull final String imageUrl, @Nonnull final ImageItem.DetailLevel detailLevel) {
     return new UserMessage(
         new MessageContent(
             Stream.concat(

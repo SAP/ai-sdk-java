@@ -31,7 +31,7 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
    */
   @Nonnull
   public static MessageContent image(
-      @Nonnull final String imageUrl, @Nullable final ImageItem.DetailLevel detailLevel) {
+      @Nonnull final String imageUrl, @Nonnull final ImageItem.DetailLevel detailLevel) {
     return new MessageContent(List.of(new ImageItem(imageUrl, detailLevel)));
   }
 
