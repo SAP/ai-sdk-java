@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Represents the content of a chat message.
  *
@@ -49,19 +51,20 @@ public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
   /**
    * Creates a new message content containing one or more {@link TextItem}s with the given texts.
    *
-   * @param firstInput the first text of the message
-   * @param moreInputs additional texts of the message
+   * @param message the first text of the message
+   * @param additionalMessages additional texts of the message
    * @return the new message content
    */
   @Nonnull
   public static MessageContent text(
-      @Nonnull final String firstInput, @Nullable final String... moreInputs) {
-    return new MessageContent(
-        Stream.concat(
-                Stream.of(firstInput),
-                moreInputs == null ? Stream.empty() : Arrays.stream(moreInputs))
-            .map(text -> (ContentItem) new TextItem(text))
-            .toList());
+      @Nonnull final String message, @Nullable final String... additionalMessages) {
+    var messagesStream =
+        (additionalMessages != null)
+            ? Stream.concat(Stream.of(message), Stream.of(additionalMessages))
+            : Stream.of(message);
+    var contentList =
+         messagesStream.map(text -> (ContentItem) new TextItem(text)).toList();
+    return new MessageContent(contentList);
   }
 
   /**

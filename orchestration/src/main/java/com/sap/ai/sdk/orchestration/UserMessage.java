@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -8,6 +10,7 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
+import lombok.experimental.Tolerate;
 
 /** Represents a chat message as 'user' to the orchestration service. */
 @Value
@@ -28,32 +31,29 @@ public class UserMessage implements Message {
    * @param message the first message.
    * @param additionalMessages the additional messages.
    */
+  @Tolerate
   public UserMessage(@Nonnull final String message, @Nullable final String... additionalMessages) {
-    content = MessageContent.text(message, additionalMessages);
-  }
-
-  /**
-   * Creates a new user message with the given message content.
-   *
-   * @param messageContent the message content.
-   */
-  public UserMessage(@Nonnull final MessageContent messageContent) {
-    content = messageContent;
+    this(MessageContent.text(message, additionalMessages));
   }
 
   /**
    * Add text to the message.
    *
-   * @param messages the text to add.
+   * @param message the text to add
+   * @param additionalMessages additional text to add
    * @return the new message.
    */
   @Nonnull
-  public UserMessage andText(@Nonnull final String... messages) {
-    return new UserMessage(
-        new MessageContent(
-            Stream.concat(
-                    content.contentItemList().stream(), Stream.of(messages).map(TextItem::new))
-                .toList()));
+  public UserMessage andText(
+      @Nonnull final String message, @Nullable final String... additionalMessages) {
+    var messagesStream =
+        (additionalMessages != null)
+            ? Stream.concat(Stream.of(message), Stream.of(additionalMessages))
+            : Stream.of(message);
+    var contentList =
+        Stream.concat(content.contentItemList().stream(), messagesStream.map(TextItem::new))
+            .toList();
+    return new UserMessage(new MessageContent(contentList));
   }
 
   /**
@@ -66,12 +66,9 @@ public class UserMessage implements Message {
   @Nonnull
   public UserMessage andImage(
       @Nonnull final String imageUrl, @Nonnull final ImageItem.DetailLevel detailLevel) {
-    return new UserMessage(
-        new MessageContent(
-            Stream.concat(
-                    content.contentItemList().stream(),
-                    Stream.of(new ImageItem(imageUrl, detailLevel)))
-                .toList()));
+    final var contentItems = new LinkedList<>(content.contentItemList());
+    contentItems.add(new ImageItem(imageUrl, detailLevel));
+    return new UserMessage(new MessageContent(contentItems));
   }
 
   /**
@@ -82,10 +79,9 @@ public class UserMessage implements Message {
    */
   @Nonnull
   public UserMessage andImage(@Nonnull final String imageUrl) {
-    return new UserMessage(
-        new MessageContent(
-            Stream.concat(content.contentItemList().stream(), Stream.of(new ImageItem(imageUrl)))
-                .toList()));
+    final var contentItems = new LinkedList<>(content.contentItemList());
+    contentItems.add(new ImageItem(imageUrl));
+    return new UserMessage(new MessageContent(contentItems));
   }
 
   /**
