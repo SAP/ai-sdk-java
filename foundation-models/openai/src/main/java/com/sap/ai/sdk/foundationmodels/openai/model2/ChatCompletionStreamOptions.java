@@ -34,10 +34,11 @@ import javax.annotation.Nullable;
 public class ChatCompletionStreamOptions
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("include_usage")
   private Boolean includeUsage;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the includeUsage of this {@link ChatCompletionStreamOptions} instance and return the same

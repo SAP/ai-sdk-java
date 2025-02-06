@@ -36,13 +36,65 @@ import javax.annotation.Nullable;
 public class ResponseFormatJsonSchema implements CreateChatCompletionRequestAllOfResponseFormat
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  /** The type of response format being defined: &#x60;json_schema&#x60; */
+  public enum TypeEnum {
+    /** The JSON_SCHEMA option of this ResponseFormatJsonSchema */
+    JSON_SCHEMA("json_schema");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ResponseFormatJsonSchema
+     */
+    @JsonCreator
+    @Nonnull
+    public static TypeEnum fromValue(@Nonnull final String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("type")
   private TypeEnum type;
 
   @JsonProperty("json_schema")
   private ResponseFormatJsonSchemaJsonSchema jsonSchema;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the type of this {@link ResponseFormatJsonSchema} instance and return the same instance.
@@ -188,56 +240,5 @@ public class ResponseFormatJsonSchema implements CreateChatCompletionRequestAllO
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** The type of response format being defined: &#x60;json_schema&#x60; */
-  public enum TypeEnum {
-    /** The JSON_SCHEMA option of this ResponseFormatJsonSchema */
-    JSON_SCHEMA("json_schema");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ResponseFormatJsonSchema
-     */
-    @JsonCreator
-    @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

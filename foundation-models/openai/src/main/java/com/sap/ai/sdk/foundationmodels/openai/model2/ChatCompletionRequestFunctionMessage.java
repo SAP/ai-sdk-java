@@ -41,8 +41,57 @@ import javax.annotation.Nullable;
 public class ChatCompletionRequestFunctionMessage implements ChatCompletionRequestMessage
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  /** The role of the messages author, in this case &#x60;function&#x60;. */
+  public enum RoleEnum {
+    /** The FUNCTION option of this ChatCompletionRequestFunctionMessage */
+    FUNCTION("function");
+
+    private String value;
+
+    RoleEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ChatCompletionRequestFunctionMessage
+     */
+    @JsonCreator
+    @Nonnull
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("role")
   private RoleEnum role;
 
@@ -51,6 +100,9 @@ public class ChatCompletionRequestFunctionMessage implements ChatCompletionReque
 
   @JsonProperty("name")
   private String name;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the role of this {@link ChatCompletionRequestFunctionMessage} instance and return the same
@@ -235,56 +287,5 @@ public class ChatCompletionRequestFunctionMessage implements ChatCompletionReque
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** The role of the messages author, in this case &#x60;function&#x60;. */
-  public enum RoleEnum {
-    /** The FUNCTION option of this ChatCompletionRequestFunctionMessage */
-    FUNCTION("function");
-
-    private String value;
-
-    RoleEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ChatCompletionRequestFunctionMessage
-     */
-    @JsonCreator
-    @Nonnull
-    public static RoleEnum fromValue(@Nonnull final String value) {
-      for (RoleEnum b : RoleEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

@@ -35,16 +35,20 @@ import javax.annotation.Nullable;
 public class ResponseFormatJsonSchemaJsonSchema
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("description")
   private String description;
+
   @JsonProperty("name")
   private String name;
+
   @JsonProperty("schema")
   private Map<String, Object> schema = new HashMap<>();
+
   @JsonProperty("strict")
   private Boolean strict = false;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the description of this {@link ResponseFormatJsonSchemaJsonSchema} instance and return the

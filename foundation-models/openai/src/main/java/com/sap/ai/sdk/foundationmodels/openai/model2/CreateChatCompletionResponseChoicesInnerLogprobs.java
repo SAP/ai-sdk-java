@@ -36,12 +36,14 @@ import javax.annotation.Nullable;
 public class CreateChatCompletionResponseChoicesInnerLogprobs
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("content")
   private List<ChatCompletionTokenLogprob> content;
+
   @JsonProperty("refusal")
   private List<ChatCompletionTokenLogprob> refusal;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the content of this {@link CreateChatCompletionResponseChoicesInnerLogprobs} instance and

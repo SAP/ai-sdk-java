@@ -38,55 +38,77 @@ import javax.annotation.Nullable;
 public class CreateChatCompletionRequest
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("temperature")
   private BigDecimal temperature = new BigDecimal("1");
+
   @JsonProperty("top_p")
   private BigDecimal topP = new BigDecimal("1");
+
   @JsonProperty("stream")
   private Boolean stream = false;
+
   @JsonProperty("stop")
   private CreateChatCompletionRequestAllOfStop stop = null;
+
   @JsonProperty("max_tokens")
   private Integer maxTokens;
+
   @JsonProperty("max_completion_tokens")
   private Integer maxCompletionTokens;
+
   @JsonProperty("presence_penalty")
   private BigDecimal presencePenalty = new BigDecimal("0");
+
   @JsonProperty("frequency_penalty")
   private BigDecimal frequencyPenalty = new BigDecimal("0");
+
   @JsonProperty("logit_bias")
   private Map<String, Integer> logitBias;
+
   @JsonProperty("user")
   private String user;
 
-  // @JsonProperty("data_sources") // IGNORED TODO
-  // private List<AzureChatExtensionConfiguration> dataSources = new ArrayList<>();
   @JsonProperty("messages")
   private List<ChatCompletionRequestMessage> messages = new ArrayList<>();
+
+  // @JsonProperty("data_sources") // IGNORED TODO
+  // private List<AzureChatExtensionConfiguration> dataSources = new ArrayList<>();
+
   @JsonProperty("logprobs")
   private Boolean logprobs = false;
+
   @JsonProperty("top_logprobs")
   private Integer topLogprobs;
+
   @JsonProperty("n")
   private Integer n = 1;
+
   @JsonProperty("parallel_tool_calls")
   private Boolean parallelToolCalls = true;
+
   @JsonProperty("response_format")
   private CreateChatCompletionRequestAllOfResponseFormat responseFormat;
+
   @JsonProperty("seed")
   private Integer seed;
+
   @JsonProperty("stream_options")
   private ChatCompletionStreamOptions streamOptions;
+
   @JsonProperty("tools")
   private List<ChatCompletionTool> tools = new ArrayList<>();
+
   @JsonProperty("tool_choice")
   private ChatCompletionToolChoiceOption toolChoice;
+
   @JsonProperty("function_call")
   private CreateChatCompletionRequestAllOfFunctionCall functionCall;
+
   @JsonProperty("functions")
   private List<ChatCompletionFunctions> functions = new ArrayList<>();
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the temperature of this {@link CreateChatCompletionRequest} instance and return the same

@@ -34,12 +34,14 @@ import javax.annotation.Nullable;
 public class EmbeddingsCreate200ResponseUsage
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("prompt_tokens")
   private Integer promptTokens;
+
   @JsonProperty("total_tokens")
   private Integer totalTokens;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the promptTokens of this {@link EmbeddingsCreate200ResponseUsage} instance and return the

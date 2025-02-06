@@ -34,12 +34,14 @@ import javax.annotation.Nullable;
 public class PromptFilterResult
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("prompt_index")
   private Integer promptIndex;
+
   @JsonProperty("content_filter_results")
   private ContentFilterPromptResults contentFilterResults;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the promptIndex of this {@link PromptFilterResult} instance and return the same instance.

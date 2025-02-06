@@ -33,6 +33,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @com.google.common.annotations.Beta
 public interface CreateChatCompletionRequestAllOfFunctionCall {
   /**
+   * Helper class to create a ChatCompletionFunctionCallOption that implements {@link
+   * CreateChatCompletionRequestAllOfFunctionCall}.
+   */
+  record InnerChatCompletionFunctionCallOption(@JsonValue ChatCompletionFunctionCallOption value)
+      implements CreateChatCompletionRequestAllOfFunctionCall {}
+
+  /**
    * Creator to enable deserialization of a ChatCompletionFunctionCallOption.
    *
    * @param val the value to use
@@ -44,6 +51,13 @@ public interface CreateChatCompletionRequestAllOfFunctionCall {
   }
 
   /**
+   * Helper class to create a String that implements {@link
+   * CreateChatCompletionRequestAllOfFunctionCall}.
+   */
+  record InnerString(@JsonValue String value)
+      implements CreateChatCompletionRequestAllOfFunctionCall {}
+
+  /**
    * Creator to enable deserialization of a String.
    *
    * @param val the value to use
@@ -53,18 +67,4 @@ public interface CreateChatCompletionRequestAllOfFunctionCall {
   static InnerString create(String val) {
     return new InnerString(val);
   }
-
-  /**
-   * Helper class to create a ChatCompletionFunctionCallOption that implements {@link
-   * CreateChatCompletionRequestAllOfFunctionCall}.
-   */
-  record InnerChatCompletionFunctionCallOption(@JsonValue ChatCompletionFunctionCallOption value)
-      implements CreateChatCompletionRequestAllOfFunctionCall {}
-
-  /**
-   * Helper class to create a String that implements {@link
-   * CreateChatCompletionRequestAllOfFunctionCall}.
-   */
-  record InnerString(@JsonValue String value)
-      implements CreateChatCompletionRequestAllOfFunctionCall {}
 }

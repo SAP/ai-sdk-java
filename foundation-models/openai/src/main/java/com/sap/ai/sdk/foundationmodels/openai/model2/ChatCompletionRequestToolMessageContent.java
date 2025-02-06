@@ -22,6 +22,13 @@ import java.util.List;
 @com.google.common.annotations.Beta
 public interface ChatCompletionRequestToolMessageContent {
   /**
+   * Helper class to create a String that implements {@link
+   * ChatCompletionRequestToolMessageContent}.
+   */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
+      implements ChatCompletionRequestToolMessageContent {}
+
+  /**
    * Creator to enable deserialization of a String.
    *
    * @param val the value to use
@@ -31,6 +38,15 @@ public interface ChatCompletionRequestToolMessageContent {
   static InnerString create(String val) {
     return new InnerString(val);
   }
+
+  /**
+   * Helper class to create a list of ChatCompletionRequestToolMessageContentPart that implements
+   * {@link ChatCompletionRequestToolMessageContent}.
+   */
+  record InnerChatCompletionRequestToolMessageContentParts(
+      @com.fasterxml.jackson.annotation.JsonValue
+          List<ChatCompletionRequestToolMessageContentPart> values)
+      implements ChatCompletionRequestToolMessageContent {}
 
   /**
    * Creator to enable deserialization of a list of ChatCompletionRequestToolMessageContentPart.
@@ -43,20 +59,4 @@ public interface ChatCompletionRequestToolMessageContent {
       List<ChatCompletionRequestToolMessageContentPart> val) {
     return new InnerChatCompletionRequestToolMessageContentParts(val);
   }
-
-  /**
-   * Helper class to create a String that implements {@link
-   * ChatCompletionRequestToolMessageContent}.
-   */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue String value)
-      implements ChatCompletionRequestToolMessageContent {}
-
-  /**
-   * Helper class to create a list of ChatCompletionRequestToolMessageContentPart that implements
-   * {@link ChatCompletionRequestToolMessageContent}.
-   */
-  record InnerChatCompletionRequestToolMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue
-          List<ChatCompletionRequestToolMessageContentPart> values)
-      implements ChatCompletionRequestToolMessageContent {}
 }

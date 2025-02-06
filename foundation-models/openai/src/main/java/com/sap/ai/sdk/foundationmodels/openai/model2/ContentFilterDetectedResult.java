@@ -34,12 +34,14 @@ import javax.annotation.Nullable;
 public class ContentFilterDetectedResult
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("filtered")
   private Boolean filtered;
+
   @JsonProperty("detected")
   private Boolean detected;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the filtered of this {@link ContentFilterDetectedResult} instance and return the same

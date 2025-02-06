@@ -37,14 +37,17 @@ import javax.annotation.Nullable;
 public class EmbeddingsCreate200ResponseDataInner
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("index")
   private Integer index;
+
   @JsonProperty("object")
   private String _object;
+
   @JsonProperty("embedding")
   private List<BigDecimal> embedding = new ArrayList<>(); //
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the index of this {@link EmbeddingsCreate200ResponseDataInner} instance and return the same

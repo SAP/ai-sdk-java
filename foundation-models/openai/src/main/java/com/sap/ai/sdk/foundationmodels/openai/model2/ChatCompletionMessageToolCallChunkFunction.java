@@ -34,12 +34,14 @@ import javax.annotation.Nullable;
 public class ChatCompletionMessageToolCallChunkFunction
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("name")
   private String name;
+
   @JsonProperty("arguments")
   private String arguments;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the name of this {@link ChatCompletionMessageToolCallChunkFunction} instance and return the

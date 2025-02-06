@@ -34,16 +34,20 @@ import javax.annotation.Nullable;
 public class CompletionUsage
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("prompt_tokens")
   private Integer promptTokens;
+
   @JsonProperty("completion_tokens")
   private Integer completionTokens;
+
   @JsonProperty("total_tokens")
   private Integer totalTokens;
+
   @JsonProperty("completion_tokens_details")
   private CompletionUsageCompletionTokensDetails completionTokensDetails;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the promptTokens of this {@link CompletionUsage} instance and return the same instance.

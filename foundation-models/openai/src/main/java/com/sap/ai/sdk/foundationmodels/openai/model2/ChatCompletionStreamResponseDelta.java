@@ -38,19 +38,83 @@ import javax.annotation.Nullable;
 public class ChatCompletionStreamResponseDelta
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("content")
   private String content;
+
   @JsonProperty("function_call")
   private ChatCompletionStreamResponseDeltaFunctionCall functionCall;
+
   @JsonProperty("tool_calls")
   private List<ChatCompletionMessageToolCallChunk> toolCalls = new ArrayList<>();
+
+  /** The role of the author of this message. */
+  public enum RoleEnum {
+    /** The SYSTEM option of this ChatCompletionStreamResponseDelta */
+    SYSTEM("system"),
+
+    /** The USER option of this ChatCompletionStreamResponseDelta */
+    USER("user"),
+
+    /** The ASSISTANT option of this ChatCompletionStreamResponseDelta */
+    ASSISTANT("assistant"),
+
+    /** The TOOL option of this ChatCompletionStreamResponseDelta */
+    TOOL("tool");
+
+    private String value;
+
+    RoleEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type ChatCompletionStreamResponseDelta
+     */
+    @JsonCreator
+    @Nonnull
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("role")
   private RoleEnum role;
 
   @JsonProperty("refusal")
   private String refusal;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the content of this {@link ChatCompletionStreamResponseDelta} instance and return the same
@@ -325,65 +389,5 @@ public class ChatCompletionStreamResponseDelta
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** The role of the author of this message. */
-  public enum RoleEnum {
-    /** The SYSTEM option of this ChatCompletionStreamResponseDelta */
-    SYSTEM("system"),
-
-    /** The USER option of this ChatCompletionStreamResponseDelta */
-    USER("user"),
-
-    /** The ASSISTANT option of this ChatCompletionStreamResponseDelta */
-    ASSISTANT("assistant"),
-
-    /** The TOOL option of this ChatCompletionStreamResponseDelta */
-    TOOL("tool");
-
-    private String value;
-
-    RoleEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ChatCompletionStreamResponseDelta
-     */
-    @JsonCreator
-    @Nonnull
-    public static RoleEnum fromValue(@Nonnull final String value) {
-      for (RoleEnum b : RoleEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }

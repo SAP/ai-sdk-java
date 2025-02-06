@@ -41,20 +41,79 @@ import javax.annotation.Nullable;
 public class CreateChatCompletionStreamResponse implements ChatCompletionsCreate200Response
 // CHECKSTYLE:ON
 {
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
   @JsonProperty("id")
   private String id;
+
   @JsonProperty("choices")
   private List<CreateChatCompletionStreamResponseChoicesInner> choices = new ArrayList<>();
+
   @JsonProperty("created")
   private Integer created;
+
   @JsonProperty("model")
   private String model;
+
   @JsonProperty("system_fingerprint")
   private String systemFingerprint;
+
+  /** The object type, which is always &#x60;chat.completion.chunk&#x60;. */
+  public enum ObjectEnum {
+    /** The CHAT_COMPLETION_CHUNK option of this CreateChatCompletionStreamResponse */
+    CHAT_COMPLETION_CHUNK("chat.completion.chunk"),
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponse */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    ObjectEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type CreateChatCompletionStreamResponse
+     */
+    @JsonCreator
+    @Nonnull
+    public static ObjectEnum fromValue(@Nonnull final String value) {
+      for (ObjectEnum b : ObjectEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
   @JsonProperty("object")
   private ObjectEnum _object;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
    * Set the id of this {@link CreateChatCompletionStreamResponse} instance and return the same
@@ -375,58 +434,5 @@ public class CreateChatCompletionStreamResponse implements ChatCompletionsCreate
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
-  }
-
-  /** The object type, which is always &#x60;chat.completion.chunk&#x60;. */
-  public enum ObjectEnum {
-    /** The CHAT_COMPLETION_CHUNK option of this CreateChatCompletionStreamResponse */
-    CHAT_COMPLETION_CHUNK("chat.completion.chunk"),
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponse */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    ObjectEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type CreateChatCompletionStreamResponse
-     */
-    @JsonCreator
-    @Nonnull
-    public static ObjectEnum fromValue(@Nonnull final String value) {
-      for (ObjectEnum b : ObjectEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
   }
 }
