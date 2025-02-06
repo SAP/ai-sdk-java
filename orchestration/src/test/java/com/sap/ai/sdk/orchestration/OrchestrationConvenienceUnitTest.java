@@ -32,9 +32,9 @@ public class OrchestrationConvenienceUnitTest {
     assertThat(userMessageWithImageAndImage).isEqualTo(userMessageWithImageAnd);
 
     var userMessageWithImageDetailAndImage =
-        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.low);
+        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.LOW);
     var userMessageWithImageDetailAnd =
-        Message.user("Text 1").and(MessageContent.image("url", ImageItem.DetailLevel.low));
+        Message.user("Text 1").and(MessageContent.image("url", ImageItem.DetailLevel.LOW));
     assertThat(userMessageWithImageDetailAndImage).isEqualTo(userMessageWithImageDetailAnd);
   }
 }

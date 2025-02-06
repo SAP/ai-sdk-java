@@ -67,7 +67,7 @@ public class OrchestrationService {
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     final var multiMessage =
-        Message.user("What is in this image?").andImage(pathToImage, ImageItem.DetailLevel.low);
+        Message.user("What is in this image?").andImage(pathToImage, ImageItem.DetailLevel.LOW);
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, llmWithImageSupportConfig);
   }

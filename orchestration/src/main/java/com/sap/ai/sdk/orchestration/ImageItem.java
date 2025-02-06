@@ -18,17 +18,19 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
    * @param imageUrl the URL of the image
    */
   public ImageItem(@Nonnull final String imageUrl) {
-    this(imageUrl, DetailLevel.auto);
+    this(imageUrl, DetailLevel.AUTO);
   }
 
   /** The detail level of the image. */
   public enum DetailLevel {
     /** Low detail level. */
-    low,
+    LOW("low"),
     /** High detail level. */
-    high,
+    HIGH("high"),
     /** Automatic detail level. */
-    auto;
+    AUTO("auto");
+
+    private final String level;
 
     /**
      * Converts a string to a detail level.
@@ -38,7 +40,21 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
      */
     @Nonnull
     static DetailLevel fromString(@Nonnull final String str) {
-      return DetailLevel.valueOf(str.toLowerCase(Locale.ENGLISH));
+      return DetailLevel.valueOf(str.toUpperCase(Locale.ENGLISH));
+    }
+
+    /**
+     * Get the string representation of the DetailLevel
+     *
+     * @return the DetailLevel as string
+     */
+    @Nonnull
+    public String toString() {
+      return level;
+    }
+
+    DetailLevel(@Nonnull final String level) {
+      this.level = level;
     }
   }
 }

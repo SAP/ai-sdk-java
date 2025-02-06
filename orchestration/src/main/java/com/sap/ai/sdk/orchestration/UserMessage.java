@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,11 +45,11 @@ public class UserMessage implements Message {
   @Nonnull
   public UserMessage andText(
       @Nonnull final String message, @Nullable final String... additionalMessages) {
-    var messagesStream =
+    final var messagesStream =
         (additionalMessages != null)
             ? Stream.concat(Stream.of(message), Stream.of(additionalMessages))
             : Stream.of(message);
-    var contentList =
+    final var contentList =
         Stream.concat(content.contentItemList().stream(), messagesStream.map(TextItem::new))
             .toList();
     return new UserMessage(new MessageContent(contentList));
