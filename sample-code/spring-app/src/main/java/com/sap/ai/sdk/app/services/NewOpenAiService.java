@@ -7,7 +7,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionReques
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImageImageUrl.DetailEnum.HIGH;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage.RoleEnum.USER;
-import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool.TypeEnum.*;
+import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
@@ -132,22 +132,22 @@ public class NewOpenAiService {
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionTools(@Nonnull final String description) {
-    var function =
+    final var function =
         new FunctionObject()
             .name("fibonacci")
             .description(description)
             .parameters(
                 Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
 
-    var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
-    var toolChoice =
+    final var toolChoice =
         ChatCompletionToolChoiceOption.create(
             new ChatCompletionNamedToolChoice()
                 .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
                 .function(new ChatCompletionNamedToolChoiceFunction().name("fibonacci")));
 
-    var request =
+    final var request =
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?")
             .tools(List.of(tool))

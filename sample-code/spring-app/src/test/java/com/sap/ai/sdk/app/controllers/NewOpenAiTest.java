@@ -27,8 +27,7 @@ class NewOpenAiTest {
 
   @Test
   void chatCompletion() {
-    final var completion =
-        service.chatCompletion("Who is the prettiest");
+    final var completion = service.chatCompletion("Who is the prettiest");
 
     assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(completion.getContent()).isNotEmpty();

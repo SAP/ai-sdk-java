@@ -29,10 +29,15 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoice;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoiceFunction;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
+import com.sap.ai.sdk.foundationmodels.openai.model2.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.model2.PromptFilterResult;
 import io.vavr.control.Try;
 import java.io.IOException;
@@ -552,5 +557,91 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
     assertThat(filter.getJailbreak()).isNull();
     assertThat(filter.getProfanity()).isNull();
     assertThat(filter.getError()).isNull();
+  }
+
+  @Test
+  void chatCompletionTool() {
+    stubForChatCompletionTool();
+
+    final var function =
+        new FunctionObject()
+            .name("fibonacci")
+            .parameters(
+                Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
+
+    final var tool =
+        new ChatCompletionTool().type(ChatCompletionTool.TypeEnum.FUNCTION).function(function);
+
+    final var toolChoice =
+        ChatCompletionToolChoiceOption.create(
+            new ChatCompletionNamedToolChoice()
+                .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
+                .function(new ChatCompletionNamedToolChoiceFunction().name("fibonacci")));
+
+    final var request =
+        new OpenAiChatCompletionRequest(
+                "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?")
+            .tools(List.of(tool))
+            .toolChoice(toolChoice);
+
+    var respose = client.chatCompletion(request).getOriginalResponse();
+
+    assertThat(respose).isNotNull();
+    assertThat(respose.getChoices()).hasSize(1);
+    assertThat(respose.getChoices().get(0).getFinishReason().getValue()).isEqualTo("stop");
+    assertThat(respose.getChoices().get(0).getMessage().getRole().getValue())
+        .isEqualTo("assistant");
+    assertThat(respose.getChoices().get(0).getMessage().getToolCalls()).hasSize(1);
+    assertThat(respose.getChoices().get(0).getMessage().getToolCalls().get(0).getId())
+        .isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
+    assertThat(respose.getChoices().get(0).getMessage().getToolCalls().get(0).getType().getValue())
+        .isEqualTo("function");
+    assertThat(
+            respose.getChoices().get(0).getMessage().getToolCalls().get(0).getFunction().getName())
+        .isEqualTo("fibonacci");
+    assertThat(
+            respose
+                .getChoices()
+                .get(0)
+                .getMessage()
+                .getToolCalls()
+                .get(0)
+                .getFunction()
+                .getArguments())
+        .isEqualTo("{\"N\":12}");
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withRequestBody(
+                equalToJson(
+                    """
+                  {
+                    "messages" : [ {
+                      "content" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?",
+                      "role" : "user"
+                    } ],
+                    "tools" : [ {
+                      "type" : "function",
+                      "function" : {
+                        "name" : "fibonacci",
+                        "parameters" : {
+                          "type" : "object",
+                          "properties" : {
+                            "N" : {
+                              "type" : "integer"
+                            }
+                          }
+                        },
+                        "strict" : false
+                      }
+                    } ],
+                    "tool_choice" : {
+                      "type" : "function",
+                      "function" : {
+                        "name" : "fibonacci"
+                      }
+                    }
+                  }
+                  """)));
   }
 }

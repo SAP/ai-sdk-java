@@ -86,4 +86,13 @@ abstract class BaseOpenAiClientTest {
 
     return inputStream;
   }
+
+  static void stubForChatCompletionTool() {
+    stubFor(
+        post(urlPathEqualTo("/chat/completions"))
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("chatCompletionToolResponse.json")));
+  }
 }

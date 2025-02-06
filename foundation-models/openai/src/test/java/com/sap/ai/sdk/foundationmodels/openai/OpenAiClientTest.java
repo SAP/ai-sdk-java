@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
@@ -8,13 +9,16 @@ import static org.mockito.Mockito.times;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -410,5 +414,82 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     assertThat(filter.getJailbreak()).isNull();
     assertThat(filter.getProfanity()).isNull();
     assertThat(filter.getError()).isNull();
+  }
+
+  @Test
+  void chatCompletionTool() {
+    stubForChatCompletionTool();
+
+    final var question =
+        "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?";
+    final var par = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
+    final var function = new OpenAiChatCompletionFunction().setName("fibonacci").setParameters(par);
+    final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
+    final var request =
+        new OpenAiChatCompletionParameters()
+            .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText(question))
+            .setTools(List.of(tool))
+            .setToolChoiceFunction("fibonacci");
+
+    var respose = client.chatCompletion(request);
+
+    assertThat(respose).isNotNull();
+    assertThat(respose.getChoices()).hasSize(1);
+    assertThat(respose.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(respose.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(respose.getChoices().get(0).getMessage().getToolCalls()).hasSize(1);
+    assertThat(respose.getChoices().get(0).getMessage().getToolCalls().get(0).getId())
+        .isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
+    assertThat(respose.getChoices().get(0).getMessage().getToolCalls().get(0).getType())
+        .isEqualTo("function");
+    assertThat(
+            respose.getChoices().get(0).getMessage().getToolCalls().get(0).getFunction().getName())
+        .isEqualTo("fibonacci");
+    assertThat(
+            respose
+                .getChoices()
+                .get(0)
+                .getMessage()
+                .getToolCalls()
+                .get(0)
+                .getFunction()
+                .getArguments())
+        .isEqualTo("{\"N\":12}");
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withRequestBody(
+                equalToJson(
+                    """
+                      {
+                        "messages" : [ {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?"
+                          } ]
+                        } ],
+                        "tools" : [ {
+                          "type" : "function",
+                          "function" : {
+                            "name" : "fibonacci",
+                            "parameters" : {
+                              "type" : "object",
+                              "properties" : {
+                                "N" : {
+                                  "type" : "integer"
+                                }
+                              }
+                            }
+                          }
+                        } ],
+                        "tool_choice" : {
+                          "function" : {
+                            "name" : "fibonacci"
+                          },
+                          "type" : "function"
+                        }
+                      }
+                      """)));
   }
 }
