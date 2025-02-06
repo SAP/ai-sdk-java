@@ -6,7 +6,11 @@ import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
-/** Represents a chat message as 'tool' to the orchestration service. */
+/**
+ * Represents a chat message as 'tool' to the orchestration service.
+ *
+ * @since 1.3.0
+ */
 @Value
 @Accessors(fluent = true)
 public class ToolMessage implements Message {

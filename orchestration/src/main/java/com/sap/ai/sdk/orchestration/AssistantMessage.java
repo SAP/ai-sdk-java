@@ -3,7 +3,6 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
@@ -23,16 +22,6 @@ public final class AssistantMessage implements Message {
 
   /** Tool call if there is any. */
   @Nullable List<ToolCall> toolCalls = null;
-
-  /**
-   * Represents a tool call.
-   *
-   * @param id call id
-   * @param type "function" or "tool"
-   * @param name the name of the function to call
-   * @param arguments the arguments to pass to the function
-   */
-  public record ToolCall(String id, String type, String name, String arguments) {}
 
   /**
    * Creates a new assistant message with the given text content.
@@ -57,20 +46,12 @@ public final class AssistantMessage implements Message {
   @Override
   public ChatMessage createChatMessage() {
     if (toolCalls() != null) {
-      final List<Map<String, Object>> toolCallList =
-          toolCalls().stream()
-              .map(
-                  toolCall -> {
-                    val function =
-                        Map.of("name", toolCall.name(), "arguments", toolCall.arguments());
-                    return Map.of(
-                        "id", toolCall.id(), "type", toolCall.type(), toolCall.type(), function);
-                  })
-              .toList();
-
       // content shouldn't be required for tool calls 🤷
       val message = SingleChatMessage.create().role(role).content("");
-      message.setCustomField("tool_calls", toolCallList);
+
+      val maps = toolCalls().stream().map(ToolCall::map).toList();
+      message.setCustomField("tool_calls", maps);
+
       return message;
     }
     return Message.super.createChatMessage();

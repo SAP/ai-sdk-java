@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
+import com.sap.ai.sdk.orchestration.ToolCall;
 import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.ai.chat.model.AbstractToolCallSupport;
@@ -131,20 +131,20 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
               case USER:
                 yield List.of(new UserMessage(msg.getText()));
               case ASSISTANT:
-                final List<ToolCall> toolCalls =
+                val springToolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
-                if (toolCalls != null) {
-                  final List<AssistantMessage.ToolCall> toolCallList =
-                      toolCalls.stream()
+                if (springToolCalls != null) {
+                  final List<ToolCall> sdkToolCalls =
+                      springToolCalls.stream()
                           .map(
                               toolCall ->
-                                  new AssistantMessage.ToolCall(
-                                      toolCall.id(),
-                                      toolCall.type(),
-                                      toolCall.name(),
-                                      toolCall.arguments()))
+                                  new ToolCall()
+                                      .id(toolCall.id())
+                                      .type(toolCall.type())
+                                      .name(toolCall.name())
+                                      .arguments(toolCall.arguments()))
                           .toList();
-                  yield List.of(new AssistantMessage(toolCallList));
+                  yield List.of(new AssistantMessage(sdkToolCalls));
                 }
                 yield List.of(new AssistantMessage(msg.getText()));
               case TOOL:
