@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.sap.ai.sdk.app.services.OpenAiService;
+import com.sap.ai.sdk.app.services.NewOpenAiService;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @RestController
 @SuppressWarnings("unused")
 public class OpenAiController {
-  @Autowired private OpenAiService service;
+  @Autowired private NewOpenAiService service;
 
   /**
    * Chat request to OpenAI
