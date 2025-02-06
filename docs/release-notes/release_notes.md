@@ -13,6 +13,7 @@
 ### ✨ New Functionality
 
 - [Add Orchestration `LlamaGuardFilter`](../guides/ORCHESTRATION_CHAT_COMPLETION.md#chat-completion-filter).
+- [Add Spring AI function calling](../guides/SPRING_AI_INTEGRATION.md#function-calling).
 
 ### 📈 Improvements
 

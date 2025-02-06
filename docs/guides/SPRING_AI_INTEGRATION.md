@@ -5,6 +5,8 @@
 - [Introduction](#introduction)
 - [Orchestration Chat Completion](#orchestration-chat-completion)
 - [Orchestration Masking](#orchestration-masking)
+- [Stream chat completion](#stream-chat-completion)
+- [Function Calling](#function-calling)
 
 ## Introduction
 
@@ -99,3 +101,39 @@ Flux<String> responseFlux =
 _Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## Function Calling
+
+First define a function that will be called by the LLM:
+
+```java
+public class MockWeatherService implements Function<Request, Response> {
+  public enum Unit {C, F}
+  public record Request(String location, Unit unit) {}
+  public record Response(double temp, Unit unit) {}
+
+  public Response apply(Request request) {
+    return new Response(30.0, Unit.C);
+  }
+}
+```
+
+Then add your function to the options:
+
+```java
+OrchestrationChatOptions options = new OrchestrationChatOptions(config);
+options.setFunctionCallbacks(
+    List.of(
+        FunctionCallback.builder()
+            .function(
+                "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+            .description("Get the weather in location") // (2) function description
+            .inputType(MockWeatherService.Request.class) // (3) function input type
+            .build()));
+Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+
+ChatResponse response = client.call(prompt);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
