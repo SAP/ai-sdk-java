@@ -153,6 +153,9 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
 
     assertThat(result.getPromptFilterResults()).hasSize(1);
     assertThat(result.getPromptFilterResults().get(0).getPromptIndex()).isEqualTo(0);
+    assertThat(result.getContent())
+        .isEqualTo(
+            "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
 
     var promptFilterResults = result.getPromptFilterResults().get(0).getContentFilterResults();
     assertThat(promptFilterResults).isNotNull();
@@ -177,9 +180,6 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     var choice = result.getChoices().get(0);
     assertThat(choice.getFinishReason()).isEqualTo("stop");
     assertThat(choice.getIndex()).isZero();
-    assertThat(choice.getMessage().getContent())
-        .isEqualTo(
-            "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
     assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
     assertThat(choice.getMessage().getToolCalls()).isNull();
 
@@ -257,7 +257,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltasErrorHandling() throws IOException {
-    try (var inputStream = stubChatCompletionDeltas("streamChatCompletionError.txt")) {
+    try (var inputStream = stubStreamChatCompletion("streamChatCompletionError.txt")) {
 
       final var request =
           new OpenAiChatCompletionParameters()
@@ -277,7 +277,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltas() throws IOException {
-    try (var inputStream = stubChatCompletionDeltas("streamChatCompletion.txt")) {
+    try (var inputStream = stubStreamChatCompletion("streamChatCompletion.txt")) {
 
       final var request =
           new OpenAiChatCompletionParameters()
@@ -329,6 +329,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
         assertThat(delta0.getObject()).isEmpty();
         assertThat(delta0.getUsage()).isNull();
         assertThat(delta0.getChoices()).isEmpty();
+        assertThat(delta0.getFinishReason()).isNull();
         // prompt filter results are only present in delta 0
         assertThat(delta0.getPromptFilterResults()).isNotNull();
         assertThat(delta0.getPromptFilterResults().get(0).getPromptIndex()).isZero();
@@ -343,9 +344,10 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
         assertThat(delta2.getObject()).isEqualTo("chat.completion.chunk");
         assertThat(delta2.getUsage()).isNull();
         assertThat(delta2.getPromptFilterResults()).isNull();
+        assertThat(delta2.getFinishReason()).isNull();
+
         final var choices2 = delta2.getChoices().get(0);
         assertThat(choices2.getIndex()).isEqualTo(0);
-        assertThat(choices2.getFinishReason()).isNull();
         assertThat(choices2.getMessage()).isNotNull();
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(choices2.getMessage().getRole()).isEqualTo("assistant");
@@ -357,8 +359,8 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
         final var delta3 = deltaList.get(3);
         assertThat(delta3.getDeltaContent()).isEqualTo("!");
 
+        assertThat(deltaList.get(4).getFinishReason()).isEqualTo("stop");
         final var delta4Choice = deltaList.get(4).getChoices().get(0);
-        assertThat(delta4Choice.getFinishReason()).isEqualTo("stop");
         assertThat(delta4Choice.getMessage()).isNotNull();
         // the role is only defined in delta 1, but it defaults to "assistant" for all deltas
         assertThat(delta4Choice.getMessage().getRole()).isEqualTo("assistant");

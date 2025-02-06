@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,20 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 class NewOpenAiClientTest extends BaseOpenAiClientTest {
+
+  @Test
+  void openAiModels() {
+    var model = OpenAiModel.GPT_4;
+    var newModel = model.withVersion("v1");
+
+    assertThat(model.name()).isEqualTo("gpt-4");
+    assertThat(model.version()).isNull();
+
+    assertThat(newModel.name()).isEqualTo("gpt-4");
+    assertThat(newModel.version()).isEqualTo("v1");
+
+    assertThat(model).isNotSameAs(newModel);
+  }
 
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
@@ -355,7 +370,7 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
 
   @Test
   void streamChatCompletionDeltasErrorHandling() throws IOException {
-    try (var inputStream = stubChatCompletionDeltas("streamChatCompletionError.txt")) {
+    try (var inputStream = stubStreamChatCompletion("streamChatCompletionError.txt")) {
 
       final var request =
           new OpenAiChatCompletionRequest(
@@ -371,9 +386,29 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
     }
   }
 
+  @SneakyThrows
+  @Test
+  void streamChatCompletionWithString() {
+    try (var inputStream = stubStreamChatCompletion("streamChatCompletion.txt")) {
+      final var userMessage = "Hello World! Why is this phrase so famous?";
+      client.withSystemPrompt("You are a helpful AI");
+      final var result = client.streamChatCompletion(userMessage).toList();
+
+      assertThat(result).hasSize(5);
+      // the first two and the last delta don't have any content
+      assertThat(result.get(0)).isEmpty();
+      assertThat(result.get(1)).isEmpty();
+      assertThat(result.get(2)).isEqualTo("Sure");
+      assertThat(result.get(3)).isEqualTo("!");
+      assertThat(result.get(4)).isEmpty();
+
+      Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
   @Test
   void streamChatCompletionDeltas() throws IOException {
-    try (var inputStream = stubChatCompletionDeltas("streamChatCompletion.txt")) {
+    try (var inputStream = stubStreamChatCompletion("streamChatCompletion.txt")) {
 
       final var request =
           new OpenAiChatCompletionRequest(

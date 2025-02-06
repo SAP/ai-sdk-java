@@ -69,7 +69,7 @@ abstract class BaseOpenAiClientTest {
     ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
-  InputStream stubChatCompletionDeltas(String responseFile) throws IOException {
+  InputStream stubStreamChatCompletion(String responseFile) throws IOException {
     var inputStream = spy(fileLoader.apply(responseFile));
 
     final var httpClient = mock(HttpClient.class);
