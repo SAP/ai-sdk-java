@@ -146,7 +146,7 @@ jobs:
           
           PR_URL=$(gh pr create --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
-          - [ ] Add release notes to the [Draft Release](${{ needs.create-release.outputs.release-url }}
+          - [ ] Add release notes to the [Draft Release](${{ needs.create-release.outputs.release-url }} and improve formatting
           - [ ] Review **and approve** this PR
           - [ ] Trigger the [Perform Release Workflow](${{ github.event.repository.html_url }}/actions/workflows/perform-release.yaml)
           - [ ] Once the `Perform Release` workflow is through, head over to the [Central Sonatype](https://central.sonatype.com/publishing/deployments) and log in with the credentials in the Team Password Safe. There should be a published release.")
