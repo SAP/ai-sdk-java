@@ -532,6 +532,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <!-- Exclude generated clients -->
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/openai/model2/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
           </excludes>
         </configuration>
@@ -575,6 +576,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/openai/model2/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
