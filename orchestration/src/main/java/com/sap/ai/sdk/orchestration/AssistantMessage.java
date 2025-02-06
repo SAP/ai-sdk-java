@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -21,7 +22,7 @@ public final class AssistantMessage implements Message {
   @Nonnull String content;
 
   /** Tool call if there is any. */
-  @Nullable List<ToolCall> toolCalls = null;
+  @Nullable List<ResponseMessageToolCall> toolCalls = null;
 
   /**
    * Creates a new assistant message with the given text content.
@@ -37,7 +38,7 @@ public final class AssistantMessage implements Message {
    *
    * @param toolCalls list of tool call objects
    */
-  public AssistantMessage(@Nonnull final List<ToolCall> toolCalls) {
+  public AssistantMessage(@Nonnull final List<ResponseMessageToolCall> toolCalls) {
     content = "";
     this.toolCalls = toolCalls;
   }
@@ -48,10 +49,7 @@ public final class AssistantMessage implements Message {
     if (toolCalls() != null) {
       // content shouldn't be required for tool calls 🤷
       val message = SingleChatMessage.create().role(role).content("");
-
-      val maps = toolCalls().stream().map(ToolCall::map).toList();
-      message.setCustomField("tool_calls", maps);
-
+      message.setCustomField("tool_calls", toolCalls);
       return message;
     }
     return Message.super.createChatMessage();

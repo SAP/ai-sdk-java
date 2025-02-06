@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
+import static com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall.TypeEnum.FUNCTION;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
@@ -8,9 +9,10 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.ToolCall;
 import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
+import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
+import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCallFunction;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -134,15 +136,17 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
                 val springToolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
                 if (springToolCalls != null) {
-                  final List<ToolCall> sdkToolCalls =
+                  final List<ResponseMessageToolCall> sdkToolCalls =
                       springToolCalls.stream()
                           .map(
                               toolCall ->
-                                  new ToolCall()
+                                  ResponseMessageToolCall.create()
                                       .id(toolCall.id())
-                                      .type(toolCall.type())
-                                      .name(toolCall.name())
-                                      .arguments(toolCall.arguments()))
+                                      .type(FUNCTION)
+                                      .function(
+                                          ResponseMessageToolCallFunction.create()
+                                              .name(toolCall.name())
+                                              .arguments(toolCall.arguments())))
                           .toList();
                   yield List.of(new AssistantMessage(sdkToolCalls));
                 }
