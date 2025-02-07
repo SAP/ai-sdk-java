@@ -266,37 +266,33 @@ It's possible to add images and multiple text inputs to a message.
 
 ### Add images to a message
 
-An image can be added to an existing message as follows.
+An image can be added to a message as follows.
 
 ```java
-var newMessage = message.andImage("https://url.to/image.jpg");
+var message = Message.user("Describe the following image");
+var newMessage = message.withImage("https://url.to/image.jpg");
 ```
 
-You can also construct a message with an image directly, using the `MessageContent` class.
+You can also construct a message with an image directly, using the `ImageItem` class.
 
 ```java
-var message = Message.user(MessageContent.image("https://url.to/image.jpg"));
+var message = Message.user(new ImageItem("https://url.to/image.jpg"));
 ```
 
 Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
 
 ```java
-var newMessage = message.andImage("https://url.to/image.jpg", ImageItem.DetailLevel.low);
+var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailLevel.LOW);
 ```
 Note, that currently only user messages are supported for image attachments.
 
 ### Add multiple text inputs to a message
 
-It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can construct a message with multiple text inputs as follows.
+It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can add additional text inputs as follows.
 
 ```java
-var message = Message.user("What is chess about?", "Answer in two sentences.");
-```
-
-Or you can add additional text inputs to an existing message.
-
-```java
-var newMessage = message.andText("Please use many emojis in your answer.");
+var message = Message.user("What is chess about?");
+var newMessage = message.withText("Answer in two sentences.");
 ```
 
 Note, that only user and system messages are supported for multiple text inputs.

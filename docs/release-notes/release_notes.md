@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
-- `Message.content()` returns a `ContentItem` now instead of a `String`. Use `((TextItem) Message.content().contentItemList().get(0)).text()` if the corresponding `ContentItem` is a `TextItem` and the string representation is needed.
+- `Message.content()` returns a `ContentItem` now instead of a `String`. Use `((TextItem) Message.content().items().get(0)).text()` if the corresponding `ContentItem` is a `TextItem` and the string representation is needed.
 
 ### ✨ New Functionality
 
