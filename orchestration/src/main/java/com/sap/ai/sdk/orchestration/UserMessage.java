@@ -37,6 +37,7 @@ public class UserMessage implements Message {
    *
    * @param message the text to add.
    * @return the new message.
+   * @since 1.3.0
    */
   @Nonnull
   public UserMessage withText(@Nonnull final String message) {
@@ -51,6 +52,7 @@ public class UserMessage implements Message {
    * @param imageUrl the URL of the image.
    * @param detailLevel the detail level of the image.
    * @return the new message.
+   * @since 1.3.0
    */
   @Nonnull
   public UserMessage withImage(
@@ -65,6 +67,7 @@ public class UserMessage implements Message {
    *
    * @param imageUrl the URL of the image.
    * @return the new message.
+   * @since 1.3.0
    */
   @Nonnull
   public UserMessage withImage(@Nonnull final String imageUrl) {

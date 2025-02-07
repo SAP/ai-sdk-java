@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
  * Represents the content of a chat message.
  *
  * @param contentItemList a list of the content items
+ * @since 1.3.0
  */
 public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
   @Nonnull

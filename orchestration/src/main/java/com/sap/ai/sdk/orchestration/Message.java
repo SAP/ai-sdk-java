@@ -31,6 +31,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    *
    * @param imageItem the message content.
    * @return the user message.
+   * @since 1.3.0
    */
   @Nonnull
   static UserMessage user(@Nonnull final ImageItem imageItem) {

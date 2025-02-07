@@ -37,6 +37,7 @@ public class SystemMessage implements Message {
    *
    * @param message the text to add.
    * @return the new message.
+   * @since 1.3.0
    */
   @Nonnull
   public SystemMessage withText(@Nonnull final String message) {

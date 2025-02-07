@@ -7,7 +7,8 @@ import javax.annotation.Nonnull;
  * Represents an image item in a {@link MessageContent} object.
  *
  * @param imageUrl the URL of the image
- * @param detailLevel the detail level of the image (optional
+ * @param detailLevel the detail level of the image (optional)
+ * @since 1.3.0
  */
 public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLevel)
     implements ContentItem {
@@ -16,12 +17,17 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
    * Creates a new image item with the given image URL.
    *
    * @param imageUrl the URL of the image
+   * @since 1.3.0
    */
   public ImageItem(@Nonnull final String imageUrl) {
     this(imageUrl, DetailLevel.AUTO);
   }
 
-  /** The detail level of the image. */
+  /**
+   * The detail level of the image.
+   *
+   * @since 1.3.0
+   */
   public enum DetailLevel {
     /** Low detail level. */
     LOW("low"),
@@ -37,6 +43,7 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
      *
      * @param str the string to convert
      * @return the detail level
+     * @since 1.3.0
      */
     @Nonnull
     static DetailLevel fromString(@Nonnull final String str) {
@@ -47,6 +54,7 @@ public record ImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLev
      * Get the string representation of the DetailLevel
      *
      * @return the DetailLevel as string
+     * @since 1.3.0
      */
     @Nonnull
     public String toString() {
