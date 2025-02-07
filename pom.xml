@@ -540,7 +540,14 @@
           </execution>
         </executions>
       </plugin>
-      <!-- phase: process-test-classes -->
+      <!-- phase: test -->
+      <plugin>
+        <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
+      </plugin>
+      <!-- phase: verify -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -566,7 +573,7 @@
             <goals>
               <goal>check</goal>
             </goals>
-            <phase>process-test-classes</phase>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>
@@ -596,18 +603,10 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <goals>
               <goal>check</goal>
             </goals>
-            <phase>process-test-classes</phase>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>
-      <!-- phase: test -->
-      <plugin>
-        <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire.version}</version>
-      </plugin>
-      <!-- phase: verify -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
