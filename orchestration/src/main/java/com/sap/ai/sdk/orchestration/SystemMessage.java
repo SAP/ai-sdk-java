@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
+import lombok.experimental.Tolerate;
 
 /** Represents a chat message as 'system' to the orchestration service. */
 @Value
@@ -26,17 +27,9 @@ public class SystemMessage implements Message {
    *
    * @param message the first message.
    */
+  @Tolerate
   public SystemMessage(@Nonnull final String message) {
     content = new MessageContent(List.of(new TextItem(message)));
-  }
-
-  /**
-   * Creates a new system message with the given message content.
-   *
-   * @param messageContent the message content.
-   */
-  public SystemMessage(@Nonnull final MessageContent messageContent) {
-    content = messageContent;
   }
 
   /**
