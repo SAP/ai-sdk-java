@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 final class JacksonMixins {
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
   @JsonDeserialize(as = CreateChatCompletionStreamResponse.class)
-  public interface DefaultChatCompletionCreate200ResponseMixIn {}
+  interface DefaultChatCompletionCreate200ResponseMixIn {}
 }

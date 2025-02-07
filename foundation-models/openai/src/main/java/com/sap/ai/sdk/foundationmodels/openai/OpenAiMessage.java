@@ -3,7 +3,11 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessage;
 import javax.annotation.Nonnull;
 
-/** Interface representing convenience wrappers of chat message to the openai service. */
+/**
+ * Interface representing convenience wrappers of chat message to the openai service.
+ *
+ * @since 1.3.0
+ */
 public interface OpenAiMessage {
 
   /**

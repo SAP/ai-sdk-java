@@ -6,7 +6,11 @@ import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
-/** Represents a chat message as 'system' to OpenAI service. */
+/**
+ * Represents a chat message as 'system' to OpenAI service. *
+ *
+ * @since 1.3.0
+ */
 @Value
 @Accessors(fluent = true)
 class OpenAiSystemMessage implements OpenAiMessage {

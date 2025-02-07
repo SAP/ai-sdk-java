@@ -11,7 +11,11 @@ import javax.annotation.Nonnull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-/** Represents the output of an OpenAI chat completion. */
+/**
+ * Represents the output of an OpenAI chat completion. *
+ *
+ * @since 1.3.0
+ */
 @Data
 @RequiredArgsConstructor(access = PACKAGE)
 public class OpenAiChatCompletionResponse {

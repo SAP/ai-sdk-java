@@ -10,7 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Delegate;
 
-/** Represents an error response from the OpenAI API. */
+/**
+ * Represents an error response from the OpenAI API.
+ *
+ * @since 1.3.0
+ */
 @Beta
 @Value
 @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
