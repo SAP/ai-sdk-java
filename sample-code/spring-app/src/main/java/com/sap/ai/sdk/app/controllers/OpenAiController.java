@@ -107,7 +107,6 @@ public class OpenAiController {
     }
   }
 
-
   @GetMapping("/chatCompletionImage")
   @Nonnull
   Object chatCompletionImage(
