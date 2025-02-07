@@ -41,7 +41,7 @@ public class SystemMessage implements Message {
    */
   @Nonnull
   public SystemMessage withText(@Nonnull final String message) {
-    final var contentItems = new LinkedList<>(content.contentItemList());
+    final var contentItems = new LinkedList<>(content.items());
     contentItems.add(new TextItem(message));
     return new SystemMessage(new MessageContent(contentItems));
   }

@@ -207,13 +207,13 @@ class OrchestrationUnitTest {
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
     final var messageList = result.getAllMessages();
 
-    assertThat(((TextItem) messageList.get(0).content().contentItemList().get(0)).text())
+    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
         .isEqualTo("You are a multi language translator");
     assertThat(messageList.get(0).role()).isEqualTo("system");
-    assertThat(((TextItem) messageList.get(1).content().contentItemList().get(0)).text())
+    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(messageList.get(1).role()).isEqualTo("user");
-    assertThat(((TextItem) messageList.get(2).content().contentItemList().get(0)).text())
+    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
@@ -706,31 +706,31 @@ class OrchestrationUnitTest {
     assertThat(result.getAllMessages()).hasSize(3);
     var systemMessage = result.getAllMessages().get(0);
     assertThat(systemMessage.role()).isEqualTo("system");
-    assertThat(systemMessage.content().contentItemList()).hasSize(2);
-    assertThat(systemMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) systemMessage.content().contentItemList().get(0)).text())
+    assertThat(systemMessage.content().items()).hasSize(2);
+    assertThat(systemMessage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) systemMessage.content().items().get(0)).text())
         .isEqualTo("Please answer in exactly two sentences.");
-    assertThat(systemMessage.content().contentItemList().get(1)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) systemMessage.content().contentItemList().get(1)).text())
+    assertThat(systemMessage.content().items().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) systemMessage.content().items().get(1)).text())
         .isEqualTo("Start the first sentence with the word 'Well'.");
     var userMessage = result.getAllMessages().get(1);
     assertThat(userMessage.role()).isEqualTo("user");
-    assertThat(userMessage.content().contentItemList()).hasSize(3);
-    assertThat(userMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) userMessage.content().contentItemList().get(0)).text())
+    assertThat(userMessage.content().items()).hasSize(3);
+    assertThat(userMessage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessage.content().items().get(0)).text())
         .isEqualTo("What is in this image?");
-    assertThat(userMessage.content().contentItemList().get(1)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) userMessage.content().contentItemList().get(1)).text())
+    assertThat(userMessage.content().items().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessage.content().items().get(1)).text())
         .isEqualTo("And what is the main color?");
-    assertThat(userMessage.content().contentItemList().get(2)).isInstanceOf(ImageItem.class);
-    assertThat(((ImageItem) userMessage.content().contentItemList().get(2)).imageUrl())
+    assertThat(userMessage.content().items().get(2)).isInstanceOf(ImageItem.class);
+    assertThat(((ImageItem) userMessage.content().items().get(2)).imageUrl())
         .isEqualTo(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     var assistantMessage = result.getAllMessages().get(2);
     assertThat(assistantMessage.role()).isEqualTo("assistant");
-    assertThat(assistantMessage.content().contentItemList()).hasSize(1);
-    assertThat(assistantMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) assistantMessage.content().contentItemList().get(0)).text())
+    assertThat(assistantMessage.content().items()).hasSize(1);
+    assertThat(assistantMessage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) assistantMessage.content().items().get(0)).text())
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 

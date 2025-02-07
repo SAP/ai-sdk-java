@@ -67,7 +67,7 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   default ChatMessage createChatMessage() {
-    final var itemList = this.content().contentItemList();
+    final var itemList = this.content().items();
     if (itemList.size() == 1 && itemList.get(0) instanceof TextItem textItem) {
       return SingleChatMessage.create().role(role()).content(textItem.text());
     }

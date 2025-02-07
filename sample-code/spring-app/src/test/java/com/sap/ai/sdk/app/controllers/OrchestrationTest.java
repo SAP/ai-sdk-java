@@ -72,8 +72,7 @@ class OrchestrationTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
-    assertThat(
-            ((TextItem) result.getAllMessages().get(0).content().contentItemList().get(0)).text())
+    assertThat(((TextItem) result.getAllMessages().get(0).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();

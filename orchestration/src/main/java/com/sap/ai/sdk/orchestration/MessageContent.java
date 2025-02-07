@@ -9,10 +9,10 @@ import javax.annotation.Nonnull;
 /**
  * Represents the content of a chat message.
  *
- * @param contentItemList a list of the content items
+ * @param items a list of the content items
  * @since 1.3.0
  */
-public record MessageContent(@Nonnull List<ContentItem> contentItemList) {
+public record MessageContent(@Nonnull List<ContentItem> items) {
   @Nonnull
   static MessageContent fromMCMContentList(
       @Nonnull final List<MultiChatMessageContent> mCMContentList) {
