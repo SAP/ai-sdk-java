@@ -25,9 +25,9 @@ public class OrchestrationConvenienceUnitTest {
         new UserMessage(new MessageContent(List.of(new ImageItem("url"))));
     assertThat(userMessageOnlyImageBase).isEqualTo(userMessageOnlyImageConvenience);
 
-    var userMessageWithImage = Message.user("Text 1").andImage("url");
+    var userMessageWithImage = Message.user("Text 1").withImage("url");
     var userMessageWithImageAndDetail =
-        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.AUTO);
+        Message.user("Text 1").withImage("url", ImageItem.DetailLevel.AUTO);
     assertThat(userMessageWithImage).isEqualTo(userMessageWithImageAndDetail);
   }
 }

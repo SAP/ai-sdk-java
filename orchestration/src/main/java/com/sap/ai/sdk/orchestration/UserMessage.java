@@ -39,7 +39,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage andText(@Nonnull final String message) {
+  public UserMessage withText(@Nonnull final String message) {
     final var contentItems = new LinkedList<>(content.contentItemList());
     contentItems.add(new TextItem(message));
     return new UserMessage(new MessageContent(contentItems));
@@ -53,7 +53,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage andImage(
+  public UserMessage withImage(
       @Nonnull final String imageUrl, @Nonnull final ImageItem.DetailLevel detailLevel) {
     final var contentItems = new LinkedList<>(content.contentItemList());
     contentItems.add(new ImageItem(imageUrl, detailLevel));
@@ -67,7 +67,7 @@ public class UserMessage implements Message {
    * @return the new message.
    */
   @Nonnull
-  public UserMessage andImage(@Nonnull final String imageUrl) {
+  public UserMessage withImage(@Nonnull final String imageUrl) {
     final var contentItems = new LinkedList<>(content.contentItemList());
     contentItems.add(new ImageItem(imageUrl));
     return new UserMessage(new MessageContent(contentItems));

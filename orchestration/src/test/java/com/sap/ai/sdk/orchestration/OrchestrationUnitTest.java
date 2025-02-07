@@ -687,12 +687,12 @@ class OrchestrationUnitTest {
 
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
-            .andText("Start the first sentence with the word 'Well'.");
+            .withText("Start the first sentence with the word 'Well'.");
 
     var messageWithImage =
         Message.user("What is in this image?")
-            .andText("And what is the main color?")
-            .andImage(
+            .withText("And what is the main color?")
+            .withImage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     var prompt =
         new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithTwoTexts));
