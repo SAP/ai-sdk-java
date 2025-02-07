@@ -58,36 +58,39 @@ public class OrchestrationChatResponse {
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
     final var messages = new ArrayList<Message>();
-
     for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
       if (chatMessage instanceof SingleChatMessage simpleMsg) {
-        final var message =
-            switch (simpleMsg.getRole()) {
-              case "user" -> Message.user(simpleMsg.getContent());
-              case "assistant" -> Message.assistant(simpleMsg.getContent());
-              case "system" -> Message.system(simpleMsg.getContent());
-              default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
-            };
-        messages.add(message);
+        messages.add(chatMessageIntoMessage(simpleMsg));
       } else if (chatMessage instanceof MultiChatMessage mCMessage) {
-        messages.add(
-            switch (mCMessage.getRole()) {
-              case "user" ->
-                  new UserMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
-              case "system" ->
-                  new SystemMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
-              default ->
-                  throw new IllegalStateException(
-                      "Unexpected role with complex message: " + mCMessage.getRole());
-            });
+        messages.add(chatMessageIntoMessage(mCMessage));
       } else {
         throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
     }
-
     messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
+  }
+
+  @Nonnull
+  private Message chatMessageIntoMessage(@Nonnull final SingleChatMessage simpleMsg) {
+    return switch (simpleMsg.getRole()) {
+      case "user" -> Message.user(simpleMsg.getContent());
+      case "assistant" -> Message.assistant(simpleMsg.getContent());
+      case "system" -> Message.system(simpleMsg.getContent());
+      default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
+    };
+  }
+
+  @Nonnull
+  private Message chatMessageIntoMessage(@Nonnull final MultiChatMessage mCMessage) {
+    return switch (mCMessage.getRole()) {
+      case "user" -> new UserMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
+      case "system" -> new SystemMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
+      default ->
+          throw new IllegalStateException(
+              "Unexpected role with complex message: " + mCMessage.getRole());
+    };
   }
 
   /**
