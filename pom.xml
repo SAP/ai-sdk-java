@@ -268,6 +268,7 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <!-- phase: validate -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -401,6 +402,93 @@
           </execution>
         </executions>
       </plugin>
+      <!-- phase: process-sources -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <skip>${spotless.skip}</skip>
+          <java>
+            <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#java -->
+            <removeUnusedImports/>
+            <googleJavaFormat/>
+          </java>
+          <pom>
+            <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#maven-pom -->
+            <includes>
+              <include>**/pom.xml</include>
+            </includes>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <sortPom>
+              <expandEmptyElements>false</expandEmptyElements>
+            </sortPom>
+          </pom>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- compile:apply instead of the default validate:check -->
+            <!-- because we want it to run AFTER the OpenAPI generator and FIX (apply) the generated code -->
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>process-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- phase: generate-resources -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>2.5.0</version>
+        <configuration>
+          <acceptPomPackaging>true</acceptPomPackaging>
+          <licenseName>apache_v2</licenseName>
+          <failOnBlacklist>true</failOnBlacklist>
+          <failOnMissing>true</failOnMissing>
+          <excludedScopes>test</excludedScopes>
+          <includedLicenses>
+            <includedLicense>The MIT License</includedLicense>
+            <includedLicense>Apache Software License - Version 2.0</includedLicense>
+            <includedLicense>ISC</includedLicense>
+            <includedLicense>The BSD 3-Clause License</includedLicense>
+            <includedLicense>WTFPL</includedLicense>
+            <includedLicense>CC-BY</includedLicense>
+            <includedLicense>CC0</includedLicense>
+            <includedLicense>Unlicense</includedLicense>
+            <includedLicense>Public Domain</includedLicense>
+
+            <!-- other licenses as needed -->
+            <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
+            <includedLicense>Bouncy Castle Licence</includedLicense>
+          </includedLicenses>
+          <licenseMerges>
+            <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
+              The Apache License, Version 2.0|Apache License, Version 2.0|Apache-2.0|
+              The Apache Software License, Version 2.0|Apache License 2.0</licenseMerge>
+            <licenseMerge>The MIT License|MIT License|The MIT License (MIT)|MIT|MIT-0</licenseMerge>
+            <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
+            <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
+            <licenseMerge>Eclipse Public License v2.0|EPL 2.0</licenseMerge>
+            <licenseMerge>Public Domain|Public Domain, per Creative Commons CC0|The JSON License</licenseMerge>
+          </licenseMerges>
+        </configuration>
+        <executions>
+          <execution>
+            <id>add-third-party</id>
+            <goals>
+              <goal>add-third-party</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- phase: process-resources and process-test-resources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
+      <!-- phase: test-compile -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -452,39 +540,14 @@
           </execution>
         </executions>
       </plugin>
+      <!-- phase: test -->
       <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>${spotless.version}</version>
-        <configuration>
-          <skip>${spotless.skip}</skip>
-          <java>
-            <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#java -->
-            <removeUnusedImports/>
-            <googleJavaFormat/>
-          </java>
-          <pom>
-            <!-- https://github.com/diffplug/spotless/tree/main/plugin-maven#maven-pom -->
-            <includes>
-              <include>**/pom.xml</include>
-            </includes>
-            <encoding>${project.build.sourceEncoding}</encoding>
-            <sortPom>
-              <expandEmptyElements>false</expandEmptyElements>
-            </sortPom>
-          </pom>
-        </configuration>
-        <executions>
-          <execution>
-            <!-- compile:apply instead of the default validate:check -->
-            <!-- because we want it to run AFTER the OpenAPI generator and FIX (apply) the generated code -->
-            <goals>
-              <goal>apply</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
+        <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
       </plugin>
+      <!-- phase: verify -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -545,27 +608,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.6</version>
-        <configuration>
-          <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
-          <!-- Exclude generated clients -->
-          <excludeFilterFile>${project.rootdir}/.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
-          <effort>Max</effort>
-          <threshold>Low</threshold>
-          <maxHeap>2048</maxHeap>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <phase>verify</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.12</version>
@@ -584,19 +626,21 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <phase>initialize</phase>
           </execution>
           <execution>
             <id>default-report</id>
             <goals>
               <goal>report</goal>
             </goals>
-            <phase>prepare-package</phase>
+            <phase>verify</phase>
           </execution>
           <execution>
             <id>default-check</id>
             <goals>
               <goal>check</goal>
             </goals>
+            <phase>verify</phase>
             <configuration>
               <rules>
                 <rule>
@@ -640,16 +684,27 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         </executions>
       </plugin>
       <plugin>
-        <!-- Needed because GitHub actions uses an old Maven version <3.9.0 -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire.version}</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.6.6</version>
+        <configuration>
+          <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
+          <!-- Exclude generated clients -->
+          <excludeFilterFile>${project.rootdir}/.pipeline/spotbugs-exclusions.xml</excludeFilterFile>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <maxHeap>2048</maxHeap>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.1</version>
-      </plugin>
+      <!-- configuration for GitHub actions -->
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
@@ -663,51 +718,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <nvdValidForHours>46</nvdValidForHours>
           <skipProvidedScope>true</skipProvidedScope>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <version>2.5.0</version>
-        <configuration>
-          <acceptPomPackaging>true</acceptPomPackaging>
-          <licenseName>apache_v2</licenseName>
-          <failOnBlacklist>true</failOnBlacklist>
-          <failOnMissing>true</failOnMissing>
-          <excludedScopes>test</excludedScopes>
-          <includedLicenses>
-            <includedLicense>The MIT License</includedLicense>
-            <includedLicense>Apache Software License - Version 2.0</includedLicense>
-            <includedLicense>ISC</includedLicense>
-            <includedLicense>The BSD 3-Clause License</includedLicense>
-            <includedLicense>WTFPL</includedLicense>
-            <includedLicense>CC-BY</includedLicense>
-            <includedLicense>CC0</includedLicense>
-            <includedLicense>Unlicense</includedLicense>
-            <includedLicense>Public Domain</includedLicense>
-
-            <!-- other licenses as needed -->
-            <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
-            <includedLicense>Bouncy Castle Licence</includedLicense>
-          </includedLicenses>
-          <licenseMerges>
-            <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
-              The Apache License, Version 2.0|Apache License, Version 2.0|Apache-2.0|
-              The Apache Software License, Version 2.0|Apache License 2.0</licenseMerge>
-            <licenseMerge>The MIT License|MIT License|The MIT License (MIT)|MIT|MIT-0</licenseMerge>
-            <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
-            <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
-            <licenseMerge>Eclipse Public License v2.0|EPL 2.0</licenseMerge>
-            <licenseMerge>Public Domain|Public Domain, per Creative Commons CC0|The JSON License</licenseMerge>
-          </licenseMerges>
-        </configuration>
-        <executions>
-          <execution>
-            <id>add-third-party</id>
-            <goals>
-              <goal>add-third-party</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
