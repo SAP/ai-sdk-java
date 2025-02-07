@@ -44,16 +44,15 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  static final ObjectMapper JACKSON = getDefaultObjectMapper();
+  static final ObjectMapper JACKSON =
+      getDefaultObjectMapper()
+          .addMixIn(
+              ChatCompletionsCreate200Response.class,
+              JacksonMixins.DefaultChatCompletionCreate200ResponseMixIn.class);
+
   @Nullable private String systemPrompt = null;
 
   @Nonnull private final Destination destination;
-
-  static {
-    JACKSON.addMixIn(
-        ChatCompletionsCreate200Response.class,
-        JacksonMixins.DefaultChatCompletionCreate200ResponseMixIn.class);
-  }
 
   /**
    * Create a new OpenAI client for the given foundation model, using the default resource group.
@@ -139,6 +138,7 @@ public final class OpenAiClient {
    * @param prompt a text message.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
+   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
   @Deprecated(since = "1.3.0")
   @Nonnull
@@ -380,7 +380,9 @@ public final class OpenAiClient {
    * @param parameters the input text.
    * @return the embedding output
    * @throws OpenAiClientException if the request fails
+   * @deprecated Use {@link #embedding(EmbeddingsCreateRequest)} instead.
    */
+  @Deprecated(since = "1.3.0")
   @Nonnull
   public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
       throws OpenAiClientException {

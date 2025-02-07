@@ -14,6 +14,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImage;
@@ -62,20 +63,7 @@ public class NewOpenAiService {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final String message) {
-    final var request =
-        new CreateChatCompletionRequest()
-            .addMessagesItem(
-                new ChatCompletionRequestUserMessage()
-                    .role(USER)
-                    .content(
-                        ChatCompletionRequestUserMessageContent.create(
-                            List.of(
-                                new ChatCompletionRequestMessageContentPartText()
-                                    .text(message)
-                                    .type(TEXT)))))
-            .tools(null)
-            .functions(null)
-            .parallelToolCalls(null);
+    final var request = new OpenAiChatCompletionRequest(OpenAiMessage.user(message));
 
     return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
   }

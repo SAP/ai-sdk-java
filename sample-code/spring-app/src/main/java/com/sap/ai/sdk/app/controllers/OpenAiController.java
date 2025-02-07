@@ -1,9 +1,14 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.NewOpenAiService;
+import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +27,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private NewOpenAiService service;
+  private static final ObjectMapper MAPPER =
+      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
   /**
    * Chat request to OpenAI
@@ -53,10 +60,17 @@ public class OpenAiController {
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
+          final var totalOutput = new AtomicReference<CompletionUsage>();
           // try-with-resources ensures the stream is closed
           try (stream) {
-            stream.forEach(delta -> send(emitter, delta.getDeltaContent()));
+            stream.forEach(
+                delta -> {
+                  final var usage = delta.getCompletionUsage(MAPPER);
+                  totalOutput.compareAndExchange(null, usage);
+                  send(emitter, delta.getDeltaContent());
+                });
           } finally {
+            send(emitter, "\n\n-----Total Output-----\n\n" + totalOutput);
             emitter.complete();
           }
         };

@@ -2,6 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
+import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
@@ -13,7 +14,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import java.io.IOException;
@@ -37,7 +37,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
       () ->
           client.chatCompletion(
               new OpenAiChatCompletionParameters()
-                  .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText("")))
+                  .addMessages(new OpenAiChatUserMessage().addText("")))
     };
   }
 
@@ -118,11 +118,9 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
   private static Callable<?>[] chatCompletionCalls() {
     return new Callable[] {
       () -> {
-        final var systemMessage =
-            new OpenAiChatMessage.OpenAiChatSystemMessage().setContent("You are a helpful AI");
+        final var systemMessage = new OpenAiChatSystemMessage().setContent("You are a helpful AI");
         final var userMessage =
-            new OpenAiChatMessage.OpenAiChatUserMessage()
-                .addText("Hello World! Why is this phrase so famous?");
+            new OpenAiChatUserMessage().addText("Hello World! Why is this phrase so famous?");
         final var request =
             new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
         return client.chatCompletion(request);
@@ -266,7 +264,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
       final var request =
           new OpenAiChatCompletionParameters()
               .addMessages(
-                  new OpenAiChatMessage.OpenAiChatUserMessage()
+                  new OpenAiChatUserMessage()
                       .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
       try (var stream = client.streamChatCompletionDeltas(request)) {
@@ -286,7 +284,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
       final var request =
           new OpenAiChatCompletionParameters()
               .addMessages(
-                  new OpenAiChatMessage.OpenAiChatUserMessage()
+                  new OpenAiChatUserMessage()
                       .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
       try (Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta> stream =
@@ -427,7 +425,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
     final var request =
         new OpenAiChatCompletionParameters()
-            .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText(question))
+            .addMessages(new OpenAiChatUserMessage().addText(question))
             .setTools(List.of(tool))
             .setToolChoiceFunction("fibonacci");
 
