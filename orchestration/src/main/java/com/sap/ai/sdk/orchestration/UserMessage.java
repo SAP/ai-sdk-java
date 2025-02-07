@@ -3,9 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import com.google.common.annotations.Beta;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -25,34 +23,26 @@ public class UserMessage implements Message {
   MessageContent content;
 
   /**
-   * Creates a new user message from one or more strings.
+   * Creates a new user message from a string.
    *
    * @param message the first message.
-   * @param additionalMessages the additional messages.
    */
   @Tolerate
-  public UserMessage(@Nonnull final String message, @Nullable final String... additionalMessages) {
-    this(MessageContent.text(message, additionalMessages));
+  public UserMessage(@Nonnull final String message) {
+    this(new MessageContent(List.of(new TextItem(message))));
   }
 
   /**
    * Add text to the message.
    *
-   * @param message the text to add
-   * @param additionalMessages additional text to add
+   * @param message the text to add.
    * @return the new message.
    */
   @Nonnull
-  public UserMessage andText(
-      @Nonnull final String message, @Nullable final String... additionalMessages) {
-    final var messagesStream =
-        (additionalMessages != null)
-            ? Stream.concat(Stream.of(message), Stream.of(additionalMessages))
-            : Stream.of(message);
-    final var contentList =
-        Stream.concat(content.contentItemList().stream(), messagesStream.map(TextItem::new))
-            .toList();
-    return new UserMessage(new MessageContent(contentList));
+  public UserMessage andText(@Nonnull final String message) {
+    final var contentItems = new LinkedList<>(content.contentItemList());
+    contentItems.add(new TextItem(message));
+    return new UserMessage(new MessageContent(contentItems));
   }
 
   /**
@@ -81,22 +71,5 @@ public class UserMessage implements Message {
     final var contentItems = new LinkedList<>(content.contentItemList());
     contentItems.add(new ImageItem(imageUrl));
     return new UserMessage(new MessageContent(contentItems));
-  }
-
-  /**
-   * Add content in the form of {@link MessageContent} objects to the message.
-   *
-   * @param messageContents the content to add.
-   * @return the new message.
-   */
-  @Nonnull
-  public UserMessage and(@Nonnull final MessageContent... messageContents) {
-    final List<ContentItem> combinedItems =
-        Stream.concat(
-                content.contentItemList().stream(),
-                Stream.of(messageContents)
-                    .flatMap(contentItem -> contentItem.contentItemList().stream()))
-            .toList();
-    return new UserMessage(new MessageContent(combinedItems));
   }
 }

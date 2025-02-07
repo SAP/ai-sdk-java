@@ -12,7 +12,6 @@ import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
-import com.sap.ai.sdk.orchestration.MessageContent;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -80,9 +79,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     final var multiMessage =
-        Message.user(questions.get(0))
-            .andText(questions.get(1))
-            .and(MessageContent.text(questions.get(2)));
+        Message.user(questions.get(0)).andText(questions.get(1)).andText(questions.get(2));
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }

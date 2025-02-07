@@ -7,7 +7,6 @@ import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
@@ -74,13 +73,9 @@ public class OrchestrationChatResponse {
         messages.add(
             switch (mCMessage.getRole()) {
               case "user" ->
-                  Message.user(
-                      new MessageContent(
-                          mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
+                  new UserMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
               case "system" ->
-                  Message.system(
-                      new MessageContent(
-                          mCMessage.getContent().toArray(MultiChatMessageContent[]::new)));
+                  new SystemMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
               default ->
                   throw new IllegalStateException(
                       "Unexpected role with complex message: " + mCMessage.getRole());

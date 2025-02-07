@@ -1,10 +1,9 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -23,14 +22,12 @@ public class SystemMessage implements Message {
   MessageContent content;
 
   /**
-   * Creates a new system message from one or more strings.
+   * Creates a new system message from a string.
    *
    * @param message the first message.
-   * @param additionalMessages the additional messages.
    */
-  public SystemMessage(
-      @Nonnull final String message, @Nullable final String... additionalMessages) {
-    content = MessageContent.text(message, additionalMessages);
+  public SystemMessage(@Nonnull final String message) {
+    content = new MessageContent(List.of(new TextItem(message)));
   }
 
   /**
@@ -45,33 +42,13 @@ public class SystemMessage implements Message {
   /**
    * Add text to the message.
    *
-   * @param messages the text to add.
+   * @param message the text to add.
    * @return the new message.
    */
   @Nonnull
-  public SystemMessage andText(@Nonnull final String... messages) {
-    return new SystemMessage(
-        new MessageContent(
-            Stream.concat(
-                    content.contentItemList().stream(), Stream.of(messages).map(TextItem::new))
-                .toList()));
-  }
-
-  /**
-   * Add content to the message. The content will be added to the end of the message. As of now,
-   * only TextItem will be successfully consumed by an AI.
-   *
-   * @param messageContents the content to add.
-   * @return the new message.
-   */
-  @Nonnull
-  public SystemMessage and(@Nonnull final MessageContent... messageContents) {
-    final List<ContentItem> combinedItems =
-        Stream.concat(
-                content.contentItemList().stream(),
-                Stream.of(messageContents)
-                    .flatMap(contentItem -> contentItem.contentItemList().stream()))
-            .toList();
-    return new SystemMessage(new MessageContent(combinedItems));
+  public SystemMessage andText(@Nonnull final String message) {
+    final var contentItems = new LinkedList<>(content.contentItemList());
+    contentItems.add(new TextItem(message));
+    return new SystemMessage(new MessageContent(contentItems));
   }
 }

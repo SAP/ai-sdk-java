@@ -2,39 +2,32 @@ package com.sap.ai.sdk.orchestration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testMessageConstructionText() {
-    var userMessageTwoTexts = Message.user("Text 1", "Text 2");
-    var userMessageTwoTextsAndText = Message.user("Text 1").andText("Text 2");
-    var userMessageTwoTextsAnd = Message.user("Text 1").and(MessageContent.text("Text 2"));
-    var userMessageTwoTextsContent = Message.user(MessageContent.text("Text 1", "Text 2"));
-    assertThat(userMessageTwoTexts).isEqualTo(userMessageTwoTextsAndText);
-    assertThat(userMessageTwoTextsAndText).isEqualTo(userMessageTwoTextsAnd);
-    assertThat(userMessageTwoTextsAnd).isEqualTo(userMessageTwoTextsContent);
+    var userMessageViaStaticFactory = Message.user("Text 1");
+    var userMessageViaConstructor = new UserMessage(("Text 1"));
+    assertThat(userMessageViaStaticFactory).isEqualTo(userMessageViaConstructor);
 
-    var systemMessageTwoTexts = Message.system("Text 1", "Text 2");
-    var systemMessageTwoTextsAndText = Message.system("Text 1").andText("Text 2");
-    var systemMessageTwoTextsAnd = Message.system("Text 1").and(MessageContent.text("Text 2"));
-    var systemMessageTwoTextsContent = Message.system(MessageContent.text("Text 1", "Text 2"));
-    assertThat(systemMessageTwoTexts).isEqualTo(systemMessageTwoTextsAndText);
-    assertThat(systemMessageTwoTextsAndText).isEqualTo(systemMessageTwoTextsAnd);
-    assertThat(systemMessageTwoTextsAnd).isEqualTo(systemMessageTwoTextsContent);
+    var systemMessageViaStaticFactory = Message.system("Text 1");
+    var systemMessageViaConstructor = new SystemMessage("Text 1");
+    assertThat(systemMessageViaStaticFactory).isEqualTo(systemMessageViaConstructor);
   }
 
   @Test
   void testMessageConstructionImage() {
-    var userMessageWithImageAndImage = Message.user("Text 1").andImage("url");
-    var userMessageWithImageAnd = Message.user("Text 1").and(MessageContent.image("url"));
-    assertThat(userMessageWithImageAndImage).isEqualTo(userMessageWithImageAnd);
+    var userMessageOnlyImageConvenience = Message.user(new ImageItem("url"));
+    var userMessageOnlyImageBase =
+        new UserMessage(new MessageContent(List.of(new ImageItem("url"))));
+    assertThat(userMessageOnlyImageBase).isEqualTo(userMessageOnlyImageConvenience);
 
-    var userMessageWithImageDetailAndImage =
-        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.LOW);
-    var userMessageWithImageDetailAnd =
-        Message.user("Text 1").and(MessageContent.image("url", ImageItem.DetailLevel.LOW));
-    assertThat(userMessageWithImageDetailAndImage).isEqualTo(userMessageWithImageDetailAnd);
+    var userMessageWithImage = Message.user("Text 1").andImage("url");
+    var userMessageWithImageAndDetail =
+        Message.user("Text 1").andImage("url", ImageItem.DetailLevel.AUTO);
+    assertThat(userMessageWithImage).isEqualTo(userMessageWithImageAndDetail);
   }
 }

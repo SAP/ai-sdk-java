@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Value;
@@ -25,6 +26,6 @@ public class AssistantMessage implements Message {
    * @param singleMessage the single message.
    */
   public AssistantMessage(@Nonnull final String singleMessage) {
-    content = new MessageContent(singleMessage);
+    content = new MessageContent(List.of(new TextItem(singleMessage)));
   }
 }

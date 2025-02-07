@@ -1,3 +1,4 @@
+
 {
   "orchestration_config" : {
     "module_configurations" : {
@@ -12,6 +13,9 @@
           "content" : [ {
             "type" : "text",
             "text" : "What is in this image?"
+          }, {
+            "type" : "text",
+            "text" : "And what is the main color?"
           }, {
             "type" : "image_url",
             "image_url" : {

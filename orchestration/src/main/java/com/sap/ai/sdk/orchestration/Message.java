@@ -7,34 +7,32 @@ import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.TextContent;
+import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
 public sealed interface Message permits UserMessage, AssistantMessage, SystemMessage {
 
   /**
-   * A convenience method to create a user message from one or more strings.
+   * A convenience method to create a user message from a string.
    *
    * @param message the message content.
-   * @param additionalMessages the additional messages.
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(
-      @Nonnull final String message, @Nullable final String... additionalMessages) {
-    return new UserMessage(message, additionalMessages);
+  static UserMessage user(@Nonnull final String message) {
+    return new UserMessage(message);
   }
 
   /**
-   * A convenience method to create a user message.
+   * A convenience method to create a user message containing only an image.
    *
-   * @param message the message content.
+   * @param imageItem the message content.
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(@Nonnull final MessageContent message) {
-    return new UserMessage(message);
+  static UserMessage user(@Nonnull final ImageItem imageItem) {
+    return new UserMessage(new MessageContent(List.of(imageItem)));
   }
 
   /**
@@ -49,26 +47,13 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
   }
 
   /**
-   * A convenience method to create a system message from one or more strings.
+   * A convenience method to create a system message from a string.
    *
    * @param message the message content.
    * @return the system message.
    */
   @Nonnull
-  static SystemMessage system(
-      @Nonnull final String message, @Nullable final String... additionalMessages) {
-    return new SystemMessage(message, additionalMessages);
-  }
-
-  /**
-   * A convenience method to create a system message. As of now, only text content is supported for
-   * system messages by most AIs.
-   *
-   * @param message the message content.
-   * @return the system message.
-   */
-  @Nonnull
-  static SystemMessage system(@Nonnull final MessageContent message) {
+  static SystemMessage system(@Nonnull final String message) {
     return new SystemMessage(message);
   }
 

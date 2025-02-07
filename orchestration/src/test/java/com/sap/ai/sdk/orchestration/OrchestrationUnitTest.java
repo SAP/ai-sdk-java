@@ -691,6 +691,7 @@ class OrchestrationUnitTest {
 
     var messageWithImage =
         Message.user("What is in this image?")
+            .andText("And what is the main color?")
             .andImage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     var prompt =
@@ -701,7 +702,7 @@ class OrchestrationUnitTest {
 
     assertThat(result.getContent())
         .isEqualTo(
-            "Well, this image features the logo of SAP, a multinational software corporation known for its enterprise resource planning (ERP) software. The logo is prominently displayed in white against a gradient blue background.");
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(result.getAllMessages()).hasSize(3);
     var systemMessage = result.getAllMessages().get(0);
     assertThat(systemMessage.role()).isEqualTo("system");
@@ -714,12 +715,15 @@ class OrchestrationUnitTest {
         .isEqualTo("Start the first sentence with the word 'Well'.");
     var userMessage = result.getAllMessages().get(1);
     assertThat(userMessage.role()).isEqualTo("user");
-    assertThat(userMessage.content().contentItemList()).hasSize(2);
+    assertThat(userMessage.content().contentItemList()).hasSize(3);
     assertThat(userMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) userMessage.content().contentItemList().get(0)).text())
         .isEqualTo("What is in this image?");
-    assertThat(userMessage.content().contentItemList().get(1)).isInstanceOf(ImageItem.class);
-    assertThat(((ImageItem) userMessage.content().contentItemList().get(1)).imageUrl())
+    assertThat(userMessage.content().contentItemList().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessage.content().contentItemList().get(1)).text())
+        .isEqualTo("And what is the main color?");
+    assertThat(userMessage.content().contentItemList().get(2)).isInstanceOf(ImageItem.class);
+    assertThat(((ImageItem) userMessage.content().contentItemList().get(2)).imageUrl())
         .isEqualTo(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
     var assistantMessage = result.getAllMessages().get(2);
@@ -728,49 +732,49 @@ class OrchestrationUnitTest {
     assertThat(assistantMessage.content().contentItemList().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) assistantMessage.content().contentItemList().get(0)).text())
         .isEqualTo(
-            "Well, this image features the logo of SAP, a multinational software corporation known for its enterprise resource planning (ERP) software. The logo is prominently displayed in white against a gradient blue background.");
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    assertThat(response.getRequestId()).isEqualTo("4709911e-bc40-48d9-8464-17d99b8329c6");
+    assertThat(response.getRequestId()).isEqualTo("8d973a0d-c2cf-437b-a765-08d66bf446d8");
     assertThat(response.getModuleResults()).isNotNull();
     assertThat(response.getModuleResults().getTemplating()).hasSize(2);
 
     var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
-    assertThat(llmResults.getId()).isEqualTo("chatcmpl-Ax9PbdnAUqOb4geJBr9k1mxKmCHes");
+    assertThat(llmResults.getId()).isEqualTo("chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v");
     assertThat(llmResults.getObject()).isEqualTo("chat.completion");
-    assertThat(llmResults.getCreated()).isEqualTo(1738660895);
+    assertThat(llmResults.getCreated()).isEqualTo(1738928206);
     assertThat(llmResults.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
     assertThat(llmResults.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
-            "Well, this image features the logo of SAP, a multinational software corporation known for its enterprise resource planning (ERP) software. The logo is prominently displayed in white against a gradient blue background.");
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
-    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(38);
-    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(243);
-    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(281);
+    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(35);
+    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(250);
+    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(285);
 
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult).isNotNull();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Ax9PbdnAUqOb4geJBr9k1mxKmCHes");
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1738660895);
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1738928206);
     assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
     assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
-            "Well, this image features the logo of SAP, a multinational software corporation known for its enterprise resource planning (ERP) software. The logo is prominently displayed in white against a gradient blue background.");
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
         .isEqualTo("assistant");
     assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
-    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(38);
-    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(243);
-    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(281);
+    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(35);
+    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(250);
+    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(285);
 
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
