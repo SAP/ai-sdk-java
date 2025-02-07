@@ -431,22 +431,22 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .setTools(List.of(tool))
             .setToolChoiceFunction("fibonacci");
 
-    var respose = client.chatCompletion(request);
+    var response = client.chatCompletion(request);
 
-    assertThat(respose).isNotNull();
-    assertThat(respose.getChoices()).hasSize(1);
-    assertThat(respose.getChoices().get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(respose.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(respose.getChoices().get(0).getMessage().getToolCalls()).hasSize(1);
-    assertThat(respose.getChoices().get(0).getMessage().getToolCalls().get(0).getId())
+    assertThat(response).isNotNull();
+    assertThat(response.getChoices()).hasSize(1);
+    assertThat(response.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(response.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(response.getChoices().get(0).getMessage().getToolCalls()).hasSize(1);
+    assertThat(response.getChoices().get(0).getMessage().getToolCalls().get(0).getId())
         .isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
-    assertThat(respose.getChoices().get(0).getMessage().getToolCalls().get(0).getType())
+    assertThat(response.getChoices().get(0).getMessage().getToolCalls().get(0).getType())
         .isEqualTo("function");
     assertThat(
-            respose.getChoices().get(0).getMessage().getToolCalls().get(0).getFunction().getName())
+            response.getChoices().get(0).getMessage().getToolCalls().get(0).getFunction().getName())
         .isEqualTo("fibonacci");
     assertThat(
-            respose
+            response
                 .getChoices()
                 .get(0)
                 .getMessage()
