@@ -30,11 +30,6 @@ public class OpenAiController {
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-  /**
-   * Chat request to OpenAI
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletion")
   @Nonnull
   Object chatCompletion(
@@ -46,11 +41,6 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
@@ -80,11 +70,6 @@ public class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
@@ -122,11 +107,7 @@ public class OpenAiController {
     }
   }
 
-  /**
-   * Chat request to OpenAI with an image
-   *
-   * @return a ResponseEntity with the response content
-   */
+
   @GetMapping("/chatCompletionImage")
   @Nonnull
   Object chatCompletionImage(
@@ -140,11 +121,6 @@ public class OpenAiController {
     return response.getChoices().get(0).getMessage();
   }
 
-  /**
-   * Chat request to OpenAI with a tool.
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletionTool")
   @Nonnull
   Object chatCompletionTools(
@@ -157,23 +133,12 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  /**
-   * Get the embedding of a text
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/embedding")
   @Nonnull
   Object embedding() {
     return service.embedding("Hello world");
   }
 
-  /**
-   * Chat request to OpenAI filtering by resource group
-   *
-   * @param resourceGroup The resource group to use
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   Object chatCompletionWithResource(
