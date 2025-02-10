@@ -38,9 +38,8 @@ class NewOpenAiTest {
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo(ASSISTANT);
-    assertThat(message.getContent()).isNotEmpty();
+    assertThat(completion.getContent()).isNotEmpty();
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
   }
 
   @Test

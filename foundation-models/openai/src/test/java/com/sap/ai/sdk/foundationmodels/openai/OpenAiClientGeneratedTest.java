@@ -68,6 +68,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   }
 
   private static Runnable[] errorHandlingCalls() {
+    // TODO: WHy did I do this here?
     return new Runnable[] {
       () -> client.chatCompletion(new OpenAiChatCompletionRequest("")),
       () ->

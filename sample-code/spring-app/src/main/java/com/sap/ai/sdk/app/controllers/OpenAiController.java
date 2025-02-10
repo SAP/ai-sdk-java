@@ -117,7 +117,7 @@ public class OpenAiController {
     if ("json".equals(format)) {
       return response;
     }
-    return response.getChoices().get(0).getMessage();
+    return response.getContent();
   }
 
   @GetMapping("/chatCompletionTool")
