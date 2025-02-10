@@ -138,7 +138,6 @@ class OrchestrationUnitTest {
             .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
     final var databaseFilter =
         DocumentGroundingFilter.create()
-            .id("arbitrary-user-defined-id")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(3))
             .documentMetadata(List.of(documentMetadata))

@@ -324,7 +324,6 @@ public class OrchestrationService {
     // optional filter for document chunks
     val databaseFilter =
         DocumentGroundingFilter.create()
-            .id("")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
             .addDocumentMetadataItem(documentMetadata);

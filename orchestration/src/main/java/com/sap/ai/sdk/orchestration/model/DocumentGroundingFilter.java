@@ -33,7 +33,7 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
-  private Object id = null;
+  private String id;
 
   @JsonProperty("search_config")
   private GroundingFilterSearchConfiguration searchConfig;
@@ -66,7 +66,7 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    * @return The same instance of this {@link DocumentGroundingFilter} class
    */
   @Nonnull
-  public DocumentGroundingFilter id(@Nullable final Object id) {
+  public DocumentGroundingFilter id(@Nullable final String id) {
     this.id = id;
     return this;
   }
@@ -76,8 +76,8 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    *
    * @return id The id of this {@link DocumentGroundingFilter} instance.
    */
-  @Nullable
-  public Object getId() {
+  @Nonnull
+  public String getId() {
     return id;
   }
 
@@ -86,7 +86,7 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    *
    * @param id Identifier of this SearchFilter - unique per request.
    */
-  public void setId(@Nullable final Object id) {
+  public void setId(@Nullable final String id) {
     this.id = id;
   }
 
@@ -183,7 +183,7 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    */
   @Nonnull
   public DocumentGroundingFilter dataRepositoryType(
-      @Nullable final DataRepositoryType dataRepositoryType) {
+      @Nonnull final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
@@ -194,7 +194,7 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    * @return dataRepositoryType The dataRepositoryType of this {@link DocumentGroundingFilter}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public DataRepositoryType getDataRepositoryType() {
     return dataRepositoryType;
   }
@@ -204,7 +204,7 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    *
    * @param dataRepositoryType The dataRepositoryType of this {@link DocumentGroundingFilter}
    */
-  public void setDataRepositoryType(@Nullable final DataRepositoryType dataRepositoryType) {
+  public void setDataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
   }
 
@@ -473,24 +473,12 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
    * DocumentGroundingFilter} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (dataRepositoryType) ->
-            new DocumentGroundingFilter().id(id).dataRepositoryType(dataRepositoryType);
+    return (dataRepositoryType) ->
+        new DocumentGroundingFilter().dataRepositoryType(dataRepositoryType);
   }
 
   /** Builder helper class. */
   public interface Builder {
-    /**
-     * Set the id of this {@link DocumentGroundingFilter} instance.
-     *
-     * @param id Identifier of this SearchFilter - unique per request.
-     * @return The DocumentGroundingFilter builder.
-     */
-    Builder1 id(@Nullable final Object id);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
     /**
      * Set the dataRepositoryType of this {@link DocumentGroundingFilter} instance.
      *
@@ -498,6 +486,6 @@ public class DocumentGroundingFilter implements GroundingModuleConfigConfigFilte
      * @return The DocumentGroundingFilter instance.
      */
     DocumentGroundingFilter dataRepositoryType(
-        @Nullable final DataRepositoryType dataRepositoryType);
+        @Nonnull final DataRepositoryType dataRepositoryType);
   }
 }

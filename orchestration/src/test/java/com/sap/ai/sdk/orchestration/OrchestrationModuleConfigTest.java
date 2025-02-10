@@ -145,14 +145,14 @@ class OrchestrationModuleConfigTest {
     List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
     assertThat(filters).hasSize(1);
     DocumentGroundingFilter filter = (DocumentGroundingFilter) filters.get(0);
-    assertThat(filter.getId()).isEqualTo("");
+    assertThat(filter.getId()).isNull();
     assertThat(filter.getDataRepositoryType()).isEqualTo(VECTOR);
   }
 
   @Test
   void testGroundingConfigWithFilters() {
-    var filter1 = DocumentGroundingFilter.create().id("123").dataRepositoryType(VECTOR);
-    var filter2 = DocumentGroundingFilter.create().id("234").dataRepositoryType(VECTOR);
+    var filter1 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("123");
+    var filter2 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("234");
     var groundingConfig = Grounding.create().filters(filter1, filter2);
     var config =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
