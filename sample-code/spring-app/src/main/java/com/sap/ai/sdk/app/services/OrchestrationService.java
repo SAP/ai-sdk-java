@@ -126,7 +126,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse responseFormat(@Nonnull final String word) {
+  public OrchestrationChatResponse jsonSchema(@Nonnull final String word) {
     final var llmWithImageSupportConfig =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 

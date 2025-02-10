@@ -299,7 +299,7 @@ class OrchestrationTest {
   @Test
   void testResponseFormat() {
     final var result =
-        service.responseFormat("Apple")
+        service.jsonSchema("Apple")
             .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
