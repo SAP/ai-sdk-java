@@ -1,0 +1,59 @@
+{
+  "request_id": "6bb75be9-6ffa-48b7-857f-acc6a3b6067b",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "Whats 'Apfel' in German?"
+      },
+      {
+        "role": "system",
+        "content": "You are a language translator."
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-AzRZVc31my2jV7iKpN6UdTDM2VDD7",
+      "object": "chat.completion",
+      "created": 1739207357,
+      "model": "gpt-4o-mini-2024-07-18",
+      "system_fingerprint": "fp_f3927aa00d",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"translation\":\"Apple\",\"language\":\"English\"}"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 69,
+        "total_tokens": 78
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-AzRZVc31my2jV7iKpN6UdTDM2VDD7",
+    "object": "chat.completion",
+    "created": 1739207357,
+    "model": "gpt-4o-mini-2024-07-18",
+    "system_fingerprint": "fp_f3927aa00d",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"translation\":\"Apple\",\"language\":\"English\"}"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 9,
+      "prompt_tokens": 69,
+      "total_tokens": 78
+    }
+  }
+}
