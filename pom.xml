@@ -32,6 +32,7 @@
     <module>core</module>
     <module>orchestration</module>
     <module>foundation-models/openai</module>
+    <module>prompt-registry</module>
   </modules>
   <scm>
     <connection/>
