@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -8,6 +9,7 @@ import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Grounding;
+import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
@@ -50,6 +52,35 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with an image.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    final var multiMessage =
+        Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, llmWithImageSupportConfig);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with multiple strings.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
+    final var multiMessage =
+        Message.user(questions.get(0)).withText(questions.get(1)).withText(questions.get(2));
+    final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }
 

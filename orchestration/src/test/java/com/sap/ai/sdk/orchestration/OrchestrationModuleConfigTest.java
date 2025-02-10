@@ -169,7 +169,7 @@ class OrchestrationModuleConfigTest {
     var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
     assertThat(prompt.getMessages()).hasSize(1);
     var message = prompt.getMessages().get(0);
-    assertThat(message.content())
+    assertThat(((TextItem) message.content().items().get(0)).text())
         .isEqualTo(
             "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
   }

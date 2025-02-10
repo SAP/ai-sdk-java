@@ -1,0 +1,44 @@
+
+{
+  "orchestration_config" : {
+    "module_configurations" : {
+      "llm_module_config" : {
+        "model_name" : "gpt-4o-mini",
+        "model_params" : { },
+        "model_version" : "latest"
+      },
+      "templating_module_config" : {
+        "template" : [ {
+          "role" : "user",
+          "content" : [ {
+            "type" : "text",
+            "text" : "What is in this image?"
+          }, {
+            "type" : "text",
+            "text" : "And what is the main color?"
+          }, {
+            "type" : "image_url",
+            "image_url" : {
+              "url" : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png",
+              "detail" : "auto"
+            }
+          } ]
+        } ],
+        "defaults" : { },
+        "tools" : [ ]
+      }
+    },
+    "stream" : false
+  },
+  "input_params" : { },
+  "messages_history" : [ {
+    "role" : "system",
+    "content" : [ {
+      "type" : "text",
+      "text" : "Please answer in exactly two sentences."
+    }, {
+      "type" : "text",
+      "text" : "Start the first sentence with the word 'Well'."
+    } ]
+  } ]
+}
