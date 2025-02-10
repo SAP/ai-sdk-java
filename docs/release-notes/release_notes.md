@@ -12,6 +12,7 @@
 
 ### ✨ New Functionality
 
+- Upgrade to release 2502a of AI Core.
 - [Add Orchestration `LlamaGuardFilter`](../guides/ORCHESTRATION_CHAT_COMPLETION.md#chat-completion-filter).
 
 ### 📈 Improvements
