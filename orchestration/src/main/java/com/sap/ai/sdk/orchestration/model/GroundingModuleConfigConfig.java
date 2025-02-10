@@ -41,6 +41,9 @@ public class GroundingModuleConfigConfig
   @JsonProperty("output_param")
   private String outputParam;
 
+  @JsonProperty("metadata_params")
+  private List<String> metadataParams = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -176,6 +179,54 @@ public class GroundingModuleConfigConfig
   }
 
   /**
+   * Set the metadataParams of this {@link GroundingModuleConfigConfig} instance and return the same
+   * instance.
+   *
+   * @param metadataParams Parameter name used for specifying metadata parameters
+   * @return The same instance of this {@link GroundingModuleConfigConfig} class
+   */
+  @Nonnull
+  public GroundingModuleConfigConfig metadataParams(@Nullable final List<String> metadataParams) {
+    this.metadataParams = metadataParams;
+    return this;
+  }
+
+  /**
+   * Add one metadataParams instance to this {@link GroundingModuleConfigConfig}.
+   *
+   * @param metadataParamsItem The metadataParams that should be added
+   * @return The same instance of type {@link GroundingModuleConfigConfig}
+   */
+  @Nonnull
+  public GroundingModuleConfigConfig addMetadataParamsItem(
+      @Nonnull final String metadataParamsItem) {
+    if (this.metadataParams == null) {
+      this.metadataParams = new ArrayList<>();
+    }
+    this.metadataParams.add(metadataParamsItem);
+    return this;
+  }
+
+  /**
+   * Parameter name used for specifying metadata parameters
+   *
+   * @return metadataParams The metadataParams of this {@link GroundingModuleConfigConfig} instance.
+   */
+  @Nonnull
+  public List<String> getMetadataParams() {
+    return metadataParams;
+  }
+
+  /**
+   * Set the metadataParams of this {@link GroundingModuleConfigConfig} instance.
+   *
+   * @param metadataParams Parameter name used for specifying metadata parameters
+   */
+  public void setMetadataParams(@Nullable final List<String> metadataParams) {
+    this.metadataParams = metadataParams;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link GroundingModuleConfigConfig}.
    *
    * @return The set of properties names
@@ -228,12 +279,13 @@ public class GroundingModuleConfigConfig
             this.cloudSdkCustomFields, groundingModuleConfigConfig.cloudSdkCustomFields)
         && Objects.equals(this.filters, groundingModuleConfigConfig.filters)
         && Objects.equals(this.inputParams, groundingModuleConfigConfig.inputParams)
-        && Objects.equals(this.outputParam, groundingModuleConfigConfig.outputParam);
+        && Objects.equals(this.outputParam, groundingModuleConfigConfig.outputParam)
+        && Objects.equals(this.metadataParams, groundingModuleConfigConfig.metadataParams);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filters, inputParams, outputParam, cloudSdkCustomFields);
+    return Objects.hash(filters, inputParams, outputParam, metadataParams, cloudSdkCustomFields);
   }
 
   @Override
@@ -244,6 +296,7 @@ public class GroundingModuleConfigConfig
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    inputParams: ").append(toIndentedString(inputParams)).append("\n");
     sb.append("    outputParam: ").append(toIndentedString(outputParam)).append("\n");
+    sb.append("    metadataParams: ").append(toIndentedString(metadataParams)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
