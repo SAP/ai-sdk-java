@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
  */
 @Beta
 public sealed interface OpenAiMessage
-    permits OpenAiUserMessage, OpenAiAssistantMessage, OpenAiSystemMessage {
+    permits OpenAiUserMessage, OpenAiAssistantMessage, OpenAiSystemMessage, OpenAiToolMessage {
 
   /**
    * A convenience method to create a user message.
@@ -56,6 +56,17 @@ public sealed interface OpenAiMessage
   @Nonnull
   static OpenAiSystemMessage system(@Nonnull final String message) {
     return new OpenAiSystemMessage(message);
+  }
+
+  /**
+   * A convenience method to create a tool message.
+   *
+   * @param message the message content.
+   * @return the tool message.
+   */
+  @Nonnull
+  static OpenAiToolMessage tool(@Nonnull final String message) {
+    return new OpenAiToolMessage(message);
   }
 
   /**
