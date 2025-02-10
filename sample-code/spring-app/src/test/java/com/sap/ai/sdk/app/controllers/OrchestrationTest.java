@@ -295,4 +295,15 @@ class OrchestrationTest {
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
+
+  @Test
+  void testResponseFormat() {
+    final var result =
+        service.responseFormat("Apple")
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":\"German\"");
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":\"Apfel\"");
+  }
 }

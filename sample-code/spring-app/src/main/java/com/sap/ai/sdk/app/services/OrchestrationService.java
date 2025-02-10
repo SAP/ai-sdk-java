@@ -22,6 +22,8 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -112,6 +114,52 @@ public class OrchestrationService {
 
     val inputParams = Map.of("language", language);
     val prompt = new OrchestrationPrompt(inputParams);
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a template.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse responseFormat(@Nonnull final String word) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("Whats '%s' in German?".formatted(word));
+    var schema =
+        Map.of(
+            "type",
+            "object",
+            "properties",
+            Map.of(
+                "language", Map.of("type", "string"),
+                "translation", Map.of("type", "string")),
+            "required",
+            List.of("language", "translation"),
+            "additionalProperties",
+            false);
+
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonSchema.create()
+                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+                    .jsonSchema(
+                        ResponseFormatJsonSchemaJsonSchema.create()
+                            .name("translation_response")
+                            .schema(schema)
+                            .strict(true)
+                            .description("Output schema for language translation.")));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+    //    log.info("Template config: {}", templatingConfig);
+
+    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
 
     return client.chatCompletion(prompt, configWithTemplate);
   }
