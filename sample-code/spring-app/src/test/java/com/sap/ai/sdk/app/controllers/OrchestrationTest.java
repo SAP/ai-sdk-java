@@ -299,7 +299,7 @@ class OrchestrationTest {
   @Test
   void testResponseFormatJsonSchema() {
     final var result =
-        service.responseFormatJsonSchema("Apple")
+        service.responseFormatJsonSchema("apple")
             .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -310,7 +310,7 @@ class OrchestrationTest {
   @Test
   void testResponseFormatJsonObject() {
     final var result =
-        service.responseFormatJsonObject("Apple")
+        service.responseFormatJsonObject("apple")
             .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -319,7 +319,7 @@ class OrchestrationTest {
   @Test
   void testResponseFormatText() {
     final var result =
-        service.responseFormatText("Apple")
+        service.responseFormatText("apple")
             .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();

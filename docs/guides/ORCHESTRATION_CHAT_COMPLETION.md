@@ -12,6 +12,8 @@
     - [Data Masking](#data-masking)
     - [Grounding](#grounding)
     - [Stream chat completion](#stream-chat-completion)
+    - [Add images and multiple text inputs to a message](#add-images-and-multiple-text-inputs-to-a-message)
+    - [Set a Response Format](#set-a-response-format)
     - [Set Model Parameters](#set-model-parameters)
     - [Using a Configuration from AI Launchpad](#using-a-configuration-from-ai-launchpad)
 
@@ -299,6 +301,73 @@ Note, that only user and system messages are supported for multiple text inputs.
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
+
+## Set a Response Format
+
+It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT` and `JSON_SCHEMA`.
+
+### JSON_OBJECT
+
+If you want to force the response to be a JSON object, you can set the response format as follows:
+
+```java
+var template = Message.user("What is 'apple' in German?");
+var templatingConfig =
+        Template.create()
+                .template(List.of(template.createChatMessage()))
+                .responseFormat(
+                        ResponseFormatJsonObject.create()
+                                .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+var prompt =
+        new OrchestrationPrompt(
+                Message.system(
+                        "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+var result = client.chatCompletion(prompt, configWithTemplate);
+```
+Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
+
+
+### JSON_SCHEMA
+
+If you want the response to adhere to a specific JSON schema, you can set the response format as follows:
+
+```java
+var template = Message.user("Whats '%s' in German?".formatted(word));
+var schema =
+        Map.of(
+                "type",
+                "object",
+                "properties",
+                Map.of(
+                        "language", Map.of("type", "string"),
+                        "translation", Map.of("type", "string")),
+                "required",
+                List.of("language", "translation"),
+                "additionalProperties",
+                false);
+
+var templatingConfig =
+        Template.create()
+                .template(List.of(template.createChatMessage()))
+                .responseFormat(
+                        ResponseFormatJsonSchema.create()
+                                .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+                                .jsonSchema(
+                                        ResponseFormatJsonSchemaJsonSchema.create()
+                                                .name("translation_response")
+                                                .schema(schema)
+                                                .strict(true)
+                                                .description("Output schema for language translation.")));
+var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+var prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
+var result = client.chatCompletion(prompt, configWithTemplate);
+```
+The response will adhere to the given JSON schema exactly.
+
+Please find [an example in our Spring Boot application]((../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).)
 
 ## Set model parameters
 

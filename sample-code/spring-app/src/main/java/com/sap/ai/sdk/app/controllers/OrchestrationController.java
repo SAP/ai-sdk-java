@@ -214,4 +214,26 @@ class OrchestrationController {
     }
     return response.getContent();
   }
+
+  @GetMapping("/responseFormatJsonSchema")
+  @Nonnull
+  Object responseFormatJsonSchema(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.responseFormatJsonSchema("apple");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/responseFormatJsonObject")
+  @Nonnull
+  Object responseFormatJsonObject(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.responseFormatJsonObject("apple");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
 }

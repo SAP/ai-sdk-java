@@ -354,7 +354,7 @@ public class OrchestrationService {
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = Message.user("Whats '%s' in German?".formatted(word));
-    var schema =
+    val schema =
         Map.of(
             "type",
             "object",
