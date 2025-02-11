@@ -11,7 +11,7 @@ import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
 
-/** Represents a tool message in the OpenAI SDK. */
+/** Represents a tool message in the OpenAI service. */
 @Value
 @Accessors(fluent = true)
 public class OpenAiToolMessage implements OpenAiMessage {
