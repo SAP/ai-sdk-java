@@ -259,6 +259,47 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
+
+## Add images and multiple text inputs to a message
+
+It's possible to add images and multiple text inputs to a message.
+
+### Add images to a message
+
+An image can be added to a message as follows.
+
+```java
+var message = Message.user("Describe the following image");
+var newMessage = message.withImage("https://url.to/image.jpg");
+```
+
+You can also construct a message with an image directly, using the `ImageItem` class.
+
+```java
+var message = Message.user(new ImageItem("https://url.to/image.jpg"));
+```
+
+Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
+
+```java
+var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailLevel.LOW);
+```
+Note, that currently only user messages are supported for image attachments.
+
+### Add multiple text inputs to a message
+
+It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can add additional text inputs as follows.
+
+```java
+var message = Message.user("What is chess about?");
+var newMessage = message.withText("Answer in two sentences.");
+```
+
+Note, that only user and system messages are supported for multiple text inputs.
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+
 ## Set model parameters
 
 Change your LLM configuration to add model parameters:

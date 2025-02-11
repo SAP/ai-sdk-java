@@ -6,6 +6,7 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
@@ -51,31 +52,45 @@ public class OrchestrationChatResponse {
   /**
    * Get all messages. This can be used for subsequent prompts as a message history.
    *
-   * @throws UnsupportedOperationException if the MultiChatMessage type message in chat.
+   * @throws IllegalArgumentException if the MultiChatMessage type message in chat.
    * @return A list of all messages.
    */
   @Nonnull
-  public List<Message> getAllMessages() throws UnsupportedOperationException {
+  public List<Message> getAllMessages() throws IllegalArgumentException {
     final var messages = new ArrayList<Message>();
-
     for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
       if (chatMessage instanceof SingleChatMessage simpleMsg) {
-        final var message =
-            switch (simpleMsg.getRole()) {
-              case "user" -> new UserMessage(simpleMsg.getContent());
-              case "assistant" -> new AssistantMessage(simpleMsg.getContent());
-              case "system" -> new SystemMessage(simpleMsg.getContent());
-              default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
-            };
-        messages.add(message);
+        messages.add(chatMessageIntoMessage(simpleMsg));
+      } else if (chatMessage instanceof MultiChatMessage mCMessage) {
+        messages.add(chatMessageIntoMessage(mCMessage));
       } else {
-        throw new UnsupportedOperationException(
-            "Messages of MultiChatMessage type not supported by convenience API");
+        throw new IllegalArgumentException(
+            "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
     }
-
-    messages.add(new AssistantMessage(getChoice().getMessage().getContent()));
+    messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
+  }
+
+  @Nonnull
+  private Message chatMessageIntoMessage(@Nonnull final SingleChatMessage simpleMsg) {
+    return switch (simpleMsg.getRole()) {
+      case "user" -> Message.user(simpleMsg.getContent());
+      case "assistant" -> Message.assistant(simpleMsg.getContent());
+      case "system" -> Message.system(simpleMsg.getContent());
+      default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
+    };
+  }
+
+  @Nonnull
+  private Message chatMessageIntoMessage(@Nonnull final MultiChatMessage mCMessage) {
+    return switch (mCMessage.getRole()) {
+      case "user" -> new UserMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
+      case "system" -> new SystemMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
+      default ->
+          throw new IllegalStateException(
+              "Unexpected role with complex message: " + mCMessage.getRole());
+    };
   }
 
   /**

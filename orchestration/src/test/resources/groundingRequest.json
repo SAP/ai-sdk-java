@@ -25,7 +25,6 @@
         "type" : "document_grounding_service",
         "config" : {
           "filters" : [ {
-            "id" : "arbitrary-user-defined-id",
             "search_config" : {
               "max_chunk_count" : 3
             },
@@ -43,7 +42,8 @@
             } ]
           } ],
           "input_params" : [ "query" ],
-          "output_param" : "results"
+          "output_param" : "results",
+          "metadata_params" : [ ]
         }
       }
     },

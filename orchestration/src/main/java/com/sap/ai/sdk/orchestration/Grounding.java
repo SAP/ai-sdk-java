@@ -28,8 +28,7 @@ public class Grounding implements GroundingProvider {
 
   @Nonnull
   private List<GroundingModuleConfigConfigFiltersInner> filters =
-      List.of(
-          DocumentGroundingFilter.create().id("").dataRepositoryType(DataRepositoryType.VECTOR));
+      List.of(DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR));
 
   @Setter(onMethod_ = {@Nonnull})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
