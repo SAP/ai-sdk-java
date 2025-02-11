@@ -9,7 +9,7 @@
       "templating_module_config" : {
         "template" : [ {
           "role" : "user",
-          "content" : "Whats 'Apfel' in German?"
+          "content" : "Whats 'apple' in German?"
         }, {
           "role" : "system",
           "content" : "You are a language translator."

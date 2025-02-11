@@ -799,7 +799,7 @@ class OrchestrationUnitTest {
 
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = Message.user("Whats 'Apfel' in German?");
+    val template = Message.user("Whats 'apple' in German?");
     var schema =
         Map.of(
             "type",
@@ -831,6 +831,54 @@ class OrchestrationUnitTest {
 
     final var result =
         client.chatCompletion(prompt, configWithTemplate);
+
+    final var response = result.getOriginalResponse();
+    assertThat(response.getRequestId()).isEqualTo("0759f249-a261-4cb7-99d5-ea6eae2c141c");
+    final var messageList = result.getAllMessages();
+
+    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
+        .isEqualTo("Whats 'apple' in German?");
+    assertThat(messageList.get(0).role()).isEqualTo("user");
+    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
+        .isEqualTo(
+            "You are a language translator.");
+    assertThat(messageList.get(1).role()).isEqualTo("system");
+    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
+        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+    assertThat(messageList.get(2).role()).isEqualTo("assistant");
+
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
+    assertThat(llm.getId()).isEqualTo("chatcmpl-AzmCw5QZBi6zQkJPQhvsyjW4Fe90c");
+    assertThat(llm.getObject()).isEqualTo("chat.completion");
+    assertThat(llm.getCreated()).isEqualTo(1739286682);
+    assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
+    var choices = llm.getChoices();
+    assertThat(choices.get(0).getIndex()).isZero();
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    var usage = result.getTokenUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(10);
+    assertThat(usage.getPromptTokens()).isEqualTo(68);
+    assertThat(usage.getTotalTokens()).isEqualTo(78);
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AzmCw5QZBi6zQkJPQhvsyjW4Fe90c");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1739286682);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    choices = orchestrationResult.getChoices();
+    assertThat(choices.get(0).getIndex()).isZero();
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    usage = result.getTokenUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(10);
+    assertThat(usage.getPromptTokens()).isEqualTo(68);
+    assertThat(usage.getTotalTokens()).isEqualTo(78);
 
     // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
