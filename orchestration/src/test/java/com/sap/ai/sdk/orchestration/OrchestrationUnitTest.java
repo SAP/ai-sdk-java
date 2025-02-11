@@ -44,6 +44,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
@@ -833,6 +834,89 @@ class OrchestrationUnitTest {
 
     // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testJsonObject() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonObjectResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("What is 'apple' in German?");
+
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.system(
+                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+
+    final var result =
+        client.chatCompletion(prompt, configWithTemplate);
+
+    final var response = result.getOriginalResponse();
+    assertThat(response.getRequestId()).isEqualTo("f353a729-3391-4cec-bbf9-7ab39d34ebc1");
+    final var messageList = result.getAllMessages();
+
+    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
+        .isEqualTo("What is 'apple' in German?");
+    assertThat(messageList.get(0).role()).isEqualTo("user");
+    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
+        .isEqualTo(
+            "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}");
+    assertThat(messageList.get(1).role()).isEqualTo("system");
+    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
+        .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
+    assertThat(messageList.get(2).role()).isEqualTo("assistant");
+
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
+    assertThat(llm.getId()).isEqualTo("chatcmpl-Azm2iclgMiLcQHP3cGQANArkxoiGx");
+    assertThat(llm.getObject()).isEqualTo("chat.completion");
+    assertThat(llm.getCreated()).isEqualTo(1739286048);
+    assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
+    var choices = llm.getChoices();
+    assertThat(choices.get(0).getIndex()).isZero();
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    var usage = result.getTokenUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(13);
+    assertThat(usage.getPromptTokens()).isEqualTo(41);
+    assertThat(usage.getTotalTokens()).isEqualTo(54);
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Azm2iclgMiLcQHP3cGQANArkxoiGx");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1739286048);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    choices = orchestrationResult.getChoices();
+    assertThat(choices.get(0).getIndex()).isZero();
+    assertThat(choices.get(0).getMessage().getContent())
+        .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    usage = result.getTokenUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(13);
+    assertThat(usage.getPromptTokens()).isEqualTo(41);
+    assertThat(usage.getTotalTokens()).isEqualTo(54);
+
+    // verify that null fields are absent from the sent request
+    try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
