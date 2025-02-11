@@ -22,8 +22,10 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -114,52 +116,6 @@ public class OrchestrationService {
 
     val inputParams = Map.of("language", language);
     val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a template.
-   *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
-   *     AI Core: Orchestration - Templating</a>
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse jsonSchema(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
-    val template = Message.user("Whats '%s' in German?".formatted(word));
-    var schema =
-        Map.of(
-            "type",
-            "object",
-            "properties",
-            Map.of(
-                "language", Map.of("type", "string"),
-                "translation", Map.of("type", "string")),
-            "required",
-            List.of("language", "translation"),
-            "additionalProperties",
-            false);
-
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonSchema.create()
-                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                    .jsonSchema(
-                        ResponseFormatJsonSchemaJsonSchema.create()
-                            .name("translation_response")
-                            .schema(schema)
-                            .strict(true)
-                            .description("Output schema for language translation.")));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
-    //    log.info("Template config: {}", templatingConfig);
-
-    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
 
     return client.chatCompletion(prompt, configWithTemplate);
   }
@@ -381,5 +337,111 @@ public class OrchestrationService {
     val configWithGrounding = config.withGrounding(groundingConfig);
 
     return client.chatCompletion(prompt, configWithGrounding);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using response format with JSON
+   * schema.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("Whats '%s' in German?".formatted(word));
+    var schema =
+        Map.of(
+            "type",
+            "object",
+            "properties",
+            Map.of(
+                "language", Map.of("type", "string"),
+                "translation", Map.of("type", "string")),
+            "required",
+            List.of("language", "translation"),
+            "additionalProperties",
+            false);
+
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonSchema.create()
+                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+                    .jsonSchema(
+                        ResponseFormatJsonSchemaJsonSchema.create()
+                            .name("translation_response")
+                            .schema(schema)
+                            .strict(true)
+                            .description("Output schema for language translation.")));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using the response format option 'JSON
+   * object'.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("What is '%s' in German?".formatted(word));
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonObject.create()
+                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.system(
+                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using the response format option
+   * 'text'.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("Whats '%s' in German?".formatted(word));
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.system("You are a language translator. Answer using JSON."));
+
+    return client.chatCompletion(prompt, configWithTemplate);
   }
 }

@@ -897,10 +897,9 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonObjectResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = Message.user("What is 'apple' in German?");
-
     val templatingConfig =
         Template.create()
             .template(List.of(template.createChatMessage()))
@@ -983,7 +982,6 @@ class OrchestrationUnitTest {
     val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = Message.user("What is 'apple' in German?");
-
     val templatingConfig =
         Template.create()
             .template(List.of(template.createChatMessage()))

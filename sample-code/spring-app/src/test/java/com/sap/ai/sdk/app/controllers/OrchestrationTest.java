@@ -297,13 +297,31 @@ class OrchestrationTest {
   }
 
   @Test
-  void testResponseFormat() {
+  void testResponseFormatJsonSchema() {
     final var result =
-        service.jsonSchema("Apple")
+        service.responseFormatJsonSchema("Apple")
             .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":\"German\"");
     assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":\"Apfel\"");
+  }
+
+  @Test
+  void testResponseFormatJsonObject() {
+    final var result =
+        service.responseFormatJsonObject("Apple")
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFormatText() {
+    final var result =
+        service.responseFormatText("Apple")
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }
