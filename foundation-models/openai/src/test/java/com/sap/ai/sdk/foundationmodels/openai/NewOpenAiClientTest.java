@@ -2,16 +2,12 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
-import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
-import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
@@ -25,10 +21,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
@@ -48,7 +40,6 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.SneakyThrows;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -78,87 +69,15 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
           client
               .streamChatCompletionDeltas(new OpenAiChatCompletionRequest(""))
               // the stream needs to be consumed to parse the response
-              .forEach(System.out::println),
-      () -> client.chatCompletion(""),
-      () ->
-          client.chatCompletion(
-              new OpenAiChatCompletionParameters()
-                  .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText("")))
+              .forEach(System.out::println)
     };
   }
 
   @ParameterizedTest
   @MethodSource("errorHandlingCalls")
   void chatCompletionErrorHandling(@Nonnull final Runnable request) {
-    final var errorJson =
-        """
-            { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
-            """;
-    stubFor(
-        post(anyUrl())
-            .inScenario("Errors")
-            .whenScenarioStateIs(Scenario.STARTED)
-            .willReturn(serverError())
-            .willSetStateTo("1"));
-    stubFor(
-        post(anyUrl())
-            .inScenario("Errors")
-            .whenScenarioStateIs("1")
-            .willReturn(
-                badRequest().withBody(errorJson).withHeader("Content-type", "application/json"))
-            .willSetStateTo("2"));
-    stubFor(
-        post(anyUrl())
-            .inScenario("Errors")
-            .whenScenarioStateIs("2")
-            .willReturn(
-                badRequest()
-                    .withBody("{ broken json")
-                    .withHeader("Content-type", "application/json"))
-            .willSetStateTo("3"));
-    stubFor(
-        post(anyUrl())
-            .inScenario("Errors")
-            .whenScenarioStateIs("3")
-            .willReturn(okXml("<xml></xml>"))
-            .willSetStateTo("4"));
-    stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
-
-    final var softly = new SoftAssertions();
-
-    softly
-        .assertThatThrownBy(request::run)
-        .describedAs("Server errors should be handled")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("500");
-
-    softly
-        .assertThatThrownBy(request::run)
-        .describedAs("Error objects from OpenAI should be interpreted")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("error message: 'foo'");
-
-    softly
-        .assertThatThrownBy(request::run)
-        .describedAs("Failures while parsing error message should be handled")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("400")
-        .extracting(e -> e.getSuppressed()[0])
-        .isInstanceOf(JsonParseException.class);
-
-    softly
-        .assertThatThrownBy(request::run)
-        .describedAs("Non-JSON responses should be handled")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("Failed to parse");
-
-    softly
-        .assertThatThrownBy(request::run)
-        .describedAs("Empty responses should be handled")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("was empty");
-
-    softly.assertAll();
+    stubForErrorHandling();
+    assertForErrorHandling(request);
   }
 
   @Test
