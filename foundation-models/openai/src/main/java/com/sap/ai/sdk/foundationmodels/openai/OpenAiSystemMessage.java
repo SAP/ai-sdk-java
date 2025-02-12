@@ -77,8 +77,9 @@ public class OpenAiSystemMessage implements OpenAiMessage {
             new ChatCompletionRequestMessageContentPartText()
                 .type(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT)
                 .text(textItem.text()));
-      } else if (item instanceof OpenAiImageItem) {
-        throw new IllegalArgumentException("Image items are not yet supported in system messages");
+      } else {
+        final var errorMessage = "Unknown content type for " + role() + " messages.";
+        throw new IllegalArgumentException(errorMessage);
       }
     }
     return new ChatCompletionRequestSystemMessage()

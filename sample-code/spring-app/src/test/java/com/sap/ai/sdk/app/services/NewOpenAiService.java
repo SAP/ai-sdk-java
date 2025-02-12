@@ -78,7 +78,7 @@ public class NewOpenAiService {
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
 
-    var userMessage =
+    final var userMessage =
         OpenAiMessage.user("Describe the following image.")
             .withImage(linkToImage, OpenAiImageItem.DetailLevel.HIGH);
 

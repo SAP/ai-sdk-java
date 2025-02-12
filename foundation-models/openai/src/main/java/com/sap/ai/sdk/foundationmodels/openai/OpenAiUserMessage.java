@@ -104,35 +104,45 @@ public class OpenAiUserMessage implements OpenAiMessage {
           .content(ChatCompletionRequestUserMessageContent.create(textItem.text()));
     }
 
-    final var contentList = new LinkedList<ChatCompletionRequestUserMessageContentPart>();
-    for (final OpenAiContentItem item : itemList) {
+    var messageParts = new LinkedList<ChatCompletionRequestUserMessageContentPart>();
+    for (var item : itemList) {
       if (item instanceof OpenAiTextItem textItem) {
-        contentList.add(
-            new ChatCompletionRequestMessageContentPartText()
-                .type(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT)
-                .text(textItem.text()));
-      } else if (item instanceof OpenAiImageItem openAiImageItem) {
-        final var detail = openAiImageItem.detailLevel().toString();
-
-        final ChatCompletionRequestMessageContentPartImageImageUrl img;
-        try {
-          img =
-              new ChatCompletionRequestMessageContentPartImageImageUrl()
-                  .url(new URI(openAiImageItem.imageUrl()))
-                  .detail(
-                      ChatCompletionRequestMessageContentPartImageImageUrl.DetailEnum.fromValue(
-                          detail));
-        } catch (URISyntaxException e) {
-          throw new IllegalArgumentException("Provided image url follows invalid syntax.", e);
-        }
-        contentList.add(
-            new ChatCompletionRequestMessageContentPartImage()
-                .type(ChatCompletionRequestMessageContentPartImage.TypeEnum.IMAGE_URL)
-                .imageUrl(img));
+        messageParts.add(createTextContentPart(textItem));
+      } else if (item instanceof OpenAiImageItem imageItem) {
+        messageParts.add(createImageContentPart(imageItem));
+      } else {
+        throw new IllegalArgumentException("Unknown content type for " + role() + " messages.");
       }
     }
+
     return new ChatCompletionRequestUserMessage()
         .role(ChatCompletionRequestUserMessage.RoleEnum.fromValue(role()))
-        .content(ChatCompletionRequestUserMessageContent.create(contentList));
+        .content(ChatCompletionRequestUserMessageContent.create(messageParts));
+  }
+
+  private ChatCompletionRequestMessageContentPartText createTextContentPart(
+      OpenAiTextItem textItem) {
+    return new ChatCompletionRequestMessageContentPartText()
+        .type(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT)
+        .text(textItem.text());
+  }
+
+  private ChatCompletionRequestMessageContentPartImage createImageContentPart(
+      OpenAiImageItem imageItem) throws IllegalArgumentException {
+    try {
+      var imageUrl =
+          new ChatCompletionRequestMessageContentPartImageImageUrl()
+              .url(new URI(imageItem.imageUrl()))
+              .detail(
+                  ChatCompletionRequestMessageContentPartImageImageUrl.DetailEnum.fromValue(
+                      imageItem.detailLevel().toString()));
+
+      return new ChatCompletionRequestMessageContentPartImage()
+          .type(ChatCompletionRequestMessageContentPartImage.TypeEnum.IMAGE_URL)
+          .imageUrl(imageUrl);
+
+    } catch (URISyntaxException e) {
+      throw new IllegalArgumentException("Provided image URL has invalid syntax.", e);
+    }
   }
 }
