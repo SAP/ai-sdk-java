@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -56,7 +57,9 @@ public class OrchestrationService {
   public String queryPayments(final @Nonnull String msgUser) {
     final var msgSystem = "You are a helpful chat bot to answer questions on company payments.";
 
-    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.5));
+    final var config =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.5).withParam(MAX_TOKENS, 150));
     final var prompt = new OrchestrationPrompt(Message.system(msgSystem), Message.user(msgUser));
     final var result = client.chatCompletion(prompt, config);
     return result.getContent();
