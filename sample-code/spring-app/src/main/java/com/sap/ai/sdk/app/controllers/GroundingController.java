@@ -42,9 +42,15 @@ class GroundingController {
   @GetMapping("/pipelines/createDelete")
   Object createAndDeletePipeline(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var config = PipelinePostRequstConfiguration.create().destination("d069462-001").sharePoint(
-        PipelinePostRequstConfigurationSharePoint.create().site(
-            PipelinePostRequstConfigurationSharePointSite.create().name("site").addIncludePathsItem("folder")));
+    final var config =
+        PipelinePostRequstConfiguration.create()
+            .destination("d069462-001")
+            .sharePoint(
+                PipelinePostRequstConfigurationSharePoint.create()
+                    .site(
+                        PipelinePostRequstConfigurationSharePointSite.create()
+                            .name("site")
+                            .addIncludePathsItem("folder")));
     final var req = PipelinePostRequst.create().type("MSSharePoint")._configuration(config);
     final var pipeline = CLIENT_PIPELINES.createPipeline(RESOURCE_GROUP, req);
     final var del = CLIENT_PIPELINES.deletePipelineById(RESOURCE_GROUP, pipeline.getPipelineId());
@@ -62,7 +68,7 @@ class GroundingController {
   @GetMapping("/pipelines/list")
   Object getAllPipelines(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var pipelines = CLIENT_PIPELINES.getAllPipelines(RESOURCE_GROUP, 10, 0,true);
+    final var pipelines = CLIENT_PIPELINES.getAllPipelines(RESOURCE_GROUP, 10, 0, true);
     log.info("Found {} pipelines", pipelines.getResources().size());
 
     if ("json".equals(format)) {
