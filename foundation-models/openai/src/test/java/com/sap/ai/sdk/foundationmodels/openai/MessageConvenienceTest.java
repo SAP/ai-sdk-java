@@ -9,6 +9,8 @@ import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessag
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartText;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
 import java.net.URI;
@@ -21,11 +23,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class MessagingConvenienceTest {
+class MessageConvenienceTest {
   static String validText = "Some string";
   static String validImageUrl = "http://valid-url.com";
 
-  static Stream<Arguments> provideValidTextMessageForEachRole() {
+  static Stream<Arguments> provideValidTextMessageByRole() {
     return Stream.of(
         Arguments.of(OpenAiMessage.user(validText)),
         Arguments.of(OpenAiMessage.assistant(validText)),
@@ -34,14 +36,14 @@ class MessagingConvenienceTest {
   }
 
   @ParameterizedTest
-  @MethodSource("provideValidTextMessageForEachRole")
+  @MethodSource("provideValidTextMessageByRole")
   void createMessagesWithText(OpenAiMessage message) {
     assertThat(message.content().items()).hasSize(1);
     assertThat(((OpenAiTextItem) message.content().items().get(0)).text()).isEqualTo(validText);
   }
 
   @ParameterizedTest
-  @MethodSource("provideValidTextMessageForEachRole")
+  @MethodSource("provideValidTextMessageByRole")
   void createMessagesWithAdditionalText(OpenAiMessage message) {
 
     if (message instanceof OpenAiAssistantMessage) {
@@ -188,6 +190,36 @@ class MessagingConvenienceTest {
             ((ChatCompletionRequestAssistantMessageContent.InnerString) requestMessage.getContent())
                 .value())
         .isEqualTo(validText);
+  }
+
+  @Test
+  void toolMessageToDto() {
+    var singleText = OpenAiMessage.tool(validText);
+    var multiItemMessage = singleText.withText("Additional text");
+
+    var requestMessage = singleText.createChatCompletionRequestMessage();
+    assertThat(requestMessage.getRole()).isEqualTo(ChatCompletionRequestToolMessage.RoleEnum.TOOL);
+    assertThat(
+            ((ChatCompletionRequestToolMessageContent.InnerString) requestMessage.getContent())
+                .value())
+        .isEqualTo(validText);
+
+    var requestMessageWithText = multiItemMessage.createChatCompletionRequestMessage();
+    assertThat(requestMessageWithText.getRole())
+        .isEqualTo(ChatCompletionRequestToolMessage.RoleEnum.TOOL);
+    var values =
+        ((ChatCompletionRequestToolMessageContent.InnerChatCompletionRequestToolMessageContentParts)
+                requestMessageWithText.getContent())
+            .values();
+    assertThat(values).hasSize(2);
+    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(0)).getType())
+        .isEqualTo(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT);
+    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(0)).getText())
+        .isEqualTo(validText);
+    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(1)).getType())
+        .isEqualTo(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT);
+    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(1)).getText())
+        .isEqualTo("Additional text");
   }
 
   @Test
