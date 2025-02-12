@@ -304,11 +304,11 @@ Please find [an example in our Spring Boot application](../../sample-code/spring
 
 ## Set a Response Format
 
-It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT` and `JSON_SCHEMA`.
+It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT`, `JSON_SCHEMA`, and `TEXT`, where `TEXT` is the default behavior.
 
 ### JSON_OBJECT
 
-If you want to force the response to be a JSON object, you can set the response format as follows:
+Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
 ```java
 var template = Message.user("What is 'apple' in German?");
@@ -324,14 +324,14 @@ var prompt =
         new OrchestrationPrompt(
                 Message.system(
                         "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
-var result = client.chatCompletion(prompt, configWithTemplate);
+var response = client.chatCompletion(prompt, configWithTemplate).getContent();
 ```
 Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
 
 
 ### JSON_SCHEMA
 
-If you want the response to adhere to a specific JSON schema, you can set the response format as follows:
+If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. in order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
 
 ```java
 var template = Message.user("Whats '%s' in German?".formatted(word));
@@ -363,9 +363,8 @@ var templatingConfig =
 var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
 
 var prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
-var result = client.chatCompletion(prompt, configWithTemplate);
+var response = client.chatCompletion(prompt, configWithTemplate).getContent();
 ```
-The response will adhere to the given JSON schema exactly.
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
 
