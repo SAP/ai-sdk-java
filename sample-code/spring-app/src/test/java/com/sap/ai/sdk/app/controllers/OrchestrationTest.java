@@ -20,6 +20,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,9 @@ class OrchestrationTest {
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
+
+    Function<String, String> op = service::queryPayments;
+    assertThat(op).isNotNull();
   }
 
   @Test

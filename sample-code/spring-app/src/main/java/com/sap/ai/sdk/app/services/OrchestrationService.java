@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
@@ -39,6 +40,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrchestrationService {
   private final OrchestrationClient client = new OrchestrationClient();
+
+  /**
+   * Demo operation to serve chatbot responses to payment questions.
+   *
+   * @param msg_user The user message.
+   * @return A response from our chatbot.
+   */
+  public String queryPayments(String msg_user) {
+    var msg_system = "You are a helpful chat bot to answer questions on company payments.";
+
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.5));
+    var prompt = new OrchestrationPrompt(Message.system(msg_system), Message.user(msg_user));
+    var result = client.chatCompletion(prompt, config);
+    return result.getContent();
+  }
 
   @Getter
   private final OrchestrationModuleConfig config =
