@@ -790,7 +790,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testJsonSchema() throws IOException {
+  void testResponseObjectJsonSchema() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -887,7 +887,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testJsonObject() throws IOException {
+  void testResponseObjectJsonObject() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
