@@ -104,8 +104,8 @@ public class OpenAiUserMessage implements OpenAiMessage {
           .content(ChatCompletionRequestUserMessageContent.create(textItem.text()));
     }
 
-    var messageParts = new LinkedList<ChatCompletionRequestUserMessageContentPart>();
-    for (var item : itemList) {
+    final var messageParts = new LinkedList<ChatCompletionRequestUserMessageContentPart>();
+    for (final var item : itemList) {
       if (item instanceof OpenAiTextItem textItem) {
         messageParts.add(createTextContentPart(textItem));
       } else if (item instanceof OpenAiImageItem imageItem) {
@@ -120,17 +120,19 @@ public class OpenAiUserMessage implements OpenAiMessage {
         .content(ChatCompletionRequestUserMessageContent.create(messageParts));
   }
 
+  @Nonnull
   private ChatCompletionRequestMessageContentPartText createTextContentPart(
-      OpenAiTextItem textItem) {
+      @Nonnull final OpenAiTextItem textItem) {
     return new ChatCompletionRequestMessageContentPartText()
         .type(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT)
         .text(textItem.text());
   }
 
+  @Nonnull
   private ChatCompletionRequestMessageContentPartImage createImageContentPart(
-      OpenAiImageItem imageItem) throws IllegalArgumentException {
+      @Nonnull final OpenAiImageItem imageItem) throws IllegalArgumentException {
     try {
-      var imageUrl =
+      final var imageUrl =
           new ChatCompletionRequestMessageContentPartImageImageUrl()
               .url(new URI(imageItem.imageUrl()))
               .detail(
