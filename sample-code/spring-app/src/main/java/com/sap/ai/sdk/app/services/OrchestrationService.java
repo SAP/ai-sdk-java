@@ -14,6 +14,7 @@ import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -57,9 +58,7 @@ public class OrchestrationService {
   public String queryPayments(final @Nonnull String msgUser) {
     final var msgSystem = "You are a helpful chat bot to answer questions on company payments.";
 
-    final var config =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.5).withParam(MAX_TOKENS, 150));
+    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(MAX_TOKENS, 150));
     final var prompt = new OrchestrationPrompt(Message.system(msgSystem), Message.user(msgUser));
     final var result = client.chatCompletion(prompt, config);
     return result.getContent();
