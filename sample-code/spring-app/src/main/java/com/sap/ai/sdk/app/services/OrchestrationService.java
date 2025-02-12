@@ -39,26 +39,29 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OrchestrationService {
+  @Getter
+  private final OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
+
+  /** The shared Orchestration Client. */
   private final OrchestrationClient client = new OrchestrationClient();
 
   /**
    * Demo operation to serve chatbot responses to payment questions.
    *
-   * @param msg_user The user message.
+   * @param msgUser The user message.
    * @return A response from our chatbot.
    */
-  public String queryPayments(String msg_user) {
-    var msg_system = "You are a helpful chat bot to answer questions on company payments.";
+  @Nonnull
+  public String queryPayments(final @Nonnull String msgUser) {
+    final var msgSystem = "You are a helpful chat bot to answer questions on company payments.";
 
-    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.5));
-    var prompt = new OrchestrationPrompt(Message.system(msg_system), Message.user(msg_user));
-    var result = client.chatCompletion(prompt, config);
+    final var config =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(TEMPERATURE, 0.5));
+    final var prompt = new OrchestrationPrompt(Message.system(msgSystem), Message.user(msgUser));
+    final var result = client.chatCompletion(prompt, config);
     return result.getContent();
   }
-
-  @Getter
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
