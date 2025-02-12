@@ -367,7 +367,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 The response will adhere to the given JSON schema exactly.
 
-Please find [an example in our Spring Boot application]((../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).)
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
 
 ## Set model parameters
 
