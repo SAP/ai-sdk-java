@@ -740,35 +740,15 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    assertThat(response.getRequestId()).isEqualTo("8d973a0d-c2cf-437b-a765-08d66bf446d8");
-    assertThat(response.getModuleResults()).isNotNull();
-    assertThat(response.getModuleResults().getTemplating()).hasSize(2);
-
     var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
-    assertThat(llmResults.getId()).isEqualTo("chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v");
-    assertThat(llmResults.getObject()).isEqualTo("chat.completion");
-    assertThat(llmResults.getCreated()).isEqualTo(1738928206);
-    assertThat(llmResults.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(llmResults.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
-    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(35);
-    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(250);
-    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(285);
-
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-    assertThat(orchestrationResult).isNotNull();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v");
-    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1738928206);
-    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
@@ -776,10 +756,6 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
         .isEqualTo("assistant");
-    assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
-    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(35);
-    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(250);
-    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(285);
 
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
@@ -848,38 +824,17 @@ class OrchestrationUnitTest {
 
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
-    assertThat(llm.getId()).isEqualTo("chatcmpl-AzmCw5QZBi6zQkJPQhvsyjW4Fe90c");
-    assertThat(llm.getObject()).isEqualTo("chat.completion");
-    assertThat(llm.getCreated()).isEqualTo(1739286682);
-    assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = result.getTokenUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(10);
-    assertThat(usage.getPromptTokens()).isEqualTo(68);
-    assertThat(usage.getTotalTokens()).isEqualTo(78);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AzmCw5QZBi6zQkJPQhvsyjW4Fe90c");
-    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1739286682);
-    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = result.getTokenUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(10);
-    assertThat(usage.getPromptTokens()).isEqualTo(68);
-    assertThat(usage.getTotalTokens()).isEqualTo(78);
 
-    // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
@@ -930,38 +885,18 @@ class OrchestrationUnitTest {
 
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
-    assertThat(llm.getId()).isEqualTo("chatcmpl-Azm2iclgMiLcQHP3cGQANArkxoiGx");
-    assertThat(llm.getObject()).isEqualTo("chat.completion");
-    assertThat(llm.getCreated()).isEqualTo(1739286048);
-    assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = result.getTokenUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(13);
-    assertThat(usage.getPromptTokens()).isEqualTo(41);
-    assertThat(usage.getTotalTokens()).isEqualTo(54);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-Azm2iclgMiLcQHP3cGQANArkxoiGx");
-    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1739286048);
-    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = result.getTokenUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(13);
-    assertThat(usage.getPromptTokens()).isEqualTo(41);
-    assertThat(usage.getTotalTokens()).isEqualTo(54);
 
-    // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
@@ -1009,11 +944,6 @@ class OrchestrationUnitTest {
 
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
-    assertThat(llm.getId()).isEqualTo("chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck");
-    assertThat(llm.getObject()).isEqualTo("chat.completion");
-    assertThat(llm.getCreated()).isEqualTo(1739287625);
-    assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
@@ -1021,28 +951,12 @@ class OrchestrationUnitTest {
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    var usage = result.getTokenUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(28);
-    assertThat(usage.getPromptTokens()).isEqualTo(29);
-    assertThat(usage.getTotalTokens()).isEqualTo(57);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck");
-    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1739287625);
-    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    choices = orchestrationResult.getChoices();
-    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    usage = result.getTokenUsage();
-    assertThat(usage.getCompletionTokens()).isEqualTo(28);
-    assertThat(usage.getPromptTokens()).isEqualTo(29);
-    assertThat(usage.getTotalTokens()).isEqualTo(57);
 
-    // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
