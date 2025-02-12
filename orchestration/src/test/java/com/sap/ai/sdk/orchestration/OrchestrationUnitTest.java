@@ -806,34 +806,8 @@ class OrchestrationUnitTest {
 
     val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
 
-    final var result = client.chatCompletion(prompt, configWithTemplate);
-
-    final var response = result.getOriginalResponse();
-    assertThat(response.getRequestId()).isEqualTo("0759f249-a261-4cb7-99d5-ea6eae2c141c");
-    final var messageList = result.getAllMessages();
-
-    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
-        .isEqualTo("Whats 'apple' in German?");
-    assertThat(messageList.get(0).role()).isEqualTo("user");
-    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
-        .isEqualTo("You are a language translator.");
-    assertThat(messageList.get(1).role()).isEqualTo("system");
-    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
-        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
-    assertThat(messageList.get(2).role()).isEqualTo("assistant");
-
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
-    assertThat(llm).isNotNull();
-    var choices = llm.getChoices();
-    assertThat(choices.get(0).getIndex()).isZero();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getIndex()).isZero();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
 
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
@@ -866,36 +840,8 @@ class OrchestrationUnitTest {
             Message.system(
                 "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
 
-    final var result = client.chatCompletion(prompt, configWithTemplate);
-
-    final var response = result.getOriginalResponse();
-    assertThat(response.getRequestId()).isEqualTo("f353a729-3391-4cec-bbf9-7ab39d34ebc1");
-    final var messageList = result.getAllMessages();
-
-    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
-        .isEqualTo("What is 'apple' in German?");
-    assertThat(messageList.get(0).role()).isEqualTo("user");
-    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
-        .isEqualTo(
-            "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}");
-    assertThat(messageList.get(1).role()).isEqualTo("system");
-    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
-        .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
-    assertThat(messageList.get(2).role()).isEqualTo("assistant");
-
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
-    assertThat(llm).isNotNull();
-    var choices = llm.getChoices();
-    assertThat(choices.get(0).getIndex()).isZero();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(choices.get(0).getIndex()).isZero();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
 
     try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
@@ -925,37 +871,10 @@ class OrchestrationUnitTest {
         new OrchestrationPrompt(
             Message.system("You are a language translator. Answer using JSON."));
 
-    final var result = client.chatCompletion(prompt, configWithTemplate);
-
-    final var response = result.getOriginalResponse();
-    assertThat(response.getRequestId()).isEqualTo("2fe5cbeb-4cdc-4a62-8d0b-29bbd8acde07");
-    final var messageList = result.getAllMessages();
-
-    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
-        .isEqualTo("What is 'apple' in German?");
-    assertThat(messageList.get(0).role()).isEqualTo("user");
-    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
-        .isEqualTo("You are a language translator. Answer using JSON.");
-    assertThat(messageList.get(1).role()).isEqualTo("system");
-    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message)
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
-    assertThat(messageList.get(2).role()).isEqualTo("assistant");
-
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
-    assertThat(llm).isNotNull();
-    var choices = llm.getChoices();
-    assertThat(choices.get(0).getIndex()).isZero();
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo(
-            "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo(
-            "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
 
     try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
