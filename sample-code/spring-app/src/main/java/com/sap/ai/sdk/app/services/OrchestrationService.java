@@ -423,7 +423,7 @@ public class OrchestrationService {
    *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
-   *     AI Core: Orchestration - Templating</a>
+   *     AI Core: Orchestration - Structured Output</a>
    * @return the assistant response object
    */
   @Nonnull
