@@ -830,8 +830,7 @@ class OrchestrationUnitTest {
 
     val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
 
-    final var result =
-        client.chatCompletion(prompt, configWithTemplate);
+    final var result = client.chatCompletion(prompt, configWithTemplate);
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("0759f249-a261-4cb7-99d5-ea6eae2c141c");
@@ -841,8 +840,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Whats 'apple' in German?");
     assertThat(messageList.get(0).role()).isEqualTo("user");
     assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
-        .isEqualTo(
-            "You are a language translator.");
+        .isEqualTo("You are a language translator.");
     assertThat(messageList.get(1).role()).isEqualTo("system");
     assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
         .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
@@ -904,7 +902,8 @@ class OrchestrationUnitTest {
         Template.create()
             .template(List.of(template.createChatMessage()))
             .responseFormat(
-                ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+                ResponseFormatJsonObject.create()
+                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
 
     val prompt =
@@ -912,8 +911,7 @@ class OrchestrationUnitTest {
             Message.system(
                 "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
 
-    final var result =
-        client.chatCompletion(prompt, configWithTemplate);
+    final var result = client.chatCompletion(prompt, configWithTemplate);
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("f353a729-3391-4cec-bbf9-7ab39d34ebc1");
@@ -985,68 +983,64 @@ class OrchestrationUnitTest {
     val templatingConfig =
         Template.create()
             .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
+            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
 
     val prompt =
         new OrchestrationPrompt(
-            Message.system(
-                "You are a language translator. Answer using JSON."));
+            Message.system("You are a language translator. Answer using JSON."));
 
-    final var result =
-        client.chatCompletion(prompt, configWithTemplate);
+    final var result = client.chatCompletion(prompt, configWithTemplate);
 
     final var response = result.getOriginalResponse();
-assertThat(response.getRequestId()).isEqualTo("2fe5cbeb-4cdc-4a62-8d0b-29bbd8acde07");
-final var messageList = result.getAllMessages();
+    assertThat(response.getRequestId()).isEqualTo("2fe5cbeb-4cdc-4a62-8d0b-29bbd8acde07");
+    final var messageList = result.getAllMessages();
 
-assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
-    .isEqualTo("What is 'apple' in German?");
-assertThat(messageList.get(0).role()).isEqualTo("user");
-assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
-    .isEqualTo(
-        "You are a language translator. Answer using JSON.");
-assertThat(messageList.get(1).role()).isEqualTo("system");
+    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
+        .isEqualTo("What is 'apple' in German?");
+    assertThat(messageList.get(0).role()).isEqualTo("user");
+    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
+        .isEqualTo("You are a language translator. Answer using JSON.");
+    assertThat(messageList.get(1).role()).isEqualTo("system");
     assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
-assertThat(messageList.get(2).role()).isEqualTo("assistant");
+    assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
-var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
-assertThat(llm).isNotNull();
-assertThat(llm.getId()).isEqualTo("chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck");
-assertThat(llm.getObject()).isEqualTo("chat.completion");
-assertThat(llm.getCreated()).isEqualTo(1739287625);
-assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
-var choices = llm.getChoices();
-assertThat(choices.get(0).getIndex()).isZero();
+    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llm).isNotNull();
+    assertThat(llm.getId()).isEqualTo("chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck");
+    assertThat(llm.getObject()).isEqualTo("chat.completion");
+    assertThat(llm.getCreated()).isEqualTo(1739287625);
+    assertThat(llm.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    assertThat(llm.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
+    var choices = llm.getChoices();
+    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
-assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-var usage = result.getTokenUsage();
-assertThat(usage.getCompletionTokens()).isEqualTo(28);
-assertThat(usage.getPromptTokens()).isEqualTo(29);
-assertThat(usage.getTotalTokens()).isEqualTo(57);
-var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck");
-assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-assertThat(orchestrationResult.getCreated()).isEqualTo(1739287625);
-assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-choices = orchestrationResult.getChoices();
-assertThat(choices.get(0).getIndex()).isZero();
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    var usage = result.getTokenUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(28);
+    assertThat(usage.getPromptTokens()).isEqualTo(29);
+    assertThat(usage.getTotalTokens()).isEqualTo(57);
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck");
+    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
+    assertThat(orchestrationResult.getCreated()).isEqualTo(1739287625);
+    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
+    choices = orchestrationResult.getChoices();
+    assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
-assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
-assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
-usage = result.getTokenUsage();
-assertThat(usage.getCompletionTokens()).isEqualTo(28);
-assertThat(usage.getPromptTokens()).isEqualTo(29);
-assertThat(usage.getTotalTokens()).isEqualTo(57);
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
+    usage = result.getTokenUsage();
+    assertThat(usage.getCompletionTokens()).isEqualTo(28);
+    assertThat(usage.getPromptTokens()).isEqualTo(29);
+    assertThat(usage.getTotalTokens()).isEqualTo(57);
 
     // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
