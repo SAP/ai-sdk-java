@@ -57,8 +57,7 @@ public class OrchestrationService {
   public String queryPayments(final @Nonnull String msgUser) {
     final var msgSystem = "You are a helpful chat bot to answer questions on company payments.";
 
-    final var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(MAX_TOKENS, 150));
+    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O.withParam(MAX_TOKENS, 150));
     final var prompt = new OrchestrationPrompt(Message.system(msgSystem), Message.user(msgUser));
     final var result = client.chatCompletion(prompt, config);
     return result.getContent();
