@@ -3,6 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.CONTENT_FILTER;
 import static lombok.AccessLevel.PACKAGE;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
  *
  * @since 1.3.0
  */
+@Beta
 @Data
 @RequiredArgsConstructor(access = PACKAGE)
 public class OpenAiChatCompletionResponse {

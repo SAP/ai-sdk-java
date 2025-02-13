@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionToolChoiceOption;
@@ -21,6 +22,7 @@ import lombok.experimental.Accessors;
  *
  * @since 1.3.0
  */
+@Beta
 @Accessors(fluent = true)
 @Data
 public class OpenAiChatCompletionRequest {

@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestAssistantMessageContent;
 import javax.annotation.Nonnull;
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
  *
  * @since 1.3.0
  */
+@Beta
 @Value
 @Accessors(fluent = true)
 class OpenAiAssistantMessage implements OpenAiMessage {

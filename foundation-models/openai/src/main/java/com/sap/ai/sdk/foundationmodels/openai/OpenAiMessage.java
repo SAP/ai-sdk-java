@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessage;
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import javax.annotation.Nonnull;
  *
  * @since 1.3.0
  */
+@Beta
 public interface OpenAiMessage {
 
   /**

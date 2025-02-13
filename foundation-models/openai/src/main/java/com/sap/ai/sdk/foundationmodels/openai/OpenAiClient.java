@@ -158,6 +158,7 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.3.0
    */
+  @Beta
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
@@ -174,6 +175,7 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.3.0
    */
+  @Beta
   @Nonnull
   public CreateChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -272,6 +274,7 @@ public final class OpenAiClient {
    * @see #streamChatCompletion(String)
    * @since 1.3.0
    */
+  @Beta
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
@@ -288,6 +291,7 @@ public final class OpenAiClient {
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
    * @since 1.3.0
    */
+  @Beta
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -351,6 +355,7 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.3.0
    */
+  @Beta
   @Nonnull
   public EmbeddingsCreate200Response embedding(@Nonnull final String input)
       throws OpenAiClientException {
@@ -367,6 +372,7 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.3.0
    */
+  @Beta
   @Nonnull
   public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest request)
       throws OpenAiClientException {
