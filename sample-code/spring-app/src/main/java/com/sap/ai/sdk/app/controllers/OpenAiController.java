@@ -124,8 +124,7 @@ public class OpenAiController {
   @Nonnull
   Object chatCompletionTools(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response =
-        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
+    final var response = service.chatCompletionTools(12);
     if ("json".equals(format)) {
       return response;
     }
