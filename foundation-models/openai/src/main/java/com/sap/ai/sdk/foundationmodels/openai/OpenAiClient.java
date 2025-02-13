@@ -138,9 +138,7 @@ public final class OpenAiClient {
    * @param prompt a text message.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
-   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
-  @Deprecated(since = "1.3.0")
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
@@ -188,9 +186,7 @@ public final class OpenAiClient {
    * @param parameters the completion request.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
-   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
-  @Deprecated(since = "1.3.0")
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
@@ -326,9 +322,7 @@ public final class OpenAiClient {
    * @param parameters The prompt, including a list of messages.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
-   * @deprecated Use {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)} instead.
    */
-  @Deprecated(since = "1.3.0")
   @Nonnull
   public Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta>
       streamChatCompletionDeltas(@Nonnull final OpenAiChatCompletionParameters parameters)
@@ -386,9 +380,7 @@ public final class OpenAiClient {
    * @param parameters the input text.
    * @return the embedding output
    * @throws OpenAiClientException if the request fails
-   * @deprecated Use {@link #embedding(EmbeddingsCreateRequest)} instead.
    */
-  @Deprecated(since = "1.3.0")
   @Nonnull
   public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
       throws OpenAiClientException {
