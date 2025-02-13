@@ -4,7 +4,9 @@ import com.google.common.annotations.Beta;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
@@ -12,6 +14,7 @@ import lombok.experimental.Tolerate;
 /** Represents a chat message as 'system' to the orchestration service. */
 @Value
 @Accessors(fluent = true)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class SystemMessage implements Message {
 
   /** The role of the assistant. */

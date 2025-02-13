@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- The constructors `UserMessage(MessageContent)` and `SystemMessage(MessageContent)` are removed. Use `Message.user(String)`, `Message.user(ImageItem)`, or `Message.system(String)` instead.
 
 ### ✨ New Functionality
 
