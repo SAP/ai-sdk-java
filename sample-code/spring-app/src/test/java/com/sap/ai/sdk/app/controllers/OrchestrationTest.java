@@ -295,4 +295,27 @@ class OrchestrationTest {
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
+
+  @Test
+  void testResponseFormatJsonSchema() {
+    final var result = service.responseFormatJsonSchema("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":\"German\"");
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":\"Apfel\"");
+  }
+
+  @Test
+  void testResponseFormatJsonObject() {
+    final var result = service.responseFormatJsonObject("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFormatText() {
+    final var result = service.responseFormatText("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
 }
