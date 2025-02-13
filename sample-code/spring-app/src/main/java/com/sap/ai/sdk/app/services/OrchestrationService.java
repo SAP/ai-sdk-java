@@ -4,6 +4,17 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.victools.jsonschema.generator.Option;
+import com.github.victools.jsonschema.generator.OptionPreset;
+import com.github.victools.jsonschema.generator.SchemaGenerator;
+import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
+import com.github.victools.jsonschema.generator.SchemaVersion;
+import com.github.victools.jsonschema.module.jackson.JacksonModule;
+import com.github.victools.jsonschema.module.jackson.JacksonOption;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
@@ -354,18 +365,33 @@ public class OrchestrationService {
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = Message.user("Whats '%s' in German?".formatted(word));
-    val schema =
-        Map.of(
-            "type",
-            "object",
-            "properties",
-            Map.of(
-                "language", Map.of("type", "string"),
-                "translation", Map.of("type", "string")),
-            "required",
-            List.of("language", "translation"),
-            "additionalProperties",
-            false);
+
+    //    Example class
+    class Translation {
+      @JsonProperty(required = true)
+      private String translation;
+
+      @JsonProperty(required = true)
+      private String language;
+    }
+
+    //    Build JSON schema from class
+    JacksonModule module =
+        new JacksonModule(
+            JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
+
+    SchemaGenerator generator =
+        new SchemaGenerator(
+            new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON)
+                .without(Option.SCHEMA_VERSION_INDICATOR)
+                .with(Option.FORBIDDEN_ADDITIONAL_PROPERTIES_BY_DEFAULT)
+                .with(module)
+                .build());
+    JsonNode jsonSchema = generator.generateSchema(Translation.class);
+
+    //    Convert JSON schema to Map
+    val mapper = new ObjectMapper();
+    Map<String, Object> schemaMap = mapper.convertValue(jsonSchema, new TypeReference<>() {});
 
     val templatingConfig =
         Template.create()
@@ -376,7 +402,7 @@ public class OrchestrationService {
                     .jsonSchema(
                         ResponseFormatJsonSchemaJsonSchema.create()
                             .name("translation_response")
-                            .schema(schema)
+                            .schema(schemaMap)
                             .strict(true)
                             .description("Output schema for language translation.")));
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
