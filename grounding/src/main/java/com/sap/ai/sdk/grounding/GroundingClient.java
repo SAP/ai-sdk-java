@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
  *
  * @since 1.3.0
  */
-@Beta
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class GroundingClient {
 
