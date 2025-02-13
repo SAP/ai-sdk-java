@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.grounding;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.grounding.api.PipelinesApi;
 import com.sap.ai.sdk.grounding.api.RetrievalApi;

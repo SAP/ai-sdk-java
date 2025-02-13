@@ -10,16 +10,11 @@ import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.DataRepository;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.Pipeline;
-import com.sap.ai.sdk.grounding.model.PipelinePostRequst;
-import com.sap.ai.sdk.grounding.model.PipelinePostRequstConfiguration;
-import com.sap.ai.sdk.grounding.model.PipelinePostRequstConfigurationSharePoint;
-import com.sap.ai.sdk.grounding.model.PipelinePostRequstConfigurationSharePointSite;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,28 +32,6 @@ class GroundingController {
   private static final RetrievalApi CLIENT_RETRIEVAL = GroundingClient.create().retrieval();
   private static final VectorApi CLIENT_VECTOR = GroundingClient.create().vector();
   private static final String RESOURCE_GROUP = "default";
-
-  /** Create and delete a deployment with the Java specific configuration ID. */
-  @GetMapping("/pipelines/createDelete")
-  Object createAndDeletePipeline(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var config =
-        PipelinePostRequstConfiguration.create()
-            .destination("d069462-001")
-            .sharePoint(
-                PipelinePostRequstConfigurationSharePoint.create()
-                    .site(
-                        PipelinePostRequstConfigurationSharePointSite.create()
-                            .name("site")
-                            .addIncludePathsItem("folder")));
-    final var req = PipelinePostRequst.create().type("MSSharePoint")._configuration(config);
-    final var pipeline = CLIENT_PIPELINES.createPipeline(RESOURCE_GROUP, req);
-    final var del = CLIENT_PIPELINES.deletePipelineById(RESOURCE_GROUP, pipeline.getPipelineId());
-    if ("json".equals(format)) {
-      return pipeline;
-    }
-    return ResponseEntity.ok("Pipeline created and deleted.");
-  }
 
   /**
    * Stop all deployments with the Java specific configuration ID.

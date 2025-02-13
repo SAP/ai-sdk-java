@@ -6,7 +6,6 @@ import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
-import com.sap.ai.sdk.grounding.model.PipelineId;
 import com.sap.ai.sdk.grounding.model.Pipelines;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -16,16 +15,6 @@ class GroundingTest {
   public static final String CONFIG_ID = "67e8d039-c7f1-4179-9f8f-60d158a36b0e";
 
   private static final String JSON_FORMAT = "json";
-
-  @Test
-  void testPipelinesCreateAndDelete() {
-    final var controller = new GroundingController();
-
-    final var response = controller.createAndDeletePipeline(JSON_FORMAT);
-
-    assertThat(response).isInstanceOf(PipelineId.class);
-    assertThat(((PipelineId) response).getPipelineId()).isNotEmpty();
-  }
 
   @Test
   void getPipelinesGetAll() {
