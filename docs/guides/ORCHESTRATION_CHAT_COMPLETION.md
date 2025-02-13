@@ -348,6 +348,7 @@ var schema =
                 "additionalProperties",
                 false);
 
+// Note, that we plan to add more convenient ways to add a JSON schema in the future.
 var templatingConfig =
         Template.create()
                 .template(List.of(template.createChatMessage()))
