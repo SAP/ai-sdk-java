@@ -155,8 +155,19 @@ For SAP internal development, you can also use `SNAPSHOT` builds from the [inter
 
 ### _"How to add a custom header to AI Core requests?"_
 
-Create a [HeaderProvider](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations#about-headerproviders).
+The AI SDK leverages the destination concept from the SAP Cloud SDK to manage the connection to AI Core.
+This opens up a wide range of possibilities to customize the connection, including adding custom headers.
 
+```java
+var service = new AiCoreService();
+var service = service.withBaseDestination(
+        DefaultHttpDestination.fromDestination(service.getBaseDestination())
+          .header("my-header-key", "my-header-value")
+          .build()
+);
+```
+
+For more information, please refer to the [AI Core connectivity guide](./docs/guides/CONNECTING_TO_AICORE.md) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
 
 ### _"There's a vulnerability warning `CVE-2021-41251`?"_
 

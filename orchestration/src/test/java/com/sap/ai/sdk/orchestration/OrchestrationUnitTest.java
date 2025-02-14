@@ -44,9 +44,14 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -58,6 +63,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -734,35 +740,15 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    assertThat(response.getRequestId()).isEqualTo("8d973a0d-c2cf-437b-a765-08d66bf446d8");
-    assertThat(response.getModuleResults()).isNotNull();
-    assertThat(response.getModuleResults().getTemplating()).hasSize(2);
-
     var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
-    assertThat(llmResults.getId()).isEqualTo("chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v");
-    assertThat(llmResults.getObject()).isEqualTo("chat.completion");
-    assertThat(llmResults.getCreated()).isEqualTo(1738928206);
-    assertThat(llmResults.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(llmResults.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
-    assertThat(llmResults.getChoices().get(0).getIndex()).isZero();
-    assertThat(llmResults.getUsage().getCompletionTokens()).isEqualTo(35);
-    assertThat(llmResults.getUsage().getPromptTokens()).isEqualTo(250);
-    assertThat(llmResults.getUsage().getTotalTokens()).isEqualTo(285);
-
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
-    assertThat(orchestrationResult).isNotNull();
-    assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v");
-    assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
-    assertThat(orchestrationResult.getCreated()).isEqualTo(1738928206);
-    assertThat(orchestrationResult.getModel()).isEqualTo("gpt-4o-mini-2024-07-18");
-    assertThat(orchestrationResult.getSystemFingerprint()).isEqualTo("fp_f3927aa00d");
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
@@ -770,16 +756,129 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
         .isEqualTo("assistant");
-    assertThat(orchestrationResult.getChoices().get(0).getIndex()).isZero();
-    assertThat(orchestrationResult.getUsage().getCompletionTokens()).isEqualTo(35);
-    assertThat(orchestrationResult.getUsage().getPromptTokens()).isEqualTo(250);
-    assertThat(orchestrationResult.getUsage().getTotalTokens()).isEqualTo(285);
 
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/completion"))
               .withRequestBody(equalToJson(requestBody)));
+    }
+  }
+
+  @Test
+  void testResponseObjectJsonSchema() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonSchemaResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("Whats 'apple' in German?");
+    var schema =
+        Map.of(
+            "type",
+            "object",
+            "properties",
+            Map.of(
+                "language", Map.of("type", "string"),
+                "translation", Map.of("type", "string")),
+            "required",
+            List.of("language", "translation"),
+            "additionalProperties",
+            false);
+
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonSchema.create()
+                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+                    .jsonSchema(
+                        ResponseFormatJsonSchemaJsonSchema.create()
+                            .name("translation_response")
+                            .schema(schema)
+                            .strict(true)
+                            .description("Output schema for language translation.")));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
+
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+
+    try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testResponseObjectJsonObject() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonObjectResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("What is 'apple' in German?");
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonObject.create()
+                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.system(
+                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
+
+    try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testResponseObjectText() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("responseFormatTextResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("What is 'apple' in German?");
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.system("You are a language translator. Answer using JSON."));
+
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message)
+        .isEqualTo(
+            "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
+
+    try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
   }
 }

@@ -49,6 +49,7 @@ final class ConfigToRequestTransformer {
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
     val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
+    val responseFormat = template instanceof Template t ? t.getResponseFormat() : null;
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(
         prompt.getMessages().stream().map(Message::createChatMessage).toList());
@@ -56,7 +57,7 @@ final class ConfigToRequestTransformer {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return Template.create().template(messagesWithPrompt);
+    return Template.create().template(messagesWithPrompt).responseFormat(responseFormat);
   }
 
   @Nonnull
