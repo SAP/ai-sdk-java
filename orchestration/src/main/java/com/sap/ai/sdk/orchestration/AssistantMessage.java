@@ -3,34 +3,44 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import javax.annotation.Nullable;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import lombok.Getter;
+import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
-@Getter
+@Value
 @Accessors(fluent = true)
-public final class AssistantMessage implements Message {
+public class AssistantMessage implements Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull String content;
+  @Nonnull
+  @Getter(onMethod_ = @Beta)
+  MessageContent content;
 
   /** Tool call if there is any. */
-  @Nullable List<ResponseMessageToolCall> toolCalls = null;
+  @Nullable
+  List<ResponseMessageToolCall> toolCalls = null;
 
   /**
-   * Creates a new assistant message with the given text content.
+   * Creates a new assistant message with the given single message.
    *
-   * @param content the message
+   * @param singleMessage the single message.
    */
-  public AssistantMessage(@Nonnull final String content) {
-    this.content = content;
+  public AssistantMessage(@Nonnull final String singleMessage) {
+    content = new MessageContent(List.of(new TextItem(singleMessage)));
   }
 
   /**
@@ -39,7 +49,7 @@ public final class AssistantMessage implements Message {
    * @param toolCalls list of tool call objects
    */
   public AssistantMessage(@Nonnull final List<ResponseMessageToolCall> toolCalls) {
-    content = "";
+    content = new MessageContent();
     this.toolCalls = toolCalls;
   }
 

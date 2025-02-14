@@ -12,6 +12,8 @@
     - [Data Masking](#data-masking)
     - [Grounding](#grounding)
     - [Stream chat completion](#stream-chat-completion)
+    - [Add images and multiple text inputs to a message](#add-images-and-multiple-text-inputs-to-a-message)
+    - [Set a Response Format](#set-a-response-format)
     - [Set Model Parameters](#set-model-parameters)
     - [Using a Configuration from AI Launchpad](#using-a-configuration-from-ai-launchpad)
 
@@ -258,6 +260,114 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
+
+
+## Add images and multiple text inputs to a message
+
+It's possible to add images and multiple text inputs to a message.
+
+### Add images to a message
+
+An image can be added to a message as follows.
+
+```java
+var message = Message.user("Describe the following image");
+var newMessage = message.withImage("https://url.to/image.jpg");
+```
+
+You can also construct a message with an image directly, using the `ImageItem` class.
+
+```java
+var message = Message.user(new ImageItem("https://url.to/image.jpg"));
+```
+
+Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
+
+```java
+var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailLevel.LOW);
+```
+Note, that currently only user messages are supported for image attachments.
+
+### Add multiple text inputs to a message
+
+It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can add additional text inputs as follows.
+
+```java
+var message = Message.user("What is chess about?");
+var newMessage = message.withText("Answer in two sentences.");
+```
+
+Note, that only user and system messages are supported for multiple text inputs.
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+
+## Set a Response Format
+
+It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT`, `JSON_SCHEMA`, and `TEXT`, where `TEXT` is the default behavior.
+
+### JSON_OBJECT
+
+Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
+
+```java
+var template = Message.user("What is 'apple' in German?");
+var templatingConfig =
+        Template.create()
+                .template(List.of(template.createChatMessage()))
+                .responseFormat(
+                        ResponseFormatJsonObject.create()
+                                .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+var prompt =
+        new OrchestrationPrompt(
+                Message.system(
+                        "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+var response = client.chatCompletion(prompt, configWithTemplate).getContent();
+```
+Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
+
+
+### JSON_SCHEMA
+
+If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. in order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
+
+```java
+var template = Message.user("Whats '%s' in German?".formatted(word));
+var schema =
+        Map.of(
+                "type",
+                "object",
+                "properties",
+                Map.of(
+                        "language", Map.of("type", "string"),
+                        "translation", Map.of("type", "string")),
+                "required",
+                List.of("language", "translation"),
+                "additionalProperties",
+                false);
+
+// Note, that we plan to add more convenient ways to add a JSON schema in the future.
+var templatingConfig =
+        Template.create()
+                .template(List.of(template.createChatMessage()))
+                .responseFormat(
+                        ResponseFormatJsonSchema.create()
+                                .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+                                .jsonSchema(
+                                        ResponseFormatJsonSchemaJsonSchema.create()
+                                                .name("translation_response")
+                                                .schema(schema)
+                                                .strict(true)
+                                                .description("Output schema for language translation.")));
+var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+var prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
+var response = client.chatCompletion(prompt, configWithTemplate).getContent();
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
 
 ## Set model parameters
 

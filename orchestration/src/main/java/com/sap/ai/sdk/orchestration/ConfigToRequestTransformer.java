@@ -49,6 +49,7 @@ final class ConfigToRequestTransformer {
      */
     val template = config instanceof Template t ? t : Template.create().template();
     val messages = template.getTemplate();
+    val responseFormat = template.getResponseFormat();
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(
         prompt.getMessages().stream().map(Message::createChatMessage).toList());
@@ -56,7 +57,7 @@ final class ConfigToRequestTransformer {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return Template.create().template(messagesWithPrompt).tools(template.getTools());
+    return Template.create().template(messagesWithPrompt).tools(template.getTools()).responseFormat(responseFormat);
   }
 
   @Nonnull

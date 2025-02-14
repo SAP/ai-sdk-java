@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -184,6 +185,52 @@ class OrchestrationController {
   Object grounding(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.grounding("What does Joule do?");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/image")
+  @Nonnull
+  Object imageInput(@RequestParam(value = "format", required = false) final String format) {
+    final var response =
+        service.imageInput(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/multiString")
+  @Nonnull
+  Object multiStringInput(@RequestParam(value = "format", required = false) final String format) {
+    final var response =
+        service.multiStringInput(
+            List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"));
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/responseFormatJsonSchema")
+  @Nonnull
+  Object responseFormatJsonSchema(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.responseFormatJsonSchema("apple");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/responseFormatJsonObject")
+  @Nonnull
+  Object responseFormatJsonObject(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.responseFormatJsonObject("apple");
     if ("json".equals(format)) {
       return response;
     }

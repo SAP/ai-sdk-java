@@ -8,10 +8,16 @@ import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +72,7 @@ class OrchestrationTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
-    assertThat(result.getAllMessages().get(0).content())
+    assertThat(((TextItem) result.getAllMessages().get(0).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
@@ -247,5 +253,69 @@ class OrchestrationTest {
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
     assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testImageInput() {
+    final var result =
+        service
+            .imageInput(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testImageInputBase64() {
+    String dataUrl = "";
+    try {
+      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
+      try (InputStream inputStream = url.openStream()) {
+        byte[] imageBytes = inputStream.readAllBytes();
+        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
+        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+        dataUrl = "data:image/jpeg;base64," + encodedString;
+      }
+    } catch (Exception e) {
+      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
+    }
+    final var result = service.imageInput(dataUrl).getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testMultiStringInput() {
+    final var result =
+        service
+            .multiStringInput(
+                List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFormatJsonSchema() {
+    final var result = service.responseFormatJsonSchema("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":\"German\"");
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":\"Apfel\"");
+  }
+
+  @Test
+  void testResponseFormatJsonObject() {
+    final var result = service.responseFormatJsonObject("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFormatText() {
+    final var result = service.responseFormatText("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }
