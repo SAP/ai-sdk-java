@@ -2,7 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionStreamResponse;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

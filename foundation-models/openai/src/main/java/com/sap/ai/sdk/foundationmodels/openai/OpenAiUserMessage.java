@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
 import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;

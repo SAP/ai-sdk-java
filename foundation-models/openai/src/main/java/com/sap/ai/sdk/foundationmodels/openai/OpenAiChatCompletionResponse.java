@@ -1,12 +1,12 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.CONTENT_FILTER;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.CONTENT_FILTER;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponse;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionResponseChoicesInner;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.Data;

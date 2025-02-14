@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessage;
 import javax.annotation.Nonnull;
 
 /**

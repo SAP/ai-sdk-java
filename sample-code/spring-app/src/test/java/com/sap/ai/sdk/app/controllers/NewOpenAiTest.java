@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
-import static com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionResponseMessageRole.ASSISTANT;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,7 @@ import com.sap.ai.sdk.app.services.NewOpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CompletionUsage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.extern.slf4j.Slf4j;

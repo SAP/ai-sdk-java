@@ -1,12 +1,12 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionStreamOptions;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionToolChoiceOption;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequestAllOfResponseFormat;
-import com.sap.ai.sdk.foundationmodels.openai.model2.CreateChatCompletionRequestAllOfStop;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;

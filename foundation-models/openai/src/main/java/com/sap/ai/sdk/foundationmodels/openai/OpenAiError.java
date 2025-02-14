@@ -3,7 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ErrorResponse;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ErrorResponse;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
