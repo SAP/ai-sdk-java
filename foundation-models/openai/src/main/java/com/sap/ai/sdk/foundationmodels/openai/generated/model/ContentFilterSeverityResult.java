@@ -51,7 +51,10 @@ public class ContentFilterSeverityResult
     MEDIUM("medium"),
 
     /** The HIGH option of this ContentFilterSeverityResult */
-    HIGH("high");
+    HIGH("high"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ContentFilterSeverityResult */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -95,7 +98,7 @@ public class ContentFilterSeverityResult
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

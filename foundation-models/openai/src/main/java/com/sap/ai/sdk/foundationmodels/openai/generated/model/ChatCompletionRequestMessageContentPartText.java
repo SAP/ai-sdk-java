@@ -43,7 +43,10 @@ public class ChatCompletionRequestMessageContentPartText
   /** The type of the content part. */
   public enum TypeEnum {
     /** The TEXT option of this ChatCompletionRequestMessageContentPartText */
-    TEXT("text");
+    TEXT("text"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionRequestMessageContentPartText */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -87,7 +90,7 @@ public class ChatCompletionRequestMessageContentPartText
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

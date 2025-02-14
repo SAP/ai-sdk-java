@@ -60,7 +60,8 @@ public class CreateChatCompletionStreamResponse implements ChatCompletionsCreate
   public enum ObjectEnum {
     /** The CHAT_COMPLETION_CHUNK option of this CreateChatCompletionStreamResponse */
     CHAT_COMPLETION_CHUNK("chat.completion.chunk"),
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponse */
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionStreamResponse */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;

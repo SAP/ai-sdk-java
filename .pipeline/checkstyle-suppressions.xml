@@ -8,7 +8,7 @@
   <!-- Suppress generated clients -->
   <suppress files="[/\\]core[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]core[/\\]model[/\\]" checks=".*"/>
-  <suppress files="[/\\]openai[/\\]model2[/\\]" checks=".*"/>
+  <suppress files="[/\\]openai[/\\]generated[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]orchestration[/\\]model[/\\]" checks=".*"/>
   <!-- Suppress TODOs -->
   <suppress files="OpenAiChatMessage.java" checks="TodoComment" lines="257,7" />

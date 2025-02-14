@@ -39,7 +39,10 @@ public class ResponseFormatText implements CreateChatCompletionRequestAllOfRespo
   /** The type of response format being defined: &#x60;text&#x60; */
   public enum TypeEnum {
     /** The TEXT option of this ResponseFormatText */
-    TEXT("text");
+    TEXT("text"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatText */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -83,7 +86,7 @@ public class ResponseFormatText implements CreateChatCompletionRequestAllOfRespo
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

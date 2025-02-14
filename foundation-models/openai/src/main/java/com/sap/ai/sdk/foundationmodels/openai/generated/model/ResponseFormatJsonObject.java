@@ -39,7 +39,10 @@ public class ResponseFormatJsonObject implements CreateChatCompletionRequestAllO
   /** The type of response format being defined: &#x60;json_object&#x60; */
   public enum TypeEnum {
     /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object");
+    JSON_OBJECT("json_object"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -83,7 +86,7 @@ public class ResponseFormatJsonObject implements CreateChatCompletionRequestAllO
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

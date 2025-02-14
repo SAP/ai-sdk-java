@@ -40,7 +40,12 @@ public class ChatCompletionRequestMessageContentPartRefusal
   /** The type of the content part. */
   public enum TypeEnum {
     /** The REFUSAL option of this ChatCompletionRequestMessageContentPartRefusal */
-    REFUSAL("refusal");
+    REFUSAL("refusal"),
+
+    /**
+     * The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionRequestMessageContentPartRefusal
+     */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -84,7 +89,7 @@ public class ChatCompletionRequestMessageContentPartRefusal
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

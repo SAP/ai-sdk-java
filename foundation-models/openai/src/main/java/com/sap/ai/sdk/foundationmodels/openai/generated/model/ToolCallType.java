@@ -23,7 +23,11 @@ import javax.annotation.Nonnull;
 /** The type of the tool call, in this case &#x60;function&#x60;. */
 @com.google.common.annotations.Beta
 public enum ToolCallType {
-  FUNCTION("function");
+  /** The FUNCTION option of this ToolCallType. */
+  FUNCTION("function"),
+
+  /** The UNKNOWN_DEFAULT_OPEN_API option of this ToolCallType. */
+  UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
@@ -61,6 +65,6 @@ public enum ToolCallType {
         return b;
       }
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }

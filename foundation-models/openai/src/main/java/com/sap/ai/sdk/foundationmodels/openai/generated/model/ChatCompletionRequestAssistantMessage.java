@@ -47,7 +47,10 @@ public class ChatCompletionRequestAssistantMessage implements ChatCompletionRequ
   /** The role of the messages author, in this case &#x60;assistant&#x60;. */
   public enum RoleEnum {
     /** The ASSISTANT option of this ChatCompletionRequestAssistantMessage */
-    ASSISTANT("assistant");
+    ASSISTANT("assistant"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionRequestAssistantMessage */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -91,7 +94,7 @@ public class ChatCompletionRequestAssistantMessage implements ChatCompletionRequ
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

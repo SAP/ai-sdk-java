@@ -42,7 +42,10 @@ public class ChatCompletionRequestSystemMessage implements ChatCompletionRequest
   /** The role of the messages author, in this case &#x60;system&#x60;. */
   public enum RoleEnum {
     /** The SYSTEM option of this ChatCompletionRequestSystemMessage */
-    SYSTEM("system");
+    SYSTEM("system"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionRequestSystemMessage */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -86,7 +89,7 @@ public class ChatCompletionRequestSystemMessage implements ChatCompletionRequest
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

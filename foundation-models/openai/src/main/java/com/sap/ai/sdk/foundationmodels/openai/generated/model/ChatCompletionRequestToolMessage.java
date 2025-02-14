@@ -39,7 +39,10 @@ public class ChatCompletionRequestToolMessage implements ChatCompletionRequestMe
   /** The role of the messages author, in this case &#x60;tool&#x60;. */
   public enum RoleEnum {
     /** The TOOL option of this ChatCompletionRequestToolMessage */
-    TOOL("tool");
+    TOOL("tool"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionRequestToolMessage */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -83,7 +86,7 @@ public class ChatCompletionRequestToolMessage implements ChatCompletionRequestMe
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

@@ -59,7 +59,10 @@ public class ChatCompletionStreamResponseDelta
     ASSISTANT("assistant"),
 
     /** The TOOL option of this ChatCompletionStreamResponseDelta */
-    TOOL("tool");
+    TOOL("tool"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionStreamResponseDelta */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -103,7 +106,7 @@ public class ChatCompletionStreamResponseDelta
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

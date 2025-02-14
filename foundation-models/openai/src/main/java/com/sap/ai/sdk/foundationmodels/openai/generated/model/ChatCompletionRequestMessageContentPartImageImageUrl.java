@@ -52,7 +52,13 @@ public class ChatCompletionRequestMessageContentPartImageImageUrl
     LOW("low"),
 
     /** The HIGH option of this ChatCompletionRequestMessageContentPartImageImageUrl */
-    HIGH("high");
+    HIGH("high"),
+
+    /**
+     * The UNKNOWN_DEFAULT_OPEN_API option of this
+     * ChatCompletionRequestMessageContentPartImageImageUrl
+     */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -96,7 +102,7 @@ public class ChatCompletionRequestMessageContentPartImageImageUrl
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

@@ -57,7 +57,10 @@ public class CreateChatCompletionResponseChoicesInner
     CONTENT_FILTER("content_filter"),
 
     /** The FUNCTION_CALL option of this CreateChatCompletionResponseChoicesInner */
-    FUNCTION_CALL("function_call");
+    FUNCTION_CALL("function_call"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this CreateChatCompletionResponseChoicesInner */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -101,7 +104,7 @@ public class CreateChatCompletionResponseChoicesInner
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 

@@ -45,7 +45,10 @@ public class ChatCompletionMessageToolCallChunk
   /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
   public enum TypeEnum {
     /** The FUNCTION option of this ChatCompletionMessageToolCallChunk */
-    FUNCTION("function");
+    FUNCTION("function"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionMessageToolCallChunk */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
@@ -89,7 +92,7 @@ public class ChatCompletionMessageToolCallChunk
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return UNKNOWN_DEFAULT_OPEN_API;
     }
   }
 
