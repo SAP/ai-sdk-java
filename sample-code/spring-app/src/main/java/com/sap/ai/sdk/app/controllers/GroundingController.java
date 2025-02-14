@@ -92,7 +92,7 @@ class GroundingController {
    *
    * <p>Only UNKNOWN and STOPPED deployments can be DELETED
    */
-  @GetMapping("/retrieval/repositories")
+  @GetMapping("/retrieval/search")
   Object searchInDocuments(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var filter =
@@ -191,10 +191,10 @@ class GroundingController {
     final var ids = documents.getResources().stream().map(DocumentWithoutChunks::getId).toList();
     log.info("Deleting collection {} with {} documents: {}", collectionId, ids.size(), ids);
 
-    for (UUID documentId : ids) {
+    for (final var documentId : ids) {
       final var del = CLIENT_VECTOR.deleteDocumentById(RESOURCE_GROUP, collectionId, documentId);
       if (del.getStatusCode() >= 400) {
-        final var msg = "Document {} could not be deleted, status code [{}], headers: ";
+        final var msg = "Document {} could not be deleted, status code [{}], headers: {}";
         log.error(msg, documentId, del.getStatusCode(), del.getHeaders());
         throw new IllegalStateException("Document deletion failed for id " + documentId);
       }

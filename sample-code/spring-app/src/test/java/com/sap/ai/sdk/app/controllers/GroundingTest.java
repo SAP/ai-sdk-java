@@ -47,7 +47,7 @@ class GroundingTest {
     final var repositoryCount = ((DataRepositories) result).getCount();
 
     assertThat(repositoryCount).isGreaterThan(0);
-    for (var repository : repositoryList) {
+    for (final var repository : repositoryList) {
       assertThat(repository.getId()).isNotNull();
       assertThat(repository.getTitle()).isNotNull();
     }
@@ -98,14 +98,14 @@ class GroundingTest {
 
   private void assertDocumentSearchResult(RetievalSearchResults search, String dayOfWeek) {
     assertThat(search.getResults()).isNotEmpty();
-    for (var resultsByFilter : search.getResults()) {
+    for (final var resultsByFilter : search.getResults()) {
       assertThat(resultsByFilter.getFilterId()).isEqualTo("question");
       assertThat(resultsByFilter.getResults()).isNotEmpty();
-      for (var result : resultsByFilter.getResults()) {
+      for (final var result : resultsByFilter.getResults()) {
         assertThat(result.getDataRepository().getDocuments()).isNotEmpty();
-        for (var document : result.getDataRepository().getDocuments()) {
+        for (final var document : result.getDataRepository().getDocuments()) {
           assertThat(document.getChunks()).isNotEmpty();
-          for (var chunk : document.getChunks()) {
+          for (final var chunk : document.getChunks()) {
             assertThat(chunk.getContent()).contains(dayOfWeek);
           }
         }
@@ -122,7 +122,7 @@ class GroundingTest {
     final var collectionsCount = ((CollectionsListResponse) result).getCount();
 
     assertThat(collectionsCount).isGreaterThan(0);
-    for (var collection : collectionsList) {
+    for (final var collection : collectionsList) {
       assertThat(collection.getId()).isNotNull();
       assertThat(collection.getTitle()).isNotEmpty();
       assertThat(collection.getEmbeddingConfig()).isNotNull();
@@ -138,7 +138,7 @@ class GroundingTest {
     final var chunks = ((DocumentResponse) result).getChunks();
 
     assertThat(chunks).isNotEmpty();
-    for (var chunk : chunks) {
+    for (final var chunk : chunks) {
       assertThat(chunk.getContent()).isNotEmpty();
       assertThat(chunk.getMetadata()).isNotNull().isNotEmpty();
     }
