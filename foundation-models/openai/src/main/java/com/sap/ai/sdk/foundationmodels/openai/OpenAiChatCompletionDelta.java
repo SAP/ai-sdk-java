@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Represents an OpenAI chat completion output delta for streaming.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Beta
 @Data

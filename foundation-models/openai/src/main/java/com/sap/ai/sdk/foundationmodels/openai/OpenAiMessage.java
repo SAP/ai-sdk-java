@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 /**
  * Interface representing convenience wrappers of chat message to the openai service.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Beta
 public interface OpenAiMessage {

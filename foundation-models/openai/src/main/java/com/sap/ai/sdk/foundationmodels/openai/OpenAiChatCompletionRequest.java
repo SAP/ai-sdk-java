@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 /**
  * Represents a request for OpenAI chat completion, including conversation messages and parameters.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Beta
 @Accessors(fluent = true)

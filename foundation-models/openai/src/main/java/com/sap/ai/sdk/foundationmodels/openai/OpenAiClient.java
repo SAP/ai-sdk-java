@@ -156,7 +156,7 @@ public final class OpenAiClient {
    * @param request the completion request.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
-   * @since 1.3.0
+   * @since 1.4.0
    */
   @Beta
   @Nonnull
@@ -173,7 +173,7 @@ public final class OpenAiClient {
    * @param request the completion request.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
-   * @since 1.3.0
+   * @since 1.4.0
    */
   @Beta
   @Nonnull
@@ -272,7 +272,7 @@ public final class OpenAiClient {
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    * @see #streamChatCompletion(String)
-   * @since 1.3.0
+   * @since 1.4.0
    */
   @Beta
   @Nonnull
@@ -289,7 +289,7 @@ public final class OpenAiClient {
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
-   * @since 1.3.0
+   * @since 1.4.0
    */
   @Beta
   @Nonnull
@@ -353,7 +353,7 @@ public final class OpenAiClient {
    * @param input the input text.
    * @return the embedding output
    * @throws OpenAiClientException if the request fails
-   * @since 1.3.0
+   * @since 1.4.0
    */
   @Beta
   @Nonnull
@@ -370,7 +370,7 @@ public final class OpenAiClient {
    * @param request the request with input text.
    * @return the embedding output
    * @throws OpenAiClientException if the request fails
-   * @since 1.3.0
+   * @since 1.4.0
    */
   @Beta
   @Nonnull

@@ -13,7 +13,7 @@ import lombok.experimental.Delegate;
 /**
  * Represents an error response from the OpenAI API.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Beta
 @Value

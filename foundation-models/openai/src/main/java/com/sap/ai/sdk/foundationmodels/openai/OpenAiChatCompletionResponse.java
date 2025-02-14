@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Represents the output of an OpenAI chat completion. *
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Beta
 @Data

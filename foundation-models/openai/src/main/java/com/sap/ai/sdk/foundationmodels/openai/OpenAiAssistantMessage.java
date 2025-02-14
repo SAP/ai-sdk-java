@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * Represents a chat message as 'assistant' to OpenAI service.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Beta
 @Value
