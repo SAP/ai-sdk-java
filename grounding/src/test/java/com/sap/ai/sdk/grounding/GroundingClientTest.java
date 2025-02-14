@@ -33,7 +33,7 @@ public class GroundingClientTest {
 
   @Test
   void testPipelines() {
-    final PipelinesApi api = GroundingClient.create(SERVICE).pipelines();
+    final PipelinesApi api = new GroundingClient(SERVICE).pipelines();
 
     final Pipelines allPipelines = api.getAllPipelines("reosurceGroup");
     assertThat(allPipelines).isNotNull();
@@ -42,7 +42,7 @@ public class GroundingClientTest {
 
   @Test
   void testVector() {
-    final VectorApi api = GroundingClient.create(SERVICE).vector();
+    final VectorApi api = new GroundingClient(SERVICE).vector();
 
     final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
     assertThat(collections).isNotNull();
@@ -107,7 +107,7 @@ public class GroundingClientTest {
 
   @Test
   void testRetrieval() {
-    final RetrievalApi api = GroundingClient.create(SERVICE).retrieval();
+    final RetrievalApi api = new GroundingClient(SERVICE).retrieval();
 
     DataRepositories repositories = api.getDataRepositories("reosurceGroup");
     assertThat(repositories).isNotNull();

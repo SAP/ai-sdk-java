@@ -45,9 +45,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/grounding")
 class GroundingController {
 
-  private static final PipelinesApi CLIENT_PIPELINES = GroundingClient.create().pipelines();
-  private static final RetrievalApi CLIENT_RETRIEVAL = GroundingClient.create().retrieval();
-  private static final VectorApi CLIENT_VECTOR = GroundingClient.create().vector();
+  private static final PipelinesApi CLIENT_PIPELINES = new GroundingClient().pipelines();
+  private static final RetrievalApi CLIENT_RETRIEVAL = new GroundingClient().retrieval();
+  private static final VectorApi CLIENT_VECTOR = new GroundingClient().vector();
   private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
 
   /**

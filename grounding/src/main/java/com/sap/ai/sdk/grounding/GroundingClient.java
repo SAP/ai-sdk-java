@@ -6,53 +6,36 @@ import com.sap.ai.sdk.grounding.api.RetrievalApi;
 import com.sap.ai.sdk.grounding.api.VectorApi;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Tolerate;
 
 /**
  * Service class for the Grounding APIs.
  *
  * @since 1.3.0
  */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+@Getter(value = AccessLevel.PROTECTED)
 public class GroundingClient {
-
-  final AiCoreService aiCoreService;
-  final String basePath;
+  @Nonnull private final AiCoreService service;
+  @Nonnull private final String basePath;
 
   static final String DEFAULT_BASE_PATH = "lm/document-grounding/";
 
-  /**
-   * Create a new instance of the GroundingService.
-   *
-   * @return A new instance of the GroundingService.
-   */
-  @Nonnull
-  public static GroundingClient create() {
-    return create(new AiCoreService());
+  /** Default constructor. */
+  @Tolerate
+  public GroundingClient() {
+    this(new AiCoreService());
   }
 
   /**
-   * Create a new instance of the GroundingService.
+   * Constructor with custom AI Core service instance.
    *
-   * @param aiCoreService The AiCoreService instance to use.
-   * @return A new instance of the GroundingService.
+   * @param service The instance of AI Core service
    */
-  @Nonnull
-  public static GroundingClient create(@Nonnull final AiCoreService aiCoreService) {
-    return create(aiCoreService, DEFAULT_BASE_PATH);
-  }
-
-  /**
-   * Create a new instance of the GroundingService.
-   *
-   * @param aiCoreService The AiCoreService instance to use.
-   * @param basePath The base path to use for the API calls.
-   * @return A new instance of the GroundingService.
-   */
-  @Nonnull
-  public static GroundingClient create(
-      @Nonnull final AiCoreService aiCoreService, @Nonnull final String basePath) {
-    return new GroundingClient(aiCoreService, basePath);
+  public GroundingClient(final @Nonnull AiCoreService service) {
+    this(service, DEFAULT_BASE_PATH);
   }
 
   /**
@@ -62,7 +45,7 @@ public class GroundingClient {
    */
   @Nonnull
   public PipelinesApi pipelines() {
-    return new PipelinesApi(aiCoreService.getApiClient().setBasePath(basePath));
+    return new PipelinesApi(getService().getApiClient().setBasePath(getBasePath()));
   }
 
   /**
@@ -72,7 +55,7 @@ public class GroundingClient {
    */
   @Nonnull
   public VectorApi vector() {
-    return new VectorApi(aiCoreService.getApiClient().setBasePath(basePath));
+    return new VectorApi(getService().getApiClient().setBasePath(getBasePath()));
   }
 
   /**
@@ -82,6 +65,6 @@ public class GroundingClient {
    */
   @Nonnull
   public RetrievalApi retrieval() {
-    return new RetrievalApi(aiCoreService.getApiClient().setBasePath(basePath));
+    return new RetrievalApi(getService().getApiClient().setBasePath(getBasePath()));
   }
 }
