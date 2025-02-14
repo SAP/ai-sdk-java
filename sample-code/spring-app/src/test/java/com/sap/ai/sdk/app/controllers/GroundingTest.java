@@ -1,12 +1,19 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
+import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
 import com.sap.ai.sdk.grounding.model.Pipelines;
+import com.sap.ai.sdk.grounding.model.RetievalSearchResults;
+import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -78,6 +85,65 @@ class GroundingTest {
     for (var document : documentsList) {
       assertThat(document.getId()).isNotNull();
     }
+  }
+
+  @Test
+  void testCreateDeleteCollection() {
+    final var controller = new GroundingController();
+
+    // (1) CREATE COLLECTION
+    final var collectionId = controller.createCollection(JSON_FORMAT);
+    final var collectionUuid = UUID.fromString(collectionId);
+    assertThat(collectionId).isNotNull();
+
+    // (2) SANITY CHECK: NO DOCUMENTS
+    final var documentsEmpty = controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT);
+    assertThat(documentsEmpty).isInstanceOf(Documents.class);
+    assertThat(((Documents) documentsEmpty).getCount()).isEqualTo(0);
+    assertThat(((Documents) documentsEmpty).getResources()).isNotNull().isEmpty();
+
+    // (3) UPLOAD A DOCUMENT
+    final var documentCreated = controller.createDocument(collectionUuid, JSON_FORMAT);
+    assertThat(documentCreated).isInstanceOf(DocumentsListResponse.class);
+    assertThat(((DocumentsListResponse) documentCreated).getDocuments()).isNotNull().hasSize(1);
+
+    // (4) SEARCH FOR DOCUMENTS
+    Object search = controller.searchInDocuments(JSON_FORMAT);
+    final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+    assertThat(search).isInstanceOf(RetievalSearchResults.class);
+    assertThat(((RetievalSearchResults) search).getResults())
+        .isNotNull()
+        .isNotEmpty()
+        .allSatisfy(
+            r ->
+                assertThat(r.getResults())
+                    .isNotNull()
+                    .isNotEmpty()
+                    .allSatisfy(
+                        doc ->
+                            assertThat(doc.getDataRepository().getDocuments())
+                                .isNotNull()
+                                .isNotEmpty()
+                                .allSatisfy(
+                                    m ->
+                                        assertThat(m.getChunks())
+                                            .isNotNull()
+                                            .isNotEmpty()
+                                            .allSatisfy(
+                                                chunk ->
+                                                    assertThat(chunk.getContent())
+                                                        .isNotNull()
+                                                        .contains(dayOfWeek)))));
+
+    // (5) DELETE COLLECTION
+    Object deletion = controller.deleteDocuments(collectionUuid, JSON_FORMAT);
+    assertThat(deletion).isInstanceOf(OpenApiResponse.class);
+    assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
+
+    // (6) SANITY CHECK: NO COLLECTION
+    assertThatThrownBy(() -> controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT))
+        .hasMessageContaining("404 Not Found");
   }
 
   @Test
