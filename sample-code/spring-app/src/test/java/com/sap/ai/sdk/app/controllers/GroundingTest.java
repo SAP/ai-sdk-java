@@ -54,7 +54,66 @@ class GroundingTest {
   }
 
   @Test
-  void getCollectionsGetAll() {
+  void testCreateDeleteCollection() {
+    final var controller = new GroundingController();
+
+    // (1) CREATE COLLECTION
+    final var collectionId = controller.createCollection(JSON_FORMAT);
+    final var collectionUuid = UUID.fromString(collectionId);
+    assertThat(collectionId).isNotNull();
+
+    // (1.1) TEST COLLECTION LOOKUP
+    this.testCollectionsGetAll();
+
+    // (2) SANITY CHECK: NO DOCUMENTS
+    final var documentsEmpty = controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT);
+    assertThat(documentsEmpty).isInstanceOf(Documents.class);
+    assertThat(((Documents) documentsEmpty).getCount()).isEqualTo(0);
+    assertThat(((Documents) documentsEmpty).getResources()).isNotNull().isEmpty();
+
+    // (3) UPLOAD A DOCUMENT
+    final var documentsCreated = controller.createDocument(collectionUuid, JSON_FORMAT);
+    assertThat(documentsCreated).isInstanceOf(DocumentsListResponse.class);
+    final var document = ((DocumentsListResponse) documentsCreated).getDocuments();
+    assertThat(document).isNotNull().hasSize(1);
+
+    // (3.1) TEST DOCUMENT LOOKUP
+    this.testGetDocumentById(collectionUuid, document.get(0).getId());
+
+    // (4) SEARCH FOR DOCUMENTS
+    Object search = controller.searchInDocuments(JSON_FORMAT);
+    assertThat(search).isInstanceOf(RetievalSearchResults.class);
+    final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+    this.assertDocumentSearchResult((RetievalSearchResults) search, dayOfWeek);
+
+    // (5) DELETE COLLECTION
+    Object deletion = controller.deleteDocuments(collectionUuid, JSON_FORMAT);
+    assertThat(deletion).isInstanceOf(OpenApiResponse.class);
+    assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
+
+    // (6) SANITY CHECK: NO COLLECTION
+    assertThatThrownBy(() -> controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT))
+        .hasMessageContaining("404 Not Found");
+  }
+
+  private void assertDocumentSearchResult(RetievalSearchResults search, String dayOfWeek) {
+    assertThat(search.getResults()).isNotEmpty();
+    for (var resultsByFilter : search.getResults()) {
+      assertThat(resultsByFilter.getFilterId()).isEqualTo("question");
+      assertThat(resultsByFilter.getResults()).isNotEmpty();
+      for (var result : resultsByFilter.getResults()) {
+        assertThat(result.getDataRepository().getDocuments()).isNotEmpty();
+        for (var document : result.getDataRepository().getDocuments()) {
+          assertThat(document.getChunks()).isNotEmpty();
+          for (var chunk : document.getChunks()) {
+            assertThat(chunk.getContent()).contains(dayOfWeek);
+          }
+        }
+      }
+    }
+  }
+
+  void testCollectionsGetAll() {
     final var controller = new GroundingController();
 
     final var result = controller.getAllCollections(JSON_FORMAT);
@@ -71,87 +130,9 @@ class GroundingTest {
     }
   }
 
-  @Test
-  void testGetDocuments() {
+  void testGetDocumentById(UUID collectionId, UUID documentId) {
     final var controller = new GroundingController();
 
-    UUID collectionId = UUID.fromString("6ebdb977-f9f8-4200-8849-6559b4cff311");
-    final var result = controller.getDocumentsByCollectionId(collectionId, JSON_FORMAT);
-    assertThat(result).isInstanceOf(Documents.class);
-    final var documentsList = ((Documents) result).getResources();
-    final var documentsCount = ((Documents) result).getCount();
-
-    assertThat(documentsCount).isGreaterThan(0);
-    for (var document : documentsList) {
-      assertThat(document.getId()).isNotNull();
-    }
-  }
-
-  @Test
-  void testCreateDeleteCollection() {
-    final var controller = new GroundingController();
-
-    // (1) CREATE COLLECTION
-    final var collectionId = controller.createCollection(JSON_FORMAT);
-    final var collectionUuid = UUID.fromString(collectionId);
-    assertThat(collectionId).isNotNull();
-
-    // (2) SANITY CHECK: NO DOCUMENTS
-    final var documentsEmpty = controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT);
-    assertThat(documentsEmpty).isInstanceOf(Documents.class);
-    assertThat(((Documents) documentsEmpty).getCount()).isEqualTo(0);
-    assertThat(((Documents) documentsEmpty).getResources()).isNotNull().isEmpty();
-
-    // (3) UPLOAD A DOCUMENT
-    final var documentCreated = controller.createDocument(collectionUuid, JSON_FORMAT);
-    assertThat(documentCreated).isInstanceOf(DocumentsListResponse.class);
-    assertThat(((DocumentsListResponse) documentCreated).getDocuments()).isNotNull().hasSize(1);
-
-    // (4) SEARCH FOR DOCUMENTS
-    Object search = controller.searchInDocuments(JSON_FORMAT);
-    final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-
-    assertThat(search).isInstanceOf(RetievalSearchResults.class);
-    assertThat(((RetievalSearchResults) search).getResults())
-        .isNotNull()
-        .isNotEmpty()
-        .allSatisfy(
-            r ->
-                assertThat(r.getResults())
-                    .isNotNull()
-                    .isNotEmpty()
-                    .allSatisfy(
-                        doc ->
-                            assertThat(doc.getDataRepository().getDocuments())
-                                .isNotNull()
-                                .isNotEmpty()
-                                .allSatisfy(
-                                    m ->
-                                        assertThat(m.getChunks())
-                                            .isNotNull()
-                                            .isNotEmpty()
-                                            .allSatisfy(
-                                                chunk ->
-                                                    assertThat(chunk.getContent())
-                                                        .isNotNull()
-                                                        .contains(dayOfWeek)))));
-
-    // (5) DELETE COLLECTION
-    Object deletion = controller.deleteDocuments(collectionUuid, JSON_FORMAT);
-    assertThat(deletion).isInstanceOf(OpenApiResponse.class);
-    assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
-
-    // (6) SANITY CHECK: NO COLLECTION
-    assertThatThrownBy(() -> controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT))
-        .hasMessageContaining("404 Not Found");
-  }
-
-  @Test
-  void testGetDocumentById() {
-    final var controller = new GroundingController();
-
-    UUID collectionId = UUID.fromString("6ebdb977-f9f8-4200-8849-6559b4cff311");
-    UUID documentId = UUID.fromString("500d1e93-270e-479e-abbd-83a2291e4f6d");
     final var result = controller.getDocumentChunksById(collectionId, documentId, JSON_FORMAT);
     assertThat(result).isInstanceOf(DocumentResponse.class);
     final var chunks = ((DocumentResponse) result).getChunks();
