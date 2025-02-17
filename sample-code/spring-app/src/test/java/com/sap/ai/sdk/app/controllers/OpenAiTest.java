@@ -75,8 +75,7 @@ class OpenAiTest {
 
   @Test
   void chatCompletionTools() {
-    final var completion =
-        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
+    final var completion = service.chatCompletionTools(12);
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");

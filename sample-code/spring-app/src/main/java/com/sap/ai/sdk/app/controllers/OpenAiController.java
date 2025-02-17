@@ -3,8 +3,8 @@ package com.sap.ai.sdk.app.controllers;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sap.ai.sdk.app.services.NewOpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
+import com.sap.ai.sdk.app.services.OpenAiService;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @RestController
 @SuppressWarnings("unused")
 public class OpenAiController {
-  @Autowired private NewOpenAiService service;
+  @Autowired private OpenAiService service;
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
@@ -48,19 +48,19 @@ public class OpenAiController {
     final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var stream = service.streamChatCompletionDeltas(message);
     final var emitter = new ResponseBodyEmitter();
+    final var totalUsage = new AtomicReference<OpenAiUsage>();
     final Runnable consumeStream =
         () -> {
-          final var totalOutput = new AtomicReference<CompletionUsage>();
-          // try-with-resources ensures the stream is closed
           try (stream) {
             stream.forEach(
                 delta -> {
-                  final var usage = delta.getCompletionUsage(MAPPER);
-                  totalOutput.compareAndExchange(null, usage);
+                  // Instead of getCompletionUsage(MAPPER), we now use getUsage()
+                  final var usage = delta.getUsage();
+                  totalUsage.compareAndExchange(null, usage);
                   send(emitter, delta.getDeltaContent());
                 });
           } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + totalOutput);
+            send(emitter, "\n\n-----Total Usage-----\n\n" + totalUsage.get());
             emitter.complete();
           }
         };
