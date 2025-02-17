@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.CONTENT_FILTER;
+import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.google.common.annotations.Beta;
@@ -9,8 +10,9 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.Value;
 
 /**
  * Represents the output of an OpenAI chat completion. *
@@ -18,8 +20,9 @@ import lombok.RequiredArgsConstructor;
  * @since 1.4.0
  */
 @Beta
-@Data
+@Value
 @RequiredArgsConstructor(access = PACKAGE)
+@Setter(value = NONE)
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
   @Nonnull final CreateChatCompletionResponse originalResponse;

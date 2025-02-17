@@ -181,13 +181,16 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
                 equalToJson(
                     """
                     {
+                      "stream": false,
                       "messages" : [ {
                         "content" : "You are a helpful AI",
                         "role" : "system"
                       }, {
                         "content" : "Hello World! Why is this phrase so famous?",
                         "role" : "user"
-                      } ]
+                      } ],
+                       "logprobs" : false,
+                        "parallel_tool_calls" : true
                     }""")));
   }
 
@@ -210,10 +213,13 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
                 equalToJson(
                     """
                       {
+                           "stream" : false,
                            "messages" : [{
                              "content" : "First message",
                              "role" : "user"
-                           } ]
+                           }],
+                           "logprobs" : false,
+                           "parallel_tool_calls" : true
                       }""")));
 
     var response = client.chatCompletion(new OpenAiChatCompletionRequest("Second message"));
@@ -230,10 +236,13 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
                 equalToJson(
                     """
                       {
+                           "stream" : false,
                            "messages" : [{
                              "content" : "Second message",
                              "role" : "user"
-                           } ]
+                           }],
+                           "logprobs" : false,
+                           "parallel_tool_calls" : true
                       }""")));
   }
 
@@ -500,8 +509,8 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
     final var request =
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?")
-            .tools(List.of(tool))
-            .toolChoice(toolChoice);
+            .withTools(List.of(tool))
+            .withToolChoice(toolChoice);
 
     var response = client.chatCompletion(request).getOriginalResponse();
 
@@ -535,6 +544,7 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
                 equalToJson(
                     """
                   {
+                    "stream" : false,
                     "messages" : [ {
                       "content" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?",
                       "role" : "user"
@@ -559,7 +569,9 @@ class NewOpenAiClientTest extends BaseOpenAiClientTest {
                       "function" : {
                         "name" : "fibonacci"
                       }
-                    }
+                    },
+                    "logprobs" : false,
+                    "parallel_tool_calls" : true
                   }
                   """)));
   }

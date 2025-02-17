@@ -139,8 +139,9 @@ public class NewOpenAiService {
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
                     .formatted(months))
-            .tools(List.of(tool))
-            .toolChoice(toolChoice);
+            .withTools(List.of(tool))
+            .withToolChoice(toolChoice)
+            .withLogprobs(true);
 
     return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
   }

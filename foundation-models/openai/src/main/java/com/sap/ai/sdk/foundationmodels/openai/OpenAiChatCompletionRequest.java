@@ -14,8 +14,12 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Value;
+import lombok.With;
+import lombok.experimental.Tolerate;
 
 /**
  * Represents a request for OpenAI chat completion, including conversation messages and parameters.
@@ -23,76 +27,79 @@ import lombok.experimental.Accessors;
  * @since 1.4.0
  */
 @Beta
-@Accessors(fluent = true)
-@Data
+@Value
+@With
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter(value = AccessLevel.NONE)
 public class OpenAiChatCompletionRequest {
   /** List of messages from the conversation. */
-  @Nonnull private final List<OpenAiMessage> messages = new ArrayList<>();
+  @Nonnull List<OpenAiMessage> messages;
 
   /** Stop sequences for the completion. */
-  @Nullable private List<String> stop;
+  @Nullable List<String> stop;
 
   /** Temperature for the completion. */
-  @Nullable private BigDecimal temperature;
+  @Nullable BigDecimal temperature;
 
   /** Top-p sampling parameter. */
-  @Nullable private BigDecimal topP;
+  @Nullable BigDecimal topP;
 
   /** Whether to stream the completion. */
-  @Nullable private Boolean stream;
+  boolean stream;
 
   /** Maximum number of tokens for the completion. */
-  @Nullable private Integer maxTokens;
+  @Nullable Integer maxTokens;
 
   /** Maximum number of tokens for the completion response. */
-  @Nullable private Integer maxCompletionTokens;
+  @Nullable Integer maxCompletionTokens;
 
   /** Presence penalty for the completion. */
-  @Nullable private BigDecimal presencePenalty;
+  @Nullable BigDecimal presencePenalty;
 
   /** Frequency penalty for the completion. */
-  @Nullable private BigDecimal frequencyPenalty;
+  @Nullable BigDecimal frequencyPenalty;
 
   /** Logit bias for the completion. */
-  @Nullable private Map<String, Integer> logitBias;
+  @Nullable Map<String, Integer> logitBias;
 
   /** User identifier for the completion. */
-  @Nullable private String user;
+  @Nullable String user;
 
   /** Whether to include log probabilities in the response. */
-  @Nullable private Boolean logprobs;
+  boolean logprobs;
 
   /** Number of top log probabilities to include. */
-  @Nullable private Integer topLogprobs;
+  @Nullable Integer topLogprobs;
 
   /** Number of completions to generate. */
-  @Nullable private Integer n;
+  @Nullable Integer n;
 
   /** Whether to allow parallel tool calls. */
-  @Nullable private Boolean parallelToolCalls;
+  boolean parallelToolCalls;
 
   /** Seed for random number generation. */
-  @Nullable private Integer seed;
+  @Nullable Integer seed;
 
   /** Options for streaming the completion. */
-  @Nullable private ChatCompletionStreamOptions streamOptions;
+  @Nullable ChatCompletionStreamOptions streamOptions;
 
   /** Response format for the completion. */
-  @Nullable private CreateChatCompletionRequestAllOfResponseFormat responseFormat;
+  @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
   /** List of tools for the completion. */
-  @Nullable private List<ChatCompletionTool> tools;
+  @Nullable List<ChatCompletionTool> tools;
 
   /** Tool choice option for the completion. */
-  @Nullable private ChatCompletionToolChoiceOption toolChoice;
+  @Nullable ChatCompletionToolChoiceOption toolChoice;
 
   /**
-   * Creates an OpenAiChatCompletionPrompt with a single message.
+   * Creates an OpenAiChatCompletionPrompt with string as user message.
    *
    * @param message the message to be added to the prompt
    */
+  @Tolerate
   public OpenAiChatCompletionRequest(@Nonnull final String message) {
-    messages.add(OpenAiMessage.user(message));
+    this(OpenAiMessage.user(message));
   }
 
   /**
@@ -101,54 +108,85 @@ public class OpenAiChatCompletionRequest {
    * @param message the primary message to be added to the prompt
    * @param messages additional messages to be added to the prompt
    */
+  @Tolerate
   public OpenAiChatCompletionRequest(
       @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
+    // Keeps default values for boolean fields. @With introduces bug comparison of Boolean
+    this(
+        new ArrayList<>(),
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        true,
+        null,
+        null,
+        null,
+        null,
+        null);
+
     this.messages.add(message);
     this.messages.addAll(Arrays.asList(messages));
   }
 
   /**
-   * Sets the stop sequences for the prompt.
+   * Adds stop sequences to the request.
    *
-   * @param values the stop sequences to be set
-   * @return the current OpenAiChatCompletionPrompt instance
+   * @param sequence the primary stop sequence
+   * @param sequences additional stop sequences
+   * @return a new OpenAiChatCompletionRequest instance with the specified stop sequences
    */
+  @Tolerate
   @Nonnull
-  public OpenAiChatCompletionRequest stop(
-      @Nonnull final String value, @Nonnull final String... values) {
-    this.stop = new ArrayList<>();
+  public OpenAiChatCompletionRequest withStop(
+      @Nonnull final String sequence, @Nonnull final String... sequences) {
+    final var allSequences = new ArrayList<String>();
 
-    this.stop.add(value);
-    this.stop.addAll(Arrays.asList(values));
+    allSequences.add(sequence);
+    allSequences.addAll(Arrays.asList(sequences));
 
-    return this;
+    return this.withStop(allSequences);
   }
 
+  /**
+   * Converts the request to a generated model class CreateChatCompletionRequest.
+   *
+   * @return the CreateChatCompletionRequest
+   */
   CreateChatCompletionRequest toCreateChatCompletionRequest() {
     final var request = new CreateChatCompletionRequest();
-    this.messages().forEach(message -> request.addMessagesItem(message.createDTO()));
+    this.messages.forEach(message -> request.addMessagesItem(message.createDTO()));
 
-    request.stop(
-        this.stop() != null ? CreateChatCompletionRequestAllOfStop.create(this.stop()) : null);
+    request.stop(this.stop != null ? CreateChatCompletionRequestAllOfStop.create(this.stop) : null);
 
-    request.temperature(this.temperature());
-    request.topP(this.topP());
-    request.stream(this.stream());
-    request.maxTokens(this.maxTokens());
-    request.maxCompletionTokens(this.maxCompletionTokens());
-    request.presencePenalty(this.presencePenalty());
-    request.frequencyPenalty(this.frequencyPenalty());
-    request.logitBias(this.logitBias());
-    request.user(this.user());
-    request.logprobs(this.logprobs());
-    request.topLogprobs(this.topLogprobs());
-    request.n(this.n());
-    request.parallelToolCalls(this.parallelToolCalls());
-    request.seed(this.seed());
-    request.streamOptions(this.streamOptions());
-    request.responseFormat(this.responseFormat());
-    request.tools(this.tools());
-    request.toolChoice(this.toolChoice());
+    request.temperature(this.temperature);
+    request.topP(this.topP);
+
+    request.stream(this.stream);
+    request.maxTokens(this.maxTokens);
+    request.maxCompletionTokens(this.maxCompletionTokens);
+    request.presencePenalty(this.presencePenalty);
+    request.frequencyPenalty(this.frequencyPenalty);
+    request.logitBias(this.logitBias);
+    request.user(this.user);
+    request.logprobs(this.logprobs);
+    request.topLogprobs(this.topLogprobs);
+    request.n(this.n);
+    request.parallelToolCalls(this.parallelToolCalls);
+    request.seed(this.seed);
+    request.streamOptions(this.streamOptions);
+    request.responseFormat(this.responseFormat);
+    request.tools(this.tools);
+    request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);
     return request;
