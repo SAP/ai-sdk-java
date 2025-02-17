@@ -15,18 +15,18 @@ import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCallFunction;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
-import org.springframework.ai.chat.model.AbstractToolCallSupport;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.function.FunctionCallingOptions;
+import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import org.springframework.ai.model.tool.ToolCallingChatOptions;
+import org.springframework.ai.model.tool.ToolExecutionResult;
 import reactor.core.publisher.Flux;
 
 /**
@@ -36,7 +36,7 @@ import reactor.core.publisher.Flux;
  */
 @Beta
 @Slf4j
-public class OrchestrationChatModel extends AbstractToolCallSupport implements ChatModel {
+public class OrchestrationChatModel extends DefaultToolCallingManager implements ChatModel {
   @Nonnull private final OrchestrationClient client;
 
   /**
@@ -45,7 +45,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
    * @since 1.2.0
    */
   public OrchestrationChatModel() {
-    super(null);
+    super(null, null, null);
     this.client = new OrchestrationClient();
   }
 
@@ -55,7 +55,7 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
    * @since 1.2.0
    */
   public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
-    super(null);
+    super(null, null, null);
     this.client = client;
   }
 
@@ -64,24 +64,32 @@ public class OrchestrationChatModel extends AbstractToolCallSupport implements C
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      if (options.getFunctionCallbacks() != null) {
-        runtimeFunctionCallbackConfigurations(
-            FunctionCallingOptions.builder()
-                .functionCallbacks(options.getFunctionCallbacks())
-                .build());
-      }
+//      if (options.getToolCallbacks() != null) {
+//        runtimeToolCallbackConfigurations(
+//            ToolCallingChatOptions.builder()
+//                .toolCallbacks(options.getToolCallbacks())
+//                .build());
+//      }
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
               client.chatCompletion(orchestrationPrompt, options.getConfig()));
 
-      if (!isProxyToolCalls(prompt, options)
-          && isToolCall(response, Set.of("tool_calls", "stop"))) {
-        val toolCallConversation = handleToolCalls(prompt, response);
-        // Recursively call the call method with the tool call message
-        // conversation that contains the call responses.
-        return call(new Prompt(toolCallConversation, prompt.getOptions()));
+      if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
+          && response.hasToolCalls()) {
+        var toolExecutionResult = this.executeToolCalls(prompt, response);
+        if (toolExecutionResult.returnDirect()) {
+          // Return tool execution result directly to the client.
+          return ChatResponse.builder()
+              .from(response)
+              .generations(ToolExecutionResult.buildGenerations(toolExecutionResult))
+              .build();
+        }
+        else {
+          // Send the tool execution result back to the model.
+          return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+        }
       }
       return response;
     }

@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.function.FunctionCallback;
+import org.springframework.ai.tool.ToolCallback;
 import reactor.core.publisher.Flux;
 
 @WireMockTest
@@ -83,7 +83,7 @@ public class OrchestrationChatModelTest {
     val result = client.call(prompt);
 
     assertThat(result).isNotNull();
-    assertThat(result.getResult().getOutput().getContent()).isNotEmpty();
+    assertThat(result.getResult().getOutput().getText()).isNotEmpty();
   }
 
   @Test
@@ -130,9 +130,9 @@ public class OrchestrationChatModelTest {
 
       assertThat(deltaList).hasSize(3);
       // the first delta doesn't have any content
-      assertThat(deltaList.get(0).getResult().getOutput().getContent()).isEqualTo("");
-      assertThat(deltaList.get(1).getResult().getOutput().getContent()).isEqualTo("Sure");
-      assertThat(deltaList.get(2).getResult().getOutput().getContent()).isEqualTo("!");
+      assertThat(deltaList.get(0).getResult().getOutput().getText()).isEqualTo("");
+      assertThat(deltaList.get(1).getResult().getOutput().getText()).isEqualTo("Sure");
+      assertThat(deltaList.get(2).getResult().getOutput().getText()).isEqualTo("!");
 
       assertThat(deltaList.get(0).getResult().getMetadata().getFinishReason()).isEqualTo("");
       assertThat(deltaList.get(1).getResult().getMetadata().getFinishReason()).isEqualTo("");
@@ -164,9 +164,9 @@ public class OrchestrationChatModelTest {
                     .withBodyFile("toolCallsResponse2.json")
                     .withHeader("Content-Type", "application/json")));
 
-    defaultOptions.setFunctionCallbacks(
+    defaultOptions.setToolCallbacks(
         List.of(
-            FunctionCallback.builder()
+            ToolCallback.builder()
                 .function(
                     "CurrentWeather", new MockWeatherService()) // (1) function name and instance
                 .description("Get the weather in location") // (2) function description
@@ -175,7 +175,7 @@ public class OrchestrationChatModelTest {
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
     val result = client.call(prompt);
 
-    assertThat(result.getResult().getOutput().getContent())
+    assertThat(result.getResult().getOutput().getText())
         .isEqualTo("The current temperature in Potsdam is 30°C and in Toulouse 30°C.");
 
     try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {

@@ -57,7 +57,10 @@ final class ConfigToRequestTransformer {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return Template.create().template(messagesWithPrompt).tools(template.getTools()).responseFormat(responseFormat);
+    return Template.create()
+        .template(messagesWithPrompt)
+        .tools(template.getTools())
+        .responseFormat(responseFormat);
   }
 
   @Nonnull

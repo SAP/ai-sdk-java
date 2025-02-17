@@ -17,7 +17,7 @@ public class SpringAiOrchestrationTest {
   void testCompletion() {
     ChatResponse response = service.completion();
     assertThat(response).isNotNull();
-    assertThat(response.getResult().getOutput().getContent()).contains("Paris");
+    assertThat(response.getResult().getOutput().getText()).contains("Paris");
   }
 
   @Test
@@ -30,7 +30,7 @@ public class SpringAiOrchestrationTest {
         .forEach(
         delta -> {
           log.info("delta: {}", delta);
-          if (!delta.getResult().getOutput().getContent().isEmpty()) {
+          if (!delta.getResult().getOutput().getText().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
         });
@@ -44,13 +44,13 @@ public class SpringAiOrchestrationTest {
   void testTemplate() {
     ChatResponse response = service.template();
     assertThat(response).isNotNull();
-    assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
   }
 
   @Test
   void testMasking() {
     ChatResponse response = service.masking();
     assertThat(response).isNotNull();
-    assertThat(response.getResult().getOutput().getContent()).isNotEmpty();
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
   }
 }

@@ -1,26 +1,20 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import javax.annotation.Nullable;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
-@Value
+@Getter
 @Accessors(fluent = true)
-public class AssistantMessage implements Message {
+public final class AssistantMessage implements Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "assistant";
@@ -31,8 +25,7 @@ public class AssistantMessage implements Message {
   MessageContent content;
 
   /** Tool call if there is any. */
-  @Nullable
-  List<ResponseMessageToolCall> toolCalls = null;
+  @Nullable List<ResponseMessageToolCall> toolCalls = null;
 
   /**
    * Creates a new assistant message with the given single message.
@@ -49,7 +42,7 @@ public class AssistantMessage implements Message {
    * @param toolCalls list of tool call objects
    */
   public AssistantMessage(@Nonnull final List<ResponseMessageToolCall> toolCalls) {
-    content = new MessageContent();
+    content = new MessageContent(List.of());
     this.toolCalls = toolCalls;
   }
 

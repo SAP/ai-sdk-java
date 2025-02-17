@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -21,6 +22,12 @@ public class ToolMessage implements Message {
   @Nonnull String id;
 
   @Nonnull String content;
+
+  @Nonnull
+  @Override
+  public MessageContent content() {
+    return new MessageContent(List.of(new TextItem(content)));
+  }
 
   @Nonnull
   @Override

@@ -15,7 +15,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.model.function.FunctionCallback;
+import org.springframework.ai.tool.function.FunctionToolCallback;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -100,11 +100,9 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public ChatResponse functionCalling() {
     final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
-    options.setFunctionCallbacks(
+    options.setToolCallbackss(
         List.of(
-            FunctionCallback.builder()
-                .function(
-                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+            FunctionToolCallback.builder("CurrentWeather", new MockWeatherService())
                 .description("Get the weather in location") // (2) function description
                 .inputType(MockWeatherService.Request.class) // (3) function input type
                 .build()));

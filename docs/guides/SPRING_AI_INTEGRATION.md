@@ -122,9 +122,9 @@ Then add your function to the options:
 
 ```java
 OrchestrationChatOptions options = new OrchestrationChatOptions(config);
-options.setFunctionCallbacks(
+options.setToolCallbacks(
     List.of(
-        FunctionCallback.builder()
+        ToolCallback.builder()
             .function(
                 "CurrentWeather", new MockWeatherService()) // (1) function name and instance
             .description("Get the weather in location") // (2) function description

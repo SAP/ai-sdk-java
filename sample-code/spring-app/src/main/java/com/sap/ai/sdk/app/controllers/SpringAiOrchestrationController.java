@@ -28,7 +28,7 @@ class SpringAiOrchestrationController {
           .getOrchestrationResponse()
           .getOriginalResponse();
     }
-    return response.getResult().getOutput().getContent();
+    return response.getResult().getOutput().getText();
   }
 
   @GetMapping("/streamChatCompletion")
@@ -36,7 +36,7 @@ class SpringAiOrchestrationController {
   Flux<String> streamChatCompletion() {
     return service
         .streamChatCompletion()
-        .map(chatResponse -> chatResponse.getResult().getOutput().getContent());
+        .map(chatResponse -> chatResponse.getResult().getOutput().getText());
   }
 
   @GetMapping("/template")
@@ -48,7 +48,7 @@ class SpringAiOrchestrationController {
           .getOrchestrationResponse()
           .getOriginalResponse();
     }
-    return response.getResult().getOutput().getContent();
+    return response.getResult().getOutput().getText();
   }
 
   @GetMapping("/masking")
@@ -60,7 +60,7 @@ class SpringAiOrchestrationController {
           .getOrchestrationResponse()
           .getOriginalResponse();
     }
-    return response.getResult().getOutput().getContent();
+    return response.getResult().getOutput().getText();
   }
 
   @GetMapping("/functionCalling")
@@ -73,6 +73,6 @@ class SpringAiOrchestrationController {
           .getOrchestrationResponse()
           .getOriginalResponse();
     }
-    return response.getResult().getOutput().getContent();
+    return response.getResult().getOutput().getText();
   }
 }

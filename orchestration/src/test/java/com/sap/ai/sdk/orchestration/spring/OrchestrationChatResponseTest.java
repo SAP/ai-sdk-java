@@ -22,7 +22,7 @@ class OrchestrationChatResponseTest {
 
     Generation generation = OrchestrationSpringChatResponse.toGeneration(choice);
 
-    assertThat(generation.getOutput().getContent()).isEqualTo("Hello, world!");
+    assertThat(generation.getOutput().getText()).isEqualTo("Hello, world!");
     assertThat(generation.getMetadata().getFinishReason()).isEqualTo("stop");
     assertThat(generation.getMetadata().<Integer>get("index")).isEqualTo(0);
   }

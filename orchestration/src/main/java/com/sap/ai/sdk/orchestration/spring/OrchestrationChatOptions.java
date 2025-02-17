@@ -28,7 +28,8 @@ import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.model.function.FunctionCallback;
-import org.springframework.ai.model.function.FunctionCallingOptions;
+import org.springframework.ai.model.tool.ToolCallingChatOptions;
+import org.springframework.ai.tool.ToolCallback;
 
 /**
  * Configuration to be used for orchestration requests.
@@ -38,18 +39,13 @@ import org.springframework.ai.model.function.FunctionCallingOptions;
 @Beta
 @Data
 @Getter(AccessLevel.PUBLIC)
-public class OrchestrationChatOptions implements FunctionCallingOptions {
+public class OrchestrationChatOptions implements ToolCallingChatOptions
+{
 
   @Getter(AccessLevel.NONE)
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
-  private Set<String> functions = Set.of();
-
   @Nonnull private OrchestrationModuleConfig config;
-
-  private List<FunctionCallback> functionCallbacks;
-
-  private Map<String, Object> toolContext = Map.of();
 
   /**
    * Returns the model to use for the chat.
@@ -183,31 +179,89 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
         "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
   }
 
-  @Override
-  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> functionCallbacks) {
-    this.functionCallbacks = functionCallbacks;
+  private List<ToolCallback> toolCallbacks;
+
+  public void setToolCallbackss(@Nonnull final List<ToolCallback> toolCallbacks) {
+    this.toolCallbacks = toolCallbacks;
     final Template template =
         Objects.requireNonNullElse(
             (Template) config.getTemplateConfig(), Template.create().template());
     val tools =
-        functionCallbacks.stream()
+        toolCallbacks.stream()
             .map(
                 functionCallback ->
                     ChatCompletionTool.create()
                         .type(TypeEnum.FUNCTION)
                         .function(
                             FunctionObject.create()
-                                .name(functionCallback.getName())
-                                .description(functionCallback.getDescription())
+                                .name(functionCallback.getToolDefinition().name())
+                                .description(functionCallback.getToolDefinition().description())
                                 .parameters(
                                     ModelOptionsUtils.jsonToMap(
-                                        functionCallback.getInputTypeSchema()))))
+                                        functionCallback.getToolDefinition().inputSchema()))))
             .toList();
     config = config.withTemplateConfig(template.tools(tools));
   }
 
+  // -------------------DEPRECATED-------------------
   @Override
-  public void setFunctions(@Nonnull final Set<String> functionNames) {
+  public List<FunctionCallback> getToolCallbacks()
+  {
+    return List.of();
+  }
+
+  @Override
+  public void setToolCallbacks( List<FunctionCallback> toolCallbacks )
+  {
+
+  }
+
+  @Override
+  public List<FunctionCallback> getFunctionCallbacks()
+  {
+    return List.of();
+  }
+
+  @Override
+  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> functionCallbacks) {
+
+  }
+
+  // -------------------TODO-------------------
+  @Nonnull
+  @Override
+  public Set<String> getToolNames()
+  {
+    return Set.of();
+  }
+
+  @Override
+  public void setToolNames( @Nonnull final Set<String> toolNames )
+  {
+
+  }
+
+  @Override
+  public Boolean isInternalToolExecutionEnabled()
+  {
+    return null;
+  }
+
+  @Override
+  public void setInternalToolExecutionEnabled( Boolean internalToolExecutionEnabled )
+  {
+
+  }
+
+  @Override
+  public Set<String> getFunctions()
+  {
+    return Set.of();
+  }
+
+  @Override
+  public void setFunctions( Set<String> functions )
+  {
     //    val template =
     //        Objects.requireNonNullElse(
     //            (Template) config.getTemplateConfig(), Template.create().template());
@@ -224,7 +278,14 @@ public class OrchestrationChatOptions implements FunctionCallingOptions {
   }
 
   @Override
-  public void setToolContext(@Nonnull final Map<String, Object> toolContext) {
+  public Map<String, Object> getToolContext()
+  {
+    return Map.of();
+  }
+
+  @Override
+  public void setToolContext( Map<String, Object> tooContext )
+  {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 }
