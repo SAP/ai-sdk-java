@@ -29,7 +29,7 @@ class OpenAiAssistantMessage implements OpenAiMessage {
    * @return the corresponding {@code ChatCompletionRequestAssistantMessage} object.
    */
   @Nonnull
-  public ChatCompletionRequestAssistantMessage createDTO() {
+  ChatCompletionRequestAssistantMessage toChatCompletionRequestSystemMessage() {
     return new ChatCompletionRequestAssistantMessage()
         .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()))
         .content(ChatCompletionRequestAssistantMessageContent.create(content));

@@ -29,7 +29,7 @@ class OpenAiUserMessage implements OpenAiMessage {
    * @return the corresponding {@code ChatCompletionRequestUserMessage} object.
    */
   @Nonnull
-  public ChatCompletionRequestUserMessage createDTO() {
+  ChatCompletionRequestUserMessage toChatCompletionRequestSystemMessage() {
     return new ChatCompletionRequestUserMessage()
         .role(ChatCompletionRequestUserMessage.RoleEnum.fromValue(role()))
         .content(ChatCompletionRequestUserMessageContent.create(content()));

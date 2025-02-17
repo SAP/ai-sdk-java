@@ -46,7 +46,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
-class NewOpenAiClientTest extends BaseOpenAiClientTest {
+class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
 
   @Test
   void openAiModels() {

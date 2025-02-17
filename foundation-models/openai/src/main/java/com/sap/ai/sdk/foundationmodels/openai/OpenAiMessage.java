@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessage;
 import javax.annotation.Nonnull;
 
 /**
@@ -44,12 +43,4 @@ public interface OpenAiMessage {
   static OpenAiMessage system(@Nonnull final String msg) {
     return new OpenAiSystemMessage(msg);
   }
-
-  /**
-   * Converts the message to a serializable object.
-   *
-   * @return the corresponding serializable object.
-   */
-  @Nonnull
-  ChatCompletionRequestMessage createDTO();
 }
