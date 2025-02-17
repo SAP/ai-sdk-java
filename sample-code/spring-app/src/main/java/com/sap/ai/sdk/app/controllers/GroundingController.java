@@ -156,7 +156,6 @@ class GroundingController {
       @Nonnull @PathVariable("id") final UUID collectionId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    ;
     final var documentContent = "Last upload on " + dayOfWeek;
 
     final var chunkMeta = KeyValueListPair.create().key("context").value("day-of-week");
@@ -179,7 +178,6 @@ class GroundingController {
       @Nonnull @PathVariable("id") final UUID collectionId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    ;
     final var chunkMeta = KeyValueListPair.create().key("context").value("day-of-week");
     final var chunk =
         TextOnlyBaseChunk.create().content("Today is " + dayOfWeek).metadata(chunkMeta);
