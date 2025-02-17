@@ -29,6 +29,8 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponse;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.PromptFilterResult;
 import io.vavr.control.Try;
@@ -241,7 +243,10 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   void embedding() {
     stubForEmbedding();
 
-    final var result = client.embedding("Hello World");
+    final var result =
+        client.embedding(
+            new EmbeddingsCreateRequest()
+                .input(EmbeddingsCreateRequestInput.create("Hello World")));
 
     assertThat(result).isNotNull();
     assertThat(result.getModel()).isEqualTo("ada");

@@ -16,7 +16,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
@@ -344,23 +343,6 @@ public final class OpenAiClient {
       log.warn(
           "Previously set messages will be ignored, set it as an argument of this method instead.");
     }
-  }
-
-  /**
-   * Get a vector representation of a given string input that can be easily consumed by machine
-   * learning models and algorithms.
-   *
-   * @param input the input text.
-   * @return the embedding output
-   * @throws OpenAiClientException if the request fails
-   * @since 1.4.0
-   */
-  @Beta
-  @Nonnull
-  public EmbeddingsCreate200Response embedding(@Nonnull final String input)
-      throws OpenAiClientException {
-    return embedding(
-        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create(input)));
   }
 
   /**
