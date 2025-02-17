@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -44,9 +45,6 @@ public class OpenAiChatCompletionRequest {
   /** Top-p sampling parameter. */
   @Nullable BigDecimal topP;
 
-  /** Whether to stream the completion. */
-  boolean stream;
-
   /** Maximum number of tokens for the completion. */
   @Nullable Integer maxTokens;
 
@@ -66,7 +64,9 @@ public class OpenAiChatCompletionRequest {
   @Nullable String user;
 
   /** Whether to include log probabilities in the response. */
-  boolean logprobs;
+  @With(AccessLevel.NONE)
+  @Nullable
+  Boolean logprobs;
 
   /** Number of top log probabilities to include. */
   @Nullable Integer topLogprobs;
@@ -75,7 +75,9 @@ public class OpenAiChatCompletionRequest {
   @Nullable Integer n;
 
   /** Whether to allow parallel tool calls. */
-  boolean parallelToolCalls;
+  @With(AccessLevel.NONE)
+  @Nullable
+  Boolean parallelToolCalls;
 
   /** Seed for random number generation. */
   @Nullable Integer seed;
@@ -113,21 +115,20 @@ public class OpenAiChatCompletionRequest {
       @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
     // Keeps default values for boolean fields. @With introduces bug comparison of Boolean
     this(
-        new ArrayList<>(),
-        null,
-        null,
-        null,
-        false,
+        new ArrayList<OpenAiMessage>(),
         null,
         null,
         null,
         null,
         null,
         null,
-        false,
         null,
         null,
-        true,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -158,6 +159,71 @@ public class OpenAiChatCompletionRequest {
   }
 
   /**
+   * Sets the parallel tool calls option.
+   *
+   * @param parallelToolCalls Whether to allow parallel tool calls.
+   * @return A new instance with the specified option.
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withParallelToolCalls(
+      @Nonnull final Boolean parallelToolCalls) {
+    return Objects.equals(this.parallelToolCalls, parallelToolCalls)
+        ? this
+        : new OpenAiChatCompletionRequest(
+            this.messages,
+            this.stop,
+            this.temperature,
+            this.topP,
+            this.maxTokens,
+            this.maxCompletionTokens,
+            this.presencePenalty,
+            this.frequencyPenalty,
+            this.logitBias,
+            this.user,
+            this.logprobs,
+            this.topLogprobs,
+            this.n,
+            parallelToolCalls,
+            this.seed,
+            this.streamOptions,
+            this.responseFormat,
+            this.tools,
+            this.toolChoice);
+  }
+
+  /**
+   * Sets the log probabilities option.
+   *
+   * @param logprobs Whether to include log probabilities in the response.
+   * @return A new instance with the specified option.
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withLogprobs(@Nonnull final Boolean logprobs) {
+    return Objects.equals(this.logprobs, logprobs)
+        ? this
+        : new OpenAiChatCompletionRequest(
+            this.messages,
+            this.stop,
+            this.temperature,
+            this.topP,
+            this.maxTokens,
+            this.maxCompletionTokens,
+            this.presencePenalty,
+            this.frequencyPenalty,
+            this.logitBias,
+            this.user,
+            logprobs,
+            this.topLogprobs,
+            this.n,
+            this.parallelToolCalls,
+            this.seed,
+            this.streamOptions,
+            this.responseFormat,
+            this.tools,
+            this.toolChoice);
+  }
+
+  /**
    * Converts the request to a generated model class CreateChatCompletionRequest.
    *
    * @return the CreateChatCompletionRequest
@@ -171,7 +237,7 @@ public class OpenAiChatCompletionRequest {
     request.temperature(this.temperature);
     request.topP(this.topP);
 
-    request.stream(this.stream);
+    request.stream(null);
     request.maxTokens(this.maxTokens);
     request.maxCompletionTokens(this.maxCompletionTokens);
     request.presencePenalty(this.presencePenalty);
