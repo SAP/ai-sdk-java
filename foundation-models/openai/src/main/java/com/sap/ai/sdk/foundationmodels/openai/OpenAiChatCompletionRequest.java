@@ -232,7 +232,7 @@ public class OpenAiChatCompletionRequest {
     final var request = new CreateChatCompletionRequest();
     this.messages.forEach(
         message ->
-            request.addMessagesItem(OpenAiUtils.toChatCompletionRequestSystemMessage(message)));
+            request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message)));
 
     request.stop(this.stop != null ? CreateChatCompletionRequestAllOfStop.create(this.stop) : null);
 

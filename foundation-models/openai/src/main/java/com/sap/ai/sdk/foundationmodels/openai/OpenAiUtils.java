@@ -20,14 +20,14 @@ class OpenAiUtils {
    * @throws IllegalArgumentException if the message type is unknown
    */
   @Nonnull
-  static ChatCompletionRequestMessage toChatCompletionRequestSystemMessage(
+  static ChatCompletionRequestMessage createChatCompletionRequestMessage(
       @Nonnull final OpenAiMessage message) throws IllegalArgumentException {
     if (message instanceof OpenAiUserMessage userMessage) {
-      return userMessage.toChatCompletionRequestSystemMessage();
+      return userMessage.createChatCompletionRequestMessage();
     } else if (message instanceof OpenAiAssistantMessage assistantMessage) {
-      return assistantMessage.toChatCompletionRequestSystemMessage();
+      return assistantMessage.createChatCompletionRequestMessage();
     } else if (message instanceof OpenAiSystemMessage systemMessage) {
-      return systemMessage.toChatCompletionRequestSystemMessage();
+      return systemMessage.createChatCompletionRequestMessage();
     } else {
       throw new IllegalArgumentException("Unknown message type: " + message.getClass());
     }
