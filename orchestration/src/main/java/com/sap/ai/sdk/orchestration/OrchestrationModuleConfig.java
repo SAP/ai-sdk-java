@@ -226,9 +226,10 @@ public class OrchestrationModuleConfig {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param templateConfig
+   * @param templateConfig The template configuration to use.
    * @return A new configuration with the given template configuration.
    */
+  @Tolerate
   @Nonnull
   public OrchestrationModuleConfig withTemplateConfig(
       @Nullable final TemplatingModuleConfig templateConfig) {
@@ -245,6 +246,7 @@ public class OrchestrationModuleConfig {
     if (this.templateConfig instanceof Template oldTemplate) {
       responseFormat = oldTemplate.getResponseFormat();
     }
+    //  Template.getResponseFormat() might return null, so the following check is necessary.
     if (newTemplate != null && newTemplate.getResponseFormat() == null) {
       newTemplate.setResponseFormat(responseFormat);
     }
@@ -263,12 +265,12 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param schema
+   * @param schema The response schema to use.
    * @return A new configuration with the given response schema.
    * @since 1.4.0
    */
   @Nonnull
-  public OrchestrationModuleConfig withResponseJsonSchema(
+  public OrchestrationModuleConfig withJsonSchemaResponse(
       @Nonnull final ResponseJsonSchema schema) {
     val responseFormatJsonSchema =
         ResponseFormatJsonSchema.create()
@@ -279,7 +281,6 @@ public class OrchestrationModuleConfig {
                     .schema(schema.getSchemaMap())
                     .strict(schema.getIsStrict())
                     .description(schema.getDescription()));
-
     if (this.templateConfig instanceof Template template) {
       template.setResponseFormat(responseFormatJsonSchema);
       return this.withTemplateConfig(template);
@@ -300,17 +301,14 @@ public class OrchestrationModuleConfig {
    */
   @Nonnull
   public OrchestrationModuleConfig withJsonResponse() {
+    val responseFormatJsonObject =
+        ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);
     if (this.templateConfig instanceof Template template) {
-      template.setResponseFormat(
-          ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+      template.setResponseFormat(responseFormatJsonObject);
       return this.withTemplateConfig(template);
     }
     val templatingConfig =
-        Template.create()
-            .template(List.of())
-            .responseFormat(
-                ResponseFormatJsonObject.create()
-                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+        Template.create().template(List.of()).responseFormat(responseFormatJsonObject);
     return this.withTemplateConfig(templatingConfig);
   }
 }

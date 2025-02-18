@@ -64,7 +64,7 @@ public class ResponseJsonSchema {
   /**
    * Create a new instance of {@link ResponseJsonSchema} from a given class.
    *
-   * @param classType
+   * @param classType The class to generate the schema from
    * @return The new instance of {@link ResponseJsonSchema}
    * @since 1.4.0
    */

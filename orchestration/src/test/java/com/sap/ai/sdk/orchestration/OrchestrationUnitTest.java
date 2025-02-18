@@ -786,7 +786,7 @@ class OrchestrationUnitTest {
         ResponseJsonSchema.from(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema = gpt4oCustomInstance.withResponseJsonSchema(schema);
+    val configWithResponseSchema = gpt4oCustomInstance.withJsonSchemaResponse(schema);
 
     val prompt =
         new OrchestrationPrompt(

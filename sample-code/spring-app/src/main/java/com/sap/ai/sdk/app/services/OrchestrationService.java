@@ -352,8 +352,6 @@ public class OrchestrationService {
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
     val gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = Message.user("Whats '%s' in German?".formatted(word));
-
     //    Example class
     class Translation {
       @JsonProperty(required = true)
@@ -367,11 +365,11 @@ public class OrchestrationService {
         ResponseJsonSchema.from(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema = gpt4oCustomInstance.withResponseJsonSchema(schema);
+    val configWithResponseSchema = gpt4oCustomInstance.withJsonSchemaResponse(schema);
 
     val prompt =
         new OrchestrationPrompt(
-            Message.user("Whats 'apple' in German?"),
+            Message.user("Whats '%s' in German?".formatted(word)),
             Message.system("You are a language translator."));
 
     return client.chatCompletion(prompt, configWithResponseSchema);
