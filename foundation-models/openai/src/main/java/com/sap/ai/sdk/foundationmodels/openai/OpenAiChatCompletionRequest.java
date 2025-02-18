@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
+import com.google.common.collect.Lists;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
@@ -8,8 +9,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -113,9 +112,8 @@ public class OpenAiChatCompletionRequest {
   @Tolerate
   public OpenAiChatCompletionRequest(
       @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
-    // Keeps default values for boolean fields. @With introduces bug comparison of Boolean
     this(
-        new ArrayList<OpenAiMessage>(),
+        Lists.asList(message, messages),
         null,
         null,
         null,
@@ -134,9 +132,6 @@ public class OpenAiChatCompletionRequest {
         null,
         null,
         null);
-
-    this.messages.add(message);
-    this.messages.addAll(Arrays.asList(messages));
   }
 
   /**
@@ -150,12 +145,7 @@ public class OpenAiChatCompletionRequest {
   @Nonnull
   public OpenAiChatCompletionRequest withStop(
       @Nonnull final String sequence, @Nonnull final String... sequences) {
-    final var allSequences = new ArrayList<String>();
-
-    allSequences.add(sequence);
-    allSequences.addAll(Arrays.asList(sequences));
-
-    return this.withStop(allSequences);
+    return this.withStop(Lists.asList(sequence, sequences));
   }
 
   /**
