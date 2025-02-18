@@ -31,11 +31,6 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
   /** The original response from the chat completion stream. */
   @Nonnull private final CreateChatCompletionStreamResponse originalResponse;
 
-  /**
-   * Retrieves the delta content from the original response.
-   *
-   * @return The delta content as a string, or an empty string if not available.
-   */
   @Nonnull
   @Override
   public String getDeltaContent() {
@@ -47,11 +42,6 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
     return "";
   }
 
-  /**
-   * Retrieves the finish reason from the original response.
-   *
-   * @return The finish reason as a string, or null if not available.
-   */
   @Nullable
   @Override
   public String getFinishReason() {
