@@ -11,8 +11,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.*;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterSeverityResult.SeverityEnum.SAFE;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse.ObjectEnum.CHAT_COMPLETION;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner.FinishReasonEnum.STOP;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponse.ObjectEnum.CHAT_COMPLETION_CHUNK;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner.FinishReasonEnum.STOP;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ToolCallType.FUNCTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
@@ -29,6 +33,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponse;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
@@ -119,7 +124,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(result.getCreated()).isEqualTo(1727436279);
     assertThat(result.getId()).isEqualTo("chatcmpl-AC3NPPYlxem8kRBBAX9EBObMMsrnf");
     assertThat(result.getModel()).isEqualTo("gpt-35-turbo");
-    assertThat(result.getObject().getValue()).isEqualTo("chat.completion");
+    assertThat(result.getObject()).isEqualTo(CHAT_COMPLETION);
     assertThat(result.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
 
     assertThat(result.getUsage()).isNotNull();
@@ -134,15 +139,15 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(promptFilterResults).isNotNull();
     assertThat(promptFilterResults.getSexual()).isNotNull();
     assertThat(promptFilterResults.getSexual().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getSexual().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getViolence()).isNotNull();
     assertThat(promptFilterResults.getViolence().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getViolence().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getHate()).isNotNull();
     assertThat(promptFilterResults.getHate().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getHate().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getSelfHarm()).isNotNull();
-    assertThat(promptFilterResults.getSelfHarm().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getSelfHarm().isFiltered()).isFalse();
     assertThat(promptFilterResults.getProfanity()).isNull();
     assertThat(promptFilterResults.getError()).isNull();
@@ -151,27 +156,27 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(result.getChoices()).hasSize(1);
 
     var choice = result.getChoices().get(0);
-    assertThat(choice.getFinishReason().getValue()).isEqualTo("stop");
+    assertThat(choice.getFinishReason()).isEqualTo(STOP);
     assertThat(choice.getIndex()).isZero();
     assertThat(choice.getMessage().getContent())
         .isEqualTo(
             "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
-    assertThat(choice.getMessage().getRole().getValue()).isEqualTo("assistant");
+    assertThat(choice.getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choice.getMessage().getToolCalls()).isNull();
 
     var contentFilterResults = choice.getContentFilterResults();
     assertThat(contentFilterResults).isNotNull();
     assertThat(contentFilterResults.getSexual()).isNotNull();
     assertThat(contentFilterResults.getSexual().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getSexual().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getViolence()).isNotNull();
     assertThat(contentFilterResults.getViolence().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getViolence().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getHate()).isNotNull();
     assertThat(contentFilterResults.getHate().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getHate().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getSelfHarm()).isNotNull();
-    assertThat(contentFilterResults.getSelfHarm().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
     assertThat(contentFilterResults.getProfanity()).isNull();
     assertThat(contentFilterResults.getError()).isNull();
@@ -253,7 +258,6 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(result.getObject()).isEqualTo("list");
 
     assertThat(result.getUsage()).isNotNull();
-    assertThat(result.getUsage().getCustomFieldNames()).doesNotContain("completion_tokens");
     assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
     assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
 
@@ -356,7 +360,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(deltaList.get(4).getDeltaContent()).isEmpty();
 
         assertThat(deltaList.get(3).getFinishReason()).isNull();
-        assertThat(deltaList.get(4).getFinishReason()).isEqualTo(STOP.getValue());
+        assertThat(deltaList.get(4).getFinishReason()).isEqualTo("stop");
 
         final var delta0 = deltaList.get(0).getOriginalResponse();
         final var delta1 = deltaList.get(1).getOriginalResponse();
@@ -436,7 +440,8 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         // delta 4
         assertThat(delta4.getChoices()).hasSize(1);
         final var delta4Choice = delta4.getChoices().get(0);
-        assertThat(delta4Choice.getFinishReason()).isEqualTo(STOP);
+        assertThat(delta4Choice.getFinishReason())
+            .isEqualTo(CreateChatCompletionStreamResponseChoicesInner.FinishReasonEnum.STOP);
         assertThat(delta4Choice.getDelta().getContent()).isNull();
         // the role is only defined in delta 1
         assertThat(delta4Choice.getDelta().getRole()).isNull();
@@ -444,13 +449,14 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(delta4Choice.getDelta().getToolCalls()).isEmpty();
         assertThat(delta4.getChoices()).hasSize(1);
         final var choice = delta4.getChoices().get(0);
-        assertThat(choice.getFinishReason()).isEqualTo(STOP);
+        assertThat(choice.getFinishReason())
+            .isEqualTo(CreateChatCompletionStreamResponseChoicesInner.FinishReasonEnum.STOP);
         final Map<?, ?> filterRaw = (Map<?, ?>) choice.getCustomField("content_filter_results");
         assertThat(filterRaw).isEmpty();
         assertThat(choice.getDelta()).isNotNull();
         assertThat(choice.getDelta().getRole()).isNull();
         assertThat(choice.getDelta().getContent()).isNull();
-        assertThat(choice.getDelta().getToolCalls()).isNotNull().isEmpty();
+        assertThat(choice.getDelta().getToolCalls()).isEmpty();
         assertThat(delta4.getId()).isEqualTo("chatcmpl-A16EvnkgEm6AdxY0NoOmGPjsJucQ1");
         assertThat(delta4.getCreated()).isEqualTo(1724825677);
         assertThat(delta4.getModel()).isEqualTo("gpt-35-turbo");
@@ -468,16 +474,16 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(filter).isNotNull();
     assertThat(filter.getHate()).isNotNull();
     assertThat(filter.getHate().isFiltered()).isFalse();
-    assertThat(filter.getHate().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getHate().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getSelfHarm()).isNotNull();
     assertThat(filter.getSelfHarm().isFiltered()).isFalse();
-    assertThat(filter.getSelfHarm().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getSelfHarm().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getSexual()).isNotNull();
     assertThat(filter.getSexual().isFiltered()).isFalse();
-    assertThat(filter.getSexual().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getSexual().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getViolence()).isNotNull();
     assertThat(filter.getViolence().isFiltered()).isFalse();
-    assertThat(filter.getViolence().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getViolence().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getJailbreak()).isNull();
     assertThat(filter.getProfanity()).isNull();
     assertThat(filter.getError()).isNull();
@@ -512,14 +518,13 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
 
     assertThat(response).isNotNull();
     assertThat(response.getChoices()).hasSize(1);
-    assertThat(response.getChoices().get(0).getFinishReason().getValue()).isEqualTo("stop");
-    assertThat(response.getChoices().get(0).getMessage().getRole().getValue())
-        .isEqualTo("assistant");
+    assertThat(response.getChoices().get(0).getFinishReason()).isEqualTo(STOP);
+    assertThat(response.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(response.getChoices().get(0).getMessage().getToolCalls()).hasSize(1);
     assertThat(response.getChoices().get(0).getMessage().getToolCalls().get(0).getId())
         .isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
-    assertThat(response.getChoices().get(0).getMessage().getToolCalls().get(0).getType().getValue())
-        .isEqualTo("function");
+    assertThat(response.getChoices().get(0).getMessage().getToolCalls().get(0).getType())
+        .isEqualTo(FUNCTION);
     assertThat(
             response.getChoices().get(0).getMessage().getToolCalls().get(0).getFunction().getName())
         .isEqualTo("fibonacci");

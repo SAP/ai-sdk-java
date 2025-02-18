@@ -3,6 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.*;
+import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
@@ -21,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -97,15 +99,15 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     assertThat(promptFilterResults).isNotNull();
     assertThat(promptFilterResults.getSexual()).isNotNull();
     assertThat(promptFilterResults.getSexual().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getSexual().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getViolence()).isNotNull();
     assertThat(promptFilterResults.getViolence().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getViolence().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getHate()).isNotNull();
     assertThat(promptFilterResults.getHate().isFiltered()).isFalse();
-    assertThat(promptFilterResults.getHate().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getSelfHarm()).isNotNull();
-    assertThat(promptFilterResults.getSelfHarm().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(promptFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
     assertThat(promptFilterResults.getSelfHarm().isFiltered()).isFalse();
     assertThat(promptFilterResults.getProfanity()).isNull();
     assertThat(promptFilterResults.getError()).isNull();
@@ -116,6 +118,9 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     var choice = result.getChoices().get(0);
     assertThat(choice.getFinishReason()).isEqualTo("stop");
     assertThat(choice.getIndex()).isZero();
+    assertThat(choice.getMessage().getContent())
+        .isEqualTo(
+            "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
     assertThat(choice.getMessage().getRole()).isEqualTo("assistant");
     assertThat(choice.getMessage().getToolCalls()).isNull();
 
@@ -123,15 +128,15 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     assertThat(contentFilterResults).isNotNull();
     assertThat(contentFilterResults.getSexual()).isNotNull();
     assertThat(contentFilterResults.getSexual().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getSexual().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getSexual().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getViolence()).isNotNull();
     assertThat(contentFilterResults.getViolence().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getViolence().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getViolence().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getHate()).isNotNull();
     assertThat(contentFilterResults.getHate().isFiltered()).isFalse();
-    assertThat(contentFilterResults.getHate().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getHate().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getSelfHarm()).isNotNull();
-    assertThat(contentFilterResults.getSelfHarm().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(contentFilterResults.getSelfHarm().getSeverity()).isEqualTo(SAFE);
     assertThat(contentFilterResults.getSelfHarm().isFiltered()).isFalse();
     assertThat(contentFilterResults.getProfanity()).isNull();
     assertThat(contentFilterResults.getError()).isNull();
@@ -155,6 +160,58 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                          } ]
                        } ]
                      }""")));
+  }
+
+  @Test
+  @DisplayName("Chat history is not implemented yet")
+  void history() {
+    stubFor(
+        post(urlPathEqualTo("/chat/completions"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("chatCompletionResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    client.chatCompletion("First message");
+
+    verify(
+        exactly(1),
+        postRequestedFor(urlPathEqualTo("/chat/completions"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                      {
+                        "messages" : [ {
+                          "role" : "user",
+                          "content" : [ {
+                            "type" : "text",
+                            "text" : "First message"
+                          } ]
+                        } ]
+                      }""")));
+
+    var response = client.chatCompletion("Second message");
+
+    assertThat(response.getContent()).isNotNull();
+    assertThat(response.getContent())
+        .isEqualTo(
+            "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
+
+    verify(
+        exactly(1),
+        postRequestedFor(urlPathEqualTo("/chat/completions"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                      {
+                         "messages" : [ {
+                           "role" : "user",
+                           "content" : [ {
+                             "type" : "text",
+                             "text" : "Second message"
+                           } ]
+                         } ]
+                       }""")));
   }
 
   @Test
@@ -221,8 +278,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                   new OpenAiChatUserMessage()
                       .addText("Can you give me the first 100 numbers of the Fibonacci sequence?"));
 
-      try (Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta> stream =
-          client.streamChatCompletionDeltas(request)) {
+      try (Stream<OpenAiChatCompletionDelta> stream = client.streamChatCompletionDeltas(request)) {
 
         OpenAiChatCompletionOutput totalOutput = new OpenAiChatCompletionOutput();
         final List<OpenAiChatCompletionDelta> deltaList =
@@ -333,16 +389,16 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     assertThat(filter).isNotNull();
     assertThat(filter.getHate()).isNotNull();
     assertThat(filter.getHate().isFiltered()).isFalse();
-    assertThat(filter.getHate().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getHate().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getSelfHarm()).isNotNull();
     assertThat(filter.getSelfHarm().isFiltered()).isFalse();
-    assertThat(filter.getSelfHarm().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getSelfHarm().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getSexual()).isNotNull();
     assertThat(filter.getSexual().isFiltered()).isFalse();
-    assertThat(filter.getSexual().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getSexual().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getViolence()).isNotNull();
     assertThat(filter.getViolence().isFiltered()).isFalse();
-    assertThat(filter.getViolence().getSeverity().getValue()).isEqualTo("safe");
+    assertThat(filter.getViolence().getSeverity()).isEqualTo(SAFE);
     assertThat(filter.getJailbreak()).isNull();
     assertThat(filter.getProfanity()).isNull();
     assertThat(filter.getError()).isNull();

@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static lombok.AccessLevel.NONE;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
@@ -12,9 +10,10 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.Value;
+import lombok.ToString;
 
 /**
  * Represents an OpenAI chat completion output delta for streaming.
@@ -22,12 +21,13 @@ import lombok.Value;
  * @since 1.4.0
  */
 @Beta
-@Value
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator)
-@Setter(value = NONE)
+@Getter
+@ToString
+@EqualsAndHashCode
 public class OpenAiChatCompletionDelta implements StreamedDelta {
   /** The original response from the chat completion stream. */
-  @Nonnull final CreateChatCompletionStreamResponse originalResponse;
+  @Nonnull private final CreateChatCompletionStreamResponse originalResponse;
 
   /**
    * Retrieves the delta content from the original response.
