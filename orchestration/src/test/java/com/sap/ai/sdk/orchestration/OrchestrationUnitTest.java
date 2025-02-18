@@ -32,21 +32,9 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.github.victools.jsonschema.generator.Option;
-import com.github.victools.jsonschema.generator.OptionPreset;
-import com.github.victools.jsonschema.generator.SchemaGenerator;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
-import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.github.victools.jsonschema.module.jackson.JacksonModule;
-import com.github.victools.jsonschema.module.jackson.JacksonOption;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -57,9 +45,6 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -779,7 +764,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseObjectJsonSchema() throws IOException {
+  void testResponseFormatJsonSchema() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -787,54 +772,28 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
-    val template = Message.user("Whats 'apple' in German?");
+    var gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     //    Example class
     class Translation {
       @JsonProperty(required = true)
-      private String translation;
+      private String language;
 
       @JsonProperty(required = true)
-      private String language;
+      private String translation;
     }
+    val schema =
+        ResponseJsonSchema.from(Translation.class)
+            .withDescription("Output schema for language translation.")
+            .withStrict(true);
+    val configWithResponseSchema = gpt4oCustomInstance.withResponseJsonSchema(schema);
 
-    //    Build JSON schema from class
-    JacksonModule module =
-        new JacksonModule(
-            JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
+    val prompt =
+        new OrchestrationPrompt(
+            Message.user("Whats 'apple' in German?"),
+            Message.system("You are a language translator."));
 
-    SchemaGenerator generator =
-        new SchemaGenerator(
-            new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON)
-                .without(Option.SCHEMA_VERSION_INDICATOR)
-                .with(Option.FORBIDDEN_ADDITIONAL_PROPERTIES_BY_DEFAULT)
-                .with(module)
-                .build());
-    JsonNode jsonSchema = generator.generateSchema(Translation.class);
-
-    //    Convert JSON schema to Map
-    val mapper = new ObjectMapper();
-    Map<String, Object> schemaMap = mapper.convertValue(jsonSchema, new TypeReference<>() {});
-
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonSchema.create()
-                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                    .jsonSchema(
-                        ResponseFormatJsonSchemaJsonSchema.create()
-                            .name("translation_response")
-                            .schema(schemaMap)
-                            .strict(true)
-                            .description("Output schema for language translation.")));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
-
-    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
-
-    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    final var message = client.chatCompletion(prompt, configWithResponseSchema).getContent();
     assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
 
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
@@ -844,7 +803,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseObjectJsonObject() throws IOException {
+  void testResponseFormatJsonObject() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -852,23 +811,17 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonObjectResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = Message.user("What is 'apple' in German?");
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonObject.create()
-                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+    val configWithJsonResponse = gpt4oCustomInstance.withJsonResponse();
 
     val prompt =
         new OrchestrationPrompt(
+            Message.user("What is 'apple' in German?"),
             Message.system(
                 "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
 
-    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    final var message = client.chatCompletion(prompt, configWithJsonResponse).getContent();
     assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
 
     try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
@@ -878,7 +831,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseObjectText() throws IOException {
+  void testResponseFormatText() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(

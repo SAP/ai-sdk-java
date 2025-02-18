@@ -5,16 +5,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.victools.jsonschema.generator.Option;
-import com.github.victools.jsonschema.generator.OptionPreset;
-import com.github.victools.jsonschema.generator.SchemaGenerator;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
-import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.github.victools.jsonschema.module.jackson.JacksonModule;
-import com.github.victools.jsonschema.module.jackson.JacksonOption;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
@@ -28,14 +18,13 @@ import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -361,8 +350,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = Message.user("Whats '%s' in German?".formatted(word));
 
@@ -375,41 +363,18 @@ public class OrchestrationService {
       private String language;
     }
 
-    //    Build JSON schema from class
-    JacksonModule module =
-        new JacksonModule(
-            JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
+    val schema =
+        ResponseJsonSchema.from(Translation.class)
+            .withDescription("Output schema for language translation.")
+            .withStrict(true);
+    val configWithResponseSchema = gpt4oCustomInstance.withResponseJsonSchema(schema);
 
-    SchemaGenerator generator =
-        new SchemaGenerator(
-            new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON)
-                .without(Option.SCHEMA_VERSION_INDICATOR)
-                .with(Option.FORBIDDEN_ADDITIONAL_PROPERTIES_BY_DEFAULT)
-                .with(module)
-                .build());
-    JsonNode jsonSchema = generator.generateSchema(Translation.class);
+    val prompt =
+        new OrchestrationPrompt(
+            Message.user("Whats 'apple' in German?"),
+            Message.system("You are a language translator."));
 
-    //    Convert JSON schema to Map
-    val mapper = new ObjectMapper();
-    Map<String, Object> schemaMap = mapper.convertValue(jsonSchema, new TypeReference<>() {});
-
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonSchema.create()
-                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                    .jsonSchema(
-                        ResponseFormatJsonSchemaJsonSchema.create()
-                            .name("translation_response")
-                            .schema(schemaMap)
-                            .strict(true)
-                            .description("Output schema for language translation.")));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
-
-    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion(prompt, configWithResponseSchema);
   }
 
   /**

@@ -6,9 +6,16 @@ import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
+import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TemplateRef;
+import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,7 +68,9 @@ public class OrchestrationModuleConfig {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
-  @Nullable TemplatingModuleConfig templateConfig;
+  @With(AccessLevel.NONE)
+  @Nullable
+  TemplatingModuleConfig templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
@@ -210,5 +219,98 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withGrounding(
       @Nonnull final GroundingProvider groundingProvider) {
     return this.withGroundingConfig(groundingProvider.createConfig());
+  }
+
+  /**
+   * Creates a new configuration with the given template configuration.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @param templateConfig
+   * @return A new configuration with the given template configuration.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withTemplateConfig(
+      @Nullable final TemplatingModuleConfig templateConfig) {
+
+    //    If new templateConfig is a TemplateRef, use it.
+    if (templateConfig instanceof TemplateRef) {
+      return new OrchestrationModuleConfig(
+          llmConfig, templateConfig, maskingConfig, filteringConfig, groundingConfig);
+    }
+
+    //  Make sure old responseFormat is only overwritten if new templateConfig has one set.
+    var newTemplate = (Template) templateConfig;
+    TemplateResponseFormat responseFormat = null;
+    if (this.templateConfig instanceof Template oldTemplate) {
+      responseFormat = oldTemplate.getResponseFormat();
+    }
+    if (newTemplate != null && newTemplate.getResponseFormat() == null) {
+      newTemplate.setResponseFormat(responseFormat);
+    }
+    if (newTemplate == null && responseFormat != null) {
+      newTemplate = Template.create().template(List.of());
+      newTemplate.setResponseFormat(responseFormat);
+    }
+
+    return new OrchestrationModuleConfig(
+        llmConfig, newTemplate, maskingConfig, filteringConfig, groundingConfig);
+  }
+
+  /**
+   * Creates a new configuration with the given response schema.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
+   *     AI Core: Orchestration - Structured Output</a>
+   * @param schema
+   * @return A new configuration with the given response schema.
+   * @since 1.4.0
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withResponseJsonSchema(
+      @Nonnull final ResponseJsonSchema schema) {
+    val responseFormatJsonSchema =
+        ResponseFormatJsonSchema.create()
+            .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+            .jsonSchema(
+                ResponseFormatJsonSchemaJsonSchema.create()
+                    .name(schema.getName())
+                    .schema(schema.getSchemaMap())
+                    .strict(schema.getIsStrict())
+                    .description(schema.getDescription()));
+
+    if (this.templateConfig instanceof Template template) {
+      template.setResponseFormat(responseFormatJsonSchema);
+      return this.withTemplateConfig(template);
+    }
+    val templatingConfig =
+        Template.create().template(List.of()).responseFormat(responseFormatJsonSchema);
+    return this.withTemplateConfig(templatingConfig);
+  }
+
+  /**
+   * Creates a new configuration where the response format is set to JSON object.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
+   *     AI Core: Orchestration - Structured Output</a>
+   * @return A new configuration with response format JSON object.
+   * @since 1.4.0
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withJsonResponse() {
+    if (this.templateConfig instanceof Template template) {
+      template.setResponseFormat(
+          ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+      return this.withTemplateConfig(template);
+    }
+    val templatingConfig =
+        Template.create()
+            .template(List.of())
+            .responseFormat(
+                ResponseFormatJsonObject.create()
+                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
+    return this.withTemplateConfig(templatingConfig);
   }
 }
