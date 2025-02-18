@@ -377,8 +377,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThatThrownBy(() -> delta0.getCustomField("usage"))
             .isInstanceOf(NoSuchElementException.class);
         assertThat(delta1.getCustomField("usage")).isNull();
-        assertThat(delta1.getCustomField("usage"))
-            .isEqualTo(deltaList.get(1).getCompletionUsage(MAPPER));
+        assertThat(delta1.getCustomField("usage")).isEqualTo(deltaList.get(1).getCompletionUsage());
         assertThat(delta2.getCustomField("usage")).isNull();
         assertThat(delta3.getCustomField("usage")).isNull();
         final Map<?, ?> delta4UsageRaw = (Map<?, ?>) delta4.getCustomField("usage");
@@ -387,7 +386,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(delta4Usage.getCompletionTokens()).isEqualTo(607);
         assertThat(delta4Usage.getPromptTokens()).isEqualTo(21);
         assertThat(delta4Usage.getTotalTokens()).isEqualTo(628);
-        assertThat(delta4Usage).isEqualTo(deltaList.get(4).getCompletionUsage(MAPPER));
+        assertThat(delta4Usage).isEqualTo(deltaList.get(4).getCompletionUsage());
 
         // delta 0
 

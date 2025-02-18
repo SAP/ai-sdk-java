@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.NewOpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
@@ -56,7 +55,7 @@ class NewOpenAiTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
             delta -> {
-              final var usage = delta.getCompletionUsage(new ObjectMapper());
+              final var usage = delta.getCompletionUsage();
               totalOutput.compareAndExchange(null, usage);
               final String deltaContent = delta.getDeltaContent();
               log.info("delta: {}", delta);

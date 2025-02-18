@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,6 @@ import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
@@ -43,11 +42,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  static final ObjectMapper JACKSON =
-      getDefaultObjectMapper()
-          .addMixIn(
-              ChatCompletionsCreate200Response.class,
-              JacksonMixins.DefaultChatCompletionCreate200ResponseMixIn.class);
+  static final ObjectMapper JACKSON = getOpenAiObjectMapper();
 
   @Nullable private String systemPrompt = null;
 

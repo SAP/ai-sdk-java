@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
@@ -66,14 +66,13 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
   /**
    * Retrieves the completion usage from the response, or null if it is not available.
    *
-   * @param objectMapper The object mapper to use for conversion.
    * @return The completion usage or null.
    */
   @Nullable
-  public CompletionUsage getCompletionUsage(@Nonnull final ObjectMapper objectMapper) {
+  public CompletionUsage getCompletionUsage() {
     if (getOriginalResponse().getCustomFieldNames().contains("usage")
         && getOriginalResponse().getCustomField("usage") instanceof Map<?, ?> usage) {
-      return objectMapper.convertValue(usage, CompletionUsage.class);
+      return getOpenAiObjectMapper().convertValue(usage, CompletionUsage.class);
     }
     return null;
   }
