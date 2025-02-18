@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static lombok.AccessLevel.PACKAGE;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
@@ -21,7 +23,7 @@ import lombok.ToString;
  * @since 1.4.0
  */
 @Beta
-@RequiredArgsConstructor(onConstructor_ = @JsonCreator)
+@RequiredArgsConstructor(onConstructor_ = @JsonCreator, access = PACKAGE)
 @Getter
 @ToString
 @EqualsAndHashCode

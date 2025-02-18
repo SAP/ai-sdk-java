@@ -228,7 +228,7 @@ public class OpenAiChatCompletionRequest {
    *
    * @return the CreateChatCompletionRequest
    */
-  CreateChatCompletionRequest toCreateChatCompletionRequest() {
+  CreateChatCompletionRequest createCreateChatCompletionRequest() {
     final var request = new CreateChatCompletionRequest();
     this.messages.forEach(
         message ->

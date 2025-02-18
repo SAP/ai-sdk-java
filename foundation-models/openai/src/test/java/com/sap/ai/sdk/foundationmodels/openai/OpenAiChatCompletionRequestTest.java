@@ -17,7 +17,7 @@ class OpenAiChatCompletionRequestTest {
         new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
             .withStop("stop1", "stop2 stopNot3", "stop3");
 
-    var lowLevelRequest = request.toCreateChatCompletionRequest();
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
     assertThat(
             ((CreateChatCompletionRequestAllOfStop.InnerStrings) lowLevelRequest.getStop())
                 .values())
@@ -33,7 +33,7 @@ class OpenAiChatCompletionRequestTest {
 
     var newRequest = originalRequest.withMessages(List.of(OpenAiMessage.user("Another message")));
 
-    var lowlevelRequest = newRequest.toCreateChatCompletionRequest();
+    var lowlevelRequest = newRequest.createCreateChatCompletionRequest();
 
     assertThat(newRequest).isNotEqualTo(originalRequest);
     assertThat(lowlevelRequest.getMessages()).hasSize(1);

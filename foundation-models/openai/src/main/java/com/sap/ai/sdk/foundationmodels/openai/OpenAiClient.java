@@ -163,7 +163,7 @@ public final class OpenAiClient {
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     warnIfUnsupportedUsage();
     return new OpenAiChatCompletionResponse(
-        chatCompletion(request.toCreateChatCompletionRequest()));
+        chatCompletion(request.createCreateChatCompletionRequest()));
   }
 
   /**
@@ -231,7 +231,7 @@ public final class OpenAiClient {
             ? new OpenAiChatCompletionRequest(OpenAiMessage.system(systemPrompt), userPrompt)
             : new OpenAiChatCompletionRequest(userPrompt);
 
-    return streamChatCompletionDeltas(request.toCreateChatCompletionRequest())
+    return streamChatCompletionDeltas(request.createCreateChatCompletionRequest())
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
   }
@@ -277,7 +277,7 @@ public final class OpenAiClient {
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
-    return streamChatCompletionDeltas(request.toCreateChatCompletionRequest());
+    return streamChatCompletionDeltas(request.createCreateChatCompletionRequest());
   }
 
   /**
