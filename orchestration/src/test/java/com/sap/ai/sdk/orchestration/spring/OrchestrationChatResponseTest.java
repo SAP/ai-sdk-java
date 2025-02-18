@@ -48,7 +48,7 @@ class OrchestrationChatResponseTest {
     var usage = metadata.getUsage();
 
     assertThat(usage.getPromptTokens()).isEqualTo(10L);
-    assertThat(usage.getGenerationTokens()).isEqualTo(20L);
+    assertThat(usage.getCompletionTokens()).isEqualTo(20L);
     assertThat(usage.getTotalTokens()).isEqualTo(30L);
   }
 }

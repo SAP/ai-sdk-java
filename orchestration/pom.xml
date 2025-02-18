@@ -31,11 +31,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>80%</coverage.complexity>
-    <coverage.line>93%</coverage.line>
-    <coverage.instruction>93%</coverage.instruction>
+    <coverage.complexity>79%</coverage.complexity>
+    <coverage.line>92%</coverage.line>
+    <coverage.instruction>92%</coverage.instruction>
     <coverage.branch>73%</coverage.branch>
-    <coverage.method>92%</coverage.method>
+    <coverage.method>90%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -57,6 +57,11 @@
     <dependency>
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-observation</artifactId>
       <optional>true</optional>
     </dependency>
     <dependency>

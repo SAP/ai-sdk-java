@@ -54,6 +54,7 @@
               "name": "CurrentWeather",
               "parameters": {
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "additionalProperties": false,
                 "type": "object",
                 "properties": {
                   "location": {
@@ -66,7 +67,11 @@
                       "F"
                     ]
                   }
-                }
+                },
+                "required": [
+                  "location",
+                  "unit"
+                ]
               },
               "strict": false
             }

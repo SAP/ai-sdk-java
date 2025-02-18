@@ -100,7 +100,7 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public ChatResponse functionCalling() {
     final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
-    options.setToolCallbackss(
+    options.setToolCallbacks(
         List.of(
             FunctionToolCallback.builder("CurrentWeather", new MockWeatherService())
                 .description("Get the weather in location") // (2) function description

@@ -13,6 +13,7 @@ import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCallFunction;
+import io.micrometer.observation.ObservationRegistry;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -27,6 +28,8 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import org.springframework.ai.model.tool.ToolExecutionResult;
+import org.springframework.ai.tool.execution.DefaultToolExecutionExceptionProcessor;
+import org.springframework.ai.tool.resolution.DelegatingToolCallbackResolver;
 import reactor.core.publisher.Flux;
 
 /**
@@ -45,7 +48,10 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
    * @since 1.2.0
    */
   public OrchestrationChatModel() {
-    super(null, null, null);
+    super(
+        ObservationRegistry.NOOP,
+        new DelegatingToolCallbackResolver(List.of()),
+        DefaultToolExecutionExceptionProcessor.builder().build());
     this.client = new OrchestrationClient();
   }
 
@@ -55,7 +61,10 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
    * @since 1.2.0
    */
   public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
-    super(null, null, null);
+    super(
+        ObservationRegistry.NOOP,
+        new DelegatingToolCallbackResolver(List.of()),
+        DefaultToolExecutionExceptionProcessor.builder().build());
     this.client = client;
   }
 
@@ -64,13 +73,6 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-//      if (options.getToolCallbacks() != null) {
-//        runtimeToolCallbackConfigurations(
-//            ToolCallingChatOptions.builder()
-//                .toolCallbacks(options.getToolCallbacks())
-//                .build());
-//      }
-
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
@@ -78,15 +80,14 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
-        var toolExecutionResult = this.executeToolCalls(prompt, response);
+        val toolExecutionResult = this.executeToolCalls(prompt, response);
         if (toolExecutionResult.returnDirect()) {
           // Return tool execution result directly to the client.
           return ChatResponse.builder()
               .from(response)
               .generations(ToolExecutionResult.buildGenerations(toolExecutionResult))
               .build();
-        }
-        else {
+        } else {
           // Send the tool execution result back to the model.
           return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
         }
