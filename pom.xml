@@ -57,7 +57,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cloud-sdk.version>5.16.0</cloud-sdk.version>
     <junit-jupiter.version>5.11.4</junit-jupiter.version>
-    <wiremock.version>3.11.0</wiremock.version>
+    <wiremock.version>3.12.0</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.16</slf4j.version>
     <checkstyle.version>10.21.2</checkstyle.version>
@@ -595,6 +595,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <!-- Exclude generated clients -->
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
           </excludes>
         </configuration>
@@ -617,6 +618,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
@@ -686,7 +688,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.6</version>
+        <version>4.9.1.0</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
@@ -708,7 +710,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>11.1.1</version>
+        <version>12.1.0</version>
         <configuration>
           <connectionTimeout>60000</connectionTimeout>
           <nvdMaxRetryCount>20</nvdMaxRetryCount>
