@@ -415,7 +415,7 @@
             <configuration>
               <rules>
                 <bannedDependencies>
-                  <message>Spring AI should be optional</message>
+                  <message>Spring AI dependencies should be optional</message>
                   <includes>
                     <include>org.springframework.ai:*</include>
                   </includes>
