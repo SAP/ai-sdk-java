@@ -88,18 +88,19 @@ public class OpenAiService {
   /**
    * Chat request to OpenAI with a tool.
    *
-   * @param prompt The prompt to send to the assistant
+   * @param months The number of months to be inferred in the tool
    * @return the assistant message response
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletionTools(@Nonnull final String prompt) {
+  public OpenAiChatCompletionOutput chatCompletionTools(final int months) {
     final var question =
-        "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?";
+        "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
+            .formatted(months);
     final var par = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
     final var function =
         new OpenAiChatCompletionFunction()
             .setName("fibonacci")
-            .setDescription(prompt)
+            .setDescription("Calculate the Fibonacci number for given sequence index.")
             .setParameters(par);
     final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
     final var request =

@@ -1,0 +1,56 @@
+{
+  "choices": [
+    {
+      "content_filter_results": {},
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"N\":12}",
+              "name": "fibonacci"
+            },
+            "id": "call_CUYGJf2j7FRWJMHT3PN3aGxK",
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1738867288,
+  "id": "chatcmpl-Ay16WxAjYvRDJ12ImPi8E1T1TZHoP",
+  "model": "gpt-3.5-turbo-1106",
+  "object": "chat.completion",
+  "prompt_filter_results": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "prompt_index": 0
+    }
+  ],
+  "system_fingerprint": "fp_0165350fbb",
+  "usage": {
+    "completion_tokens": 5,
+    "prompt_tokens": 93,
+    "total_tokens": 98
+  }
+}
