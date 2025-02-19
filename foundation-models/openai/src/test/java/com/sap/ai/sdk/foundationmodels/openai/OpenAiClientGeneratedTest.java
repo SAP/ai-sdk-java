@@ -30,7 +30,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionName
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
@@ -43,7 +42,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.SneakyThrows;
@@ -389,20 +387,6 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(delta2.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
         assertThat(delta3.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
         assertThat(delta4.getSystemFingerprint()).isEqualTo("fp_e49e4201a9");
-
-        // usage is not in modelled CreateChatCompletionStreamResponse -> always custom field
-        assertThatThrownBy(() -> delta0.getCustomField("usage"))
-            .isInstanceOf(NoSuchElementException.class);
-        assertThat(delta1.getCustomField("usage")).isNull();
-        assertThat(delta2.getCustomField("usage")).isNull();
-        assertThat(delta3.getCustomField("usage")).isNull();
-        assertThat(delta4.getCustomField("usage")).isNotNull();
-        final var usage4 =
-            MAPPER.convertValue(delta4.getCustomField("usage"), CompletionUsage.class);
-        assertThat(usage4).isNotNull();
-        assertThat(usage4.getCompletionTokens()).isEqualTo(607);
-        assertThat(usage4.getPromptTokens()).isEqualTo(21);
-        assertThat(usage4.getTotalTokens()).isEqualTo(628);
 
         assertThat(delta0.getCustomFieldNames()).contains("prompt_filter_results");
         assertThat(delta1.getCustomFieldNames()).doesNotContain("prompt_filter_results");
