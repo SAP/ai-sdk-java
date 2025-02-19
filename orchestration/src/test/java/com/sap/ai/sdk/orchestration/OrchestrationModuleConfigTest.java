@@ -199,7 +199,7 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
-  void testResponseFormatNotOverwrittenWithNewTemplateConfig() {
+  void testResponseFormatNotOverwrittenByNewTemplateConfig() {
     var schema = ResponseJsonSchema.from(TestClassForSchemaGeneration.class);
     var config = new OrchestrationModuleConfig().withJsonSchemaResponse(schema);
     assertThat(((Template) config.getTemplateConfig())).isNotNull();

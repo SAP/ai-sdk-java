@@ -70,7 +70,6 @@ public class ResponseJsonSchema {
    */
   @Nonnull
   public static ResponseJsonSchema from(@Nonnull final Type classType) {
-    //    Build JSON schema from class
     val module =
         new JacksonModule(
             JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
@@ -82,13 +81,9 @@ public class ResponseJsonSchema {
                 .with(module)
                 .build());
     val jsonSchema = generator.generateSchema(classType);
-
-    //    Convert JSON schema to Map
     val mapper = new ObjectMapper();
     final Map<String, Object> schemaMap = mapper.convertValue(jsonSchema, new TypeReference<>() {});
-
     val schemaName = ((Class<?>) classType).getSimpleName() + "-Schema";
-
     return new ResponseJsonSchema(schemaMap, schemaName, null, null);
   }
 }
