@@ -209,10 +209,11 @@ class OrchestrationModuleConfigTest {
                 .getSchema())
         .isEqualTo(schema.getSchemaMap());
 
-    config =
-        config.withTemplateConfig(
-            Template.create()
-                .template(SingleChatMessage.create().role("user").content("Hello, World!")));
+    var template =
+        Template.create()
+            .template(SingleChatMessage.create().role("user").content("Hello, World!"));
+    template.setCustomField("field", 1);
+    config = config.withTemplateConfig(template);
     assertThat(((Template) config.getTemplateConfig())).isNotNull();
     assertThat(
             ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())

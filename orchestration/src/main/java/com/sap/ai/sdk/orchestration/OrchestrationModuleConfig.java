@@ -233,30 +233,51 @@ public class OrchestrationModuleConfig {
   @Nonnull
   public OrchestrationModuleConfig withTemplateConfig(
       @Nullable final TemplatingModuleConfig templateConfig) {
-
-    //    If new templateConfig is a TemplateRef, use it.
     if (templateConfig instanceof TemplateRef) {
       return new OrchestrationModuleConfig(
           llmConfig, templateConfig, maskingConfig, filteringConfig, groundingConfig);
     }
+    if (templateConfig == null) {
+      return handleNullTemplateConfig();
+    }
+    return handleNonNullTemplateConfig((Template) templateConfig);
+  }
 
-    //  Make sure old responseFormat is only overwritten if new templateConfig has one set.
-    var newTemplate = (Template) templateConfig;
-    TemplateResponseFormat responseFormat = null;
-    if (this.templateConfig instanceof Template oldTemplate) {
-      responseFormat = oldTemplate.getResponseFormat();
-    }
-    //  Template.getResponseFormat() might return null, so the following check is necessary.
-    if (newTemplate != null && newTemplate.getResponseFormat() == null) {
+  @Nonnull
+  private OrchestrationModuleConfig handleNullTemplateConfig() {
+    if (getResponseFormatIfExists(this.templateConfig) != null) {
+      val responseFormat = ((Template) this.templateConfig).getResponseFormat();
+      val newTemplate = Template.create().template(List.of());
       newTemplate.setResponseFormat(responseFormat);
+      return new OrchestrationModuleConfig(
+          llmConfig, newTemplate, maskingConfig, filteringConfig, groundingConfig);
     }
-    if (newTemplate == null && responseFormat != null) {
-      newTemplate = Template.create().template(List.of());
-      newTemplate.setResponseFormat(responseFormat);
-    }
-
     return new OrchestrationModuleConfig(
-        llmConfig, newTemplate, maskingConfig, filteringConfig, groundingConfig);
+        llmConfig, null, maskingConfig, filteringConfig, groundingConfig);
+  }
+
+  @Nonnull
+  private OrchestrationModuleConfig handleNonNullTemplateConfig(final Template newTemplate) {
+    if (getResponseFormatIfExists(newTemplate) != null) {
+      return new OrchestrationModuleConfig(
+          llmConfig, newTemplate, maskingConfig, filteringConfig, groundingConfig);
+    }
+    val responseFormat = getResponseFormatIfExists(this.templateConfig);
+    return new OrchestrationModuleConfig(
+        llmConfig,
+        ResponseJsonSchema.newTemplateWithResponseFormat(newTemplate, responseFormat),
+        maskingConfig,
+        filteringConfig,
+        groundingConfig);
+  }
+
+  @Nullable
+  private static TemplateResponseFormat getResponseFormatIfExists(
+      final TemplatingModuleConfig templateConfig) {
+    if (templateConfig instanceof Template template) {
+      return template.getResponseFormat();
+    }
+    return null;
   }
 
   /**
@@ -282,8 +303,9 @@ public class OrchestrationModuleConfig {
                     .strict(schema.getIsStrict())
                     .description(schema.getDescription()));
     if (this.templateConfig instanceof Template template) {
-      template.setResponseFormat(responseFormatJsonSchema);
-      return this.withTemplateConfig(template);
+      val newTemplate =
+          ResponseJsonSchema.newTemplateWithResponseFormat(template, responseFormatJsonSchema);
+      return this.withTemplateConfig(newTemplate);
     }
     val templatingConfig =
         Template.create().template(List.of()).responseFormat(responseFormatJsonSchema);
@@ -304,8 +326,9 @@ public class OrchestrationModuleConfig {
     val responseFormatJsonObject =
         ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);
     if (this.templateConfig instanceof Template template) {
-      template.setResponseFormat(responseFormatJsonObject);
-      return this.withTemplateConfig(template);
+      val newTemplate =
+          ResponseJsonSchema.newTemplateWithResponseFormat(template, responseFormatJsonObject);
+      return this.withTemplateConfig(newTemplate);
     }
     val templatingConfig =
         Template.create().template(List.of()).responseFormat(responseFormatJsonObject);
