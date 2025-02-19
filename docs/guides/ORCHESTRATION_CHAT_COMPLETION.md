@@ -311,6 +311,8 @@ It is possible to set the response format for the chat completion. Available opt
 Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
 ```java
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
 var configWithJsonResponse = config.withJsonResponse();
 
 var prompt =
@@ -330,13 +332,41 @@ var schema =
     ResponseJsonSchema.from(MyClass.class)
             .withDescription("Output schema for the example class MyClass.")
             .withStrict(true);
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
 var configWithResponseSchema = config.withJsonSchemaResponse(schema);
 
-var prompt =
-        new OrchestrationPrompt(Message.user("Some message."));
+var prompt = new OrchestrationPrompt(Message.user("Some message."));
 var response = client.chatCompletion(prompt, configWithTemplate).getContent();
 ```
 Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`. Not all schemas are possible for OpenAI in strict mode. See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
+
+There is also a way to generate the schema from a map of key-value pairs. This can be done as follows:
+<details><summary>Click to expand code</summary>
+
+```java
+var schemaMap =
+        Map.of(
+                "type",
+                "object",
+                "properties",
+                Map.of(
+                        "language", Map.of("type", "string"),
+                        "translation", Map.of("type", "string")),
+                "required",
+                List.of("language", "translation"),
+                "additionalProperties",
+                false);
+var schemaFromMap = ResponseJsonSchema.of(schemaMap, "Translator-Schema");
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithResponseSchema = config.withJsonSchemaResponse(schemaFromMap);
+
+var prompt = new OrchestrationPrompt(Message.user("Some message."));
+var response = client.chatCompletion(prompt, configWithTemplate).getContent();
+```
+
+</details>
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
 
