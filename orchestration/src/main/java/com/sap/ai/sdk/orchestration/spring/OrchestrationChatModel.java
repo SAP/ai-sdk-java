@@ -27,7 +27,6 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
-import org.springframework.ai.model.tool.ToolExecutionResult;
 import org.springframework.ai.tool.execution.DefaultToolExecutionExceptionProcessor;
 import org.springframework.ai.tool.resolution.DelegatingToolCallbackResolver;
 import reactor.core.publisher.Flux;
@@ -81,16 +80,8 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
         val toolExecutionResult = this.executeToolCalls(prompt, response);
-        if (toolExecutionResult.returnDirect()) {
-          // Return tool execution result directly to the client.
-          return ChatResponse.builder()
-              .from(response)
-              .generations(ToolExecutionResult.buildGenerations(toolExecutionResult))
-              .build();
-        } else {
-          // Send the tool execution result back to the model.
-          return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
-        }
+        // Send the tool execution result back to the model.
+        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
       }
       return response;
     }
