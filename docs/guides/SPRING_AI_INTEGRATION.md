@@ -107,29 +107,27 @@ Please find [an example in our Spring Boot application](../../sample-code/spring
 First define a function that will be called by the LLM:
 
 ```java
-public class MockWeatherService implements Function<Request, Response> {
-  public enum Unit {C, F}
-  public record Request(String location, Unit unit) {}
-  public record Response(double temp, Unit unit) {}
+class WeatherMethod {
+  enum Unit {C,F}
+  record Request(String location, Unit unit) {}
+  record Response(double temp, Unit unit) {}
 
-  public Response apply(Request request) {
-    return new Response(30.0, Unit.C);
+  @Tool(description = "Get the weather in location")
+  Response getCurrentWeather(@ToolParam Request request) {
+    int temperature = request.location.hashCode() % 30;
+    return new Response(temperature, request.unit);
   }
 }
 ```
 
-Then add your function to the options:
+Then add your tool to the options:
 
 ```java
 OrchestrationChatOptions options = new OrchestrationChatOptions(config);
-options.setToolCallbacks(
-    List.of(
-        FunctionToolCallback.builder(
-        "CurrentWeather", new MockWeatherService()) // (1) function name and instance
-            .description("Get the weather in location") // (2) function description
-            .inputType(MockWeatherService.Request.class) // (3) function input type
-            .build()));
+options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+
 options.setInternalToolExecutionEnabled(false);// tool execution is not yet available in orchestration
+
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
 ChatResponse response = client.call(prompt);
