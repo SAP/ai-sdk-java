@@ -47,6 +47,13 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   private List<FunctionCallback> functionCallbacks;
 
+  @Getter(AccessLevel.NONE)
+  private Boolean internalToolExecutionEnabled;
+
+  private Set<String> toolNames;
+
+  private Map<String, Object> toolContext;
+
   /**
    * Returns the model to use for the chat.
    *
@@ -190,12 +197,6 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     setFunctionCallbacks(toolCallbacks);
   }
 
-  @Nonnull
-  @Override
-  public List<FunctionCallback> getFunctionCallbacks() {
-    return functionCallbacks;
-  }
-
   @Override
   public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
     this.functionCallbacks = toolCallbacks;
@@ -219,24 +220,11 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     config = config.withTemplateConfig(template.tools(tools));
   }
 
-  @Nonnull
   @Override
-  public Set<String> getToolNames() {
-    return Set.of();
-  }
-
-  @Override
-  public void setToolNames(@Nonnull final Set<String> toolNames) {}
-
   @Nullable
-  @Override
   public Boolean isInternalToolExecutionEnabled() {
-    return null;
+    return this.internalToolExecutionEnabled;
   }
-
-  @Override
-  public void setInternalToolExecutionEnabled(
-      @Nullable final Boolean internalToolExecutionEnabled) {}
 
   @Nonnull
   @Override
@@ -258,17 +246,6 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     //                        .function(FunctionObject.create().name(functionName)))
     //            .toList();
     //    config = config.withTemplateConfig(template.tools(tools));
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
-
-  @Nonnull
-  @Override
-  public Map<String, Object> getToolContext() {
-    return Map.of();
-  }
-
-  @Override
-  public void setToolContext(@Nonnull final Map<String, Object> tooContext) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 }
