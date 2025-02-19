@@ -1,12 +1,14 @@
 package com.sap.ai.sdk.app.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
+  private static final ObjectMapper MAPPER =
+      new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
   @GetMapping("/chatCompletion")
   @Nonnull
@@ -44,16 +48,19 @@ public class OpenAiController {
     final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var stream = service.streamChatCompletionDeltas(message);
     final var emitter = new ResponseBodyEmitter();
+    final var totalUsage = new AtomicReference<OpenAiUsage>();
     final Runnable consumeStream =
         () -> {
-          final var totalOutput = new OpenAiChatCompletionOutput();
-          // try-with-resources ensures the stream is closed
           try (stream) {
-            stream
-                .peek(totalOutput::addDelta)
-                .forEach(delta -> send(emitter, delta.getDeltaContent()));
+            stream.forEach(
+                delta -> {
+                  // Instead of getCompletionUsage(MAPPER), we now use getUsage()
+                  final var usage = delta.getUsage();
+                  totalUsage.compareAndExchange(null, usage);
+                  send(emitter, delta.getDeltaContent());
+                });
           } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+            send(emitter, "\n\n-----Total Usage-----\n\n" + totalUsage.get());
             emitter.complete();
           }
         };
@@ -100,20 +107,6 @@ public class OpenAiController {
     }
   }
 
-  /**
-   * Convert an object to JSON
-   *
-   * @param obj The object to convert
-   * @return The JSON representation of the object
-   */
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
-    }
-  }
-
   @GetMapping("/chatCompletionImage")
   @Nonnull
   Object chatCompletionImage(
@@ -124,15 +117,14 @@ public class OpenAiController {
     if ("json".equals(format)) {
       return response;
     }
-    return response.getContent();
+    return response.getChoices().get(0).getMessage();
   }
 
   @GetMapping("/chatCompletionTool")
   @Nonnull
   Object chatCompletionTools(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response =
-        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
+    final var response = service.chatCompletionTools(12);
     if ("json".equals(format)) {
       return response;
     }
