@@ -1,12 +1,16 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartText;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessageContentPart;
+import static lombok.AccessLevel.PACKAGE;
+
+import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContentPart;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
@@ -14,13 +18,15 @@ import lombok.experimental.Tolerate;
 /**
  * Represents a tool message in the OpenAI service.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
+@Beta
 @Value
 @Accessors(fluent = true)
+@AllArgsConstructor(access = PACKAGE)
 public class OpenAiToolMessage implements OpenAiMessage {
 
-  /** The role of the message, which is "tool". */
+  /** The role associated with this message. */
   String role = "tool";
 
   /** The content of the message. */

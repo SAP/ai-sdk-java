@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static lombok.AccessLevel.PACKAGE;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImageImageUrl;
@@ -12,6 +14,7 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -25,6 +28,7 @@ import lombok.experimental.Tolerate;
 @Beta
 @Value
 @Accessors(fluent = true)
+@AllArgsConstructor(access = PACKAGE)
 public class OpenAiUserMessage implements OpenAiMessage {
 
   /** The role associated with this message. */

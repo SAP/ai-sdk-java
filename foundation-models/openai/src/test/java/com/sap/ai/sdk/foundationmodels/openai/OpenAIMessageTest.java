@@ -2,17 +2,17 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestAssistantMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestAssistantMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartImageImageUrl;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestMessageContentPartText;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestSystemMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestToolMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model2.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImageImageUrl;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,7 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class MessageConvenienceTest {
+class OpenAIMessageTest {
   static String validText = "Some string";
   static String validImageUrl = "http://valid-url.com";
 

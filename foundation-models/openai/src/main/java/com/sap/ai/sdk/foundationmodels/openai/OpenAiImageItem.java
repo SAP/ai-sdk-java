@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
 import java.util.Locale;
 import javax.annotation.Nonnull;
 
@@ -8,8 +9,9 @@ import javax.annotation.Nonnull;
  *
  * @param imageUrl the URL of the image
  * @param detailLevel the detail level of the image (optional)
- * @since 1.3.0
+ * @since 1.4.0
  */
+@Beta
 public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLevel)
     implements OpenAiContentItem {
 
