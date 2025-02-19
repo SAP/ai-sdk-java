@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Add Spring AI function calling](../guides/SPRING_AI_INTEGRATION.md#function-calling).
+- [Add Spring AI tool calling](../guides/SPRING_AI_INTEGRATION.md#tool-calling).
 
 ### 📈 Improvements
 
