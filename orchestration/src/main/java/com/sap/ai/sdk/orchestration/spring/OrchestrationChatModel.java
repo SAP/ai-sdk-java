@@ -20,6 +20,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.ai.chat.model.ChatModel;
@@ -138,15 +139,7 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
                 if (springToolCalls != null) {
                   final List<ResponseMessageToolCall> sdkToolCalls =
                       springToolCalls.stream()
-                          .map(
-                              toolCall ->
-                                  ResponseMessageToolCall.create()
-                                      .id(toolCall.id())
-                                      .type(FUNCTION)
-                                      .function(
-                                          ResponseMessageToolCallFunction.create()
-                                              .name(toolCall.name())
-                                              .arguments(toolCall.arguments())))
+                          .map(OrchestrationChatModel::toOrchestrationToolCall)
                           .toList();
                   yield List.of(new AssistantMessage(sdkToolCalls));
                 }
@@ -164,5 +157,16 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
         .map(mapper)
         .flatMap(List::stream)
         .toArray(com.sap.ai.sdk.orchestration.Message[]::new);
+  }
+
+  @Nonnull
+  private static ResponseMessageToolCall toOrchestrationToolCall(@Nonnull final ToolCall toolCall) {
+    return ResponseMessageToolCall.create()
+        .id(toolCall.id())
+        .type(FUNCTION)
+        .function(
+            ResponseMessageToolCallFunction.create()
+                .name(toolCall.name())
+                .arguments(toolCall.arguments()));
   }
 }

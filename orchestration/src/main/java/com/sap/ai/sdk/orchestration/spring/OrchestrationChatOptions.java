@@ -37,10 +37,8 @@ import org.springframework.ai.model.tool.ToolCallingChatOptions;
  */
 @Beta
 @Data
-@Getter(AccessLevel.PUBLIC)
 public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
-  @Getter(AccessLevel.NONE)
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   @Nonnull private OrchestrationModuleConfig config;
@@ -203,21 +201,19 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     final Template template =
         Objects.requireNonNullElse(
             (Template) config.getTemplateConfig(), Template.create().template());
-    val tools =
-        toolCallbacks.stream()
-            .map(
-                functionCallback ->
-                    ChatCompletionTool.create()
-                        .type(TypeEnum.FUNCTION)
-                        .function(
-                            FunctionObject.create()
-                                .name(functionCallback.getName())
-                                .description(functionCallback.getDescription())
-                                .parameters(
-                                    ModelOptionsUtils.jsonToMap(
-                                        functionCallback.getInputTypeSchema()))))
-            .toList();
+    val tools = toolCallbacks.stream().map(OrchestrationChatOptions::toOrchestrationTool).toList();
     config = config.withTemplateConfig(template.tools(tools));
+  }
+
+  private static ChatCompletionTool toOrchestrationTool(
+      @Nonnull final FunctionCallback functionCallback) {
+    return ChatCompletionTool.create()
+        .type(TypeEnum.FUNCTION)
+        .function(
+            FunctionObject.create()
+                .name(functionCallback.getName())
+                .description(functionCallback.getDescription())
+                .parameters(ModelOptionsUtils.jsonToMap(functionCallback.getInputTypeSchema())));
   }
 
   @Override
