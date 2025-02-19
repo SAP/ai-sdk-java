@@ -112,7 +112,7 @@ public final class OpenAiClient {
 
   /**
    * Use this method to set a system prompt that should be used across multiple chat completions
-   * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)}.
+   * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
    *
    * <p>Note: The system prompt is ignored on chat completions invoked with
    * OpenAiChatCompletionPrompt.

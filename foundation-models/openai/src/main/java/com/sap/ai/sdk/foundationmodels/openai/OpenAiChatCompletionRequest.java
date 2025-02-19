@@ -24,6 +24,9 @@ import lombok.experimental.Tolerate;
 /**
  * Represents a request for OpenAI chat completion, including conversation messages and parameters.
  *
+ * @see <a
+ *     href="https://platform.openai.com/docs/api-reference/chat/create#chat-create-messages">OpenAI
+ *     API Reference</a>
  * @since 1.4.0
  */
 @Beta
@@ -35,31 +38,60 @@ public class OpenAiChatCompletionRequest {
   /** List of messages from the conversation. */
   @Nonnull List<OpenAiMessage> messages;
 
-  /** Stop sequences for the completion. */
+  /** Upto 4 Stop sequences to interrupts token generation and returns a response without them. */
   @Nullable List<String> stop;
 
-  /** Temperature for the completion. */
+  /**
+   * Controls the randomness of the completion.
+   *
+   * <p>Lower values (e.g. 0.0) make the model more deterministic and repetitive, while higher
+   * values (e.g. 1.0) make the model more random and creative.
+   */
   @Nullable BigDecimal temperature;
 
-  /** Top-p sampling parameter. */
+  /**
+   * Controls the cumulative probability threshold used for nucleus sampling. Alternative to {@link
+   * #temperature}.
+   *
+   * <p>Lower values (e.g. 0.1) limit the model to consider only the smallest set of tokens whose
+   * combined probabilities add up to at least 10% of the total.
+   */
   @Nullable BigDecimal topP;
 
-  /** Maximum number of tokens for the completion. */
+  /** Maximum number of tokens that can be generated for the completion. */
   @Nullable Integer maxTokens;
 
-  /** Maximum number of tokens for the completion response. */
+  /**
+   * Maximum number of tokens that can be generated for the completion, including consumed reasoning
+   * tokens. This field supersedes {@link #maxTokens} and should be used with newer models.
+   */
   @Nullable Integer maxCompletionTokens;
 
-  /** Presence penalty for the completion. */
+  /**
+   * Encourage new topic by penalising token based on their presence in the completion.
+   *
+   * <p>Value should be in range [-2, 2].
+   */
   @Nullable BigDecimal presencePenalty;
 
-  /** Frequency penalty for the completion. */
+  /**
+   * Encourage new topic by penalising tokens based on their frequency in the completion.
+   *
+   * <p>Value should be in range [-2, 2].
+   */
   @Nullable BigDecimal frequencyPenalty;
 
-  /** Logit bias for the completion. */
+  /**
+   * A map that adjusts the likelihood of specified tokens by adding a bias value (between -100 and
+   * 100) to the logits before sampling. Extreme values can effectively ban or enforce the selection
+   * of tokens.
+   */
   @Nullable Map<String, Integer> logitBias;
 
-  /** User identifier for the completion. */
+  /**
+   * Unique identifier for the end-user making the request. This can help with monitoring and abuse
+   * detection.
+   */
   @Nullable String user;
 
   /** Whether to include log probabilities in the response. */
@@ -67,7 +99,10 @@ public class OpenAiChatCompletionRequest {
   @Nullable
   Boolean logprobs;
 
-  /** Number of top log probabilities to include. */
+  /**
+   * Number of top log probabilities to return for each token. An integer between 0 and 20. This is
+   * only relevant if {@code logprobs} is enabled.
+   */
   @Nullable Integer topLogprobs;
 
   /** Number of completions to generate. */
@@ -81,16 +116,16 @@ public class OpenAiChatCompletionRequest {
   /** Seed for random number generation. */
   @Nullable Integer seed;
 
-  /** Options for streaming the completion. */
+  /** Options for streaming the completion response. */
   @Nullable ChatCompletionStreamOptions streamOptions;
 
   /** Response format for the completion. */
   @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
-  /** List of tools for the completion. */
+  /** List of tools that the model may invoke during the completion. */
   @Nullable List<ChatCompletionTool> tools;
 
-  /** Tool choice option for the completion. */
+  /** Option to control which tool is invoked by the model. */
   @Nullable ChatCompletionToolChoiceOption toolChoice;
 
   /**
