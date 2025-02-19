@@ -1,18 +1,18 @@
-package com.sap.ai.sdk.app.services;
+package com.sap.ai.sdk.orchestration.spring;
 
-import com.sap.ai.sdk.app.services.MockWeatherService.Request;
-import com.sap.ai.sdk.app.services.MockWeatherService.Response;
-import java.util.function.Function;
 import javax.annotation.Nonnull;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 
-/** Function for tool calls in Spring AI */
-public class MockWeatherService implements Function<Request, Response> {
+public class WeatherMethod {
 
   /** Unit of temperature */
   public enum Unit {
     /** Celsius */
+    @SuppressWarnings("unused")
     C,
     /** Fahrenheit */
+    @SuppressWarnings("unused")
     F
   }
 
@@ -32,14 +32,10 @@ public class MockWeatherService implements Function<Request, Response> {
    */
   public record Response(double temp, Unit unit) {}
 
-  /**
-   * Apply the function
-   *
-   * @param request the request
-   * @return the response
-   */
   @Nonnull
-  public Response apply(@Nonnull Request request) {
-    return new Response(30.0, Unit.C);
+  @SuppressWarnings("unused")
+  @Tool(description = "Get the weather in location")
+  Response getCurrentWeather(@ToolParam @Nonnull Request request) {
+    return new Response(30, request.unit);
   }
 }

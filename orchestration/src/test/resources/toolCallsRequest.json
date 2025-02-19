@@ -19,26 +19,34 @@
             "type": "function",
             "function": {
               "description": "Get the weather in location",
-              "name": "CurrentWeather",
+              "name": "getCurrentWeather",
               "parameters": {
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "additionalProperties": false,
                 "type": "object",
                 "properties": {
-                  "location": {
-                    "type": "string"
-                  },
-                  "unit": {
-                    "type": "string",
-                    "enum": [
-                      "C",
-                      "F"
+                  "arg0": {
+                    "type": "object",
+                    "properties": {
+                      "location": {
+                        "type": "string"
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "C",
+                          "F"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "location",
+                      "unit"
                     ]
                   }
                 },
                 "required": [
-                  "location",
-                  "unit"
+                  "arg0"
                 ]
               },
               "strict": false

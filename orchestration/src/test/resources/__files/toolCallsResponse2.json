@@ -14,16 +14,16 @@
             "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
             "type": "function",
             "function": {
-              "name": "CurrentWeather",
-              "arguments": "{\"location\": \"Potsdam\", \"unit\": \"C\"}"
+              "name": "getCurrentWeather",
+              "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
             }
           },
           {
             "id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
             "type": "function",
             "function": {
-              "name": "CurrentWeather",
-              "arguments": "{\"location\": \"Toulouse\", \"unit\": \"C\"}"
+              "name": "getCurrentWeather",
+              "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
             }
           }
         ]

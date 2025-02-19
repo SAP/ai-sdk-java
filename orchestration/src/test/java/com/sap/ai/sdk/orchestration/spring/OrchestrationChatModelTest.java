@@ -42,7 +42,7 @@ import org.mockito.Mockito;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.tool.function.FunctionToolCallback;
+import org.springframework.ai.tool.ToolCallbacks;
 import reactor.core.publisher.Flux;
 
 @WireMockTest
@@ -152,13 +152,7 @@ public class OrchestrationChatModelTest {
                     .withBodyFile("toolCallsResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    defaultOptions.setToolCallbacks(
-        List.of(
-            FunctionToolCallback.builder(
-                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
-                .description("Get the weather in location") // (2) function description
-                .inputType(MockWeatherService.Request.class) // (3) function input type
-                .build()));
+    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
     defaultOptions.setInternalToolExecutionEnabled(false);
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
     val result = client.call(prompt);
@@ -169,10 +163,12 @@ public class OrchestrationChatModelTest {
     ToolCall toolCall2 = toolCalls.get(1);
     assertThat(toolCall1.type()).isEqualTo("function");
     assertThat(toolCall2.type()).isEqualTo("function");
-    assertThat(toolCall1.name()).isEqualTo("CurrentWeather");
-    assertThat(toolCall2.name()).isEqualTo("CurrentWeather");
-    assertThat(toolCall1.arguments()).isEqualTo("{\"location\": \"Potsdam\", \"unit\": \"C\"}");
-    assertThat(toolCall2.arguments()).isEqualTo("{\"location\": \"Toulouse\", \"unit\": \"C\"}");
+    assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
+    assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
+    assertThat(toolCall1.arguments())
+        .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
+    assertThat(toolCall2.arguments())
+        .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
 
     try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
       final String request1 = new String(request1InputStream.readAllBytes());
@@ -202,13 +198,7 @@ public class OrchestrationChatModelTest {
                     .withBodyFile("toolCallsResponse2.json")
                     .withHeader("Content-Type", "application/json")));
 
-    defaultOptions.setToolCallbacks(
-        List.of(
-            FunctionToolCallback.builder(
-                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
-                .description("Get the weather in location") // (2) function description
-                .inputType(MockWeatherService.Request.class) // (3) function input type
-                .build()));
+    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
     val result = client.call(prompt);
 

@@ -15,7 +15,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.tool.function.FunctionToolCallback;
+import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -91,22 +91,16 @@ public class SpringAiOrchestrationService {
   }
 
   /**
-   * Register a function that will be called when the user asks for the weather. <a
-   * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_programmatic_specification_functiontoolcallback">Spring
-   * AI Function Calling</a>
+   * Turn a method into a tool by annotating it with @Tool. <a
+   * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
+   * Tool Method Declarative Specification</a>
    *
    * @return the assistant response object
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
     final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
-    options.setToolCallbacks(
-        List.of(
-            FunctionToolCallback.builder(
-                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
-                .description("Get the weather in location") // (2) function description
-                .inputType(MockWeatherService.Request.class) // (3) function input type
-                .build()));
+    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
     options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
 
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);

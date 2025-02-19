@@ -67,10 +67,12 @@ public class SpringAiOrchestrationTest {
     ToolCall toolCall2 = toolCalls.get(1);
     assertThat(toolCall1.type()).isEqualTo("function");
     assertThat(toolCall2.type()).isEqualTo("function");
-    assertThat(toolCall1.name()).isEqualTo("CurrentWeather");
-    assertThat(toolCall2.name()).isEqualTo("CurrentWeather");
-    assertThat(toolCall1.arguments()).isEqualTo("{\"location\": \"Potsdam\", \"unit\": \"C\"}");
-    assertThat(toolCall2.arguments()).isEqualTo("{\"location\": \"Toulouse\", \"unit\": \"C\"}");
+    assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
+    assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
+    assertThat(toolCall1.arguments())
+        .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
+    assertThat(toolCall2.arguments())
+        .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
   }
 
   @Test
