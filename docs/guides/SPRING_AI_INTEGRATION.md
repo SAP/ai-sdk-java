@@ -6,7 +6,7 @@
 - [Orchestration Chat Completion](#orchestration-chat-completion)
 - [Orchestration Masking](#orchestration-masking)
 - [Stream chat completion](#stream-chat-completion)
-- [Function Calling](#function-calling)
+- [Tool Calling](#tool-calling)
 
 ## Introduction
 
@@ -34,7 +34,7 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 :::note Spring AI Milestone Version
 Note that currently no stable version of Spring AI exists just yet.
-The AI SDK currently uses the [M5 milestone](https://spring.io/blog/2024/12/23/spring-ai-1-0-0-m5-released).
+The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
 
 Please be aware that future versions of the AI SDK may increase the Spring AI version.
 :::
@@ -102,7 +102,7 @@ _Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Function Calling
+## Tool Calling
 
 First define a function that will be called by the LLM:
 
@@ -124,12 +124,12 @@ Then add your function to the options:
 OrchestrationChatOptions options = new OrchestrationChatOptions(config);
 options.setToolCallbacks(
     List.of(
-        ToolCallback.builder()
-            .function(
-                "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+        FunctionToolCallback.builder(
+        "CurrentWeather", new MockWeatherService()) // (1) function name and instance
             .description("Get the weather in location") // (2) function description
             .inputType(MockWeatherService.Request.class) // (3) function input type
             .build()));
+options.setInternalToolExecutionEnabled(false);// tool execution is not yet available in orchestration
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
 ChatResponse response = client.call(prompt);

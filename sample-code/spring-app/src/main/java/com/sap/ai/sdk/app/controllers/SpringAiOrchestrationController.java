@@ -5,6 +5,7 @@ import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.val;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,16 +64,19 @@ class SpringAiOrchestrationController {
     return response.getResult().getOutput().getText();
   }
 
-  @GetMapping("/functionCalling")
-  Object functionCalling(
+  @GetMapping("/toolCalling")
+  Object toolCalling(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = service.functionCalling();
+    // tool execution broken on orchestration https://jira.tools.sap/browse/AI-86627
+    val response = service.toolCalling(false);
 
     if ("json".equals(format)) {
       return ((OrchestrationSpringChatResponse) response)
           .getOrchestrationResponse()
           .getOriginalResponse();
     }
-    return response.getResult().getOutput().getText();
+    final AssistantMessage message = response.getResult().getOutput();
+    final String text = message.getText();
+    return text.isEmpty() ? message.getToolCalls().toString() : text;
   }
 }

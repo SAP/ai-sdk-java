@@ -39,6 +39,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.tool.function.FunctionToolCallback;
@@ -143,7 +144,44 @@ public class OrchestrationChatModelTest {
   }
 
   @Test
-  void testToolCalls() throws IOException {
+  void testToolCallsWithoutExecution() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("toolCallsResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    defaultOptions.setToolCallbacks(
+        List.of(
+            FunctionToolCallback.builder(
+                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
+                .description("Get the weather in location") // (2) function description
+                .inputType(MockWeatherService.Request.class) // (3) function input type
+                .build()));
+    defaultOptions.setInternalToolExecutionEnabled(false);
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
+    val result = client.call(prompt);
+
+    List<ToolCall> toolCalls = result.getResult().getOutput().getToolCalls();
+    assertThat(toolCalls).hasSize(2);
+    ToolCall toolCall1 = toolCalls.get(0);
+    ToolCall toolCall2 = toolCalls.get(1);
+    assertThat(toolCall1.type()).isEqualTo("function");
+    assertThat(toolCall2.type()).isEqualTo("function");
+    assertThat(toolCall1.name()).isEqualTo("CurrentWeather");
+    assertThat(toolCall2.name()).isEqualTo("CurrentWeather");
+    assertThat(toolCall1.arguments()).isEqualTo("{\"location\": \"Potsdam\", \"unit\": \"C\"}");
+    assertThat(toolCall2.arguments()).isEqualTo("{\"location\": \"Toulouse\", \"unit\": \"C\"}");
+
+    try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
+      final String request1 = new String(request1InputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request1)));
+    }
+  }
+
+  @Test
+  void testToolCallsWithExecution() throws IOException {
     // https://platform.openai.com/docs/guides/function-calling
     stubFor(
         post(urlPathEqualTo("/completion"))

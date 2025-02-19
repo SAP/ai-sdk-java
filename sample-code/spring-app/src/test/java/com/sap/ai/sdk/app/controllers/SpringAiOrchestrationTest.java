@@ -1,11 +1,15 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 
 @Slf4j
@@ -52,5 +56,28 @@ public class SpringAiOrchestrationTest {
     ChatResponse response = service.masking();
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+  }
+
+  @Test
+  void testToolCallingWithoutExecution() {
+    ChatResponse response = service.toolCalling(false);
+    List<ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
+    assertThat(toolCalls).hasSize(2);
+    ToolCall toolCall1 = toolCalls.get(0);
+    ToolCall toolCall2 = toolCalls.get(1);
+    assertThat(toolCall1.type()).isEqualTo("function");
+    assertThat(toolCall2.type()).isEqualTo("function");
+    assertThat(toolCall1.name()).isEqualTo("CurrentWeather");
+    assertThat(toolCall2.name()).isEqualTo("CurrentWeather");
+    assertThat(toolCall1.arguments()).isEqualTo("{\"location\": \"Potsdam\", \"unit\": \"C\"}");
+    assertThat(toolCall2.arguments()).isEqualTo("{\"location\": \"Toulouse\", \"unit\": \"C\"}");
+  }
+
+  @Test
+  void testToolCallingWithExecution() {
+    // tool execution broken on orchestration https://jira.tools.sap/browse/AI-86627
+    assertThatThrownBy(() -> service.toolCalling(true))
+        .isExactlyInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Request failed with status 400 Bad Request");
   }
 }

@@ -92,22 +92,24 @@ public class SpringAiOrchestrationService {
 
   /**
    * Register a function that will be called when the user asks for the weather. <a
-   * href="https://docs.spring.io/spring-ai/reference/api/chat/functions/openai-chat-functions.html#_registercall_functions_with_prompt_options">Spring
+   * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_programmatic_specification_functiontoolcallback">Spring
    * AI Function Calling</a>
    *
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse functionCalling() {
+  public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
     final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(
         List.of(
-            FunctionToolCallback.builder("CurrentWeather", new MockWeatherService())
+            FunctionToolCallback.builder(
+                    "CurrentWeather", new MockWeatherService()) // (1) function name and instance
                 .description("Get the weather in location") // (2) function description
                 .inputType(MockWeatherService.Request.class) // (3) function input type
                 .build()));
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
 
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
     return client.call(prompt);
   }
 }
