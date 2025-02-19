@@ -123,7 +123,10 @@ class WeatherMethod {
 Then add your tool to the options:
 
 ```java
-OrchestrationChatOptions options = new OrchestrationChatOptions(config);
+ChatModel client = new OrchestrationChatModel();
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
 
 options.setInternalToolExecutionEnabled(false);// tool execution is not yet available in orchestration
