@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Add new convenient methods to set the response format for Orchestration.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#set-a-response-format)
 
 ### 📈 Improvements
 
