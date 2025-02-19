@@ -191,12 +191,13 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   }
 
   @Override
-  public void setToolCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
-    setFunctionCallbacks(toolCallbacks);
+  @Deprecated
+  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
+    setToolCallbacks(toolCallbacks);
   }
 
   @Override
-  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
+  public void setToolCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
     this.functionCallbacks = toolCallbacks;
     final Template template =
         Objects.requireNonNullElse(
