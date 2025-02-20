@@ -58,6 +58,15 @@ public class DefaultApi extends AbstractOpenApiService {
     super(addMixin(new AiCoreService()));
   }
 
+  /**
+   * Instantiates this API class to invoke operations on the Prompt Registry API
+   *
+   * @param aiCoreService The configured connectivity instance to AI Core
+   */
+  public DefaultApi(@Nonnull final AiCoreService aiCoreService) {
+    super(addMixin(aiCoreService));
+  }
+
   private static ApiClient addMixin(AiCoreService service) {
     var destination = service.getBaseDestination();
     var httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
@@ -88,15 +97,6 @@ public class DefaultApi extends AbstractOpenApiService {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     @JsonDeserialize(as = ResponseFormatText.class)
     interface ResponseFormat {}
-  }
-
-  /**
-   * Instantiates this API class to invoke operations on the Prompt Registry API
-   *
-   * @param aiCoreService The configured connectivity instance to AI Core
-   */
-  public DefaultApi(@Nonnull final AiCoreService aiCoreService) {
-    super(aiCoreService.getApiClient());
   }
 
   /**

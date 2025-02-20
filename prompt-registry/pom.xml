@@ -125,6 +125,7 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/prompt-registry.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.prompt.registry.client</apiPackage>
+                  <generateApis>false</generateApis>
                   <modelPackage>com.sap.ai.sdk.prompt.registry.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
