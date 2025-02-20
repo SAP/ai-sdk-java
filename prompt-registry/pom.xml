@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
   </parent>
-
   <artifactId>prompt-registry</artifactId>
   <name>Prompt Registry client</name>
   <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI
     Hub, and Orchestration Service. This is the client for life cycle management of your prompts without
-    Orchestration Service.
-  </description>
-
+    Orchestration Service.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -36,8 +32,32 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
+    <coverage.complexity>100%</coverage.complexity>
+    <coverage.line>100%</coverage.line>
+    <coverage.instruction>100%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>100%</coverage.method>
+    <coverage.class>100%</coverage.class>
   </properties>
+
   <dependencies>
+    <!-- scope "compile" -->
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -83,15 +103,17 @@
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/prompt-registry.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.prompt.registry.client</apiPackage>
-                  <generateApis>false</generateApis>
                   <modelPackage>com.sap.ai.sdk.prompt.registry.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <removeOperationIdPrefix>true</removeOperationIdPrefix>
+                    <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
+                    <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
+                    <aiSdkConstructor>true</aiSdkConstructor>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
-                    <removeEnumValuePrefix>true</removeEnumValuePrefix>
                   </additionalProperties>
                 </configuration>
               </execution>
