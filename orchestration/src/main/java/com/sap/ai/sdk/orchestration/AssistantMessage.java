@@ -8,13 +8,15 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
+@Value
 @Getter
 @Accessors(fluent = true)
-public final class AssistantMessage implements Message {
+public class AssistantMessage implements Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "assistant";
@@ -25,7 +27,7 @@ public final class AssistantMessage implements Message {
   MessageContent content;
 
   /** Tool call if there is any. */
-  @Nullable List<ResponseMessageToolCall> toolCalls = null;
+  @Nullable List<ResponseMessageToolCall> toolCalls;
 
   /**
    * Creates a new assistant message with the given single message.
@@ -34,6 +36,7 @@ public final class AssistantMessage implements Message {
    */
   public AssistantMessage(@Nonnull final String singleMessage) {
     content = new MessageContent(List.of(new TextItem(singleMessage)));
+    toolCalls = null;
   }
 
   /**
