@@ -272,7 +272,7 @@ public class OrchestrationModuleConfig {
   }
 
   @Nullable
-  private static TemplateResponseFormat getResponseFormatIfExists(
+  private static TemplateResponseFormat getResponseFormat(
       final TemplatingModuleConfig templateConfig) {
     if (templateConfig instanceof Template template) {
       return template.getResponseFormat();
