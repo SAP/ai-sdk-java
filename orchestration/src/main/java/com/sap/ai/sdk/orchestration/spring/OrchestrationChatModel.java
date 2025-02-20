@@ -48,11 +48,7 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
    * @since 1.2.0
    */
   public OrchestrationChatModel() {
-    super(
-        ObservationRegistry.NOOP,
-        new DelegatingToolCallbackResolver(List.of()),
-        DefaultToolExecutionExceptionProcessor.builder().build());
-    this.client = new OrchestrationClient();
+    this(new OrchestrationClient());
   }
 
   /**
