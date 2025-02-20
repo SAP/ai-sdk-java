@@ -1,6 +1,6 @@
 /*
  * Internal Orchestration Service API
- * SAP AI Core - Orchestration Service API
+ * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
  *
@@ -41,8 +41,8 @@ public class GlobalStreamOptions
   /**
    * Set the chunkSize of this {@link GlobalStreamOptions} instance and return the same instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
+   * @param chunkSize Minimum number of characters per chunk that post-LLM modules operate on.
+   *     Minimum: 1 Maximum: 10000
    * @return The same instance of this {@link GlobalStreamOptions} class
    */
   @Nonnull
@@ -52,7 +52,8 @@ public class GlobalStreamOptions
   }
 
   /**
-   * Number of characters per chunk that post-LLM modules operate on. minimum: 1 maximum: 10000
+   * Minimum number of characters per chunk that post-LLM modules operate on. minimum: 1 maximum:
+   * 10000
    *
    * @return chunkSize The chunkSize of this {@link GlobalStreamOptions} instance.
    */
@@ -64,8 +65,8 @@ public class GlobalStreamOptions
   /**
    * Set the chunkSize of this {@link GlobalStreamOptions} instance.
    *
-   * @param chunkSize Number of characters per chunk that post-LLM modules operate on. Minimum: 1
-   *     Maximum: 10000
+   * @param chunkSize Minimum number of characters per chunk that post-LLM modules operate on.
+   *     Minimum: 1 Maximum: 10000
    */
   public void setChunkSize(@Nullable final Integer chunkSize) {
     this.chunkSize = chunkSize;
