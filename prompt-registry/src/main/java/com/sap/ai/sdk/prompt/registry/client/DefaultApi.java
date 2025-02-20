@@ -1,15 +1,26 @@
 package com.sap.ai.sdk.prompt.registry.client;
 
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.annotations.Beta;
+import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpecResponseFormat;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.ProvisioningResponse;
+import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
+import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
+import com.sap.ai.sdk.prompt.registry.model.Template;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.io.File;
@@ -19,13 +30,19 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -38,7 +55,39 @@ public class DefaultApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the Prompt Registry API */
   public DefaultApi() {
-    super(new AiCoreService().getApiClient());
+    super(addMixin(new AiCoreService()));
+  }
+
+  private static ApiClient addMixin(AiCoreService service) {
+    var destination = service.getBaseDestination();
+    var httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+    httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
+
+    var rt = new RestTemplate();
+    Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
+        .forEach(
+            converter ->
+                converter.setObjectMapper(
+                    getDefaultObjectMapper()
+                        .addMixIn(Template.class, JacksonMixin.TemplateMixIn.class)
+                        .addMixIn(
+                            PromptTemplateSpecResponseFormat.class,
+                            JacksonMixin.ResponseFormat.class)));
+
+    rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
+
+    return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  private static class JacksonMixin {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    @JsonDeserialize(as = SingleChatTemplate.class)
+    interface TemplateMixIn {}
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    @JsonDeserialize(as = ResponseFormatText.class)
+    interface ResponseFormat {}
   }
 
   /**

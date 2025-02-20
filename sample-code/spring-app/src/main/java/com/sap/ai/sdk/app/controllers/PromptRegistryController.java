@@ -14,7 +14,7 @@ class PromptRegistryController {
   private static final DefaultApi client = new DefaultApi();
 
   @GetMapping("/listTemplates")
-  public PromptTemplateListResponse listTemplates() {
+  PromptTemplateListResponse listTemplates() {
     return client.listPromptTemplates();
   }
 }

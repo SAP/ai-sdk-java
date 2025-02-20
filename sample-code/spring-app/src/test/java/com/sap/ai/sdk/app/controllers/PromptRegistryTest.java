@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PromptRegistryTest {
 
