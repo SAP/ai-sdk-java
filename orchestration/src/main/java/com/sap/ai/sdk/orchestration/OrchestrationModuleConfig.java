@@ -245,7 +245,7 @@ public class OrchestrationModuleConfig {
 
   @Nonnull
   private OrchestrationModuleConfig handleNullTemplateConfig() {
-    if (getResponseFormatIfExists(this.templateConfig) != null) {
+    if (getResponseFormat(this.templateConfig) != null) {
       val responseFormat = ((Template) this.templateConfig).getResponseFormat();
       val newTemplate = Template.create().template(List.of());
       newTemplate.setResponseFormat(responseFormat);
@@ -258,11 +258,11 @@ public class OrchestrationModuleConfig {
 
   @Nonnull
   private OrchestrationModuleConfig handleNonNullTemplateConfig(final Template newTemplate) {
-    if (getResponseFormatIfExists(newTemplate) != null) {
+    if (getResponseFormat(newTemplate) != null) {
       return new OrchestrationModuleConfig(
           llmConfig, newTemplate, maskingConfig, filteringConfig, groundingConfig);
     }
-    val responseFormat = getResponseFormatIfExists(this.templateConfig);
+    val responseFormat = getResponseFormat(this.templateConfig);
     return new OrchestrationModuleConfig(
         llmConfig,
         ResponseJsonSchema.newTemplateWithResponseFormat(newTemplate, responseFormat),
