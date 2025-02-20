@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * Represents a chat message as 'tool' to the orchestration service.
  *
- * @since 1.3.0
+ * @since 1.4.0
  */
 @Value
 @Accessors(fluent = true)
