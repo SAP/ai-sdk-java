@@ -13,7 +13,6 @@ import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
 import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCallFunction;
-import io.micrometer.observation.ObservationRegistry;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,8 +27,6 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
-import org.springframework.ai.tool.execution.DefaultToolExecutionExceptionProcessor;
-import org.springframework.ai.tool.resolution.DelegatingToolCallbackResolver;
 import reactor.core.publisher.Flux;
 
 /**
@@ -39,8 +36,12 @@ import reactor.core.publisher.Flux;
  */
 @Beta
 @Slf4j
-public class OrchestrationChatModel extends DefaultToolCallingManager implements ChatModel {
+public class OrchestrationChatModel implements ChatModel {
   @Nonnull private final OrchestrationClient client;
+
+  @Nonnull
+  private final DefaultToolCallingManager toolCallingManager =
+      DefaultToolCallingManager.builder().build();
 
   /**
    * Default constructor.
@@ -57,10 +58,6 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
    * @since 1.2.0
    */
   public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
-    super(
-        ObservationRegistry.NOOP,
-        new DelegatingToolCallbackResolver(List.of()),
-        DefaultToolExecutionExceptionProcessor.builder().build());
     this.client = client;
   }
 
@@ -76,7 +73,7 @@ public class OrchestrationChatModel extends DefaultToolCallingManager implements
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
-        val toolExecutionResult = this.executeToolCalls(prompt, response);
+        val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
         // Send the tool execution result back to the model.
         return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
       }
