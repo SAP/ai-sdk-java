@@ -118,17 +118,34 @@ public class AiArtifactArgumentBinding
   /**
    * Get the value of an unrecognizable property of this {@link AiArtifactArgumentBinding} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "AiArtifactArgumentBinding has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link AiArtifactArgumentBinding} instance including
+   * unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (key != null) declaredFields.put("key", key);
+    if (artifactId != null) declaredFields.put("artifactId", artifactId);
+    return declaredFields;
   }
 
   /**

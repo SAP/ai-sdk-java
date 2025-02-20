@@ -363,16 +363,40 @@ public class AiConfiguration
   /**
    * Get the value of an unrecognizable property of this {@link AiConfiguration} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("AiConfiguration has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link AiConfiguration} instance including unrecognized
+   * properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (name != null) declaredFields.put("name", name);
+    if (executableId != null) declaredFields.put("executableId", executableId);
+    if (scenarioId != null) declaredFields.put("scenarioId", scenarioId);
+    if (parameterBindings != null) declaredFields.put("parameterBindings", parameterBindings);
+    if (inputArtifactBindings != null)
+      declaredFields.put("inputArtifactBindings", inputArtifactBindings);
+    if (id != null) declaredFields.put("id", id);
+    if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (scenario != null) declaredFields.put("scenario", scenario);
+    return declaredFields;
   }
 
   /**

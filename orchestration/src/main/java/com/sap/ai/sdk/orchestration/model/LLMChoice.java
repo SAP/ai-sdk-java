@@ -214,16 +214,35 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   /**
    * Get the value of an unrecognizable property of this {@link LLMChoice} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("LLMChoice has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link LLMChoice} instance including unrecognized
+   * properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (index != null) declaredFields.put("index", index);
+    if (message != null) declaredFields.put("message", message);
+    if (logprobs != null) declaredFields.put("logprobs", logprobs);
+    if (finishReason != null) declaredFields.put("finishReason", finishReason);
+    return declaredFields;
   }
 
   /**

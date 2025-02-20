@@ -634,9 +634,9 @@ class OrchestrationUnitTest {
         final var choices0 = result0.getChoices().get(0);
         assertThat(choices0.getIndex()).isEqualTo(0);
         assertThat(choices0.getFinishReason()).isEmpty();
-        assertThat(choices0.getCustomField("delta")).isNotNull();
+        assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) choices0.getCustomField("delta");
+        final var message0 = (Map<String, Object>) choices0.toMap().get("delta");
         assertThat(message0.get("role")).isEqualTo("");
         assertThat(message0.get("content")).isEqualTo("");
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
@@ -657,8 +657,8 @@ class OrchestrationUnitTest {
         final var choices1 = result1.getChoices().get(0);
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
-        assertThat(choices1.getCustomField("delta")).isNotNull();
-        final var message1 = (Map<String, Object>) choices1.getCustomField("delta");
+        assertThat(choices1.toMap().get("delta")).isNotNull();
+        final var message1 = (Map<String, Object>) choices1.toMap().get("delta");
         assertThat(message1.get("role")).isEqualTo("assistant");
         assertThat(message1.get("content")).isEqualTo("Sure");
 
@@ -673,8 +673,8 @@ class OrchestrationUnitTest {
         assertThat(choices2.getIndex()).isEqualTo(0);
         assertThat(choices2.getFinishReason()).isEqualTo("stop");
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        assertThat(choices2.getCustomField("delta")).isNotNull();
-        final var message2 = (Map<String, Object>) choices2.getCustomField("delta");
+        assertThat(choices2.toMap().get("delta")).isNotNull();
+        final var message2 = (Map<String, Object>) choices2.toMap().get("delta");
         assertThat(message2.get("role")).isEqualTo("assistant");
         assertThat(message2.get("content")).isEqualTo("!");
       }
