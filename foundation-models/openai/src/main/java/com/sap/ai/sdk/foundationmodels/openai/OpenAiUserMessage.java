@@ -96,7 +96,7 @@ public class OpenAiUserMessage implements OpenAiMessage {
   /**
    * Converts the message to a serializable object.
    *
-   * @return the corresponding serializable object.
+   * @return the corresponding {@code ChatCompletionRequestUserMessage} object.
    */
   @Nonnull
   ChatCompletionRequestUserMessage createChatCompletionRequestMessage()

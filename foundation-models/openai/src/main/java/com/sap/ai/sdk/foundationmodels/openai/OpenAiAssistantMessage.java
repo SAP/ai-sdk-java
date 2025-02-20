@@ -43,7 +43,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
   /**
    * Converts the message to a serializable object.
    *
-   * @return the corresponding serializable object.
+   * @return the corresponding {@code ChatCompletionRequestAssistantMessage} object.
    */
   @Nonnull
   ChatCompletionRequestAssistantMessage createChatCompletionRequestMessage()
