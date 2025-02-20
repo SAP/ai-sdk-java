@@ -69,6 +69,7 @@
     <reactor-core.version>3.6.12</reactor-core.version>
     <dotenv-java.version>3.1.0</dotenv-java.version>
     <mockito.version>5.15.2</mockito.version>
+    <javaparser.version>3.26.3</javaparser.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250107</json.version>
@@ -184,6 +185,12 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.github.javaparser</groupId>
+        <artifactId>javaparser-core</artifactId>
+        <version>${javaparser.version}</version>
         <scope>test</scope>
       </dependency>
       <!-- Modules BoM -->
@@ -402,6 +409,22 @@
                   <excludes>
                     <exclude>junit:junit</exclude>
                   </excludes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
+            <id>enforce-spring-ai-optional</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <message>Spring AI dependencies should be optional</message>
+                  <includes>
+                    <include>org.springframework.ai:*</include>
+                  </includes>
                 </bannedDependencies>
               </rules>
             </configuration>
