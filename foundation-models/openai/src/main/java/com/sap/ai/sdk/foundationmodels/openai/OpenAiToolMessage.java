@@ -62,7 +62,7 @@ public class OpenAiToolMessage implements OpenAiMessage {
    * @throws IllegalArgumentException if the content contains unsupported items.
    */
   @Nonnull
-  public ChatCompletionRequestToolMessage createChatCompletionRequestMessage()
+  ChatCompletionRequestToolMessage createChatCompletionRequestMessage()
       throws IllegalArgumentException {
     final var itemList = this.content().items();
     if (itemList.size() == 1 && itemList.get(0) instanceof OpenAiTextItem textItem) {
