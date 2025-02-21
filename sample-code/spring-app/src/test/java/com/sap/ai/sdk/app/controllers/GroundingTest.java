@@ -24,7 +24,7 @@ class GroundingTest {
   private static final String JSON_FORMAT = "json";
 
   @Test
-  void getPipelinesGetAll() {
+  void testPipelinesGetAll() {
     final var controller = new GroundingController();
 
     final var result = controller.getAllPipelines(JSON_FORMAT);
@@ -38,7 +38,7 @@ class GroundingTest {
   }
 
   @Test
-  void getRepositoriesGetAll() {
+  void testRepositoriesGetAll() {
     final var controller = new GroundingController();
 
     final var result = controller.getAllRepositories(JSON_FORMAT);
