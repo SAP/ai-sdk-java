@@ -76,8 +76,6 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
   @Nonnull
   private static DefaultUsage toDefaultUsage(@Nonnull final TokenUsage usage) {
     return new DefaultUsage(
-        usage.getPromptTokens().longValue(),
-        usage.getCompletionTokens().longValue(),
-        usage.getTotalTokens().longValue());
+        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
   }
 }
