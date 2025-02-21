@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,5 +45,52 @@ class OpenAiChatCompletionRequestTest {
         .isEqualTo(ChatCompletionRequestUserMessageContent.create("Another message"));
     assertThat(lowlevelRequest.getSeed()).isEqualTo(123);
     assertThat(lowlevelRequest.getTemperature()).isEqualTo(BigDecimal.valueOf(0.5));
+  }
+
+  @Test
+  void withToolChoiceNone() {
+    OpenAiChatCompletionRequest request =
+        new OpenAiChatCompletionRequest("message").withToolChoiceNone();
+
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
+    var choice =
+        ((ChatCompletionToolChoiceOption.InnerString) lowLevelRequest.getToolChoice()).value();
+    assertThat(choice).isEqualTo("none");
+  }
+
+  @Test
+  void withToolChoiceOptional() {
+    OpenAiChatCompletionRequest request =
+        new OpenAiChatCompletionRequest("message").withToolChoiceOptional();
+
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
+    var choice =
+        ((ChatCompletionToolChoiceOption.InnerString) lowLevelRequest.getToolChoice()).value();
+    assertThat(choice).isEqualTo("auto");
+  }
+
+  @Test
+  void withToolChoiceRequired() {
+    OpenAiChatCompletionRequest request =
+        new OpenAiChatCompletionRequest("message").withToolChoiceRequired();
+
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
+    var choice =
+        ((ChatCompletionToolChoiceOption.InnerString) lowLevelRequest.getToolChoice()).value();
+    assertThat(choice).isEqualTo("required");
+  }
+
+  @Test
+  void withToolChoiceFunction() {
+    OpenAiChatCompletionRequest request =
+        new OpenAiChatCompletionRequest("message").withToolChoiceFunction("functionName");
+
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
+    var choice =
+        ((ChatCompletionToolChoiceOption.InnerChatCompletionNamedToolChoice)
+                lowLevelRequest.getToolChoice())
+            .value();
+    assertThat(choice.getType().getValue()).isEqualTo("function");
+    assertThat(choice.getFunction().getName()).isEqualTo("functionName");
   }
 }

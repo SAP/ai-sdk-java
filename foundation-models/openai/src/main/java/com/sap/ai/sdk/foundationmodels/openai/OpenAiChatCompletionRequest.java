@@ -2,6 +2,8 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
@@ -126,7 +128,9 @@ public class OpenAiChatCompletionRequest {
   @Nullable List<ChatCompletionTool> tools;
 
   /** Option to control which tool is invoked by the model. */
-  @Nullable ChatCompletionToolChoiceOption toolChoice;
+  @With(AccessLevel.PRIVATE)
+  @Nullable
+  ChatCompletionToolChoiceOption toolChoice;
 
   /**
    * Creates an OpenAiChatCompletionPrompt with string as user message.
@@ -246,6 +250,51 @@ public class OpenAiChatCompletionRequest {
             this.responseFormat,
             this.tools,
             this.toolChoice);
+  }
+
+  /**
+   * Only message generation will be performed without calling any tool.
+   *
+   * @return the current OpenAiChatCompletionRequest instance.
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withToolChoiceNone() {
+    return this.withToolChoice(ChatCompletionToolChoiceOption.create("none"));
+  }
+
+  /**
+   * The model may decide whether to call a (one or more) tool.
+   *
+   * @return the current OpenAiChatCompletionRequest instance.
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withToolChoiceOptional() {
+    return this.withToolChoice(ChatCompletionToolChoiceOption.create("auto"));
+  }
+
+  /**
+   * The model must call one or more tools as part of its processing.
+   *
+   * @return the current OpenAiChatCompletionRequest instance.
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withToolChoiceRequired() {
+    return this.withToolChoice(ChatCompletionToolChoiceOption.create("required"));
+  }
+
+  /**
+   * The model must call the function specified by {@code functionName}.
+   *
+   * @param functionName the name of the function that must be called.
+   * @return the current OpenAiChatCompletionRequest instance.
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withToolChoiceFunction(@Nonnull final String functionName) {
+    return this.withToolChoice(
+        ChatCompletionToolChoiceOption.create(
+            new ChatCompletionNamedToolChoice()
+                .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
+                .function(new ChatCompletionNamedToolChoiceFunction().name(functionName))));
   }
 
   /**

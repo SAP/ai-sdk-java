@@ -25,11 +25,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
@@ -530,17 +527,11 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     final var tool =
         new ChatCompletionTool().type(ChatCompletionTool.TypeEnum.FUNCTION).function(function);
 
-    final var toolChoice =
-        ChatCompletionToolChoiceOption.create(
-            new ChatCompletionNamedToolChoice()
-                .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
-                .function(new ChatCompletionNamedToolChoiceFunction().name("fibonacci")));
-
     final var request =
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?")
             .withTools(List.of(tool))
-            .withToolChoice(toolChoice);
+            .withToolChoiceFunction("fibonacci");
 
     var response = client.chatCompletion(request).getOriginalResponse();
 
