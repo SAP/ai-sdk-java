@@ -13,7 +13,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
-public sealed interface Message permits UserMessage, AssistantMessage, SystemMessage {
+public sealed interface Message permits AssistantMessage, SystemMessage, ToolMessage, UserMessage {
 
   /**
    * A convenience method to create a user message from a string.
