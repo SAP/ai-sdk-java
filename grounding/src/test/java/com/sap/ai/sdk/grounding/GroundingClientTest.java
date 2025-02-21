@@ -25,7 +25,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 public class GroundingClientTest {
 
   @RegisterExtension
-  private final static WireMockExtension WM =
+  private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
   private final HttpDestination DESTINATION = DefaultHttpDestination.builder(WM.baseUrl()).build();
