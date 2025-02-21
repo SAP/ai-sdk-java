@@ -7,6 +7,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.val;
@@ -14,6 +15,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -85,6 +87,23 @@ public class SpringAiOrchestrationService {
             "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
             opts);
 
+    return client.call(prompt);
+  }
+
+  /**
+   * Turn a method into a tool by annotating it with @Tool. <a
+   * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
+   * Tool Method Declarative Specification</a>
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
+    final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
+    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+    options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
+
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
     return client.call(prompt);
   }
 }

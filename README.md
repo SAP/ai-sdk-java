@@ -160,11 +160,20 @@ This opens up a wide range of possibilities to customize the connection, includi
 
 ```java
 var service = new AiCoreService();
-var service = service.withBaseDestination(
-        DefaultHttpDestination.fromDestination(service.getBaseDestination())
-          .header("my-header-key", "my-header-value")
-          .build()
-);
+var destination =
+    DefaultHttpDestination.fromDestination(service.getBaseDestination())
+        .header("my-header-key", "my-header-value")
+        .build();
+
+// AI Core client
+service = service.withBaseDestination(destination);
+DeploymentApi client = new DeploymentApi(service);
+
+// Orchestration client
+OrchestrationClient client = new OrchestrationClient(destination);
+
+// OpenAI client
+OpenAiClient client2 = OpenAiClient.withCustomDestination(destination);
 ```
 
 For more information, please refer to the [AI Core connectivity guide](./docs/guides/CONNECTING_TO_AICORE.md) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
