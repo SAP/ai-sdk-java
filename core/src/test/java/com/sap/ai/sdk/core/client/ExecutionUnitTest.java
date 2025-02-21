@@ -136,7 +136,7 @@ class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution).isNotNull();
     assertThat(execution.getId()).isEqualTo("eab289226fe981da");
     assertThat(execution.getMessage()).isEqualTo("AiExecution acknowledged");
-    assertThat(execution.getCustomField("url")).isEqualTo("ai://default/eab289226fe981da");
+    assertThat(execution.toMap().get("url")).isEqualTo("ai://default/eab289226fe981da");
 
     wireMockServer.verify(
         postRequestedFor(urlPathEqualTo("/v2/lm/executions"))
@@ -246,7 +246,7 @@ class ExecutionUnitTest extends WireMockTestServer {
     assertThat(execution.getId()).isEqualTo("e529e8bd58740bc9");
     assertThat(execution.getMessage()).isEqualTo("Deletion scheduled");
     // targetStatus is not in the generated client.
-    assertThat(execution.getCustomField("targetStatus")).isEqualTo("DELETED");
+    assertThat(execution.toMap().get("targetStatus")).isEqualTo("DELETED");
   }
 
   @Test
@@ -339,8 +339,8 @@ class ExecutionUnitTest extends WireMockTestServer {
         .isEqualTo(
             "time=\"2024-09-18T13:19:40.527Z\" level=info msg=\"Starting Workflow Executor\" version=v3.5.4+960af33.dirty");
     // `container` and `pod` properties are not defined in spec.
-    assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("init");
-    assertThat(rtaLogCommonResultItem.getCustomField("pod")).isEqualTo("ee467bea5af28adb");
+    assertThat(rtaLogCommonResultItem.toMap().get("container")).isEqualTo("init");
+    assertThat(rtaLogCommonResultItem.toMap().get("pod")).isEqualTo("ee467bea5af28adb");
   }
 
   @Test

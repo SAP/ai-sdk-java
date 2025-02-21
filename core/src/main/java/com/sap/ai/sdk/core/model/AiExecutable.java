@@ -525,16 +525,43 @@ public class AiExecutable
   /**
    * Get the value of an unrecognizable property of this {@link AiExecutable} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("AiExecutable has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link AiExecutable} instance including unrecognized
+   * properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (labels != null) declaredFields.put("labels", labels);
+    if (name != null) declaredFields.put("name", name);
+    if (description != null) declaredFields.put("description", description);
+    if (id != null) declaredFields.put("id", id);
+    if (scenarioId != null) declaredFields.put("scenarioId", scenarioId);
+    if (versionId != null) declaredFields.put("versionId", versionId);
+    if (parameters != null) declaredFields.put("parameters", parameters);
+    if (inputArtifacts != null) declaredFields.put("inputArtifacts", inputArtifacts);
+    if (outputArtifacts != null) declaredFields.put("outputArtifacts", outputArtifacts);
+    if (deployable != null) declaredFields.put("deployable", deployable);
+    if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (modifiedAt != null) declaredFields.put("modifiedAt", modifiedAt);
+    return declaredFields;
   }
 
   /**
