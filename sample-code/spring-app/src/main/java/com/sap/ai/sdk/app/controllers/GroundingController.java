@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Endpoints for AI Core AiDeployment operations */
+/** Endpoints for AI Core Grounding operations */
 @Slf4j
 @RestController
 @SuppressWarnings("unused")
@@ -50,11 +50,7 @@ class GroundingController {
   private static final VectorApi CLIENT_VECTOR = new GroundingClient().vector();
   private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
 
-  /**
-   * Stop all deployments with the Java specific configuration ID.
-   *
-   * <p>Only RUNNING deployments can be STOPPED
-   */
+  /** Retrieve (up to 10) grounding pipeline entities. */
   @GetMapping("/pipelines/list")
   Object getAllPipelines(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
@@ -68,11 +64,7 @@ class GroundingController {
     return "Found pipelines with ids: " + ids;
   }
 
-  /**
-   * Delete all deployments with the Java specific configuration ID.
-   *
-   * <p>Only UNKNOWN and STOPPED deployments can be DELETED
-   */
+  /** Retrieve all grounding data repositories. */
   @GetMapping("/retrieval/repositories")
   Object getAllRepositories(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
@@ -87,11 +79,7 @@ class GroundingController {
     return "Found repositories with titles: " + titles;
   }
 
-  /**
-   * Delete all deployments with the Java specific configuration ID.
-   *
-   * <p>Only UNKNOWN and STOPPED deployments can be DELETED
-   */
+  /** Search for grounding documents that match a specific search term, in all data repositories. */
   @GetMapping("/retrieval/search")
   Object searchInDocuments(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
@@ -111,7 +99,7 @@ class GroundingController {
     return "Found the following response(s): " + messages;
   }
 
-  /** Get all deployments with the Java specific configuration ID. */
+  /** Get all grounding document collections. */
   @GetMapping("/vector/collections")
   Object getAllCollections(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
@@ -124,7 +112,7 @@ class GroundingController {
     return "The following collections are available: %s.".formatted(items);
   }
 
-  /** Get all deployments, including non-Java specific deployments */
+  /** Get all items by a specific grounding document collection id. */
   @GetMapping("/vector/collection/by-id/{id}/documents")
   Object getDocumentsByCollectionId(
       @Nonnull @PathVariable("id") final UUID collectionId,
@@ -137,7 +125,7 @@ class GroundingController {
     return "The following document ids are available: %s.".formatted(ids);
   }
 
-  /** Get all deployments, including non-Java specific deployments */
+  /** Create a new grounding document collection. */
   @GetMapping("/vector/collection/create")
   String createCollection(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
@@ -150,7 +138,7 @@ class GroundingController {
     return locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
   }
 
-  /** Get all deployments, including non-Java specific deployments */
+  /** Create a new vector for a given grounding document collection. */
   @GetMapping("/vector/collection/by-id/{id}/day")
   Object createDocument(
       @Nonnull @PathVariable("id") final UUID collectionId,
@@ -172,7 +160,7 @@ class GroundingController {
     return "The following document ids are available: %s.".formatted(ids);
   }
 
-  /** Get all deployments, including non-Java specific deployments */
+  /** Delete all items from a given grounding document collection. */
   @GetMapping("/vector/collection/by-id/{id}/clear")
   Object deleteDocuments(
       @Nonnull @PathVariable("id") final UUID collectionId,
@@ -205,7 +193,7 @@ class GroundingController {
     return response.getStatusCode() >= 400 ? "Failed to delete collection" : "Deletion successful";
   }
 
-  /** Get all deployments, including non-Java specific deployments */
+  /** Get vector chunks from a given grounding document. */
   @GetMapping("/vector/collection/by-id/{collectionId}/document/by-id/{documentId}")
   Object getDocumentChunksById(
       @Nonnull @PathVariable("collectionId") final UUID collectionId,
