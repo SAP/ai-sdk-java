@@ -427,17 +427,42 @@ public class BckndArgoCDApplicationStatus
    * Get the value of an unrecognizable property of this {@link BckndArgoCDApplicationStatus}
    * instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "BckndArgoCDApplicationStatus has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link BckndArgoCDApplicationStatus} instance including
+   * unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (healthStatus != null) declaredFields.put("healthStatus", healthStatus);
+    if (syncStatus != null) declaredFields.put("syncStatus", syncStatus);
+    if (message != null) declaredFields.put("message", message);
+    if (source != null) declaredFields.put("source", source);
+    if (syncFinishedAt != null) declaredFields.put("syncFinishedAt", syncFinishedAt);
+    if (syncStartedAt != null) declaredFields.put("syncStartedAt", syncStartedAt);
+    if (reconciledAt != null) declaredFields.put("reconciledAt", reconciledAt);
+    if (syncResourcesStatus != null) declaredFields.put("syncResourcesStatus", syncResourcesStatus);
+    if (syncRessourcesStatus != null)
+      declaredFields.put("syncRessourcesStatus", syncRessourcesStatus);
+    return declaredFields;
   }
 
   /**

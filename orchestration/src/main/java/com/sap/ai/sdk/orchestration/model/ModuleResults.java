@@ -322,16 +322,38 @@ public class ModuleResults
   /**
    * Get the value of an unrecognizable property of this {@link ModuleResults} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("ModuleResults has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link ModuleResults} instance including unrecognized
+   * properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (grounding != null) declaredFields.put("grounding", grounding);
+    if (templating != null) declaredFields.put("templating", templating);
+    if (inputMasking != null) declaredFields.put("inputMasking", inputMasking);
+    if (inputFiltering != null) declaredFields.put("inputFiltering", inputFiltering);
+    if (llm != null) declaredFields.put("llm", llm);
+    if (outputFiltering != null) declaredFields.put("outputFiltering", outputFiltering);
+    if (outputUnmasking != null) declaredFields.put("outputUnmasking", outputUnmasking);
+    return declaredFields;
   }
 
   /**

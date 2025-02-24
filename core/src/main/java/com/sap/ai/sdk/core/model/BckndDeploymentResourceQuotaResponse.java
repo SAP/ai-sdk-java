@@ -141,17 +141,34 @@ public class BckndDeploymentResourceQuotaResponse
    * Get the value of an unrecognizable property of this {@link
    * BckndDeploymentResourceQuotaResponse} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "BckndDeploymentResourceQuotaResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link BckndDeploymentResourceQuotaResponse} instance
+   * including unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (usage != null) declaredFields.put("usage", usage);
+    if (quotas != null) declaredFields.put("quotas", quotas);
+    return declaredFields;
   }
 
   /**

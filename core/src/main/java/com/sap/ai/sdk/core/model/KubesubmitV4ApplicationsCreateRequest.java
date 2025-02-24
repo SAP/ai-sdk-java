@@ -231,17 +231,37 @@ public class KubesubmitV4ApplicationsCreateRequest
    * Get the value of an unrecognizable property of this {@link
    * KubesubmitV4ApplicationsCreateRequest} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "KubesubmitV4ApplicationsCreateRequest has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link KubesubmitV4ApplicationsCreateRequest} instance
+   * including unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (repositoryUrl != null) declaredFields.put("repositoryUrl", repositoryUrl);
+    if (revision != null) declaredFields.put("revision", revision);
+    if (path != null) declaredFields.put("path", path);
+    if (applicationName != null) declaredFields.put("applicationName", applicationName);
+    if (repositoryName != null) declaredFields.put("repositoryName", repositoryName);
+    return declaredFields;
   }
 
   /**
