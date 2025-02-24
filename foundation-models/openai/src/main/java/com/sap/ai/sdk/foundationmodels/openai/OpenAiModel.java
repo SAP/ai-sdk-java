@@ -26,6 +26,7 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   public static final OpenAiModel GPT_35_TURBO_1025 = new OpenAiModel("gpt-35-turbo-0125", null);
 
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  @Deprecated
   public static final OpenAiModel GPT_35_TURBO_16K = new OpenAiModel("gpt-35-turbo-16k", null);
 
   /** Azure OpenAI GPT-4 chat completions model */
@@ -39,6 +40,12 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
 
   /** Azure OpenAI GPT-4o Mini chat completions model */
   public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
+
+  /** Azure OpenAI o1 chat completions model */
+  public static final OpenAiModel O1 = new OpenAiModel("o1", null);
+
+  /** Azure OpenAI o3-mini chat completions model */
+  public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
 
   /** Azure OpenAI Text Embedding 3 Large model */
   public static final OpenAiModel TEXT_EMBEDDING_3_LARGE =
