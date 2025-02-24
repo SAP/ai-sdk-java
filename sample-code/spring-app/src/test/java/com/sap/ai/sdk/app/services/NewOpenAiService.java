@@ -14,6 +14,8 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
@@ -26,9 +28,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.net.URI;
 import java.util.List;
@@ -152,9 +151,8 @@ public class NewOpenAiService {
    * @return the embedding response
    */
   @Nonnull
-  public EmbeddingsCreate200Response embedding(@Nonnull final String input) {
-    final var request =
-        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create(input));
+  public OpenAiEmbeddingResponse embedding(@Nonnull final String input) {
+    final var request = new OpenAiEmbeddingRequest(input);
 
     return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
   }

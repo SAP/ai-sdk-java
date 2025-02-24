@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.extern.slf4j.Slf4j;
@@ -87,9 +88,13 @@ class NewOpenAiTest {
   void embedding() {
     final var embedding = service.embedding("Hello world");
 
-    assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
-    assertThat(embedding.getModel()).isEqualTo("ada");
-    assertThat(embedding.getObject()).isEqualTo("list");
+    assertThat(embedding.getOriginalResponse().getData().get(0).getEmbedding())
+        .hasSizeGreaterThan(1);
+    assertThat(embedding.getEmbeddings()).isInstanceOf(ArrayList.class);
+    assertThat(embedding.getEmbeddings().get(0)).isInstanceOf(float[].class);
+
+    assertThat(embedding.getOriginalResponse().getModel()).isEqualTo("ada");
+    assertThat(embedding.getOriginalResponse().getObject()).isEqualTo("list");
   }
 
   @Test

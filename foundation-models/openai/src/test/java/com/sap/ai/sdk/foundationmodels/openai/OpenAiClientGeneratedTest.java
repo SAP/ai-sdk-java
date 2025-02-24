@@ -33,8 +33,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.PromptFilterResult;
 import io.vavr.control.Try;
@@ -247,21 +245,19 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   void embedding() {
     stubForEmbedding();
 
-    final var result =
-        client.embedding(
-            new EmbeddingsCreateRequest()
-                .input(EmbeddingsCreateRequestInput.create("Hello World")));
+    final var response =
+        client.embedding(new OpenAiEmbeddingRequest("Hello World")).getOriginalResponse();
 
-    assertThat(result).isNotNull();
-    assertThat(result.getModel()).isEqualTo("ada");
-    assertThat(result.getObject()).isEqualTo("list");
+    assertThat(response).isNotNull();
+    assertThat(response.getModel()).isEqualTo("ada");
+    assertThat(response.getObject()).isEqualTo("list");
 
-    assertThat(result.getUsage()).isNotNull();
-    assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
-    assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
+    assertThat(response.getUsage()).isNotNull();
+    assertThat(response.getUsage().getPromptTokens()).isEqualTo(2);
+    assertThat(response.getUsage().getTotalTokens()).isEqualTo(2);
 
-    assertThat(result.getData()).isNotNull().hasSize(1);
-    var embeddingData = result.getData().get(0);
+    assertThat(response.getData()).isNotNull().hasSize(1);
+    var embeddingData = response.getData().get(0);
     assertThat(embeddingData).isNotNull();
     assertThat(embeddingData.getObject()).isEqualTo("embedding");
     assertThat(embeddingData.getIndex()).isZero();
