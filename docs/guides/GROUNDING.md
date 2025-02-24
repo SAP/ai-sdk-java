@@ -139,7 +139,10 @@ var groundingConfig =
     GroundingModuleConfig.create()
         .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
         .config(groundingConfigConfig);
-var configWithGrounding = config.withGroundingConfig(groundingConfig);
+var configWithGrounding =
+    new OrchestrationModuleConfig()
+        .withLlmConfig(GPT_4O)
+        .withGroundingConfig(groundingConfig);
 
 var inputParams = Map.of("query", "What is SAP Cloud SDK for AI?");
 
