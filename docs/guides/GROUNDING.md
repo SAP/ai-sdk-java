@@ -66,7 +66,7 @@ Pipelines pipelines = api.getAllPipelines(resourceGroupId);
 var type = "MSSharePoint"; // or "S3" or "SFTP"
 var pipelineSecret = "my-secret-name";
 var config = PipelinePostRequstConfiguration.create().destination(pipelineSecret);
-var request = PipelinesPostRequest.create().type(type)._configuration(config);
+var request = PipelinePostRequst.create().type(type)._configuration(config);
 PipelineId pipeline = api.createPipeline(resourceGroupId, request);
 
 // get pipeline status
