@@ -7,11 +7,11 @@
         - [Maven Dependencies](#maven-dependencies)
 - [Usage](#usage)
     - [Data Ingestion](#data-ingestion)
-        - [Pipeline API](#pipeline)
-        - [Vector API](#vector)
-    - [Data Retrieval](#data-retrieval)
+        - [Pipeline API](#pipeline-api)
+        - [Vector API](#vector-api)
+    - [Data Retrieval](#retrieval-api)
         - [Retrieval API](#create-a-deployment)
-        - [Grounding via Orchestration](#orchestration)
+        - [Grounding via Orchestration](#grounding-via-orchestration)
 
 ## Introduction
 
@@ -66,7 +66,7 @@ Pipelines pipelines = api.getAllPipelines(resourceGroupId);
 var type = "MSSharePoint"; // or "S3" or "SFTP"
 var pipelineSecret = "my-secret-name";
 var config = PipelinePostRequstConfiguration.create().destination(pipelineSecret);
-var request = PipelinesPostRequest.create().type(type)._configuration(config);
+var request = PipelinePostRequst.create().type(type)._configuration(config);
 PipelineId pipeline = api.createPipeline(resourceGroupId, request);
 
 // get pipeline status
@@ -121,7 +121,7 @@ RetievalSearchResults results = api.search(resourceGroupId, search);
 ### Grounding via Orchestration
 
 You can use the grounding service via orchestration.
-Please find the [documentation on Orchestration client in the dedicated document](ORCHESTRATION.md).
+Please find the [documentation on Orchestration client in the dedicated document](ORCHESTRATION_CHAT_COMPLETION.md).
 
 ```java
 OrchestrationClient client;
