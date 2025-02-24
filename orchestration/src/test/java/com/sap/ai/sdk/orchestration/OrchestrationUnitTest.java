@@ -772,7 +772,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     //    Example class
     class Translation {
@@ -786,7 +786,7 @@ class OrchestrationUnitTest {
         ResponseJsonSchema.from(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema = gpt4oCustomInstance.withJsonSchemaResponse(schema);
+    val configWithResponseSchema = config.withJsonSchemaResponse(schema);
 
     val prompt =
         new OrchestrationPrompt(
@@ -811,9 +811,9 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonObjectResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val configWithJsonResponse = gpt4oCustomInstance.withJsonResponse();
+    val configWithJsonResponse = config.withJsonResponse();
 
     val prompt =
         new OrchestrationPrompt(

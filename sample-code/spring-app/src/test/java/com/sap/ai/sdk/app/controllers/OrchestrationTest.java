@@ -308,6 +308,8 @@ class OrchestrationTest {
     final var result = service.responseFormatJsonObject("apple").getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":");
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":");
   }
 
   @Test

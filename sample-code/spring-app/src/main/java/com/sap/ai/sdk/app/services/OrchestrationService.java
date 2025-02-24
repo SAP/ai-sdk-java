@@ -350,7 +350,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    val gpt4oCustomInstance = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     //    Example class
     class Translation {
@@ -365,7 +365,7 @@ public class OrchestrationService {
         ResponseJsonSchema.from(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema = gpt4oCustomInstance.withJsonSchemaResponse(schema);
+    val configWithResponseSchema = config.withJsonSchemaResponse(schema);
 
     val prompt =
         new OrchestrationPrompt(
