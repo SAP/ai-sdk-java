@@ -38,8 +38,8 @@ public class OpenAiToolMessage implements OpenAiMessage {
    * @param message the first message.
    */
   @Tolerate
-  public OpenAiToolMessage(@Nonnull final String message) {
-    content = new OpenAiMessageContent(List.of(new OpenAiTextItem(message)));
+  OpenAiToolMessage(@Nonnull final String message) {
+    this(new OpenAiMessageContent(List.of(new OpenAiTextItem(message))));
   }
 
   /**

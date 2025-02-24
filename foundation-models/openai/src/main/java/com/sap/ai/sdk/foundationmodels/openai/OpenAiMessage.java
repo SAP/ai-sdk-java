@@ -29,7 +29,6 @@ public sealed interface OpenAiMessage
    *
    * @param openAiImageItem the message content.
    * @return the user message.
-   * @since 1.3.0
    */
   @Nonnull
   static OpenAiUserMessage user(@Nonnull final OpenAiImageItem openAiImageItem) {
@@ -82,7 +81,7 @@ public sealed interface OpenAiMessage
    *
    * @return the content.
    */
-  @Nonnull
   @Beta
+  @Nonnull
   OpenAiMessageContent content();
 }

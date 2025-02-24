@@ -41,8 +41,8 @@ public class OpenAiSystemMessage implements OpenAiMessage {
    * @param message the first message.
    */
   @Tolerate
-  public OpenAiSystemMessage(@Nonnull final String message) {
-    content = new OpenAiMessageContent(List.of(new OpenAiTextItem(message)));
+  OpenAiSystemMessage(@Nonnull final String message) {
+    this(new OpenAiMessageContent(List.of(new OpenAiTextItem(message))));
   }
 
   /**
@@ -50,7 +50,6 @@ public class OpenAiSystemMessage implements OpenAiMessage {
    *
    * @param message the text to add.
    * @return the new message.
-   * @since 1.3.0
    */
   @Nonnull
   public OpenAiSystemMessage withText(@Nonnull final String message) {

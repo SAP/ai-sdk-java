@@ -45,7 +45,7 @@ public class OpenAiUserMessage implements OpenAiMessage {
    * @param message the first message.
    */
   @Tolerate
-  public OpenAiUserMessage(@Nonnull final String message) {
+  OpenAiUserMessage(@Nonnull final String message) {
     this(new OpenAiMessageContent(List.of(new OpenAiTextItem(message))));
   }
 
@@ -54,7 +54,6 @@ public class OpenAiUserMessage implements OpenAiMessage {
    *
    * @param message the text to add.
    * @return the new message.
-   * @since 1.3.0
    */
   @Nonnull
   public OpenAiUserMessage withText(@Nonnull final String message) {
@@ -69,7 +68,6 @@ public class OpenAiUserMessage implements OpenAiMessage {
    * @param imageUrl the URL of the image.
    * @param detailLevel the detail level of the image.
    * @return the new message.
-   * @since 1.3.0
    */
   @Nonnull
   public OpenAiUserMessage withImage(
@@ -84,7 +82,6 @@ public class OpenAiUserMessage implements OpenAiMessage {
    *
    * @param imageUrl the URL of the image.
    * @return the new message.
-   * @since 1.3.0
    */
   @Nonnull
   public OpenAiUserMessage withImage(@Nonnull final String imageUrl) {

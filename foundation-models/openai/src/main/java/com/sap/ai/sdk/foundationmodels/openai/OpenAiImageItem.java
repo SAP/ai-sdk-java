@@ -19,17 +19,12 @@ public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel det
    * Creates a new image item with the given image URL.
    *
    * @param imageUrl the URL of the image
-   * @since 1.3.0
    */
   public OpenAiImageItem(@Nonnull final String imageUrl) {
     this(imageUrl, DetailLevel.AUTO);
   }
 
-  /**
-   * The detail level of the image.
-   *
-   * @since 1.3.0
-   */
+  /** The detail level of the image. */
   public enum DetailLevel {
     /** Low detail level. */
     LOW("low"),
@@ -45,7 +40,6 @@ public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel det
      *
      * @param str the string to convert
      * @return the detail level
-     * @since 1.3.0
      */
     @Nonnull
     static DetailLevel fromString(@Nonnull final String str) {
@@ -56,7 +50,6 @@ public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel det
      * Get the string representation of the DetailLevel
      *
      * @return the DetailLevel as string
-     * @since 1.3.0
      */
     @Nonnull
     public String toString() {
