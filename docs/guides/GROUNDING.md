@@ -7,11 +7,11 @@
         - [Maven Dependencies](#maven-dependencies)
 - [Usage](#usage)
     - [Data Ingestion](#data-ingestion)
-        - [Pipeline API](#pipeline)
-        - [Vector API](#vector)
-    - [Data Retrieval](#data-retrieval)
+        - [Pipeline API](#pipeline-api)
+        - [Vector API](#vector-api)
+    - [Data Retrieval](#retrieval-api)
         - [Retrieval API](#create-a-deployment)
-        - [Grounding via Orchestration](#orchestration)
+        - [Grounding via Orchestration](#grounding-via-orchestration)
 
 ## Introduction
 
