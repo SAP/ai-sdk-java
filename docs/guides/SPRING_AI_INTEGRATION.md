@@ -32,12 +32,11 @@ First, add the Spring AI dependency to your `pom.xml`:
 </repository>
 ```
 
-:::note Spring AI Milestone Version
-Note that currently no stable version of Spring AI exists just yet.
-The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
-
-Please be aware that future versions of the AI SDK may increase the Spring AI version.
-:::
+> [!NOTE]
+> Note that currently no stable version of Spring AI exists just yet.
+> The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
+> 
+> Please be aware that future versions of the AI SDK may increase the Spring AI version.
 
 ## Orchestration Chat Completion
 
