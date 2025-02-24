@@ -9,6 +9,9 @@
 ### 🔧 Compatibility Notes
 
 - The constructors `UserMessage(MessageContent)` and `SystemMessage(MessageContent)` are removed. Use `Message.user(String)`, `Message.user(ImageItem)`, or `Message.system(String)` instead.
+- Add `toMap()` and deprecate `getCustomField(String)` on generated model classes.
+  - `com.sap.ai.sdk.core.model.*`
+  - `com.sap.ai.sdk.orchestration.model.*`
 
 ### ✨ New Functionality
 
