@@ -5,9 +5,9 @@ import static java.time.LocalDate.now;
 import static java.util.stream.Collectors.joining;
 
 import com.sap.ai.sdk.grounding.GroundingClient;
-import com.sap.ai.sdk.grounding.api.PipelinesApi;
-import com.sap.ai.sdk.grounding.api.RetrievalApi;
-import com.sap.ai.sdk.grounding.api.VectorApi;
+import com.sap.ai.sdk.grounding.client.PipelinesApi;
+import com.sap.ai.sdk.grounding.client.RetrievalApi;
+import com.sap.ai.sdk.grounding.client.VectorApi;
 import com.sap.ai.sdk.grounding.model.BaseDocument;
 import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;

@@ -5,7 +5,7 @@
       <Package name="com.sap.ai.sdk.core.client"/>
       <Package name="com.sap.ai.sdk.core.model"/>
       <Package name="com.sap.ai.sdk.orchestration.model"/>
-      <Package name="com.sap.ai.sdk.grounding.api"/>
+      <Package name="com.sap.ai.sdk.grounding.client"/>
       <Package name="com.sap.ai.sdk.grounding.model"/>
     </Or>
   </Match>

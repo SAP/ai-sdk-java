@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.grounding;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.grounding.api.PipelinesApi;
-import com.sap.ai.sdk.grounding.api.RetrievalApi;
-import com.sap.ai.sdk.grounding.api.VectorApi;
+import com.sap.ai.sdk.grounding.client.PipelinesApi;
+import com.sap.ai.sdk.grounding.client.RetrievalApi;
+import com.sap.ai.sdk.grounding.client.VectorApi;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;

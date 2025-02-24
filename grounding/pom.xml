@@ -132,7 +132,7 @@
                 <phase>generate-sources</phase>
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/grounding.yaml</inputSpec>
-                  <apiPackage>com.sap.ai.sdk.grounding.api</apiPackage>
+                  <apiPackage>com.sap.ai.sdk.grounding.client</apiPackage>
                   <modelPackage>com.sap.ai.sdk.grounding.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>

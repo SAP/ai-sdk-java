@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.grounding.api;
+package com.sap.ai.sdk.grounding.client;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.grounding.model.DataRepositories;

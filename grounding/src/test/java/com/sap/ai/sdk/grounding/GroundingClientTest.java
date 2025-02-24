@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.grounding.api.PipelinesApi;
-import com.sap.ai.sdk.grounding.api.RetrievalApi;
-import com.sap.ai.sdk.grounding.api.VectorApi;
+import com.sap.ai.sdk.grounding.client.PipelinesApi;
+import com.sap.ai.sdk.grounding.client.RetrievalApi;
+import com.sap.ai.sdk.grounding.client.VectorApi;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
