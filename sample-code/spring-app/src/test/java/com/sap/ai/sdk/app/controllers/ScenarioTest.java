@@ -33,7 +33,7 @@ class ScenarioTest {
     // get the models from the OpenAiModel class
     List<String> declaredOpenAiModelList = new ArrayList<>();
     for (Field field : declaredFields) {
-      if (field.getType().equals(OpenAiModel.class)) {
+      if (field.getType().equals(OpenAiModel.class) && !field.isAnnotationPresent(Deprecated.class)) {
         declaredOpenAiModelList.add(((OpenAiModel) field.get(null)).name());
       }
     }
