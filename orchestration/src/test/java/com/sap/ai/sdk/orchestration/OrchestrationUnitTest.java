@@ -16,7 +16,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -82,8 +82,8 @@ import org.mockito.Mockito;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  static final OrchestrationAiModel CUSTOM_GPT_35 =
-      GPT_35_TURBO_16K
+  static final OrchestrationAiModel CUSTOM_GPT_4O =
+      GPT_4O
           .withParam(MAX_TOKENS, 50)
           .withParam(TEMPERATURE, 0.1)
           .withParam(FREQUENCY_PENALTY, 0)
@@ -103,7 +103,7 @@ class OrchestrationUnitTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationClient(destination);
-    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
+    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
