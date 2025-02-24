@@ -73,7 +73,7 @@
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250107</json.version>
     <!-- Formatting -->
-    <spotless.version>2.44.2</spotless.version>
+    <spotless.version>2.44.3</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -260,7 +260,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.4.0</version>
+          <version>3.4.1</version>
         </plugin>
         <plugin>
           <groupId>com.sap.cloud.sdk.datamodel</groupId>
