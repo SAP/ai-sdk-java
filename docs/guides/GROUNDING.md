@@ -121,7 +121,7 @@ RetievalSearchResults results = api.search(resourceGroupId, search);
 ### Grounding via Orchestration
 
 You can use the grounding service via orchestration.
-Please find the [documentation on Orchestration client in the dedicated document](ORCHESTRATION.md).
+Please find the [documentation on Orchestration client in the dedicated document](ORCHESTRATION_CHAT_COMPLETION.md).
 
 ```java
 OrchestrationClient client;
