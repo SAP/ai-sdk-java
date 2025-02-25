@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/document-grounding/retrieval/dataRepositories"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "count": 2,
+      "resources": [
+        {
+          "id": "001766c1-05c7-41fe-a3d7-c1fb02fc1473",
+          "title": "test-collection",
+          "metadata": [
+            {
+              "key": "purpose",
+              "value": [
+                "grounding test"
+              ]
+            }
+          ],
+          "type": "vector"
+        },
+        {
+          "id": "61451b0d-ea10-4eac-ae2a-a0a00a33a505",
+          "title": "This is another collection",
+          "metadata": [],
+          "type": "vector"
+        }
+      ]
+    }
+  }
+}

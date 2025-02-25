@@ -58,8 +58,16 @@
       <artifactId>orchestration</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>grounding</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
