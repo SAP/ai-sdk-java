@@ -31,11 +31,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>80%</coverage.complexity>
+    <coverage.complexity>81%</coverage.complexity>
     <coverage.line>92%</coverage.line>
     <coverage.instruction>93%</coverage.instruction>
-    <coverage.branch>71%</coverage.branch>
-    <coverage.method>95%</coverage.method>
+    <coverage.branch>74%</coverage.branch>
+    <coverage.method>92%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 

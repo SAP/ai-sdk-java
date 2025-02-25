@@ -380,17 +380,42 @@ public class MetaAiApiCapabilities
   /**
    * Get the value of an unrecognizable property of this {@link MetaAiApiCapabilities} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "MetaAiApiCapabilities has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link MetaAiApiCapabilities} instance including
+   * unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (multitenant != null) declaredFields.put("multitenant", multitenant);
+    if (shareable != null) declaredFields.put("shareable", shareable);
+    if (staticDeployments != null) declaredFields.put("staticDeployments", staticDeployments);
+    if (userDeployments != null) declaredFields.put("userDeployments", userDeployments);
+    if (userExecutions != null) declaredFields.put("userExecutions", userExecutions);
+    if (timeToLiveDeployments != null)
+      declaredFields.put("timeToLiveDeployments", timeToLiveDeployments);
+    if (executionSchedules != null) declaredFields.put("executionSchedules", executionSchedules);
+    if (logs != null) declaredFields.put("logs", logs);
+    if (bulkUpdates != null) declaredFields.put("bulkUpdates", bulkUpdates);
+    return declaredFields;
   }
 
   /**

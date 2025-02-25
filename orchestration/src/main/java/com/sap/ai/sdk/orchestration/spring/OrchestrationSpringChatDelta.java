@@ -51,7 +51,7 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
 
   @Nonnull
   private static String getContent(@Nonnull final LLMChoice choice) {
-    return choice.getCustomField("delta") instanceof Map<?, ?> delta
+    return choice.toMap().get("delta") instanceof Map<?, ?> delta
             && delta.get("content") instanceof String content
         ? content
         : "";
@@ -76,8 +76,6 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
   @Nonnull
   private static DefaultUsage toDefaultUsage(@Nonnull final TokenUsage usage) {
     return new DefaultUsage(
-        usage.getPromptTokens().longValue(),
-        usage.getCompletionTokens().longValue(),
-        usage.getTotalTokens().longValue());
+        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
   }
 }
