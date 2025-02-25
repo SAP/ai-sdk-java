@@ -12,10 +12,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
@@ -103,18 +100,12 @@ public class OpenAiServiceV2 {
 
     final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
-    final var toolChoice =
-        ChatCompletionToolChoiceOption.create(
-            new ChatCompletionNamedToolChoice()
-                .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
-                .function(new ChatCompletionNamedToolChoiceFunction().name("fibonacci")));
-
     final var request =
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
                     .formatted(months))
             .withTools(List.of(tool))
-            .withToolChoice(toolChoice);
+            .withToolChoiceFunction("fibonacci");
 
     return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
   }
