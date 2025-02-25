@@ -616,17 +616,61 @@ public class BckndobjectStoreSecretStatusMetadata
    * Get the value of an unrecognizable property of this {@link
    * BckndobjectStoreSecretStatusMetadata} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "BckndobjectStoreSecretStatusMetadata has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link BckndobjectStoreSecretStatusMetadata} instance
+   * including unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (servingKubeflowOrgS3Usehttps != null)
+      declaredFields.put("servingKubeflowOrgS3Usehttps", servingKubeflowOrgS3Usehttps);
+    if (servingKubeflowOrgS3Verifyssl != null)
+      declaredFields.put("servingKubeflowOrgS3Verifyssl", servingKubeflowOrgS3Verifyssl);
+    if (servingKubeflowOrgS3Endpoint != null)
+      declaredFields.put("servingKubeflowOrgS3Endpoint", servingKubeflowOrgS3Endpoint);
+    if (servingKubeflowOrgS3Region != null)
+      declaredFields.put("servingKubeflowOrgS3Region", servingKubeflowOrgS3Region);
+    if (storageAiSapComType != null) declaredFields.put("storageAiSapComType", storageAiSapComType);
+    if (storageAiSapComBucket != null)
+      declaredFields.put("storageAiSapComBucket", storageAiSapComBucket);
+    if (storageAiSapComEndpoint != null)
+      declaredFields.put("storageAiSapComEndpoint", storageAiSapComEndpoint);
+    if (storageAiSapComRegion != null)
+      declaredFields.put("storageAiSapComRegion", storageAiSapComRegion);
+    if (storageAiSapComPathPrefix != null)
+      declaredFields.put("storageAiSapComPathPrefix", storageAiSapComPathPrefix);
+    if (storageAiSapComHdfsNameNode != null)
+      declaredFields.put("storageAiSapComHdfsNameNode", storageAiSapComHdfsNameNode);
+    if (storageAiSapComHeaders != null)
+      declaredFields.put("storageAiSapComHeaders", storageAiSapComHeaders);
+    if (storageAiSapComContainerUri != null)
+      declaredFields.put("storageAiSapComContainerUri", storageAiSapComContainerUri);
+    if (storageAiSapComSubscriptionId != null)
+      declaredFields.put("storageAiSapComSubscriptionId", storageAiSapComSubscriptionId);
+    if (storageAiSapComTenantId != null)
+      declaredFields.put("storageAiSapComTenantId", storageAiSapComTenantId);
+    if (storageAiSapComProjectId != null)
+      declaredFields.put("storageAiSapComProjectId", storageAiSapComProjectId);
+    return declaredFields;
   }
 
   /**

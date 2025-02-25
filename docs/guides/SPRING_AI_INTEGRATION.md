@@ -5,6 +5,8 @@
 - [Introduction](#introduction)
 - [Orchestration Chat Completion](#orchestration-chat-completion)
 - [Orchestration Masking](#orchestration-masking)
+- [Stream chat completion](#stream-chat-completion)
+- [Tool Calling](#tool-calling)
 
 ## Introduction
 
@@ -32,7 +34,7 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 :::note Spring AI Milestone Version
 Note that currently no stable version of Spring AI exists just yet.
-The AI SDK currently uses the [M5 milestone](https://spring.io/blog/2024/12/23/spring-ai-1-0-0-m5-released).
+The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
 
 Please be aware that future versions of the AI SDK may increase the Spring AI version.
 :::
@@ -99,3 +101,40 @@ Flux<String> responseFlux =
 _Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## Tool Calling
+
+First define a function that will be called by the LLM:
+
+```java
+class WeatherMethod {
+  enum Unit {C,F}
+  record Request(String location, Unit unit) {}
+  record Response(double temp, Unit unit) {}
+
+  @Tool(description = "Get the weather in location")
+  Response getCurrentWeather(@ToolParam Request request) {
+    int temperature = request.location.hashCode() % 30;
+    return new Response(temperature, request.unit);
+  }
+}
+```
+
+Then add your tool to the options:
+
+```java
+ChatModel client = new OrchestrationChatModel();
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+
+options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+
+options.setInternalToolExecutionEnabled(false);// tool execution is not yet available in orchestration
+
+Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+
+ChatResponse response = client.call(prompt);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+

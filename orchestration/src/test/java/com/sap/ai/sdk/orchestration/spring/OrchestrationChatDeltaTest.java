@@ -26,7 +26,7 @@ class OrchestrationChatDeltaTest {
 
     Generation generation = OrchestrationSpringChatDelta.toGeneration(choice);
 
-    assertThat(generation.getOutput().getContent()).isEqualTo("Hello, world!");
+    assertThat(generation.getOutput().getText()).isEqualTo("Hello, world!");
     assertThat(generation.getMetadata().getFinishReason()).isEqualTo("stop");
     assertThat(generation.getMetadata().<Integer>get("index")).isEqualTo(0);
   }
@@ -52,7 +52,7 @@ class OrchestrationChatDeltaTest {
     var usage = metadata.getUsage();
 
     assertThat(usage.getPromptTokens()).isEqualTo(10L);
-    assertThat(usage.getGenerationTokens()).isEqualTo(20L);
+    assertThat(usage.getCompletionTokens()).isEqualTo(20L);
     assertThat(usage.getTotalTokens()).isEqualTo(30L);
 
     // delta without token usage

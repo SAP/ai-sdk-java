@@ -223,17 +223,37 @@ public class BckndServiceServicePlanItem
    * Get the value of an unrecognizable property of this {@link BckndServiceServicePlanItem}
    * instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
           "BckndServiceServicePlanItem has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link BckndServiceServicePlanItem} instance including
+   * unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (description != null) declaredFields.put("description", description);
+    if (free != null) declaredFields.put("free", free);
+    if (id != null) declaredFields.put("id", id);
+    if (name != null) declaredFields.put("name", name);
+    if (metadata != null) declaredFields.put("metadata", metadata);
+    return declaredFields;
   }
 
   /**
