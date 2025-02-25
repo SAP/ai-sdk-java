@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @Value
 @Accessors(fluent = true)
 @AllArgsConstructor(access = PACKAGE)
-public class OpenAiAssistantMessage implements OpenAiMessage {
+class OpenAiAssistantMessage implements OpenAiMessage {
 
   /** The role associated with this message. */
   @Nonnull String role = "assistant";
@@ -34,7 +34,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
   /**
    * Creates a new assistant message with the given single message.
    *
-   * @param singleMessage the single message.
+   * @param singleMessage the message.
    */
   OpenAiAssistantMessage(@Nonnull final String singleMessage) {
     this(new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))));
@@ -46,8 +46,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    * @return the corresponding {@code ChatCompletionRequestAssistantMessage} object.
    */
   @Nonnull
-  ChatCompletionRequestAssistantMessage createChatCompletionRequestMessage()
-      throws IllegalArgumentException {
+  ChatCompletionRequestAssistantMessage createChatCompletionRequestMessage() {
     final var textItem = (OpenAiTextItem) this.content().items().get(0);
     return new ChatCompletionRequestAssistantMessage()
         .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()))

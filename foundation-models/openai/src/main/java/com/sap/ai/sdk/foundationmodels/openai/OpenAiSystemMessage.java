@@ -62,6 +62,7 @@ public class OpenAiSystemMessage implements OpenAiMessage {
    * Converts the message to a serializable object.
    *
    * @return the corresponding {@code ChatCompletionRequestSystemMessage} object.
+   * @throws IllegalArgumentException if the content contains unsupported items.
    */
   @Nonnull
   ChatCompletionRequestSystemMessage createChatCompletionRequestMessage()
@@ -81,7 +82,7 @@ public class OpenAiSystemMessage implements OpenAiMessage {
                 .type(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT)
                 .text(textItem.text()));
       } else {
-        final var errorMessage = "Unknown content type for " + role() + " messages.";
+        final var errorMessage = "Unknown content type for " + item.getClass() + " messages.";
         throw new IllegalArgumentException(errorMessage);
       }
     }

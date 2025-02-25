@@ -94,6 +94,7 @@ public class OpenAiUserMessage implements OpenAiMessage {
    * Converts the message to a serializable object.
    *
    * @return the corresponding {@code ChatCompletionRequestUserMessage} object.
+   * @throws IllegalArgumentException if the content contains unsupported items.
    */
   @Nonnull
   ChatCompletionRequestUserMessage createChatCompletionRequestMessage()
@@ -112,7 +113,8 @@ public class OpenAiUserMessage implements OpenAiMessage {
       } else if (item instanceof OpenAiImageItem imageItem) {
         messageParts.add(createImageContentPart(imageItem));
       } else {
-        throw new IllegalArgumentException("Unknown content type for " + role() + " messages.");
+        throw new IllegalArgumentException(
+            "Unknown content type for " + item.getClass() + " messages.");
       }
     }
 
@@ -131,7 +133,7 @@ public class OpenAiUserMessage implements OpenAiMessage {
 
   @Nonnull
   private ChatCompletionRequestMessageContentPartImage createImageContentPart(
-      @Nonnull final OpenAiImageItem imageItem) throws IllegalArgumentException {
+      @Nonnull final OpenAiImageItem imageItem) {
     try {
       final var imageUrl =
           new ChatCompletionRequestMessageContentPartImageImageUrl()

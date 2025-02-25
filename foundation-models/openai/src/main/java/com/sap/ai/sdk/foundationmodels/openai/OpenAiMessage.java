@@ -64,8 +64,8 @@ public sealed interface OpenAiMessage
    * @return the tool message.
    */
   @Nonnull
-  static OpenAiToolMessage tool(@Nonnull final String message) {
-    return new OpenAiToolMessage(message);
+  static OpenAiToolMessage tool(@Nonnull final String message, @Nonnull final String toolCallId) {
+    return new OpenAiToolMessage(message, toolCallId);
   }
 
   /**

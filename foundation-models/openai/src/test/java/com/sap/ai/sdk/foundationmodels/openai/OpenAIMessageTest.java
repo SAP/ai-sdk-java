@@ -32,7 +32,7 @@ class OpenAIMessageTest {
         Arguments.of(OpenAiMessage.user(validText)),
         Arguments.of(OpenAiMessage.assistant(validText)),
         Arguments.of(OpenAiMessage.system(validText)),
-        Arguments.of(OpenAiMessage.tool(validText)));
+        Arguments.of(OpenAiMessage.tool(validText, "some call id")));
   }
 
   @ParameterizedTest
@@ -40,13 +40,17 @@ class OpenAIMessageTest {
   void createMessagesWithText(OpenAiMessage message) {
     assertThat(message.content().items()).hasSize(1);
     assertThat(((OpenAiTextItem) message.content().items().get(0)).text()).isEqualTo(validText);
+
+    if (message instanceof OpenAiToolMessage) {
+      assertThat(((OpenAiToolMessage) message).toolCallId()).isEqualTo("some call id");
+    }
   }
 
   @ParameterizedTest
   @MethodSource("provideValidTextMessageByRole")
   void createMessagesWithAdditionalText(OpenAiMessage message) {
 
-    if (message instanceof OpenAiAssistantMessage) {
+    if (message instanceof OpenAiAssistantMessage || message instanceof OpenAiToolMessage) {
       return;
     }
 
@@ -55,13 +59,13 @@ class OpenAIMessageTest {
         switch (message.role()) {
           case "user" -> ((OpenAiUserMessage) message).withText(additionalText);
           case "system" -> ((OpenAiSystemMessage) message).withText(additionalText);
-          case "tool" -> ((OpenAiToolMessage) message).withText(additionalText);
           default -> throw new IllegalArgumentException("Invalid message role: " + message.role());
         };
 
     assertThat(extendedMessage.content().items()).hasSize(2);
     assertThat(((OpenAiTextItem) extendedMessage.content().items().get(1)).text())
         .isEqualTo(additionalText);
+    assertThat(message).isNotSameAs(extendedMessage);
   }
 
   @Test
@@ -194,8 +198,7 @@ class OpenAIMessageTest {
 
   @Test
   void toolMessageToDto() {
-    var singleText = OpenAiMessage.tool(validText);
-    var multiItemMessage = singleText.withText("Additional text");
+    var singleText = OpenAiMessage.tool(validText, "some call id");
 
     var requestMessage = singleText.createChatCompletionRequestMessage();
     assertThat(requestMessage.getRole()).isEqualTo(ChatCompletionRequestToolMessage.RoleEnum.TOOL);
@@ -203,23 +206,7 @@ class OpenAIMessageTest {
             ((ChatCompletionRequestToolMessageContent.InnerString) requestMessage.getContent())
                 .value())
         .isEqualTo(validText);
-
-    var requestMessageWithText = multiItemMessage.createChatCompletionRequestMessage();
-    assertThat(requestMessageWithText.getRole())
-        .isEqualTo(ChatCompletionRequestToolMessage.RoleEnum.TOOL);
-    var values =
-        ((ChatCompletionRequestToolMessageContent.InnerChatCompletionRequestToolMessageContentParts)
-                requestMessageWithText.getContent())
-            .values();
-    assertThat(values).hasSize(2);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(0)).getType())
-        .isEqualTo(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(0)).getText())
-        .isEqualTo(validText);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(1)).getType())
-        .isEqualTo(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(1)).getText())
-        .isEqualTo("Additional text");
+    assertThat(requestMessage.getToolCallId()).isEqualTo("some call id");
   }
 
   @Test
@@ -230,17 +217,7 @@ class OpenAIMessageTest {
 
     Assertions.assertThatThrownBy(systemMessage::createChatCompletionRequestMessage)
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Unknown content type for system messages.");
-  }
-
-  @Test
-  void throwOnToolMessageWithImage() {
-    var toolMessage =
-        new OpenAiToolMessage(
-            new OpenAiMessageContent(List.of(new OpenAiImageItem(validImageUrl))));
-
-    Assertions.assertThatThrownBy(toolMessage::createChatCompletionRequestMessage)
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Unknown content type for tool messages.");
+        .hasMessageContaining(
+            "Unknown content type for class com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem messages.");
   }
 }
