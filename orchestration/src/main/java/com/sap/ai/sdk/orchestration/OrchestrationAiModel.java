@@ -123,12 +123,6 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-4o-mini chat completions model */
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
-  /** Azure OpenAI o1 chat completions model */
-  public static final OrchestrationAiModel O1 = new OrchestrationAiModel("o1");
-
-  /** Azure OpenAI o3-mini chat completions model */
-  public static final OrchestrationAiModel O3_MINI = new OrchestrationAiModel("o3-mini");
-
   /** Google Cloud Platform Gemini 1.0 Pro model */
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
       new OrchestrationAiModel("gemini-1.0-pro");

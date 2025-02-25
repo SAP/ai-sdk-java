@@ -41,12 +41,6 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-4o Mini chat completions model */
   public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
 
-  /** Azure OpenAI o1 chat completions model */
-  public static final OpenAiModel O1 = new OpenAiModel("o1", null);
-
-  /** Azure OpenAI o3-mini chat completions model */
-  public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
-
   /** Azure OpenAI Text Embedding 3 Large model */
   public static final OpenAiModel TEXT_EMBEDDING_3_LARGE =
       new OpenAiModel("text-embedding-3-large", null);
