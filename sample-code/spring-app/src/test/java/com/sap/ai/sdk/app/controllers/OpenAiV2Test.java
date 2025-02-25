@@ -4,7 +4,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.app.services.NewOpenAiService;
+import com.sap.ai.sdk.app.services.OpenAiServiceV2;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
@@ -17,12 +17,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-class NewOpenAiTest {
-  NewOpenAiService service;
+class OpenAiV2Test {
+  OpenAiServiceV2 service;
 
   @BeforeEach
   void setUp() {
-    service = new NewOpenAiService();
+    service = new OpenAiServiceV2();
   }
 
   @Test
@@ -39,9 +39,8 @@ class NewOpenAiTest {
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo(ASSISTANT);
-    assertThat(message.getContent()).isNotEmpty();
+    assertThat(completion.getContent()).isNotEmpty();
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
   }
 
   @Test

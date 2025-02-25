@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/document-grounding/pipelines"
+  },
+
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {"count": 0, "resources": []}
+  }
+}

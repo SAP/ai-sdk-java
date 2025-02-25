@@ -1,9 +1,14 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static lombok.AccessLevel.PACKAGE;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
+import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -15,13 +20,25 @@ import lombok.experimental.Accessors;
 @Beta
 @Value
 @Accessors(fluent = true)
+@AllArgsConstructor(access = PACKAGE)
 class OpenAiAssistantMessage implements OpenAiMessage {
 
-  /** The role of the message. */
+  /** The role associated with this message. */
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull String content;
+  @Getter(onMethod_ = @Beta)
+  @Nonnull
+  OpenAiMessageContent content;
+
+  /**
+   * Creates a new assistant message with the given single message.
+   *
+   * @param singleMessage the message.
+   */
+  OpenAiAssistantMessage(@Nonnull final String singleMessage) {
+    this(new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))));
+  }
 
   /**
    * Converts the message to a serializable object.
@@ -30,8 +47,9 @@ class OpenAiAssistantMessage implements OpenAiMessage {
    */
   @Nonnull
   ChatCompletionRequestAssistantMessage createChatCompletionRequestMessage() {
+    final var textItem = (OpenAiTextItem) this.content().items().get(0);
     return new ChatCompletionRequestAssistantMessage()
         .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()))
-        .content(ChatCompletionRequestAssistantMessageContent.create(content));
+        .content(ChatCompletionRequestAssistantMessageContent.create(textItem.text()));
   }
 }

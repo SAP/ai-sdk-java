@@ -1,0 +1,127 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v2/lm/document-grounding/vector/collections"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "count": 1,
+          "resources": [
+            {
+              "title": "test-collection",
+              "embeddingConfig": {
+                "modelName": "text-embedding-ada-999"
+              },
+              "metadata": [
+                {
+                  "key": "purpose",
+                  "value": [
+                    "grounding test"
+                  ]
+                }
+              ],
+              "id": "e57c5e98-0c6e-4076-b619-61654234b447"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v2/lm/document-grounding/vector/collections/e57c5e98-0c6e-4076-b619-61654234b447/documents"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "count": 1,
+          "resources": [
+            {
+              "metadata": [
+                {
+                  "key": "url",
+                  "value": [
+                    "http://hello.com",
+                    "123"
+                  ],
+                  "matchMode": "ANY"
+                }
+              ],
+              "id": "89c75c12-3c60-4a8a-84ec-4e72b74b1c8b"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v2/lm/document-grounding/vector/collections/e57c5e98-0c6e-4076-b619-61654234b447/documents/89c75c12-3c60-4a8a-84ec-4e72b74b1c8b"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "chunks": [
+            {
+              "content": "Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler.",
+              "metadata": [
+                {
+                  "key": "index",
+                  "value": [
+                    "1"
+                  ]
+                },
+                {
+                  "key": "sap.document-grounding/language",
+                  "value": [
+                    "en"
+                  ]
+                }
+              ]
+            },
+            {
+              "content": "It enables the companion of the Intelligent Enterprise, guiding you through content discovery within SAP Ecosystem, and giving a transparent role-based access to the relevant processes from everywhere. This is the one assistant experience, a unified and delightful user experience across SAP\u2019s \u01ee solution portfolio.",
+              "metadata": [
+                {
+                  "key": "index",
+                  "value": [
+                    "2"
+                  ]
+                },
+                {
+                  "key": "sap.document-grounding/language",
+                  "value": [
+                    "en"
+                  ]
+                }
+              ]
+            }
+          ],
+          "metadata": [
+            {
+              "key": "url",
+              "value": [
+                "http://hello.com",
+                "123"
+              ],
+              "matchMode": "ANY"
+            }
+          ],
+          "id": "89c75c12-3c60-4a8a-84ec-4e72b74b1c8b"
+        }
+      }
+    }
+  ]
+}

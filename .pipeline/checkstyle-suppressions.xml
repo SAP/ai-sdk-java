@@ -10,6 +10,8 @@
   <suppress files="[/\\]core[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]openai[/\\]generated[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]orchestration[/\\]model[/\\]" checks=".*"/>
+  <suppress files="[/\\]grounding[/\\]api[/\\]" checks=".*"/>
+  <suppress files="[/\\]grounding[/\\]model[/\\]" checks=".*"/>
   <!-- Suppress TODOs -->
   <suppress files="OpenAiChatMessage.java" checks="TodoComment" lines="257,7" />
   <suppress files="ChatCompletionResponseMessage.java" checks="TodoComment" lines="53,34" />
