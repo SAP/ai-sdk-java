@@ -136,6 +136,7 @@ For more detailed information and advanced usage, please refer to the following:
 - [<img src="sample-code/spring-app/src/main/resources/static/Open-AI-Logo.svg" width="16"/> OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](docs/guides/SPRING_AI_INTEGRATION.md)
 - [🧰 AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/grounding.png" width="16"/> AI Core Grounding](docs/guides/GROUNDING.md)
 
 For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
 

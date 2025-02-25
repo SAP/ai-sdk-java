@@ -3,10 +3,6 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImage.TypeEnum.IMAGE_URL;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImageImageUrl.DetailEnum.HIGH;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage.RoleEnum.USER;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -14,23 +10,16 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImage;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImageImageUrl;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -38,10 +27,10 @@ import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-/** Service class for OpenAI service */
+/** Service class for OpenAI service using latest convenience api */
 @Service
 @Slf4j
-public class NewOpenAiService {
+public class OpenAiServiceV2 {
 
   /**
    * Chat request to OpenAI
@@ -87,29 +76,14 @@ public class NewOpenAiService {
    * @return the assistant message response
    */
   @Nonnull
-  public CreateChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
-    final var partText =
-        new ChatCompletionRequestMessageContentPartText()
-            .type(TEXT)
-            .text("Describe the following image.");
-    final var partImageUrl =
-        new ChatCompletionRequestMessageContentPartImageImageUrl()
-            .url(URI.create(linkToImage))
-            .detail(HIGH);
-    final var partImage =
-        new ChatCompletionRequestMessageContentPartImage().type(IMAGE_URL).imageUrl(partImageUrl);
-    final var userMessage =
-        new ChatCompletionRequestUserMessage()
-            .role(USER)
-            .content(ChatCompletionRequestUserMessageContent.create(List.of(partText, partImage)));
-    final var request =
-        new CreateChatCompletionRequest()
-            .addMessagesItem(userMessage)
-            .functions(null)
-            .tools(null)
-            .parallelToolCalls(null);
+  public OpenAiChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
 
-    return OpenAiClient.forModel(GPT_4O).chatCompletion(request);
+    final var userMessage =
+        OpenAiMessage.user("Describe the following image.")
+            .withImage(linkToImage, OpenAiImageItem.DetailLevel.HIGH);
+
+    return OpenAiClient.forModel(GPT_4O)
+        .chatCompletion(new OpenAiChatCompletionRequest(userMessage));
   }
 
   /**
