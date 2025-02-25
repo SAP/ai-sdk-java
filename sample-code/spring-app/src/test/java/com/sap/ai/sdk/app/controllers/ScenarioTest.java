@@ -6,11 +6,8 @@ import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.core.model.AiModelVersion;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
-
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,7 +47,7 @@ class ScenarioTest {
     }
 
     // Assert that the declared OpenAI models match the expected list
-//    assertThat(declaredOpenAiModelList.keySet()).containsAll(availableOpenAiModels.keySet());
+    assertThat(declaredOpenAiModelList.keySet()).containsAll(availableOpenAiModels.keySet());
     for (var model : availableOpenAiModels.entrySet()) {
       Boolean declaredDeprecated = declaredOpenAiModelList.get(model.getKey());
       assertThat(declaredDeprecated)
