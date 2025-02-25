@@ -29,9 +29,7 @@ class ScenarioTest {
             .filter(model -> model.getExecutableId().equals("azure-openai"))
             .collect(
                 () -> new HashMap<String, Boolean>(),
-                (list, model) -> {
-                  list.put(model.getModel(), isDeprecated(model));
-                },
+                (list, model) -> list.put(model.getModel(), isDeprecated(model)),
                 HashMap::putAll);
 
     // Gather our declared OpenAI models
