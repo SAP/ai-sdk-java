@@ -61,6 +61,7 @@ public sealed interface OpenAiMessage
    * A convenience method to create a tool message.
    *
    * @param message the message content.
+   * @param toolCallId identifier of the tool call this message is responding to.
    * @return the tool message.
    */
   @Nonnull

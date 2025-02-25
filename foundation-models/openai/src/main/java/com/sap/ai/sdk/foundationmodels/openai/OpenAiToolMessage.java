@@ -32,9 +32,10 @@ public class OpenAiToolMessage implements OpenAiMessage {
   @Nonnull private final String toolCallId;
 
   /**
-   * Creates a new tool message from a string.
+   * Creates a new tool message from a string and tool call id.
    *
    * @param message the first message.
+   * @param toolCallId identifier of the tool call this message is responding to.
    */
   OpenAiToolMessage(@Nonnull final String message, @Nonnull final String toolCallId) {
     this(new OpenAiMessageContent(List.of(new OpenAiTextItem(message))), toolCallId);
