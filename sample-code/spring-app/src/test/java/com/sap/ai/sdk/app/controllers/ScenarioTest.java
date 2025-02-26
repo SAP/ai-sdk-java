@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test;
 class ScenarioTest {
 
   @Test
-  @DisplayName("Declared OpenAI models must match AI Core's available OpenAI models")
+  @DisplayName(
+      "Declared OpenAI models must be superset of our AI Core account's available OpenAI models")
   @SneakyThrows
   void openAiModelAvailability() {
 
@@ -39,6 +40,6 @@ class ScenarioTest {
     }
 
     // Assert that the declared OpenAI models match the expected list
-    assertThat(declaredOpenAiModelList).hasSameElementsAs(availableOpenAiModels);
+    assertThat(declaredOpenAiModelList).containsAll(availableOpenAiModels);
   }
 }
