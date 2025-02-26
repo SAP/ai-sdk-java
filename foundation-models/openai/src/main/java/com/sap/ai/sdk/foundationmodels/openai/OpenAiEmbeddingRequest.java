@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Value;
-import lombok.With;
 
 /**
  * Represents a request to create embeddings using OpenAI's API.
@@ -19,7 +18,6 @@ import lombok.With;
  */
 @Beta
 @Value
-@With
 public class OpenAiEmbeddingRequest {
   /** List of tokens to be embedded. */
   @Nonnull private final List<String> tokens;

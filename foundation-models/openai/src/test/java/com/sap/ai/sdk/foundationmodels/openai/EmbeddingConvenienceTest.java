@@ -40,9 +40,11 @@ class EmbeddingConvenienceTest {
                 getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
                 EmbeddingsCreate200Response.class);
 
-    var response = new OpenAiEmbeddingResponse(originalResponse);
+    var embeddings = new OpenAiEmbeddingResponse(originalResponse).getEmbeddingVectors();
 
-    assertThat(response.getEmbeddings())
+    assertThat(embeddings).isInstanceOf(List.class);
+    assertThat(embeddings).hasSize(1);
+    assertThat(embeddings)
         .containsExactly(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
   }
 }

@@ -89,8 +89,8 @@ class OpenAiV2Test {
 
     assertThat(embedding.getOriginalResponse().getData().get(0).getEmbedding())
         .hasSizeGreaterThan(1);
-    assertThat(embedding.getEmbeddings()).isInstanceOf(ArrayList.class);
-    assertThat(embedding.getEmbeddings().get(0)).isInstanceOf(float[].class);
+    assertThat(embedding.getEmbeddingVectors()).isInstanceOf(ArrayList.class);
+    assertThat(embedding.getEmbeddingVectors().get(0)).isInstanceOf(float[].class);
 
     assertThat(embedding.getOriginalResponse().getModel()).isEqualTo("ada");
     assertThat(embedding.getOriginalResponse().getObject()).isEqualTo("list");
