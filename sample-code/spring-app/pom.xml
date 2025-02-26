@@ -62,6 +62,10 @@
       <artifactId>document-grounding</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>prompt-registry</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-core</artifactId>
     </dependency>

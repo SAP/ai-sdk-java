@@ -23,6 +23,7 @@ jobs:
             OpenAI
             Orchestration
             DevOps
+            PromptRegistry
           headerPattern: '^(\w.+): (?:\[(\w.+)\] )?(.+)$'
           headerPatternCorrespondence: type, scope, subject
           # for available types, check:

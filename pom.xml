@@ -33,6 +33,7 @@
     <module>orchestration</module>
     <module>document-grounding</module>
     <module>foundation-models/openai</module>
+    <module>prompt-registry</module>
   </modules>
   <scm>
     <connection/>
@@ -207,6 +208,11 @@
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
         <artifactId>document-grounding</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>prompt-registry</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -628,6 +634,8 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
+            <exclude>com/sap/ai/sdk/prompt/registry/client/*</exclude>
+            <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -652,6 +660,8 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
+            <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>
+            <exclude>com/sap/ai/sdk/prompt/registry/client/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
           </excludes>
         </configuration>
@@ -766,6 +776,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       </activation>
       <modules>
         <module>sample-code/spring-app</module>
+        <module>prompt-registry</module>
       </modules>
     </profile>
     <profile>

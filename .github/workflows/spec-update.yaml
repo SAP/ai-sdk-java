@@ -11,6 +11,7 @@ on:
           - core
           - grounding
           - orchestration
+          - prompt-registry
         default: orchestration
       file-ref:
         description: "Branch or tag to checkout the spec file from"
@@ -77,6 +78,10 @@ jobs:
             orchestration)
               API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
+              ;;
+            prompt-registry)
+              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
+              FILE_PATH='prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               ;;
           esac
           
