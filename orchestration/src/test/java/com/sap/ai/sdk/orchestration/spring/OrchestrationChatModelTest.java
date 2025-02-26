@@ -9,7 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,8 +61,7 @@ public class OrchestrationChatModelTest {
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationChatModel(new OrchestrationClient(destination));
     defaultOptions =
-        new OrchestrationChatOptions(
-            new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO_16K));
+        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(GPT_4O));
     prompt = new Prompt("Hello World! Why is this phrase so famous?", defaultOptions);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }

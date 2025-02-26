@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_35;
+import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_4O;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -80,7 +80,7 @@ class ConfigToRequestTransformerTest {
     var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(systemMessage));
     var actual =
         ConfigToRequestTransformer.toCompletionPostRequest(
-            prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35));
+            prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O));
 
     assertThat(actual.getMessagesHistory()).containsExactly(systemMessage.createChatMessage());
   }

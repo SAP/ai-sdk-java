@@ -102,7 +102,12 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-3.5 Turbo chat completions model */
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  /**
+   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   *
+   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-13.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO_16K =
       new OrchestrationAiModel("gpt-35-turbo-16k");
 
