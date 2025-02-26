@@ -117,7 +117,7 @@ public class OpenAiServiceV2 {
    */
   @Nonnull
   public OpenAiEmbeddingResponse embedding(@Nonnull final String input) {
-    final var request = new OpenAiEmbeddingRequest(input);
+    final var request = new OpenAiEmbeddingRequest(List.of(input));
 
     return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
   }

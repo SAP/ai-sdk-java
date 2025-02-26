@@ -13,16 +13,6 @@ import org.junit.jupiter.api.Test;
 class EmbeddingConvenienceTest {
 
   @Test
-  void createEmbeddingRequestWithSingleToken() {
-    var request = new OpenAiEmbeddingRequest("token1");
-    var lowLevelRequest = request.createEmbeddingsCreateRequest();
-
-    assertThat(((EmbeddingsCreateRequestInput.InnerString) lowLevelRequest.getInput()))
-        .usingRecursiveComparison()
-        .isEqualTo(EmbeddingsCreateRequestInput.create("token1"));
-  }
-
-  @Test
   void createEmbeddingRequestWithMultipleTokens() {
     var request = new OpenAiEmbeddingRequest(List.of("token1", "token2", "token3"));
     var lowLevelRequest = request.createEmbeddingsCreateRequest();

@@ -243,7 +243,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     stubForEmbedding();
 
     final var response =
-        client.embedding(new OpenAiEmbeddingRequest("Hello World")).getOriginalResponse();
+        client.embedding(new OpenAiEmbeddingRequest(List.of("Hello World"))).getOriginalResponse();
 
     assertThat(response).isNotNull();
     assertThat(response.getModel()).isEqualTo("ada");
