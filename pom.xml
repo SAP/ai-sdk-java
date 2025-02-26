@@ -31,7 +31,7 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
-    <module>grounding</module>
+    <module>document-grounding</module>
     <module>foundation-models/openai</module>
   </modules>
   <scm>
@@ -206,7 +206,7 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
-        <artifactId>grounding</artifactId>
+        <artifactId>document-grounding</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

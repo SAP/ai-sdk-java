@@ -16,6 +16,8 @@
 ### ✨ New Functionality
 
 - [Add Spring AI tool calling](../guides/SPRING_AI_INTEGRATION.md#tool-calling).
+- [Add Document Grounding Client](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/GROUNDING.md)
+  - `com.sap.ai.sdk:document-grounding:1.4.0` 
 
 ### 📈 Improvements
 
