@@ -12,7 +12,6 @@ import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 class ScenarioTest {
 
@@ -51,7 +50,8 @@ class ScenarioTest {
     SoftAssertions softly = new SoftAssertions();
     for (var model : availableOpenAiModels.entrySet()) {
       Boolean declaredDeprecated = declaredOpenAiModelList.get(model.getKey());
-      softly.assertThat(declaredDeprecated)
+      softly
+          .assertThat(declaredDeprecated)
           .withFailMessage(
               "%s is deprecated:%s on AI Core but deprecated:%s in AI SDK",
               model.getKey(), model.getValue(), declaredDeprecated)
