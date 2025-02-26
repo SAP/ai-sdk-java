@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Optional;
 import lombok.SneakyThrows;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
@@ -46,14 +47,17 @@ class ScenarioTest {
 
     // Assert that the declared OpenAI models match the expected list
     assertThat(declaredOpenAiModelList.keySet()).containsAll(availableOpenAiModels.keySet());
+
+    SoftAssertions softly = new SoftAssertions();
     for (var model : availableOpenAiModels.entrySet()) {
       Boolean declaredDeprecated = declaredOpenAiModelList.get(model.getKey());
-      assertThat(declaredDeprecated)
+      softly.assertThat(declaredDeprecated)
           .withFailMessage(
               "%s is deprecated:%s on AI Core but deprecated:%s in AI SDK",
               model.getKey(), model.getValue(), declaredDeprecated)
           .isEqualTo(model.getValue());
     }
+    softly.assertAll();
   }
 
   private static boolean isDeprecated(AiModelBaseData model) {

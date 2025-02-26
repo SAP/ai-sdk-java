@@ -19,10 +19,19 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI dall-e-3 image generate model */
   public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
-  public static final OpenAiModel GPT_35_TURBO = new OpenAiModel("gpt-35-turbo", null);
+  /**
+   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   *
+   * @deprecated This model is not usable anymore. It is retired on AI Core since 2024-11-17.
+   */
+  @Deprecated public static final OpenAiModel GPT_35_TURBO = new OpenAiModel("gpt-35-turbo", null);
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  /**
+   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   *
+   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-22.
+   */
+  @Deprecated
   public static final OpenAiModel GPT_35_TURBO_1025 = new OpenAiModel("gpt-35-turbo-0125", null);
 
   /**
@@ -36,8 +45,12 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-4 chat completions model */
   public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
 
-  /** Azure OpenAI GPT-4-32k chat completions model */
-  public static final OpenAiModel GPT_4_32K = new OpenAiModel("gpt-4-32k", null);
+  /**
+   * Azure OpenAI GPT-4-32k chat completions model
+   *
+   * @deprecated This model will not be usable anymore on 2025-05-30.
+   */
+  @Deprecated public static final OpenAiModel GPT_4_32K = new OpenAiModel("gpt-4-32k", null);
 
   /** Azure OpenAI GPT-4o chat completions model */
   public static final OpenAiModel GPT_4O = new OpenAiModel("gpt-4o", null);
