@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
-import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,19 +14,19 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class OpenAiToolChoice {
-  @Nonnull final Supplier<? extends ChatCompletionToolChoiceOption> toolChoice;
+  @Nonnull final ChatCompletionToolChoiceOption toolChoice;
 
   /** Only message generation will be performed without calling any tool. */
   public static final OpenAiToolChoice NONE =
-      new OpenAiToolChoice(() -> ChatCompletionToolChoiceOption.create("none"));
+      new OpenAiToolChoice(ChatCompletionToolChoiceOption.create("none"));
 
   /** The model may decide whether to call a (one or more) tool. */
   public static final OpenAiToolChoice OPTIONAL =
-      new OpenAiToolChoice(() -> ChatCompletionToolChoiceOption.create("auto"));
+      new OpenAiToolChoice(ChatCompletionToolChoiceOption.create("auto"));
 
   /** The model must call one or more tools as part of its processing. */
   public static final OpenAiToolChoice REQUIRED =
-      new OpenAiToolChoice(() -> ChatCompletionToolChoiceOption.create("required"));
+      new OpenAiToolChoice(ChatCompletionToolChoiceOption.create("required"));
 
   /**
    * The model must call the function specified by {@code functionName}.
@@ -38,10 +37,9 @@ public class OpenAiToolChoice {
   @Nonnull
   public static OpenAiToolChoice function(@Nonnull final String functionName) {
     return new OpenAiToolChoice(
-        () ->
-            ChatCompletionToolChoiceOption.create(
-                new ChatCompletionNamedToolChoice()
-                    .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
-                    .function(new ChatCompletionNamedToolChoiceFunction().name(functionName))));
+        ChatCompletionToolChoiceOption.create(
+            new ChatCompletionNamedToolChoice()
+                .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
+                .function(new ChatCompletionNamedToolChoiceFunction().name(functionName))));
   }
 }

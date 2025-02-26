@@ -268,8 +268,7 @@ public class OpenAiChatCompletionRequest {
   @Nonnull
   @Tolerate
   public OpenAiChatCompletionRequest withToolChoice(@Nonnull final OpenAiToolChoice choice) {
-    final ChatCompletionToolChoiceOption option = choice.toolChoice.get();
-    return this.withToolChoice(option);
+    return this.withToolChoice(choice.toolChoice);
   }
 
   /**
