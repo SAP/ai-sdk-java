@@ -23,15 +23,6 @@ public class OpenAiEmbeddingRequest {
   @Nonnull private final List<String> tokens;
 
   /**
-   * Constructs an OpenAiEmbeddingRequest from a basic string.
-   *
-   * @param token the token to be embedded
-   */
-  public OpenAiEmbeddingRequest(@Nonnull final String token) {
-    this(List.of(token));
-  }
-
-  /**
    * Constructs an OpenAiEmbeddingRequest from a list of strings.
    *
    * @param tokens a list of tokens to be embedded
