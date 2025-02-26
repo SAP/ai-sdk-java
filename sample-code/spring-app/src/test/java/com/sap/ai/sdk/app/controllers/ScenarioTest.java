@@ -16,8 +16,8 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 class ScenarioTest {
 
   @Test
-  @DisplayName("Declared OpenAI models must match AI Core's available OpenAI models")
-  @DisabledIfSystemProperty(named = "aicore.landscape", matches = "canary")
+  @DisplayName(
+      "Declared OpenAI models must be superset of our AI Core account's available OpenAI models")
   @SneakyThrows
   void openAiModelAvailability() {
 
