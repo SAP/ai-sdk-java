@@ -2,10 +2,12 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.common.reflect.Reflection;
 import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
@@ -15,9 +17,8 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 class ScenarioTest {
 
   @Test
-  @DisplayName("Declared OpenAI models must match AI Core's available OpenAI models")
+  @DisplayName("Declared OpenAI models must be superset of our AI Core account's available OpenAI models")
   @SneakyThrows
-  @DisabledIfSystemProperty(named = "aicore.landscape", matches = "canary")
   void openAiModelAvailability() {
 
     // Gather AI Core's list of available OpenAI models
@@ -41,6 +42,6 @@ class ScenarioTest {
     }
 
     // Assert that the declared OpenAI models match the expected list
-    assertThat(declaredOpenAiModelList).hasSameElementsAs(availableOpenAiModels);
+    assertThat(declaredOpenAiModelList).containsAll(availableOpenAiModels);
   }
 }
