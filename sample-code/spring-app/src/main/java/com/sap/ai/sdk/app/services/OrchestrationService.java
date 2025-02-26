@@ -19,6 +19,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -365,7 +366,8 @@ public class OrchestrationService {
         ResponseJsonSchema.from(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema = config.withJsonSchemaResponse(schema);
+    val configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(

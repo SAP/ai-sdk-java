@@ -22,7 +22,7 @@ import lombok.With;
 import lombok.val;
 
 /**
- * The schema object to use for the response format parameter in {@link OrchestrationModuleConfig}.
+ * The schema object to use for the response format parameter in {@link OrchestrationTemplate}.
  *
  * @since 1.4.0
  */

@@ -9,6 +9,8 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
@@ -88,9 +90,9 @@ public class OrchestrationConvenienceUnitTest {
     val schemaMap = generateSchemaMap();
 
     var configWithResponseSchemaFromClass =
-        new OrchestrationModuleConfig()
+        new OrchestrationModuleConfig().withTemplateConfig(TemplateConfig.create()
             .withJsonSchemaResponse(
-                schemaFromClass.withDescription("Description").withStrict(true));
+                schemaFromClass.withDescription("Description").withStrict(true)));
     var configWithResponseSchemaLowLevel =
         new OrchestrationModuleConfig()
             .withTemplateConfig(

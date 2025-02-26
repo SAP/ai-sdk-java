@@ -6,15 +6,13 @@ import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 
 public abstract class TemplateConfig {
-  abstract protected TemplatingModuleConfig toLowLevel();
+  protected abstract TemplatingModuleConfig toLowLevel();
+
   // factory method
   public static OrchestrationTemplate create() {
     return new OrchestrationTemplate();
   }
-//  // optional factory method?
-//  public static OrchestrationTemplate jsonResponse() {
-//    return create().withResponseFormat("json");
-//  }
+
   // factory method
   public static ReferenceBuilder reference() {
     return new ReferenceBuilder();
@@ -25,7 +23,7 @@ public abstract class TemplateConfig {
       return new OrchestrationTemplateReference(TemplateRefByID.create().id(id));
     }
 
-    ReferenceBuilder1 byScenarioNameVersion(String scenario){
+    ReferenceBuilder1 byScenarioNameVersion(String scenario) {
       return new ReferenceBuilder1(scenario);
     }
   }
@@ -36,6 +34,7 @@ public abstract class TemplateConfig {
     ReferenceBuilder1(String scenario) {
       this.scenario = scenario;
     }
+
     ReferenceBuilder2 name(String name) {
       return new ReferenceBuilder2(scenario, name);
     }
@@ -49,8 +48,10 @@ public abstract class TemplateConfig {
       this.scenario = scenario;
       this.name = name;
     }
+
     OrchestrationTemplateReference version(String version) {
-      return new OrchestrationTemplateReference(TemplateRefByScenarioNameVersion.create().scenario(scenario).name(name).version(version));
+      return new OrchestrationTemplateReference(
+          TemplateRefByScenarioNameVersion.create().scenario(scenario).name(name).version(version));
     }
   }
 }
