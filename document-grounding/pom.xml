@@ -6,9 +6,9 @@
     <artifactId>sdk-parent</artifactId>
     <version>1.4.0-SNAPSHOT</version>
   </parent>
-  <artifactId>grounding</artifactId>
-  <name>Grounding client</name>
-  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Grounding Service.</description>
+  <artifactId>document-grounding</artifactId>
+  <name>Document Grounding Client</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Document Grounding Service.</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>

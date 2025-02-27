@@ -1,4 +1,4 @@
-# Grounding Services
+# Document Grounding Services
 
 ## Table of Contents
 
@@ -24,7 +24,7 @@ It's divided into two main sections: Data Ingestion and Data Retrieval.
 
 ## Prerequisites
 
-Before using the Grounding module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements).
+Before using the Document Grounding module, ensure that you have met all the general requirements outlined in the [README.md](../../README.md#general-requirements).
 Additionally, include the necessary Maven dependency in your project.
 
 ### Maven Dependencies
@@ -34,7 +34,7 @@ Add the following dependency to your `pom.xml` file:
 ```xml
 <dependency>
     <groupId>com.sap.ai.sdk</groupId>
-    <artifactId>grounding</artifactId>
+    <artifactId>document-grounding</artifactId>
     <version>${ai-sdk.version}</version>
 </dependency>
 ```
@@ -102,7 +102,7 @@ The following APIs are available for data retrieval: Retrieval and Orchestration
 
 ### Retrieval API
 
-Consider the following code sample to search for relevant grounding data based on a query:
+Consider the following code sample to search for relevant document grounding data based on a query:
 
 ```java
 var api = new GroundingClient().retrieval();

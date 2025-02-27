@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Tolerate;
 
 /**
- * Service class for the Grounding APIs.
+ * Service class for the Document Grounding APIs.
  *
  * @since 1.3.0
  */
