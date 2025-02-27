@@ -124,7 +124,7 @@ OpenAiClient.withCustomDestination(destination);
 
 ## Message history
 
-Since v1.4.0
+**Since v1.4.0**
 
 ```java
 var request =
@@ -136,9 +136,7 @@ var response = OpenAiClient.forModel(GPT_4O).chatCompletion(request).getContent(
 ```
 
 <details>
-<summary>
-Since v1.0.0
-</summary>
+<summary><b>Since v1.0.0</b></summary>
 
 ```java
 var systemMessage =
