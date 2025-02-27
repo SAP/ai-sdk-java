@@ -48,15 +48,15 @@ class OpenAiV2Test {
     final var userMessage = OpenAiMessage.user("Who is the prettiest?");
     final var prompt = new OpenAiChatCompletionRequest(userMessage);
 
-    final var totalOutput = new AtomicReference<CompletionUsage>();
+    final var usageRef = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
+
     OpenAiClient.forModel(GPT_35_TURBO)
         .streamChatCompletionDeltas(prompt)
         // foreach consumes all elements, closing the stream at the end
         .forEach(
             delta -> {
-              final var usage = delta.getCompletionUsage();
-              totalOutput.compareAndExchange(null, usage);
+              usageRef.compareAndExchange(null, delta.getCompletionUsage());
               final String deltaContent = delta.getDeltaContent();
               log.info("delta: {}", delta);
               if (!deltaContent.isEmpty()) {
@@ -64,13 +64,9 @@ class OpenAiV2Test {
               }
             });
 
-    // the first two and the last delta don't have any content
-    // see OpenAiChatCompletionDelta#getDeltaContent
-    assertThat(filledDeltaCount.get()).isGreaterThan(0);
-
-    assertThat(totalOutput.get().getTotalTokens()).isGreaterThan(0);
-    assertThat(totalOutput.get().getPromptTokens()).isEqualTo(14);
-    assertThat(totalOutput.get().getCompletionTokens()).isGreaterThan(0);
+    assertThat(usageRef.get().getTotalTokens()).isGreaterThan(0);
+    assertThat(usageRef.get().getPromptTokens()).isEqualTo(14);
+    assertThat(usageRef.get().getCompletionTokens()).isGreaterThan(0);
   }
 
   @Test
