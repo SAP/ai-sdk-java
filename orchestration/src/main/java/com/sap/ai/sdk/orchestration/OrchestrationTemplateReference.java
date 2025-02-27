@@ -1,19 +1,31 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
+import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 
+/**
+ * A reference to a template to use in {@link OrchestrationModuleConfig}.
+ *
+ * @since 1.5.0
+ */
 @Value
-public class OrchestrationTemplateReference extends TemplateConfig{
-  TemplateRefTemplateRef reference;
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class OrchestrationTemplateReference extends TemplateConfig {
+  @Nonnull TemplateRefTemplateRef reference;
 
-  public OrchestrationTemplateReference(TemplateRefTemplateRef reference) {
-    this.reference = reference;
-  }
-
+  /**
+   * Create a low-level representation of the template.
+   *
+   * @return The low-level representation of the template.
+   */
+  @Nonnull
   @Override
   protected TemplatingModuleConfig toLowLevel() {
-    return null;
+    return TemplateRef.create().templateRef(reference);
   }
 }

@@ -6,12 +6,9 @@ import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -64,9 +61,7 @@ public class OrchestrationModuleConfig {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
-  @With
-  @Nullable
-  TemplatingModuleConfig templateConfig;
+  @With @Nullable TemplatingModuleConfig templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
@@ -227,7 +222,8 @@ public class OrchestrationModuleConfig {
    */
   @Tolerate
   @Nonnull
-  public OrchestrationModuleConfig withTemplateConfig(@Nonnull TemplateConfig templateConfig) {
-      return this.withTemplateConfig(templateConfig.toLowLevel());
-    }
+  public OrchestrationModuleConfig withTemplateConfig(
+      @Nonnull final TemplateConfig templateConfig) {
+    return this.withTemplateConfig(templateConfig.toLowLevel());
+  }
 }

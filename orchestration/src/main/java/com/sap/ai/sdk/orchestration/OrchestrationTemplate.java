@@ -8,6 +8,13 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -16,31 +23,37 @@ import lombok.Value;
 import lombok.With;
 import lombok.val;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * A template to use in {@link OrchestrationModuleConfig}.
+ *
+ * @since 1.5.0
+ */
 @EqualsAndHashCode(callSuper = true)
 @Value
 @With
-@AllArgsConstructor(
-    access = AccessLevel.PRIVATE) // TODO: why do we need PRIVATE here instead of NONE?
+// JONAS: why do we need PRIVATE here instead of NONE?
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class OrchestrationTemplate extends TemplateConfig {
-  List<ChatMessage> template;
-  Map<String, String> defaults = new HashMap<>();
+  @Nullable List<ChatMessage> template;
+  @Nonnull Map<String, String> defaults = new HashMap<>();
 
   @With(AccessLevel.PACKAGE)
+  @Nullable
   TemplateResponseFormat responseFormat;
 
-  List<ChatCompletionTool> tools = new ArrayList<>();
-  Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  @Nonnull List<ChatCompletionTool> tools = new ArrayList<>();
+  @Nonnull Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /**
+   * Create a low-level representation of the template.
+   *
+   * @return The low-level representation of the template.
+   */
   @Override
+  @Nonnull
   protected TemplatingModuleConfig toLowLevel() {
-    List<ChatMessage> template = this.template != null ? this.template : List.of();
+    final List<ChatMessage> template = this.template != null ? this.template : List.of();
     return Template.create()
         .template(template)
         .defaults(defaults)
@@ -48,7 +61,14 @@ public class OrchestrationTemplate extends TemplateConfig {
         .tools(tools);
   }
 
-  public OrchestrationTemplate withJsonSchemaResponse(ResponseJsonSchema schema) {
+  /**
+   * Set the response format to the given JSON schema.
+   *
+   * @param schema The JSON schema to use.
+   * @return The updated template.
+   */
+  @Nonnull
+  public OrchestrationTemplate withJsonSchemaResponse(@Nonnull final ResponseJsonSchema schema) {
     val responseFormatJsonSchema =
         ResponseFormatJsonSchema.create()
             .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
@@ -61,6 +81,12 @@ public class OrchestrationTemplate extends TemplateConfig {
     return this.withResponseFormat(responseFormatJsonSchema);
   }
 
+  /**
+   * Set the response format to JSON object.
+   *
+   * @return The updated template.
+   */
+  @Nonnull
   public OrchestrationTemplate withJsonResponse() {
     val responseFormatJsonObject =
         ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);

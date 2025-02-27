@@ -22,8 +22,6 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import java.util.List;
 import java.util.Map;
-
-import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import org.junit.jupiter.api.Test;
 
 class OrchestrationModuleConfigTest {
