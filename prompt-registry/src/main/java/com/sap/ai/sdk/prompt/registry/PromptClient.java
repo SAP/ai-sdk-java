@@ -48,11 +48,11 @@ public class PromptClient {
 
   @Nonnull
   private static ApiClient addMixin(@Nonnull final AiCoreService service) {
-    var destination = service.getBaseDestination();
-    var httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+    final var destination = service.getBaseDestination();
+    final var httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
     httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
 
-    var rt = new RestTemplate();
+    final var rt = new RestTemplate();
     Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
         .forEach(
             converter ->
