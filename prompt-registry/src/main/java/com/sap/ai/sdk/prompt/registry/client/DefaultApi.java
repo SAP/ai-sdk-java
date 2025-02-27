@@ -38,7 +38,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class DefaultApi extends AbstractOpenApiService {
 
   /**
-   * Instantiates this API class to invoke operations on the Document Grounding Pipeline API.
+   * Instantiates this API class to invoke operations on the Prompt Registry API.
    *
    * @param httpDestination The destination that API should be used with
    */
@@ -47,7 +47,7 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * Instantiates this API class to invoke operations on the Document Grounding Pipeline API based
+   * Instantiates this API class to invoke operations on the Prompt Registry API based
    * on a given {@link ApiClient}.
    *
    * @param apiClient ApiClient to invoke the API on
