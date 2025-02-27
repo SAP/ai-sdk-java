@@ -12,7 +12,7 @@ import lombok.Value;
 /**
  * A reference to a template to use in {@link OrchestrationModuleConfig}.
  *
- * @since 1.5.0
+ * @since 1.4.0
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

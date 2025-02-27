@@ -220,7 +220,7 @@ public class OrchestrationModuleConfig {
    *     AI Core: Orchestration - Templating</a>
    * @param templateConfig The template configuration to use.
    * @return A new configuration with the given template configuration.
-   * @since 1.5.0
+   * @since 1.4.0
    */
   @Tolerate
   @Nonnull

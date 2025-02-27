@@ -26,7 +26,7 @@ import lombok.val;
 /**
  * A template to use in {@link OrchestrationModuleConfig}.
  *
- * @since 1.5.0
+ * @since 1.4.0
  */
 @EqualsAndHashCode(callSuper = true)
 @Value

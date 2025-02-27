@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 /**
  * Template configuration for the {@link OrchestrationModuleConfig}.
  *
- * @since 1.5.0
+ * @since 1.4.0
  */
 @Beta
 public abstract class TemplateConfig {
