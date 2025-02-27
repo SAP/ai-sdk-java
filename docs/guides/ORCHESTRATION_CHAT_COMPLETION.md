@@ -346,24 +346,18 @@ There is also a way to generate the schema from a map of key-value pairs. This c
 
 ```java
 var schemaMap =
-        Map.of(
-                "type",
-                "object",
-                "properties",
-                Map.of(
-                        "language", Map.of("type", "string"),
-                        "translation", Map.of("type", "string")),
-                "required",
-                List.of("language", "translation"),
-                "additionalProperties",
-                false);
+    Map.ofEntries(
+        entry("type", "object"),
+        entry("properties", Map.ofEntries(
+            entry("language", Map.of("type", "string")),
+            entry("translation", Map.of("type", "string"))),
+        entry("required", List.of("language","translation")),
+        entry("additionalProperties", false)));
+
 var schemaFromMap = ResponseJsonSchema.of(schemaMap, "Translator-Schema");
 var config = new OrchestrationModuleConfig()
-        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+    .withLlmConfig(OrchestrationAiModel.GPT_4O);
 var configWithResponseSchema = config.withJsonSchemaResponse(schemaFromMap);
-
-var prompt = new OrchestrationPrompt(Message.user("Some message."));
-var response = client.chatCompletion(prompt, configWithTemplate).getContent();
 ```
 
 </details>
