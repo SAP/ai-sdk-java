@@ -34,7 +34,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.PromptFilterResult;
 import io.vavr.control.Try;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -261,12 +260,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(embeddingData.getEmbedding())
         .isNotNull()
         .isNotEmpty()
-        .containsExactly(
-            new BigDecimal("0.0"),
-            new BigDecimal("3.4028235E+38"),
-            new BigDecimal("1.4E-45"),
-            new BigDecimal("1.23"),
-            new BigDecimal("-4.56"));
+        .isEqualTo(new float[] {0.0f, 3.4028235E+38f, 1.4E-45f, 1.23f, -4.56f});
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
