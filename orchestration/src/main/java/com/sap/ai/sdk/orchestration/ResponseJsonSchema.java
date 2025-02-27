@@ -9,8 +9,6 @@ import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
 import com.github.victools.jsonschema.generator.SchemaVersion;
 import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
-import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -87,27 +85,5 @@ public class ResponseJsonSchema {
     final Map<String, Object> schemaMap = mapper.convertValue(jsonSchema, new TypeReference<>() {});
     val schemaName = ((Class<?>) classType).getSimpleName() + "-Schema";
     return new ResponseJsonSchema(schemaMap, schemaName, null, null);
-  }
-
-  /**
-   * Create a new instance of a {@link Template} that is a copy of the given one but with the given
-   * response format.
-   *
-   * @param originalTemplate The template to copy
-   * @param responseFormat The response format to set in the copy
-   * @return The new instance of {@link Template}
-   */
-  @Nonnull
-  static Template newTemplateWithResponseFormat(
-      @Nonnull final Template originalTemplate,
-      @Nullable final TemplateResponseFormat responseFormat) {
-    val newTemplate = Template.create().template(originalTemplate.getTemplate());
-    newTemplate.setDefaults(originalTemplate.getDefaults());
-    newTemplate.setTools(originalTemplate.getTools());
-    for (val customFieldName : originalTemplate.getCustomFieldNames()) {
-      newTemplate.setCustomField(customFieldName, originalTemplate.getCustomField(customFieldName));
-    }
-    newTemplate.setResponseFormat(responseFormat);
-    return newTemplate;
   }
 }

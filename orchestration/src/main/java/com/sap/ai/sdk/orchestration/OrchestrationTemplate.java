@@ -38,7 +38,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @Nullable List<ChatMessage> template;
   @Nonnull Map<String, String> defaults = new HashMap<>();
 
-  @With(AccessLevel.PACKAGE)
+  @With(AccessLevel.PRIVATE)
   @Nullable
   TemplateResponseFormat responseFormat;
 

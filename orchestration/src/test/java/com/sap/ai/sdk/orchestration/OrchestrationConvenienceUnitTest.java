@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TemplateRef;
+import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
+import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,5 +111,39 @@ public class OrchestrationConvenienceUnitTest {
                                     .strict(true)
                                     .description("Description"))));
     assertThat(configWithResponseSchemaFromClass).isEqualTo(configWithResponseSchemaLowLevel);
+  }
+
+  @Test
+  void testTemplateReferenceConstruction() {
+    var templateReferenceId = TemplateConfig.reference().byId("id");
+    var expectedTemplateReferenceId =
+        new OrchestrationTemplateReference(TemplateRefByID.create().id("id"));
+    var templateReferenceIdLowLevel =
+        TemplateRef.create().templateRef(TemplateRefByID.create().id("id"));
+    assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
+    assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
+
+    var templateReferenceScenarioNameVersion =
+        TemplateConfig.reference()
+            .byScenarioNameVersion("scenario")
+            .name("name")
+            .version("version");
+    var expectedTemplateReferenceScenarioNameVersion =
+        new OrchestrationTemplateReference(
+            TemplateRefByScenarioNameVersion.create()
+                .scenario("scenario")
+                .name("name")
+                .version("version"));
+    var templateReferenceScenarioNameVersionLowLevel =
+        TemplateRef.create()
+            .templateRef(
+                TemplateRefByScenarioNameVersion.create()
+                    .scenario("scenario")
+                    .name("name")
+                    .version("version"));
+    assertThat(templateReferenceScenarioNameVersion)
+        .isEqualTo(expectedTemplateReferenceScenarioNameVersion);
+    assertThat(templateReferenceScenarioNameVersion.toLowLevel())
+        .isEqualTo(templateReferenceScenarioNameVersionLowLevel);
   }
 }

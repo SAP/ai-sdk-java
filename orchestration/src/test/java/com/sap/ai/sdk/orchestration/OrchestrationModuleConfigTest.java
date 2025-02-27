@@ -16,7 +16,6 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -199,7 +198,7 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
-  void testResponseFormatOverwrittenByNewTemplateConfigWithResponseFormat() {
+  void testResponseFormatSchema() {
     var schema = ResponseJsonSchema.from(TestClassForSchemaGeneration.class);
     var config =
         new OrchestrationModuleConfig()
@@ -210,16 +209,17 @@ class OrchestrationModuleConfigTest {
                 .getJsonSchema()
                 .getSchema())
         .isEqualTo(schema.getSchemaMap());
+  }
 
-    config =
-        config.withTemplateConfig(
-            Template.create()
-                .template(SingleChatMessage.create().role("user").content("Hello, World!"))
-                .responseFormat(
-                    ResponseFormatJsonObject.create()
-                        .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT)));
+  @Test
+  void testResponseFormatObject() {
+    var config =
+        new OrchestrationModuleConfig()
+            .withTemplateConfig(TemplateConfig.create().withJsonResponse());
     assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(((Template) config.getTemplateConfig()).getResponseFormat())
+    assertThat(
+            ((ResponseFormatJsonObject)
+                ((Template) config.getTemplateConfig()).getResponseFormat()))
         .isInstanceOf(ResponseFormatJsonObject.class);
   }
 
@@ -240,32 +240,5 @@ class OrchestrationModuleConfigTest {
         config.withTemplateConfig(
             TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
     assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
-  }
-
-  @Test
-  void testResponseFormatOverwrittenByOtherResponseFormat() {
-    var schema = ResponseJsonSchema.from(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
-                .getJsonSchema()
-                .getSchema())
-        .isEqualTo(schema.getSchemaMap());
-
-    config = config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(((Template) config.getTemplateConfig()).getResponseFormat())
-        .isInstanceOf(ResponseFormatJsonObject.class);
-
-    config = config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
-                .getJsonSchema()
-                .getSchema())
-        .isEqualTo(schema.getSchemaMap());
   }
 }
