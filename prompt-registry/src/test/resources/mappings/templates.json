@@ -1,0 +1,35 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/promptTemplates"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "count": 2,
+      "resources": [
+        {
+          "id": "312a9b9c-a532-4c1c-8852-bf75de887d74",
+          "name": "prompt_template_name",
+          "version": "1.0.0",
+          "scenario": "MyScenario",
+          "creationTimestamp": "2025-02-26T12:29:55.875000",
+          "managedBy": "imperative",
+          "isVersionHead": true
+        },
+        {
+          "id": "912bda62-ae87-4e73-ab53-08e9a10e2813",
+          "name": "get-capital",
+          "version": "0.0.1",
+          "scenario": "e2e-test",
+          "creationTimestamp": "2025-01-20T10:58:54.748000",
+          "managedBy": "imperative",
+          "isVersionHead": true
+        }
+      ]
+    }
+  }
+}
