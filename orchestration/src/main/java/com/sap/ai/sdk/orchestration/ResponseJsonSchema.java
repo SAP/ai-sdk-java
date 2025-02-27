@@ -81,7 +81,7 @@ public class ResponseJsonSchema {
                 .build());
     val jsonSchema = generator.generateSchema(classType);
     val mapper = new ObjectMapper();
-    val schemaMap = mapper.convertValue(jsonSchema, new TypeReference<Map<String,Object>>() {});
+    val schemaMap = mapper.convertValue(jsonSchema, new TypeReference<Map<String, Object>>() {});
     val schemaName = ((Class<?>) classType).getSimpleName() + "-Schema";
     return new ResponseJsonSchema(schemaMap, schemaName, null, null);
   }
