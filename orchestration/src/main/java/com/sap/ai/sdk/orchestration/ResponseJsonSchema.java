@@ -33,20 +33,7 @@ public class ResponseJsonSchema {
   @Nonnull Map<String, Object> schemaMap;
   @Nonnull String name;
   @Nullable String description;
-
-  @With(AccessLevel.NONE)
-  @Nullable
-  Boolean isStrict;
-
-  /**
-   * Create a new instance of {@link ResponseJsonSchema} with the given strictness.
-   *
-   * @return A new ResponseJsonSchema instance with the given strictness
-   */
-  @Nonnull
-  public ResponseJsonSchema withStrict(@Nullable final Boolean isStrict) {
-    return new ResponseJsonSchema(schemaMap, name, description, isStrict);
-  }
+  @Nullable Boolean strict;
 
   /**
    * Create a new instance of {@link ResponseJsonSchema} with the given schema map and name.

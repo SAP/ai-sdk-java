@@ -62,7 +62,7 @@ public class OrchestrationModuleConfig {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
-  @With @Nullable TemplatingModuleConfig templateConfig;
+  @Nullable TemplatingModuleConfig templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.

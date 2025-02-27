@@ -3,8 +3,13 @@ package com.sap.ai.sdk.orchestration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.FunctionObject;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -111,6 +116,34 @@ public class OrchestrationConvenienceUnitTest {
                                     .strict(true)
                                     .description("Description"))));
     assertThat(configWithResponseSchemaFromClass).isEqualTo(configWithResponseSchemaLowLevel);
+  }
+
+  @Test
+  void testTemplateConstruction() {
+    List<ChatMessage> templateMessages =
+        List.of(SingleChatMessage.create().role("user").content("message"));
+    var defaults = Map.of("key", "value");
+    var tools =
+        List.of(
+            ChatCompletionTool.create()
+                .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                .function(FunctionObject.create().name("func")));
+    var template =
+        TemplateConfig.create()
+            .withTemplate(templateMessages)
+            .withDefaults(defaults)
+            .withTools(tools)
+            .withJsonResponse();
+
+    var templateLowLevel =
+        Template.create()
+            .template(templateMessages)
+            .defaults(defaults)
+            .responseFormat(
+                ResponseFormatJsonObject.create()
+                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT))
+            .tools(tools);
+    assertThat(template.toLowLevel()).isEqualTo(templateLowLevel);
   }
 
   @Test

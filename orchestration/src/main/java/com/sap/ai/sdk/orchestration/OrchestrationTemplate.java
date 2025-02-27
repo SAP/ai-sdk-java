@@ -11,7 +11,6 @@ import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -37,14 +36,13 @@ import lombok.val;
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
   @Nullable List<ChatMessage> template;
-  @Nonnull Map<String, String> defaults = new HashMap<>();
+  @Nullable Map<String, String> defaults;
 
   @With(AccessLevel.PRIVATE)
   @Nullable
   TemplateResponseFormat responseFormat;
 
-  @Nonnull List<ChatCompletionTool> tools = new ArrayList<>();
-  @Nonnull Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+  @Nullable List<ChatCompletionTool> tools;
 
   /**
    * Create a low-level representation of the template.
@@ -55,6 +53,8 @@ public class OrchestrationTemplate extends TemplateConfig {
   @Nonnull
   protected TemplatingModuleConfig toLowLevel() {
     final List<ChatMessage> template = this.template != null ? this.template : List.of();
+    final Map<String, String> defaults = this.defaults != null ? this.defaults : new HashMap<>();
+    final List<ChatCompletionTool> tools = this.tools != null ? this.tools : new ArrayList<>();
     return Template.create()
         .template(template)
         .defaults(defaults)
@@ -77,7 +77,7 @@ public class OrchestrationTemplate extends TemplateConfig {
                 ResponseFormatJsonSchemaJsonSchema.create()
                     .name(schema.getName())
                     .schema(schema.getSchemaMap())
-                    .strict(schema.getIsStrict())
+                    .strict(schema.getStrict())
                     .description(schema.getDescription()));
     return this.withResponseFormat(responseFormatJsonSchema);
   }
