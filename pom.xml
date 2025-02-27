@@ -776,7 +776,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       </activation>
       <modules>
         <module>sample-code/spring-app</module>
-        <module>prompt-registry</module>
       </modules>
     </profile>
     <profile>
