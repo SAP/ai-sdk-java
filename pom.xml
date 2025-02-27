@@ -33,7 +33,6 @@
     <module>orchestration</module>
     <module>document-grounding</module>
     <module>foundation-models/openai</module>
-    <module>prompt-registry</module>
   </modules>
   <scm>
     <connection/>
