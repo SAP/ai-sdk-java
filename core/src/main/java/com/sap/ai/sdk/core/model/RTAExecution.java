@@ -464,16 +464,41 @@ public class RTAExecution
   /**
    * Get the value of an unrecognizable property of this {@link RTAExecution} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("RTAExecution has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link RTAExecution} instance including unrecognized
+   * properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (scenarioId != null) declaredFields.put("scenarioId", scenarioId);
+    if (executableId != null) declaredFields.put("executableId", executableId);
+    if (id != null) declaredFields.put("id", id);
+    if (status != null) declaredFields.put("status", status);
+    if (statusMessage != null) declaredFields.put("statusMessage", statusMessage);
+    if (submissionTimestamp != null) declaredFields.put("submissionTimestamp", submissionTimestamp);
+    if (startTimestamp != null) declaredFields.put("startTimestamp", startTimestamp);
+    if (finishTimestamp != null) declaredFields.put("finishTimestamp", finishTimestamp);
+    if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (modifiedAt != null) declaredFields.put("modifiedAt", modifiedAt);
+    return declaredFields;
   }
 
   /**

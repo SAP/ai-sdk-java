@@ -368,16 +368,38 @@ public class BckndResourceGroup
   /**
    * Get the value of an unrecognizable property of this {@link BckndResourceGroup} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("BckndResourceGroup has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link BckndResourceGroup} instance including
+   * unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (resourceGroupId != null) declaredFields.put("resourceGroupId", resourceGroupId);
+    if (tenantId != null) declaredFields.put("tenantId", tenantId);
+    if (zoneId != null) declaredFields.put("zoneId", zoneId);
+    if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (labels != null) declaredFields.put("labels", labels);
+    if (status != null) declaredFields.put("status", status);
+    if (statusMessage != null) declaredFields.put("statusMessage", statusMessage);
+    return declaredFields;
   }
 
   /**

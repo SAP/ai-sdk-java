@@ -34,7 +34,7 @@
     <coverage.complexity>82%</coverage.complexity>
     <coverage.line>93%</coverage.line>
     <coverage.instruction>94%</coverage.instruction>
-    <coverage.branch>71%</coverage.branch>
+    <coverage.branch>74%</coverage.branch>
     <coverage.method>95%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
@@ -138,6 +138,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

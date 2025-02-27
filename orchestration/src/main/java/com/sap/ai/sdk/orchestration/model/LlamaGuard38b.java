@@ -528,16 +528,48 @@ public class LlamaGuard38b
   /**
    * Get the value of an unrecognizable property of this {@link LlamaGuard38b} instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
    */
   @Nullable
+  @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException("LlamaGuard38b has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link LlamaGuard38b} instance including unrecognized
+   * properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (violentCrimes != null) declaredFields.put("violentCrimes", violentCrimes);
+    if (nonViolentCrimes != null) declaredFields.put("nonViolentCrimes", nonViolentCrimes);
+    if (sexCrimes != null) declaredFields.put("sexCrimes", sexCrimes);
+    if (childExploitation != null) declaredFields.put("childExploitation", childExploitation);
+    if (defamation != null) declaredFields.put("defamation", defamation);
+    if (specializedAdvice != null) declaredFields.put("specializedAdvice", specializedAdvice);
+    if (privacy != null) declaredFields.put("privacy", privacy);
+    if (intellectualProperty != null)
+      declaredFields.put("intellectualProperty", intellectualProperty);
+    if (indiscriminateWeapons != null)
+      declaredFields.put("indiscriminateWeapons", indiscriminateWeapons);
+    if (hate != null) declaredFields.put("hate", hate);
+    if (selfHarm != null) declaredFields.put("selfHarm", selfHarm);
+    if (sexualContent != null) declaredFields.put("sexualContent", sexualContent);
+    if (elections != null) declaredFields.put("elections", elections);
+    if (codeInterpreterAbuse != null)
+      declaredFields.put("codeInterpreterAbuse", codeInterpreterAbuse);
+    return declaredFields;
   }
 
   /**

@@ -25,16 +25,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoice;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionNamedToolChoiceFunction;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.PromptFilterResult;
 import io.vavr.control.Try;
@@ -247,21 +242,19 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   void embedding() {
     stubForEmbedding();
 
-    final var result =
-        client.embedding(
-            new EmbeddingsCreateRequest()
-                .input(EmbeddingsCreateRequestInput.create("Hello World")));
+    final var response =
+        client.embedding(new OpenAiEmbeddingRequest(List.of("Hello World"))).getOriginalResponse();
 
-    assertThat(result).isNotNull();
-    assertThat(result.getModel()).isEqualTo("ada");
-    assertThat(result.getObject()).isEqualTo("list");
+    assertThat(response).isNotNull();
+    assertThat(response.getModel()).isEqualTo("ada");
+    assertThat(response.getObject()).isEqualTo("list");
 
-    assertThat(result.getUsage()).isNotNull();
-    assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
-    assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
+    assertThat(response.getUsage()).isNotNull();
+    assertThat(response.getUsage().getPromptTokens()).isEqualTo(2);
+    assertThat(response.getUsage().getTotalTokens()).isEqualTo(2);
 
-    assertThat(result.getData()).isNotNull().hasSize(1);
-    var embeddingData = result.getData().get(0);
+    assertThat(response.getData()).isNotNull().hasSize(1);
+    var embeddingData = response.getData().get(0);
     assertThat(embeddingData).isNotNull();
     assertThat(embeddingData.getObject()).isEqualTo("embedding");
     assertThat(embeddingData.getIndex()).isZero();
@@ -530,17 +523,11 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     final var tool =
         new ChatCompletionTool().type(ChatCompletionTool.TypeEnum.FUNCTION).function(function);
 
-    final var toolChoice =
-        ChatCompletionToolChoiceOption.create(
-            new ChatCompletionNamedToolChoice()
-                .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
-                .function(new ChatCompletionNamedToolChoiceFunction().name("fibonacci")));
-
     final var request =
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?")
             .withTools(List.of(tool))
-            .withToolChoice(toolChoice);
+            .withToolChoice(OpenAiToolChoice.function("fibonacci"));
 
     var response = client.chatCompletion(request).getOriginalResponse();
 

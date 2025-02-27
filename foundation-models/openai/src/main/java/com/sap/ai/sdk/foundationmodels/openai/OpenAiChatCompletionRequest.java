@@ -126,7 +126,9 @@ public class OpenAiChatCompletionRequest {
   @Nullable List<ChatCompletionTool> tools;
 
   /** Option to control which tool is invoked by the model. */
-  @Nullable ChatCompletionToolChoiceOption toolChoice;
+  @With(AccessLevel.PRIVATE)
+  @Nullable
+  ChatCompletionToolChoiceOption toolChoice;
 
   /**
    * Creates an OpenAiChatCompletionPrompt with string as user message.
@@ -246,6 +248,27 @@ public class OpenAiChatCompletionRequest {
             this.responseFormat,
             this.tools,
             this.toolChoice);
+  }
+
+  /**
+   * Define the model behavior towards calling functions.
+   *
+   * <p>Example:
+   *
+   * <ul>
+   *   <li><code>.withToolChoice(OpenAiToolChoice.NONE)</code>
+   *   <li><code>.withToolChoice(OpenAiToolChoice.OPTIONAL)</code>
+   *   <li><code>.withToolChoice(OpenAiToolChoice.REQUIRED)</code>
+   *   <li><code>.withToolChoice(OpenAiToolChoice.function("fibonacci")</code>
+   * </ul>
+   *
+   * @param choice the generic tool choice.
+   * @return the current OpenAiChatCompletionRequest instance.
+   */
+  @Nonnull
+  @Tolerate
+  public OpenAiChatCompletionRequest withToolChoice(@Nonnull final OpenAiToolChoice choice) {
+    return this.withToolChoice(choice.toolChoice);
   }
 
   /**

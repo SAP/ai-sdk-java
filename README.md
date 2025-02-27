@@ -1,7 +1,7 @@
 ![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg?branch=main)
 ![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
-[![Fosstars security rating](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_badge.svg)](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_report.md)
+[![Fosstars security rating](https://github.com/SAP/ai-sdk-java/actions/workflows/fosstars-report.yml/badge.svg?branch=main)](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_report.md)
 
 # <img src="https://sap.github.io/cloud-sdk/img/logo.svg" alt="SAP Cloud SDK" width="30"/> SAP Cloud SDK for AI (for Java)
 
@@ -136,6 +136,7 @@ For more detailed information and advanced usage, please refer to the following:
 - [<img src="sample-code/spring-app/src/main/resources/static/Open-AI-Logo.svg" width="16"/> OpenAI Chat Completion](docs/guides/OPENAI_CHAT_COMPLETION.md)
 - [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](docs/guides/SPRING_AI_INTEGRATION.md)
 - [🧰 AI Core Deployment](docs/guides/AI_CORE_DEPLOYMENT.md)
+- [<img src="sample-code/spring-app/src/main/resources/static/grounding.png" width="16"/> AI Core Grounding](docs/guides/GROUNDING.md)
 
 For updating versions, please refer to the [**Release Notes**](docs/release-notes/release-notes-0-to-14.md).
 
@@ -160,11 +161,20 @@ This opens up a wide range of possibilities to customize the connection, includi
 
 ```java
 var service = new AiCoreService();
-var service = service.withBaseDestination(
-        DefaultHttpDestination.fromDestination(service.getBaseDestination())
-          .header("my-header-key", "my-header-value")
-          .build()
-);
+var destination =
+    DefaultHttpDestination.fromDestination(service.getBaseDestination())
+        .header("my-header-key", "my-header-value")
+        .build();
+
+// AI Core client
+service = service.withBaseDestination(destination);
+DeploymentApi client = new DeploymentApi(service);
+
+// Orchestration client
+OrchestrationClient client = new OrchestrationClient(destination);
+
+// OpenAI client
+OpenAiClient client2 = OpenAiClient.withCustomDestination(destination);
 ```
 
 For more information, please refer to the [AI Core connectivity guide](./docs/guides/CONNECTING_TO_AICORE.md) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
