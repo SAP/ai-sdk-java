@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
+    - [New User Interface (v1.4.0)](#new-user-interface-v140)
 - [Prerequisites](#prerequisites)
 - [Maven Dependencies](#maven-dependencies)
 - [Usage](#usage)
