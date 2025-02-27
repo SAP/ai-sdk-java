@@ -129,8 +129,8 @@ OpenAiClient.withCustomDestination(destination);
 ```java
 var request =
     new OpenAiChatCompletionRequest(
-        OpenAiMessage.system("I'm fine, thank you!"),
-        OpenAiMessage.user("Hello, how are you?"));
+        OpenAiMessage.system("You are a helpful assistant"),
+        OpenAiMessage.user("Hello World! Why is this phrase so famous?"));
 
 var response = OpenAiClient.forModel(GPT_4O).chatCompletion(request).getContent();
 ```
@@ -203,8 +203,7 @@ try (Stream<String> stream = client.streamChatCompletion(msg)) {
 
 **Since v1.4.0**
 
-The following example demonstrate how you can leverage a concurrency-safe container (like an AtomicReference) to "listen" for usage information in
-any incoming delta.
+The following example demonstrate how you can leverage a concurrency-safe container (like an AtomicReference) to "listen" for usage information in any incoming delta.
 
 ```java
 String question = "Can you give me the first 100 numbers of the Fibonacci sequence?";
@@ -233,7 +232,8 @@ Thread streamProcessor =
 
 // Start the processing thread; the main thread remains free (non-blocking)
 streamProcessor.start();
-streamProcessor.join(); // Wait for the thread to finish (blocking)
+// Wait for the thread to finish (blocking)
+streamProcessor.join();
 
 // Access information caught from completion usage
 Integer tokensUsed = usageRef.get().getCompletionTokens();
