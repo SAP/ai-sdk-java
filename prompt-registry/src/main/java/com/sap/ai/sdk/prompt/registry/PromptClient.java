@@ -15,35 +15,27 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 /** Client for the Prompt Registry service. */
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class PromptClient {
+public class PromptClient extends DefaultApi {
 
-  @Nonnull
-  @Getter(AccessLevel.PROTECTED)
-  private final AiCoreService service;
-
-  /** Create a new client for the Prompt Registry service. */
+  /** Instantiates this a client to invoke operations on the Prompt Registry service. */
   public PromptClient() {
     this(new AiCoreService());
   }
 
   /**
-   * Get the API client for the Prompt Registry service.
+   * Instantiates this a client to invoke operations on the Prompt Registry service.
    *
-   * @return The API client.
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  @Nonnull
-  public DefaultApi api() {
-    return new DefaultApi(addMixin(getService()));
+  public PromptClient(@Nonnull final AiCoreService aiCoreService) {
+    super(addMixin(aiCoreService));
   }
 
   @Nonnull

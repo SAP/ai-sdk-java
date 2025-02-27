@@ -36,7 +36,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @Beta
 public class DefaultApi extends AbstractOpenApiService {
-
   /**
    * Instantiates this API class to invoke operations on the Prompt Registry API.
    *
@@ -47,8 +46,8 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * Instantiates this API class to invoke operations on the Prompt Registry API based
-   * on a given {@link ApiClient}.
+   * Instantiates this API class to invoke operations on the Prompt Registry API based on a given
+   * {@link ApiClient}.
    *
    * @param apiClient ApiClient to invoke the API on
    */

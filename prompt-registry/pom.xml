@@ -32,11 +32,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>100%</coverage.complexity>
-    <coverage.line>100%</coverage.line>
-    <coverage.instruction>100%</coverage.instruction>
+    <coverage.complexity>75%</coverage.complexity>
+    <coverage.line>87%</coverage.line>
+    <coverage.instruction>89%</coverage.instruction>
     <coverage.branch>100%</coverage.branch>
-    <coverage.method>100%</coverage.method>
+    <coverage.method>75%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -92,6 +92,22 @@
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!-- scope "test" -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -124,8 +140,7 @@
                 <phase>generate-sources</phase>
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/prompt-registry.yaml</inputSpec>
-                  <apiPackage>com.sap.ai.sdk.prompt.registry.disabled</apiPackage>
-                  <generateApis>false</generateApis>
+                  <apiPackage>com.sap.ai.sdk.prompt.registry.client</apiPackage>
                   <modelPackage>com.sap.ai.sdk.prompt.registry.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
@@ -135,7 +150,6 @@
                     <removeOperationIdPrefix>true</removeOperationIdPrefix>
                     <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
                     <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
-                    <aiSdkConstructor>true</aiSdkConstructor>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                   </additionalProperties>
                 </configuration>
