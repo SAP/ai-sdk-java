@@ -39,11 +39,13 @@ public abstract class TemplateConfig {
    */
   @Nonnull
   public static ReferenceBuilder reference() {
-    return new ReferenceBuilder();
+    final var templ = TemplateRefByScenarioNameVersion.create();
+    return s -> n -> v -> new OrchestrationTemplateReference(templ.scenario(s).name(n).version(v));
   }
 
   /** Intermediate object to build a template reference. */
-  public static class ReferenceBuilder {
+  @FunctionalInterface
+  public interface ReferenceBuilder {
     /**
      * Build a template reference with the given id.
      *
@@ -51,7 +53,7 @@ public abstract class TemplateConfig {
      * @return A template reference with the given id.
      */
     @Nonnull
-    public OrchestrationTemplateReference byId(@Nonnull final String id) {
+    default OrchestrationTemplateReference byId(@Nonnull final String id) {
       return new OrchestrationTemplateReference(TemplateRefByID.create().id(id));
     }
 
@@ -62,20 +64,14 @@ public abstract class TemplateConfig {
      * @return An intermediate object to build the template reference.
      */
     @Nonnull
-    public ReferenceBuilder1 byScenarioNameVersion(@Nonnull final String scenario) {
-      return new ReferenceBuilder1(scenario);
-    }
+    ReferenceBuilder1 byScenario(@Nonnull final String scenario);
   }
 
   /**
    * Intermediate object to build a template reference with the given scenario, name, and version.
    */
-  public static class ReferenceBuilder1 {
-    @Nonnull private final String scenario;
-
-    private ReferenceBuilder1(@Nonnull final String scenario) {
-      this.scenario = scenario;
-    }
+  @FunctionalInterface
+  public interface ReferenceBuilder1 {
 
     /**
      * Build a template reference with the given scenario, name, and version.
@@ -84,23 +80,14 @@ public abstract class TemplateConfig {
      * @return An intermediate object to build the template reference.
      */
     @Nonnull
-    public ReferenceBuilder2 name(@Nonnull final String name) {
-      return new ReferenceBuilder2(scenario, name);
-    }
+    ReferenceBuilder2 name(@Nonnull final String name);
   }
 
   /**
    * Intermediate object to build a template reference with the given scenario, name, and version.
    */
-  public static class ReferenceBuilder2 {
-    @Nonnull private final String scenario;
-    @Nonnull private final String name;
-
-    private ReferenceBuilder2(@Nonnull final String scenario, @Nonnull final String name) {
-      this.scenario = scenario;
-      this.name = name;
-    }
-
+  @FunctionalInterface
+  public interface ReferenceBuilder2 {
     /**
      * Build a template reference with the given scenario, name, and version.
      *
@@ -108,9 +95,6 @@ public abstract class TemplateConfig {
      * @return A template reference with the given scenario, name, and version.
      */
     @Nonnull
-    public OrchestrationTemplateReference version(@Nonnull final String version) {
-      return new OrchestrationTemplateReference(
-          TemplateRefByScenarioNameVersion.create().scenario(scenario).name(name).version(version));
-    }
+    OrchestrationTemplateReference version(@Nonnull final String version);
   }
 }

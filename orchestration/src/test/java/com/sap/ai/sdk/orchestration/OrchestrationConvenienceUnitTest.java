@@ -124,10 +124,7 @@ public class OrchestrationConvenienceUnitTest {
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
     var templateReferenceScenarioNameVersion =
-        TemplateConfig.reference()
-            .byScenarioNameVersion("scenario")
-            .name("name")
-            .version("version");
+        TemplateConfig.reference().byScenario("scenario").name("name").version("version");
     var expectedTemplateReferenceScenarioNameVersion =
         new OrchestrationTemplateReference(
             TemplateRefByScenarioNameVersion.create()
