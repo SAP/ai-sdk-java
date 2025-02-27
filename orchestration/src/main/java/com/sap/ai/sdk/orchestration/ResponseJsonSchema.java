@@ -9,6 +9,7 @@ import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
 import com.github.victools.jsonschema.generator.SchemaVersion;
 import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
+import com.google.common.annotations.Beta;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -27,6 +28,7 @@ import lombok.val;
 @Value
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @With
+@Beta
 public class ResponseJsonSchema {
   @Nonnull Map<String, Object> schemaMap;
   @Nonnull String name;
@@ -40,7 +42,6 @@ public class ResponseJsonSchema {
    * Create a new instance of {@link ResponseJsonSchema} with the given strictness.
    *
    * @return A new ResponseJsonSchema instance with the given strictness
-   * @since 1.4.0
    */
   @Nonnull
   public ResponseJsonSchema withStrict(@Nullable final Boolean isStrict) {
@@ -53,7 +54,6 @@ public class ResponseJsonSchema {
    * @param schemaMap The schema map
    * @param name The name of the schema
    * @return The new instance of {@link ResponseJsonSchema}
-   * @since 1.4.0
    */
   @Nonnull
   public static ResponseJsonSchema of(
@@ -66,7 +66,6 @@ public class ResponseJsonSchema {
    *
    * @param classType The class to generate the schema from
    * @return The new instance of {@link ResponseJsonSchema}
-   * @since 1.4.0
    */
   @Nonnull
   public static ResponseJsonSchema from(@Nonnull final Type classType) {

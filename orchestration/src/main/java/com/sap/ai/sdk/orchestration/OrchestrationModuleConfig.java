@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
@@ -219,9 +220,11 @@ public class OrchestrationModuleConfig {
    *     AI Core: Orchestration - Templating</a>
    * @param templateConfig The template configuration to use.
    * @return A new configuration with the given template configuration.
+   * @since 1.5.0
    */
   @Tolerate
   @Nonnull
+  @Beta
   public OrchestrationModuleConfig withTemplateConfig(
       @Nonnull final TemplateConfig templateConfig) {
     return this.withTemplateConfig(templateConfig.toLowLevel());

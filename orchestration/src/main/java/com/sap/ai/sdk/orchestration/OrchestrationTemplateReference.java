@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
@@ -15,6 +16,7 @@ import lombok.Value;
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Beta
 public class OrchestrationTemplateReference extends TemplateConfig {
   @Nonnull TemplateRefTemplateRef reference;
 

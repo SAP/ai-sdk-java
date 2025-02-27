@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
@@ -31,9 +32,9 @@ import lombok.val;
 @EqualsAndHashCode(callSuper = true)
 @Value
 @With
-// JONAS: why do we need PRIVATE here instead of NONE?
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@Beta
 public class OrchestrationTemplate extends TemplateConfig {
   @Nullable List<ChatMessage> template;
   @Nonnull Map<String, String> defaults = new HashMap<>();

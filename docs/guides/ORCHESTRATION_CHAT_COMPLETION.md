@@ -313,7 +313,8 @@ Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, 
 ```java
 var config = new OrchestrationModuleConfig()
         .withLlmConfig(OrchestrationAiModel.GPT_4O);
-var configWithJsonResponse = config.withJsonResponse();
+var configWithJsonResponse = 
+        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
 
 var prompt =
         new OrchestrationPrompt(
@@ -334,7 +335,8 @@ var schema =
             .withStrict(true);
 var config = new OrchestrationModuleConfig()
         .withLlmConfig(OrchestrationAiModel.GPT_4O);
-var configWithResponseSchema = config.withJsonSchemaResponse(schema);
+var configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
 var prompt = new OrchestrationPrompt(Message.user("Some message."));
 var response = client.chatCompletion(prompt, configWithTemplate).getContent();
@@ -357,7 +359,8 @@ var schemaMap =
 var schemaFromMap = ResponseJsonSchema.of(schemaMap, "Translator-Schema");
 var config = new OrchestrationModuleConfig()
     .withLlmConfig(OrchestrationAiModel.GPT_4O);
-var configWithResponseSchema = config.withJsonSchemaResponse(schemaFromMap);
+var configWithResponseSchema = 
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schemaFromMap));
 ```
 
 </details>
