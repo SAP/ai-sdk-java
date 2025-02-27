@@ -38,13 +38,8 @@ public class OpenAiEmbeddingResponse {
   public List<float[]> getEmbeddingVectors() {
     final var embeddings = new ArrayList<float[]>();
     for (final var container : originalResponse.getData()) {
+      final var embeddingFloats = container.getEmbedding();
 
-      final var embeddingDecimals = container.getEmbedding();
-      final var embeddingFloats = new float[embeddingDecimals.size()];
-
-      for (int i = 0; i < embeddingDecimals.size(); i++) {
-        embeddingFloats[i] = embeddingDecimals.get(i).floatValue();
-      }
       embeddings.add(embeddingFloats);
     }
     return embeddings;
