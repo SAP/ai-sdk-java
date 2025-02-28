@@ -311,20 +311,15 @@ It is possible to set the response format for the chat completion. Available opt
 Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
 
 ```java
-var template = Message.user("What is 'apple' in German?");
-var templatingConfig =
-        Template.create()
-                .template(List.of(template.createChatMessage()))
-                .responseFormat(
-                        ResponseFormatJsonObject.create()
-                                .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
-var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithJsonResponse = 
+        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
 
 var prompt =
         new OrchestrationPrompt(
-                Message.system(
-                        "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
-var response = client.chatCompletion(prompt, configWithTemplate).getContent();
+                Message.user("Some message."), Message.system("Answer using JSON."));
+var response = client.chatCompletion(prompt, configWithJsonResponse).getContent();
 ```
 Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
 
@@ -334,38 +329,41 @@ Note, that it is necessary to tell the AI model to actually return a JSON object
 If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. in order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
 
 ```java
-var template = Message.user("Whats '%s' in German?".formatted(word));
 var schema =
-        Map.of(
-                "type",
-                "object",
-                "properties",
-                Map.of(
-                        "language", Map.of("type", "string"),
-                        "translation", Map.of("type", "string")),
-                "required",
-                List.of("language", "translation"),
-                "additionalProperties",
-                false);
+    ResponseJsonSchema.fromType(MyClass.class)
+            .withDescription("Output schema for the example class MyClass.")
+            .withStrict(true);
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
-// Note, that we plan to add more convenient ways to add a JSON schema in the future.
-var templatingConfig =
-        Template.create()
-                .template(List.of(template.createChatMessage()))
-                .responseFormat(
-                        ResponseFormatJsonSchema.create()
-                                .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                                .jsonSchema(
-                                        ResponseFormatJsonSchemaJsonSchema.create()
-                                                .name("translation_response")
-                                                .schema(schema)
-                                                .strict(true)
-                                                .description("Output schema for language translation.")));
-var configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
-
-var prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
+var prompt = new OrchestrationPrompt(Message.user("Some message."));
 var response = client.chatCompletion(prompt, configWithTemplate).getContent();
 ```
+Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`. Not all schemas are possible for OpenAI in strict mode. See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
+
+There is also a way to generate the schema from a map of key-value pairs. This can be done as follows:
+<details><summary>Click to expand code</summary>
+
+```java
+var schemaMap =
+    Map.ofEntries(
+        entry("type", "object"),
+        entry("properties", Map.ofEntries(
+            entry("language", Map.of("type", "string")),
+            entry("translation", Map.of("type", "string"))),
+        entry("required", List.of("language","translation")),
+        entry("additionalProperties", false)));
+
+var schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "Translator-Schema");
+var config = new OrchestrationModuleConfig()
+    .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithResponseSchema = 
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schemaFromMap));
+```
+
+</details>
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
 

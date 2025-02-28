@@ -30,6 +30,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -44,9 +45,6 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -766,7 +764,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseObjectJsonSchema() throws IOException {
+  void testResponseFormatJsonSchema() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -774,39 +772,29 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = Message.user("Whats 'apple' in German?");
-    var schema =
-        Map.of(
-            "type",
-            "object",
-            "properties",
-            Map.of(
-                "language", Map.of("type", "string"),
-                "translation", Map.of("type", "string")),
-            "required",
-            List.of("language", "translation"),
-            "additionalProperties",
-            false);
+    //    Example class
+    class Translation {
+      @JsonProperty(required = true)
+      private String language;
 
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonSchema.create()
-                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                    .jsonSchema(
-                        ResponseFormatJsonSchemaJsonSchema.create()
-                            .name("translation_response")
-                            .schema(schema)
-                            .strict(true)
-                            .description("Output schema for language translation.")));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+      @JsonProperty(required = true)
+      private String translation;
+    }
+    val schema =
+        ResponseJsonSchema.fromType(Translation.class)
+            .withDescription("Output schema for language translation.")
+            .withStrict(true);
+    val configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
-    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
+    val prompt =
+        new OrchestrationPrompt(
+            Message.user("Whats 'apple' in German?"),
+            Message.system("You are a language translator."));
 
-    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    final var message = client.chatCompletion(prompt, configWithResponseSchema).getContent();
     assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
 
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
@@ -816,7 +804,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseObjectJsonObject() throws IOException {
+  void testResponseFormatJsonObject() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -824,23 +812,18 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonObjectResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = Message.user("What is 'apple' in German?");
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonObject.create()
-                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+    val configWithJsonResponse =
+        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
 
     val prompt =
         new OrchestrationPrompt(
+            Message.user("What is 'apple' in German?"),
             Message.system(
                 "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
 
-    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    final var message = client.chatCompletion(prompt, configWithJsonResponse).getContent();
     assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
 
     try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
@@ -850,7 +833,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseObjectText() throws IOException {
+  void testResponseFormatText() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(

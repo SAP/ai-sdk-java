@@ -31,11 +31,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>81%</coverage.complexity>
-    <coverage.line>92%</coverage.line>
-    <coverage.instruction>93%</coverage.instruction>
-    <coverage.branch>74%</coverage.branch>
-    <coverage.method>92%</coverage.method>
+    <coverage.complexity>82%</coverage.complexity>
+    <coverage.line>93%</coverage.line>
+    <coverage.instruction>94%</coverage.instruction>
+    <coverage.branch>76%</coverage.branch>
+    <coverage.method>93%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -99,6 +99,14 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.victools</groupId>
+      <artifactId>jsonschema-generator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.victools</groupId>
+      <artifactId>jsonschema-module-jackson</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>

@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
@@ -17,14 +18,14 @@ import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -350,40 +351,30 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = Message.user("Whats '%s' in German?".formatted(word));
+    //    Example class
+    class Translation {
+      @JsonProperty(required = true)
+      private String translation;
+
+      @JsonProperty(required = true)
+      private String language;
+    }
+
     val schema =
-        Map.of(
-            "type",
-            "object",
-            "properties",
-            Map.of(
-                "language", Map.of("type", "string"),
-                "translation", Map.of("type", "string")),
-            "required",
-            List.of("language", "translation"),
-            "additionalProperties",
-            false);
+        ResponseJsonSchema.fromType(Translation.class)
+            .withDescription("Output schema for language translation.")
+            .withStrict(true);
+    val configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonSchema.create()
-                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                    .jsonSchema(
-                        ResponseFormatJsonSchemaJsonSchema.create()
-                            .name("translation_response")
-                            .schema(schema)
-                            .strict(true)
-                            .description("Output schema for language translation.")));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+    val prompt =
+        new OrchestrationPrompt(
+            Message.user("Whats '%s' in German?".formatted(word)),
+            Message.system("You are a language translator."));
 
-    val prompt = new OrchestrationPrompt(Message.system("You are a language translator."));
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion(prompt, configWithResponseSchema);
   }
 
   /**

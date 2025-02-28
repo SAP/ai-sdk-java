@@ -19,19 +19,19 @@
           "type" : "json_schema",
           "json_schema" : {
             "description" : "Output schema for language translation.",
-            "name" : "translation_response",
+            "name" : "Translation-Schema",
             "schema" : {
               "type" : "object",
               "properties" : {
-                "translation" : {
+                "language" : {
                   "type" : "string"
                 },
-                "language" : {
+                "translation" : {
                   "type" : "string"
                 }
               },
-              "additionalProperties" : false,
-              "required" : [ "language", "translation" ]
+              "required" : [ "language", "translation" ],
+              "additionalProperties" : false
             },
             "strict" : true
           }

@@ -8,16 +8,39 @@ import static com.sap.ai.sdk.orchestration.model.GroundingModuleConfig.TypeEnum.
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
+import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TemplateRef;
+import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class OrchestrationModuleConfigTest {
+
+  static class TestClassForSchemaGeneration {
+    @JsonProperty(required = true)
+    private String stringField;
+
+    @JsonProperty(required = true)
+    private int intField;
+
+    @JsonProperty(required = true)
+    private OrchestrationConvenienceUnitTest.TestClassForSchemaGeneration.InsideTestClass
+        complexField;
+
+    static class InsideTestClass {
+      @JsonProperty(required = true)
+      private String anotherStringField;
+    }
+  }
 
   @Test
   void testStackingInputAndOutputFilter() {
@@ -172,5 +195,50 @@ class OrchestrationModuleConfigTest {
     assertThat(((TextItem) message.content().items().get(0)).text())
         .isEqualTo(
             "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
+  }
+
+  @Test
+  void testResponseFormatSchema() {
+    var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
+    var config =
+        new OrchestrationModuleConfig()
+            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    assertThat(
+            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+                .getJsonSchema()
+                .getSchema())
+        .isEqualTo(schema.getSchemaMap());
+  }
+
+  @Test
+  void testResponseFormatObject() {
+    var config =
+        new OrchestrationModuleConfig()
+            .withTemplateConfig(TemplateConfig.create().withJsonResponse());
+    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    assertThat(
+            ((ResponseFormatJsonObject)
+                ((Template) config.getTemplateConfig()).getResponseFormat()))
+        .isInstanceOf(ResponseFormatJsonObject.class);
+  }
+
+  @Test
+  void testResponseFormatOverwrittenByNewTemplateRef() {
+    var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
+    var config =
+        new OrchestrationModuleConfig()
+            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    assertThat(
+            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+                .getJsonSchema()
+                .getSchema())
+        .isEqualTo(schema.getSchemaMap());
+
+    config =
+        config.withTemplateConfig(
+            TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
+    assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
   }
 }

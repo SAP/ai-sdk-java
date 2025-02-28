@@ -9,4 +9,9 @@
       <Package name="com.sap.ai.sdk.grounding.model"/>
     </Or>
   </Match>
+  <Match>
+    <Class name="com.sap.ai.sdk.orchestration.ResponseJsonSchema" />
+    <Method name="withStrict" />
+    <Bug pattern="RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN" />
+  </Match>
 </FindBugsFilter>

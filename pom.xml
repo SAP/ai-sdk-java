@@ -70,6 +70,7 @@
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.15.2</mockito.version>
     <javaparser.version>3.26.3</javaparser.version>
+    <jsonschema-generator.version>4.37.0</jsonschema-generator.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250107</json.version>
@@ -130,6 +131,16 @@
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-parameter-names</artifactId>
         <version>2.18.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.victools</groupId>
+        <artifactId>jsonschema-generator</artifactId>
+        <version>${jsonschema-generator.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.victools</groupId>
+        <artifactId>jsonschema-module-jackson</artifactId>
+        <version>${jsonschema-generator.version}</version>
       </dependency>
       <!-- conflicts resolution scope "compile" -->
       <dependency>
