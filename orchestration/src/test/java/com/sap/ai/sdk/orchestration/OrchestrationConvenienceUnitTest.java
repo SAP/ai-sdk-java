@@ -154,7 +154,8 @@ public class OrchestrationConvenienceUnitTest {
         new OrchestrationTemplateReference(TemplateRefByID.create().id("id"));
     var templateReferenceIdLowLevel =
         TemplateRef.create().templateRef(TemplateRefByID.create().id("id"));
-    assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
+    assertThat(templateReferenceId.getReference())
+        .isEqualTo(expectedTemplateReferenceId.getReference());
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
     var templateReferenceScenarioNameVersion =
@@ -172,8 +173,8 @@ public class OrchestrationConvenienceUnitTest {
                     .scenario("scenario")
                     .name("name")
                     .version("version"));
-    assertThat(templateReferenceScenarioNameVersion)
-        .isEqualTo(expectedTemplateReferenceScenarioNameVersion);
+    assertThat(templateReferenceScenarioNameVersion.getReference())
+        .isEqualTo(expectedTemplateReferenceScenarioNameVersion.getReference());
     assertThat(templateReferenceScenarioNameVersion.toLowLevel())
         .isEqualTo(templateReferenceScenarioNameVersionLowLevel);
   }

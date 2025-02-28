@@ -7,6 +7,7 @@ import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
@@ -14,6 +15,7 @@ import lombok.Value;
  *
  * @since 1.4.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Value
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Beta
