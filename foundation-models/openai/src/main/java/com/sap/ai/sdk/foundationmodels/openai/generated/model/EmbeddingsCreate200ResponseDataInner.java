@@ -20,10 +20,8 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -44,7 +42,7 @@ public class EmbeddingsCreate200ResponseDataInner
   private String _object;
 
   @JsonProperty("embedding")
-  private List<BigDecimal> embedding = new ArrayList<>(); //
+  private float[] embedding;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -121,24 +119,8 @@ public class EmbeddingsCreate200ResponseDataInner
    * @return The same instance of this {@link EmbeddingsCreate200ResponseDataInner} class
    */
   @Nonnull
-  public EmbeddingsCreate200ResponseDataInner embedding(@Nonnull final List<BigDecimal> embedding) {
+  public EmbeddingsCreate200ResponseDataInner embedding(@Nonnull final float[] embedding) {
     this.embedding = embedding;
-    return this;
-  }
-
-  /**
-   * Add one embedding instance to this {@link EmbeddingsCreate200ResponseDataInner}.
-   *
-   * @param embeddingItem The embedding that should be added
-   * @return The same instance of type {@link EmbeddingsCreate200ResponseDataInner}
-   */
-  @Nonnull
-  public EmbeddingsCreate200ResponseDataInner addEmbeddingItem(
-      @Nonnull final BigDecimal embeddingItem) {
-    if (this.embedding == null) {
-      this.embedding = new ArrayList<>();
-    }
-    this.embedding.add(embeddingItem);
     return this;
   }
 
@@ -148,7 +130,7 @@ public class EmbeddingsCreate200ResponseDataInner
    * @return embedding The embedding of this {@link EmbeddingsCreate200ResponseDataInner} instance.
    */
   @Nonnull
-  public List<BigDecimal> getEmbedding() {
+  public float[] getEmbedding() {
     return embedding;
   }
 
@@ -157,7 +139,7 @@ public class EmbeddingsCreate200ResponseDataInner
    *
    * @param embedding The embedding of this {@link EmbeddingsCreate200ResponseDataInner}
    */
-  public void setEmbedding(@Nonnull final List<BigDecimal> embedding) {
+  public void setEmbedding(@Nonnull final float[] embedding) {
     this.embedding = embedding;
   }
 
@@ -217,12 +199,12 @@ public class EmbeddingsCreate200ResponseDataInner
             this.cloudSdkCustomFields, embeddingsCreate200ResponseDataInner.cloudSdkCustomFields)
         && Objects.equals(this.index, embeddingsCreate200ResponseDataInner.index)
         && Objects.equals(this._object, embeddingsCreate200ResponseDataInner._object)
-        && Objects.equals(this.embedding, embeddingsCreate200ResponseDataInner.embedding);
+        && Arrays.equals(this.embedding, embeddingsCreate200ResponseDataInner.embedding);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, _object, embedding, cloudSdkCustomFields);
+    return Objects.hash(index, _object, Arrays.hashCode(embedding), cloudSdkCustomFields);
   }
 
   @Override

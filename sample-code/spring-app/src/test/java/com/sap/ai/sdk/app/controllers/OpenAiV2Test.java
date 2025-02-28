@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.extern.slf4j.Slf4j;
@@ -47,15 +48,15 @@ class OpenAiV2Test {
     final var userMessage = OpenAiMessage.user("Who is the prettiest?");
     final var prompt = new OpenAiChatCompletionRequest(userMessage);
 
-    final var totalOutput = new AtomicReference<CompletionUsage>();
+    final var usageRef = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
+
     OpenAiClient.forModel(GPT_35_TURBO)
         .streamChatCompletionDeltas(prompt)
         // foreach consumes all elements, closing the stream at the end
         .forEach(
             delta -> {
-              final var usage = delta.getCompletionUsage();
-              totalOutput.compareAndExchange(null, usage);
+              usageRef.compareAndExchange(null, delta.getCompletionUsage());
               final String deltaContent = delta.getDeltaContent();
               log.info("delta: {}", delta);
               if (!deltaContent.isEmpty()) {
@@ -63,13 +64,11 @@ class OpenAiV2Test {
               }
             });
 
-    // the first two and the last delta don't have any content
-    // see OpenAiChatCompletionDelta#getDeltaContent
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
 
-    assertThat(totalOutput.get().getTotalTokens()).isGreaterThan(0);
-    assertThat(totalOutput.get().getPromptTokens()).isEqualTo(14);
-    assertThat(totalOutput.get().getCompletionTokens()).isGreaterThan(0);
+    assertThat(usageRef.get().getTotalTokens()).isGreaterThan(0);
+    assertThat(usageRef.get().getPromptTokens()).isEqualTo(14);
+    assertThat(usageRef.get().getCompletionTokens()).isGreaterThan(0);
   }
 
   @Test
@@ -86,9 +85,13 @@ class OpenAiV2Test {
   void embedding() {
     final var embedding = service.embedding("Hello world");
 
-    assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
-    assertThat(embedding.getModel()).isEqualTo("ada");
-    assertThat(embedding.getObject()).isEqualTo("list");
+    assertThat(embedding.getOriginalResponse().getData().get(0).getEmbedding())
+        .hasSizeGreaterThan(1);
+    assertThat(embedding.getEmbeddingVectors()).isInstanceOf(ArrayList.class);
+    assertThat(embedding.getEmbeddingVectors().get(0)).isInstanceOf(float[].class);
+
+    assertThat(embedding.getOriginalResponse().getModel()).isEqualTo("ada");
+    assertThat(embedding.getOriginalResponse().getObject()).isEqualTo("list");
   }
 
   @Test

@@ -50,7 +50,7 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void withToolChoiceNone() {
     OpenAiChatCompletionRequest request =
-        new OpenAiChatCompletionRequest("message").withToolChoiceNone();
+        new OpenAiChatCompletionRequest("message").withToolChoice(OpenAiToolChoice.NONE);
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     var choice =
@@ -61,7 +61,7 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void withToolChoiceOptional() {
     OpenAiChatCompletionRequest request =
-        new OpenAiChatCompletionRequest("message").withToolChoiceOptional();
+        new OpenAiChatCompletionRequest("message").withToolChoice(OpenAiToolChoice.OPTIONAL);
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     var choice =
@@ -72,7 +72,7 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void withToolChoiceRequired() {
     OpenAiChatCompletionRequest request =
-        new OpenAiChatCompletionRequest("message").withToolChoiceRequired();
+        new OpenAiChatCompletionRequest("message").withToolChoice(OpenAiToolChoice.REQUIRED);
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     var choice =
@@ -83,7 +83,8 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void withToolChoiceFunction() {
     OpenAiChatCompletionRequest request =
-        new OpenAiChatCompletionRequest("message").withToolChoiceFunction("functionName");
+        new OpenAiChatCompletionRequest("message")
+            .withToolChoice(OpenAiToolChoice.function("functionName"));
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     var choice =

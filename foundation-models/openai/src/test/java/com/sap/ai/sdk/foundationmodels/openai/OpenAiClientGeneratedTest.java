@@ -30,13 +30,10 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.PromptFilterResult;
 import io.vavr.control.Try;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -244,33 +241,26 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   void embedding() {
     stubForEmbedding();
 
-    final var result =
-        client.embedding(
-            new EmbeddingsCreateRequest()
-                .input(EmbeddingsCreateRequestInput.create("Hello World")));
+    final var response =
+        client.embedding(new OpenAiEmbeddingRequest(List.of("Hello World"))).getOriginalResponse();
 
-    assertThat(result).isNotNull();
-    assertThat(result.getModel()).isEqualTo("ada");
-    assertThat(result.getObject()).isEqualTo("list");
+    assertThat(response).isNotNull();
+    assertThat(response.getModel()).isEqualTo("ada");
+    assertThat(response.getObject()).isEqualTo("list");
 
-    assertThat(result.getUsage()).isNotNull();
-    assertThat(result.getUsage().getPromptTokens()).isEqualTo(2);
-    assertThat(result.getUsage().getTotalTokens()).isEqualTo(2);
+    assertThat(response.getUsage()).isNotNull();
+    assertThat(response.getUsage().getPromptTokens()).isEqualTo(2);
+    assertThat(response.getUsage().getTotalTokens()).isEqualTo(2);
 
-    assertThat(result.getData()).isNotNull().hasSize(1);
-    var embeddingData = result.getData().get(0);
+    assertThat(response.getData()).isNotNull().hasSize(1);
+    var embeddingData = response.getData().get(0);
     assertThat(embeddingData).isNotNull();
     assertThat(embeddingData.getObject()).isEqualTo("embedding");
     assertThat(embeddingData.getIndex()).isZero();
     assertThat(embeddingData.getEmbedding())
         .isNotNull()
         .isNotEmpty()
-        .containsExactly(
-            new BigDecimal("0.0"),
-            new BigDecimal("3.4028235E+38"),
-            new BigDecimal("1.4E-45"),
-            new BigDecimal("1.23"),
-            new BigDecimal("-4.56"));
+        .isEqualTo(new float[] {0.0f, 3.4028235E+38f, 1.4E-45f, 1.23f, -4.56f});
 
     verify(
         postRequestedFor(urlPathEqualTo("/embeddings"))
@@ -531,7 +521,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         new OpenAiChatCompletionRequest(
                 "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?")
             .withTools(List.of(tool))
-            .withToolChoiceFunction("fibonacci");
+            .withToolChoice(OpenAiToolChoice.function("fibonacci"));
 
     var response = client.chatCompletion(request).getOriginalResponse();
 

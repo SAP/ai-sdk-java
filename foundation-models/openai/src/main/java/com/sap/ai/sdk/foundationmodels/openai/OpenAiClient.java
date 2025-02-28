@@ -341,12 +341,29 @@ public final class OpenAiClient {
   }
 
   /**
-   * Get a vector representation of a given request with input that can be easily consumed by
-   * machine learning models and algorithms.
+   * Get a vector representation of a given request that can be easily consumed by machine learning
+   * models and algorithms using high-level request object.
+   *
+   * @param request the request with input text.
+   * @return the embedding response convenience object
+   * @throws OpenAiClientException if the request fails
+   * @see #embedding(EmbeddingsCreateRequest) for full confgurability.
+   * @since 1.4.0
+   */
+  @Beta
+  @Nonnull
+  public OpenAiEmbeddingResponse embedding(@Nonnull final OpenAiEmbeddingRequest request)
+      throws OpenAiClientException {
+    return new OpenAiEmbeddingResponse(embedding(request.createEmbeddingsCreateRequest()));
+  }
+
+  /**
+   * Get a vector representation of a given inputs using low-level request.
    *
    * @param request the request with input text.
    * @return the embedding output
    * @throws OpenAiClientException if the request fails
+   * @see #embedding(OpenAiEmbeddingRequest) for conveninece api
    * @since 1.4.0
    */
   @Beta
