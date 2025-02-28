@@ -15,7 +15,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI tool calling](../guides/SPRING_AI_INTEGRATION.md#tool-calling).
+- [Orchestration] [Add Spring AI tool calling](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/SPRING_AI_INTEGRATION.md#tool-calling).
 - [Orchestration] [Add new convenient methods to set the response format for Orchestration.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#set-a-response-format)
 - [Document Grounding] [Add Document Grounding Client](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/GROUNDING.md)
     - `com.sap.ai.sdk:document-grounding:1.4.0`
