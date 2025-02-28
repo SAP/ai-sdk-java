@@ -330,7 +330,7 @@ If you want the response to not only consist of valid JSON but additionally adhe
 
 ```java
 var schema =
-    ResponseJsonSchema.from(MyClass.class)
+    ResponseJsonSchema.fromType(MyClass.class)
             .withDescription("Output schema for the example class MyClass.")
             .withStrict(true);
 var config = new OrchestrationModuleConfig()
@@ -356,7 +356,7 @@ var schemaMap =
         entry("required", List.of("language","translation")),
         entry("additionalProperties", false)));
 
-var schemaFromMap = ResponseJsonSchema.of(schemaMap, "Translator-Schema");
+var schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "Translator-Schema");
 var config = new OrchestrationModuleConfig()
     .withLlmConfig(OrchestrationAiModel.GPT_4O);
 var configWithResponseSchema = 

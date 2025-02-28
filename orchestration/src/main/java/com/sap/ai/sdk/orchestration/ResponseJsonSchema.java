@@ -43,7 +43,7 @@ public class ResponseJsonSchema {
    * @return The new instance of {@link ResponseJsonSchema}
    */
   @Nonnull
-  public static ResponseJsonSchema of(
+  public static ResponseJsonSchema fromMap(
       @Nonnull final Map<String, Object> schemaMap, @Nonnull final String name) {
     return new ResponseJsonSchema(schemaMap, name, null, null);
   }
@@ -55,7 +55,7 @@ public class ResponseJsonSchema {
    * @return The new instance of {@link ResponseJsonSchema}
    */
   @Nonnull
-  public static ResponseJsonSchema from(@Nonnull final Type classType) {
+  public static ResponseJsonSchema fromType(@Nonnull final Type classType) {
     val module =
         new JacksonModule(
             JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);

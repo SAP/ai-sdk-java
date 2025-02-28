@@ -199,7 +199,7 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testResponseFormatSchema() {
-    var schema = ResponseJsonSchema.from(TestClassForSchemaGeneration.class);
+    var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
     var config =
         new OrchestrationModuleConfig()
             .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
@@ -225,7 +225,7 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testResponseFormatOverwrittenByNewTemplateRef() {
-    var schema = ResponseJsonSchema.from(TestClassForSchemaGeneration.class);
+    var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
     var config =
         new OrchestrationModuleConfig()
             .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));

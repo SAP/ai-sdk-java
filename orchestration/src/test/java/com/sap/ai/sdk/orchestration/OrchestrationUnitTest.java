@@ -783,7 +783,7 @@ class OrchestrationUnitTest {
       private String translation;
     }
     val schema =
-        ResponseJsonSchema.from(Translation.class)
+        ResponseJsonSchema.fromType(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
