@@ -5,12 +5,14 @@ import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import javax.annotation.Nonnull;
+import lombok.EqualsAndHashCode;
 
 /**
  * Template configuration for the {@link OrchestrationModuleConfig}.
  *
  * @since 1.4.0
  */
+@EqualsAndHashCode
 @Beta
 public abstract class TemplateConfig {
 
