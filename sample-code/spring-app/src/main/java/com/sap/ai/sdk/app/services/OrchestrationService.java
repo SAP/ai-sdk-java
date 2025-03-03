@@ -335,7 +335,8 @@ public class OrchestrationService {
 
     val groundingConfig = Grounding.create().filters(databaseFilter);
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
-    val configWithGrounding = config.withGrounding(groundingConfig);
+    val maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.PERSON).withGroundingEnabled();
+    val configWithGrounding = config.withGrounding(groundingConfig).withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithGrounding);
   }

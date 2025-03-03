@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.orchestration.model.DPIConfig.MethodEnum.PSEUDONYMI
 import static com.sap.ai.sdk.orchestration.model.DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
 
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
+import com.sap.ai.sdk.orchestration.model.DPIConfigMaskGroundingInput;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingProviderConfig;
@@ -31,6 +32,7 @@ import lombok.val;
 public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
+  boolean maskGroundingInput;
 
   /**
    * Build a configuration applying anonymization.
@@ -74,8 +76,12 @@ public class DpiMasking implements MaskingProvider {
       val entitiesList = new ArrayList<DPIEntities>();
       entitiesList.add(entity);
       entitiesList.addAll(Arrays.asList(entities));
-      return new DpiMasking(maskingMethod, entitiesList);
+      return new DpiMasking(maskingMethod, entitiesList, false);
     }
+  }
+
+  public DpiMasking withGroundingEnabled() {
+    return new DpiMasking(maskingMethod, entities, true);
   }
 
   @Nonnull
@@ -85,6 +91,7 @@ public class DpiMasking implements MaskingProvider {
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
-        .entities(entitiesDTO);
+        .entities(entitiesDTO)
+        .maskGroundingInput(DPIConfigMaskGroundingInput.create().enabled(maskGroundingInput));
   }
 }
