@@ -117,6 +117,8 @@ var prompt = new OrchestrationPrompt(inputParams);
 var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
+In this case the template is defined with the placeholders `{{?language}}` which is replaced by the value `German` in the input parameters.
+
 Alternatively, you can use already prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
 ```java
@@ -131,7 +133,7 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 
 A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
-In this case the template is defined with the placeholders `{{?language}}` and `{{?iput}}` which are replaced by the values `Italian` and `cloud ERP systems`, respectively, in the input parameters.
+You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
 
 ## Message history
 
