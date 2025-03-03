@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] [Add Spring AI Chat Memory support](../guides/SPRING_AI_INTEGRATION.md#chat-memory)
 
 ### 📈 Improvements
 
