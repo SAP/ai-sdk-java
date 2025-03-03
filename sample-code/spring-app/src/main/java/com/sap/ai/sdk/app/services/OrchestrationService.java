@@ -445,14 +445,14 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse templateFromPromptRegistryId(@Nonnull final String topic) {
+  public OrchestrationChatResponse templateFromPromptRegistryById(@Nonnull final String topic) {
     final var llmWithImageSupportConfig =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
-    val inputParams = Map.of("language", "Hindi", "input", topic);
+    val inputParams = Map.of("language", "Italian", "input", topic);
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
@@ -467,14 +467,15 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse templateFromPromptRegistryScenario(@Nonnull final String topic) {
+  public OrchestrationChatResponse templateFromPromptRegistryByScenario(
+      @Nonnull final String topic) {
     final var llmWithImageSupportConfig =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
+    val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("language", "Hindi", "input", topic);
+    val inputParams = Map.of("language", "Italian", "input", topic);
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);

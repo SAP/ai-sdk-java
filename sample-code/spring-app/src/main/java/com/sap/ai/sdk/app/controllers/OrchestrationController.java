@@ -237,22 +237,22 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  @GetMapping("/templateFromPromptRegistryId")
+  @GetMapping("/templateFromPromptRegistryById")
   @Nonnull
-  Object templateFromPromptRegistryId(
+  Object templateFromPromptRegistryById(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.templateFromPromptRegistryId("Cloud ERP systems");
+    final var response = service.templateFromPromptRegistryById("Cloud ERP systems");
     if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
   }
 
-  @GetMapping("/templateFromPromptRegistryScenario")
+  @GetMapping("/templateFromPromptRegistryByScenario")
   @Nonnull
-  Object templateFromPromptRegistryScenario(
+  Object templateFromPromptRegistryByScenario(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.templateFromPromptRegistryScenario("Cloud ERP systems");
+    final var response = service.templateFromPromptRegistryByScenario("Cloud ERP systems");
     if ("json".equals(format)) {
       return response;
     }

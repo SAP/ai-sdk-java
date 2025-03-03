@@ -864,4 +864,56 @@ class OrchestrationUnitTest {
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
   }
+
+  @Test
+  void testTemplateFromPromptRegistryById() throws IOException {
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceByIdResponse.json")
+                      .withHeader("Content-Type", "application/json")));
+
+      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var configWithTemplate = config.withTemplateConfig(template);
+
+      var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+      var prompt = new OrchestrationPrompt(inputParams);
+
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+      assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+
+      try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      }
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenario() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceByScenarioResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+    assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+    assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+
+    try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
 }
