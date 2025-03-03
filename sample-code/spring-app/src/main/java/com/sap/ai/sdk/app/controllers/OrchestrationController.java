@@ -241,7 +241,7 @@ class OrchestrationController {
   @Nonnull
   Object templateFromPromptRegistryById(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.templateFromPromptRegistryById("Cloud ERP systems");
+    final var response = service.templateFromPromptRegistryById("cloud ERP systems");
     if ("json".equals(format)) {
       return response;
     }
@@ -252,7 +252,7 @@ class OrchestrationController {
   @Nonnull
   Object templateFromPromptRegistryByScenario(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.templateFromPromptRegistryByScenario("Cloud ERP systems");
+    final var response = service.templateFromPromptRegistryByScenario("cloud ERP systems");
     if ("json".equals(format)) {
       return response;
     }
