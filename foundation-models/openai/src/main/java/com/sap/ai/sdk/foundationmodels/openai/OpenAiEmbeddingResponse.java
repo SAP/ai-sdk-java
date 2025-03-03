@@ -37,7 +37,7 @@ public class OpenAiEmbeddingResponse {
   @Nonnull
   public List<float[]> getEmbeddingVectors() {
     final var embeddings = new ArrayList<float[]>();
-    for (final var container : originalResponse.getData()) {
+    for (final var container : getOriginalResponse().getData()) {
       final var embeddingFloats = container.getEmbedding();
 
       embeddings.add(embeddingFloats);
