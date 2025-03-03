@@ -117,7 +117,7 @@ var prompt = new OrchestrationPrompt(inputParams);
 var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
-In this case the template is defined with the placeholders `{{?language}}` which is replaced by the value `German` in the input parameters.
+In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
 Alternatively, you can use already prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
