@@ -117,7 +117,7 @@ var prompt = new OrchestrationPrompt(inputParams);
 var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
-Alternatively, you can use already prepared templates from the Prompt Registry of SAP AI Core instead of passing a template in the request yourself.
+Alternatively, you can use already prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
 
 ```java
 var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
@@ -129,7 +129,7 @@ var prompt = new OrchestrationPrompt(inputParams);
 var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
-A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to this guide.
+A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 In this case the template is defined with the placeholders `{{?language}}` and `{{?iput}}` which are replaced by the values `Italian` and `cloud ERP systems`, respectively, in the input parameters.
 
