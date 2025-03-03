@@ -27,9 +27,8 @@ public class OrchestrationError implements ClientError {
    */
   @Nonnull
   public String getMessage() {
-    final String message = originalResponse.getMessage();
     return originalResponse.getCode() == 500
-        ? message + " in " + originalResponse.getLocation()
-        : message;
+        ? originalResponse.getLocation()
+        : originalResponse.getMessage();
   }
 }
