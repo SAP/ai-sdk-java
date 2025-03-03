@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI Chat Memory support](../guides/SPRING_AI_INTEGRATION.md#chat-memory)
+- [Orchestration] [Add Spring AI Chat Memory support](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/SPRING_AI_INTEGRATION.md#chat-memory)
 
 ### 📈 Improvements
 
