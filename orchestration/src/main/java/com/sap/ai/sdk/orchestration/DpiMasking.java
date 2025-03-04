@@ -88,7 +88,7 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withMaskGroundingEnabled() {
-    return new DpiMasking(maskingMethod, entities, true, List.of());
+    return new DpiMasking(maskingMethod, entities, true, allowList);
   }
 
   /**
