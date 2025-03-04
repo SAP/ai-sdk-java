@@ -82,4 +82,15 @@ public class SpringAiOrchestrationTest {
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("Request failed with status 400 Bad Request");
   }
+
+  @Test
+  void testChatMemory() {
+    ChatResponse response = service.chatMemory();
+    assertThat(response).isNotNull();
+    String text = response.getResult().getOutput().getText();
+    log.info(text);
+    assertThat(text)
+        .containsAnyOf(
+            "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");
+  }
 }

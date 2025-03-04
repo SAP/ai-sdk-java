@@ -25,7 +25,6 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -112,7 +111,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
     val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig = Template.create().template(List.of(template.createChatMessage()));
+    val templatingConfig =
+        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val inputParams = Map.of("language", language);
@@ -357,8 +357,6 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     //    Example class
     class Translation {
       @JsonProperty(required = true)
@@ -394,17 +392,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     val template = Message.user("What is '%s' in German?".formatted(word));
     val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonObject.create()
-                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+        TemplateConfig.create()
+            .withTemplate(List.of(template.createChatMessage()))
+            .withJsonResponse();
+    val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
         new OrchestrationPrompt(
@@ -425,15 +418,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     val template = Message.user("Whats '%s' in German?".formatted(word));
     val templatingConfig =
         Template.create()
             .template(List.of(template.createChatMessage()))
             .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+    val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
         new OrchestrationPrompt(

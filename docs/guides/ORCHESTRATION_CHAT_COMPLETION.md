@@ -109,7 +109,8 @@ Use a prepared template and execute requests with by passing only the input para
 
 ```java
 var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-var templatingConfig = TemplatingModuleConfig.create().template(template);
+var templatingConfig =
+        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
 var inputParams = Map.of("language", "German");
