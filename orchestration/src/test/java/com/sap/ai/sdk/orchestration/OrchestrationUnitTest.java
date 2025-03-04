@@ -170,7 +170,13 @@ class OrchestrationUnitTest {
         GroundingModuleConfig.create()
             .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
             .config(groundingConfigConfig);
-    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+    val maskingConfig = // optional masking configuration
+        DpiMasking.anonymization()
+            .withEntities(DPIEntities.SENSITIVE_DATA)
+            .withMaskGroundingEnabled()
+            .withAllowList(List.of("SAP", "Joule"));
+    final var configWithGrounding =
+        config.withGroundingConfig(groundingConfig).withMaskingConfig(maskingConfig);
 
     final Map<String, String> inputParams =
         Map.of("query", "String used for similarity search in database");

@@ -33,7 +33,10 @@
                 "type": "profile-phone"
               }
             ],
-            "allowlist" : [ ]
+            "allowlist" : [ ],
+            "mask_grounding_input" : {
+              "enabled" : false
+            }
           }
         ]
       }

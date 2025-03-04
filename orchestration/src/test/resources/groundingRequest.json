@@ -21,6 +21,19 @@
         "defaults" : { },
         "tools" : [ ]
       },
+      "masking_module_config" : {
+        "masking_providers" : [ {
+          "type" : "sap_data_privacy_integration",
+          "method" : "anonymization",
+          "entities" : [ {
+            "type" : "profile-sensitive-data"
+          } ],
+          "allowlist" : [ "SAP", "Joule" ],
+          "mask_grounding_input" : {
+            "enabled" : true
+          }
+        } ]
+      },
       "grounding_module_config" : {
         "type" : "document_grounding_service",
         "config" : {
