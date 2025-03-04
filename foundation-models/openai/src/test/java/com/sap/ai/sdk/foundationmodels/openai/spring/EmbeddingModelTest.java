@@ -33,44 +33,42 @@ class EmbeddingModelTest {
 
   @Test
   void callWithValidRequest() {
-    var request =
+    final var request =
         new EmbeddingRequest(
-            List.of("instructions"),
-            EmbeddingOptionsBuilder.builder().withModel("model").withDimensions(128).build());
+            List.of("instructions"), EmbeddingOptionsBuilder.builder().withDimensions(128).build());
 
-    var vector = new float[] {0.0f};
-    var expectedResponse =
+    final var vector = new float[] {0.0f};
+    final var modelName = ""; // defined by client object and options not honoured
+    final var expectedResponse =
         new EmbeddingResponse(
             List.of(new Embedding(vector, 0)),
-            new EmbeddingResponseMetadata("model", new DefaultUsage(0, null, 0)));
+            new EmbeddingResponseMetadata(modelName, new DefaultUsage(0, null, 0)));
 
-    var openAiResponse =
+    final var openAiResponse =
         new EmbeddingsCreate200Response()
             .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
-            .model("model")
             .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
 
     when(client.embedding(any(EmbeddingsCreateRequest.class))).thenReturn(openAiResponse);
 
-    var actualResponse = new OpenAiSpringEmbeddingModel(client).call(request);
+    final var actualResponse = new OpenAiSpringEmbeddingModel(client).call(request);
 
     assertThat(expectedResponse).usingRecursiveComparison().isEqualTo(actualResponse);
   }
 
   @Test
-  void embedDocumentInvokesDefaultMethod() {
+  void embedDocument() {
     Document document = new Document("Some content");
 
-    OpenAiSpringEmbeddingModel model =
-        new OpenAiSpringEmbeddingModel(client) {
-          @Override
-          public float[] embed(String text) {
-            // For testing, just return any array
-            return new float[] {1, 2, 3};
-          }
-        };
+    var vector = new float[] {1, 2, 3};
+    var openAiResponse =
+        new EmbeddingsCreate200Response()
+            .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
+            .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
 
-    float[] result = model.embed(document);
+    when(client.embedding(any(EmbeddingsCreateRequest.class))).thenReturn(openAiResponse);
+
+    float[] result = new OpenAiSpringEmbeddingModel(client).embed(document);
     assertArrayEquals(new float[] {1, 2, 3}, result);
   }
 
