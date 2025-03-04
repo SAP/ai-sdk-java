@@ -13,6 +13,7 @@
 ### ✨ New Functionality
 
 - [Orchestration] [Prompt templates can be consumed from registry.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#Chat-completion-with-Templates)
+- [Orchestration] [Masking is now available on grounding.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#mask-grounding)
 
 ### 📈 Improvements
 

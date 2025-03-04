@@ -11,6 +11,7 @@
     - [Chat Completion Filter](#chat-completion-filter)
     - [Data Masking](#data-masking)
     - [Grounding](#grounding)
+      - [Mask Grounding](#mask-grounding)
     - [Stream chat completion](#stream-chat-completion)
     - [Add images and multiple text inputs to a message](#add-images-and-multiple-text-inputs-to-a-message)
     - [Set a Response Format](#set-a-response-format)
@@ -250,6 +251,23 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 In this example, the AI model is provided with additional context in the form of grounding information.
 
 `Grounding.create()` is by default a document grounding service with a vector data repository.
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+### Mask Grounding
+
+You can also mask both the grounding information and the prompt message:
+
+```java
+var maskingConfig =
+    DpiMasking.anonymization()
+        .withEntities(DPIEntities.SENSITIVE_DATA)
+        .withMaskGroundingEnabled()
+        .withAllowList(List.of("SAP", "Joule"));
+var maskedGroundingConfig = groundingConfig.withMaskingConfig(maskingConfig);
+
+var result = client.chatCompletion(prompt, maskedGroundingConfig);
+```
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
