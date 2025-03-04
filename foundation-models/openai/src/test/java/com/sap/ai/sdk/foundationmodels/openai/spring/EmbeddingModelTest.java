@@ -1,9 +1,10 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
@@ -15,6 +16,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.metadata.DefaultUsage;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.Embedding;
 import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
 import org.springframework.ai.embedding.EmbeddingRequest;
@@ -22,17 +24,15 @@ import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.ai.embedding.EmbeddingResponseMetadata;
 
 class EmbeddingModelTest {
-  private OpenAiSpringEmbeddingModel model;
   private OpenAiClient client;
 
   @BeforeEach
   void setUp() {
     client = mock(OpenAiClient.class);
-    model = new OpenAiSpringEmbeddingModel();
   }
 
   @Test
-  void testCall() {
+  void callWithValidRequest() {
     var request =
         new EmbeddingRequest(
             List.of("instructions"),
@@ -52,12 +52,37 @@ class EmbeddingModelTest {
 
     when(client.embedding(any(EmbeddingsCreateRequest.class))).thenReturn(openAiResponse);
 
-    try (var mockedStatic = mockStatic(OpenAiClient.class)) {
-      mockedStatic.when(() -> OpenAiClient.forModel(any())).thenReturn(client);
+    var actualResponse = new OpenAiSpringEmbeddingModel(client).call(request);
 
-      var actualResponse = model.call(request);
+    assertThat(expectedResponse).usingRecursiveComparison().isEqualTo(actualResponse);
+  }
 
-      assertThat(expectedResponse).usingRecursiveComparison().isEqualTo(actualResponse);
-    }
+  @Test
+  void embedDocumentInvokesDefaultMethod() {
+    Document document = new Document("Some content");
+
+    OpenAiSpringEmbeddingModel model =
+        new OpenAiSpringEmbeddingModel(client) {
+          @Override
+          public float[] embed(String text) {
+            // For testing, just return any array
+            return new float[] {1, 2, 3};
+          }
+        };
+
+    float[] result = model.embed(document);
+    assertArrayEquals(new float[] {1, 2, 3}, result);
+  }
+
+  @Test
+  void embedDocumentThrowsException() {
+    var document = mock(Document.class);
+    when(document.isText()).thenReturn(false);
+
+    var model = new OpenAiSpringEmbeddingModel(client);
+
+    assertThatThrownBy(() -> model.embed(document))
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessage("Only text type document supported for embedding");
   }
 }
