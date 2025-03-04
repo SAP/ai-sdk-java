@@ -163,14 +163,18 @@
                     <useOneOfCreators>true</useOneOfCreators>
                     <useFloatArrays>true</useFloatArrays>
 
-                    <!-- new: remove unassigned components -->
-                    <fixRedundantComponents>true</fixRedundantComponents>
+                    <!-- new exclude paths -->
                     <excludePaths>/deployments/{deployment-id}/completions
                     /deployments/{deployment-id}/audio/transcriptions
                     /deployments/{deployment-id}/audio/translations
                     /deployments/{deployment-id}/images/generations</excludePaths>
+
+                    <!-- new exclude properties -->
                     <excludeProperties>chatCompletionResponseMessage.context
                     createChatCompletionRequest.data_sources</excludeProperties>
+
+                    <!-- new: remove unassigned components -->
+                    <fixRedundantComponents>true</fixRedundantComponents>
                   </additionalProperties>
                 </configuration>
               </execution>
