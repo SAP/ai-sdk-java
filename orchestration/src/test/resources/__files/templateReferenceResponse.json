@@ -1,0 +1,59 @@
+{
+  "request_id": "c02a6e4c-5552-4a72-a801-b6512d4f2f2a",
+  "module_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "Please answer in Italian"
+      },
+      {
+        "role": "user",
+        "content": "Give me a short introduction of Cloud ERP systems."
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-B6zYkaS7gjo5Ye6U87iK0B2dp4hde",
+      "object": "chat.completion",
+      "created": 1741006302,
+      "model": "gpt-4o-2024-08-06",
+      "system_fingerprint": "fp_b705f0c291",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "I sistemi ERP (Enterprise Resource Planning) basati su cloud sono soluzioni software che consentono alle aziende di gestire e integrare le loro operazioni aziendali principali attraverso una piattaforma centralizzata accessibile via internet. A differenza dei"
+          },
+          "finish_reason": "length"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 25,
+        "total_tokens": 75
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-B6zYkaS7gjo5Ye6U87iK0B2dp4hde",
+    "object": "chat.completion",
+    "created": 1741006302,
+    "model": "gpt-4o-2024-08-06",
+    "system_fingerprint": "fp_b705f0c291",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "I sistemi ERP (Enterprise Resource Planning) basati su cloud sono soluzioni software che consentono alle aziende di gestire e integrare le loro operazioni aziendali principali attraverso una piattaforma centralizzata accessibile via internet. A differenza dei"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 50,
+      "prompt_tokens": 25,
+      "total_tokens": 75
+    }
+  }
+}
