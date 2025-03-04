@@ -41,6 +41,9 @@ public class PromptTemplateSpec
   @JsonProperty("additionalFields")
   private Object additionalFields;
 
+  @JsonProperty("additional_fields")
+  private Object additionalFields;
+
   @JsonProperty("response_format")
   private PromptTemplateSpecResponseFormat responseFormat;
 
@@ -128,6 +131,40 @@ public class PromptTemplateSpec
    */
   public void setDefaults(@Nullable final Object defaults) {
     this.defaults = defaults;
+  }
+
+  /**
+   * Set the additionalFields of this {@link PromptTemplateSpec} instance and return the same
+   * instance.
+   *
+   * @param additionalFields DEPRECATED. Please use additional_fields instead.
+   * @return The same instance of this {@link PromptTemplateSpec} class
+   */
+  @Nonnull
+  public PromptTemplateSpec additionalFields(@Nullable final Object additionalFields) {
+    this.additionalFields = additionalFields;
+    return this;
+  }
+
+  /**
+   * DEPRECATED. Please use additional_fields instead.
+   *
+   * @return additionalFields The additionalFields of this {@link PromptTemplateSpec} instance.
+   * @deprecated
+   */
+  @Deprecated
+  @Nonnull
+  public Object getAdditionalFields() {
+    return additionalFields;
+  }
+
+  /**
+   * Set the additionalFields of this {@link PromptTemplateSpec} instance.
+   *
+   * @param additionalFields DEPRECATED. Please use additional_fields instead.
+   */
+  public void setAdditionalFields(@Nullable final Object additionalFields) {
+    this.additionalFields = additionalFields;
   }
 
   /**
@@ -285,6 +322,7 @@ public class PromptTemplateSpec
     if (template != null) declaredFields.put("template", template);
     if (defaults != null) declaredFields.put("defaults", defaults);
     if (additionalFields != null) declaredFields.put("additionalFields", additionalFields);
+    if (additionalFields != null) declaredFields.put("additionalFields", additionalFields);
     if (responseFormat != null) declaredFields.put("responseFormat", responseFormat);
     if (tools != null) declaredFields.put("tools", tools);
     return declaredFields;
@@ -315,6 +353,7 @@ public class PromptTemplateSpec
         && Objects.equals(this.template, promptTemplateSpec.template)
         && Objects.equals(this.defaults, promptTemplateSpec.defaults)
         && Objects.equals(this.additionalFields, promptTemplateSpec.additionalFields)
+        && Objects.equals(this.additionalFields, promptTemplateSpec.additionalFields)
         && Objects.equals(this.responseFormat, promptTemplateSpec.responseFormat)
         && Objects.equals(this.tools, promptTemplateSpec.tools);
   }
@@ -322,7 +361,13 @@ public class PromptTemplateSpec
   @Override
   public int hashCode() {
     return Objects.hash(
-        template, defaults, additionalFields, responseFormat, tools, cloudSdkCustomFields);
+        template,
+        defaults,
+        additionalFields,
+        additionalFields,
+        responseFormat,
+        tools,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -332,6 +377,7 @@ public class PromptTemplateSpec
     sb.append("class PromptTemplateSpec {\n");
     sb.append("    template: ").append(toIndentedString(template)).append("\n");
     sb.append("    defaults: ").append(toIndentedString(defaults)).append("\n");
+    sb.append("    additionalFields: ").append(toIndentedString(additionalFields)).append("\n");
     sb.append("    additionalFields: ").append(toIndentedString(additionalFields)).append("\n");
     sb.append("    responseFormat: ").append(toIndentedString(responseFormat)).append("\n");
     sb.append("    tools: ").append(toIndentedString(tools)).append("\n");
