@@ -176,6 +176,9 @@ class OrchestrationTest {
     assertThat(result.getModuleResults().getGrounding()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getData()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
+
+    var maskingResult = result.getModuleResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
   }
 
   @Test

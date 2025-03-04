@@ -33,6 +33,7 @@ public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
   boolean maskGroundingInput;
+  @Nonnull List<String> allowList;
 
   /**
    * Build a configuration applying anonymization.
@@ -67,7 +68,7 @@ public class DpiMasking implements MaskingProvider {
      *
      * @param entity An entity type to mask (required)
      * @param entities Additional entity types to mask (optional)
-     * @return A configured {@link DpiMasking} instance
+     * @return A new {@link DpiMasking} instance
      * @see DPIEntities
      */
     @Nonnull
@@ -76,12 +77,29 @@ public class DpiMasking implements MaskingProvider {
       val entitiesList = new ArrayList<DPIEntities>();
       entitiesList.add(entity);
       entitiesList.addAll(Arrays.asList(entities));
-      return new DpiMasking(maskingMethod, entitiesList, false);
+      return new DpiMasking(maskingMethod, entitiesList, false, List.of());
     }
   }
 
-  public DpiMasking withGroundingEnabled() {
-    return new DpiMasking(maskingMethod, entities, true);
+  /**
+   * If grounding is used, the input text will be masked.
+   *
+   * @return A new {@link DpiMasking} instance
+   */
+  @Nonnull
+  public DpiMasking withMaskGroundingEnabled() {
+    return new DpiMasking(maskingMethod, entities, true, List.of());
+  }
+
+  /**
+   * Set words that should not be masked.
+   *
+   * @param allowList List of strings that should not be masked
+   * @return A new {@link DpiMasking} instance
+   */
+  @Nonnull
+  public DpiMasking withAllowList(@Nonnull final List<String> allowList) {
+    return new DpiMasking(maskingMethod, entities, maskGroundingInput, allowList);
   }
 
   @Nonnull
@@ -92,6 +110,7 @@ public class DpiMasking implements MaskingProvider {
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
         .entities(entitiesDTO)
-        .maskGroundingInput(DPIConfigMaskGroundingInput.create().enabled(maskGroundingInput));
+        .maskGroundingInput(DPIConfigMaskGroundingInput.create().enabled(maskGroundingInput))
+        .allowlist(allowList);
   }
 }
