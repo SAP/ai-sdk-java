@@ -122,4 +122,62 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>generate</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>5.18.0-SNAPSHOT</version>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <apiMaturity>beta</apiMaturity>
+              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+              <compileScope>COMPILE</compileScope>
+              <deleteOutputDirectory>true</deleteOutputDirectory>
+            </configuration>
+            <executions>
+              <execution>
+                <id>orchestration</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/openapi-2024-10-21.yaml</inputSpec>
+                  <apiPackage>com.sap.ai.sdk.foundationmodels.openai.generated.api</apiPackage>
+                  <modelPackage>com.sap.ai.sdk.foundationmodels.openai.generated.model</modelPackage>
+                  <generateApis>false</generateApis>
+                  <additionalProperties>
+                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <useOneOfCreators>true</useOneOfCreators>
+                    <useFloatArrays>true</useFloatArrays>
+
+                    <!-- new: remove unassigned components -->
+                    <fixRedundantComponents>true</fixRedundantComponents>
+                    <excludePaths>/deployments/{deployment-id}/completions
+                    /deployments/{deployment-id}/audio/transcriptions
+                    /deployments/{deployment-id}/audio/translations
+                    /deployments/{deployment-id}/images/generations</excludePaths>
+                    <excludeProperties>chatCompletionResponseMessage.context
+                    createChatCompletionRequest.data_sources</excludeProperties>
+                  </additionalProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
