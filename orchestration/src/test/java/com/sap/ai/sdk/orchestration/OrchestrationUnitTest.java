@@ -127,6 +127,21 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testCompletionError() {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withStatus(500)
+                    .withBodyFile("error500Response.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
+        .hasMessage(
+            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+  }
+
+  @Test
   void testGrounding() throws IOException {
     stubFor(
         post(urlPathEqualTo("/completion"))
@@ -185,9 +200,10 @@ class OrchestrationUnitTest {
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
 
-    final String requestBody = new String(fileLoader.apply("groundingRequest.json").readAllBytes());
-    verify(
-        postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(requestBody)));
+    try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
   }
 
   @Test

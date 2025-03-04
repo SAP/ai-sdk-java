@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import lombok.experimental.Delegate;
 
 /**
  * Represents an error response from the OpenAI API.
@@ -20,7 +19,6 @@ import lombok.experimental.Delegate;
 @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
 public class OpenAiError implements ClientError {
   /** The original error response from the OpenAI API. */
-  @Delegate(types = {ClientError.class})
   ErrorResponse originalResponse;
 
   /**
