@@ -79,4 +79,17 @@ class SpringAiOrchestrationController {
     final String text = message.getText();
     return text.isEmpty() ? message.getToolCalls().toString() : text;
   }
+
+  @GetMapping("/chatMemory")
+  Object chatMemory(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    val response = service.chatMemory();
+
+    if ("json".equals(format)) {
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
+    }
+    return response.getResult().getOutput().getText();
+  }
 }
