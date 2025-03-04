@@ -236,4 +236,26 @@ class OrchestrationController {
     }
     return response.getContent();
   }
+
+  @GetMapping("/templateFromPromptRegistryById")
+  @Nonnull
+  Object templateFromPromptRegistryById(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.templateFromPromptRegistryById("cloud ERP systems");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/templateFromPromptRegistryByScenario")
+  @Nonnull
+  Object templateFromPromptRegistryByScenario(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.templateFromPromptRegistryByScenario("cloud ERP systems");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
 }
