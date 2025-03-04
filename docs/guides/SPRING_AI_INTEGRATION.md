@@ -152,11 +152,11 @@ val advisor = new MessageChatMemoryAdvisor(memory);
 val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
 Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
-String content = cl.prompt(prompt1).call().content();
-// content is "Paris"
+String content1 = cl.prompt(prompt1).call().content();
+// content1 is "Paris"
 
 Prompt prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
-ChatResponse response = cl.prompt(prompt2).call().chatResponse();
+String content2 = cl.prompt(prompt2).call().content();
 // chat memory will remember that the user is inquiring about France.
 ```
 
