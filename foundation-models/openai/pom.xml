@@ -137,7 +137,6 @@
           <plugin>
             <groupId>com.sap.cloud.sdk.datamodel</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
-            <version>5.18.0-SNAPSHOT</version>
             <configuration>
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <apiMaturity>beta</apiMaturity>
