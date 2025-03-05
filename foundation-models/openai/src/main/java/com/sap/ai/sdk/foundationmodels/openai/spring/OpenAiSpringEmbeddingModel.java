@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
@@ -24,7 +23,6 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  *
  * @since 1.5.0
  */
-@Beta
 public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
 
   private final OpenAiClient client;
@@ -39,9 +37,21 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
     this.client = client;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IllegalArgumentException if {@code request.getOptions().getModel()} is not null.
+   */
   @Override
   @Nonnull
-  public EmbeddingResponse call(@Nonnull final EmbeddingRequest request) {
+  public EmbeddingResponse call(@Nonnull final EmbeddingRequest request)
+      throws IllegalArgumentException {
+
+    if (request.getOptions().getModel() != null) {
+      throw new IllegalArgumentException(
+          "Invalid EmbeddingRequest: the model option must be null, as the client already defines the model.");
+    }
+
     final var openAiRequest = createEmbeddingCreateRequest(request);
     final var openAiResponse = client.embedding(openAiRequest);
 
@@ -52,7 +62,7 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
   @Nonnull
   public float[] embed(@Nonnull final Document document) throws UnsupportedOperationException {
     if (document.isText()) {
-      return embed(Objects.requireNonNull(document.getText(), "Document text is null"));
+      return embed(Objects.requireNonNull(document.getText(), "Document is missing text content"));
     }
     throw new UnsupportedOperationException("Only text type document supported for embedding");
   }

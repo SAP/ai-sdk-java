@@ -35,10 +35,12 @@ First, add the Spring AI dependency to your `pom.xml`:
 > [!NOTE]
 > Note that currently no stable version of Spring AI exists just yet.
 > The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
-> 
+>
 > Please be aware that future versions of the AI SDK may increase the Spring AI version.
 
-## Orchestration Chat Completion
+## Orchestration
+
+### Chat Completion
 
 The Orchestration client is integrated in Spring AI classes:
 
@@ -53,7 +55,7 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Orchestration Masking
+### Masking
 
 Configure Orchestration modules withing Spring AI:
 
@@ -77,7 +79,7 @@ ChatResponse response = client.call(prompt);
 Please
 find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Stream chat completion
+### Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend
 to the frontend in real-time.
@@ -93,7 +95,7 @@ Prompt prompt =
 Flux<ChatResponse> flux = client.stream(prompt);
 
 // also possible to keep only the chat completion text
-Flux<String> responseFlux = 
+Flux<String> responseFlux =
     flux.map(chatResponse -> chatResponse.getResult().getOutput().getContent());
 ```
 
@@ -101,7 +103,7 @@ _Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Tool Calling
+### Tool Calling
 
 First define a function that will be called by the LLM:
 
@@ -137,3 +139,24 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
+## OpenAI
+
+### Embedding
+
+With SpringAI integration (_since v1.5.0_), you may now obtain embedding vectors for a list of strings as follows:
+
+You first initialize the OpenAI client for your model of choice and attach it  `OpenAiSpringEmbeddingModel` object.
+
+```java
+OpenAiClient client = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+OpenAiSpringEmbeddingModel embeddingModel = new OpenAiSpringEmbeddingModel(client);
+``` 
+
+Then you can invoke `embded` method on the `embeddingModel` object with the text items to embed.
+
+```java
+List<String> texts = List.of("Hello", "World");
+float[] embeddings = embeddingModel.embed(texts);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).

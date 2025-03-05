@@ -2,8 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,8 +11,12 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate20
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200ResponseDataInner;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200ResponseUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import java.util.List;
+import java.util.function.Consumer;
+import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.metadata.DefaultUsage;
 import org.springframework.ai.document.Document;
@@ -32,55 +35,93 @@ class EmbeddingModelTest {
   }
 
   @Test
-  void callWithValidRequest() {
-    final var request =
-        new EmbeddingRequest(
-            List.of("instructions"), EmbeddingOptionsBuilder.builder().withDimensions(128).build());
+  @DisplayName("Call with embedding request containing valid options")
+  void callWithValidEmbeddingRequest() {
+    val texts = List.of("Some text");
+    val springAiRequest =
+        new EmbeddingRequest(texts, EmbeddingOptionsBuilder.builder().withDimensions(128).build());
 
-    final var vector = new float[] {0.0f};
-    final var modelName = ""; // defined by client object and options not honoured
-    final var expectedResponse =
+    val vector = new float[] {0.0f};
+    val expectedOpenAiResponse =
+        new EmbeddingsCreate200Response()
+            .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
+            .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
+
+    val expectedOpenAiRequest =
+        new EmbeddingsCreateRequest()
+            .input(EmbeddingsCreateRequestInput.create(texts))
+            .dimensions(128);
+
+    when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
+        .thenReturn(expectedOpenAiResponse);
+
+    val actualSpringAiResponse = new OpenAiSpringEmbeddingModel(client).call(springAiRequest);
+
+    val modelName = ""; // defined by client object and options not honoured
+    val expectedSpringAiResponse =
         new EmbeddingResponse(
             List.of(new Embedding(vector, 0)),
             new EmbeddingResponseMetadata(modelName, new DefaultUsage(0, null, 0)));
 
-    final var openAiResponse =
-        new EmbeddingsCreate200Response()
-            .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
-            .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
-
-    when(client.embedding(any(EmbeddingsCreateRequest.class))).thenReturn(openAiResponse);
-
-    final var actualResponse = new OpenAiSpringEmbeddingModel(client).call(request);
-
-    assertThat(expectedResponse).usingRecursiveComparison().isEqualTo(actualResponse);
+    assertThat(expectedSpringAiResponse)
+        .usingRecursiveComparison()
+        .isEqualTo(actualSpringAiResponse);
   }
 
   @Test
+  @DisplayName("Call with embedding request with model option set")
+  void callWithModelOptionSetThrowsException() {
+    val springAiRequest =
+        new EmbeddingRequest(
+            List.of("Some text"), EmbeddingOptionsBuilder.builder().withModel("model").build());
+
+    val model = new OpenAiSpringEmbeddingModel(client);
+
+    assertThatThrownBy(() -> model.call(springAiRequest))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage(
+            "Invalid EmbeddingRequest: the model option must be null, as the client already defines the model.");
+  }
+
+  @Test
+  @DisplayName("Embed document with text content")
   void embedDocument() {
     Document document = new Document("Some content");
 
-    var vector = new float[] {1, 2, 3};
-    var openAiResponse =
+    val vector = new float[] {1, 2, 3};
+    val openAiResponse =
         new EmbeddingsCreate200Response()
             .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
             .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
 
-    when(client.embedding(any(EmbeddingsCreateRequest.class))).thenReturn(openAiResponse);
+    val expectedOpenAiRequest =
+        new EmbeddingsCreateRequest()
+            .input(EmbeddingsCreateRequestInput.create(List.of(document.getText())));
+
+    when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
+        .thenReturn(openAiResponse);
 
     float[] result = new OpenAiSpringEmbeddingModel(client).embed(document);
-    assertArrayEquals(new float[] {1, 2, 3}, result);
+
+    assertThat(result).isEqualTo(new float[] {1, 2, 3});
   }
 
   @Test
-  void embedDocumentThrowsException() {
-    var document = mock(Document.class);
+  @DisplayName("Embed document with missing text content")
+  void embedDocumentNonTextThrowsException() {
+    val document = mock(Document.class);
     when(document.isText()).thenReturn(false);
 
-    var model = new OpenAiSpringEmbeddingModel(client);
+    val model = new OpenAiSpringEmbeddingModel(client);
 
     assertThatThrownBy(() -> model.embed(document))
         .isInstanceOf(UnsupportedOperationException.class)
         .hasMessage("Only text type document supported for embedding");
+  }
+
+  private static <T> Consumer<T> assertRecursiveEquals(T expected) {
+    return (actual) -> {
+      assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    };
   }
 }

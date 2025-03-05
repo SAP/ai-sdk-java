@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [OpenAI] [Spring AI integration for embedding calls.](../guides/SPRING_AI_INTEGRATION.md#embedding)
 
 ### 📈 Improvements
 
