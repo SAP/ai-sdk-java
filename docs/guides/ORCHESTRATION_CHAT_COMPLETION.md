@@ -227,6 +227,10 @@ In this example, the input will be masked before the call to the LLM and will re
 
 Use the grounding module to provide additional context to the AI model. 
 
+### Vector Data Repository
+
+One way to provide grounding is by using a vector data repository. This can be done as follows.
+
 ```java
 // optional filter for collections
 var documentMetadata =
@@ -250,7 +254,9 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 
 In this example, the AI model is provided with additional context in the form of grounding information.
 
-`Grounding.create()` is by default a document grounding service with a vector data repository. If you want to use grounding based on *help.sap.com*, you can use the following code.
+### Grounding via *help.sap.com*
+
+You can also use grounding based on *help.sap.com* for convenient SAP specific grounding. This can be achieved as follows.
 
 ```java
 var groundingHelpSapCom =
