@@ -1,0 +1,45 @@
+{
+  "orchestration_config" : {
+    "module_configurations" : {
+      "llm_module_config" : {
+        "model_name" : "gpt-4o",
+        "model_params" : {
+          "max_tokens" : 50,
+          "temperature" : 0.1,
+          "frequency_penalty" : 0,
+          "presence_penalty" : 0,
+          "top_p" : 1,
+          "n" : 1
+        },
+        "model_version" : "latest"
+      },
+      "templating_module_config" : {
+        "template" : [ {
+          "role" : "user",
+          "content" : "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"
+        } ],
+        "defaults" : { },
+        "tools" : [ ]
+      },
+      "grounding_module_config" : {
+        "type" : "document_grounding_service",
+        "config" : {
+          "filters" : [ {
+            "data_repositories" : [ "*" ],
+            "data_repository_type" : "help.sap.com",
+            "data_repository_metadata" : [ ],
+            "document_metadata" : [ ],
+            "chunk_metadata" : [ ]
+          } ],
+          "input_params" : [ "userMessage" ],
+          "output_param" : "groundingContext"
+        }
+      }
+    },
+    "stream" : false
+  },
+  "input_params" : {
+    "userMessage" : "What is a fuzzy search?"
+  },
+  "messages_history" : [ ]
+}

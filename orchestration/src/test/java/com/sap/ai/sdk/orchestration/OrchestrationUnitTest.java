@@ -225,6 +225,34 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testGroundingWithHelpSapCom() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingHelpSapComResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    val groundingHelpSapCom =
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+    val response = client.chatCompletion(prompt, configWithGrounding);
+
+    assertThat(
+            response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
+        .contains(
+            "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
+    assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
+
+    try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
   void testTemplating() throws IOException {
     stubFor(
         post(anyUrl())
