@@ -191,6 +191,17 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/groundingHelpSapCom")
+  @Nonnull
+  Object groundingHelpSapCom(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.groundingHelpSapCom("What is a fuzzy search?");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/image")
   @Nonnull
   Object imageInput(@RequestParam(value = "format", required = false) final String format) {
