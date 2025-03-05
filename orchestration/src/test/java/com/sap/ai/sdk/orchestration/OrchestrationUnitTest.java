@@ -224,7 +224,8 @@ class OrchestrationUnitTest {
 
     assertThat(
             response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
-        .contains("Fuzzy search is a fast and fault-tolerant search feature of SAP HANA.");
+        .contains(
+            "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
     assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
 
     try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
