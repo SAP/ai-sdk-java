@@ -42,7 +42,6 @@ import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
-import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
@@ -216,11 +215,8 @@ class OrchestrationUnitTest {
                     .withBodyFile("groundingHelpSapComResponse.json")
                     .withHeader("Content-Type", "application/json")));
     val groundingHelpSapCom =
-        DocumentGroundingFilter.create()
-            .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
-    val groundingConfig =
-        Grounding.create()
-            .filters(groundingHelpSapCom);
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
     val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");

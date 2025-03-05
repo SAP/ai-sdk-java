@@ -351,11 +351,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse groundingHelpSapCom(@Nonnull final String userMessage) {
     val groundingHelpSapCom =
-        DocumentGroundingFilter.create()
-            .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
-    val groundingConfig =
-        Grounding.create()
-            .filters(groundingHelpSapCom);
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
