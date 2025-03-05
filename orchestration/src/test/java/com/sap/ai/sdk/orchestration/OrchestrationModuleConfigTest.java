@@ -77,7 +77,11 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testDpiMaskingConfig() {
-    var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.ADDRESS);
+    var maskingConfig =
+        DpiMasking.anonymization()
+            .withEntities(DPIEntities.ADDRESS)
+            .withMaskGroundingInput(true)
+            .withAllowList(List.of("Alice"));
     var config =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(maskingConfig);
 
@@ -87,6 +91,8 @@ class OrchestrationModuleConfigTest {
     assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
     assertThat(dpiConfig.getEntities()).hasSize(1);
     assertThat(dpiConfig.getEntities().get(0).getType()).isEqualTo(DPIEntities.ADDRESS);
+    assertThat(dpiConfig.getMaskGroundingInput().isEnabled()).isEqualTo(true);
+    assertThat(dpiConfig.getAllowlist()).containsExactly("Alice");
 
     var configModified = config.withMaskingConfig(maskingConfig);
     assertThat(configModified.getMaskingConfig()).isNotNull();

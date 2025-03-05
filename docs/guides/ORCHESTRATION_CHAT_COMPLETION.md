@@ -271,6 +271,23 @@ var response = client.chatCompletion(prompt, configWithGrounding);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
+### Mask Grounding
+
+You can also mask both the grounding information and the prompt message:
+
+```java
+var maskingConfig =
+    DpiMasking.anonymization()
+        .withEntities(DPIEntities.SENSITIVE_DATA)
+        .withMaskGroundingEnabled()
+        .withAllowList(List.of("SAP", "Joule"));
+var maskedGroundingConfig = groundingConfig.withMaskingConfig(maskingConfig);
+
+var result = client.chatCompletion(prompt, maskedGroundingConfig);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
 ## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.

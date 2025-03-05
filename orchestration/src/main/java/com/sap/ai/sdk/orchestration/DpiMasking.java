@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.orchestration.model.DPIConfig.MethodEnum.PSEUDONYMI
 import static com.sap.ai.sdk.orchestration.model.DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION;
 
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
+import com.sap.ai.sdk.orchestration.model.DPIConfigMaskGroundingInput;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingProviderConfig;
@@ -16,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.With;
 import lombok.val;
 
 /**
@@ -31,6 +33,8 @@ import lombok.val;
 public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
+  @With boolean maskGroundingInput;
+  @Nonnull List<String> allowList;
 
   /**
    * Build a configuration applying anonymization.
@@ -65,7 +69,7 @@ public class DpiMasking implements MaskingProvider {
      *
      * @param entity An entity type to mask (required)
      * @param entities Additional entity types to mask (optional)
-     * @return A configured {@link DpiMasking} instance
+     * @return A new {@link DpiMasking} instance
      * @see DPIEntities
      */
     @Nonnull
@@ -74,8 +78,19 @@ public class DpiMasking implements MaskingProvider {
       val entitiesList = new ArrayList<DPIEntities>();
       entitiesList.add(entity);
       entitiesList.addAll(Arrays.asList(entities));
-      return new DpiMasking(maskingMethod, entitiesList);
+      return new DpiMasking(maskingMethod, entitiesList, false, List.of());
     }
+  }
+
+  /**
+   * Set words that should not be masked.
+   *
+   * @param allowList List of strings that should not be masked
+   * @return A new {@link DpiMasking} instance
+   */
+  @Nonnull
+  public DpiMasking withAllowList(@Nonnull final List<String> allowList) {
+    return new DpiMasking(maskingMethod, entities, maskGroundingInput, allowList);
   }
 
   @Nonnull
@@ -85,6 +100,8 @@ public class DpiMasking implements MaskingProvider {
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
-        .entities(entitiesDTO);
+        .entities(entitiesDTO)
+        .maskGroundingInput(DPIConfigMaskGroundingInput.create().enabled(maskGroundingInput))
+        .allowlist(allowList);
   }
 }

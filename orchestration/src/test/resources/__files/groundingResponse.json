@@ -14,6 +14,13 @@
         "content": "Context message with embedded grounding results. First chunk```Second chunk```Last found chunk"
       }
     ],
+    "input_masking": {
+      "message": "Input to LLM and Grounding is masked successfully.",
+      "data": {
+        "masked_template": "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
+        "masked_grounding_input": "[\"What does Joule do?\"]"
+      }
+    },
     "llm": {
       "id": "chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU",
       "object": "chat.completion",
