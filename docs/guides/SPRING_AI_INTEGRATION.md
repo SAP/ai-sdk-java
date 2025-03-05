@@ -3,14 +3,14 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Orchestration] (#orchestration)
-  - [Orchestration Chat Completion](#orchestration-chat-completion)
-  - [Orchestration Masking](#orchestration-masking)
+- [Orchestration](#orchestration)
+  - [Chat Completion](#chat-completion)
+  - [Masking](#masking)
   - [Stream chat completion](#stream-chat-completion)
   - [Tool Calling](#tool-calling)
   - [Chat Memory](#chat-memory)
-- [OpenAI] (#openai)
-  - [Emdedding] (#embedding)
+- [OpenAI](#openai)
+  - [Embedding](#embedding)
 
 
 ## Introduction
@@ -45,7 +45,7 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 ## Orchestration
 
-### Orchestration Chat Completion
+### Chat Completion
 
 The Orchestration client is integrated in Spring AI classes:
 
@@ -60,7 +60,7 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-### Orchestration Masking
+### Masking
 
 Configure Orchestration modules withing Spring AI:
 
