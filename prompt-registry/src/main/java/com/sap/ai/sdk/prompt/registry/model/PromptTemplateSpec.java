@@ -134,7 +134,7 @@ public class PromptTemplateSpec
    * Set the additionalFields of this {@link PromptTemplateSpec} instance and return the same
    * instance.
    *
-   * @param additionalFields The additionalFields of this {@link PromptTemplateSpec}
+   * @param additionalFields DEPRECATED. Please use additional_fields instead.
    * @return The same instance of this {@link PromptTemplateSpec} class
    */
   @Nonnull
@@ -144,10 +144,12 @@ public class PromptTemplateSpec
   }
 
   /**
-   * Get additionalFields
+   * DEPRECATED. Please use additional_fields instead.
    *
    * @return additionalFields The additionalFields of this {@link PromptTemplateSpec} instance.
+   * @deprecated
    */
+  @Deprecated
   @Nonnull
   public Object getAdditionalFields() {
     return additionalFields;
@@ -156,7 +158,7 @@ public class PromptTemplateSpec
   /**
    * Set the additionalFields of this {@link PromptTemplateSpec} instance.
    *
-   * @param additionalFields The additionalFields of this {@link PromptTemplateSpec}
+   * @param additionalFields DEPRECATED. Please use additional_fields instead.
    */
   public void setAdditionalFields(@Nullable final Object additionalFields) {
     this.additionalFields = additionalFields;
