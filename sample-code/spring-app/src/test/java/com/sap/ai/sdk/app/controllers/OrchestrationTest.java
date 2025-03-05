@@ -167,7 +167,7 @@ class OrchestrationTest {
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
-    var response = service.grounding("What does Joule do?");
+    var response = service.grounding("What does Joule do?", true);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);

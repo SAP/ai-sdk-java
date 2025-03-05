@@ -80,7 +80,7 @@ class OrchestrationModuleConfigTest {
     var maskingConfig =
         DpiMasking.anonymization()
             .withEntities(DPIEntities.ADDRESS)
-            .withMaskGroundingEnabled()
+            .withMaskGroundingInput(true)
             .withAllowList(List.of("Alice"));
     var config =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(maskingConfig);

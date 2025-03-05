@@ -173,7 +173,7 @@ class OrchestrationUnitTest {
     val maskingConfig = // optional masking configuration
         DpiMasking.anonymization()
             .withEntities(DPIEntities.SENSITIVE_DATA)
-            .withMaskGroundingEnabled()
+            .withMaskGroundingInput(true)
             .withAllowList(List.of("SAP", "Joule"));
     final var configWithGrounding =
         config.withGroundingConfig(groundingConfig).withMaskingConfig(maskingConfig);
@@ -215,7 +215,7 @@ class OrchestrationUnitTest {
             Map.of(
                 "masked_template",
                 "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
-                "masked_grounding_input",
+                "masked_grounding_input", // maskGroundingInput: true will make this field present
                 "[\"What does Joule do?\"]"));
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {

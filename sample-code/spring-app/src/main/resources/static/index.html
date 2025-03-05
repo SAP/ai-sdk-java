@@ -340,12 +340,23 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/grounding"
+                                    <button type="submit" formaction="/orchestration/grounding/false"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/orchestration/grounding</code>
                                     </button>
                                     <div class="tooltip-content">
                                         Using grounding to provide additional context to the AI model.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/orchestration/grounding/true"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/orchestration/<wbr>maskGroundingInput</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        The request to the grounding service will be masked.
                                     </div>
                                 </div>
                             </li>

@@ -316,10 +316,12 @@ public class OrchestrationService {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
    * @param userMessage the user message to provide grounding for
+   * @param maskGroundingInput whether to mask the request sent to the Grounding Service
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse grounding(@Nonnull final String userMessage) {
+  public OrchestrationChatResponse grounding(
+      @Nonnull final String userMessage, final boolean maskGroundingInput) {
     // optional filter for collections
     val documentMetadata =
         SearchDocumentKeyValueListPair.create()
@@ -338,7 +340,7 @@ public class OrchestrationService {
     val maskingConfig = // optional masking configuration
         DpiMasking.anonymization()
             .withEntities(DPIEntities.SENSITIVE_DATA)
-            .withMaskGroundingEnabled()
+            .withMaskGroundingInput(maskGroundingInput)
             .withAllowList(List.of("SAP", "Joule"));
     val configWithGrounding =
         config.withGrounding(groundingConfig).withMaskingConfig(maskingConfig);

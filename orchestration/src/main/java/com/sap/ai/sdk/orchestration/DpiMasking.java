@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.With;
 import lombok.val;
 
 /**
@@ -32,7 +33,7 @@ import lombok.val;
 public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntities> entities;
-  boolean maskGroundingInput;
+  @With boolean maskGroundingInput;
   @Nonnull List<String> allowList;
 
   /**
@@ -79,16 +80,6 @@ public class DpiMasking implements MaskingProvider {
       entitiesList.addAll(Arrays.asList(entities));
       return new DpiMasking(maskingMethod, entitiesList, false, List.of());
     }
-  }
-
-  /**
-   * If grounding is used, the input text will be masked.
-   *
-   * @return A new {@link DpiMasking} instance
-   */
-  @Nonnull
-  public DpiMasking withMaskGroundingEnabled() {
-    return new DpiMasking(maskingMethod, entities, true, allowList);
   }
 
   /**
