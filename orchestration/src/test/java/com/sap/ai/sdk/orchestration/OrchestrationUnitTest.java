@@ -42,6 +42,7 @@ import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
@@ -201,6 +202,36 @@ class OrchestrationUnitTest {
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testGroundingWithHelpSapCom() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingHelpSapComResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    val groundingHelpSapCom =
+        DocumentGroundingFilter.create()
+            .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig =
+        Grounding.create()
+            .filters(groundingHelpSapCom);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+    val response = client.chatCompletion(prompt, configWithGrounding);
+
+    assertThat(
+            response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
+        .contains("Fuzzy search is a fast and fault-tolerant search feature of SAP HANA.");
+    assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
+
+    try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
     }
