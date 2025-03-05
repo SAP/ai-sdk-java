@@ -39,6 +39,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -211,6 +214,43 @@ public class OrchestrationChatModelTest {
         verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request1)));
         verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request2)));
       }
+    }
+  }
+
+  @Test
+  void testChatMemory() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .inScenario("Chat Memory")
+            .whenScenarioStateIs(STARTED)
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json") // The response is not important
+                    .withHeader("Content-Type", "application/json"))
+            .willSetStateTo("Second Call"));
+
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .inScenario("Chat Memory")
+            .whenScenarioStateIs("Second Call")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json") // The response is not important
+                    .withHeader("Content-Type", "application/json")));
+
+    val memory = new InMemoryChatMemory();
+    val advisor = new MessageChatMemoryAdvisor(memory);
+    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+    val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
+    val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
+
+    cl.prompt(prompt1).call().content();
+    cl.prompt(prompt2).call().content();
+    // The response is not important
+    // We just want to verify that the second call remembered the first call
+    try (var requestInputStream = fileLoader.apply("chatMemory.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
   }
 }

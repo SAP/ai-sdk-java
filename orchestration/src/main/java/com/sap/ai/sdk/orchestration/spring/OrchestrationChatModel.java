@@ -129,7 +129,7 @@ public class OrchestrationChatModel implements ChatModel {
               case ASSISTANT:
                 val springToolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
-                if (springToolCalls != null) {
+                if (springToolCalls != null && !springToolCalls.isEmpty()) {
                   final List<ResponseMessageToolCall> sdkToolCalls =
                       springToolCalls.stream()
                           .map(OrchestrationChatModel::toOrchestrationToolCall)
