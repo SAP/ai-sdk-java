@@ -85,6 +85,11 @@ public class Grounding implements GroundingProvider {
             .outputParam("groundingContext")
             .filters(filters);
 
+    if (filters.contains(
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM))) {
+      groundingConfigConfig.setMetadataParams(null);
+    }
+
     return GroundingModuleConfig.create()
         .type(documentGroundingService)
         .config(groundingConfigConfig);

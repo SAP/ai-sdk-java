@@ -341,6 +341,26 @@ public class OrchestrationService {
   }
 
   /**
+   * Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse groundingHelpSapCom(@Nonnull final String userMessage) {
+    val groundingHelpSapCom =
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+
+    return client.chatCompletion(prompt, configWithGrounding);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
