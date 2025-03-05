@@ -249,7 +249,20 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 
 In this example, the AI model is provided with additional context in the form of grounding information.
 
-`Grounding.create()` is by default a document grounding service with a vector data repository.
+`Grounding.create()` is by default a document grounding service with a vector data repository. If you want to use grounding based on *help.sap.com*, you can use the following code.
+
+```java
+val groundingHelpSapCom =
+        DocumentGroundingFilter.create()
+                .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+val groundingConfig =
+        Grounding.create()
+                .filters(groundingHelpSapCom);
+var configWithGrounding = config.withGrounding(groundingConfig);
+
+var prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+var response = client.chatCompletion(prompt, configWithGrounding);
+```
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 
