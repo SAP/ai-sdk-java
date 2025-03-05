@@ -11,7 +11,6 @@
     - [Chat Completion Filter](#chat-completion-filter)
     - [Data Masking](#data-masking)
     - [Grounding](#grounding)
-      - [Mask Grounding](#mask-grounding)
     - [Stream chat completion](#stream-chat-completion)
     - [Add images and multiple text inputs to a message](#add-images-and-multiple-text-inputs-to-a-message)
     - [Set a Response Format](#set-a-response-format)
