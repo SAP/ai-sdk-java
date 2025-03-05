@@ -318,4 +318,20 @@ class OrchestrationTest {
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
+
+  @Test
+  void testTemplateFromPromptRegistryById() {
+    final var result =
+        service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenario() {
+    final var result =
+        service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
 }

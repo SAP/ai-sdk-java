@@ -191,6 +191,17 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/groundingHelpSapCom")
+  @Nonnull
+  Object groundingHelpSapCom(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.groundingHelpSapCom("What is a fuzzy search?");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/image")
   @Nonnull
   Object imageInput(@RequestParam(value = "format", required = false) final String format) {
@@ -231,6 +242,28 @@ class OrchestrationController {
   Object responseFormatJsonObject(
       @RequestParam(value = "format", required = false) final String format) {
     final var response = service.responseFormatJsonObject("apple");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/templateFromPromptRegistryById")
+  @Nonnull
+  Object templateFromPromptRegistryById(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.templateFromPromptRegistryById("cloud ERP systems");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/templateFromPromptRegistryByScenario")
+  @Nonnull
+  Object templateFromPromptRegistryByScenario(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.templateFromPromptRegistryByScenario("cloud ERP systems");
     if ("json".equals(format)) {
       return response;
     }

@@ -1,0 +1,62 @@
+{
+  "request_id": "47ee9f8c-3c54-4028-aabe-358f89409de9",
+  "module_results": {
+    "grounding": {
+      "message": "grounding result",
+      "data": {
+        "grounding_query": "grounding call",
+        "grounding_result": "A fuzzy search is a search technique that is designed to be fast and tolerant of errors"
+      }
+    },
+    "templating": [
+      {
+        "role": "user",
+        "content": "What is a fuzzy search? Use the following information as additional context: A fuzzy search is a search technique that is designed to be fast and tolerant of errors"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-B7fExAgihXpKnBaaJ3uXnLgmaC6Ox",
+      "object": "chat.completion",
+      "created": 1741166523,
+      "model": "gpt-4o-2024-08-06",
+      "system_fingerprint": "fp_b705f0c291",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "A fuzzy search is a search technique that is designed to be fast and tolerant of errors, such as additional or missing characters or other types of spelling mistakes. This feature is particularly useful in scenarios where exact matches are not required or when dealing with imperfect data"
+          },
+          "finish_reason": "length"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 1222,
+        "total_tokens": 1272
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-B7fExAgihXpKnBaaJ3uXnLgmaC6Ox",
+    "object": "chat.completion",
+    "created": 1741166523,
+    "model": "gpt-4o-2024-08-06",
+    "system_fingerprint": "fp_b705f0c291",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "A fuzzy search is a search technique that is designed to be fast and tolerant of errors, such as additional or missing characters or other types of spelling mistakes. This feature is particularly useful in scenarios where exact matches are not required or when dealing with imperfect data"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 50,
+      "prompt_tokens": 1222,
+      "total_tokens": 1272
+    }
+  }
+}

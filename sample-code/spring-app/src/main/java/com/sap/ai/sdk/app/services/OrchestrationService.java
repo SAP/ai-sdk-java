@@ -25,7 +25,6 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -112,7 +111,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
     val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig = Template.create().template(List.of(template.createChatMessage()));
+    val templatingConfig =
+        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val inputParams = Map.of("language", language);
@@ -341,6 +341,26 @@ public class OrchestrationService {
   }
 
   /**
+   * Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse groundingHelpSapCom(@Nonnull final String userMessage) {
+    val groundingHelpSapCom =
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+
+    return client.chatCompletion(prompt, configWithGrounding);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
@@ -351,8 +371,6 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     //    Example class
     class Translation {
       @JsonProperty(required = true)
@@ -388,17 +406,12 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     val template = Message.user("What is '%s' in German?".formatted(word));
     val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(
-                ResponseFormatJsonObject.create()
-                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+        TemplateConfig.create()
+            .withTemplate(List.of(template.createChatMessage()))
+            .withJsonResponse();
+    val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
         new OrchestrationPrompt(
@@ -419,19 +432,61 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     val template = Message.user("Whats '%s' in German?".formatted(word));
     val templatingConfig =
         Template.create()
             .template(List.of(template.createChatMessage()))
             .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+    val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
         new OrchestrationPrompt(
             Message.system("You are a language translator. Answer using JSON."));
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using a template from the prompt
+   * registry.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse templateFromPromptRegistryById(@Nonnull final String topic) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
+
+    val inputParams = Map.of("language", "Italian", "input", topic);
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using a template from the prompt
+   * registry.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse templateFromPromptRegistryByScenario(
+      @Nonnull final String topic) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    val configWithTemplate = config.withTemplateConfig(template);
+
+    val inputParams = Map.of("language", "Italian", "input", topic);
+    val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
   }

@@ -3,10 +3,15 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Orchestration Chat Completion](#orchestration-chat-completion)
-- [Orchestration Masking](#orchestration-masking)
-- [Stream chat completion](#stream-chat-completion)
-- [Tool Calling](#tool-calling)
+- [Orchestration] (#orchestration)
+  - [Orchestration Chat Completion](#orchestration-chat-completion)
+  - [Orchestration Masking](#orchestration-masking)
+  - [Stream chat completion](#stream-chat-completion)
+  - [Tool Calling](#tool-calling)
+  - [Chat Memory](#chat-memory)
+- [OpenAI] (#openai)
+  - [Emdedding] (#embedding)
+
 
 ## Introduction
 
@@ -40,7 +45,7 @@ First, add the Spring AI dependency to your `pom.xml`:
 
 ## Orchestration
 
-### Chat Completion
+### Orchestration Chat Completion
 
 The Orchestration client is integrated in Spring AI classes:
 
@@ -55,7 +60,7 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-### Masking
+### Orchestration Masking
 
 Configure Orchestration modules withing Spring AI:
 
@@ -135,6 +140,30 @@ options.setInternalToolExecutionEnabled(false);// tool execution is not yet avai
 Prompt prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
 
 ChatResponse response = client.call(prompt);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## Chat Memory
+
+Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat memory advisor like so:
+
+```java
+ChatModel client = new OrchestrationChatModel();
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
+
+val memory = new InMemoryChatMemory();
+val advisor = new MessageChatMemoryAdvisor(memory);
+val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+Prompt prompt1 = new Prompt("What is the capital of France?", defaultOptions);
+String content1 = cl.prompt(prompt1).call().content();
+// content1 is "Paris"
+
+Prompt prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
+String content2 = cl.prompt(prompt2).call().content();
+// chat memory will remember that the user is inquiring about France.
 ```
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
