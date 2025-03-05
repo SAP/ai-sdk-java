@@ -205,6 +205,7 @@ class OrchestrationUnitTest {
             "grounding_result",
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
+    assertThat(response.getOriginalResponse().getModuleResults().getInputMasking()).isNotNull();
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
