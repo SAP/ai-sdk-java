@@ -180,11 +180,12 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  @GetMapping("/grounding")
+  @GetMapping("/grounding/{maskGroundingInput}")
   @Nonnull
   Object grounding(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.grounding("What does Joule do?");
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @PathVariable("maskGroundingInput") final boolean maskGroundingInput) {
+    final var response = service.grounding("What does Joule do?", maskGroundingInput);
     if ("json".equals(format)) {
       return response;
     }
