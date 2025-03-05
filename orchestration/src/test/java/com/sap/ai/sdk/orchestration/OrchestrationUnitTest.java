@@ -205,7 +205,18 @@ class OrchestrationUnitTest {
             "grounding_result",
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
-    assertThat(response.getOriginalResponse().getModuleResults().getInputMasking()).isNotNull();
+
+    var inputMasking = response.getOriginalResponse().getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage())
+        .isEqualTo("Input to LLM and Grounding is masked successfully.");
+    Object data = inputMasking.getData();
+    assertThat(data)
+        .isEqualTo(
+            Map.of(
+                "masked_template",
+                "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
+                "masked_grounding_input",
+                "[\"What does Joule do?\"]"));
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
