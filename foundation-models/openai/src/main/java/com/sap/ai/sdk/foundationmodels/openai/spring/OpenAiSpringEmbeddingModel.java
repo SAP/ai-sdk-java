@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import org.springframework.ai.chat.metadata.DefaultUsage;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.Embedding;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.embedding.EmbeddingRequest;
@@ -26,6 +27,7 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
 public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
 
   private final OpenAiClient client;
+  private final MetadataMode metadataMode;
 
   /**
    * Constructs an {@code OpenAiSpringEmbeddingModel} with the specified {@link OpenAiClient} of
@@ -34,7 +36,24 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
    * @param client the OpenAI client
    */
   public OpenAiSpringEmbeddingModel(@Nonnull final OpenAiClient client) {
+    this(client, MetadataMode.EMBED);
+  }
+
+  /**
+   * Constructs an {@code OpenAiSpringEmbeddingModel} with the specified {@link OpenAiClient} of
+   * some model and metadata mode.
+   *
+   * <p>The metadata mode is used by content formatter to determine which metadata to include in the
+   * resulting content. Currently, the formatter is only effective for calls to {@link
+   * #embed(Document)}.
+   *
+   * @param client the OpenAI client
+   * @param metadataMode the metadata mode
+   */
+  public OpenAiSpringEmbeddingModel(
+      @Nonnull final OpenAiClient client, @Nonnull final MetadataMode metadataMode) {
     this.client = client;
+    this.metadataMode = metadataMode;
   }
 
   /**
@@ -62,7 +81,9 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
   @Nonnull
   public float[] embed(@Nonnull final Document document) throws UnsupportedOperationException {
     if (document.isText()) {
-      return embed(Objects.requireNonNull(document.getText(), "Document is missing text content"));
+      return embed(
+          Objects.requireNonNull(
+              document.getFormattedContent(this.metadataMode), "Document is missing text content"));
     }
     throw new UnsupportedOperationException("Only text type document supported for embedding");
   }
