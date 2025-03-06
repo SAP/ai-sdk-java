@@ -36,7 +36,7 @@ class EmbeddingModelTest {
 
   @Test
   @DisplayName("Call with embedding request containing valid options")
-  void callWithValidEmbeddingRequest() {
+  void testCallWithValidEmbeddingRequest() {
     val texts = List.of("Some text");
     val springAiRequest =
         new EmbeddingRequest(texts, EmbeddingOptionsBuilder.builder().withDimensions(128).build());
@@ -69,8 +69,8 @@ class EmbeddingModelTest {
   }
 
   @Test
-  @DisplayName("Call with embedding request with model option set")
-  void callWithModelOptionSetThrowsException() {
+  @DisplayName("Call with embedding request with model option set throws exception")
+  void testCallWithModelOptionSetThrows() {
     val springAiRequest =
         new EmbeddingRequest(
             List.of("Some text"), EmbeddingOptionsBuilder.builder().withModel("model").build());
@@ -85,7 +85,7 @@ class EmbeddingModelTest {
 
   @Test
   @DisplayName("Embed document with text content")
-  void embedDocument() {
+  void testEmbedDocument() {
     Document document = new Document("Some content");
 
     val vector = new float[] {1, 2, 3};
@@ -107,8 +107,8 @@ class EmbeddingModelTest {
   }
 
   @Test
-  @DisplayName("Embed document with missing text content")
-  void embedDocumentNonTextThrowsException() {
+  @DisplayName("Embed document with missing text content throws exception")
+  void testEmbedNonTextDocumentThrows() {
     val document = mock(Document.class);
     when(document.isText()).thenReturn(false);
 
