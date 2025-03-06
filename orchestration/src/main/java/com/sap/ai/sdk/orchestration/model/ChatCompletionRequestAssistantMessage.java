@@ -28,17 +28,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseChatMessage */
+/** ChatCompletionRequestAssistantMessage */
 @Beta // CHECKSTYLE:OFF
-public class ResponseChatMessage
+public class ChatCompletionRequestAssistantMessage implements SingleChatMessage
 // CHECKSTYLE:ON
 {
   /** Gets or Sets role */
   public enum RoleEnum {
-    /** The ASSISTANT option of this ResponseChatMessage */
+    /** The ASSISTANT option of this ChatCompletionRequestAssistantMessage */
     ASSISTANT("assistant"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseChatMessage */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionRequestAssistantMessage */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -73,7 +73,7 @@ public class ResponseChatMessage
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseChatMessage
+     * @return The enum value of type ChatCompletionRequestAssistantMessage
      */
     @JsonCreator
     @Nonnull
@@ -102,17 +102,18 @@ public class ResponseChatMessage
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseChatMessage. */
-  protected ResponseChatMessage() {}
+  /** Default constructor for ChatCompletionRequestAssistantMessage. */
+  protected ChatCompletionRequestAssistantMessage() {}
 
   /**
-   * Set the role of this {@link ResponseChatMessage} instance and return the same instance.
+   * Set the role of this {@link ChatCompletionRequestAssistantMessage} instance and return the same
+   * instance.
    *
-   * @param role The role of this {@link ResponseChatMessage}
-   * @return The same instance of this {@link ResponseChatMessage} class
+   * @param role The role of this {@link ChatCompletionRequestAssistantMessage}
+   * @return The same instance of this {@link ChatCompletionRequestAssistantMessage} class
    */
   @Nonnull
-  public ResponseChatMessage role(@Nullable final RoleEnum role) {
+  public ChatCompletionRequestAssistantMessage role(@Nonnull final RoleEnum role) {
     this.role = role;
     return this;
   }
@@ -120,7 +121,7 @@ public class ResponseChatMessage
   /**
    * Get role
    *
-   * @return role The role of this {@link ResponseChatMessage} instance.
+   * @return role The role of this {@link ChatCompletionRequestAssistantMessage} instance.
    */
   @Nonnull
   public RoleEnum getRole() {
@@ -128,22 +129,23 @@ public class ResponseChatMessage
   }
 
   /**
-   * Set the role of this {@link ResponseChatMessage} instance.
+   * Set the role of this {@link ChatCompletionRequestAssistantMessage} instance.
    *
-   * @param role The role of this {@link ResponseChatMessage}
+   * @param role The role of this {@link ChatCompletionRequestAssistantMessage}
    */
-  public void setRole(@Nullable final RoleEnum role) {
+  public void setRole(@Nonnull final RoleEnum role) {
     this.role = role;
   }
 
   /**
-   * Set the content of this {@link ResponseChatMessage} instance and return the same instance.
+   * Set the content of this {@link ChatCompletionRequestAssistantMessage} instance and return the
+   * same instance.
    *
-   * @param content The content of this {@link ResponseChatMessage}
-   * @return The same instance of this {@link ResponseChatMessage} class
+   * @param content The content of this {@link ChatCompletionRequestAssistantMessage}
+   * @return The same instance of this {@link ChatCompletionRequestAssistantMessage} class
    */
   @Nonnull
-  public ResponseChatMessage content(@Nullable final String content) {
+  public ChatCompletionRequestAssistantMessage content(@Nullable final String content) {
     this.content = content;
     return this;
   }
@@ -151,7 +153,7 @@ public class ResponseChatMessage
   /**
    * Get content
    *
-   * @return content The content of this {@link ResponseChatMessage} instance.
+   * @return content The content of this {@link ChatCompletionRequestAssistantMessage} instance.
    */
   @Nullable
   public String getContent() {
@@ -159,22 +161,23 @@ public class ResponseChatMessage
   }
 
   /**
-   * Set the content of this {@link ResponseChatMessage} instance.
+   * Set the content of this {@link ChatCompletionRequestAssistantMessage} instance.
    *
-   * @param content The content of this {@link ResponseChatMessage}
+   * @param content The content of this {@link ChatCompletionRequestAssistantMessage}
    */
   public void setContent(@Nullable final String content) {
     this.content = content;
   }
 
   /**
-   * Set the refusal of this {@link ResponseChatMessage} instance and return the same instance.
+   * Set the refusal of this {@link ChatCompletionRequestAssistantMessage} instance and return the
+   * same instance.
    *
-   * @param refusal The refusal of this {@link ResponseChatMessage}
-   * @return The same instance of this {@link ResponseChatMessage} class
+   * @param refusal The refusal of this {@link ChatCompletionRequestAssistantMessage}
+   * @return The same instance of this {@link ChatCompletionRequestAssistantMessage} class
    */
   @Nonnull
-  public ResponseChatMessage refusal(@Nullable final String refusal) {
+  public ChatCompletionRequestAssistantMessage refusal(@Nullable final String refusal) {
     this.refusal = refusal;
     return this;
   }
@@ -182,7 +185,7 @@ public class ResponseChatMessage
   /**
    * Get refusal
    *
-   * @return refusal The refusal of this {@link ResponseChatMessage} instance.
+   * @return refusal The refusal of this {@link ChatCompletionRequestAssistantMessage} instance.
    */
   @Nullable
   public String getRefusal() {
@@ -190,34 +193,36 @@ public class ResponseChatMessage
   }
 
   /**
-   * Set the refusal of this {@link ResponseChatMessage} instance.
+   * Set the refusal of this {@link ChatCompletionRequestAssistantMessage} instance.
    *
-   * @param refusal The refusal of this {@link ResponseChatMessage}
+   * @param refusal The refusal of this {@link ChatCompletionRequestAssistantMessage}
    */
   public void setRefusal(@Nullable final String refusal) {
     this.refusal = refusal;
   }
 
   /**
-   * Set the toolCalls of this {@link ResponseChatMessage} instance and return the same instance.
+   * Set the toolCalls of this {@link ChatCompletionRequestAssistantMessage} instance and return the
+   * same instance.
    *
    * @param toolCalls The tool calls generated by the model, such as function calls.
-   * @return The same instance of this {@link ResponseChatMessage} class
+   * @return The same instance of this {@link ChatCompletionRequestAssistantMessage} class
    */
   @Nonnull
-  public ResponseChatMessage toolCalls(@Nullable final List<ResponseMessageToolCall> toolCalls) {
+  public ChatCompletionRequestAssistantMessage toolCalls(
+      @Nullable final List<ResponseMessageToolCall> toolCalls) {
     this.toolCalls = toolCalls;
     return this;
   }
 
   /**
-   * Add one toolCalls instance to this {@link ResponseChatMessage}.
+   * Add one toolCalls instance to this {@link ChatCompletionRequestAssistantMessage}.
    *
    * @param toolCallsItem The toolCalls that should be added
-   * @return The same instance of type {@link ResponseChatMessage}
+   * @return The same instance of type {@link ChatCompletionRequestAssistantMessage}
    */
   @Nonnull
-  public ResponseChatMessage addToolCallsItem(
+  public ChatCompletionRequestAssistantMessage addToolCallsItem(
       @Nonnull final ResponseMessageToolCall toolCallsItem) {
     if (this.toolCalls == null) {
       this.toolCalls = new ArrayList<>();
@@ -229,7 +234,7 @@ public class ResponseChatMessage
   /**
    * The tool calls generated by the model, such as function calls.
    *
-   * @return toolCalls The toolCalls of this {@link ResponseChatMessage} instance.
+   * @return toolCalls The toolCalls of this {@link ChatCompletionRequestAssistantMessage} instance.
    */
   @Nonnull
   public List<ResponseMessageToolCall> getToolCalls() {
@@ -237,7 +242,7 @@ public class ResponseChatMessage
   }
 
   /**
-   * Set the toolCalls of this {@link ResponseChatMessage} instance.
+   * Set the toolCalls of this {@link ChatCompletionRequestAssistantMessage} instance.
    *
    * @param toolCalls The tool calls generated by the model, such as function calls.
    */
@@ -246,7 +251,8 @@ public class ResponseChatMessage
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseChatMessage}.
+   * Get the names of the unrecognizable properties of the {@link
+   * ChatCompletionRequestAssistantMessage}.
    *
    * @return The set of properties names
    */
@@ -257,7 +263,8 @@ public class ResponseChatMessage
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseChatMessage} instance.
+   * Get the value of an unrecognizable property of this {@link
+   * ChatCompletionRequestAssistantMessage} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -269,14 +276,14 @@ public class ResponseChatMessage
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ResponseChatMessage has no field with name '" + name + "'.");
+          "ChatCompletionRequestAssistantMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseChatMessage} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link ChatCompletionRequestAssistantMessage} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -292,8 +299,9 @@ public class ResponseChatMessage
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseChatMessage} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ChatCompletionRequestAssistantMessage} instance.
+   * If the map previously contained a mapping for the key, the old value is replaced by the
+   * specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -311,12 +319,14 @@ public class ResponseChatMessage
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseChatMessage responseChatMessage = (ResponseChatMessage) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseChatMessage.cloudSdkCustomFields)
-        && Objects.equals(this.role, responseChatMessage.role)
-        && Objects.equals(this.content, responseChatMessage.content)
-        && Objects.equals(this.refusal, responseChatMessage.refusal)
-        && Objects.equals(this.toolCalls, responseChatMessage.toolCalls);
+    final ChatCompletionRequestAssistantMessage chatCompletionRequestAssistantMessage =
+        (ChatCompletionRequestAssistantMessage) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, chatCompletionRequestAssistantMessage.cloudSdkCustomFields)
+        && Objects.equals(this.role, chatCompletionRequestAssistantMessage.role)
+        && Objects.equals(this.content, chatCompletionRequestAssistantMessage.content)
+        && Objects.equals(this.refusal, chatCompletionRequestAssistantMessage.refusal)
+        && Objects.equals(this.toolCalls, chatCompletionRequestAssistantMessage.toolCalls);
   }
 
   @Override
@@ -328,7 +338,7 @@ public class ResponseChatMessage
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseChatMessage {\n");
+    sb.append("class ChatCompletionRequestAssistantMessage {\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    refusal: ").append(toIndentedString(refusal)).append("\n");
@@ -350,8 +360,22 @@ public class ResponseChatMessage
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ResponseChatMessage} instance. No arguments are required. */
-  public static ResponseChatMessage create() {
-    return new ResponseChatMessage();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * ChatCompletionRequestAssistantMessage} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (role) -> new ChatCompletionRequestAssistantMessage().role(role);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the role of this {@link ChatCompletionRequestAssistantMessage} instance.
+     *
+     * @param role The role of this {@link ChatCompletionRequestAssistantMessage}
+     * @return The ChatCompletionRequestAssistantMessage instance.
+     */
+    ChatCompletionRequestAssistantMessage role(@Nonnull final RoleEnum role);
   }
 }

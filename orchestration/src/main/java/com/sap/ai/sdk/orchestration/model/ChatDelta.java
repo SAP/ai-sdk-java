@@ -35,7 +35,7 @@ public class ChatDelta
   private String role;
 
   @JsonProperty("content")
-  private String content = "";
+  private String content;
 
   @JsonProperty("refusal")
   private String refusal;
@@ -87,7 +87,7 @@ public class ChatDelta
    * @return The same instance of this {@link ChatDelta} class
    */
   @Nonnull
-  public ChatDelta content(@Nonnull final String content) {
+  public ChatDelta content(@Nullable final String content) {
     this.content = content;
     return this;
   }
@@ -97,7 +97,7 @@ public class ChatDelta
    *
    * @return content The content of this {@link ChatDelta} instance.
    */
-  @Nonnull
+  @Nullable
   public String getContent() {
     return content;
   }
@@ -107,7 +107,7 @@ public class ChatDelta
    *
    * @param content The content of this {@link ChatDelta}
    */
-  public void setContent(@Nonnull final String content) {
+  public void setContent(@Nullable final String content) {
     this.content = content;
   }
 
@@ -128,7 +128,7 @@ public class ChatDelta
    *
    * @return refusal The refusal of this {@link ChatDelta} instance.
    */
-  @Nonnull
+  @Nullable
   public String getRefusal() {
     return refusal;
   }
@@ -308,6 +308,6 @@ public class ChatDelta
      * @param content The content of this {@link ChatDelta}
      * @return The ChatDelta instance.
      */
-    ChatDelta content(@Nonnull final String content);
+    ChatDelta content(@Nullable final String content);
   }
 }
