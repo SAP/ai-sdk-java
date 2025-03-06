@@ -6,25 +6,21 @@ import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200ResponseDataInner;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200ResponseUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import java.util.List;
 import java.util.function.Consumer;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.ai.chat.metadata.DefaultUsage;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.Embedding;
 import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
 import org.springframework.ai.embedding.EmbeddingRequest;
-import org.springframework.ai.embedding.EmbeddingResponse;
-import org.springframework.ai.embedding.EmbeddingResponseMetadata;
 
 class EmbeddingModelTest {
   private OpenAiClient client;
@@ -34,6 +30,7 @@ class EmbeddingModelTest {
     client = mock(OpenAiClient.class);
   }
 
+  @SneakyThrows
   @Test
   @DisplayName("Call with embedding request containing valid options")
   void testCallWithValidEmbeddingRequest() {
@@ -41,11 +38,11 @@ class EmbeddingModelTest {
     val springAiRequest =
         new EmbeddingRequest(texts, EmbeddingOptionsBuilder.builder().withDimensions(128).build());
 
-    val vector = new float[] {0.0f};
     val expectedOpenAiResponse =
-        new EmbeddingsCreate200Response()
-            .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
-            .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
+        new ObjectMapper()
+            .readValue(
+                getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
+                EmbeddingsCreate200Response.class);
 
     val expectedOpenAiRequest =
         new EmbeddingsCreateRequest()
@@ -57,15 +54,11 @@ class EmbeddingModelTest {
 
     val actualSpringAiResponse = new OpenAiSpringEmbeddingModel(client).call(springAiRequest);
 
-    val modelName = ""; // defined by client object and options not honoured
-    val expectedSpringAiResponse =
-        new EmbeddingResponse(
-            List.of(new Embedding(vector, 0)),
-            new EmbeddingResponseMetadata(modelName, new DefaultUsage(0, null, 0)));
-
-    assertThat(expectedSpringAiResponse)
-        .usingRecursiveComparison()
-        .isEqualTo(actualSpringAiResponse);
+    assertThat(actualSpringAiResponse).isNotNull();
+    assertThat(actualSpringAiResponse.getResult().getOutput())
+        .isEqualTo(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
+    assertThat(actualSpringAiResponse.getMetadata().getUsage().getPromptTokens()).isEqualTo(2);
+    assertThat(actualSpringAiResponse.getMetadata().getUsage().getTotalTokens()).isEqualTo(2);
   }
 
   @Test
@@ -83,27 +76,28 @@ class EmbeddingModelTest {
             "Do not set a model in EmbeddingOptions, as the OpenAiClient already defines the model.");
   }
 
+  @SneakyThrows
   @Test
   @DisplayName("Embed document with text content")
   void testEmbedDocument() {
     Document document = new Document("Some content");
 
-    val vector = new float[] {1, 2, 3};
-    val openAiResponse =
-        new EmbeddingsCreate200Response()
-            .data(List.of(new EmbeddingsCreate200ResponseDataInner().embedding(vector)))
-            .usage(new EmbeddingsCreate200ResponseUsage().promptTokens(0).totalTokens(0));
+    val expectedOpenAiResponse =
+        new ObjectMapper()
+            .readValue(
+                getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
+                EmbeddingsCreate200Response.class);
 
     val expectedOpenAiRequest =
         new EmbeddingsCreateRequest()
             .input(EmbeddingsCreateRequestInput.create(List.of(document.getFormattedContent())));
 
     when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
-        .thenReturn(openAiResponse);
+        .thenReturn(expectedOpenAiResponse);
 
     float[] result = new OpenAiSpringEmbeddingModel(client).embed(document);
 
-    assertThat(result).isEqualTo(new float[] {1, 2, 3});
+    assertThat(result).isEqualTo(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
   }
 
   private static <T> Consumer<T> assertRecursiveEquals(T expected) {
