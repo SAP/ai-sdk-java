@@ -9,6 +9,7 @@ import com.sap.ai.sdk.grounding.client.PipelinesApi;
 import com.sap.ai.sdk.grounding.client.RetrievalApi;
 import com.sap.ai.sdk.grounding.client.VectorApi;
 import com.sap.ai.sdk.grounding.model.BaseDocument;
+import com.sap.ai.sdk.grounding.model.Chunk;
 import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;
 import com.sap.ai.sdk.grounding.model.DataRepository;
@@ -19,7 +20,6 @@ import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
 import com.sap.ai.sdk.grounding.model.Pipeline;
-import com.sap.ai.sdk.grounding.model.ResultsInner1;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.SearchConfiguration;
@@ -95,7 +95,13 @@ class GroundingController {
     if ("json".equals(format)) {
       return results;
     }
-    final var messages = results.getResults().stream().map(ResultsInner1::getMessage).toList();
+    final var messages =
+        results.getResults().stream()
+            .flatMap(resultsInner1 -> resultsInner1.getResults().stream())
+            .flatMap(result -> result.getDataRepository().getDocuments().stream())
+            .flatMap(dataRepositorySearchResult -> dataRepositorySearchResult.getChunks().stream())
+            .map(Chunk::getContent)
+            .toList();
     return "Found the following response(s): " + messages;
   }
 

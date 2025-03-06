@@ -57,6 +57,9 @@ class GroundingTest {
   void testCreateDeleteCollection() {
     final var controller = new GroundingController();
 
+    // (0) DELETE OLD DOCUMENTS
+    this.deleteOldDocuments();
+
     // (1) CREATE COLLECTION
     final var collectionId = controller.createCollection(JSON_FORMAT);
     final var collectionUuid = UUID.fromString(collectionId);
@@ -65,7 +68,7 @@ class GroundingTest {
     // (1.1) TEST COLLECTION LOOKUP
     this.testCollectionsGetAll();
 
-    // (2) SANITY CHECK: NO DOCUMENTS
+    // (2) SANITY CHECK: NO DOCUMENTS IN COLLECTION
     final var documentsEmpty = controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT);
     assertThat(documentsEmpty).isInstanceOf(Documents.class);
     assertThat(((Documents) documentsEmpty).getCount()).isEqualTo(0);
@@ -141,6 +144,22 @@ class GroundingTest {
     for (final var chunk : chunks) {
       assertThat(chunk.getContent()).isNotEmpty();
       assertThat(chunk.getMetadata()).isNotNull().isNotEmpty();
+    }
+  }
+
+  void deleteOldDocuments() {
+    final var controller = new GroundingController();
+
+    final var result = controller.getAllCollections(JSON_FORMAT);
+    assertThat(result).isInstanceOf(CollectionsListResponse.class);
+    final var collectionsList = ((CollectionsListResponse) result).getResources();
+
+    for (final var collection : collectionsList) {
+      if ("e2e".equals(collection.getTitle())) {
+        final var deletion = controller.deleteDocuments(collection.getId(), JSON_FORMAT);
+        assertThat(deletion).isInstanceOf(OpenApiResponse.class);
+        assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
+      }
     }
   }
 }
