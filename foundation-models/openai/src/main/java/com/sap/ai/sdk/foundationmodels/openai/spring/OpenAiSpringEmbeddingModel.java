@@ -52,7 +52,7 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
           "Invalid EmbeddingRequest: the model option must be null, as the client already defines the model.");
     }
 
-    final var openAiRequest = createEmbeddingCreateRequest(request);
+    final var openAiRequest = createEmbeddingsCreateRequest(request);
     final var openAiResponse = client.embedding(openAiRequest);
 
     return createSpringAiEmbeddingResponse(openAiResponse);
@@ -67,7 +67,7 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
     throw new UnsupportedOperationException("Only text type document supported for embedding");
   }
 
-  private EmbeddingsCreateRequest createEmbeddingCreateRequest(
+  private EmbeddingsCreateRequest createEmbeddingsCreateRequest(
       @Nonnull final EmbeddingRequest request) {
     return new EmbeddingsCreateRequest()
         .dimensions(request.getOptions().getDimensions())
