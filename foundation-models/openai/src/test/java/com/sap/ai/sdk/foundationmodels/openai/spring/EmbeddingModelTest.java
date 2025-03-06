@@ -96,7 +96,7 @@ class EmbeddingModelTest {
 
     val expectedOpenAiRequest =
         new EmbeddingsCreateRequest()
-            .input(EmbeddingsCreateRequestInput.create(List.of(document.getText())));
+            .input(EmbeddingsCreateRequestInput.create(List.of(document.getFormattedContent())));
 
     when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
         .thenReturn(openAiResponse);
