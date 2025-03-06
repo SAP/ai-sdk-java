@@ -59,6 +59,7 @@ class EmbeddingModelTest {
         .isEqualTo(new float[] {0.0f, 3.4028235E38f, 1.4E-45f, 1.23f, -4.56f});
     assertThat(actualSpringAiResponse.getMetadata().getUsage().getPromptTokens()).isEqualTo(2);
     assertThat(actualSpringAiResponse.getMetadata().getUsage().getTotalTokens()).isEqualTo(2);
+    assertThat(actualSpringAiResponse.getMetadata().getModel()).isEqualTo("ada");
   }
 
   @Test
