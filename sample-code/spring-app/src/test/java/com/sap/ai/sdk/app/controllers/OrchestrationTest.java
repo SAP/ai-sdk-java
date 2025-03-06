@@ -167,7 +167,7 @@ class OrchestrationTest {
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
-    var response = service.grounding("What does Joule do?");
+    var response = service.grounding("What does Joule do?", true);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -176,6 +176,9 @@ class OrchestrationTest {
     assertThat(result.getModuleResults().getGrounding()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getData()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
+
+    var maskingResult = result.getModuleResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
   }
 
   @Test

@@ -170,7 +170,13 @@ class OrchestrationUnitTest {
         GroundingModuleConfig.create()
             .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
             .config(groundingConfigConfig);
-    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+    val maskingConfig = // optional masking configuration
+        DpiMasking.anonymization()
+            .withEntities(DPIEntities.SENSITIVE_DATA)
+            .withMaskGroundingInput(true)
+            .withAllowList(List.of("SAP", "Joule"));
+    final var configWithGrounding =
+        config.withGroundingConfig(groundingConfig).withMaskingConfig(maskingConfig);
 
     final Map<String, String> inputParams =
         Map.of("query", "String used for similarity search in database");
@@ -199,6 +205,18 @@ class OrchestrationUnitTest {
             "grounding_result",
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
+
+    var inputMasking = response.getOriginalResponse().getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage())
+        .isEqualTo("Input to LLM and Grounding is masked successfully.");
+    Object data = inputMasking.getData();
+    assertThat(data)
+        .isEqualTo(
+            Map.of(
+                "masked_template",
+                "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
+                "masked_grounding_input", // maskGroundingInput: true will make this field present
+                "[\"What does Joule do?\"]"));
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
