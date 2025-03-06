@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.app.services.SpringAiOpenAiService;
-import java.util.List;
 import javax.annotation.Nullable;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 class SpringAiOpenAiController {
   @Autowired private SpringAiOpenAiService service;
 
-  @GetMapping("/embed")
+  @GetMapping("/embed/strings")
   Object embed(@Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response =
-        service.embedWithEmbeddingRequest(List.of("The quick brown fox jumps over the lazy dog."));
+    val response = service.embedStrings();
 
     if ("json".equals(format)) {
       return response;

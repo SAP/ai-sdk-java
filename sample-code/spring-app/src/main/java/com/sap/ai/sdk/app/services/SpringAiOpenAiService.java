@@ -20,13 +20,13 @@ public class SpringAiOpenAiService {
   /**
    * Embeds a list of strings using the OpenAI embedding model.
    *
-   * @param strings the list of strings to embed
    * @return an {@code EmbeddingResponse} containing the embeddings and metadata
    */
   @Nonnull
-  public EmbeddingResponse embedWithEmbeddingRequest(@Nonnull final List<String> strings) {
+  public EmbeddingResponse embedStrings() {
     final var options = EmbeddingOptionsBuilder.builder().withDimensions(128).build();
-    final var springAiRequest = new EmbeddingRequest(strings, options);
+    final var springAiRequest =
+        new EmbeddingRequest(List.of("The quick brown fox jumps over the lazy dog."), options);
 
     return new OpenAiSpringEmbeddingModel(client).call(springAiRequest);
   }
@@ -34,12 +34,11 @@ public class SpringAiOpenAiService {
   /**
    * Embeds the content of a document using the OpenAI embedding model.
    *
-   * @param content the content of the document to embed
    * @return a float array representing the embedding of the document's content
    */
   @Nonnull
-  public float[] embedWithDocument(@Nonnull final String content) {
-    final var document = new Document(content);
+  public float[] embedDocument() {
+    final var document = new Document("The quick brown fox jumps over the lazy dog.");
     return new OpenAiSpringEmbeddingModel(client).embed(document);
   }
 }

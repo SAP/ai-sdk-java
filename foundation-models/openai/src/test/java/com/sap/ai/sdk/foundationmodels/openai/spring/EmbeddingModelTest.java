@@ -80,7 +80,7 @@ class EmbeddingModelTest {
     assertThatThrownBy(() -> model.call(springAiRequest))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage(
-            "Invalid EmbeddingRequest: the model option must be null, as the client already defines the model.");
+            "Do not set a model in EmbeddingOptions, as the OpenAiClient already defines the model.");
   }
 
   @Test
@@ -104,19 +104,6 @@ class EmbeddingModelTest {
     float[] result = new OpenAiSpringEmbeddingModel(client).embed(document);
 
     assertThat(result).isEqualTo(new float[] {1, 2, 3});
-  }
-
-  @Test
-  @DisplayName("Embed document with missing text content throws exception")
-  void testEmbedNonTextDocumentThrows() {
-    val document = mock(Document.class);
-    when(document.isText()).thenReturn(false);
-
-    val model = new OpenAiSpringEmbeddingModel(client);
-
-    assertThatThrownBy(() -> model.embed(document))
-        .isInstanceOf(UnsupportedOperationException.class)
-        .hasMessage("Only text type document supported for embedding");
   }
 
   private static <T> Consumer<T> assertRecursiveEquals(T expected) {

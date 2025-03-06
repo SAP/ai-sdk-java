@@ -170,20 +170,19 @@ Please find [an example in our Spring Boot application](../../sample-code/spring
 
 ## OpenAI
 
+### Introduction
+
+Our OpenAI client is integrated in Spring AI classes:
+
 ### Embedding
 
-With SpringAI integration (_since v1.5.0_), you may now obtain embedding vectors for a list of strings as follows:
+Here is how to obtain embedding vectors for a list of strings:
 
 You first initialize the OpenAI client for your model of choice and attach it  `OpenAiSpringEmbeddingModel` object.
 
 ```java
 OpenAiClient client = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
 OpenAiSpringEmbeddingModel embeddingModel = new OpenAiSpringEmbeddingModel(client);
-``` 
-
-Then you can invoke `embded` method on the `embeddingModel` object with the text items to embed.
-
-```java
 List<String> texts = List.of("Hello", "World");
 float[] embeddings = embeddingModel.embed(texts);
 ```

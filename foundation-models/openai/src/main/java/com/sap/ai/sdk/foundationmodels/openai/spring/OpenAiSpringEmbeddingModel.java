@@ -68,7 +68,7 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
 
     if (request.getOptions().getModel() != null) {
       throw new IllegalArgumentException(
-          "Invalid EmbeddingRequest: the model option must be null, as the client already defines the model.");
+          "Do not set a model in EmbeddingOptions, as the OpenAiClient already defines the model.");
     }
 
     final var openAiRequest = createEmbeddingsCreateRequest(request);
@@ -80,12 +80,10 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
   @Override
   @Nonnull
   public float[] embed(@Nonnull final Document document) throws UnsupportedOperationException {
-    if (document.isText()) {
-      return embed(
-          Objects.requireNonNull(
-              document.getFormattedContent(this.metadataMode), "Document is missing text content"));
-    }
-    throw new UnsupportedOperationException("Only text type document supported for embedding");
+    return embed(
+        Objects.requireNonNull(
+            document.getFormattedContent(this.metadataMode),
+            "Formatted content of the document should not be null."));
   }
 
   private EmbeddingsCreateRequest createEmbeddingsCreateRequest(
