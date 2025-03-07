@@ -438,8 +438,11 @@
               <rules>
                 <bannedDependencies>
                   <message>Spring AI dependencies should be optional</message>
+                  <excludes>
+                    <exclude>org.springframework.ai:*</exclude>
+                  </excludes>
                   <includes>
-                    <include>org.springframework.ai:*</include>
+                    <include>com.sap.ai.sdk.app:*</include>
                   </includes>
                 </bannedDependencies>
               </rules>
