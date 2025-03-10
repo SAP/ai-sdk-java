@@ -83,6 +83,7 @@
     <enforcer.skipEnforceScopeLoggerBridges>false</enforcer.skipEnforceScopeLoggerBridges>
     <enforcer.skipEnforceScopeLombok>false</enforcer.skipEnforceScopeLombok>
     <enforcer.skipBanGeneratedModulesReference>false</enforcer.skipBanGeneratedModulesReference>
+    <enforcer.skipEnforceSpringAIOptional>false</enforcer.skipEnforceSpringAIOptional>
     <!-- Test coverage DO NOT CHANGE IN THE ROOT POM -->
     <coverage.complexity>100%</coverage.complexity>
     <coverage.line>100%</coverage.line>
@@ -435,12 +436,13 @@
               <goal>enforce</goal>
             </goals>
             <configuration>
+              <skip>${enforcer.skipEnforceSpringAIOptional}</skip>
               <rules>
                 <bannedDependencies>
                   <message>Spring AI dependencies should be optional</message>
-                  <includes>
-                    <include>org.springframework.ai:*</include>
-                  </includes>
+                  <excludes>
+                    <exclude>org.springframework.ai:*</exclude>
+                  </excludes>
                 </bannedDependencies>
               </rules>
             </configuration>
