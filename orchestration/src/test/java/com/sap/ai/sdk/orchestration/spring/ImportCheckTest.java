@@ -16,10 +16,12 @@ import java.util.stream.Stream;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
-public class ImportCheckTest {
+class ImportCheckTest {
+
+  private static final JavaParser PARSER = new JavaParser();
 
   @Test
-  public void testSpringAIOptional() throws IOException {
+  void testSpringAIOptional() throws IOException {
     String springAI = "org.springframework.ai";
     checkImports("com/sap/ai/sdk/orchestration", springAI, false);
     checkImports("com/sap/ai/sdk/orchestration/spring", springAI, true);
@@ -31,7 +33,7 @@ public class ImportCheckTest {
 
     boolean hasImport = false;
     for (File file : javaFiles) {
-      val result = new JavaParser().parse(file).getResult();
+      val result = PARSER.parse(file).getResult();
       assertThat(result).isPresent();
 
       hasImport =
@@ -55,7 +57,7 @@ public class ImportCheckTest {
     try (Stream<Path> files = Files.list(orchestrationPackage)) {
       return files
           .filter(Files::isRegularFile)
-          .map(java.nio.file.Path::toFile)
+          .map(Path::toFile)
           .filter(file -> file.getName().endsWith(".java"))
           .collect(Collectors.toList());
     }

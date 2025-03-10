@@ -41,7 +41,7 @@
     <!-- Allow logging frameworks because this module is not released -->
     <enforcer.skipBanLoggingFrameworks>true</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>true</enforcer.skipEnforceScopeLoggerBridges>
-    <enforcer.enforce-spring-ai-optional>false</enforcer.enforce-spring-ai-optional>
+    <enforcer.skipEnforceSpringAIOptional>true</enforcer.skipEnforceSpringAIOptional>
   </properties>
 
   <dependencies>
@@ -214,16 +214,6 @@
         <configuration>
           <skipAddThirdParty>true</skipAddThirdParty>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-spring-ai-optional</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
