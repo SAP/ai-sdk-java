@@ -57,6 +57,9 @@ class GroundingTest {
   void testCreateDeleteCollection() {
     final var controller = new GroundingController();
 
+    // (0) DELETE OLD COLLECTIONS
+    controller.deleteCollections(JSON_FORMAT);
+
     // (1) CREATE COLLECTION
     final var collectionId = controller.createCollection(JSON_FORMAT);
     final var collectionUuid = UUID.fromString(collectionId);
@@ -65,7 +68,7 @@ class GroundingTest {
     // (1.1) TEST COLLECTION LOOKUP
     this.testCollectionsGetAll();
 
-    // (2) SANITY CHECK: NO DOCUMENTS
+    // (2) SANITY CHECK: NO DOCUMENTS IN COLLECTION
     final var documentsEmpty = controller.getDocumentsByCollectionId(collectionUuid, JSON_FORMAT);
     assertThat(documentsEmpty).isInstanceOf(Documents.class);
     assertThat(((Documents) documentsEmpty).getCount()).isEqualTo(0);
@@ -86,8 +89,8 @@ class GroundingTest {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     this.assertDocumentSearchResult((RetievalSearchResults) search, dayOfWeek);
 
-    // (5) DELETE COLLECTION
-    Object deletion = controller.deleteDocuments(collectionUuid, JSON_FORMAT);
+    // (5) CLEAN UP
+    Object deletion = controller.deleteCollection(collectionUuid, JSON_FORMAT);
     assertThat(deletion).isInstanceOf(OpenApiResponse.class);
     assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
 
