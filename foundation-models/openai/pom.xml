@@ -147,7 +147,7 @@
             </configuration>
             <executions>
               <execution>
-                <id>orchestration</id>
+                <id>openai</id>
                 <goals>
                   <goal>generate</goal>
                 </goals>

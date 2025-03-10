@@ -13,9 +13,11 @@ package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
 /** The type of the tool call, in this case &#x60;function&#x60;. */
+@Beta
 public enum ToolCallType {
   FUNCTION("function"),
 
