@@ -108,7 +108,8 @@ Use a prepared template and execute requests with by passing only the input para
 
 ```java
 var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-var templatingConfig = TemplatingModuleConfig.create().template(template);
+var templatingConfig =
+        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
 var inputParams = Map.of("language", "German");
@@ -118,6 +119,22 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 ```
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
+
+Alternatively, you can use already prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
+
+```java
+var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+var configWithTemplate = config.withTemplateConfig(template);
+
+var inputParams = Map.of("language", "Italian", "input", "cloud ERP systems");
+var prompt = new OrchestrationPrompt(inputParams);
+
+var result = client.chatCompletion(prompt, configWithTemplate);
+```
+
+A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+
+You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
 
 ## Message history
 
@@ -210,6 +227,10 @@ In this example, the input will be masked before the call to the LLM and will re
 
 Use the grounding module to provide additional context to the AI model. 
 
+### Vector Data Repository
+
+One way to provide grounding is by using a vector data repository. This can be done as follows.
+
 ```java
 // optional filter for collections
 var documentMetadata =
@@ -233,7 +254,37 @@ var result = client.chatCompletion(prompt, configWithGrounding);
 
 In this example, the AI model is provided with additional context in the form of grounding information.
 
-`Grounding.create()` is by default a document grounding service with a vector data repository.
+### Grounding via *help.sap.com*
+
+You can also use grounding based on *help.sap.com* for convenient SAP specific grounding. This can be achieved as follows.
+
+```java
+var groundingHelpSapCom =
+        DocumentGroundingFilter.create()
+                .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+var groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+var configWithGrounding = config.withGrounding(groundingConfig);
+
+var prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+var response = client.chatCompletion(prompt, configWithGrounding);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+### Mask Grounding
+
+You can also mask both the grounding information and the prompt message:
+
+```java
+var maskingConfig =
+    DpiMasking.anonymization()
+        .withEntities(DPIEntities.SENSITIVE_DATA)
+        .withMaskGroundingEnabled()
+        .withAllowList(List.of("SAP", "Joule"));
+var maskedGroundingConfig = groundingConfig.withMaskingConfig(maskingConfig);
+
+var result = client.chatCompletion(prompt, maskedGroundingConfig);
+```
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 

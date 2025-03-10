@@ -1,0 +1,14 @@
+{
+  "request_id": "d647775b-725b-428a-90b7-348cbf30f7f4",
+  "code": 500,
+  "message": "Internal Server Error",
+  "location": "Masking Module - Masking",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "yo"
+      }
+    ]
+  }
+}

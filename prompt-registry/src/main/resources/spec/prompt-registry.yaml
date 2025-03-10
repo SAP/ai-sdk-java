@@ -29,12 +29,12 @@ paths:
                     example: "Service Unavailable"
   /internal/promptTemplates/provisioning:
     parameters:
-      - in: header
-        name: AI-Main-Tenant
-        required: true
-        schema:
-          type: string
-        description: The main tenant name
+    - in: header
+      name: AI-Main-Tenant
+      required: true
+      schema:
+        type: string
+      description: The main tenant name
     post:
       operationId: registry.controller.prompt_controller.onboard_tenant
       responses:
@@ -369,7 +369,7 @@ components:
       properties:
         type:
           type: string
-          enum: [ "text" ]
+          enum: ["text"]
         text:
           type: string
     ImageContent:
@@ -380,7 +380,7 @@ components:
       properties:
         type:
           type: string
-          enum: [ "image_url" ]
+          enum: ["image_url"]
         image_url:
           type: object
           required:
@@ -396,6 +396,8 @@ components:
       type: object
       required:
         - template
+      additionalProperties:
+        type: object
       properties:
         template:
           type: array
@@ -405,6 +407,9 @@ components:
           type: object
         additionalFields:
           type: object
+          description: >
+            DEPRECATED. Please use additional_fields instead.
+          deprecated: true
         response_format:
           description: >
             Response format that the model output should adhere to.
@@ -422,7 +427,7 @@ components:
             This is the same as the OpenAI definition.
           items:
             $ref: "#/components/schemas/ChatCompletionTool"
-
+    
     # below ReponseFormats are copied from openapi spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
     ResponseFormatText:
       type: object
@@ -549,7 +554,7 @@ components:
         documentation about the format. 
         Omitting `parameters` defines a function with an empty parameter list.
       additionalProperties: true
-
+    
     PromptTemplatePostRequest:
       type: object
       required:

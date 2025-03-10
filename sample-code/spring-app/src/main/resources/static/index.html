@@ -340,7 +340,7 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/grounding"
+                                    <button type="submit" formaction="/orchestration/grounding/false"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/orchestration/grounding</code>
                                     </button>
@@ -349,7 +349,28 @@
                                     </div>
                                 </div>
                             </li>
-
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/orchestration/grounding/true"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/orchestration/<wbr>maskGroundingInput</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        The request to the grounding service will be masked.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/orchestration/groundingHelpSapCom"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/orchestration/groundingHelpSapCom</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
+                                    </div>
+                                </div>
+                            </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit" formaction="/orchestration/image"
@@ -391,6 +412,28 @@
                                     </button>
                                     <div class="tooltip-content">
                                         Chat request to an LLM through the Orchestration service where the output will consist of valid JSON.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/orchestration/templateFromPromptRegistryById"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/orchestration/templateFromPromptRegistryById</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Chat request to an LLM through the Orchestration service using a template from the prompt registry identified by ID.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/orchestration/templateFromPromptRegistryByScenario"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/orchestration/templateFromPromptRegistryByScenario</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Chat request to an LLM through the Orchestration service using a template from the prompt registry identified by Scenario, name, and version.
                                     </div>
                                 </div>
                             </li>
@@ -574,6 +617,16 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/spring-ai-orchestration/chatMemory"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-orchestration/chatMemory</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        The user firsts asks the capital of France, then the typical for there, chat memory will remember that the user is inquiring about France.
+                                    </div>
+                                </div>
                         </ul>
                     </div>
                 </div>

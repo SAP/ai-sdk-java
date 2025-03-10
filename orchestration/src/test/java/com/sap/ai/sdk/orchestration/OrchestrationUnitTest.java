@@ -127,6 +127,21 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testCompletionError() {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withStatus(500)
+                    .withBodyFile("error500Response.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
+        .hasMessage(
+            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+  }
+
+  @Test
   void testGrounding() throws IOException {
     stubFor(
         post(urlPathEqualTo("/completion"))
@@ -155,7 +170,13 @@ class OrchestrationUnitTest {
         GroundingModuleConfig.create()
             .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
             .config(groundingConfigConfig);
-    final var configWithGrounding = config.withGroundingConfig(groundingConfig);
+    val maskingConfig = // optional masking configuration
+        DpiMasking.anonymization()
+            .withEntities(DPIEntities.SENSITIVE_DATA)
+            .withMaskGroundingInput(true)
+            .withAllowList(List.of("SAP", "Joule"));
+    final var configWithGrounding =
+        config.withGroundingConfig(groundingConfig).withMaskingConfig(maskingConfig);
 
     final Map<String, String> inputParams =
         Map.of("query", "String used for similarity search in database");
@@ -185,9 +206,50 @@ class OrchestrationUnitTest {
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
 
-    final String requestBody = new String(fileLoader.apply("groundingRequest.json").readAllBytes());
-    verify(
-        postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(requestBody)));
+    var inputMasking = response.getOriginalResponse().getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage())
+        .isEqualTo("Input to LLM and Grounding is masked successfully.");
+    Object data = inputMasking.getData();
+    assertThat(data)
+        .isEqualTo(
+            Map.of(
+                "masked_template",
+                "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
+                "masked_grounding_input", // maskGroundingInput: true will make this field present
+                "[\"What does Joule do?\"]"));
+
+    try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testGroundingWithHelpSapCom() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingHelpSapComResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    val groundingHelpSapCom =
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+    val response = client.chatCompletion(prompt, configWithGrounding);
+
+    assertThat(
+            response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
+        .contains(
+            "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
+    assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
+
+    try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
   }
 
   @Test
@@ -860,6 +922,58 @@ class OrchestrationUnitTest {
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
 
     try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryById() throws IOException {
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResponse.json")
+                      .withHeader("Content-Type", "application/json")));
+
+      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var configWithTemplate = config.withTemplateConfig(template);
+
+      var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+      var prompt = new OrchestrationPrompt(inputParams);
+
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+      assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+
+      try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      }
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenario() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+    assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+    assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+
+    try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
