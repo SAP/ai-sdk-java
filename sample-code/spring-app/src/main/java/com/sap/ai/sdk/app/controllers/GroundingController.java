@@ -27,6 +27,7 @@ import com.sap.ai.sdk.grounding.model.SearchConfiguration;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -223,7 +224,7 @@ class GroundingController {
     final var collections = this.getAllCollections("json");
     final var collectionsList = ((CollectionsListResponse) collections).getResources();
     var statusCode = 0;
-    final var deletions = new java.util.ArrayList<>(List.of());
+    final var deletions = new ArrayList<>();
     for (final var collection : collectionsList) {
       if (COLLECTION_TITLE.equals(collection.getTitle())) {
         final var deletion = (OpenApiResponse) this.deleteCollection(collection.getId(), "json");
