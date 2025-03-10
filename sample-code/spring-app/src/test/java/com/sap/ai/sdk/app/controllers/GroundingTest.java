@@ -90,7 +90,7 @@ class GroundingTest {
     this.assertDocumentSearchResult((RetievalSearchResults) search, dayOfWeek);
 
     // (5) CLEAN UP
-    Object deletion = controller.deleteDocuments(collectionUuid, JSON_FORMAT);
+    Object deletion = controller.deleteCollection(collectionUuid, JSON_FORMAT);
     assertThat(deletion).isInstanceOf(OpenApiResponse.class);
     assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
 

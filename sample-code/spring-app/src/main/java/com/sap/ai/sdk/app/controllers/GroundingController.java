@@ -172,7 +172,7 @@ class GroundingController {
 
   /** Delete all items from a given grounding document collection. */
   @GetMapping("/vector/collection/by-id/{id}/clear")
-  Object deleteDocuments(
+  Object deleteCollection(
       @Nonnull @PathVariable("id") final UUID collectionId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
@@ -192,7 +192,6 @@ class GroundingController {
       if (del.getStatusCode() >= 400) {
         final var msg = "Document {} could not be deleted, status code [{}], headers: {}";
         log.error(msg, documentId, del.getStatusCode(), del.getHeaders());
-        throw new IllegalStateException("Document deletion failed for id " + documentId);
       }
     }
     final var response = CLIENT_VECTOR.deleteCollectionById(RESOURCE_GROUP, collectionId + "");
@@ -225,15 +224,11 @@ class GroundingController {
     final var collectionsList = ((CollectionsListResponse) collections).getResources();
     var statusCode = 0;
     final var deletions = new java.util.ArrayList<>(List.of());
-
     for (final var collection : collectionsList) {
       if (COLLECTION_TITLE.equals(collection.getTitle())) {
-        final var deletion = this.deleteDocuments(collection.getId(), "json");
-        if (deletion instanceof OpenApiResponse) {
-          final var status = ((OpenApiResponse) deletion).getStatusCode();
-          deletions.add(deletion);
-          statusCode = Math.max(status, statusCode);
-        }
+        final var deletion = (OpenApiResponse) this.deleteCollection(collection.getId(), "json");
+        deletions.add(deletion);
+        statusCode = Math.max(deletion.getStatusCode(), statusCode);
       }
     }
     if ("json".equals(format)) {
