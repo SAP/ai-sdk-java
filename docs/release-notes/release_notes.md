@@ -16,6 +16,7 @@
 - [Orchestration] [Prompt templates can be consumed from registry.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#Chat-completion-with-Templates)
 - [Orchestration] [Masking is now available on grounding.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#mask-grounding)
 - [Orchestration] [Grounding via *help.sap.com* is enabled.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#grounding)
+- [OpenAI] [Spring AI integration for embedding calls.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/SPRING_AI_INTEGRATION.md#embedding)
 
 ### 📈 Improvements
 
