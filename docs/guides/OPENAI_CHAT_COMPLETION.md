@@ -292,7 +292,7 @@ Get the embeddings of a text input in list of float values:
 ```java
 var request = new OpenAiEmbeddingRequest(List.of("Hello World"));
 
-OpenAiEmbeddingResponse response = OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+OpenAiEmbeddingResponse response = OpenAiClient.forModel(TEXT_EMBEDDING_3_SMALL).embedding(request);
 float[] embedding = embedding.getEmbeddings().get(0);
 ```
 
@@ -302,7 +302,7 @@ float[] embedding = embedding.getEmbeddings().get(0);
 ```java
 var request = new OpenAiEmbeddingParameters().setInput("Hello World");
 
-OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+OpenAiEmbeddingOutput embedding = OpenAiClient.forModel(TEXT_EMBEDDING_3_SMALL).embedding(request);
 
 float[] embedding = embedding.getData().get(0).getEmbedding();
 ```

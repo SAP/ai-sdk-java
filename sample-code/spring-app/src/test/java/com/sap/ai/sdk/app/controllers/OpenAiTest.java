@@ -88,7 +88,7 @@ class OpenAiTest {
     final var embedding = service.embedding("Hello world");
 
     assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
-    assertThat(embedding.getModel()).isEqualTo("ada");
+    assertThat(embedding.getModel()).isEqualTo("text-embedding-3-small");
     assertThat(embedding.getObject()).isEqualTo("list");
   }
 

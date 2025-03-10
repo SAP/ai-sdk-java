@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -122,7 +122,7 @@ public class OpenAiService {
   public OpenAiEmbeddingOutput embedding(@Nonnull final String input) {
     final var request = new OpenAiEmbeddingParameters().setInput(input);
 
-    return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+    return OpenAiClient.forModel(TEXT_EMBEDDING_3_SMALL).embedding(request);
   }
 
   /**
