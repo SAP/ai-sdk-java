@@ -57,8 +57,8 @@ class GroundingTest {
   void testCreateDeleteCollection() {
     final var controller = new GroundingController();
 
-    // (0) DELETE OLD DOCUMENTS
-    this.deleteOldDocuments();
+    // (0) DELETE OLD COLLECTIONS
+    controller.deleteCollections(JSON_FORMAT);
 
     // (1) CREATE COLLECTION
     final var collectionId = controller.createCollection(JSON_FORMAT);
@@ -89,7 +89,7 @@ class GroundingTest {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     this.assertDocumentSearchResult((RetievalSearchResults) search, dayOfWeek);
 
-    // (5) DELETE COLLECTION
+    // (5) CLEAN UP
     Object deletion = controller.deleteDocuments(collectionUuid, JSON_FORMAT);
     assertThat(deletion).isInstanceOf(OpenApiResponse.class);
     assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
@@ -144,22 +144,6 @@ class GroundingTest {
     for (final var chunk : chunks) {
       assertThat(chunk.getContent()).isNotEmpty();
       assertThat(chunk.getMetadata()).isNotNull().isNotEmpty();
-    }
-  }
-
-  void deleteOldDocuments() {
-    final var controller = new GroundingController();
-
-    final var result = controller.getAllCollections(JSON_FORMAT);
-    assertThat(result).isInstanceOf(CollectionsListResponse.class);
-    final var collectionsList = ((CollectionsListResponse) result).getResources();
-
-    for (final var collection : collectionsList) {
-      if ("e2e".equals(collection.getTitle())) {
-        final var deletion = controller.deleteDocuments(collection.getId(), JSON_FORMAT);
-        assertThat(deletion).isInstanceOf(OpenApiResponse.class);
-        assertThat(((OpenApiResponse) deletion).getStatusCode()).isEqualTo(202);
-      }
     }
   }
 }

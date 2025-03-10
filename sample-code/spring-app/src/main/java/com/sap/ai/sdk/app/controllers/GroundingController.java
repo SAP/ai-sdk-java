@@ -12,6 +12,7 @@ import com.sap.ai.sdk.grounding.model.BaseDocument;
 import com.sap.ai.sdk.grounding.model.Chunk;
 import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;
+import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepository;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
@@ -24,6 +25,7 @@ import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.SearchConfiguration;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
+import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +51,7 @@ class GroundingController {
   private static final RetrievalApi CLIENT_RETRIEVAL = new GroundingClient().retrieval();
   private static final VectorApi CLIENT_VECTOR = new GroundingClient().vector();
   private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
+  private static final String COLLECTION_TITLE = "ai-sdk-java-e2e-test";
 
   /** Retrieve (up to 10) grounding pipeline entities. */
   @GetMapping("/pipelines/list")
@@ -136,7 +139,8 @@ class GroundingController {
   String createCollection(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var embeddingConfig = EmbeddingConfig.create().modelName(TEXT_EMBEDDING_ADA_002.name());
-    final var request = CollectionRequest.create().embeddingConfig(embeddingConfig).title("e2e");
+    final var request =
+        CollectionRequest.create().embeddingConfig(embeddingConfig).title(COLLECTION_TITLE);
     final var documents = CLIENT_VECTOR.createCollection(RESOURCE_GROUP, request);
     final Map<String, List<String>> headers = documents.getHeaders();
 
@@ -211,5 +215,30 @@ class GroundingController {
     }
     final var ids = document.getChunks().stream().map(TextOnlyBaseChunk::getContent).toList();
     return "The following document ids are available: %s.".formatted(ids);
+  }
+
+  /** Delete all collections. */
+  @GetMapping("/vector/collection/clear")
+  Object deleteCollections(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var collections = this.getAllCollections("json");
+    final var collectionsList = ((CollectionsListResponse) collections).getResources();
+    var statusCode = 0;
+    final var deletions = new java.util.ArrayList<>(List.of());
+
+    for (final var collection : collectionsList) {
+      if (COLLECTION_TITLE.equals(collection.getTitle())) {
+        final var deletion = this.deleteDocuments(collection.getId(), "json");
+        if (deletion instanceof OpenApiResponse) {
+          final var status = ((OpenApiResponse) deletion).getStatusCode();
+          deletions.add(deletion);
+          statusCode = Math.max(status, statusCode);
+        }
+      }
+    }
+    if ("json".equals(format)) {
+      return deletions;
+    }
+    return statusCode >= 400 ? "Failed to delete collections" : "Deletion successful";
   }
 }
