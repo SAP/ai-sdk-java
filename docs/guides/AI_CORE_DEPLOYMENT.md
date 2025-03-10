@@ -50,11 +50,11 @@ In addition to the prerequisites above, we assume you have already set up the fo
         "executableId": "azure-openai",
         "id": "12345-123-123-123-123456abcdefg",
         "inputArtifactBindings": [],
-        "name": "gpt-35-turbo",
+        "name": "gpt-4o-mini",
         "parameterBindings": [
           {
             "key": "modelName",
-            "value": "gpt-35-turbo"
+            "value": "gpt-4o-mini"
           },
           {
             "key": "modelVersion",

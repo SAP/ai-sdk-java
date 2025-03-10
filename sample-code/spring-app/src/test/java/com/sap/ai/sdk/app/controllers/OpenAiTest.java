@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.OpenAiService;
@@ -50,7 +50,7 @@ class OpenAiTest {
 
     final var totalOutput = new OpenAiChatCompletionOutput();
     final var filledDeltaCount = new AtomicInteger(0);
-    OpenAiClient.forModel(GPT_35_TURBO)
+    OpenAiClient.forModel(GPT_4O_MINI)
         .streamChatCompletionDeltas(request)
         .peek(totalOutput::addDelta)
         // foreach consumes all elements, closing the stream at the end

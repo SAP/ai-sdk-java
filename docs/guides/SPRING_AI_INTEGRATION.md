@@ -51,7 +51,7 @@ The Orchestration client is integrated in Spring AI classes:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt = new Prompt("What is the capital of France?", opts);
@@ -66,7 +66,7 @@ Configure Orchestration modules withing Spring AI:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
 val masking =
     DpiMasking.anonymization()
@@ -91,7 +91,7 @@ to the frontend in real-time.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt =
@@ -130,7 +130,7 @@ Then add your tool to the options:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
@@ -150,7 +150,7 @@ Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 val memory = new InMemoryChatMemory();

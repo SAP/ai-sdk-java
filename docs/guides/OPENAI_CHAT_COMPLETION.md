@@ -71,7 +71,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
         "id": "d123456abcdefg",
         "deploymentUrl": "https://api.ai.region.aws.ml.hana.ondemand.com/v2/inference/deployments/d123456abcdefg",
         "configurationId": "12345-123-123-123-123456abcdefg",
-        "configurationName": "gpt-35-turbo",
+        "configurationName": "gpt-4o-mini",
         "scenarioId": "foundation-models",
         "status": "RUNNING",
         "statusMessage": null,
@@ -86,7 +86,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
           "resources": {
             "backendDetails": {
               "model": {
-                "name": "gpt-35-turbo",
+                "name": "gpt-4o-mini",
                 "version": "latest"
               }
             }
@@ -106,7 +106,7 @@ In addition to the prerequisites above, we assume you have already set up the fo
 
 ```java
 var result =
-    OpenAiClient.forModel(GPT_35_TURBO)
+    OpenAiClient.forModel(GPT_4O_MINI)
         .withSystemPrompt("You are a helpful AI")
         .chatCompletion("Hello World! Why is this phrase so famous?");
 
@@ -146,7 +146,7 @@ var userMessage =
 var request =
     new OpenAiChatCompletionParameters().addMessages(systemMessage, userMessage);
 
-var result = OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+var result = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
 String resultMessage = result.getContent();
 ```
@@ -162,7 +162,7 @@ To target a specific version, you can specify the model version along with the m
 
 ```java
 OpenAiChatCompletionOutput result =
-    OpenAiClient.forModel(GPT_35_TURBO.withVersion("1106")).chatCompletion(request);
+    OpenAiClient.forModel(GPT_4O_MINI.withVersion("1106")).chatCompletion(request);
 ```
 
 ## Chat completion with Custom Model
@@ -187,7 +187,7 @@ This is a blocking example for streaming and printing directly to the console:
 ```java
 String msg = "Can you give me the first 100 numbers of the Fibonacci sequence?";
 
-OpenAiClient client = OpenAiClient.forModel(GPT_35_TURBO);
+OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
 
 // try-with-resources on stream ensures the connection will be closed
 try (Stream<String> stream = client.streamChatCompletion(msg)) {
@@ -254,7 +254,7 @@ var userMessage =
 var requestParameters =
     new OpenAiChatCompletionParameters().addMessages(userMessage);
 
-var client = OpenAiClient.forModel(GPT_35_TURBO);
+var client = OpenAiClient.forModel(GPT_4O_MINI);
 var totalOutput = new OpenAiChatCompletionOutput();
 
 // Prepare the stream before starting the thread to handle any initialization exceptions

@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
@@ -35,7 +35,7 @@ public class OpenAiService {
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt) {
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(prompt);
+    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(prompt);
   }
 
   /**
@@ -50,7 +50,7 @@ public class OpenAiService {
         new OpenAiChatCompletionParameters()
             .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText(message));
 
-    return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
+    return OpenAiClient.forModel(GPT_4O_MINI).streamChatCompletionDeltas(request);
   }
 
   /**
@@ -60,7 +60,7 @@ public class OpenAiService {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String message) {
-    return OpenAiClient.forModel(GPT_35_TURBO)
+    return OpenAiClient.forModel(GPT_4O_MINI)
         .withSystemPrompt("Be a good, honest AI and answer the following question:")
         .streamChatCompletion(message);
   }
@@ -109,7 +109,7 @@ public class OpenAiService {
             .setTools(List.of(tool))
             .setToolChoiceFunction("fibonacci");
 
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
   }
 
   /**

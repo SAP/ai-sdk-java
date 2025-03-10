@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,7 +51,7 @@ class OpenAiV2Test {
     final var usageRef = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
 
-    OpenAiClient.forModel(GPT_35_TURBO)
+    OpenAiClient.forModel(GPT_4O_MINI)
         .streamChatCompletionDeltas(prompt)
         // foreach consumes all elements, closing the stream at the end
         .forEach(
@@ -67,7 +67,7 @@ class OpenAiV2Test {
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
 
     assertThat(usageRef.get().getTotalTokens()).isGreaterThan(0);
-    assertThat(usageRef.get().getPromptTokens()).isEqualTo(14);
+    assertThat(usageRef.get().getPromptTokens()).isEqualTo(13);
     assertThat(usageRef.get().getCompletionTokens()).isGreaterThan(0);
   }
 
