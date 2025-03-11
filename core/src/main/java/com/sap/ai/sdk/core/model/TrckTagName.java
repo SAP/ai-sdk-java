@@ -11,123 +11,25 @@
 
 package com.sap.ai.sdk.core.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.annotations.Beta;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /** TrckTagName */
-@Beta // CHECKSTYLE:OFF
-public class TrckTagName
-// CHECKSTYLE:ON
-{
-  @JsonAnySetter @JsonAnyGetter
-  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
-
-  /** Default constructor for TrckTagName. */
-  protected TrckTagName() {}
+@Beta
+public interface TrckTagName {
+  /** Helper class to create a String that implements {@link TrckTagName}. */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
+      implements TrckTagName {}
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TrckTagName}.
+   * Creator to enable deserialization of a String.
    *
-   * @return The set of properties names
+   * @param val the value to use
+   * @return a new instance of {@link InnerString}.
    */
-  @JsonIgnore
+  @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  public Set<String> getCustomFieldNames() {
-    return cloudSdkCustomFields.keySet();
-  }
-
-  /**
-   * Get the value of an unrecognizable property of this {@link TrckTagName} instance.
-   *
-   * @deprecated Use {@link #toMap()} instead.
-   * @param name The name of the property
-   * @return The value of the property
-   * @throws NoSuchElementException If no property with the given name could be found.
-   */
-  @Nullable
-  @Deprecated
-  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
-    if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TrckTagName has no field with name '" + name + "'.");
-    }
-    return cloudSdkCustomFields.get(name);
-  }
-
-  /**
-   * Get the value of all properties of this {@link TrckTagName} instance including unrecognized
-   * properties.
-   *
-   * @return The map of all properties
-   */
-  @JsonIgnore
-  @Nonnull
-  public Map<String, Object> toMap() {
-    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    return declaredFields;
-  }
-
-  /**
-   * Set an unrecognizable property of this {@link TrckTagName} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
-   *
-   * @param customFieldName The name of the property
-   * @param customFieldValue The value of the property
-   */
-  @JsonIgnore
-  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
-    cloudSdkCustomFields.put(customFieldName, customFieldValue);
-  }
-
-  @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    final TrckTagName trckTagName = (TrckTagName) o;
-    return Objects.equals(this.cloudSdkCustomFields, trckTagName.cloudSdkCustomFields);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(cloudSdkCustomFields);
-  }
-
-  @Override
-  @Nonnull
-  public String toString() {
-    final StringBuilder sb = new StringBuilder();
-    sb.append("class TrckTagName {\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
-   */
-  private String toIndentedString(final java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-
-  /** Create a new {@link TrckTagName} instance. No arguments are required. */
-  public static TrckTagName create() {
-    return new TrckTagName();
+  static InnerString create(@Nonnull final String val) {
+    return new InnerString(val);
   }
 }

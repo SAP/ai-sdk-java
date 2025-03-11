@@ -187,6 +187,7 @@
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <removeEnumValuePrefix>true</removeEnumValuePrefix>
+                    <useOneOfCreators>true</useOneOfCreators>
                   </additionalProperties>
                 </configuration>
               </execution>
