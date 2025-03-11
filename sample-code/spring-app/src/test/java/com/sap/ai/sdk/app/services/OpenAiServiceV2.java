@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -37,7 +37,7 @@ public class OpenAiServiceV2 {
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt) {
-    return OpenAiClient.forModel(GPT_35_TURBO)
+    return OpenAiClient.forModel(GPT_4O_MINI)
         .chatCompletion(new OpenAiChatCompletionRequest(prompt));
   }
 
@@ -51,7 +51,7 @@ public class OpenAiServiceV2 {
       @Nonnull final String message) {
     final var request = new OpenAiChatCompletionRequest(OpenAiMessage.user(message));
 
-    return OpenAiClient.forModel(GPT_35_TURBO).streamChatCompletionDeltas(request);
+    return OpenAiClient.forModel(GPT_4O_MINI).streamChatCompletionDeltas(request);
   }
 
   /**
@@ -61,7 +61,7 @@ public class OpenAiServiceV2 {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String message) {
-    return OpenAiClient.forModel(GPT_35_TURBO)
+    return OpenAiClient.forModel(GPT_4O_MINI)
         .withSystemPrompt("Be a good, honest AI and answer the following question:")
         .streamChatCompletion(message);
   }
@@ -107,7 +107,7 @@ public class OpenAiServiceV2 {
             .withTools(List.of(tool))
             .withToolChoice(OpenAiToolChoice.function("fibonacci"));
 
-    return OpenAiClient.forModel(GPT_35_TURBO).chatCompletion(request);
+    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
   }
 
   /**
@@ -120,7 +120,7 @@ public class OpenAiServiceV2 {
   public OpenAiEmbeddingResponse embedding(@Nonnull final String input) {
     final var request = new OpenAiEmbeddingRequest(List.of(input));
 
-    return OpenAiClient.forModel(TEXT_EMBEDDING_ADA_002).embedding(request);
+    return OpenAiClient.forModel(TEXT_EMBEDDING_3_SMALL).embedding(request);
   }
 
   /**

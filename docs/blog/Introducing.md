@@ -94,7 +94,7 @@ Please open a [feature request](https://github.com/SAP/ai-sdk-java/issues/new/ch
 
 ```java
 var result = 
-  OpenAiClient.forModel(GPT_35_TURBO)
+  OpenAiClient.forModel(GPT_4O_MINI)
     .withSystemPrompt("You are a helpful AI")
     .chatCompletion("Hello World! Why is this phrase so famous?");
 

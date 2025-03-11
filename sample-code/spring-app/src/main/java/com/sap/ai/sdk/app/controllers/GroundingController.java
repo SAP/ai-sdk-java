@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_ADA_002;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static java.time.LocalDate.now;
 import static java.util.stream.Collectors.joining;
 
@@ -139,7 +139,7 @@ class GroundingController {
   @GetMapping("/vector/collection/create")
   String createCollection(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var embeddingConfig = EmbeddingConfig.create().modelName(TEXT_EMBEDDING_ADA_002.name());
+    final var embeddingConfig = EmbeddingConfig.create().modelName(TEXT_EMBEDDING_3_SMALL.name());
     final var request =
         CollectionRequest.create().embeddingConfig(embeddingConfig).title(COLLECTION_TITLE);
     final var documents = CLIENT_VECTOR.createCollection(RESOURCE_GROUP, request);

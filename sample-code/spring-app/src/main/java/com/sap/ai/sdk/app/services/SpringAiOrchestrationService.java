@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Flux;
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   /**
