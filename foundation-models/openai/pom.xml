@@ -174,7 +174,7 @@
                     createChatCompletionRequest.data_sources</excludeProperties>
 
                     <!-- new: remove unassigned components -->
-                    <fixRedundantComponents>true</fixRedundantComponents>
+                    <removeUnusedComponents>true</removeUnusedComponents>
                   </additionalProperties>
                 </configuration>
               </execution>
