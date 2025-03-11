@@ -41,6 +41,7 @@
     <!-- Allow logging frameworks because this module is not released -->
     <enforcer.skipBanLoggingFrameworks>true</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>true</enforcer.skipEnforceScopeLoggerBridges>
+    <enforcer.skipEnforceSpringAIOptional>true</enforcer.skipEnforceSpringAIOptional>
   </properties>
 
   <dependencies>

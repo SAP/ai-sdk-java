@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.orchestration.spring;
+package com.sap.ai.sdk.foundationmodels.openai.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,8 +23,8 @@ class ImportCheckTest {
   @Test
   void testSpringAIOptional() throws IOException {
     String springAI = "org.springframework.ai";
-    checkImports("com/sap/ai/sdk/orchestration", springAI, false);
-    checkImports("com/sap/ai/sdk/orchestration/spring", springAI, true);
+    checkImports("com/sap/ai/sdk/foundationmodels/openai", springAI, false);
+    checkImports("com/sap/ai/sdk/foundationmodels/openai/spring", springAI, true);
   }
 
   private void checkImports(String packagePath, String imports, boolean shouldContain)
@@ -48,13 +48,13 @@ class ImportCheckTest {
     }
 
     if (shouldContain) {
-      assertTrue(hasImport, "Orchestration Spring should contain Spring AI imports");
+      assertTrue(hasImport, "OpenAI Spring should contain Spring AI imports");
     }
   }
 
   private List<File> getJavaFiles(String packagePath) throws IOException {
-    Path orchestrationPackage = Paths.get("src/main/java", packagePath);
-    try (Stream<Path> files = Files.list(orchestrationPackage)) {
+    Path openAiPackage = Paths.get("src/main/java", packagePath);
+    try (Stream<Path> files = Files.list(openAiPackage)) {
       return files
           .filter(Files::isRegularFile)
           .map(Path::toFile)

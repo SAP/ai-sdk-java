@@ -140,6 +140,7 @@
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <useOneOfCreators>true</useOneOfCreators>
                   </additionalProperties>
                 </configuration>
               </execution>

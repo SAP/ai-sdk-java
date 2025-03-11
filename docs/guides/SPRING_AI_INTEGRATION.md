@@ -3,11 +3,15 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Orchestration Chat Completion](#orchestration-chat-completion)
-- [Orchestration Masking](#orchestration-masking)
-- [Stream chat completion](#stream-chat-completion)
-- [Tool Calling](#tool-calling)
-- [Chat Memory](#chat-memory)
+- [Orchestration](#orchestration)
+  - [Chat Completion](#chat-completion)
+  - [Masking](#masking)
+  - [Stream chat completion](#stream-chat-completion)
+  - [Tool Calling](#tool-calling)
+  - [Chat Memory](#chat-memory)
+- [OpenAI](#openai)
+  - [Embedding](#embedding)
+
 
 ## Introduction
 
@@ -36,16 +40,18 @@ First, add the Spring AI dependency to your `pom.xml`:
 > [!NOTE]
 > Note that currently no stable version of Spring AI exists just yet.
 > The AI SDK currently uses the [M6 milestone](https://spring.io/blog/2025/02/14/spring-ai-1-0-0-m6-released).
-> 
+>
 > Please be aware that future versions of the AI SDK may increase the Spring AI version.
 
-## Orchestration Chat Completion
+## Orchestration
+
+### Chat Completion
 
 The Orchestration client is integrated in Spring AI classes:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt = new Prompt("What is the capital of France?", opts);
@@ -54,13 +60,13 @@ ChatResponse response = client.call(prompt);
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Orchestration Masking
+### Masking
 
 Configure Orchestration modules withing Spring AI:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
 val masking =
     DpiMasking.anonymization()
@@ -78,14 +84,14 @@ ChatResponse response = client.call(prompt);
 Please
 find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Stream chat completion
+### Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend
 to the frontend in real-time.
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 Prompt prompt =
@@ -94,7 +100,7 @@ Prompt prompt =
 Flux<ChatResponse> flux = client.stream(prompt);
 
 // also possible to keep only the chat completion text
-Flux<String> responseFlux = 
+Flux<String> responseFlux =
     flux.map(chatResponse -> chatResponse.getResult().getOutput().getContent());
 ```
 
@@ -102,7 +108,7 @@ _Note: A Spring endpoint can return `Flux` instead of `ResponseEntity`._
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
 
-## Tool Calling
+### Tool Calling
 
 First define a function that will be called by the LLM:
 
@@ -124,7 +130,7 @@ Then add your tool to the options:
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
@@ -144,7 +150,7 @@ Create a Spring AI `ChatClient` from our `OrchestrationChatModel` and add a chat
 
 ```java
 ChatModel client = new OrchestrationChatModel();
-OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO);
+OrchestrationModuleConfig config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 OrchestrationChatOptions opts = new OrchestrationChatOptions(config);
 
 val memory = new InMemoryChatMemory();
@@ -161,3 +167,24 @@ String content2 = cl.prompt(prompt2).call().content();
 ```
 
 Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOrchestrationService.java).
+
+## OpenAI
+
+### Introduction
+
+Our OpenAI client is integrated in Spring AI classes:
+
+### Embedding
+
+Here is how to obtain embedding vectors for a list of strings:
+
+You first initialize the OpenAI client for your model of choice and attach it  `OpenAiSpringEmbeddingModel` object.
+
+```java
+OpenAiClient client = OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL);
+OpenAiSpringEmbeddingModel embeddingModel = new OpenAiSpringEmbeddingModel(client);
+List<String> texts = List.of("Hello", "World");
+float[] embeddings = embeddingModel.embed(texts);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/SpringAiOpenAiService.java).
