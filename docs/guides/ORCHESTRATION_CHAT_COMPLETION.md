@@ -380,9 +380,17 @@ Note, that it is necessary to tell the AI model to actually return a JSON object
 If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. in order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
 
 ```java
+static class TestClass {
+  @JsonProperty(required = true)  // <-- this is necessary for the schema generation
+  private String stringField;
+
+  @JsonProperty(required = true)
+  private int intField;
+}
+
 var schema =
-    ResponseJsonSchema.fromType(MyClass.class)
-            .withDescription("Output schema for the example class MyClass.")
+    ResponseJsonSchema.fromType(TestClass.class)
+            .withDescription("Output schema for the example class TestClass.")
             .withStrict(true);
 var config = new OrchestrationModuleConfig()
         .withLlmConfig(OrchestrationAiModel.GPT_4O);
