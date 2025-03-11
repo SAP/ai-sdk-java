@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 
 /** Output of LLM module. Follows the OpenAI spec. */
 @Beta // CHECKSTYLE:OFF
-public class LLMModuleResultSynchronous implements LLMModuleResult
+public class LLMModuleResultSynchronous
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -48,7 +48,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
   private String systemFingerprint;
 
   @JsonProperty("choices")
-  private List<LLMChoice> choices = new ArrayList<>();
+  private List<LLMChoiceSynchronous> choices = new ArrayList<>();
 
   @JsonProperty("usage")
   private TokenUsage usage;
@@ -226,7 +226,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
    * @return The same instance of this {@link LLMModuleResultSynchronous} class
    */
   @Nonnull
-  public LLMModuleResultSynchronous choices(@Nonnull final List<LLMChoice> choices) {
+  public LLMModuleResultSynchronous choices(@Nonnull final List<LLMChoiceSynchronous> choices) {
     this.choices = choices;
     return this;
   }
@@ -238,7 +238,8 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
    * @return The same instance of type {@link LLMModuleResultSynchronous}
    */
   @Nonnull
-  public LLMModuleResultSynchronous addChoicesItem(@Nonnull final LLMChoice choicesItem) {
+  public LLMModuleResultSynchronous addChoicesItem(
+      @Nonnull final LLMChoiceSynchronous choicesItem) {
     if (this.choices == null) {
       this.choices = new ArrayList<>();
     }
@@ -252,7 +253,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
    * @return choices The choices of this {@link LLMModuleResultSynchronous} instance.
    */
   @Nonnull
-  public List<LLMChoice> getChoices() {
+  public List<LLMChoiceSynchronous> getChoices() {
     return choices;
   }
 
@@ -261,7 +262,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
    *
    * @param choices Choices
    */
-  public void setChoices(@Nonnull final List<LLMChoice> choices) {
+  public void setChoices(@Nonnull final List<LLMChoiceSynchronous> choices) {
     this.choices = choices;
   }
 
@@ -485,7 +486,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
      * @param choices Choices
      * @return The LLMModuleResultSynchronous builder.
      */
-    Builder5 choices(@Nonnull final List<LLMChoice> choices);
+    Builder5 choices(@Nonnull final List<LLMChoiceSynchronous> choices);
 
     /**
      * Set the choices of this {@link LLMModuleResultSynchronous} instance.
@@ -493,7 +494,7 @@ public class LLMModuleResultSynchronous implements LLMModuleResult
      * @param choices Choices
      * @return The LLMModuleResultSynchronous builder.
      */
-    default Builder5 choices(@Nonnull final LLMChoice... choices) {
+    default Builder5 choices(@Nonnull final LLMChoiceSynchronous... choices) {
       return choices(Arrays.asList(choices));
     }
   }

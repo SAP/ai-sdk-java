@@ -33,7 +33,7 @@ public class CompletionPostResponseStreaming
   private String requestId;
 
   @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  private ModuleResultsStreaming moduleResults;
 
   @JsonProperty("orchestration_result")
   private LLMModuleResultStreaming orchestrationResult;
@@ -85,7 +85,7 @@ public class CompletionPostResponseStreaming
    */
   @Nonnull
   public CompletionPostResponseStreaming moduleResults(
-      @Nullable final ModuleResults moduleResults) {
+      @Nullable final ModuleResultsStreaming moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -97,7 +97,7 @@ public class CompletionPostResponseStreaming
    *     instance.
    */
   @Nonnull
-  public ModuleResults getModuleResults() {
+  public ModuleResultsStreaming getModuleResults() {
     return moduleResults;
   }
 
@@ -106,7 +106,7 @@ public class CompletionPostResponseStreaming
    *
    * @param moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
    */
-  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
+  public void setModuleResults(@Nullable final ModuleResultsStreaming moduleResults) {
     this.moduleResults = moduleResults;
   }
 

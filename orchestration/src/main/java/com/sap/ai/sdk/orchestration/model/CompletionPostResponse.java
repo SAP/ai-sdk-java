@@ -33,10 +33,10 @@ public class CompletionPostResponse
   private String requestId;
 
   @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  private ModuleResultsSynchronous moduleResults;
 
   @JsonProperty("orchestration_result")
-  private LLMModuleResult orchestrationResult;
+  private LLMModuleResultSynchronous orchestrationResult;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -83,7 +83,8 @@ public class CompletionPostResponse
    * @return The same instance of this {@link CompletionPostResponse} class
    */
   @Nonnull
-  public CompletionPostResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
+  public CompletionPostResponse moduleResults(
+      @Nonnull final ModuleResultsSynchronous moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -94,7 +95,7 @@ public class CompletionPostResponse
    * @return moduleResults The moduleResults of this {@link CompletionPostResponse} instance.
    */
   @Nonnull
-  public ModuleResults getModuleResults() {
+  public ModuleResultsSynchronous getModuleResults() {
     return moduleResults;
   }
 
@@ -103,7 +104,7 @@ public class CompletionPostResponse
    *
    * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
    */
-  public void setModuleResults(@Nonnull final ModuleResults moduleResults) {
+  public void setModuleResults(@Nonnull final ModuleResultsSynchronous moduleResults) {
     this.moduleResults = moduleResults;
   }
 
@@ -116,7 +117,7 @@ public class CompletionPostResponse
    */
   @Nonnull
   public CompletionPostResponse orchestrationResult(
-      @Nonnull final LLMModuleResult orchestrationResult) {
+      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
     return this;
   }
@@ -128,7 +129,7 @@ public class CompletionPostResponse
    *     instance.
    */
   @Nonnull
-  public LLMModuleResult getOrchestrationResult() {
+  public LLMModuleResultSynchronous getOrchestrationResult() {
     return orchestrationResult;
   }
 
@@ -137,7 +138,8 @@ public class CompletionPostResponse
    *
    * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
    */
-  public void setOrchestrationResult(@Nonnull final LLMModuleResult orchestrationResult) {
+  public void setOrchestrationResult(
+      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
   }
 
@@ -278,7 +280,7 @@ public class CompletionPostResponse
      * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
      * @return The CompletionPostResponse builder.
      */
-    Builder2 moduleResults(@Nonnull final ModuleResults moduleResults);
+    Builder2 moduleResults(@Nonnull final ModuleResultsSynchronous moduleResults);
   }
 
   /** Builder helper class. */
@@ -289,6 +291,7 @@ public class CompletionPostResponse
      * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
      * @return The CompletionPostResponse instance.
      */
-    CompletionPostResponse orchestrationResult(@Nonnull final LLMModuleResult orchestrationResult);
+    CompletionPostResponse orchestrationResult(
+        @Nonnull final LLMModuleResultSynchronous orchestrationResult);
   }
 }
