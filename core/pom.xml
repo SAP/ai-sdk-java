@@ -192,6 +192,7 @@
                     <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
                     <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
                     <aiSdkConstructor>true</aiSdkConstructor>
+                    <useOneOfCreators>true</useOneOfCreators>
                   </additionalProperties>
                 </configuration>
               </execution>
