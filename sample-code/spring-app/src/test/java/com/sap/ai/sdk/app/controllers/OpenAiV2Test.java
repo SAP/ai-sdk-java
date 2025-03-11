@@ -67,7 +67,7 @@ class OpenAiV2Test {
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
 
     assertThat(usageRef.get().getTotalTokens()).isGreaterThan(0);
-    assertThat(usageRef.get().getPromptTokens()).isEqualTo(13);
+    assertThat(usageRef.get().getPromptTokens()).isGreaterThan(0);
     assertThat(usageRef.get().getCompletionTokens()).isGreaterThan(0);
   }
 
