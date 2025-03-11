@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseMessageToolCall */
+/** MessageToolCall */
 @Beta // CHECKSTYLE:OFF
-public class ResponseMessageToolCall
+public class MessageToolCall
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -36,10 +36,10 @@ public class ResponseMessageToolCall
 
   /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
   public enum TypeEnum {
-    /** The FUNCTION option of this ResponseMessageToolCall */
+    /** The FUNCTION option of this MessageToolCall */
     FUNCTION("function"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseMessageToolCall */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this MessageToolCall */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -74,7 +74,7 @@ public class ResponseMessageToolCall
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseMessageToolCall
+     * @return The enum value of type MessageToolCall
      */
     @JsonCreator
     @Nonnull
@@ -92,22 +92,22 @@ public class ResponseMessageToolCall
   private TypeEnum type;
 
   @JsonProperty("function")
-  private ResponseMessageToolCallFunction function;
+  private MessageToolCallFunction function;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseMessageToolCall. */
-  protected ResponseMessageToolCall() {}
+  /** Default constructor for MessageToolCall. */
+  protected MessageToolCall() {}
 
   /**
-   * Set the id of this {@link ResponseMessageToolCall} instance and return the same instance.
+   * Set the id of this {@link MessageToolCall} instance and return the same instance.
    *
    * @param id The ID of the tool call.
-   * @return The same instance of this {@link ResponseMessageToolCall} class
+   * @return The same instance of this {@link MessageToolCall} class
    */
   @Nonnull
-  public ResponseMessageToolCall id(@Nonnull final String id) {
+  public MessageToolCall id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
@@ -115,7 +115,7 @@ public class ResponseMessageToolCall
   /**
    * The ID of the tool call.
    *
-   * @return id The id of this {@link ResponseMessageToolCall} instance.
+   * @return id The id of this {@link MessageToolCall} instance.
    */
   @Nonnull
   public String getId() {
@@ -123,7 +123,7 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Set the id of this {@link ResponseMessageToolCall} instance.
+   * Set the id of this {@link MessageToolCall} instance.
    *
    * @param id The ID of the tool call.
    */
@@ -132,13 +132,13 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Set the type of this {@link ResponseMessageToolCall} instance and return the same instance.
+   * Set the type of this {@link MessageToolCall} instance and return the same instance.
    *
    * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-   * @return The same instance of this {@link ResponseMessageToolCall} class
+   * @return The same instance of this {@link MessageToolCall} class
    */
   @Nonnull
-  public ResponseMessageToolCall type(@Nonnull final TypeEnum type) {
+  public MessageToolCall type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -146,7 +146,7 @@ public class ResponseMessageToolCall
   /**
    * The type of the tool. Currently, only &#x60;function&#x60; is supported.
    *
-   * @return type The type of this {@link ResponseMessageToolCall} instance.
+   * @return type The type of this {@link MessageToolCall} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -154,7 +154,7 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Set the type of this {@link ResponseMessageToolCall} instance.
+   * Set the type of this {@link MessageToolCall} instance.
    *
    * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
    */
@@ -163,13 +163,13 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Set the function of this {@link ResponseMessageToolCall} instance and return the same instance.
+   * Set the function of this {@link MessageToolCall} instance and return the same instance.
    *
-   * @param function The function of this {@link ResponseMessageToolCall}
-   * @return The same instance of this {@link ResponseMessageToolCall} class
+   * @param function The function of this {@link MessageToolCall}
+   * @return The same instance of this {@link MessageToolCall} class
    */
   @Nonnull
-  public ResponseMessageToolCall function(@Nonnull final ResponseMessageToolCallFunction function) {
+  public MessageToolCall function(@Nonnull final MessageToolCallFunction function) {
     this.function = function;
     return this;
   }
@@ -177,24 +177,24 @@ public class ResponseMessageToolCall
   /**
    * Get function
    *
-   * @return function The function of this {@link ResponseMessageToolCall} instance.
+   * @return function The function of this {@link MessageToolCall} instance.
    */
   @Nonnull
-  public ResponseMessageToolCallFunction getFunction() {
+  public MessageToolCallFunction getFunction() {
     return function;
   }
 
   /**
-   * Set the function of this {@link ResponseMessageToolCall} instance.
+   * Set the function of this {@link MessageToolCall} instance.
    *
-   * @param function The function of this {@link ResponseMessageToolCall}
+   * @param function The function of this {@link MessageToolCall}
    */
-  public void setFunction(@Nonnull final ResponseMessageToolCallFunction function) {
+  public void setFunction(@Nonnull final MessageToolCallFunction function) {
     this.function = function;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseMessageToolCall}.
+   * Get the names of the unrecognizable properties of the {@link MessageToolCall}.
    *
    * @return The set of properties names
    */
@@ -205,7 +205,7 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseMessageToolCall} instance.
+   * Get the value of an unrecognizable property of this {@link MessageToolCall} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -216,15 +216,14 @@ public class ResponseMessageToolCall
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ResponseMessageToolCall has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MessageToolCall has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseMessageToolCall} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link MessageToolCall} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -239,8 +238,8 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseMessageToolCall} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link MessageToolCall} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -258,11 +257,11 @@ public class ResponseMessageToolCall
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseMessageToolCall responseMessageToolCall = (ResponseMessageToolCall) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseMessageToolCall.cloudSdkCustomFields)
-        && Objects.equals(this.id, responseMessageToolCall.id)
-        && Objects.equals(this.type, responseMessageToolCall.type)
-        && Objects.equals(this.function, responseMessageToolCall.function);
+    final MessageToolCall messageToolCall = (MessageToolCall) o;
+    return Objects.equals(this.cloudSdkCustomFields, messageToolCall.cloudSdkCustomFields)
+        && Objects.equals(this.id, messageToolCall.id)
+        && Objects.equals(this.type, messageToolCall.type)
+        && Objects.equals(this.function, messageToolCall.function);
   }
 
   @Override
@@ -274,7 +273,7 @@ public class ResponseMessageToolCall
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseMessageToolCall {\n");
+    sb.append("class MessageToolCall {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    function: ").append(toIndentedString(function)).append("\n");
@@ -296,21 +295,21 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseMessageToolCall} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link MessageToolCall}
+   * instance with all required arguments.
    */
   public static Builder create() {
     return (id) ->
-        (type) -> (function) -> new ResponseMessageToolCall().id(id).type(type).function(function);
+        (type) -> (function) -> new MessageToolCall().id(id).type(type).function(function);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the id of this {@link ResponseMessageToolCall} instance.
+     * Set the id of this {@link MessageToolCall} instance.
      *
      * @param id The ID of the tool call.
-     * @return The ResponseMessageToolCall builder.
+     * @return The MessageToolCall builder.
      */
     Builder1 id(@Nonnull final String id);
   }
@@ -318,10 +317,10 @@ public class ResponseMessageToolCall
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the type of this {@link ResponseMessageToolCall} instance.
+     * Set the type of this {@link MessageToolCall} instance.
      *
      * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-     * @return The ResponseMessageToolCall builder.
+     * @return The MessageToolCall builder.
      */
     Builder2 type(@Nonnull final TypeEnum type);
   }
@@ -329,11 +328,11 @@ public class ResponseMessageToolCall
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the function of this {@link ResponseMessageToolCall} instance.
+     * Set the function of this {@link MessageToolCall} instance.
      *
-     * @param function The function of this {@link ResponseMessageToolCall}
-     * @return The ResponseMessageToolCall instance.
+     * @param function The function of this {@link MessageToolCall}
+     * @return The MessageToolCall instance.
      */
-    ResponseMessageToolCall function(@Nonnull final ResponseMessageToolCallFunction function);
+    MessageToolCall function(@Nonnull final MessageToolCallFunction function);
   }
 }

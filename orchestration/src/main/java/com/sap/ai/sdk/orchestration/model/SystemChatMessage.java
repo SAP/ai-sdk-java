@@ -13,8 +13,10 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,31 +26,85 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SingleChatMessage */
+/** SystemChatMessage */
 @Beta // CHECKSTYLE:OFF
-public class SingleChatMessage implements ChatMessage
+public class SystemChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
+  /** Gets or Sets role */
+  public enum RoleEnum {
+    /** The SYSTEM option of this SystemChatMessage */
+    SYSTEM("system"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this SystemChatMessage */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    RoleEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type SystemChatMessage
+     */
+    @JsonCreator
+    @Nonnull
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
   @JsonProperty("role")
-  private String role;
+  private RoleEnum role;
 
   @JsonProperty("content")
-  private String content;
+  private SystemChatMessageContent content;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SingleChatMessage. */
-  protected SingleChatMessage() {}
+  /** Default constructor for SystemChatMessage. */
+  protected SystemChatMessage() {}
 
   /**
-   * Set the role of this {@link SingleChatMessage} instance and return the same instance.
+   * Set the role of this {@link SystemChatMessage} instance and return the same instance.
    *
-   * @param role The role of this {@link SingleChatMessage}
-   * @return The same instance of this {@link SingleChatMessage} class
+   * @param role The role of this {@link SystemChatMessage}
+   * @return The same instance of this {@link SystemChatMessage} class
    */
   @Nonnull
-  public SingleChatMessage role(@Nonnull final String role) {
+  public SystemChatMessage role(@Nonnull final RoleEnum role) {
     this.role = role;
     return this;
   }
@@ -56,30 +112,30 @@ public class SingleChatMessage implements ChatMessage
   /**
    * Get role
    *
-   * @return role The role of this {@link SingleChatMessage} instance.
+   * @return role The role of this {@link SystemChatMessage} instance.
    */
   @Nonnull
-  public String getRole() {
+  public RoleEnum getRole() {
     return role;
   }
 
   /**
-   * Set the role of this {@link SingleChatMessage} instance.
+   * Set the role of this {@link SystemChatMessage} instance.
    *
-   * @param role The role of this {@link SingleChatMessage}
+   * @param role The role of this {@link SystemChatMessage}
    */
-  public void setRole(@Nonnull final String role) {
+  public void setRole(@Nonnull final RoleEnum role) {
     this.role = role;
   }
 
   /**
-   * Set the content of this {@link SingleChatMessage} instance and return the same instance.
+   * Set the content of this {@link SystemChatMessage} instance and return the same instance.
    *
-   * @param content The content of this {@link SingleChatMessage}
-   * @return The same instance of this {@link SingleChatMessage} class
+   * @param content The content of this {@link SystemChatMessage}
+   * @return The same instance of this {@link SystemChatMessage} class
    */
   @Nonnull
-  public SingleChatMessage content(@Nonnull final String content) {
+  public SystemChatMessage content(@Nonnull final SystemChatMessageContent content) {
     this.content = content;
     return this;
   }
@@ -87,24 +143,24 @@ public class SingleChatMessage implements ChatMessage
   /**
    * Get content
    *
-   * @return content The content of this {@link SingleChatMessage} instance.
+   * @return content The content of this {@link SystemChatMessage} instance.
    */
   @Nonnull
-  public String getContent() {
+  public SystemChatMessageContent getContent() {
     return content;
   }
 
   /**
-   * Set the content of this {@link SingleChatMessage} instance.
+   * Set the content of this {@link SystemChatMessage} instance.
    *
-   * @param content The content of this {@link SingleChatMessage}
+   * @param content The content of this {@link SystemChatMessage}
    */
-  public void setContent(@Nonnull final String content) {
+  public void setContent(@Nonnull final SystemChatMessageContent content) {
     this.content = content;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SingleChatMessage}.
+   * Get the names of the unrecognizable properties of the {@link SystemChatMessage}.
    *
    * @return The set of properties names
    */
@@ -115,7 +171,7 @@ public class SingleChatMessage implements ChatMessage
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SingleChatMessage} instance.
+   * Get the value of an unrecognizable property of this {@link SystemChatMessage} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,13 +182,13 @@ public class SingleChatMessage implements ChatMessage
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("SingleChatMessage has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SystemChatMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SingleChatMessage} instance including
+   * Get the value of all properties of this {@link SystemChatMessage} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -147,7 +203,7 @@ public class SingleChatMessage implements ChatMessage
   }
 
   /**
-   * Set an unrecognizable property of this {@link SingleChatMessage} instance. If the map
+   * Set an unrecognizable property of this {@link SystemChatMessage} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -166,10 +222,10 @@ public class SingleChatMessage implements ChatMessage
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SingleChatMessage singleChatMessage = (SingleChatMessage) o;
-    return Objects.equals(this.cloudSdkCustomFields, singleChatMessage.cloudSdkCustomFields)
-        && Objects.equals(this.role, singleChatMessage.role)
-        && Objects.equals(this.content, singleChatMessage.content);
+    final SystemChatMessage systemChatMessage = (SystemChatMessage) o;
+    return Objects.equals(this.cloudSdkCustomFields, systemChatMessage.cloudSdkCustomFields)
+        && Objects.equals(this.role, systemChatMessage.role)
+        && Objects.equals(this.content, systemChatMessage.content);
   }
 
   @Override
@@ -181,7 +237,7 @@ public class SingleChatMessage implements ChatMessage
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SingleChatMessage {\n");
+    sb.append("class SystemChatMessage {\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -202,32 +258,32 @@ public class SingleChatMessage implements ChatMessage
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link SingleChatMessage}
+   * Create a type-safe, fluent-api builder object to construct a new {@link SystemChatMessage}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (role) -> (content) -> new SingleChatMessage().role(role).content(content);
+    return (role) -> (content) -> new SystemChatMessage().role(role).content(content);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the role of this {@link SingleChatMessage} instance.
+     * Set the role of this {@link SystemChatMessage} instance.
      *
-     * @param role The role of this {@link SingleChatMessage}
-     * @return The SingleChatMessage builder.
+     * @param role The role of this {@link SystemChatMessage}
+     * @return The SystemChatMessage builder.
      */
-    Builder1 role(@Nonnull final String role);
+    Builder1 role(@Nonnull final RoleEnum role);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the content of this {@link SingleChatMessage} instance.
+     * Set the content of this {@link SystemChatMessage} instance.
      *
-     * @param content The content of this {@link SingleChatMessage}
-     * @return The SingleChatMessage instance.
+     * @param content The content of this {@link SystemChatMessage}
+     * @return The SystemChatMessage instance.
      */
-    SingleChatMessage content(@Nonnull final String content);
+    SystemChatMessage content(@Nonnull final SystemChatMessageContent content);
   }
 }

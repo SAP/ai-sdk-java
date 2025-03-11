@@ -13,13 +13,12 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.annotations.Beta;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -27,31 +26,85 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MultiChatMessage */
+/** UserChatMessage */
 @Beta // CHECKSTYLE:OFF
-public class MultiChatMessage implements ChatMessage
+public class UserChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
+  /** Gets or Sets role */
+  public enum RoleEnum {
+    /** The USER option of this UserChatMessage */
+    USER("user"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this UserChatMessage */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    RoleEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type UserChatMessage
+     */
+    @JsonCreator
+    @Nonnull
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
   @JsonProperty("role")
-  private String role;
+  private RoleEnum role;
 
   @JsonProperty("content")
-  private List<MultiChatMessageContent> content = new ArrayList<>();
+  private UserChatMessageContent content;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MultiChatMessage. */
-  protected MultiChatMessage() {}
+  /** Default constructor for UserChatMessage. */
+  protected UserChatMessage() {}
 
   /**
-   * Set the role of this {@link MultiChatMessage} instance and return the same instance.
+   * Set the role of this {@link UserChatMessage} instance and return the same instance.
    *
-   * @param role The role of this {@link MultiChatMessage}
-   * @return The same instance of this {@link MultiChatMessage} class
+   * @param role The role of this {@link UserChatMessage}
+   * @return The same instance of this {@link UserChatMessage} class
    */
   @Nonnull
-  public MultiChatMessage role(@Nonnull final String role) {
+  public UserChatMessage role(@Nonnull final RoleEnum role) {
     this.role = role;
     return this;
   }
@@ -59,70 +112,55 @@ public class MultiChatMessage implements ChatMessage
   /**
    * Get role
    *
-   * @return role The role of this {@link MultiChatMessage} instance.
+   * @return role The role of this {@link UserChatMessage} instance.
    */
   @Nonnull
-  public String getRole() {
+  public RoleEnum getRole() {
     return role;
   }
 
   /**
-   * Set the role of this {@link MultiChatMessage} instance.
+   * Set the role of this {@link UserChatMessage} instance.
    *
-   * @param role The role of this {@link MultiChatMessage}
+   * @param role The role of this {@link UserChatMessage}
    */
-  public void setRole(@Nonnull final String role) {
+  public void setRole(@Nonnull final RoleEnum role) {
     this.role = role;
   }
 
   /**
-   * Set the content of this {@link MultiChatMessage} instance and return the same instance.
+   * Set the content of this {@link UserChatMessage} instance and return the same instance.
    *
-   * @param content The content of this {@link MultiChatMessage}
-   * @return The same instance of this {@link MultiChatMessage} class
+   * @param content The content of this {@link UserChatMessage}
+   * @return The same instance of this {@link UserChatMessage} class
    */
   @Nonnull
-  public MultiChatMessage content(@Nonnull final List<MultiChatMessageContent> content) {
+  public UserChatMessage content(@Nonnull final UserChatMessageContent content) {
     this.content = content;
-    return this;
-  }
-
-  /**
-   * Add one content instance to this {@link MultiChatMessage}.
-   *
-   * @param contentItem The content that should be added
-   * @return The same instance of type {@link MultiChatMessage}
-   */
-  @Nonnull
-  public MultiChatMessage addContentItem(@Nonnull final MultiChatMessageContent contentItem) {
-    if (this.content == null) {
-      this.content = new ArrayList<>();
-    }
-    this.content.add(contentItem);
     return this;
   }
 
   /**
    * Get content
    *
-   * @return content The content of this {@link MultiChatMessage} instance.
+   * @return content The content of this {@link UserChatMessage} instance.
    */
   @Nonnull
-  public List<MultiChatMessageContent> getContent() {
+  public UserChatMessageContent getContent() {
     return content;
   }
 
   /**
-   * Set the content of this {@link MultiChatMessage} instance.
+   * Set the content of this {@link UserChatMessage} instance.
    *
-   * @param content The content of this {@link MultiChatMessage}
+   * @param content The content of this {@link UserChatMessage}
    */
-  public void setContent(@Nonnull final List<MultiChatMessageContent> content) {
+  public void setContent(@Nonnull final UserChatMessageContent content) {
     this.content = content;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link MultiChatMessage}.
+   * Get the names of the unrecognizable properties of the {@link UserChatMessage}.
    *
    * @return The set of properties names
    */
@@ -133,7 +171,7 @@ public class MultiChatMessage implements ChatMessage
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MultiChatMessage} instance.
+   * Get the value of an unrecognizable property of this {@link UserChatMessage} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -144,14 +182,14 @@ public class MultiChatMessage implements ChatMessage
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("MultiChatMessage has no field with name '" + name + "'.");
+      throw new NoSuchElementException("UserChatMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link MultiChatMessage} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link UserChatMessage} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -165,7 +203,7 @@ public class MultiChatMessage implements ChatMessage
   }
 
   /**
-   * Set an unrecognizable property of this {@link MultiChatMessage} instance. If the map previously
+   * Set an unrecognizable property of this {@link UserChatMessage} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -184,10 +222,10 @@ public class MultiChatMessage implements ChatMessage
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MultiChatMessage multiChatMessage = (MultiChatMessage) o;
-    return Objects.equals(this.cloudSdkCustomFields, multiChatMessage.cloudSdkCustomFields)
-        && Objects.equals(this.role, multiChatMessage.role)
-        && Objects.equals(this.content, multiChatMessage.content);
+    final UserChatMessage userChatMessage = (UserChatMessage) o;
+    return Objects.equals(this.cloudSdkCustomFields, userChatMessage.cloudSdkCustomFields)
+        && Objects.equals(this.role, userChatMessage.role)
+        && Objects.equals(this.content, userChatMessage.content);
   }
 
   @Override
@@ -199,7 +237,7 @@ public class MultiChatMessage implements ChatMessage
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MultiChatMessage {\n");
+    sb.append("class UserChatMessage {\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -220,42 +258,32 @@ public class MultiChatMessage implements ChatMessage
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link MultiChatMessage}
+   * Create a type-safe, fluent-api builder object to construct a new {@link UserChatMessage}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (role) -> (content) -> new MultiChatMessage().role(role).content(content);
+    return (role) -> (content) -> new UserChatMessage().role(role).content(content);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the role of this {@link MultiChatMessage} instance.
+     * Set the role of this {@link UserChatMessage} instance.
      *
-     * @param role The role of this {@link MultiChatMessage}
-     * @return The MultiChatMessage builder.
+     * @param role The role of this {@link UserChatMessage}
+     * @return The UserChatMessage builder.
      */
-    Builder1 role(@Nonnull final String role);
+    Builder1 role(@Nonnull final RoleEnum role);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the content of this {@link MultiChatMessage} instance.
+     * Set the content of this {@link UserChatMessage} instance.
      *
-     * @param content The content of this {@link MultiChatMessage}
-     * @return The MultiChatMessage instance.
+     * @param content The content of this {@link UserChatMessage}
+     * @return The UserChatMessage instance.
      */
-    MultiChatMessage content(@Nonnull final List<MultiChatMessageContent> content);
-
-    /**
-     * Set the content of this {@link MultiChatMessage} instance.
-     *
-     * @param content The content of this {@link MultiChatMessage}
-     * @return The MultiChatMessage instance.
-     */
-    default MultiChatMessage content(@Nonnull final MultiChatMessageContent... content) {
-      return content(Arrays.asList(content));
-    }
+    UserChatMessage content(@Nonnull final UserChatMessageContent content);
   }
 }

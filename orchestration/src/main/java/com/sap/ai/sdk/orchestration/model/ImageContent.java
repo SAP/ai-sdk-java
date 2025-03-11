@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** ImageContent */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class ImageContent implements MultiChatMessageContent, UserChatMessageContentPart
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */

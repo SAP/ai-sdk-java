@@ -15,13 +15,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.annotations.Beta;
 
-/** ChatMessage */
+/** AssistantChatMessageContentPart */
 @Beta
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = AssistantChatMessage.class),
-  @JsonSubTypes.Type(value = SystemChatMessage.class),
-  @JsonSubTypes.Type(value = ToolChatMessage.class),
-  @JsonSubTypes.Type(value = UserChatMessage.class),
+  @JsonSubTypes.Type(value = RefusalContent.class),
+  @JsonSubTypes.Type(value = TextContent.class),
 })
-public interface ChatMessage {}
+public interface AssistantChatMessageContentPart {}
