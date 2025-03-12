@@ -35,15 +35,15 @@ import java.util.Arrays;
 class OrchestrationController {
   @Autowired private OrchestrationService service;
 
-  @GetMapping("/completion")
-  Object completion(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.completion("HelloWorld!");
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
-  }
+//  @GetMapping("/completion")
+//  Object completion(
+//      @Nullable @RequestParam(value = "format", required = false) final String format) {
+//    final var response = service.completion("HelloWorld!");
+//    if ("json".equals(format)) {
+//      return response;
+//    }
+//    return response.getContent();
+//  }
 
   @PostMapping("/processInput")
   public Object processInput(@RequestParam("userInput") String userInput)  {

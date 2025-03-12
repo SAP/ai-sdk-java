@@ -45,35 +45,79 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OrchestrationService {
-  private final OrchestrationClient client = new OrchestrationClient();
 
-  @Getter
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
+    static class Translation {
+      @JsonProperty(required = true)
+      private String input;
+
+      @JsonProperty(required = true)
+      private String translation;
+
+      @JsonProperty(required = true)
+      private String language;
+    }
 
 
   @Nonnull
   public String processInput(@Nonnull final String userInput) {
     var client = new OrchestrationClient();
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
+    var prompt = new OrchestrationPrompt(userInput);
+
+    var response = client.chatCompletion(prompt, config);
+    return response.getContent();
+  }
+
+  @Nonnull
+  public String processInputWithGrounding(@Nonnull final String userInput) {
+    var client = new OrchestrationClient();
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
+
+    var schema = ResponseJsonSchema.fromType(Translation.class).withStrict(true);
+    var templatingConfig = TemplateConfig.create().withJsonSchemaResponse(schema);
+
+    var groundingFilter = DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    var groundingConfig = Grounding.create().filters(groundingFilter);
+    var prompt = groundingConfig.createGroundingPrompt(userInput);
+    var response = client.chatCompletion(prompt, config.withTemplateConfig(templatingConfig).withGrounding(groundingConfig));
+    return response.getContent();
+  }
+
+
+  @Nonnull
+  public String processInput00(@Nonnull final String userInput) {
+    var client = new OrchestrationClient();
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_35_TURBO.withParam(TEMPERATURE, 0));
     var prompt = new OrchestrationPrompt(userInput);
-    var maskingConfig = DpiMasking.anonymization().withEntities(DPIEntities.LOCATION);
-//    var response = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
-//    return response.getContent();
-    return "Success";
+
+    var response = client.chatCompletion(prompt, config);
+    return response.getContent();
   }
 
-
-  /**
-   * Chat request to OpenAI through the Orchestration service with a simple prompt.
-   *
-   * @return the assistant response object
-   */
   @Nonnull
-  public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    return client.chatCompletion(prompt, config);
+  public String processInput01(@Nonnull final String userInput) {
+    var client = new OrchestrationClient();
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
+    var prompt = new OrchestrationPrompt(userInput);
+
+    var schema = ResponseJsonSchema.fromType(Translation.class).withStrict(true);
+    var templatingConfig = TemplateConfig.create().withJsonSchemaResponse(schema);
+
+    var response = client.chatCompletion(prompt, config.withTemplateConfig(templatingConfig));
+    return response.getContent();
   }
+
+
+//  /**
+//   * Chat request to OpenAI through the Orchestration service with a simple prompt.
+//   *
+//   * @return the assistant response object
+//   */
+//  @Nonnull
+//  public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
+//    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+//    return client.chatCompletion(prompt, config);
+//  }
 
 //  /**
 //   * Chat request to OpenAI through the Orchestration service with an image.
