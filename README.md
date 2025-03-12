@@ -35,7 +35,7 @@ To use the SDK in a Java application, it is necessary to understand the technica
 - Java 17 or higher.
 - Access to an **SAP AI Core Service** instance.
 
-Please refer to [this documentation on **how to connect the SDK to AI Core**](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/connecting-to-ai-core).
+Please refer to [this documentation on **how to connect the SDK to AI Core**](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core).
 
 The following table lists the required versions, based on the latest release:
 
@@ -119,26 +119,26 @@ export AICORE_SERVICE_KEY='{ "clientid": "...", "clientsecret": "...", "url": ".
 mvn spring-boot:run
 ```
 
-Please find **detailed instructions** and more examples [in this documentation](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/connecting-to-ai-core#using-the-aicore_service_key-environment-variable).
+Please find **detailed instructions** and more examples [in this documentation](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core#using-the-aicore_service_key-environment-variable).
 
 ### Explore Further Capabilities
 
 Check out the options available for the `OrchestrationPrompt` and `OrchestrationModuleConfig` classes.
 You can use templating, content filtering, data masking and more.
-Please refer to [this documentation](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/orchestration-chat-completion) for more information.
+Please refer to [this documentation](https://sap.github.io/ai-sdk/docs/java/guides/orchestration-chat-completion) for more information.
 
 ## Documentation
 
 For more detailed information and advanced usage, please refer to the following:
 
-- [<img src="sample-code/spring-app/src/main/resources/static/BTP-Cockpit-Logo.png"/> Connecting to AI Core](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/connecting-to-ai-core)
-- [<img src="sample-code/spring-app/src/main/resources/static/Orchestration-Logo.png" width="16"/> Orchestration Chat Completion](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/orchestration-chat-completion)
-- [<img src="sample-code/spring-app/src/main/resources/static/Open-AI-Logo.svg" width="16"/> OpenAI Chat Completion](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/openai-chat-completion)
-- [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/spring-ai-integration)
-- [🧰 AI Core Deployment](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/ai-core-deployment)
-- [<img src="sample-code/spring-app/src/main/resources/static/grounding.png" width="16"/> AI Core Grounding](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/document-grounding)
+- [<img src="sample-code/spring-app/src/main/resources/static/BTP-Cockpit-Logo.png"/> Connecting to AI Core](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core)
+- [<img src="sample-code/spring-app/src/main/resources/static/Orchestration-Logo.png" width="16"/> Orchestration Chat Completion](https://sap.github.io/ai-sdk/docs/java/guides/orchestration-chat-completion)
+- [<img src="sample-code/spring-app/src/main/resources/static/Open-AI-Logo.svg" width="16"/> OpenAI Chat Completion](https://sap.github.io/ai-sdk/docs/java/guides/openai-chat-completion)
+- [<img src="https://spring.io/favicon-32x32.png" width="16"/> Spring AI Integration](https://sap.github.io/ai-sdk/docs/java/guides/spring-ai-integration)
+- [🧰 AI Core Deployment](https://sap.github.io/ai-sdk/docs/java/guides/ai-core-deployment)
+- [<img src="sample-code/spring-app/src/main/resources/static/grounding.png" width="16"/> AI Core Grounding](https://sap.github.io/ai-sdk/docs/java/guides/document-grounding)
 
-For updating versions, please refer to the [**Release Notes**](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/release-notes).
+For updating versions, please refer to the [**Release Notes**](https://sap.github.io/ai-sdk/docs/java/release-notes).
 
 ## Build the Project
 
@@ -177,7 +177,7 @@ OrchestrationClient client = new OrchestrationClient(destination);
 OpenAiClient client2 = OpenAiClient.withCustomDestination(destination);
 ```
 
-For more information, please refer to the [AI Core connectivity guide](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/connecting-to-ai-core) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
+For more information, please refer to the [AI Core connectivity guide](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
 
 ### _"There's a vulnerability warning `CVE-2021-41251`?"_
 

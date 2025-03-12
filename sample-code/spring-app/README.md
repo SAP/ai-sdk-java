@@ -17,7 +17,7 @@ Before you can run the sample app, you need to install the AI SDK into your loca
 
 Next, you'll need to set up credentials for the AI Core service: 
 
-* Follow [these instructions](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/connecting-to-ai-core) to create a service key for the AI Core service.
+* Follow [these instructions](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core) to create a service key for the AI Core service.
 
   ⚠️ Put the `.env` file in the sample app directory.
 
