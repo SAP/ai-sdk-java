@@ -12,11 +12,11 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] [Add Spring AI Chat Memory support](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/SPRING_AI_INTEGRATION.md#chat-memory)
-- [Orchestration] [Prompt templates can be consumed from registry.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#Chat-completion-with-Templates)
-- [Orchestration] [Masking is now available on grounding.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#mask-grounding)
-- [Orchestration] [Grounding via *help.sap.com* is enabled.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md#grounding)
-- [OpenAI] [Spring AI integration for embedding calls.](https://github.com/SAP/ai-sdk-java/tree/main/docs/guides/SPRING_AI_INTEGRATION.md#embedding)
+- [Orchestration] [Add Spring AI Chat Memory support](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/spring-ai-integration#chat-memory)
+- [Orchestration] [Prompt templates can be consumed from registry.](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/orchestration-chat-completion#chat-completion-with-templates)
+- [Orchestration] [Masking is now available on grounding.](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/orchestration-chat-completion#mask-grounding)
+- [Orchestration] [Grounding via *help.sap.com* is enabled.](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/orchestration-chat-completion#grounding)
+- [OpenAI] [Spring AI integration for embedding calls.](https://literate-bassoon-jn3vmzp.pages.github.io/docs/java/guides/spring-ai-integration#embedding)
 
 ### 📈 Improvements
 
