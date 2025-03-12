@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** ImageContent */
 @Beta // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent, UserChatMessageContentPart
+public class ImageContent implements MultiChatMessageContent
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */
@@ -135,7 +135,7 @@ public class ImageContent implements MultiChatMessageContent, UserChatMessageCon
    * @return The same instance of this {@link ImageContent} class
    */
   @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
+  public ImageContent imageUrl(@Nullable final ImageContentImageUrl imageUrl) {
     this.imageUrl = imageUrl;
     return this;
   }
@@ -155,7 +155,7 @@ public class ImageContent implements MultiChatMessageContent, UserChatMessageCon
    *
    * @param imageUrl The imageUrl of this {@link ImageContent}
    */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
+  public void setImageUrl(@Nullable final ImageContentImageUrl imageUrl) {
     this.imageUrl = imageUrl;
   }
 
@@ -262,7 +262,7 @@ public class ImageContent implements MultiChatMessageContent, UserChatMessageCon
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (type) -> new ImageContent().type(type);
   }
 
   /** Builder helper class. */
@@ -271,19 +271,8 @@ public class ImageContent implements MultiChatMessageContent, UserChatMessageCon
      * Set the type of this {@link ImageContent} instance.
      *
      * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
-     */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the imageUrl of this {@link ImageContent} instance.
-     *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
      * @return The ImageContent instance.
      */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    ImageContent type(@Nonnull final TypeEnum type);
   }
 }

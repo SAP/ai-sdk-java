@@ -26,12 +26,18 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** UserChatMessage */
+/** Messages sent by an end user, containing prompts or additional context information. */
 @Beta // CHECKSTYLE:OFF
 public class UserChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets role */
+  @JsonProperty("content")
+  private UserChatMessageContent content;
+
+  /**
+   * An optional name for the participant. Provides the model information to differentiate between
+   * participants of the same role.
+   */
   public enum RoleEnum {
     /** The USER option of this UserChatMessage */
     USER("user"),
@@ -88,45 +94,11 @@ public class UserChatMessage implements ChatMessage
   @JsonProperty("role")
   private RoleEnum role;
 
-  @JsonProperty("content")
-  private UserChatMessageContent content;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /** Default constructor for UserChatMessage. */
   protected UserChatMessage() {}
-
-  /**
-   * Set the role of this {@link UserChatMessage} instance and return the same instance.
-   *
-   * @param role The role of this {@link UserChatMessage}
-   * @return The same instance of this {@link UserChatMessage} class
-   */
-  @Nonnull
-  public UserChatMessage role(@Nonnull final RoleEnum role) {
-    this.role = role;
-    return this;
-  }
-
-  /**
-   * Get role
-   *
-   * @return role The role of this {@link UserChatMessage} instance.
-   */
-  @Nonnull
-  public RoleEnum getRole() {
-    return role;
-  }
-
-  /**
-   * Set the role of this {@link UserChatMessage} instance.
-   *
-   * @param role The role of this {@link UserChatMessage}
-   */
-  public void setRole(@Nonnull final RoleEnum role) {
-    this.role = role;
-  }
 
   /**
    * Set the content of this {@link UserChatMessage} instance and return the same instance.
@@ -157,6 +129,40 @@ public class UserChatMessage implements ChatMessage
    */
   public void setContent(@Nonnull final UserChatMessageContent content) {
     this.content = content;
+  }
+
+  /**
+   * Set the role of this {@link UserChatMessage} instance and return the same instance.
+   *
+   * @param role An optional name for the participant. Provides the model information to
+   *     differentiate between participants of the same role.
+   * @return The same instance of this {@link UserChatMessage} class
+   */
+  @Nonnull
+  public UserChatMessage role(@Nonnull final RoleEnum role) {
+    this.role = role;
+    return this;
+  }
+
+  /**
+   * An optional name for the participant. Provides the model information to differentiate between
+   * participants of the same role.
+   *
+   * @return role The role of this {@link UserChatMessage} instance.
+   */
+  @Nonnull
+  public RoleEnum getRole() {
+    return role;
+  }
+
+  /**
+   * Set the role of this {@link UserChatMessage} instance.
+   *
+   * @param role An optional name for the participant. Provides the model information to
+   *     differentiate between participants of the same role.
+   */
+  public void setRole(@Nonnull final RoleEnum role) {
+    this.role = role;
   }
 
   /**
@@ -197,8 +203,8 @@ public class UserChatMessage implements ChatMessage
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (role != null) declaredFields.put("role", role);
     if (content != null) declaredFields.put("content", content);
+    if (role != null) declaredFields.put("role", role);
     return declaredFields;
   }
 
@@ -224,13 +230,13 @@ public class UserChatMessage implements ChatMessage
     }
     final UserChatMessage userChatMessage = (UserChatMessage) o;
     return Objects.equals(this.cloudSdkCustomFields, userChatMessage.cloudSdkCustomFields)
-        && Objects.equals(this.role, userChatMessage.role)
-        && Objects.equals(this.content, userChatMessage.content);
+        && Objects.equals(this.content, userChatMessage.content)
+        && Objects.equals(this.role, userChatMessage.role);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(role, content, cloudSdkCustomFields);
+    return Objects.hash(content, role, cloudSdkCustomFields);
   }
 
   @Override
@@ -238,8 +244,8 @@ public class UserChatMessage implements ChatMessage
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class UserChatMessage {\n");
-    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -262,28 +268,29 @@ public class UserChatMessage implements ChatMessage
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (role) -> (content) -> new UserChatMessage().role(role).content(content);
+    return (content) -> (role) -> new UserChatMessage().content(content).role(role);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the role of this {@link UserChatMessage} instance.
+     * Set the content of this {@link UserChatMessage} instance.
      *
-     * @param role The role of this {@link UserChatMessage}
+     * @param content The content of this {@link UserChatMessage}
      * @return The UserChatMessage builder.
      */
-    Builder1 role(@Nonnull final RoleEnum role);
+    Builder1 content(@Nonnull final UserChatMessageContent content);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the content of this {@link UserChatMessage} instance.
+     * Set the role of this {@link UserChatMessage} instance.
      *
-     * @param content The content of this {@link UserChatMessage}
+     * @param role An optional name for the participant. Provides the model information to
+     *     differentiate between participants of the same role.
      * @return The UserChatMessage instance.
      */
-    UserChatMessage content(@Nonnull final UserChatMessageContent content);
+    UserChatMessage role(@Nonnull final RoleEnum role);
   }
 }

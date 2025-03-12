@@ -15,7 +15,7 @@ import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-/** UserChatMessageContent */
+/** The contents of the user message.&#x60;&#x60; */
 @Beta
 public interface UserChatMessageContent {
   /** Helper class to create a String that implements {@link UserChatMessageContent}. */

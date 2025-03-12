@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** RefusalContent */
 @Beta // CHECKSTYLE:OFF
-public class RefusalContent implements AssistantChatMessageContentPart
+public class RefusalContent
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */

@@ -11,15 +11,312 @@
 
 package com.sap.ai.sdk.orchestration.model;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.annotations.Beta;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** UserChatMessageContentPart */
-@Beta
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = ImageContent.class),
-  @JsonSubTypes.Type(value = TextContent.class),
-})
-public interface UserChatMessageContentPart {}
+@Beta // CHECKSTYLE:OFF
+public class UserChatMessageContentPart
+// CHECKSTYLE:ON
+{
+  /** The type of the content part. */
+  public enum TypeEnum {
+    /** The TEXT option of this UserChatMessageContentPart */
+    TEXT("text"),
+
+    /** The IMAGE_URL option of this UserChatMessageContentPart */
+    IMAGE_URL("image_url"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this UserChatMessageContentPart */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    TypeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type UserChatMessageContentPart
+     */
+    @JsonCreator
+    @Nonnull
+    public static TypeEnum fromValue(@Nonnull final String value) {
+      for (TypeEnum b : TypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
+  @JsonProperty("type")
+  private TypeEnum type;
+
+  @JsonProperty("text")
+  private String text;
+
+  @JsonProperty("image_url")
+  private String imageUrl;
+
+  @JsonAnySetter @JsonAnyGetter
+  private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+
+  /** Default constructor for UserChatMessageContentPart. */
+  protected UserChatMessageContentPart() {}
+
+  /**
+   * Set the type of this {@link UserChatMessageContentPart} instance and return the same instance.
+   *
+   * @param type The type of the content part.
+   * @return The same instance of this {@link UserChatMessageContentPart} class
+   */
+  @Nonnull
+  public UserChatMessageContentPart type(@Nonnull final TypeEnum type) {
+    this.type = type;
+    return this;
+  }
+
+  /**
+   * The type of the content part.
+   *
+   * @return type The type of this {@link UserChatMessageContentPart} instance.
+   */
+  @Nonnull
+  public TypeEnum getType() {
+    return type;
+  }
+
+  /**
+   * Set the type of this {@link UserChatMessageContentPart} instance.
+   *
+   * @param type The type of the content part.
+   */
+  public void setType(@Nonnull final TypeEnum type) {
+    this.type = type;
+  }
+
+  /**
+   * Set the text of this {@link UserChatMessageContentPart} instance and return the same instance.
+   *
+   * @param text The text content.
+   * @return The same instance of this {@link UserChatMessageContentPart} class
+   */
+  @Nonnull
+  public UserChatMessageContentPart text(@Nullable final String text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * The text content.
+   *
+   * @return text The text of this {@link UserChatMessageContentPart} instance.
+   */
+  @Nonnull
+  public String getText() {
+    return text;
+  }
+
+  /**
+   * Set the text of this {@link UserChatMessageContentPart} instance.
+   *
+   * @param text The text content.
+   */
+  public void setText(@Nullable final String text) {
+    this.text = text;
+  }
+
+  /**
+   * Set the imageUrl of this {@link UserChatMessageContentPart} instance and return the same
+   * instance.
+   *
+   * @param imageUrl The URL of the image content.
+   * @return The same instance of this {@link UserChatMessageContentPart} class
+   */
+  @Nonnull
+  public UserChatMessageContentPart imageUrl(@Nullable final String imageUrl) {
+    this.imageUrl = imageUrl;
+    return this;
+  }
+
+  /**
+   * The URL of the image content.
+   *
+   * @return imageUrl The imageUrl of this {@link UserChatMessageContentPart} instance.
+   */
+  @Nonnull
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  /**
+   * Set the imageUrl of this {@link UserChatMessageContentPart} instance.
+   *
+   * @param imageUrl The URL of the image content.
+   */
+  public void setImageUrl(@Nullable final String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link UserChatMessageContentPart}.
+   *
+   * @return The set of properties names
+   */
+  @JsonIgnore
+  @Nonnull
+  public Set<String> getCustomFieldNames() {
+    return cloudSdkCustomFields.keySet();
+  }
+
+  /**
+   * Get the value of an unrecognizable property of this {@link UserChatMessageContentPart}
+   * instance.
+   *
+   * @deprecated Use {@link #toMap()} instead.
+   * @param name The name of the property
+   * @return The value of the property
+   * @throws NoSuchElementException If no property with the given name could be found.
+   */
+  @Nullable
+  @Deprecated
+  public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
+    if (!cloudSdkCustomFields.containsKey(name)) {
+      throw new NoSuchElementException(
+          "UserChatMessageContentPart has no field with name '" + name + "'.");
+    }
+    return cloudSdkCustomFields.get(name);
+  }
+
+  /**
+   * Get the value of all properties of this {@link UserChatMessageContentPart} instance including
+   * unrecognized properties.
+   *
+   * @return The map of all properties
+   */
+  @JsonIgnore
+  @Nonnull
+  public Map<String, Object> toMap() {
+    final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (type != null) declaredFields.put("type", type);
+    if (text != null) declaredFields.put("text", text);
+    if (imageUrl != null) declaredFields.put("imageUrl", imageUrl);
+    return declaredFields;
+  }
+
+  /**
+   * Set an unrecognizable property of this {@link UserChatMessageContentPart} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   *
+   * @param customFieldName The name of the property
+   * @param customFieldValue The value of the property
+   */
+  @JsonIgnore
+  public void setCustomField(@Nonnull String customFieldName, @Nullable Object customFieldValue) {
+    cloudSdkCustomFields.put(customFieldName, customFieldValue);
+  }
+
+  @Override
+  public boolean equals(@Nullable final java.lang.Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    final UserChatMessageContentPart userChatMessageContentPart = (UserChatMessageContentPart) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, userChatMessageContentPart.cloudSdkCustomFields)
+        && Objects.equals(this.type, userChatMessageContentPart.type)
+        && Objects.equals(this.text, userChatMessageContentPart.text)
+        && Objects.equals(this.imageUrl, userChatMessageContentPart.imageUrl);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(type, text, imageUrl, cloudSdkCustomFields);
+  }
+
+  @Override
+  @Nonnull
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("class UserChatMessageContentPart {\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+    cloudSdkCustomFields.forEach(
+        (k, v) ->
+            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
+   */
+  private String toIndentedString(final java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * UserChatMessageContentPart} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (type) -> new UserChatMessageContentPart().type(type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the type of this {@link UserChatMessageContentPart} instance.
+     *
+     * @param type The type of the content part.
+     * @return The UserChatMessageContentPart instance.
+     */
+    UserChatMessageContentPart type(@Nonnull final TypeEnum type);
+  }
+}

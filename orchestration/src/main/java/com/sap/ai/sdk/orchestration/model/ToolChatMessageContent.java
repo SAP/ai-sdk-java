@@ -35,23 +35,21 @@ public interface ToolChatMessageContent {
   }
 
   /**
-   * Helper class to create a list of ToolChatMessageContentPart that implements {@link
-   * ToolChatMessageContent}.
+   * Helper class to create a list of TextContent that implements {@link ToolChatMessageContent}.
    */
-  record InnerToolChatMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<ToolChatMessageContentPart> values)
+  record InnerTextContents(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<TextContent> values)
       implements ToolChatMessageContent {}
 
   /**
-   * Creator to enable deserialization of a list of ToolChatMessageContentPart.
+   * Creator to enable deserialization of a list of TextContent.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerToolChatMessageContentParts}.
+   * @return a new instance of {@link InnerTextContents}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerToolChatMessageContentParts create(
-      @Nonnull final List<ToolChatMessageContentPart> val) {
-    return new InnerToolChatMessageContentParts(val);
+  static InnerTextContents create(@Nonnull final List<TextContent> val) {
+    return new InnerTextContents(val);
   }
 }

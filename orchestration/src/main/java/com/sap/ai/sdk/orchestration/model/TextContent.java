@@ -28,15 +28,13 @@ import javax.annotation.Nullable;
 
 /** TextContent */
 @Beta // CHECKSTYLE:OFF
-public class TextContent
-    implements AssistantChatMessageContentPart,
-        MultiChatMessageContent,
-        SystemChatMessageContentPart,
-        ToolChatMessageContentPart,
-        UserChatMessageContentPart
+public class TextContent implements MultiChatMessageContent
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  @JsonProperty("text")
+  private String text;
+
+  /** The type of the content part. */
   public enum TypeEnum {
     /** The TEXT option of this TextContent */
     TEXT("text"),
@@ -93,9 +91,6 @@ public class TextContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("text")
-  private String text;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -103,50 +98,19 @@ public class TextContent
   protected TextContent() {}
 
   /**
-   * Set the type of this {@link TextContent} instance and return the same instance.
-   *
-   * @param type The type of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
-   */
-  @Nonnull
-  public TextContent type(@Nonnull final TypeEnum type) {
-    this.type = type;
-    return this;
-  }
-
-  /**
-   * Get type
-   *
-   * @return type The type of this {@link TextContent} instance.
-   */
-  @Nonnull
-  public TypeEnum getType() {
-    return type;
-  }
-
-  /**
-   * Set the type of this {@link TextContent} instance.
-   *
-   * @param type The type of this {@link TextContent}
-   */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
-  }
-
-  /**
    * Set the text of this {@link TextContent} instance and return the same instance.
    *
-   * @param text The text of this {@link TextContent}
+   * @param text The text content.
    * @return The same instance of this {@link TextContent} class
    */
   @Nonnull
-  public TextContent text(@Nonnull final String text) {
+  public TextContent text(@Nullable final String text) {
     this.text = text;
     return this;
   }
 
   /**
-   * Get text
+   * The text content.
    *
    * @return text The text of this {@link TextContent} instance.
    */
@@ -158,10 +122,41 @@ public class TextContent
   /**
    * Set the text of this {@link TextContent} instance.
    *
-   * @param text The text of this {@link TextContent}
+   * @param text The text content.
    */
-  public void setText(@Nonnull final String text) {
+  public void setText(@Nullable final String text) {
     this.text = text;
+  }
+
+  /**
+   * Set the type of this {@link TextContent} instance and return the same instance.
+   *
+   * @param type The type of the content part.
+   * @return The same instance of this {@link TextContent} class
+   */
+  @Nonnull
+  public TextContent type(@Nonnull final TypeEnum type) {
+    this.type = type;
+    return this;
+  }
+
+  /**
+   * The type of the content part.
+   *
+   * @return type The type of this {@link TextContent} instance.
+   */
+  @Nonnull
+  public TypeEnum getType() {
+    return type;
+  }
+
+  /**
+   * Set the type of this {@link TextContent} instance.
+   *
+   * @param type The type of the content part.
+   */
+  public void setType(@Nonnull final TypeEnum type) {
+    this.type = type;
   }
 
   /**
@@ -202,8 +197,8 @@ public class TextContent
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
     if (text != null) declaredFields.put("text", text);
+    if (type != null) declaredFields.put("type", type);
     return declaredFields;
   }
 
@@ -229,13 +224,13 @@ public class TextContent
     }
     final TextContent textContent = (TextContent) o;
     return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, textContent.type)
-        && Objects.equals(this.text, textContent.text);
+        && Objects.equals(this.text, textContent.text)
+        && Objects.equals(this.type, textContent.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cloudSdkCustomFields);
+    return Objects.hash(text, type, cloudSdkCustomFields);
   }
 
   @Override
@@ -243,8 +238,8 @@ public class TextContent
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class TextContent {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -267,7 +262,7 @@ public class TextContent
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return (type) -> new TextContent().type(type);
   }
 
   /** Builder helper class. */
@@ -275,20 +270,9 @@ public class TextContent
     /**
      * Set the type of this {@link TextContent} instance.
      *
-     * @param type The type of this {@link TextContent}
-     * @return The TextContent builder.
-     */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the text of this {@link TextContent} instance.
-     *
-     * @param text The text of this {@link TextContent}
+     * @param type The type of the content part.
      * @return The TextContent instance.
      */
-    TextContent text(@Nonnull final String text);
+    TextContent type(@Nonnull final TypeEnum type);
   }
 }

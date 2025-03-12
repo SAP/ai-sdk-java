@@ -35,24 +35,22 @@ public interface AssistantChatMessageContent {
   }
 
   /**
-   * Helper class to create a list of AssistantChatMessageContentPart that implements {@link
+   * Helper class to create a list of TextContent that implements {@link
    * AssistantChatMessageContent}.
    */
-  record InnerAssistantChatMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull
-          List<AssistantChatMessageContentPart> values)
+  record InnerTextContents(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<TextContent> values)
       implements AssistantChatMessageContent {}
 
   /**
-   * Creator to enable deserialization of a list of AssistantChatMessageContentPart.
+   * Creator to enable deserialization of a list of TextContent.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerAssistantChatMessageContentParts}.
+   * @return a new instance of {@link InnerTextContents}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerAssistantChatMessageContentParts create(
-      @Nonnull final List<AssistantChatMessageContentPart> val) {
-    return new InnerAssistantChatMessageContentParts(val);
+  static InnerTextContents create(@Nonnull final List<TextContent> val) {
+    return new InnerTextContents(val);
   }
 }

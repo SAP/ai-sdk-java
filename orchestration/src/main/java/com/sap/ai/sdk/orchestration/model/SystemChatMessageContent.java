@@ -35,24 +35,21 @@ public interface SystemChatMessageContent {
   }
 
   /**
-   * Helper class to create a list of SystemChatMessageContentPart that implements {@link
-   * SystemChatMessageContent}.
+   * Helper class to create a list of TextContent that implements {@link SystemChatMessageContent}.
    */
-  record InnerSystemChatMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull
-          List<SystemChatMessageContentPart> values)
+  record InnerTextContents(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<TextContent> values)
       implements SystemChatMessageContent {}
 
   /**
-   * Creator to enable deserialization of a list of SystemChatMessageContentPart.
+   * Creator to enable deserialization of a list of TextContent.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerSystemChatMessageContentParts}.
+   * @return a new instance of {@link InnerTextContents}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerSystemChatMessageContentParts create(
-      @Nonnull final List<SystemChatMessageContentPart> val) {
-    return new InnerSystemChatMessageContentParts(val);
+  static InnerTextContents create(@Nonnull final List<TextContent> val) {
+    return new InnerTextContents(val);
   }
 }
