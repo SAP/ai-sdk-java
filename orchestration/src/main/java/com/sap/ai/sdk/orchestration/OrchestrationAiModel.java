@@ -59,9 +59,9 @@ public class OrchestrationAiModel {
   /**
    * Meta Llama3 70B Instruct model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2024-12-15.
-   * The suggested replacement model is {@link OrchestrationAiModel#LLAMA3_1_70B_INSTRUCT}.
-   * */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2024-12-15. The
+   *     suggested replacement model is {@link OrchestrationAiModel#LLAMA3_1_70B_INSTRUCT}.
+   */
   @Deprecated
   public static final OrchestrationAiModel LLAMA3_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3-70b-instruct");
@@ -108,18 +108,18 @@ public class OrchestrationAiModel {
   /**
    * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13.
-   * The suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
-   * */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
+   */
   @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
   /**
    * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13.
-   * The suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
-   * */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
+   */
   @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO_16K =
       new OrchestrationAiModel("gpt-35-turbo-16k");
@@ -127,9 +127,9 @@ public class OrchestrationAiModel {
   /**
    * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-22.
-   * The suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
-   * */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-22. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
+   */
   @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO_0125 =
       new OrchestrationAiModel("gpt-35-turbo-0125");
@@ -140,9 +140,9 @@ public class OrchestrationAiModel {
   /**
    * Azure OpenAI GPT-4 model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-05-13.
-   * The suggested replacement model is {@link OrchestrationAiModel#GPT_4O}.
-   * */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-05-13. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O}.
+   */
   @Deprecated
   public static final OrchestrationAiModel GPT_4_32K = new OrchestrationAiModel("gpt-4-32k");
 
