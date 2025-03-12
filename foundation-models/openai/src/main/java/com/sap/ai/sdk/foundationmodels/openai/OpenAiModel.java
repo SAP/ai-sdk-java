@@ -45,12 +45,8 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-4 chat completions model */
   public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
 
-  /**
-   * Azure OpenAI GPT-4-32k chat completions model
-   *
-   * @deprecated This model will not be usable anymore on 2025-05-30.
-   */
-  @Deprecated public static final OpenAiModel GPT_4_32K = new OpenAiModel("gpt-4-32k", null);
+  /** Azure OpenAI GPT-4-32k chat completions model */
+  public static final OpenAiModel GPT_4_32K = new OpenAiModel("gpt-4-32k", null);
 
   /** Azure OpenAI GPT-4o chat completions model */
   public static final OpenAiModel GPT_4O = new OpenAiModel("gpt-4o", null);
@@ -59,10 +55,10 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
 
   /** Azure OpenAI GPT-o3 Mini chat completions model */
-  public static final OpenAiModel GPT_O3_MINI = new OpenAiModel("o3-mini", null);
+  public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
 
   /** Azure OpenAI GPT-o1 chat completions model */
-  public static final OpenAiModel GPT_O1 = new OpenAiModel("o1", null);
+  public static final OpenAiModel O1 = new OpenAiModel("o1", null);
 
   /** Azure OpenAI Text Embedding 3 Large model */
   public static final OpenAiModel TEXT_EMBEDDING_3_LARGE =
