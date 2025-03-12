@@ -16,48 +16,57 @@ import javax.annotation.Nullable;
  */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
-  /** Azure OpenAI dall-e-3 image generate model */
+  /** Azure OpenAI dall-e-3 model */
   public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is not usable anymore. It is retired on AI Core since 2024-11-17.
-   */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13.
+   * The suggested replacement model is {@link OpenAiModel#GPT_4O_MINI}.
+   * */
   @Deprecated public static final OpenAiModel GPT_35_TURBO = new OpenAiModel("gpt-35-turbo", null);
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-22.
-   */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-22.
+   * The suggested replacement model is {@link OpenAiModel#GPT_4O_MINI}.
+   * */
   @Deprecated
   public static final OpenAiModel GPT_35_TURBO_1025 = new OpenAiModel("gpt-35-turbo-0125", null);
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-13.
-   */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13.
+   * The suggested replacement model is {@link OpenAiModel#GPT_4O_MINI}.
+   * */
   @Deprecated
   public static final OpenAiModel GPT_35_TURBO_16K = new OpenAiModel("gpt-35-turbo-16k", null);
 
-  /** Azure OpenAI GPT-4 chat completions model */
+  /** Azure OpenAI GPT-4 model */
   public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
 
-  /** Azure OpenAI GPT-4-32k chat completions model */
+  /**
+   * Azure OpenAI GPT-4 model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-05-13.
+   * The suggested replacement model is {@link OpenAiModel#GPT_4O}.
+   * */
+  @Deprecated
   public static final OpenAiModel GPT_4_32K = new OpenAiModel("gpt-4-32k", null);
 
-  /** Azure OpenAI GPT-4o chat completions model */
+  /** Azure OpenAI GPT-4o model */
   public static final OpenAiModel GPT_4O = new OpenAiModel("gpt-4o", null);
 
-  /** Azure OpenAI GPT-4o Mini chat completions model */
+  /** Azure OpenAI GPT-4o Mini model */
   public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
 
-  /** Azure OpenAI GPT-o3 Mini chat completions model */
+  /** Azure OpenAI GPT-o3 Mini model */
   public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
 
-  /** Azure OpenAI GPT-o1 chat completions model */
+  /** Azure OpenAI GPT-o1 model */
   public static final OpenAiModel O1 = new OpenAiModel("o1", null);
 
   /** Azure OpenAI Text Embedding 3 Large model */
@@ -71,8 +80,9 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /**
    * Azure OpenAI Text Embedding ADA 002 model
    *
-   * @deprecated This model is deprecated on AI Core.
-   */
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-10-03.
+   * The suggested replacement models are {@link OpenAiModel#TEXT_EMBEDDING_3_SMALL} and {@link OpenAiModel#TEXT_EMBEDDING_3_LARGE}.
+   * */
   @Deprecated
   public static final OpenAiModel TEXT_EMBEDDING_ADA_002 =
       new OpenAiModel("text-embedding-ada-002", null);
