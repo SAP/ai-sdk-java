@@ -126,6 +126,7 @@ public class OrchestrationAiModel {
    *
    * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-22.
    * */
+  @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO_0125 =
       new OrchestrationAiModel("gpt-35-turbo-0125");
 
@@ -142,10 +143,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
   /** Azure OpenAI o1 chat completions model */
-  public static final OrchestrationAiModel O1 = new OrchestrationAiModel("o1");
+  public static final OrchestrationAiModel OPENAI_O1 = new OrchestrationAiModel("o1");
 
   /** Azure OpenAI o3-mini chat completions model */
-  public static final OrchestrationAiModel O3_MINI = new OrchestrationAiModel("o3-mini");
+  public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
   /** Google Cloud Platform Gemini 1.0 Pro model */
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
