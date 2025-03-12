@@ -56,7 +56,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MIXTRAL_8X7B_INSTRUCT_V01 =
       new OrchestrationAiModel("mistralai--mixtral-8x7b-instruct-v01");
 
-  /** Meta Llama3 70B Instruct model */
+  /**
+   * Meta Llama3 70B Instruct model
+   *
+   * @deprecated This model is not usable anymore. It is retired on AI Core since 2024-12-15.
+   * */
+  @Deprecated
   public static final OrchestrationAiModel LLAMA3_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3-70b-instruct");
 
@@ -99,7 +104,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  /**
+   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   *
+   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-13.
+   * */
+  @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
   /**
@@ -111,7 +121,11 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GPT_35_TURBO_16K =
       new OrchestrationAiModel("gpt-35-turbo-16k");
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  /**
+   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   *
+   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-22.
+   * */
   public static final OrchestrationAiModel GPT_35_TURBO_0125 =
       new OrchestrationAiModel("gpt-35-turbo-0125");
 
@@ -126,6 +140,12 @@ public class OrchestrationAiModel {
 
   /** Azure OpenAI GPT-4o-mini chat completions model */
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
+
+  /** Azure OpenAI o1 chat completions model */
+  public static final OrchestrationAiModel O1 = new OrchestrationAiModel("o1");
+
+  /** Azure OpenAI o3-mini chat completions model */
+  public static final OrchestrationAiModel O3_MINI = new OrchestrationAiModel("o3-mini");
 
   /** Google Cloud Platform Gemini 1.0 Pro model */
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
