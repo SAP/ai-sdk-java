@@ -26,16 +26,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrchestrationService {
 
-    static class Translation {
-      @JsonProperty(required = true)
-      private String input;
 
-      @JsonProperty(required = true)
-      private String translation;
+  static class Translation {
+    @JsonProperty(required = true)
+    private String input;
 
-      @JsonProperty(required = true)
-      private String language;
-    }
+    @JsonProperty(required = true)
+    private String translation;
+
+    @JsonProperty(required = true)
+    private String language;
+  }
 
 
   @Nonnull
@@ -79,7 +80,9 @@ public class OrchestrationService {
     var groundingFilter = DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
     var groundingConfig = Grounding.create().filters(groundingFilter);
     var prompt = groundingConfig.createGroundingPrompt(userInput);
-    var response = client.chatCompletion(prompt, config.withTemplateConfig(templatingConfig).withGrounding(groundingConfig));
+    var response = client.chatCompletion(
+        prompt,
+        config.withTemplateConfig(templatingConfig).withGrounding(groundingConfig));
     return response.getContent();
   }
 

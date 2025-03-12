@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 /** Endpoints for the Orchestration service */
 @RestController
 @Slf4j
-@SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
   @Autowired private OrchestrationService service;
+
+
 
 
 
@@ -29,6 +30,8 @@ class OrchestrationController {
     final String output = service.processInput(userInput);
     return ResponseEntity.ok(output);
   }
+
+
 
 
 
