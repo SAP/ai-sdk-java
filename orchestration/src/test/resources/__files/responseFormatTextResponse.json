@@ -1,0 +1,59 @@
+{
+  "request_id": "2fe5cbeb-4cdc-4a62-8d0b-29bbd8acde07",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "What is 'apple' in German?"
+      },
+      {
+        "role": "system",
+        "content": "You are a language translator. Answer using JSON."
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck",
+      "object": "chat.completion",
+      "created": 1739287625,
+      "model": "gpt-4o-mini-2024-07-18",
+      "system_fingerprint": "fp_f3927aa00d",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 29,
+        "total_tokens": 57
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-AzmS9fd4aGRUdEVsQufpFXSVStfck",
+    "object": "chat.completion",
+    "created": 1739287625,
+    "model": "gpt-4o-mini-2024-07-18",
+    "system_fingerprint": "fp_f3927aa00d",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 29,
+      "total_tokens": 57
+    }
+  }
+}

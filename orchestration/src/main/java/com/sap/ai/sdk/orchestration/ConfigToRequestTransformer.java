@@ -5,10 +5,10 @@ import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -32,12 +32,15 @@ final class ConfigToRequestTransformer {
             OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
         .inputParams(prompt.getTemplateParameters())
         .messagesHistory(
-            prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList());
+            prompt.getMessagesHistory().stream()
+                .map(Message::createChatMessage)
+                .map(ChatMessage.class::cast)
+                .toList());
   }
 
   @Nonnull
   static TemplatingModuleConfig toTemplateModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig template) {
+      @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig config) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
      * This works around the limitation that the template config is required.
@@ -45,7 +48,12 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    val messages = template instanceof Template t ? t.getTemplate() : List.<ChatMessage>of();
+    if (config instanceof TemplateRef) {
+      return config;
+    }
+    val template = config instanceof Template t ? t : Template.create().template();
+    val messages = template.getTemplate();
+    val responseFormat = template.getResponseFormat();
     val messagesWithPrompt = new ArrayList<>(messages);
     messagesWithPrompt.addAll(
         prompt.getMessages().stream().map(Message::createChatMessage).toList());
@@ -53,7 +61,10 @@ final class ConfigToRequestTransformer {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-    return Template.create().template(messagesWithPrompt);
+    return Template.create()
+        .template(messagesWithPrompt)
+        .tools(template.getTools())
+        .responseFormat(responseFormat);
   }
 
   @Nonnull

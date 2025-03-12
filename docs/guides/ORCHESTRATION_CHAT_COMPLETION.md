@@ -12,6 +12,8 @@
     - [Data Masking](#data-masking)
     - [Grounding](#grounding)
     - [Stream chat completion](#stream-chat-completion)
+    - [Add images and multiple text inputs to a message](#add-images-and-multiple-text-inputs-to-a-message)
+    - [Set a Response Format](#set-a-response-format)
     - [Set Model Parameters](#set-model-parameters)
     - [Using a Configuration from AI Launchpad](#using-a-configuration-from-ai-launchpad)
 
@@ -83,9 +85,9 @@ var config = new OrchestrationModuleConfig()
         .withLlmConfig(OrchestrationAiModel.GPT_4O);
 ```
 
-Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java) for this and all following code examples.
+Please also refer to [our sample code](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) for this and all following code examples.
   
-### Chat Completion
+## Chat Completion
 
 Use the Orchestration service to generate a response to a user message:
 
@@ -100,13 +102,14 @@ String messageResult = result.getContent();
 In this example, the Orchestration service generates a response to the user message "Hello world! Why is this phrase so famous?".
 The LLM response is available as the first choice under the `result.getOrchestrationResult()` object.
 
-### Chat completion with Templates
+## Chat completion with Templates
 
 Use a prepared template and execute requests with by passing only the input parameters:
 
 ```java
 var template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-var templatingConfig = TemplatingModuleConfig.create().template(template);
+var templatingConfig =
+        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
 var configWithTemplate = config.withTemplateConfig(templatingConfig);
 
 var inputParams = Map.of("language", "German");
@@ -117,7 +120,23 @@ var result = client.chatCompletion(prompt, configWithTemplate);
 
 In this case the template is defined with the placeholder `{{?language}}` which is replaced by the value `German` in the input parameters.
 
-### Message history
+Alternatively, you can use already prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core instead of passing a template in the request yourself.
+
+```java
+var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+var configWithTemplate = config.withTemplateConfig(template);
+
+var inputParams = Map.of("language", "Italian", "input", "cloud ERP systems");
+var prompt = new OrchestrationPrompt(inputParams);
+
+var result = client.chatCompletion(prompt, configWithTemplate);
+```
+
+A prompt template can be referenced either by ID as above, or by using a combination of name, scenario, and version. For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+
+You can find [some examples](https://github.com/SAP/ai-sdk-java/tree/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating using templates from Prompt Registry.
+
+## Message history
 
 Include a message history to maintain context in the conversation:
 
@@ -134,7 +153,7 @@ var prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
 var result = new OrchestrationClient().chatCompletion(prompt, config);
 ```
 
-### Chat completion filter
+## Chat completion filter
 
 Apply content filtering to the chat completion:
 
@@ -158,15 +177,30 @@ var filterLoose = new AzureContentFilter()
                 .sexual(ALLOW_SAFE_LOW_MEDIUM)
     .violence(ALLOW_SAFE_LOW_MEDIUM);
 
+// choose Llama Guard filter or/and Azure filter
+var llamaGuardFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+
 // changing the input to filterLoose will allow the message to pass
-var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict);
+var configWithFilter = config.withInputFiltering(filterStrict).withOutputFiltering(filterStrict, llamaGuardFilter);
 
 // this fails with Bad Request because the strict filter prohibits the input message
 var result =
     new OrchestrationClient().chatCompletion(prompt, configWithFilter);
 ```
+### Behavior of Input and Output Filters
 
-### Data masking
+- **Input Filter**:
+  If the input message violates the filter policy, a `400 (Bad Request)` response will be received during the `chatCompletion` call.
+  An `OrchestrationClientException` will be thrown.
+
+- **Output Filter**:
+  If the response message violates the output filter policy, the `chatCompletion` call will complete without exception.
+  The convenience method `getContent()` on the resulting object will throw an `OrchestrationClientException` upon invocation.
+  The low level API under `getOriginalResponse()` will not throw an exception.
+
+You will find [some examples](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java) in our Spring Boot application demonstrating response handling with filters.
+
+## Data masking
 
 Use the data masking module to anonymize personal information in the input:
 
@@ -189,42 +223,76 @@ var result =
 
 In this example, the input will be masked before the call to the LLM and will remain masked in the output.
 
-### Grounding
+## Grounding
 
 Use the grounding module to provide additional context to the AI model. 
 
+### Vector Data Repository
+
+One way to provide grounding is by using a vector data repository. This can be done as follows.
+
 ```java
-    var message =
-        Message.user(
-            "{{?groundingInput}} Use the following information as additional context: {{?groundingOutput}}");
-    var prompt =
-        new OrchestrationPrompt(Map.of("groundingInput", "What does Joule do?"), message);
+// optional filter for collections
+var documentMetadata =
+    SearchDocumentKeyValueListPair.create()
+        .key("my-collection")
+        .value("value")
+        .addSelectModeItem(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT);
+// optional filter for document chunks
+var databaseFilter =
+    DocumentGroundingFilter.create()
+        .id("")
+        .dataRepositoryType(DataRepositoryType.VECTOR)
+        .addDocumentMetadataItem(documentMetadata);
 
-    var filterInner =
-        DocumentGroundingFilter.create().id("someID").dataRepositoryType(DataRepositoryType.VECTOR);
-    var groundingConfigConfig =
-        GroundingModuleConfigConfig.create()
-            .inputParams(List.of("groundingInput"))
-            .outputParam("groundingOutput")
-            .addFiltersItem(filterInner);
-    
-    var groundingConfig =
-        GroundingModuleConfig.create()
-            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
-            .config(groundingConfigConfig);
-    var configWithGrounding = config.withGroundingConfig(groundingConfig);
+var groundingConfig = Grounding.create().filter(databaseFilter);
+var prompt = groundingConfig.createGroundingPrompt("What does Joule do?");
+var configWithGrounding = config.withGrounding(groundingConfig);
 
-    var result =  
-            new OrchestrationClient().chatCompletion(prompt, configWithGrounding);
+var result = client.chatCompletion(prompt, configWithGrounding);
 ```
 
-In this example, the AI model is provided with additional context in the form of grounding information. Note, that it is necessary to provide the grounding input via one or more input variables.
+In this example, the AI model is provided with additional context in the form of grounding information.
 
-### Stream chat completion
+### Grounding via *help.sap.com*
+
+You can also use grounding based on *help.sap.com* for convenient SAP specific grounding. This can be achieved as follows.
+
+```java
+var groundingHelpSapCom =
+        DocumentGroundingFilter.create()
+                .dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+var groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+var configWithGrounding = config.withGrounding(groundingConfig);
+
+var prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+var response = client.chatCompletion(prompt, configWithGrounding);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+### Mask Grounding
+
+You can also mask both the grounding information and the prompt message:
+
+```java
+var maskingConfig =
+    DpiMasking.anonymization()
+        .withEntities(DPIEntities.SENSITIVE_DATA)
+        .withMaskGroundingEnabled()
+        .withAllowList(List.of("SAP", "Joule"));
+var maskedGroundingConfig = groundingConfig.withMaskingConfig(maskingConfig);
+
+var result = client.chatCompletion(prompt, maskedGroundingConfig);
+```
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+## Stream chat completion
 
 It's possible to pass a stream of chat completion delta elements, e.g. from the application backend to the frontend in real-time.
 
-#### Asynchronous Streaming
+### Asynchronous Streaming
 
 This is a blocking example for streaming and printing directly to the console:
 
@@ -241,12 +309,116 @@ try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
 }
 ```
 
-#### Spring Boot example
-
-Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/OrchestrationController.java).
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
 It shows the usage of Spring Boot's `ResponseBodyEmitter` to stream the chat completion delta messages to the frontend in real-time.
 
-### Set model parameters
+
+## Add images and multiple text inputs to a message
+
+It's possible to add images and multiple text inputs to a message.
+
+### Add images to a message
+
+An image can be added to a message as follows.
+
+```java
+var message = Message.user("Describe the following image");
+var newMessage = message.withImage("https://url.to/image.jpg");
+```
+
+You can also construct a message with an image directly, using the `ImageItem` class.
+
+```java
+var message = Message.user(new ImageItem("https://url.to/image.jpg"));
+```
+
+Some AI models, like GPT 4o, support additionally setting the detail level with which the image is read. This can be set via the `DetailLevel` parameter.
+
+```java
+var newMessage = message.withImage("https://url.to/image.jpg", ImageItem.DetailLevel.LOW);
+```
+Note, that currently only user messages are supported for image attachments.
+
+### Add multiple text inputs to a message
+
+It's also possible to add multiple text inputs to a message. This can be useful for providing additional context to the AI model. You can add additional text inputs as follows.
+
+```java
+var message = Message.user("What is chess about?");
+var newMessage = message.withText("Answer in two sentences.");
+```
+
+Note, that only user and system messages are supported for multiple text inputs.
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java).
+
+
+## Set a Response Format
+
+It is possible to set the response format for the chat completion. Available options are using `JSON_OBJECT`, `JSON_SCHEMA`, and `TEXT`, where `TEXT` is the default behavior.
+
+### JSON_OBJECT
+
+Setting the response format to `JSON_OBJECT` tells the AI to respond with JSON, i.e., the response from the AI will be a string consisting of a valid JSON. This does, however, not guarantee that the response adheres to a specific structure (other than being valid JSON).
+
+```java
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithJsonResponse = 
+        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
+
+var prompt =
+        new OrchestrationPrompt(
+                Message.user("Some message."), Message.system("Answer using JSON."));
+var response = client.chatCompletion(prompt, configWithJsonResponse).getContent();
+```
+Note, that it is necessary to tell the AI model to actually return a JSON object in the prompt. The result might not adhere exactly to the given JSON format, but it will be a JSON object.
+
+
+### JSON_SCHEMA
+
+If you want the response to not only consist of valid JSON but additionally adhere to a specific JSON schema, you can use `JSON_SCHEMA`. in order to do that, add a JSON schema to the configuration as shown below and the response will adhere to the given schema.
+
+```java
+var schema =
+    ResponseJsonSchema.fromType(MyClass.class)
+            .withDescription("Output schema for the example class MyClass.")
+            .withStrict(true);
+var config = new OrchestrationModuleConfig()
+        .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+
+var prompt = new OrchestrationPrompt(Message.user("Some message."));
+var response = client.chatCompletion(prompt, configWithTemplate).getContent();
+```
+Note, that the LLM will only exactly adhere to the given schema if you use `withStrict(true)`. Not all schemas are possible for OpenAI in strict mode. See [here](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) for more information.
+
+There is also a way to generate the schema from a map of key-value pairs. This can be done as follows:
+<details><summary>Click to expand code</summary>
+
+```java
+var schemaMap =
+    Map.ofEntries(
+        entry("type", "object"),
+        entry("properties", Map.ofEntries(
+            entry("language", Map.of("type", "string")),
+            entry("translation", Map.of("type", "string"))),
+        entry("required", List.of("language","translation")),
+        entry("additionalProperties", false)));
+
+var schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "Translator-Schema");
+var config = new OrchestrationModuleConfig()
+    .withLlmConfig(OrchestrationAiModel.GPT_4O);
+var configWithResponseSchema = 
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schemaFromMap));
+```
+
+</details>
+
+Please find [an example in our Spring Boot application](../../sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/services/OrchestrationService.java)
+
+## Set model parameters
 
 Change your LLM configuration to add model parameters:
 
@@ -260,7 +432,7 @@ OrchestrationAiModel customGPT4O =
         .withVersion("2024-05-13");
 ```
 
-### Using a Configuration from AI Launchpad
+## Using a Configuration from AI Launchpad
 
 In case you have created a configuration in AI Launchpad, you can copy or download the configuration as JSON and use it directly in your code:
 

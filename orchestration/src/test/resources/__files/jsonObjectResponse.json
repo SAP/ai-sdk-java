@@ -1,0 +1,59 @@
+{
+  "request_id": "f353a729-3391-4cec-bbf9-7ab39d34ebc1",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "What is 'apple' in German?"
+      },
+      {
+        "role": "system",
+        "content": "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-Azm2iclgMiLcQHP3cGQANArkxoiGx",
+      "object": "chat.completion",
+      "created": 1739286048,
+      "model": "gpt-4o-mini-2024-07-18",
+      "system_fingerprint": "fp_f3927aa00d",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"language\": \"German\", \"translation\": \"Apfel\"}"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 41,
+        "total_tokens": 54
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-Azm2iclgMiLcQHP3cGQANArkxoiGx",
+    "object": "chat.completion",
+    "created": 1739286048,
+    "model": "gpt-4o-mini-2024-07-18",
+    "system_fingerprint": "fp_f3927aa00d",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"language\": \"German\", \"translation\": \"Apfel\"}"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 41,
+      "total_tokens": 54
+    }
+  }
+}

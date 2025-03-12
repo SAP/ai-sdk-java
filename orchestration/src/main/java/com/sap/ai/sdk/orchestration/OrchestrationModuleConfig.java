@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
@@ -196,5 +197,36 @@ public class OrchestrationModuleConfig {
             .input(this.filteringConfig != null ? this.filteringConfig.getInput() : null);
 
     return this.withFilteringConfig(newFilteringConfig);
+  }
+
+  /**
+   * Creates a new configuration with the given grounding configuration.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @param groundingProvider The grounding configuration to use.
+   * @return A new configuration with the given grounding configuration.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withGrounding(
+      @Nonnull final GroundingProvider groundingProvider) {
+    return this.withGroundingConfig(groundingProvider.createConfig());
+  }
+
+  /**
+   * Creates a new configuration with the given template configuration as {@link TemplateConfig}.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @param templateConfig The template configuration to use.
+   * @return A new configuration with the given template configuration.
+   * @since 1.4.0
+   */
+  @Tolerate
+  @Nonnull
+  @Beta
+  public OrchestrationModuleConfig withTemplateConfig(
+      @Nonnull final TemplateConfig templateConfig) {
+    return this.withTemplateConfig(templateConfig.toLowLevel());
   }
 }

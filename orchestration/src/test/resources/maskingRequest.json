@@ -2,7 +2,7 @@
   "orchestration_config": {
     "module_configurations": {
       "llm_module_config": {
-        "model_name": "gpt-35-turbo-16k",
+        "model_name": "gpt-4o",
         "model_params": {
           "presence_penalty": 0,
           "frequency_penalty": 0,
@@ -19,7 +19,9 @@
             "role": "user",
             "content": "Hello World! Why is this phrase so famous?"
           }
-        ]
+        ],
+        "defaults" : { },
+        "tools" : [ ]
       },
       "masking_module_config": {
         "masking_providers": [
@@ -31,7 +33,10 @@
                 "type": "profile-phone"
               }
             ],
-            "allowlist" : [ ]
+            "allowlist" : [ ],
+            "mask_grounding_input" : {
+              "enabled" : false
+            }
           }
         ]
       }

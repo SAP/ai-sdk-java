@@ -2,21 +2,22 @@ package com.sap.ai.sdk.app.controllers;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
@@ -26,33 +27,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
-  private final ObjectMapper mapper =
+  private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-  /**
-   * Chat request to OpenAI
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletion")
   @Nonnull
-  ResponseEntity<String> chatCompletion(
-      @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
+  Object chatCompletion(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.chatCompletion("Who is the prettiest");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull
@@ -60,16 +48,19 @@ public class OpenAiController {
     final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var stream = service.streamChatCompletionDeltas(message);
     final var emitter = new ResponseBodyEmitter();
+    final var totalUsage = new AtomicReference<OpenAiUsage>();
     final Runnable consumeStream =
         () -> {
-          final var totalOutput = new OpenAiChatCompletionOutput();
-          // try-with-resources ensures the stream is closed
           try (stream) {
-            stream
-                .peek(totalOutput::addDelta)
-                .forEach(delta -> send(emitter, delta.getDeltaContent()));
+            stream.forEach(
+                delta -> {
+                  // Instead of getCompletionUsage(MAPPER), we now use getUsage()
+                  final var usage = delta.getUsage();
+                  totalUsage.compareAndExchange(null, usage);
+                  send(emitter, delta.getDeltaContent());
+                });
           } finally {
-            send(emitter, "\n\n-----Total Output-----\n\n" + objectToJson(totalOutput));
+            send(emitter, "\n\n-----Total Usage-----\n\n" + totalUsage.get());
             emitter.complete();
           }
         };
@@ -79,11 +70,6 @@ public class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  /**
-   * Asynchronous stream of an OpenAI chat request
-   *
-   * @return the emitter that streams the assistant message response
-   */
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletion")
   @Nonnull
@@ -121,94 +107,46 @@ public class OpenAiController {
     }
   }
 
-  /**
-   * Convert an object to JSON
-   *
-   * @param obj The object to convert
-   * @return The JSON representation of the object
-   */
-  private static String objectToJson(@Nonnull final Object obj) {
-    try {
-      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    } catch (final JsonProcessingException ignored) {
-      return "Could not parse object to JSON";
-    }
-  }
-
-  /**
-   * Chat request to OpenAI with an image
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletionImage")
   @Nonnull
-  ResponseEntity<String> chatCompletionImage(
-      @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
+  Object chatCompletionImage(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response =
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getChoices().get(0).getMessage();
   }
 
-  /**
-   * Chat request to OpenAI with a tool.
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletionTool")
   @Nonnull
-  ResponseEntity<String> chatCompletionTools(
-      @RequestHeader(value = "accept", required = false) final String accept)
-      throws JsonProcessingException {
-    final var response =
-        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+  Object chatCompletionTools(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.chatCompletionTools(12);
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 
-  /**
-   * Get the embedding of a text
-   *
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/embedding")
   @Nonnull
-  ResponseEntity<String> embedding() throws JsonProcessingException {
-    final var response = service.embedding("Hello world");
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(mapper.writeValueAsString(response));
+  Object embedding() {
+    return service.embedding("Hello world");
   }
 
-  /**
-   * Chat request to OpenAI filtering by resource group
-   *
-   * @param resourceGroup The resource group to use
-   * @return a ResponseEntity with the response content
-   */
   @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
-  ResponseEntity<String> chatCompletionWithResource(
-      @RequestHeader(value = "accept", required = false) final String accept,
-      @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
-      throws JsonProcessingException {
+  Object chatCompletionWithResource(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup) {
     final var response =
         service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?");
-    if ("application/json".equals(accept)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(mapper.writeValueAsString(response));
+    if ("json".equals(format)) {
+      return response;
     }
-    return ResponseEntity.ok(response.getContent());
+    return response.getContent();
   }
 }

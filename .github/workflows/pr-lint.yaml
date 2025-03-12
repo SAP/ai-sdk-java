@@ -1,0 +1,34 @@
+name: lint pr
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions:
+  pull-requests: read
+
+jobs:
+  lint-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          scopes: |
+            Core
+            OpenAI
+            Orchestration
+            DevOps
+            PromptRegistry
+          headerPattern: '^(\w.+): (?:\[(\w.+)\] )?(.+)$'
+          headerPatternCorrespondence: type, scope, subject
+          # for available types, check:
+          # https://github.com/commitizen/conventional-commit-types/blob/master/index.json
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            starts with an uppercase character, e.g. "feat: New Feature".

@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_35_TURBO;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.OpenAiService;
@@ -50,7 +50,7 @@ class OpenAiTest {
 
     final var totalOutput = new OpenAiChatCompletionOutput();
     final var filledDeltaCount = new AtomicInteger(0);
-    OpenAiClient.forModel(GPT_35_TURBO)
+    OpenAiClient.forModel(GPT_4O_MINI)
         .streamChatCompletionDeltas(request)
         .peek(totalOutput::addDelta)
         // foreach consumes all elements, closing the stream at the end
@@ -75,8 +75,7 @@ class OpenAiTest {
 
   @Test
   void chatCompletionTools() {
-    final var completion =
-        service.chatCompletionTools("Calculate the Fibonacci number for given sequence index.");
+    final var completion = service.chatCompletionTools(12);
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
@@ -89,7 +88,7 @@ class OpenAiTest {
     final var embedding = service.embedding("Hello world");
 
     assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
-    assertThat(embedding.getModel()).isEqualTo("ada");
+    assertThat(embedding.getModel()).isEqualTo("text-embedding-3-small");
     assertThat(embedding.getObject()).isEqualTo("list");
   }
 

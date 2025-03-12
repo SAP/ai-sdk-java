@@ -1,62 +1,69 @@
 {
-  "request_id": "0d9d7ce3-9ded-481f-80c6-977e78e2e905",
+  "request_id": "e5d2add4-408c-4da5-84ca-1d8b0fe350c8",
   "module_results": {
     "grounding": {
       "message": "grounding result",
       "data": {
         "grounding_query": "grounding call",
-        "grounding_result": "Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler.```It enables the companion of the Intelligent Enterprise, guiding you through content discovery within SAP Ecosystem, and giving a transparent role-based access to the relevant processes from everywhere. This is the one assistant experience, a unified and delightful user experience across SAP’s \u01ee solution portfolio."
+        "grounding_result": "First chunk```Second chunk```Last found chunk"
       }
     },
     "templating": [
       {
-        "role": "user",
-        "content": "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler.```It enables the companion of the Intelligent Enterprise, guiding you through content discovery within SAP Ecosystem, and giving a transparent role-based access to the relevant processes from everywhere. This is the one assistant experience, a unified and delightful user experience across SAP’s \u01ee solution portfolio."
+        "role": "system",
+        "content": "Context message with embedded grounding results. First chunk```Second chunk```Last found chunk"
       }
     ],
+    "input_masking": {
+      "message": "Input to LLM and Grounding is masked successfully.",
+      "data": {
+        "masked_template": "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
+        "masked_grounding_input": "[\"What does Joule do?\"]"
+      }
+    },
     "llm": {
-      "id": "chatcmpl-AbRlNdsyQJfvBINnw3MOTP77WSE4X",
+      "id": "chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU",
       "object": "chat.completion",
-      "created": 1733488221,
-      "model": "gpt-35-turbo",
-      "system_fingerprint": "fp_808245b034",
+      "created": 1736952936,
+      "model": "gpt-4o-2024-08-06",
+      "system_fingerprint": "fp_f3927aa00d",
       "choices": [
         {
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems. It enables the companion of the Intelligent Enterprise, guiding users through content discovery within the SAP Ecosystem and providing transparent role-based access to relevant processes from anywhere. Joule aims to provide a unified and delightful user experience across SAP's solution portfolio."
+            "content": "Response that makes uses of grounding results in the context message."
           },
           "finish_reason": "stop"
         }
       ],
       "usage": {
-        "completion_tokens": 68,
-        "prompt_tokens": 113,
-        "total_tokens": 181
+        "completion_tokens": 163,
+        "prompt_tokens": 217,
+        "total_tokens": 380
       }
     }
   },
   "orchestration_result": {
-    "id": "chatcmpl-AbRlNdsyQJfvBINnw3MOTP77WSE4X",
+    "id": "chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU",
     "object": "chat.completion",
-    "created": 1733488221,
-    "model": "gpt-35-turbo",
-    "system_fingerprint": "fp_808245b034",
+    "created": 1736952936,
+    "model": "gpt-4o-2024-08-06",
+    "system_fingerprint": "fp_f3927aa00d",
     "choices": [
       {
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems. It enables the companion of the Intelligent Enterprise, guiding users through content discovery within the SAP Ecosystem and providing transparent role-based access to relevant processes from anywhere. Joule aims to provide a unified and delightful user experience across SAP's solution portfolio."
+          "content": "Response that makes uses of grounding results in the context message."
         },
         "finish_reason": "stop"
       }
     ],
     "usage": {
-      "completion_tokens": 68,
-      "prompt_tokens": 113,
-      "total_tokens": 181
+      "completion_tokens": 163,
+      "prompt_tokens": 217,
+      "total_tokens": 380
     }
   }
 }

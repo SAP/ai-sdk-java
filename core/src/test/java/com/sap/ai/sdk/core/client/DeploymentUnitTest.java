@@ -220,7 +220,7 @@ class DeploymentUnitTest extends WireMockTestServer {
     assertThat(deployment).isNotNull();
     assertThat(deployment.getId()).isEqualTo("d5b764fe55b3e87c");
     // targetStatus is not in the generated client
-    assertThat(deployment.getCustomField("targetStatus")).isEqualTo("DELETED");
+    assertThat(deployment.toMap().get("targetStatus")).isEqualTo("DELETED");
   }
 
   @Test
@@ -271,10 +271,10 @@ class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo(
             "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467");
     assertThat(deployment.getDetails().getResources().getBackendDetails()).isEqualTo(Map.of());
-    assertThat(deployment.getDetails().getResources().getCustomField("backend_details"))
+    assertThat(deployment.getDetails().getResources().toMap().get("backend_details"))
         .isEqualTo(Map.of());
     assertThat(deployment.getDetails().getScaling().getBackendDetails()).isEqualTo(Map.of());
-    assertThat(deployment.getDetails().getScaling().getCustomField("backend_details"))
+    assertThat(deployment.getDetails().getScaling().toMap().get("backend_details"))
         .isEqualTo(Map.of());
     assertThat(deployment.getId()).isEqualTo("db1d64d9f06be467");
     assertThat(deployment.getLastOperation())
@@ -383,8 +383,8 @@ class DeploymentUnitTest extends WireMockTestServer {
         .isEqualTo(
             "INFO:root:Copying contents of s3://hcp-8b6797d5-fc66-4fde-bdcf-0800987e1837/i749902/e529e8bd58740bc9/classifier-model-output to local");
     // `container` and `pod` are not defined in spec
-    assertThat(rtaLogCommonResultItem.getCustomField("container")).isEqualTo("storage-initializer");
-    assertThat(rtaLogCommonResultItem.getCustomField("pod"))
+    assertThat(rtaLogCommonResultItem.toMap().get("container")).isEqualTo("storage-initializer");
+    assertThat(rtaLogCommonResultItem.toMap().get("pod"))
         .isEqualTo("d058d4774af7edfb-predictor-00001-deployment-74fbb96d88-bqlqb");
   }
 

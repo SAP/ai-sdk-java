@@ -2,42 +2,62 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ImageContent;
+import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
+import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.TextContent;
+import java.util.LinkedList;
+import java.util.List;
 import javax.annotation.Nonnull;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
-public sealed interface Message permits UserMessage, AssistantMessage, SystemMessage {
+public sealed interface Message permits AssistantMessage, SystemMessage, ToolMessage, UserMessage {
 
   /**
-   * A convenience method to create a user message.
+   * A convenience method to create a user message from a string.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(@Nonnull final String msg) {
-    return new UserMessage(msg);
+  static UserMessage user(@Nonnull final String message) {
+    return new UserMessage(message);
+  }
+
+  /**
+   * A convenience method to create a user message containing only an image.
+   *
+   * @param imageItem the message content.
+   * @return the user message.
+   * @since 1.3.0
+   */
+  @Nonnull
+  static UserMessage user(@Nonnull final ImageItem imageItem) {
+    return new UserMessage(new MessageContent(List.of(imageItem)));
   }
 
   /**
    * A convenience method to create an assistant message.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the assistant message.
    */
   @Nonnull
-  static AssistantMessage assistant(@Nonnull final String msg) {
-    return new AssistantMessage(msg);
+  static AssistantMessage assistant(@Nonnull final String message) {
+    return new AssistantMessage(message);
   }
 
   /**
-   * A convenience method to create a system message.
+   * A convenience method to create a system message from a string.
    *
-   * @param msg the message content.
+   * @param message the message content.
    * @return the system message.
    */
   @Nonnull
-  static SystemMessage system(@Nonnull final String msg) {
-    return new SystemMessage(msg);
+  static SystemMessage system(@Nonnull final String message) {
+    return new SystemMessage(message);
   }
 
   /**
@@ -47,7 +67,21 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   default ChatMessage createChatMessage() {
-    return ChatMessage.create().role(role()).content(content());
+    final var itemList = this.content().items();
+    if (itemList.size() == 1 && itemList.get(0) instanceof TextItem textItem) {
+      return SingleChatMessage.create().role(role()).content(textItem.text());
+    }
+    final var contentList = new LinkedList<MultiChatMessageContent>();
+    for (final ContentItem item : itemList) {
+      if (item instanceof TextItem textItem) {
+        contentList.add(TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
+      } else if (item instanceof ImageItem imageItem) {
+        final var detail = imageItem.detailLevel().toString();
+        final var img = ImageContentImageUrl.create().url(imageItem.imageUrl()).detail(detail);
+        contentList.add(ImageContent.create().type(ImageContent.TypeEnum.IMAGE_URL).imageUrl(img));
+      }
+    }
+    return MultiChatMessage.create().role(role()).content(contentList);
   }
 
   /**
@@ -65,5 +99,5 @@ public sealed interface Message permits UserMessage, AssistantMessage, SystemMes
    */
   @Nonnull
   @Beta
-  String content();
+  MessageContent content();
 }

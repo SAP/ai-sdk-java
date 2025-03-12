@@ -16,9 +16,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_35_TURBO_16K;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,14 +30,26 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
+import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
+import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
+import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
+import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -47,6 +61,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -65,8 +80,8 @@ import org.mockito.Mockito;
  */
 @WireMockTest
 class OrchestrationUnitTest {
-  static final OrchestrationAiModel CUSTOM_GPT_35 =
-      GPT_35_TURBO_16K
+  static final OrchestrationAiModel CUSTOM_GPT_4O =
+      GPT_4O
           .withParam(MAX_TOKENS, 50)
           .withParam(TEMPERATURE, 0.1)
           .withParam(FREQUENCY_PENALTY, 0)
@@ -86,7 +101,7 @@ class OrchestrationUnitTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationClient(destination);
-    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_35);
+    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
@@ -112,34 +127,129 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGrounding() {
+  void testCompletionError() {
     stubFor(
-        post(anyUrl())
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withStatus(500)
+                    .withBodyFile("error500Response.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
+        .hasMessage(
+            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+  }
+
+  @Test
+  void testGrounding() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("groundingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    final var response = client.chatCompletion(prompt, config);
-    final var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
 
-    final var groundingData =
-        (Map<String, Object>) result.getModuleResults().getGrounding().getData();
-    assertThat(groundingData.get("grounding_query")).isEqualTo("grounding call");
-    assertThat(groundingData.get("grounding_result").toString())
-        .startsWith("Joule is the AI copilot that truly understands your business.");
-    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
-    assertThat(result.getModuleResults().getTemplating().get(0).getContent())
-        .startsWith(
-            "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business.");
-    assertThat(llmChoice.getMessage().getContent())
-        .startsWith(
-            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
-    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
-    assertThat(llmChoice.getMessage().getContent())
-        .startsWith(
-            "Joule is an AI copilot that revolutionizes how users interact with their SAP business systems.");
+    final var documentMetadata =
+        SearchDocumentKeyValueListPair.create()
+            .key("document metadata")
+            .value("2")
+            .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
+    final var databaseFilter =
+        DocumentGroundingFilter.create()
+            .dataRepositoryType(DataRepositoryType.VECTOR)
+            .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(3))
+            .documentMetadata(List.of(documentMetadata))
+            .chunkMetadata(List.of(KeyValueListPair.create().key("chunk metadata").value("1")));
+    final var groundingConfigConfig =
+        GroundingModuleConfigConfig.create()
+            .inputParams(List.of("query"))
+            .outputParam("results")
+            .addFiltersItem(databaseFilter);
+    final var groundingConfig =
+        GroundingModuleConfig.create()
+            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+            .config(groundingConfigConfig);
+    val maskingConfig = // optional masking configuration
+        DpiMasking.anonymization()
+            .withEntities(DPIEntities.SENSITIVE_DATA)
+            .withMaskGroundingInput(true)
+            .withAllowList(List.of("SAP", "Joule"));
+    final var configWithGrounding =
+        config.withGroundingConfig(groundingConfig).withMaskingConfig(maskingConfig);
+
+    final Map<String, String> inputParams =
+        Map.of("query", "String used for similarity search in database");
+    final var prompt =
+        new OrchestrationPrompt(
+            inputParams,
+            Message.system("Context message with embedded grounding results. {{?results}}"));
+
+    final var response = client.chatCompletion(prompt, configWithGrounding);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getOriginalResponse().getRequestId())
+        .isEqualTo("e5d2add4-408c-4da5-84ca-1d8b0fe350c8");
+
+    var moduleResults = response.getOriginalResponse().getModuleResults();
+    assertThat(moduleResults).isNotNull();
+
+    var groundingModule = moduleResults.getGrounding();
+    assertThat(groundingModule).isNotNull();
+    assertThat(groundingModule.getMessage()).isEqualTo("grounding result");
+    assertThat(groundingModule.getData()).isNotNull();
+    var groundingData =
+        Map.of(
+            "grounding_query",
+            "grounding call",
+            "grounding_result",
+            "First chunk```Second chunk```Last found chunk");
+    assertThat(groundingModule.getData()).isEqualTo(groundingData);
+
+    var inputMasking = response.getOriginalResponse().getModuleResults().getInputMasking();
+    assertThat(inputMasking.getMessage())
+        .isEqualTo("Input to LLM and Grounding is masked successfully.");
+    Object data = inputMasking.getData();
+    assertThat(data)
+        .isEqualTo(
+            Map.of(
+                "masked_template",
+                "[{\"role\": \"user\", \"content\": \"Context message with embedded grounding results. First chunk```MASKED_SENSITIVE_DATA```Last found chunk\"}]",
+                "masked_grounding_input", // maskGroundingInput: true will make this field present
+                "[\"What does Joule do?\"]"));
+
+    try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testGroundingWithHelpSapCom() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingHelpSapComResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    val groundingHelpSapCom =
+        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
+    val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+    val response = client.chatCompletion(prompt, configWithGrounding);
+
+    assertThat(
+            response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
+        .contains(
+            "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
+    assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
+
+    try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
   }
 
   @Test
@@ -160,9 +270,18 @@ class OrchestrationUnitTest {
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
-    assertThat(result.getAllMessages().get(0).content())
+    final var messageList = result.getAllMessages();
+
+    assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
+        .isEqualTo("You are a multi language translator");
+    assertThat(messageList.get(0).role()).isEqualTo("system");
+    assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
+    assertThat(messageList.get(1).role()).isEqualTo("user");
+    assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
+        .isEqualTo("Orchestration Service funktioniert!");
+    assertThat(messageList.get(2).role()).isEqualTo("assistant");
+
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
@@ -172,7 +291,7 @@ class OrchestrationUnitTest {
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
+        .isEqualTo("Le service d'orchestration fonctionne!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
@@ -187,7 +306,7 @@ class OrchestrationUnitTest {
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
-        .isEqualTo("Orchestration Service funktioniert!");
+        .isEqualTo("Le service d'orchestration fonctionne!");
     assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     usage = result.getTokenUsage();
@@ -234,14 +353,18 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var filter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
             .violence(ALLOW_SAFE_LOW_MEDIUM);
 
-    client.chatCompletion(prompt, config.withInputFiltering(filter).withOutputFiltering(filter));
+    final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+
+    client.chatCompletion(
+        prompt,
+        config.withInputFiltering(azureFilter, llamaFilter).withOutputFiltering(azureFilter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -571,15 +694,17 @@ class OrchestrationUnitTest {
         final var choices0 = result0.getChoices().get(0);
         assertThat(choices0.getIndex()).isEqualTo(0);
         assertThat(choices0.getFinishReason()).isEmpty();
-        assertThat(choices0.getCustomField("delta")).isNotNull();
+        assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) choices0.getCustomField("delta");
+        final var message0 = (Map<String, Object>) choices0.toMap().get("delta");
         assertThat(message0.get("role")).isEqualTo("");
         assertThat(message0.get("content")).isEqualTo("");
-        List<ChatMessage> templating = deltaList.get(0).getModuleResults().getTemplating();
+        final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
-        assertThat(templating.get(0).getRole()).isEqualTo("user");
-        assertThat(templating.get(0).getContent())
+
+        final var templateItem = (SingleChatMessage) templating.get(0);
+        assertThat(templateItem.getRole()).isEqualTo("user");
+        assertThat(templateItem.getContent())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
@@ -592,8 +717,8 @@ class OrchestrationUnitTest {
         final var choices1 = result1.getChoices().get(0);
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
-        assertThat(choices1.getCustomField("delta")).isNotNull();
-        final var message1 = (Map<String, Object>) choices1.getCustomField("delta");
+        assertThat(choices1.toMap().get("delta")).isNotNull();
+        final var message1 = (Map<String, Object>) choices1.toMap().get("delta");
         assertThat(message1.get("role")).isEqualTo("assistant");
         assertThat(message1.get("content")).isEqualTo("Sure");
 
@@ -608,12 +733,249 @@ class OrchestrationUnitTest {
         assertThat(choices2.getIndex()).isEqualTo(0);
         assertThat(choices2.getFinishReason()).isEqualTo("stop");
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        assertThat(choices2.getCustomField("delta")).isNotNull();
-        final var message2 = (Map<String, Object>) choices2.getCustomField("delta");
+        assertThat(choices2.toMap().get("delta")).isNotNull();
+        final var message2 = (Map<String, Object>) choices2.toMap().get("delta");
         assertThat(message2.get("role")).isEqualTo("assistant");
         assertThat(message2.get("content")).isEqualTo("!");
       }
       Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @Test
+  void testMultiMessage() throws IOException {
+    stubFor(
+        post("/completion")
+            .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
+
+    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    var messageWithTwoTexts =
+        Message.system("Please answer in exactly two sentences.")
+            .withText("Start the first sentence with the word 'Well'.");
+
+    var messageWithImage =
+        Message.user("What is in this image?")
+            .withText("And what is the main color?")
+            .withImage(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+    var prompt =
+        new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithTwoTexts));
+
+    var result = client.chatCompletion(prompt, llmWithImageSupportConfig);
+    var response = result.getOriginalResponse();
+
+    assertThat(result.getContent())
+        .isEqualTo(
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+    assertThat(result.getAllMessages()).hasSize(3);
+    var systemMessage = result.getAllMessages().get(0);
+    assertThat(systemMessage.role()).isEqualTo("system");
+    assertThat(systemMessage.content().items()).hasSize(2);
+    assertThat(systemMessage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) systemMessage.content().items().get(0)).text())
+        .isEqualTo("Please answer in exactly two sentences.");
+    assertThat(systemMessage.content().items().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) systemMessage.content().items().get(1)).text())
+        .isEqualTo("Start the first sentence with the word 'Well'.");
+    var userMessage = result.getAllMessages().get(1);
+    assertThat(userMessage.role()).isEqualTo("user");
+    assertThat(userMessage.content().items()).hasSize(3);
+    assertThat(userMessage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessage.content().items().get(0)).text())
+        .isEqualTo("What is in this image?");
+    assertThat(userMessage.content().items().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessage.content().items().get(1)).text())
+        .isEqualTo("And what is the main color?");
+    assertThat(userMessage.content().items().get(2)).isInstanceOf(ImageItem.class);
+    assertThat(((ImageItem) userMessage.content().items().get(2)).imageUrl())
+        .isEqualTo(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+    var assistantMessage = result.getAllMessages().get(2);
+    assertThat(assistantMessage.role()).isEqualTo("assistant");
+    assertThat(assistantMessage.content().items()).hasSize(1);
+    assertThat(assistantMessage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) assistantMessage.content().items().get(0)).text())
+        .isEqualTo(
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+
+    assertThat(response).isNotNull();
+    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    assertThat(llmResults).isNotNull();
+    assertThat(llmResults.getChoices()).hasSize(1);
+    assertThat(llmResults.getChoices().get(0).getMessage().getContent())
+        .isEqualTo(
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+    assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    assertThat(orchestrationResult.getChoices()).hasSize(1);
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
+        .isEqualTo(
+            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+    assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
+        .isEqualTo("assistant");
+
+    try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
+      final String requestBody = new String(requestInputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/completion"))
+              .withRequestBody(equalToJson(requestBody)));
+    }
+  }
+
+  @Test
+  void testResponseFormatJsonSchema() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonSchemaResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    //    Example class
+    class Translation {
+      @JsonProperty(required = true)
+      private String language;
+
+      @JsonProperty(required = true)
+      private String translation;
+    }
+    val schema =
+        ResponseJsonSchema.fromType(Translation.class)
+            .withDescription("Output schema for language translation.")
+            .withStrict(true);
+    val configWithResponseSchema =
+        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.user("Whats 'apple' in German?"),
+            Message.system("You are a language translator."));
+
+    final var message = client.chatCompletion(prompt, configWithResponseSchema).getContent();
+    assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+
+    try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testResponseFormatJsonObject() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonObjectResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val configWithJsonResponse =
+        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.user("What is 'apple' in German?"),
+            Message.system(
+                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+
+    final var message = client.chatCompletion(prompt, configWithJsonResponse).getContent();
+    assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
+
+    try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testResponseFormatText() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("responseFormatTextResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    val template = Message.user("What is 'apple' in German?");
+    val templatingConfig =
+        Template.create()
+            .template(List.of(template.createChatMessage()))
+            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
+
+    val prompt =
+        new OrchestrationPrompt(
+            Message.system("You are a language translator. Answer using JSON."));
+
+    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    assertThat(message)
+        .isEqualTo(
+            "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
+
+    try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryById() throws IOException {
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResponse.json")
+                      .withHeader("Content-Type", "application/json")));
+
+      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var configWithTemplate = config.withTemplateConfig(template);
+
+      var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+      var prompt = new OrchestrationPrompt(inputParams);
+
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+      assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+
+      try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
+        final String request = new String(requestInputStream.readAllBytes());
+        verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      }
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenario() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+    assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+    assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+
+    try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
   }
 }

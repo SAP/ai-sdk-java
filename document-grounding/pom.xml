@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>sdk-parent</artifactId>
+    <version>1.5.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>document-grounding</artifactId>
+  <name>Document Grounding Client</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Document Grounding Service.</description>
+
+  <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
+  <organization>
+    <name>SAP SE</name>
+    <url>https://www.sap.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>SAP</name>
+      <email>cloudsdk@sap.com</email>
+      <organization>SAP SE</organization>
+      <organizationUrl>https://www.sap.com</organizationUrl>
+    </developer>
+  </developers>
+  <properties>
+    <project.rootdir>${project.basedir}/../</project.rootdir>
+    <coverage.complexity>80%</coverage.complexity>
+    <coverage.line>71%</coverage.line>
+    <coverage.instruction>85%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>80%</coverage.method>
+    <coverage.class>100%</coverage.class>
+  </properties>
+
+  <dependencies>
+    <!-- used by generated API classes -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <!-- scope "compile" -->
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <!-- scope "provided" -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- scope "test" -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>generate</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <apiMaturity>beta</apiMaturity>
+              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+              <compileScope>COMPILE</compileScope>
+              <deleteOutputDirectory>true</deleteOutputDirectory>
+            </configuration>
+            <executions>
+              <execution>
+                <id>orchestration</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/grounding.yaml</inputSpec>
+                  <apiPackage>com.sap.ai.sdk.grounding.client</apiPackage>
+                  <modelPackage>com.sap.ai.sdk.grounding.model</modelPackage>
+                  <additionalProperties>
+                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                    <pojoBuildMethodName/>
+                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <useOneOfCreators>true</useOneOfCreators>
+                  </additionalProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

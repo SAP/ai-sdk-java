@@ -1,8 +1,11 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.core.client.ConfigurationApi;
-import com.sap.ai.sdk.core.model.AiConfigurationList;
+import com.sap.ai.sdk.core.model.AiConfiguration;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** Endpoint for Configuration operations */
@@ -12,13 +15,17 @@ class ConfigurationController {
 
   private static final ConfigurationApi CLIENT = new ConfigurationApi();
 
-  /**
-   * Get the list of configurations.
-   *
-   * @return the list of configurations
-   */
   @GetMapping("/configurations")
-  AiConfigurationList getConfigurations() {
-    return CLIENT.query("default");
+  Object getConfigurations(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var configList = CLIENT.query("default");
+    if ("json".equals(format)) {
+      return configList;
+    }
+    final var items =
+        configList.getResources().stream()
+            .map(AiConfiguration::getName)
+            .collect(Collectors.joining(", "));
+    return "The following configurations are available: %s.".formatted(items);
   }
 }

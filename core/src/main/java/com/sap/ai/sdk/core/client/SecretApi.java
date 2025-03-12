@@ -1,7 +1,9 @@
 package com.sap.ai.sdk.core.client;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndGenericSecretDataResponse;
+import com.sap.ai.sdk.core.model.BckndGenericSecretDetails;
 import com.sap.ai.sdk.core.model.BckndGenericSecretPatchBody;
 import com.sap.ai.sdk.core.model.BckndGenericSecretPostBody;
 import com.sap.ai.sdk.core.model.BckndListGenericSecretsResponse;
@@ -22,7 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.37.0.
+ * AI Core in version 2.38.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -31,6 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
+@Beta
 public class SecretApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
@@ -243,6 +246,107 @@ public class SecretApi extends AbstractOpenApiService {
   }
 
   /**
+   * Get a specific secret
+   *
+   * <p>Retrieve a single generic secret. This retrieves metadata only, not the secret data itself.
+   *
+   * <p><b>200</b> - The secret was fetched
+   *
+   * <p><b>404</b> - The specified resource was not found
+   *
+   * <p><b>400</b> - The request was malformed and could thus not be processed.
+   *
+   * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+   *
+   * @param secretName (required) The value for the parameter secretName
+   * @param authorization (optional) Authorization bearer token containing a JWT token.
+   * @param aiResourceGroup (optional) Specify an existing resource group id to use
+   * @param aiTenantScope (optional) Specify whether the main tenant scope is to be used
+   * @return BckndGenericSecretDetails
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public BckndGenericSecretDetails get(
+      @Nonnull final String secretName,
+      @Nullable final String authorization,
+      @Nullable final String aiResourceGroup,
+      @Nullable final Boolean aiTenantScope)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'secretName' is set
+    if (secretName == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'secretName' when calling get");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("secretName", secretName);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/admin/secrets/{secretName}")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (authorization != null)
+      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiTenantScope != null)
+      localVarHeaderParams.add("AI-Tenant-Scope", apiClient.parameterToString(aiTenantScope));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
+
+    final ParameterizedTypeReference<BckndGenericSecretDetails> localVarReturnType =
+        new ParameterizedTypeReference<BckndGenericSecretDetails>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get a specific secret
+   *
+   * <p>Retrieve a single generic secret. This retrieves metadata only, not the secret data itself.
+   *
+   * <p><b>200</b> - The secret was fetched
+   *
+   * <p><b>404</b> - The specified resource was not found
+   *
+   * <p><b>400</b> - The request was malformed and could thus not be processed.
+   *
+   * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+   *
+   * @param secretName The value for the parameter secretName
+   * @return BckndGenericSecretDetails
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public BckndGenericSecretDetails get(@Nonnull final String secretName)
+      throws OpenApiRequestException {
+    return get(secretName, null, null, null);
+  }
+
+  /**
    * Lists all secrets corresponding to tenant
    *
    * <p>Lists all secrets corresponding to tenant. This retrieves metadata only, not the secret data
@@ -269,7 +373,7 @@ public class SecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndListGenericSecretsResponse get(
+  public BckndListGenericSecretsResponse getAll(
       @Nullable final String authorization,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
@@ -339,8 +443,8 @@ public class SecretApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndListGenericSecretsResponse get() throws OpenApiRequestException {
-    return get(null, null, null, null, null, null);
+  public BckndListGenericSecretsResponse getAll() throws OpenApiRequestException {
+    return getAll(null, null, null, null, null, null);
   }
 
   /**

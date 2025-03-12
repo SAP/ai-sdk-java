@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
   </parent>
   <artifactId>orchestration</artifactId>
   <name>Orchestration client</name>
@@ -31,11 +31,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>70%</coverage.complexity>
-    <coverage.line>86%</coverage.line>
-    <coverage.instruction>86%</coverage.instruction>
-    <coverage.branch>67%</coverage.branch>
-    <coverage.method>85%</coverage.method>
+    <coverage.complexity>83%</coverage.complexity>
+    <coverage.line>94%</coverage.line>
+    <coverage.instruction>94%</coverage.instruction>
+    <coverage.branch>77%</coverage.branch>
+    <coverage.method>93%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -54,7 +54,16 @@
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>connectivity-apache-httpclient5</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents.core5</groupId>
       <artifactId>httpcore5</artifactId>
@@ -91,6 +100,14 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.github.victools</groupId>
+      <artifactId>jsonschema-generator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.victools</groupId>
+      <artifactId>jsonschema-module-jackson</artifactId>
+    </dependency>
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -121,6 +138,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -164,6 +186,8 @@
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <removeEnumValuePrefix>true</removeEnumValuePrefix>
+                    <useOneOfCreators>true</useOneOfCreators>
                   </additionalProperties>
                 </configuration>
               </execution>

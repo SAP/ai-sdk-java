@@ -2,7 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.commons.ClientError;
+import com.sap.ai.sdk.core.common.ClientError;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndCommonResourceQuotaResponse;
 import com.sap.ai.sdk.core.model.BckndDeploymentResourceQuotaResponse;
@@ -18,7 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.37.0.
+ * AI Core in version 2.38.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -27,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
+@Beta
 public class ResourceQuotaApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
@@ -126,8 +128,6 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    *
    * <p><b>400</b> - The request was malformed and could thus not be processed.
    *
-   * <p><b>404</b> - The specified resource was not found
-   *
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
    * @param authorization (optional) Authorization bearer token containing a JWT token.
@@ -186,8 +186,6 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * <p><b>200</b> - A resource quota object
    *
    * <p><b>400</b> - The request was malformed and could thus not be processed.
-   *
-   * <p><b>404</b> - The specified resource was not found
    *
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
@@ -351,9 +349,9 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get the quota for tenant-level generic secrets
+   * Get the quota for tenant-scoped or tenant-wide generic secrets
    *
-   * <p>Get the details about quota and usage for tenant-level generic secrets
+   * <p>Get the details about quota and usage for tenant-scoped or tenant-wide generic secrets
    *
    * <p><b>200</b> - quota for generic secrets on the tenant level
    *
@@ -362,12 +360,17 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    * @param authorization (optional) Authorization bearer token containing a JWT token.
    * @param quotaOnly (optional) When being set to true, the response contains only the quota of the
    *     resource and not the quota usage.
+   * @param aiResourceGroup (optional) Specify an existing resource group id to use
+   * @param aiTenantScope (optional) Specify whether the main tenant scope is to be used
    * @return BckndCommonResourceQuotaResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public BckndCommonResourceQuotaResponse getGenericSecretQuota(
-      @Nullable final String authorization, @Nullable final Boolean quotaOnly)
+      @Nullable final String authorization,
+      @Nullable final Boolean quotaOnly,
+      @Nullable final String aiResourceGroup,
+      @Nullable final Boolean aiTenantScope)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -384,6 +387,10 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
 
     if (authorization != null)
       localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiTenantScope != null)
+      localVarHeaderParams.add("AI-Tenant-Scope", apiClient.parameterToString(aiTenantScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -408,9 +415,9 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get the quota for tenant-level generic secrets
+   * Get the quota for tenant-scoped or tenant-wide generic secrets
    *
-   * <p>Get the details about quota and usage for tenant-level generic secrets
+   * <p>Get the details about quota and usage for tenant-scoped or tenant-wide generic secrets
    *
    * <p><b>200</b> - quota for generic secrets on the tenant level
    *
@@ -421,7 +428,7 @@ public class ResourceQuotaApi extends AbstractOpenApiService {
    */
   @Nonnull
   public BckndCommonResourceQuotaResponse getGenericSecretQuota() throws OpenApiRequestException {
-    return getGenericSecretQuota(null, null);
+    return getGenericSecretQuota(null, null, null, null);
   }
 
   /**

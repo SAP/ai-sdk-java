@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
@@ -34,13 +34,14 @@
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>3.4.1</spring-boot.version>
-    <logback.version>1.5.16</logback.version>
+    <logback.version>1.5.17</logback.version>
     <cf-logging.version>3.8.4</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
     <enforcer.skipBanLoggingFrameworks>true</enforcer.skipBanLoggingFrameworks>
     <enforcer.skipEnforceScopeLoggerBridges>true</enforcer.skipEnforceScopeLoggerBridges>
+    <enforcer.skipEnforceSpringAIOptional>true</enforcer.skipEnforceSpringAIOptional>
   </properties>
 
   <dependencies>
@@ -58,8 +59,24 @@
       <artifactId>orchestration</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>document-grounding</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>prompt-registry</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -70,12 +87,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot</artifactId>
       <version>${spring-boot.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -101,6 +112,10 @@
       <version>${springframework.version}</version>
     </dependency>
     <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
@@ -111,10 +126,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

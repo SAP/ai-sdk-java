@@ -17,7 +17,7 @@ jobs:
       - name: "Setup java"
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: "sapmachine"
           java-version: "17"
           server-id: artifactory-snapshots
           server-username: DEPLOYMENT_USER
@@ -37,3 +37,14 @@ jobs:
         env:
           DEPLOYMENT_USER: ${{ secrets.ARTIFACTORY_COMMON_USER }}
           DEPLOYMENT_PASS: ${{ secrets.ARTIFACTORY_COMMON_PASSWORD }}
+
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "⚠️ Snapshot Deployment failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+            }

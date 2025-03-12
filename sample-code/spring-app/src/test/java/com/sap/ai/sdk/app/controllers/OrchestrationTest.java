@@ -8,10 +8,16 @@ import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +72,7 @@ class OrchestrationTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
-    assertThat(result.getAllMessages().get(0).content())
+    assertThat(((TextItem) result.getAllMessages().get(0).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
@@ -98,27 +104,6 @@ class OrchestrationTest {
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
-  }
-
-  @Test
-  void testLenientContentFilter() {
-    var response = service.filter(AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM, "the downtown area");
-    var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
-    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
-    assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
-
-    var filterResult = result.getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
-  }
-
-  @Test
-  void testStrictContentFilter() {
-    assertThatThrownBy(() -> service.filter(AzureFilterThreshold.ALLOW_SAFE, "the downtown area"))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("400 Bad Request")
-        .hasMessageContaining("Content filtered");
   }
 
   @Test
@@ -182,7 +167,7 @@ class OrchestrationTest {
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGrounding() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
-    var response = service.grounding("What does Joule do?");
+    var response = service.grounding("What does Joule do?", true);
     var result = response.getOriginalResponse();
     var llmChoice =
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
@@ -191,6 +176,9 @@ class OrchestrationTest {
     assertThat(result.getModuleResults().getGrounding()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getData()).isNotNull();
     assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
+
+    var maskingResult = result.getModuleResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
   }
 
   @Test
@@ -201,5 +189,152 @@ class OrchestrationTest {
         ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testInputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    assertThatThrownBy(() -> service.inputFiltering(policy))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
+  }
+
+  @Test
+  void testInputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.inputFiltering(policy);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testOutputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+    var response = service.outputFiltering(policy);
+
+    assertThatThrownBy(response::getContent)
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Content filter filtered the output.");
+  }
+
+  @Test
+  void testOutputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.outputFiltering(policy);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getModuleResults().getOutputFiltering();
+    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
+  }
+
+  @Test
+  void testLlamaGuardEnabled() {
+    assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
+  }
+
+  @Test
+  void testLlamaGuardDisabled() {
+    var response = service.llamaGuardInputFilter(false);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testImageInput() {
+    final var result =
+        service
+            .imageInput(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testImageInputBase64() {
+    String dataUrl = "";
+    try {
+      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
+      try (InputStream inputStream = url.openStream()) {
+        byte[] imageBytes = inputStream.readAllBytes();
+        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
+        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+        dataUrl = "data:image/jpeg;base64," + encodedString;
+      }
+    } catch (Exception e) {
+      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
+    }
+    final var result = service.imageInput(dataUrl).getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testMultiStringInput() {
+    final var result =
+        service
+            .multiStringInput(
+                List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFormatJsonSchema() {
+    final var result = service.responseFormatJsonSchema("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFormatJsonObject() {
+    final var result = service.responseFormatJsonObject("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":");
+    assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":");
+  }
+
+  @Test
+  void testResponseFormatText() {
+    final var result = service.responseFormatText("apple").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryById() {
+    final var result =
+        service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenario() {
+    final var result =
+        service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }

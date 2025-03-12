@@ -6,6 +6,7 @@
     - [Providing a Service Binding Locally](#providing-a-service-binding-locally)
     - [Using the `AICORE_SERVICE_KEY` Environment Variable](#using-the-aicore_service_key-environment-variable)
 - [Using a Destination from the BTP Destination Service](#using-a-destination-from-the-btp-destination-service)
+- [Creating a Custom Destination](#creating-a-custom-destination)
  
 
 The AI SDK uses the [`Destination` concept of the SAP Cloud SDK](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/destination-service) to connect to AI Core.
@@ -116,13 +117,17 @@ You can define a destination in the BTP Destination Service and use that to conn
   - **Client ID**: `[clientid]`
   - **Client Secret**: `[clientsecret]`
   - **Token Service URL Type**: `Dedicated`
-  - **Token Service URL**: `[url]`
+  - **Token Service URL**: `[url]/oauth/token`
   
     Fill in the values for URL, client ID, client secret, and token service URL from the service key JSON.
+    Make sure to add `/oauth/token` in the token service URL.
 
 </details>
 
 To use the destination, ensure you have created an instance of the BTP Destination Service and bound it to your application.
+
+> [!Tip]
+> If you are using CAP, you can again use Hybrid Testing to bind the destination service to your application when running **locally**.
 
 ```java
 Destination destination = DestinationAccessor.getDestination("my-aicore").asHttp();
@@ -149,3 +154,22 @@ new DeploymentApi(aiCoreService);
 > Please run the above code for each request to ensure the destination is up-to-date.
 > Destinations are cached by default, so this does not come with a performance penalty.
 > To learn more, see the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/destination-service).
+
+## Creating a Custom Destination
+
+If the above options are not suitable for your use case (e.g. because you are obtaining the credentials in a completely different way), you can also use a custom-built destination:
+
+```java
+var destination = OAuth2DestinationBuilder
+    .forTargetUrl("https://<ai-api-url>")
+    .withTokenEndpoint("https://<xsuaa-url>/oauth/token")
+    .withClient(new ClientCertificate("<cert>", "<key>", "<clientid>"), OnBehalfOf.TECHNICAL_USER_PROVIDER)
+    .build();
+
+AiCoreService aiCoreService = new AiCoreService().withBaseDestination(destination);
+```
+
+The above example assumes you are using a client certificate for authentication and have stored the relevant credentials somewhere.
+You are free to use X509 certificates (also via the Zero Trust Identity Service) or a client secret.
+
+For more details, refer to the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/destination-service).

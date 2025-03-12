@@ -4,6 +4,7 @@ on:
     branches: [ "*" ]
   push:
     branches: [ "main" ]
+  workflow_dispatch: # triggered by the prepare-release workflow
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -13,7 +14,6 @@ env:
 jobs:
 
   continuous-integration:
-    # https://wiki.one.int.sap/wiki/display/DevFw/SUGAR
     runs-on: ubuntu-latest
     steps:
 
@@ -27,7 +27,7 @@ jobs:
       - name: "Setup java"
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
@@ -67,7 +67,7 @@ jobs:
 
       - name: "Run Unit Tests"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:check@default-check"
           mvn $MVN_ARGS
 
       - name: "Slack Notification"
