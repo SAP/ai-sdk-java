@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
  */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
-  /** Azure OpenAI dall-e-3 model */
+  /** internal [Azure OpenAI dall-e-3 model] */
   public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
 
   /**
