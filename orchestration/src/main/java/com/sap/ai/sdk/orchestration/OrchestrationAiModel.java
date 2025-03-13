@@ -146,16 +146,16 @@ public class OrchestrationAiModel {
   @Deprecated
   public static final OrchestrationAiModel GPT_4_32K = new OrchestrationAiModel("gpt-4-32k");
 
-  /** Azure OpenAI GPT-4o chat completions model */
+  /** Azure OpenAI GPT-4o model */
   public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
-  /** Azure OpenAI GPT-4o-mini chat completions model */
+  /** Azure OpenAI GPT-4o-mini model */
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
-  /** Azure OpenAI o1 chat completions model */
+  /** Azure OpenAI o1 model */
   public static final OrchestrationAiModel OPENAI_O1 = new OrchestrationAiModel("o1");
 
-  /** Azure OpenAI o3-mini chat completions model */
+  /** Azure OpenAI o3-mini model */
   public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
   /** Google Cloud Platform Gemini 1.0 Pro model */
