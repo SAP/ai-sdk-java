@@ -1,14 +1,6 @@
-## 0.X.0-SNAPSHOT
+## 1.5.0 - March 13, 2025
 
-[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/)
-
-### 🚧 Known Issues
-
--
-
-### 🔧 Compatibility Notes
-
--
+[All Release Changes](https://github.com/SAP/ai-sdk-java/releases/tag/rel%2F1.5.0)
 
 ### ✨ New Functionality
 
@@ -18,10 +10,3 @@
 - [Orchestration] [Grounding via *help.sap.com* is enabled.](https://sap.github.io/ai-sdk/docs/java/guides/orchestration-chat-completion#grounding)
 - [OpenAI] [Spring AI integration for embedding calls.](https://sap.github.io/ai-sdk/docs/java/guides/spring-ai-integration#embedding)
 
-### 📈 Improvements
-
--
-
-### 🐛 Fixed Issues
-
-- 
