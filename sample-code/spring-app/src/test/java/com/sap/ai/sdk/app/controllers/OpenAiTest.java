@@ -101,4 +101,14 @@ class OpenAiTest {
     assertThat(message.getRole()).isEqualTo("assistant");
     assertThat(message.getContent()).isNotEmpty();
   }
+
+  @Test
+  void chatCompletionToolExecution() {
+    final var completion = service.chatCompletionToolExecution(12);
+
+    String content = completion.getContent();
+
+    assertThat(content).isNotEmpty();
+    assertThat(content).contains("144");
+  }
 }
