@@ -5,6 +5,8 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
@@ -15,7 +17,15 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolChoice;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +118,84 @@ public class OpenAiServiceV2 {
             .withToolChoice(OpenAiToolChoice.function("fibonacci"));
 
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+  }
+
+  /**
+   * Executes a chat completion request to OpenAI with a tool that calculates the Fibonacci number.
+   *
+   * @param months The number of months to be inferred in the tool.
+   * @return The assistant message response.
+   */
+  @Nonnull
+  public CreateChatCompletionResponse chatCompletionToolExecution(final int months) {
+
+    record Fibonacci(int n) {
+      public long execute() {
+        return fib(n);
+      }
+
+      private static long fib(int n) {
+        if (n < 2) {
+          return n;
+        }
+        return fib(n - 1) + fib(n - 2);
+      }
+    }
+
+    final var function =
+        new FunctionObject()
+            .name("fibonacci")
+            .description("Calculate the Fibonacci number for given sequence index.")
+            .parameters(
+                Map.of("type", "object", "properties", Map.of("n", Map.of("type", "integer"))));
+
+    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+
+    var userMessage =
+        new ChatCompletionRequestUserMessage()
+            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
+            .content(
+                ChatCompletionRequestUserMessageContent.create(
+                    "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
+                        .formatted(months)));
+
+    final var request =
+        new CreateChatCompletionRequest()
+            .addMessagesItem(userMessage)
+            .tools(List.of(tool))
+            .functions(null);
+
+    OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
+
+    var initialResponse = client.chatCompletion(request);
+
+    var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
+    String toolResponseContent;
+    try {
+      var fibonacci =
+          new ObjectMapper().readValue(toolCall.getFunction().getArguments(), Fibonacci.class);
+      toolResponseContent = String.valueOf(fibonacci.execute());
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Error parsing tool call arguments", e);
+    }
+
+    var assistantMessage =
+        new ChatCompletionRequestAssistantMessage()
+            .role(ChatCompletionRequestAssistantMessage.RoleEnum.ASSISTANT)
+            .content(
+                ChatCompletionRequestAssistantMessageContent.create(
+                    initialResponse.getChoices().get(0).getMessage().getContent()))
+            .toolCalls(List.of(toolCall));
+    request.addMessagesItem(assistantMessage);
+
+    var toolMessage =
+        new ChatCompletionRequestToolMessage()
+            .role(ChatCompletionRequestToolMessage.RoleEnum.TOOL)
+            .content(ChatCompletionRequestToolMessageContent.create(toolResponseContent))
+            .toolCallId(toolCall.getId());
+    request.addMessagesItem(toolMessage);
+
+    return client.chatCompletion(request);
   }
 
   /**
