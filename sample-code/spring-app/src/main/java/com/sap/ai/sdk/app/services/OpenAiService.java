@@ -127,7 +127,7 @@ public class OpenAiService {
         return fib(N);
       }
 
-      private static long fib(int n) {
+      private static long fib(final int n) {
         if (n < 2) {
           return n;
         }
@@ -154,29 +154,31 @@ public class OpenAiService {
             .setTools(List.of(tool))
             .setToolChoiceFunction("fibonacci");
 
-    OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
-    var initialResponse = client.chatCompletion(request);
+    final var client = OpenAiClient.forModel(GPT_4O_MINI);
+    final var initialResponse = client.chatCompletion(request);
 
-    var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
+    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
     String toolResponse;
     try {
-      var fibonacci =
+      final var fibonacci =
           new ObjectMapper().readValue(toolCall.getFunction().getArguments(), Fibonacci.class);
       toolResponse = String.valueOf(fibonacci.execute());
     } catch (Exception e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
 
-    var assistantMessage = initialResponse.getChoices().get(0).getMessage();
+    final var assistantMessage = initialResponse.getChoices().get(0).getMessage();
     messages.add(assistantMessage);
 
-    var toolMessage =
+    final var toolMessage =
         new OpenAiChatMessage.OpenAiChatToolMessage()
             .setToolCallId(toolCall.getId())
             .setContent(toolResponse);
     messages.add(toolMessage);
 
-    var finalRequest = new OpenAiChatCompletionParameters().addMessages(messages.toArray(OpenAiChatMessage[]::new));
+    final var finalRequest =
+        new OpenAiChatCompletionParameters()
+            .addMessages(messages.toArray(OpenAiChatMessage[]::new));
 
     return client.chatCompletion(finalRequest);
   }

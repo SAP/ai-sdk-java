@@ -167,9 +167,9 @@ public class OpenAiServiceV2 {
 
     OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
 
-    var initialResponse = client.chatCompletion(request);
+    final var initialResponse = client.chatCompletion(request);
 
-    var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
+    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
     String toolResponseContent;
     try {
       var fibonacci =
@@ -179,7 +179,7 @@ public class OpenAiServiceV2 {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
 
-    var assistantMessage =
+    final var assistantMessage =
         new ChatCompletionRequestAssistantMessage()
             .role(ChatCompletionRequestAssistantMessage.RoleEnum.ASSISTANT)
             .content(
@@ -188,7 +188,7 @@ public class OpenAiServiceV2 {
             .toolCalls(List.of(toolCall));
     request.addMessagesItem(assistantMessage);
 
-    var toolMessage =
+    final var toolMessage =
         new ChatCompletionRequestToolMessage()
             .role(ChatCompletionRequestToolMessage.RoleEnum.TOOL)
             .content(ChatCompletionRequestToolMessageContent.create(toolResponseContent))

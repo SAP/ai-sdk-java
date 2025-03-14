@@ -160,10 +160,16 @@
         </exclusion>
       </exclusions>
     </dependency>
+
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <!-- scope "test" -->
@@ -181,6 +187,7 @@
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
     </dependency>
+
   </dependencies>
 
   <build>
