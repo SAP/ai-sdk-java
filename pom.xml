@@ -743,7 +743,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.2.0</version>
+        <version>4.9.3.0</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
