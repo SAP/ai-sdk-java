@@ -105,11 +105,11 @@ class OpenAiV2Test {
 
   @Test
   void chatCompletionToolExecution() {
-    final var completion = service.chatCompletionToolExecution(12);
+    final var completion = service.chatCompletionToolExecution("Dubai", "°C");
 
     String content = completion.getChoices().get(0).getMessage().getContent();
 
     assertThat(content).isNotEmpty();
-    assertThat(content).contains("144");
+    assertThat(content).contains("°C");
   }
 }

@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OpenAiServiceV2 {
+  private static final ObjectMapper JACKSON = new ObjectMapper();
 
   /**
    * Chat request to OpenAI
@@ -121,33 +122,28 @@ public class OpenAiServiceV2 {
   }
 
   /**
-   * Executes a chat completion request to OpenAI with a tool that calculates the Fibonacci number.
+   * Executes a chat completion request to OpenAI with a tool that calculates the weather.
    *
-   * @param months The number of months to be inferred in the tool.
+   * @param location The location to get the weather for.
+   * @param unit The unit of temperature to use.
    * @return The assistant message response.
    */
   @Nonnull
-  public CreateChatCompletionResponse chatCompletionToolExecution(final int months) {
-
-    record Fibonacci(int n) {
-      public long execute() {
-        return fib(n);
-      }
-
-      private static long fib(int n) {
-        if (n < 2) {
-          return n;
-        }
-        return fib(n - 1) + fib(n - 2);
-      }
-    }
+  public CreateChatCompletionResponse chatCompletionToolExecution(
+      @Nonnull final String location, @Nonnull final String unit) {
 
     final var function =
         new FunctionObject()
-            .name("fibonacci")
-            .description("Calculate the Fibonacci number for given sequence index.")
+            .name("weather")
+            .description("Get the weather for the given location")
             .parameters(
-                Map.of("type", "object", "properties", Map.of("n", Map.of("type", "integer"))));
+                Map.of(
+                    "type",
+                    "object",
+                    "properties",
+                    Map.of(
+                        "location", Map.of("type", "string"),
+                        "unit", Map.of("type", "string", "enum", List.of("C", "F")))));
 
     final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
@@ -156,8 +152,7 @@ public class OpenAiServiceV2 {
             .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
             .content(
                 ChatCompletionRequestUserMessageContent.create(
-                    "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
-                        .formatted(months)));
+                    "What's the weather in %s in %s?".formatted(location, unit)));
 
     final var request =
         new CreateChatCompletionRequest()
@@ -170,11 +165,12 @@ public class OpenAiServiceV2 {
     final var initialResponse = client.chatCompletion(request);
 
     final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
-    String toolResponseContent;
+    String toolResponseJson;
     try {
-      var fibonacci =
-          new ObjectMapper().readValue(toolCall.getFunction().getArguments(), Fibonacci.class);
-      toolResponseContent = String.valueOf(fibonacci.execute());
+      var weatherRequest =
+          JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
+      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
@@ -191,7 +187,7 @@ public class OpenAiServiceV2 {
     final var toolMessage =
         new ChatCompletionRequestToolMessage()
             .role(ChatCompletionRequestToolMessage.RoleEnum.TOOL)
-            .content(ChatCompletionRequestToolMessageContent.create(toolResponseContent))
+            .content(ChatCompletionRequestToolMessageContent.create(toolResponseJson))
             .toolCallId(toolCall.getId());
     request.addMessagesItem(toolMessage);
 

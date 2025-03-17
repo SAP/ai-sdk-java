@@ -135,7 +135,7 @@ public class OpenAiController {
   @Nonnull
   Object chatCompletionToolExecution(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.chatCompletionToolExecution(12);
+    final var response = service.chatCompletionToolExecution("Dubai", "°C");
     if ("json".equals(format)) {
       return response;
     }

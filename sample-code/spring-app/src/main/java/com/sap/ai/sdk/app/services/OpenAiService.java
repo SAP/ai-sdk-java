@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OpenAiService {
+  private static final ObjectMapper JACKSON = new ObjectMapper();
 
   /**
    * Chat request to OpenAI
@@ -115,54 +116,50 @@ public class OpenAiService {
   }
 
   /**
-   * Executes a chat completion request to OpenAI with a tool that calculates the Fibonacci number.
+   * Executes a chat completion request to OpenAI with a tool that calculates the weather.
    *
-   * @param months The number of months to be inferred in the tool.
+   * @param location The location to get the weather for.
+   * @param unit The unit of temperature to use.
    * @return The assistant message response.
    */
   @Nonnull
-  public OpenAiChatCompletionOutput chatCompletionToolExecution(final int months) {
-    record Fibonacci(int N) {
-      public long execute() {
-        return fib(N);
-      }
-
-      private static long fib(final int n) {
-        if (n < 2) {
-          return n;
-        }
-        return fib(n - 1) + fib(n - 2);
-      }
-    }
-
+  public OpenAiChatCompletionOutput chatCompletionToolExecution(
+      @Nonnull final String location, @Nonnull final String unit) {
     final var function =
         new OpenAiChatCompletionFunction()
-            .setName("fibonacci")
-            .setDescription("Calculate the Fibonacci number for given sequence index.")
+            .setName("weather")
+            .setDescription("Get the weather for the given location")
             .setParameters(
-                Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
+                Map.of(
+                    "type",
+                    "object",
+                    "properties",
+                    Map.of(
+                        "location", Map.of("type", "string"),
+                        "unit", Map.of("type", "string", "enum", List.of("C", "F")))));
     final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
 
     final var messages = new ArrayList<OpenAiChatMessage>();
     messages.add(
         new OpenAiChatMessage.OpenAiChatUserMessage()
-            .addText("How many rabbits will there be after %s months?".formatted(months)));
+            .addText("What's the weather in %s in %s?".formatted(location, unit)));
 
     final var request =
         new OpenAiChatCompletionParameters()
             .addMessages(messages.toArray(OpenAiChatMessage[]::new))
             .setTools(List.of(tool))
-            .setToolChoiceFunction("fibonacci");
+            .setToolChoiceFunction("weather");
 
     final var client = OpenAiClient.forModel(GPT_4O_MINI);
     final var initialResponse = client.chatCompletion(request);
 
     final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
-    String toolResponse;
+    String toolResponseJson;
     try {
-      final var fibonacci =
-          new ObjectMapper().readValue(toolCall.getFunction().getArguments(), Fibonacci.class);
-      toolResponse = String.valueOf(fibonacci.execute());
+      final var weatherRequest =
+          JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
+      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
     } catch (Exception e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
@@ -173,7 +170,7 @@ public class OpenAiService {
     final var toolMessage =
         new OpenAiChatMessage.OpenAiChatToolMessage()
             .setToolCallId(toolCall.getId())
-            .setContent(toolResponse);
+            .setContent(toolResponseJson);
     messages.add(toolMessage);
 
     final var finalRequest =
