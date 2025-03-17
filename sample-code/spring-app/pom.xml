@@ -160,7 +160,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -187,7 +186,6 @@
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
