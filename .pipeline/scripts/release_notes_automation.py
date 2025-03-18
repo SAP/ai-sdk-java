@@ -72,10 +72,10 @@ def count_releases(filename):
     return count
 
 def find_target_file(version):
-    # release-notes-X-to-Y.md with every 15 versions the index increases by 15 and stays the same for 15 versions
+    # release-notes-X-to-Y.mdx with every 15 versions the index increases by 15 and stays the same for 15 versions
     minor_version = int(version.split(".")[1])
     index = minor_version // 15 * 15
-    return "release-notes-" + str(index) + "-to-" + str(index + 14) + ".md"
+    return "release-notes-" + str(index) + "-to-" + str(index + 14) + ".mdx"
 
 def write_release_notes(folder, target_file):
     absolute_target_file = os.path.join(folder, target_file)
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='SAP Cloud SDK for AI (for Java) - Release Notes formatting script.')
 
     parser.add_argument('--version', metavar='VERSION', help='The version to be released.', required=True)
-    parser.add_argument('--folder', metavar='FOLDER', help='The ai-sdk-java/docs/release-notes folder.', required=True)
+    parser.add_argument('--folder', metavar='FOLDER', help='The ai-sdk/docs-java/release-notes folder.', required=True)
     args = parser.parse_args()
 
     file = read_file(file_name)
@@ -105,10 +105,4 @@ if __name__ == '__main__':
     file = direct_links(file)
 
     target_file = find_target_file(args.version)
-
-
-    folder_path = args.folder
-    write_release_notes(folder_path, target_file)
-
-    # delete (temporary) release-notes file so it does not appear in the released version
-    os.remove(file_name)
+    write_release_notes(args.folder, target_file)
