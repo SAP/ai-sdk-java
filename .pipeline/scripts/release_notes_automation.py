@@ -36,14 +36,15 @@ unchanged_sections = [
 """,
 """### 🐛 Fixed Issues
 
-- 
+-
 """]
 
 def remove_unchanged_sections(file, unchanged_sections):
     for unchanged_section in unchanged_sections:
         # if file contains unchanged_section, remove it
         file = re.sub(unchanged_section, "", file)
-    return file
+    # remove the trailing whitespace when removing 🐛 Fixed Issues
+    return file.strip() + "\n"
 
 def set_header(file, version):
     date = datetime.today().strftime('%B %d, %Y')
@@ -99,6 +100,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     file = read_file(file_name)
+    # print file contents
     file = remove_unchanged_sections(file, unchanged_sections)
     file = set_header(file, args.version)
     file = link_github_release(file, args.version)
