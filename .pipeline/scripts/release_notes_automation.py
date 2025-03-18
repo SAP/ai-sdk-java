@@ -57,6 +57,9 @@ def link_github_release(file, version):
     file = re.sub(old_github_release_link, new_github_release_link, file)
     return file
 
+def direct_links(file):
+    file = re.sub("https://sap.github.io/ai-sdk/docs/java/", "", file)
+    return file
 
 
 releases_pattern = re.compile(r"^## ")
@@ -86,7 +89,7 @@ def write_release_notes(folder, target_file):
         write_file(absolute_target_file, file)
 
 
-file_name = "docs/release-notes/release_notes.md"
+file_name = "docs/release_notes.md"
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='SAP Cloud SDK for AI (for Java) - Release Notes formatting script.')
@@ -99,6 +102,7 @@ if __name__ == '__main__':
     file = remove_unchanged_sections(file, unchanged_sections)
     file = set_header(file, args.version)
     file = link_github_release(file, args.version)
+    file = direct_links(file)
 
     target_file = find_target_file(args.version)
 
