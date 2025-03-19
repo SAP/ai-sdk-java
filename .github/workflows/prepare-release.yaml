@@ -12,6 +12,7 @@ on:
         required: false
 
 env:
+  CI_BUILD_WORKFLOW: "continuous-integration.yaml" # Name of the workflow that should be triggered for CI build
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   JAVA_VERSION: 17
   DOCS_REPO: SAP/ai-sdk
@@ -71,9 +72,38 @@ jobs:
           git push origin $BRANCH_NAME
           git push origin $TAG_NAME
 
+  run-ci:
+    name: "Continuous Integration"
+    outputs:
+      ci-run-id: ${{ steps.trigger-ci.outputs.run-id }}
+    needs: [ bump-version ]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write # needed to trigger the ci-build workflow
+      statuses: write # needed to update the commit status
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.bump-version.outputs.release-branch }}
+
+      - name: "Trigger CI Workflow"
+        id: trigger-ci
+        uses: ./.github/actions/trigger-workflow
+        with:
+          workflow: ${{ env.CI_BUILD_WORKFLOW }}
+          workflow-ref: ${{ needs.bump-version.outputs.release-branch }}
+          commit-sha: ${{ needs.bump-version.outputs.release-commit }}
+
+      - name: "Await CI Workflow"
+        uses: ./.github/actions/await-workflow
+        with:
+          run-id: ${{ steps.trigger-ci.outputs.run-id }}
+          commit-status: "Continuous Integration Workflow"
+
   create-release:
     name: "Create GitHub Release"
-    needs: [ bump-version ]
+    needs: [ bump-version, run-ci ]
     outputs:
       release-name: ${{ steps.create-release.outputs.RELEASE_NAME }}
       release-url: ${{ steps.create-release.outputs.RELEASE_URL }}
@@ -121,7 +151,7 @@ jobs:
 
   create-release-notes-pr:
     name: "Create Release Notes PR"
-    needs: [ bump-version ]
+    needs: [ bump-version, run-ci ]
     outputs:
       pr-url: ${{ steps.create-release-notes-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
@@ -199,7 +229,7 @@ jobs:
 
   create-code-pr:
     name: "Create Code PR"
-    needs: [ bump-version, create-release, create-release-notes-pr ]
+    needs: [ bump-version, run-ci, create-release, create-release-notes-pr ]
     outputs:
       pr-url: ${{ steps.create-code-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
@@ -213,6 +243,13 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
+
+      - name: "Set New Version"
+        run: |
+          python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
+          git add .
+          git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
+          git push
 
       - name: "Create Code PR"
         run: |
@@ -228,19 +265,6 @@ jobs:
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-
-      - name: "Run Continuous Integration" # It should trigger on push but sometimes doesn't
-        run: |
-          gh workflow run continuous-integration.yaml --ref ${{ needs.bump-version.outputs.release-branch }}
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-
-      - name: "Set New Version"
-        run: |
-          python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
-          git add .
-          git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
-          git push
 
   handle-failure:
     runs-on: ubuntu-latest
