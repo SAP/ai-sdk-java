@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
@@ -15,6 +16,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OpenAiService {
+  private static final ObjectMapper JACKSON = new ObjectMapper();
 
   /**
    * Chat request to OpenAI
@@ -110,6 +113,71 @@ public class OpenAiService {
             .setToolChoiceFunction("fibonacci");
 
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+  }
+
+  /**
+   * Executes a chat completion request to OpenAI with a tool that calculates the weather.
+   *
+   * @param location The location to get the weather for.
+   * @param unit The unit of temperature to use.
+   * @return The assistant message response.
+   */
+  @Nonnull
+  public OpenAiChatCompletionOutput chatCompletionToolExecution(
+      @Nonnull final String location, @Nonnull final String unit) {
+    final var function =
+        new OpenAiChatCompletionFunction()
+            .setName("weather")
+            .setDescription("Get the weather for the given location")
+            .setParameters(
+                Map.of(
+                    "type",
+                    "object",
+                    "properties",
+                    Map.of(
+                        "location", Map.of("type", "string"),
+                        "unit", Map.of("type", "string", "enum", List.of("C", "F")))));
+    final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
+
+    final var messages = new ArrayList<OpenAiChatMessage>();
+    messages.add(
+        new OpenAiChatMessage.OpenAiChatUserMessage()
+            .addText("What's the weather in %s in %s?".formatted(location, unit)));
+
+    final var request =
+        new OpenAiChatCompletionParameters()
+            .addMessages(messages.toArray(OpenAiChatMessage[]::new))
+            .setTools(List.of(tool))
+            .setToolChoiceFunction("weather");
+
+    final var client = OpenAiClient.forModel(GPT_4O_MINI);
+    final var initialResponse = client.chatCompletion(request);
+
+    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
+    String toolResponseJson;
+    try {
+      final var weatherRequest =
+          JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
+      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Error parsing tool call arguments", e);
+    }
+
+    final var assistantMessage = initialResponse.getChoices().get(0).getMessage();
+    messages.add(assistantMessage);
+
+    final var toolMessage =
+        new OpenAiChatMessage.OpenAiChatToolMessage()
+            .setToolCallId(toolCall.getId())
+            .setContent(toolResponseJson);
+    messages.add(toolMessage);
+
+    final var finalRequest =
+        new OpenAiChatCompletionParameters()
+            .addMessages(messages.toArray(OpenAiChatMessage[]::new));
+
+    return client.chatCompletion(finalRequest);
   }
 
   /**

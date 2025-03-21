@@ -5,6 +5,8 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
@@ -15,7 +17,15 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolChoice;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +38,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OpenAiServiceV2 {
+  private static final ObjectMapper JACKSON = new ObjectMapper();
 
   /**
    * Chat request to OpenAI
@@ -108,6 +119,79 @@ public class OpenAiServiceV2 {
             .withToolChoice(OpenAiToolChoice.function("fibonacci"));
 
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+  }
+
+  /**
+   * Executes a chat completion request to OpenAI with a tool that calculates the weather.
+   *
+   * @param location The location to get the weather for.
+   * @param unit The unit of temperature to use.
+   * @return The assistant message response.
+   */
+  @Nonnull
+  public CreateChatCompletionResponse chatCompletionToolExecution(
+      @Nonnull final String location, @Nonnull final String unit) {
+
+    final var function =
+        new FunctionObject()
+            .name("weather")
+            .description("Get the weather for the given location")
+            .parameters(
+                Map.of(
+                    "type",
+                    "object",
+                    "properties",
+                    Map.of(
+                        "location", Map.of("type", "string"),
+                        "unit", Map.of("type", "string", "enum", List.of("C", "F")))));
+
+    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+
+    var userMessage =
+        new ChatCompletionRequestUserMessage()
+            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
+            .content(
+                ChatCompletionRequestUserMessageContent.create(
+                    "What's the weather in %s in %s?".formatted(location, unit)));
+
+    final var request =
+        new CreateChatCompletionRequest()
+            .addMessagesItem(userMessage)
+            .tools(List.of(tool))
+            .functions(null);
+
+    OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
+
+    final var initialResponse = client.chatCompletion(request);
+
+    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
+    String toolResponseJson;
+    try {
+      var weatherRequest =
+          JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
+      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Error parsing tool call arguments", e);
+    }
+
+    final var assistantMessage =
+        new ChatCompletionRequestAssistantMessage()
+            .role(ChatCompletionRequestAssistantMessage.RoleEnum.ASSISTANT)
+            .content(
+                ChatCompletionRequestAssistantMessageContent.create(
+                    initialResponse.getChoices().get(0).getMessage().getContent()))
+            .toolCalls(List.of(toolCall));
+    request.addMessagesItem(assistantMessage);
+
+    final var toolMessage =
+        new ChatCompletionRequestToolMessage()
+            .role(ChatCompletionRequestToolMessage.RoleEnum.TOOL)
+            .content(ChatCompletionRequestToolMessageContent.create(toolResponseJson))
+            .toolCallId(toolCall.getId());
+    request.addMessagesItem(toolMessage);
+
+    return client.chatCompletion(request);
   }
 
   /**

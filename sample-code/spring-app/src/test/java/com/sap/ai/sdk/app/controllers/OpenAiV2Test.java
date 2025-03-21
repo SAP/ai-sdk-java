@@ -102,4 +102,14 @@ class OpenAiV2Test {
     assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(completion.getContent()).isNotEmpty();
   }
+
+  @Test
+  void chatCompletionToolExecution() {
+    final var completion = service.chatCompletionToolExecution("Dubai", "°C");
+
+    String content = completion.getChoices().get(0).getMessage().getContent();
+
+    assertThat(content).isNotEmpty();
+    assertThat(content).contains("°C");
+  }
 }
