@@ -95,7 +95,8 @@ public class OrchestrationClient {
       throws OrchestrationClientException {
 
     val request = toCompletionPostRequest(prompt, config);
-    return new OrchestrationChatResponse(executeRequest(request));
+    val response = executeRequest(request);
+    return new OrchestrationChatResponse(response);
   }
 
   /**
