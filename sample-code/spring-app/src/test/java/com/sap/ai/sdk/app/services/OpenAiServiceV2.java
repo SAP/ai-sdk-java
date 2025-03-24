@@ -7,6 +7,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatComplet
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
@@ -27,6 +28,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
+import io.vavr.control.Try;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -132,18 +134,19 @@ public class OpenAiServiceV2 {
   public CreateChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
+    final var schemaMap =
+        Try.of(() -> new JsonSchemaGenerator(JACKSON).generateSchema(WeatherMethod.Request.class))
+            .map(schema -> JACKSON.convertValue(schema, Map.class))
+            .getOrElseThrow(
+                e ->
+                    new IllegalArgumentException(
+                        "Could not generate schema for WeatherMethod.Request", e));
+
     final var function =
         new FunctionObject()
             .name("weather")
             .description("Get the weather for the given location")
-            .parameters(
-                Map.of(
-                    "type",
-                    "object",
-                    "properties",
-                    Map.of(
-                        "location", Map.of("type", "string"),
-                        "unit", Map.of("type", "string", "enum", List.of("C", "F")))));
+            .parameters(schemaMap);
 
     final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 

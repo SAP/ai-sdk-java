@@ -6,6 +6,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
@@ -16,6 +17,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -125,18 +127,20 @@ public class OpenAiService {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
+
+    final var schemaMap =
+        Try.of(() -> new JsonSchemaGenerator(JACKSON).generateSchema(WeatherMethod.Request.class))
+            .map(schema -> JACKSON.convertValue(schema, Map.class))
+            .getOrElseThrow(
+                e ->
+                    new IllegalArgumentException(
+                        "Could not generate schema for WeatherMethod.Request", e));
+
     final var function =
         new OpenAiChatCompletionFunction()
             .setName("weather")
             .setDescription("Get the weather for the given location")
-            .setParameters(
-                Map.of(
-                    "type",
-                    "object",
-                    "properties",
-                    Map.of(
-                        "location", Map.of("type", "string"),
-                        "unit", Map.of("type", "string", "enum", List.of("C", "F")))));
+            .setParameters(schemaMap);
     final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
 
     final var messages = new ArrayList<OpenAiChatMessage>();
