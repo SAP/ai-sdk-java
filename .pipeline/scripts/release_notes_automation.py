@@ -36,14 +36,15 @@ unchanged_sections = [
 """,
 """### 🐛 Fixed Issues
 
-- 
+-
 """]
 
 def remove_unchanged_sections(file, unchanged_sections):
     for unchanged_section in unchanged_sections:
         # if file contains unchanged_section, remove it
         file = re.sub(unchanged_section, "", file)
-    return file
+    # remove the trailing whitespace when removing 🐛 Fixed Issues
+    return file.strip() + "\n"
 
 def set_header(file, version):
     date = datetime.today().strftime('%B %d, %Y')
@@ -57,6 +58,9 @@ def link_github_release(file, version):
     file = re.sub(old_github_release_link, new_github_release_link, file)
     return file
 
+def direct_links(file):
+    file = re.sub("https://sap.github.io/ai-sdk/docs/java/", "", file)
+    return file
 
 
 releases_pattern = re.compile(r"^## ")
@@ -69,10 +73,10 @@ def count_releases(filename):
     return count
 
 def find_target_file(version):
-    # release-notes-X-to-Y.md with every 15 versions the index increases by 15 and stays the same for 15 versions
+    # release-notes-X-to-Y.mdx with every 15 versions the index increases by 15 and stays the same for 15 versions
     minor_version = int(version.split(".")[1])
     index = minor_version // 15 * 15
-    return "release-notes-" + str(index) + "-to-" + str(index + 14) + ".md"
+    return "release-notes-" + str(index) + "-to-" + str(index + 14) + ".mdx"
 
 def write_release_notes(folder, target_file):
     absolute_target_file = os.path.join(folder, target_file)
@@ -86,25 +90,21 @@ def write_release_notes(folder, target_file):
         write_file(absolute_target_file, file)
 
 
-file_name = "docs/release-notes/release_notes.md"
+file_name = "docs/release_notes.md"
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='SAP Cloud SDK for AI (for Java) - Release Notes formatting script.')
 
     parser.add_argument('--version', metavar='VERSION', help='The version to be released.', required=True)
-    parser.add_argument('--folder', metavar='FOLDER', help='The ai-sdk-java/docs/release-notes folder.', required=True)
+    parser.add_argument('--folder', metavar='FOLDER', help='The ai-sdk/docs-java/release-notes folder.', required=True)
     args = parser.parse_args()
 
     file = read_file(file_name)
+    # print file contents
     file = remove_unchanged_sections(file, unchanged_sections)
     file = set_header(file, args.version)
     file = link_github_release(file, args.version)
+    file = direct_links(file)
 
     target_file = find_target_file(args.version)
-
-
-    folder_path = args.folder
-    write_release_notes(folder_path, target_file)
-
-    # delete (temporary) release-notes file so it does not appear in the released version
-    os.remove(file_name)
+    write_release_notes(args.folder, target_file)

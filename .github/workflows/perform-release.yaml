@@ -15,12 +15,14 @@ on:
 env:
   MVN_CLI_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version -DskipTests
   JAVA_VERSION: 17
+  DOCS_REPO: SAP/ai-sdk
 
 jobs:
   prerequisites:
     name: "Prerequisites"
     outputs:
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
+      release-notes-branch: ${{ steps.determine-branch-names.outputs.RELEASE_NOTES_BRANCH_NAME }}
       release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
     permissions: write-all # contents and push are needed to see the draft release
@@ -33,11 +35,13 @@ jobs:
           RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2)
           RELEASE_TAG=rel/$RELEASE_VERSION
           RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
+          RELEASE_NOTES_BRANCH_NAME=java/release-notes-$RELEASE_VERSION
           
           echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
+          echo "RELEASE_NOTES_BRANCH_NAME=$RELEASE_NOTES_BRANCH_NAME" >> $GITHUB_OUTPUT
           
           echo -e "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
         env:
@@ -63,6 +67,18 @@ jobs:
         with:
           workflow: "Continuous Integration"
           sha: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
+
+      - name: "Check Whether Release Notes PR Can Be Merged"
+        if: ${{ inputs.skip-pr-merge != 'true' }}
+        uses: ./.github/actions/pr-is-mergeable
+        with:
+          pr-ref: ${{ steps.determine-branch-names.outputs.RELEASE_NOTES_BRANCH_NAME }}
+          repo: ${{ env.DOCS_REPO }}
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          excluded-check-runs: |
+            {
+              \"Build Cloud SDK Documentation\": [\"dependabot\"]
+            }
 
   release:
     name: "Release"
@@ -112,5 +128,11 @@ jobs:
 
       - name: "Publish the Draft Release"
         run: gh release edit ${{ needs.prerequisites.outputs.release-tag }} --draft=false --repo "${{ github.repository }}"
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
+      - name: "Merge Release Notes PR"
+        if: ${{ inputs.skip-pr-merge != 'true' }}
+        run: gh pr merge --squash "${{ needs.prerequisites.outputs.release-notes-branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
