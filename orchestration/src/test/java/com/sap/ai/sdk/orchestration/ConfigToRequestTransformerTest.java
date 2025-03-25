@@ -62,12 +62,16 @@ class ConfigToRequestTransformerTest {
                 List.of(
                     systemMessage.createChatMessage(),
                     userMessage.createChatMessage(),
-                    userMessage2.createChatMessage()));
+                    userMessage2.createChatMessage()))
+            .defaults(Map.of("city", "Paris"));
+    expected.setCustomField("country", "France");
 
     var prompt = new OrchestrationPrompt(userMessage2);
     var templateConfig =
         Template.create()
-            .template(List.of(systemMessage.createChatMessage(), userMessage.createChatMessage()));
+            .template(List.of(systemMessage.createChatMessage(), userMessage.createChatMessage()))
+            .defaults(Map.of("city", "Paris"));
+    templateConfig.setCustomField("country", "France");
     var actual = ConfigToRequestTransformer.toTemplateModuleConfig(prompt, templateConfig);
 
     assertThat(actual).isEqualTo(expected);
