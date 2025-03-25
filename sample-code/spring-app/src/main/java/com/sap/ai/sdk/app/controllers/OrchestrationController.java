@@ -270,4 +270,15 @@ class OrchestrationController {
     }
     return response.getContent();
   }
+
+  @GetMapping("/localPromptTemplate")
+  @Nonnull
+  Object localPromptTemplate(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.localPromptTemplate("cloud ERP systems");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
 }

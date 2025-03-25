@@ -498,4 +498,39 @@ public class OrchestrationService {
 
     return client.chatCompletion(prompt, configWithTemplate);
   }
+
+  /**
+   * Chat request to an LLM through the Orchestration service using a local template file.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse localPromptTemplate(
+      @Nonnull final String topic) {
+    String promptTemplateYAML =
+        """
+name: poem
+version: 0.0.1
+scenario: agent-evaluator
+spec:
+  template:
+    - role: "system"
+      content: |-
+        You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.
+    - role: "user"
+      content: |-
+        Write a 3 verse poem about the following topic:
+        {{ ?topic }}
+""";
+
+    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams = Map.of("topic", "Cloud ERP");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
 }

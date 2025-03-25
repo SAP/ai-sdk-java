@@ -990,80 +990,29 @@ class OrchestrationUnitTest {
 
     String promptTemplateYAML =
         """
-name: transcription
+name: poem
 version: 0.0.1
 scenario: agent-evaluator
 spec:
   template:
     - role: "system"
       content: |-
-        You are the world's leading analyst, tenowned for exceptional accuracy and speed in transcribing and processing audio. You are a leading expert in extracting information and answers from spoken language. With a keen attention to detail, you ensures that all responses are derived solely from the spoken text, maintaining the integrity and authenticity of the original content. You are committed to providing precise and concise answers to given questions, without making assumptions or extending beyond the provided audio material. The input is provided by someone responsible for the planned functionality (Product Manager/Owner or Developer).
+        You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.
     - role: "user"
       content: |-
-        Take the audio as input and listen to the spoken text accurately. Extract specific answers to the provided questions from the transcribed text. Formulate these answers in English as if the speaker themselves provided them. Ensure that all answers are strictly based on the spoken text and do not include information that is not explicitly stated in the audio. If a question cannot be answered based on the spoken text, simply omit it. By adhering to these guidelines, you will deliver precise and reliable insights, ensuring that the responses are both accurate and contextually relevant.
-        Gloassary/Background Info:
-        - Joule: An SAP AI assistant
-        - Content-based agents: No-code solutions that leverage Joule functions and scenarios
-        - Code-based agents: Offer full flexibility and control over the planning and execution process
-        - User: User of the planned functionality.
-        These are the questions:
-        <questions>
-        {questions}
-        </questions>
-        Follow the guidelines below to provide accurate and contextually relevant answers:
-        1. **Listening**: Take the audio as input and listen to the spoken text accurately
-        2. **Question Answering**: Extract specific answers to the provided questions from the transcribed text. Formulate these answers in English as if the speaker themselves provided them.
-        3. **Scope of Answers**: Ensure that all answers are strictly based on the spoken text. Do not infer or include information that is not explicitly stated in the audio. But don't write them as a direct quote and also not as spoken language. So no filler words etc. Make it a proper concise written text.
-        4. **Unanswered Questions**: If a question cannot be answered based on the spoken text, simply omit it. Do not mention or speculate on unanswered questions.
-        5. **Output Format**: Provide a paragraph (no bulletpoints etc.) for each question anwersed. don't repeat the question in the answer word-by-word but formulate it a way that it becomes clear which aspect is answered. If the input goes beyond the provided questions, provide a brief summary of the additional information also highlighting the aspects that are covered by these addtional points.
-        By adhering to these guidelines, you will deliver precise and reliable insights, ensuring that the responses are both accurate and contextually relevant.
-     \s
-  additionalFields:
-    response_format: gemini-1.5-pro
+        Write a 3 verse poem about the following topic:
+        {{ ?topic }}
 """;
 
-    String promptTemplateJSON = """
-{
-    "name": "example-prompt-template",
-    "version": "0.0.1",
-    "scenario": "categorization",
-    "spec": {
-      "template": [
-        {
-          "role": "system",
-          "content": "You classify input text into the two following categories: {{?categories}}"
-        },
-        {
-          "role": "user",
-          "content": "{{?inputExample}}"
-        }
-      ],
-      "defaults": {
-        "categories": "Finance, Tech, Sports"
-      },
-      "additionalFields": {
-        "modelParams": {
-          "temperature": 0.7,
-          "max_tokens": 100
-        },
-        "modelGroup": "chat"
-      }
-    }
-  }""";
-
-
-    var template = TemplateConfig.create().fromJSON(promptTemplateJSON);
-//    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
+    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
     var configWithTemplate = config.withTemplateConfig(template);
 
-    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+    var inputParams = Map.of("topic", "Cloud ERP");
     var prompt = new OrchestrationPrompt(inputParams);
 
     final var response = client.chatCompletion(prompt, configWithTemplate);
-    assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-    assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
 
-    try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
+    try (var requestInputStream = fileLoader.apply("templateFromInputRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }

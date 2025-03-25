@@ -123,7 +123,6 @@ public class OrchestrationTemplate extends TemplateConfig {
 
   @Nullable
   public Template fromYAML(@Nonnull String inputYaml) {
-//    inputYaml = cleanYaml(inputYaml);
     try{
       ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
       Object obj = yamlReader.readValue(inputYaml, Object.class);
@@ -136,10 +135,6 @@ public class OrchestrationTemplate extends TemplateConfig {
     }
     return null;
   }
-
-//  private String cleanYaml(@Nonnull String inputYaml) {
-//
-//  }
 
 
 
