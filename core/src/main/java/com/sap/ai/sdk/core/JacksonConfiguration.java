@@ -5,6 +5,7 @@ import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSIO
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -40,6 +41,8 @@ public final class JacksonConfiguration {
         // still added for any non-generated code and additional safety
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         .disable(DEFAULT_VIEW_INCLUSION)
+//        TODO: remove the line below
+        .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
         .build();
   }
 }

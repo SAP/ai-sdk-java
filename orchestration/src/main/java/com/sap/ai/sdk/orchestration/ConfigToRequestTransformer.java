@@ -64,6 +64,7 @@ final class ConfigToRequestTransformer {
     return Template.create()
         .template(messagesWithPrompt)
         .tools(template.getTools())
+        .defaults(template.getDefaults())
         .responseFormat(responseFormat);
   }
 

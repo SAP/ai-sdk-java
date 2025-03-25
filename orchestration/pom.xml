@@ -108,6 +108,10 @@
       <groupId>com.github.victools</groupId>
       <artifactId>jsonschema-module-jackson</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+    </dependency>
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
