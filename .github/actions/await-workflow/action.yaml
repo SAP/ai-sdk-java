@@ -1,0 +1,100 @@
+name: "Await Workflow"
+description: "Waits until a workflow run completes."
+
+inputs:
+  run-id:
+    description: "The id of the workflow run to wait for."
+    required: true
+  poll-interval:
+    description: "The interval (in seconds) to poll for the workflow run status."
+    required: false
+    default: "60"
+  commit-status:
+    description: "The commit status message. Leave empty to not create a commit status."
+    required: false
+
+outputs:
+  succeeded:
+    description: "Whether the triggered run succeeded."
+    value: ${{ steps.wait-for-workflow.outputs.RUN_SUCCEEDED }}
+  conclusion:
+    description: "The conclusion of the triggered workflow run."
+    value: ${{ steps.wait-for-workflow.outputs.CONCLUSION }}
+
+runs:
+  using: composite
+  steps:
+    - name: Print Action Input
+      run: |
+        echo "[DEBUG] Starting 'Await Workflow' Action; inputs = ${{ toJson(inputs) }}"
+      shell: bash
+
+    - name: View Run
+      if: ${{ inputs.commit-status != '' }}
+      id: view-run
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        JSON=$(gh run view ${{ inputs.run-id }} --json url,headSha)
+        echo "URL=$(echo $JSON | jq -r '.url')" >> $GITHUB_OUTPUT
+        echo "HEAD_SHA=$(echo $JSON | jq -r '.headSha')" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Create Commit Status
+      if: ${{ inputs.commit-status != '' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: '${{ steps.view-run.outputs.HEAD_SHA }}',
+            state: 'pending',
+            target_url: '${{ steps.view-run.outputs.URL }}',
+            context: '${{ inputs.commit-status }}'
+          })
+
+    - name: Wait for Workflow to Complete
+      id: wait-for-workflow
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        echo "[DEBUG] Waiting for run '${{ inputs.run-id }}' to complete..."
+        gh run watch ${{ inputs.run-id }} --interval ${{ inputs.poll-interval }} > /dev/null
+        CONCLUSION=$(gh run view ${{ inputs.run-id }} --json conclusion | jq -r '.conclusion')
+        
+        echo "CONCLUSION=$CONCLUSION" >> $GITHUB_OUTPUT
+        echo "[DEBUG] Run '${{ inputs.run-id }}' finished with conclusion '$CONCLUSION'."
+        
+        if [[ "$CONCLUSION" != "success" ]]; then
+          echo "RUN_SUCCEEDED=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+        
+        echo "RUN_SUCCEEDED=true" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Determine Final Commit Status
+      id: determine-final-commit-status
+      if: ${{ always() && inputs.commit-status != '' }}
+      run: |
+        if [[ "${{ steps.wait-for-workflow.outputs.CONCLUSION }}" == "success" ]]; then
+          echo "FINAL_COMMIT_STATUS=success" >> $GITHUB_OUTPUT
+        else
+          echo "FINAL_COMMIT_STATUS=failure" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Update Commit Status
+      if: ${{ always() && inputs.commit-status != '' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: '${{ steps.view-run.outputs.HEAD_SHA }}',
+              state: '${{ steps.determine-final-commit-status.outputs.FINAL_COMMIT_STATUS }}',
+              target_url: '${{ steps.view-run.outputs.URL }}',
+              context: '${{ inputs.commit-status }}'
+          })

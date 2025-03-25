@@ -57,7 +57,7 @@
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cloud-sdk.version>5.17.0</cloud-sdk.version>
-    <junit-jupiter.version>5.12.0</junit-jupiter.version>
+    <junit-jupiter.version>5.12.1</junit-jupiter.version>
     <wiremock.version>3.12.1</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
@@ -68,7 +68,7 @@
     <spring-ai.version>1.0.0-M6</spring-ai.version>
     <reactor-core.version>3.6.12</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
-    <mockito.version>5.16.0</mockito.version>
+    <mockito.version>5.16.1</mockito.version>
     <javaparser.version>3.26.3</javaparser.version>
     <jsonschema-generator.version>4.37.0</jsonschema-generator.version>
     <!-- conflicts resolution -->
@@ -743,7 +743,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.2.0</version>
+        <version>4.9.3.0</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
