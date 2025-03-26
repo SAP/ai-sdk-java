@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Java AI SDK Application</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
     <style>
         body { background-color: #f4f6f9; }
         .max-width-container {
@@ -97,8 +98,10 @@
                 <div class="card endpoint-card">
                     <div class="card-header">
                         <h2>🧰 AI Core</h2>
-                        The AI Core API provides tools to manage the lifecycle of your own AI scenarios, including
-                        artifacts, pipeline execution, and scalable deployments for training and inference.
+                        The AI Core API provides tools to manage the lifecycle of your own AI
+                        scenarios, including
+                        artifacts, pipeline execution, and scalable deployments for training and
+                        inference.
                         For more information, check the <a
                             href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-ai-core-overview"
                             target="_blank">AI Core documentation</a>.
@@ -114,7 +117,8 @@
                                         <code>/deployments/by-config/[...]/createDelete</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Create and delete a deployment with the Java specific configuration ID.
+                                        Create and delete a deployment with the Java specific
+                                        configuration ID.
                                     </div>
                                 </div>
                             </li>
@@ -126,7 +130,8 @@
                                         <code>/deployments/by-config/[...]/stop</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Stop all deployments with the Java specific configuration ID. Only RUNNING
+                                        Stop all deployments with the Java specific configuration
+                                        ID. Only RUNNING
                                         deployments can be STOPPED.
                                     </div>
                                 </div>
@@ -139,7 +144,8 @@
                                         <code>/deployments/by-config/[...]/delete</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Delete all deployments with the Java specific configuration ID. Only UNKNOWN and
+                                        Delete all deployments with the Java specific configuration
+                                        ID. Only UNKNOWN and
                                         STOPPED deployments can be DELETED
                                     </div>
                                 </div>
@@ -167,7 +173,8 @@
                                         <code>/deployments/getAll</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Get all deployments, including non-Java specific deployments.
+                                        Get all deployments, including non-Java specific
+                                        deployments.
                                     </div>
                                 </div>
                             </li>
@@ -221,10 +228,12 @@
                 <div class="card endpoint-card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35" class="me-1 mb-2">
+                            <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35"
+                                 class="me-1 mb-2">
                             <h2>Orchestration</h2>
                         </div>
-                        The Orchestration API offers functionality for enhancing your LLM calls with Templating,
+                        The Orchestration API offers functionality for enhancing your LLM calls with
+                        Templating,
                         Filtering, Data Masking, Grounding and more.
                         For more information, check the <a
                             href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration"
@@ -241,13 +250,15 @@
                                             <code>/orchestration/completion</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service with a simple prompt.
+                                            Chat request to an LLM through the Orchestration service
+                                            with a simple prompt.
                                         </div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
-                                        <button type="submit" formaction="/orchestration/streamChatCompletion"
+                                        <button type="submit"
+                                                formaction="/orchestration/streamChatCompletion"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                             <code>/orchestration/streamChatCompletion</code>
                                         </button>
@@ -263,18 +274,21 @@
                                             <code>/orchestration/template</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service with a template.
+                                            Chat request to an LLM through the Orchestration service
+                                            with a template.
                                         </div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
-                                        <button type="submit" formaction="/orchestration/messagesHistory"
+                                        <button type="submit"
+                                                formaction="/orchestration/messagesHistory"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                             <code>/orchestration/messageHistory</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service using message history.
+                                            Chat request to an LLM through the Orchestration service
+                                            using message history.
                                         </div>
                                     </div>
                                 </li>
@@ -285,18 +299,21 @@
                                             <code>/orchestration/image</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service with image as input.
+                                            Chat request to an LLM through the Orchestration service
+                                            with image as input.
                                         </div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
-                                        <button type="submit" formaction="/orchestration/multiString"
+                                        <button type="submit"
+                                                formaction="/orchestration/multiString"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                             <code>/orchestration/multiString</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service with multiple texts.
+                                            Chat request to an LLM through the Orchestration service
+                                            with multiple texts.
                                         </div>
                                     </div>
                                 </li>
@@ -304,165 +321,196 @@
                         </details>
                         <br>
                         <details>
-                            <summary><h5 style="display:inline-block">Filtering and Masking</h5></summary>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/inputFiltering/ALLOW_ALL"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/inputFiltering/ALLOW_ALL</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Apply lenient input filtering for a request to orchestration.
+                            <summary><h5 style="display:inline-block">Filtering and Masking</h5>
+                            </summary>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/inputFiltering/ALLOW_ALL"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/inputFiltering/ALLOW_ALL</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Apply lenient input filtering for a request to
+                                            orchestration.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/outputFiltering/ALLOW_ALL"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/outputFiltering/ALLOW_ALL</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Apply lenient output filtering for a request to orchestration.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/outputFiltering/ALLOW_ALL"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/outputFiltering/ALLOW_ALL</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Apply lenient output filtering for a request to
+                                            orchestration.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/llamaGuardFilter/false"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/llamaGuardFilter/false</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Apply lenient input filtering for a request to orchestration.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/llamaGuardFilter/false"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/llamaGuardFilter/false</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Apply lenient input filtering for a request to
+                                            orchestration.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/maskingAnonymization"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/maskingAnonymization</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Let the orchestration service evaluate the feedback on the AI SDK provided by a
-                                        hypothetical
-                                        user. Anonymize any names given as they are not relevant for judging the
-                                        sentiment of the
-                                        feedback.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/maskingAnonymization"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/maskingAnonymization</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Let the orchestration service evaluate the feedback on
+                                            the AI SDK provided by a
+                                            hypothetical
+                                            user. Anonymize any names given as they are not relevant
+                                            for judging the
+                                            sentiment of the
+                                            feedback.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/maskingPseudonymization"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/maskingPseudonymization</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Let the orchestration service a response to a hypothetical user who provided
-                                        feedback on the AI
-                                        SDK. Pseudonymize the user's name and location to protect their privacy.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/maskingPseudonymization"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/maskingPseudonymization</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Let the orchestration service a response to a
+                                            hypothetical user who provided
+                                            feedback on the AI
+                                            SDK. Pseudonymize the user's name and location to
+                                            protect their privacy.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                         </details>
                         <br>
                         <details>
                             <summary><h5 style="display:inline-block">Grounding</h5></summary>
                             <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/grounding/false"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/grounding</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Using grounding to provide additional context to the AI model.
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/grounding/false"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/grounding</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Using grounding to provide additional context to the AI
+                                            model.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/grounding/true"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/<wbr>maskGroundingInput</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        The request to the grounding service will be masked.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/grounding/true"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/
+                                                <wbr>
+                                                maskGroundingInput</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            The request to the grounding service will be masked.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/groundingHelpSapCom"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/groundingHelpSapCom</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/groundingHelpSapCom"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/groundingHelpSapCom</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Using grounding via *help.sap.com* to provide additional
+                                            SAP-specific context to the AI model.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                         </details>
                         <br>
                         <details>
                             <summary><h5 style="display:inline-block">Response format</h5></summary>
                             <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/responseFormatJsonSchema"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/responseFormatJsonSchema</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service where the output will adhere to a given JSON schema.
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/responseFormatJsonSchema"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/responseFormatJsonSchema</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service
+                                            where the output will adhere to a given JSON schema.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/responseFormatJsonObject"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/responseFormatJsonObject</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service where the output will consist of valid JSON.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/responseFormatJsonObject"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/responseFormatJsonObject</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service
+                                            where the output will consist of valid JSON.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                         </details>
                         <br>
                         <details>
-                            <summary><h5 style="display:inline-block">Template reference</h5></summary>
+                            <summary><h5 style="display:inline-block">Template reference</h5>
+                            </summary>
                             <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/templateFromPromptRegistryById"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/templateFromPromptRegistryById</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service using a template from the prompt registry identified by ID.
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/templateFromPromptRegistryById"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/templateFromPromptRegistryById</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service
+                                            using a template from the prompt registry identified by
+                                            ID.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/templateFromPromptRegistryByScenario"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/templateFromPromptRegistryByScenario</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service using a template from the prompt registry identified by Scenario, name, and version.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/templateFromPromptRegistryByScenario"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/templateFromPromptRegistryByScenario</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service
+                                            using a template from the prompt registry identified by
+                                            Scenario, name, and version.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                         </details>
                     </div>
                 </div>
@@ -472,7 +520,8 @@
                 <div class="card endpoint-card">
                     <div class="card-header">
                         <h2>🧑‍🔬 Foundation Models</h2>
-                        The Foundation Models API offers functionality for directly calling a foundation model and using
+                        The Foundation Models API offers functionality for directly calling a
+                        foundation model and using
                         the features provided by its own API.
                         For more information, check the <a
                             href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-generative-ai-models-using-sap-ai-core"
@@ -513,7 +562,8 @@
                                         <code>/streamChatCompletionDeltas</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Asynchronous stream of an OpenAI chat request and provision of complete
+                                        Asynchronous stream of an OpenAI chat request and provision
+                                        of complete
                                         response.
                                     </div>
                                 </div>
@@ -553,7 +603,8 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/chatCompletion/ai-sdk-java-e2e"
+                                    <button type="submit"
+                                            formaction="/chatCompletion/ai-sdk-java-e2e"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/chatCompletion/resourceGroup</code>
                                     </button>
@@ -571,7 +622,8 @@
                 <div class="card endpoint-card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <img src="https://spring.io/favicon-32x32.png" alt="Spring Logo" class="me-2 mb-2">
+                            <img src="https://spring.io/favicon-32x32.png" alt="Spring Logo"
+                                 class="me-2 mb-2">
                             <h2>Spring AI</h2>
                         </div>
                         Our clients are <a
@@ -580,54 +632,64 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35" class="me-1 mb-2">
+                            <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35"
+                                 class="me-1 mb-2">
                             <h5 class="mb-1">Orchestration Integration</h5>
                         </div>
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-orchestration/completion"
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/completion"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/completion</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service with a simple prompt.
+                                        Chat request to an LLM through the Orchestration service
+                                        with a simple prompt.
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-orchestration/streamChatCompletion"
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/streamChatCompletion"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/streamChatCompletion</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Asynchronous stream of an LLM chat request through the Orchestration service.
+                                        Asynchronous stream of an LLM chat request through the
+                                        Orchestration service.
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-orchestration/template"
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/template"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/template</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service with a Spring AI
+                                        Chat request to an LLM through the Orchestration service
+                                        with a Spring AI
                                         template.
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-orchestration/masking"
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/masking"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/masking</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Let the orchestration service evaluate the feedback on the AI SDK provided by a
+                                        Let the orchestration service evaluate the feedback on the
+                                        AI SDK provided by a
                                         hypothetical
-                                        user. Anonymize any names given as they are not relevant for judging the
+                                        user. Anonymize any names given as they are not relevant for
+                                        judging the
                                         sentiment of the
                                         feedback.
                                     </div>
@@ -635,22 +697,28 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-orchestration/toolCalling" class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/toolCalling"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/toolCalling</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Register a function that will be called when the user asks for the weather.
+                                        Register a function that will be called when the user asks
+                                        for the weather.
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-orchestration/chatMemory"
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/chatMemory"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/chatMemory</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        The user firsts asks the capital of France, then the typical for there, chat memory will remember that the user is inquiring about France.
+                                        The user firsts asks the capital of France, then the typical
+                                        for there, chat memory will remember that the user is
+                                        inquiring about France.
                                     </div>
                                 </div>
                         </ul>
@@ -663,12 +731,14 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/spring-ai-openai/embed/strings"
+                                    <button type="submit"
+                                            formaction="/spring-ai-openai/embed/strings"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-openai/embed/strings</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Get the embedding for a given string using SpringAI from OpenAI.
+                                        Get the embedding for a given string using SpringAI from
+                                        OpenAI.
                                     </div>
                                 </div>
                             </li>
@@ -681,10 +751,12 @@
                 <div class="card endpoint-card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <img src="grounding.png" alt="Grounding Logo" width="35" class="me-1 mb-2">
+                            <img src="grounding.png" alt="Grounding Logo" width="35"
+                                 class="me-1 mb-2">
                             <h2>Document Grounding</h2>
                         </div>
-                        The Document Grounding API offers additional context for enhancing your Orchestration LLM calls.
+                        The Document Grounding API offers additional context for enhancing your
+                        Orchestration LLM calls.
                         For more information, check the <a
                             href="https://wiki.one.int.sap/wiki/display/AI/Consume+Grounding+via+GenAI+Hub"
                             target="_blank">Wiki</a>
@@ -698,7 +770,9 @@
                                         <code>/grounding/pipelines/list</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        List all active pipelines in the document grounding module. They can be used to index document storages like Sharepoint pages or SFTP servers.
+                                        List all active pipelines in the document grounding module.
+                                        They can be used to index document storages like Sharepoint
+                                        pages or SFTP servers.
                                     </div>
                                 </div>
                             </li>
@@ -743,7 +817,8 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <button type="submit" formaction="/prompt-registry/listTemplates"
+                                    <button type="submit"
+                                            formaction="/prompt-registry/listTemplates"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/prompt-registry/listTemplates</code>
                                     </button>
@@ -772,8 +847,10 @@
         <div class="info-tooltip">
             ❓
             <div class="tooltip-content">
-                Welcome to the Java AI SDK Application. In this Demo and End-to-End Test App you can test several
-                endpoints of our API. For more information, check our GitHub repository linked at the bottom.
+                Welcome to the Java AI SDK Application. In this Demo and End-to-End Test App you can
+                test several
+                endpoints of our API. For more information, check our GitHub repository linked at
+                the bottom.
             </div>
         </div>
     </footer>
