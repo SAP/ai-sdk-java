@@ -231,52 +231,81 @@
                             target="_blank">Orchestration documentation</a>
                     </div>
                     <div class="card-body">
+                        <details open>
+                            <summary><h5 style="display:inline-block">Chat completion</h5></summary>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/orchestration/completion"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/completion</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service with a simple prompt.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/orchestration/streamChatCompletion"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/streamChatCompletion</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Asynchronous stream of an LLM chat request.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/orchestration/template"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/template</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service with a template.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/orchestration/messagesHistory"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/messageHistory</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service using message history.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/orchestration/image"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/image</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service with image as input.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/orchestration/multiString"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/multiString</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service with multiple texts.
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </details>
+                        <br>
+                        <details>
+                            <summary><h5 style="display:inline-block">Filtering and Masking</h5></summary>
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/completion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/completion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service with a simple prompt.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/streamChatCompletion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/streamChatCompletion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Asynchronous stream of an LLM chat request.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/template"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/template</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service with a template.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/messagesHistory"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/messageHistory</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service using message history.
-                                    </div>
-                                </div>
-                            </li>
-
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit" formaction="/orchestration/inputFiltering/ALLOW_ALL"
@@ -338,6 +367,12 @@
                                     </div>
                                 </div>
                             </li>
+                        </ul>
+                        </details>
+                        <br>
+                        <details>
+                            <summary><h5 style="display:inline-block">Grounding</h5></summary>
+                            <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit" formaction="/orchestration/grounding/false"
@@ -371,28 +406,12 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/image"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/image</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service with image as input.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/multiString"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/multiString</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service with multiple texts.
-                                    </div>
-                                </div>
-                            </li>
+                        </ul>
+                        </details>
+                        <br>
+                        <details>
+                            <summary><h5 style="display:inline-block">Response format</h5></summary>
+                            <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit" formaction="/orchestration/responseFormatJsonSchema"
@@ -415,6 +434,12 @@
                                     </div>
                                 </div>
                             </li>
+                        </ul>
+                        </details>
+                        <br>
+                        <details>
+                            <summary><h5 style="display:inline-block">Template reference</h5></summary>
+                            <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit" formaction="/orchestration/templateFromPromptRegistryById"
@@ -438,6 +463,7 @@
                                 </div>
                             </li>
                         </ul>
+                        </details>
                     </div>
                 </div>
             </div>
