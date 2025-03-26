@@ -15,6 +15,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCallItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolChoice;
@@ -29,6 +30,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import io.vavr.control.Try;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -195,6 +197,61 @@ public class OpenAiServiceV2 {
     request.addMessagesItem(toolMessage);
 
     return client.chatCompletion(request);
+  }
+
+  public OpenAiChatCompletionResponse chatCompletionToolExecutionConvenience(
+      @Nonnull final String location, @Nonnull final String unit) {
+    // 1. Create tool
+    // 1.1 Create schema for tool: Convenience?
+    final var schemaMap =
+        Try.of(() -> new JsonSchemaGenerator(JACKSON).generateSchema(WeatherMethod.Request.class))
+            .map(schema -> JACKSON.convertValue(schema, Map.class))
+            .getOrElseThrow(
+                e ->
+                    new IllegalArgumentException(
+                        "Could not generate schema for WeatherMethod.Request", e));
+
+    // 1.2 Create function object
+    final var function =
+        new FunctionObject()
+            .name("weather")
+            .description("Get the weather for the given location")
+            .parameters(schemaMap);
+    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+
+    // 2. Manage messages externally
+    var messages = new ArrayList<OpenAiMessage>();
+    messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
+
+    // 3. Create chat completion request
+    var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
+
+    // 4. Execute chat completion request
+    var initialResponse = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+
+    // 5. Extract tool call
+    var assistantMessage = initialResponse.getMessage();
+    messages.add(assistantMessage);
+
+    var functionCall = (OpenAiFunctionCallItem) assistantMessage.getToolCalls().get(0);
+
+    // 6. Execute tool
+    String toolResponseJson;
+    try {
+      var weatherRequest =
+          JACKSON.readValue(functionCall.getArguments(), WeatherMethod.Request.class);
+      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Error parsing tool call arguments", e);
+    }
+
+    // 7. Create tool message
+    var toolMessage = OpenAiMessage.tool(toolResponseJson, functionCall.getId());
+    messages.add(toolMessage);
+
+    // 9. Execute chat completion request with tool rsponse
+    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
 
   /**

@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -149,8 +150,18 @@ public class OpenAiChatCompletionRequest {
   @Tolerate
   public OpenAiChatCompletionRequest(
       @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
+    this(Lists.asList(message, messages));
+  }
+
+  /**
+   * Creates an OpenAiChatCompletionPrompt with a list of messages.
+   *
+   * @param messages the list of messages to be added to the prompt
+   */
+  @Tolerate
+  public OpenAiChatCompletionRequest(@Nonnull final List<OpenAiMessage> messages) {
     this(
-        Lists.asList(message, messages),
+        Collections.unmodifiableList(messages),
         null,
         null,
         null,

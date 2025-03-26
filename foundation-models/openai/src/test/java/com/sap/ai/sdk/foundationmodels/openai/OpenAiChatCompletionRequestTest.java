@@ -8,6 +8,8 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
 import java.util.List;
+
+import lombok.ToString;
 import org.junit.jupiter.api.Test;
 
 class OpenAiChatCompletionRequestTest {

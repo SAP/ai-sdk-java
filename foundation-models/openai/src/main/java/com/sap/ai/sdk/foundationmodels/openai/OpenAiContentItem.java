@@ -8,4 +8,5 @@ import com.google.common.annotations.Beta;
  * @since 1.4.0
  */
 @Beta
-public sealed interface OpenAiContentItem permits OpenAiTextItem, OpenAiImageItem {}
+public sealed interface OpenAiContentItem
+    permits OpenAiTextItem, OpenAiImageItem, OpenAiToolCallItem {}

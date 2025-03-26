@@ -8,6 +8,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +61,28 @@ public class OpenAiChatCompletionResponse {
     }
 
     return Objects.requireNonNullElse(getChoice().getMessage().getContent(), "");
+  }
+
+  @Nonnull
+  public OpenAiAssistantMessage getMessage() {
+
+    if (getChoice().getMessage().getToolCalls() == null) {
+      return OpenAiMessage.assistant(getContent());
+    }
+
+    var contentItems = new ArrayList<OpenAiContentItem>();
+    if (getContent().isEmpty()) {
+      contentItems.add(new OpenAiTextItem(getContent()));
+    }
+
+    for (var toolCall : getChoice().getMessage().getToolCalls()) {
+      contentItems.add(
+          new OpenAiFunctionCallItem(
+              toolCall.getId(),
+              toolCall.getFunction().getName(),
+              toolCall.getFunction().getArguments()));
+    }
+
+    return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems));
   }
 }

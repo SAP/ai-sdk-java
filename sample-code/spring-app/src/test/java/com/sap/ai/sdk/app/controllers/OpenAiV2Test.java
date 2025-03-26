@@ -112,4 +112,14 @@ class OpenAiV2Test {
     assertThat(content).isNotEmpty();
     assertThat(content).contains("°C");
   }
+
+  @Test
+  void chatCompletionToolExecutionConvenience() {
+    final var completion = service.chatCompletionToolExecutionConvenience("Dubai", "°C");
+
+    String content = completion.getContent();
+
+    assertThat(content).isNotEmpty();
+    assertThat(content).contains("°C");
+  }
 }
