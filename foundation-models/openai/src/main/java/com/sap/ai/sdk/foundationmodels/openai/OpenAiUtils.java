@@ -34,10 +34,9 @@ class OpenAiUtils {
       return assistantMessage.createChatCompletionRequestMessage();
     } else if (message instanceof OpenAiSystemMessage systemMessage) {
       return systemMessage.createChatCompletionRequestMessage();
-    } else if(message instanceof OpenAiToolMessage toolMessage) {
+    } else if (message instanceof OpenAiToolMessage toolMessage) {
       return toolMessage.createChatCompletionRequestMessage();
-    }
-    else {
+    } else {
       throw new IllegalArgumentException("Unknown message type: " + message.getClass());
     }
   }

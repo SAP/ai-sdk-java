@@ -1,8 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import javax.annotation.Nonnull;
-
 import com.google.common.annotations.Beta;
+import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
