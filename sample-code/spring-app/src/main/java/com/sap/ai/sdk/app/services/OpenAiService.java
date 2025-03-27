@@ -151,8 +151,7 @@ public class OpenAiService {
     final var request =
         new OpenAiChatCompletionParameters()
             .addMessages(messages.toArray(OpenAiChatMessage[]::new))
-            .setTools(List.of(tool))
-            .setToolChoiceFunction("weather");
+            .setTools(List.of(tool));
 
     final var client = OpenAiClient.forModel(GPT_4O_MINI);
     final var initialResponse = client.chatCompletion(request);
