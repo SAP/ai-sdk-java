@@ -107,7 +107,7 @@ class OpenAiV2Test {
   void chatCompletionToolExecution() {
     final var completion = service.chatCompletionToolExecution("Dubai", "°C");
 
-    String content = completion.getChoices().get(0).getMessage().getContent();
+    String content = completion.getContent();
 
     assertThat(content).isNotEmpty();
     assertThat(content).contains("°C");

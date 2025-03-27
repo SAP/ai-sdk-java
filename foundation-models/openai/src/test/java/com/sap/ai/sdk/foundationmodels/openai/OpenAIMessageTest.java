@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
@@ -13,6 +14,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequ
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ToolCallType;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Stream;
@@ -194,6 +196,22 @@ class OpenAIMessageTest {
             ((ChatCompletionRequestAssistantMessageContent.InnerString) requestMessage.getContent())
                 .value())
         .isEqualTo(validText);
+
+    var messageWithFunctionCall =
+        new OpenAiAssistantMessage(
+            new OpenAiMessageContent(
+                List.of(new OpenAiFunctionCallItem("id", "name", "arguments"))));
+    var requestMessageWithFunctionCall =
+        messageWithFunctionCall.createChatCompletionRequestMessage();
+
+    assertThat(requestMessageWithFunctionCall.getToolCalls()).hasSize(1);
+    assertThat(requestMessageWithFunctionCall.getToolCalls().get(0).getType())
+        .isEqualTo(ToolCallType.FUNCTION);
+    assertThat(requestMessageWithFunctionCall.getToolCalls().get(0).getId()).isEqualTo("id");
+    assertThat(requestMessageWithFunctionCall.getToolCalls().get(0).getFunction().getName())
+        .isEqualTo("name");
+    assertThat(requestMessageWithFunctionCall.getToolCalls().get(0).getFunction().getArguments())
+        .isEqualTo("arguments");
   }
 
   @Test
@@ -219,5 +237,36 @@ class OpenAIMessageTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(
             "Unknown content type for class com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem messages.");
+  }
+
+  @Test
+  void assistantMessageGetToolCalls() {
+    var message =
+        new OpenAiAssistantMessage(
+            new OpenAiMessageContent(
+                List.of(
+                    new OpenAiTextItem("text"),
+                    new OpenAiFunctionCallItem("id1", "name1", "arguments1"),
+                    new OpenAiFunctionCallItem("id2", "name2", "arguments2"))));
+
+    var toolCalls = message.getToolCalls();
+    assertThat(toolCalls).hasSize(2);
+
+    var functionCallItem1 = (OpenAiFunctionCallItem) toolCalls.get(0);
+    assertThat(functionCallItem1.getId()).isEqualTo("id1");
+    assertThat(functionCallItem1.getName()).isEqualTo("name1");
+    assertThat(functionCallItem1.getArguments()).isEqualTo("arguments1");
+
+    var functionCallItem2 = (OpenAiFunctionCallItem) toolCalls.get(1);
+    assertThat(functionCallItem2.getId()).isEqualTo("id2");
+    assertThat(functionCallItem2.getName()).isEqualTo("name2");
+    assertThat(functionCallItem2.getArguments()).isEqualTo("arguments2");
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideValidTextMessageByRole")
+  void verifyAllMessageTypesMappedToDto(OpenAiMessage message) {
+    assertThatNoException()
+        .isThrownBy(() -> OpenAiUtils.createChatCompletionRequestMessage(message));
   }
 }

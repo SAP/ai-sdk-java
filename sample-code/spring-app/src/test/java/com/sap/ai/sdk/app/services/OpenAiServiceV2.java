@@ -15,20 +15,14 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCallItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolChoice;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import io.vavr.control.Try;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -130,10 +124,8 @@ public class OpenAiServiceV2 {
    * @param unit The unit of temperature to use.
    * @return The assistant message response.
    */
-  @Nonnull
-  public CreateChatCompletionResponse chatCompletionToolExecution(
+  public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
-
     final var schemaMap =
         Try.of(() -> new JsonSchemaGenerator(JACKSON).generateSchema(WeatherMethod.Request.class))
             .map(schema -> JACKSON.convertValue(schema, Map.class))
@@ -147,54 +139,33 @@ public class OpenAiServiceV2 {
             .name("weather")
             .description("Get the weather for the given location")
             .parameters(schemaMap);
-
     final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
-    var userMessage =
-        new ChatCompletionRequestUserMessage()
-            .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
-            .content(
-                ChatCompletionRequestUserMessageContent.create(
-                    "What's the weather in %s in %s?".formatted(location, unit)));
+    final var messages = new ArrayList<OpenAiMessage>();
+    messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
-    final var request =
-        new CreateChatCompletionRequest()
-            .addMessagesItem(userMessage)
-            .tools(List.of(tool))
-            .functions(null);
+    final var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
+    var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
-    OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
+    final var assistantMessage = response.getMessage();
+    messages.add(assistantMessage);
 
-    final var initialResponse = client.chatCompletion(request);
+    final var functionCall = (OpenAiFunctionCallItem) assistantMessage.getToolCalls().get(0);
 
-    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
     String toolResponseJson;
     try {
       var weatherRequest =
-          JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
+          JACKSON.readValue(functionCall.getArguments(), WeatherMethod.Request.class);
       final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
       toolResponseJson = JACKSON.writeValueAsString(toolResponse);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
 
-    final var assistantMessage =
-        new ChatCompletionRequestAssistantMessage()
-            .role(ChatCompletionRequestAssistantMessage.RoleEnum.ASSISTANT)
-            .content(
-                ChatCompletionRequestAssistantMessageContent.create(
-                    initialResponse.getChoices().get(0).getMessage().getContent()))
-            .toolCalls(List.of(toolCall));
-    request.addMessagesItem(assistantMessage);
+    final var toolMessage = OpenAiMessage.tool(toolResponseJson, functionCall.getId());
+    messages.add(toolMessage);
 
-    final var toolMessage =
-        new ChatCompletionRequestToolMessage()
-            .role(ChatCompletionRequestToolMessage.RoleEnum.TOOL)
-            .content(ChatCompletionRequestToolMessageContent.create(toolResponseJson))
-            .toolCallId(toolCall.getId());
-    request.addMessagesItem(toolMessage);
-
-    return client.chatCompletion(request);
+    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
 
   /**
