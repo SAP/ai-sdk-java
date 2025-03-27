@@ -486,32 +486,30 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     stubForChatCompletion();
 
     final var response = client.chatCompletion(new OpenAiChatCompletionRequest("Some text"));
-    final var message = response.getMessage();
+    final var simpleMessage = response.getMessage();
 
-    assertThat(message).isNotNull();
-    assertThat(message).isInstanceOf(OpenAiAssistantMessage.class);
-    assertThat(message.getToolCalls()).isEmpty();
+    assertThat(simpleMessage).isNotNull();
+    assertThat(simpleMessage).isInstanceOf(OpenAiAssistantMessage.class);
+    assertThat(simpleMessage.getToolCalls()).isEmpty();
 
     stubForChatCompletionTool();
 
-    final var responseTool =
+    final var responseWithToolCall =
         client.chatCompletion(new OpenAiChatCompletionRequest("Some tool request"));
-    OpenAiAssistantMessage messageWithToolCalls = responseTool.getMessage();
+    OpenAiAssistantMessage messageWithToolCall = responseWithToolCall.getMessage();
 
-    assertThat(messageWithToolCalls).isNotNull();
-    assertThat(messageWithToolCalls).isInstanceOf(OpenAiAssistantMessage.class);
-    assertThat(messageWithToolCalls.content().items()).hasSize(1);
-    assertThat(messageWithToolCalls.getToolCalls()).hasSize(1);
-    assertThat(((OpenAiFunctionCallItem) messageWithToolCalls.getToolCalls().get(0)).getId())
-        .isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
-    assertThat(((OpenAiFunctionCallItem) messageWithToolCalls.getToolCalls().get(0)).getName())
-        .isEqualTo("fibonacci");
-    assertThat(((OpenAiFunctionCallItem) messageWithToolCalls.getToolCalls().get(0)).getArguments())
-        .isEqualTo("{\"N\":12}");
+    assertThat(messageWithToolCall).isNotNull();
+    assertThat(messageWithToolCall).isInstanceOf(OpenAiAssistantMessage.class);
+    assertThat(messageWithToolCall.content().items()).hasSize(1);
+    OpenAiFunctionCallItem functionCallItem =
+        (OpenAiFunctionCallItem) messageWithToolCall.getToolCalls().get(0);
+    assertThat(functionCallItem.getId()).isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
+    assertThat(functionCallItem.getName()).isEqualTo("fibonacci");
+    assertThat(functionCallItem.getArguments()).isEqualTo("{\"N\":12}");
 
-    // edge case: both content and tool calls are present
-    responseTool.getChoice().getMessage().content("Some content");
-    var messageWithToolCallsAndContent = responseTool.getMessage();
+    // case: both content and tool calls are present
+    responseWithToolCall.getChoice().getMessage().content("Some content");
+    var messageWithToolCallsAndContent = responseWithToolCall.getMessage();
 
     assertThat(messageWithToolCallsAndContent).isNotNull();
     assertThat(messageWithToolCallsAndContent.content().items()).hasSize(2);
@@ -519,9 +517,5 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
         .isInstanceOf(OpenAiTextItem.class);
     assertThat(messageWithToolCallsAndContent.content().items().get(1))
         .isInstanceOf(OpenAiFunctionCallItem.class);
-
-    assertThat(messageWithToolCallsAndContent.getToolCalls()).hasSize(1);
-    assertThat(messageWithToolCallsAndContent).isInstanceOf(OpenAiAssistantMessage.class);
-    assertThat(messageWithToolCallsAndContent.getToolCalls()).hasSize(1);
   }
 }
