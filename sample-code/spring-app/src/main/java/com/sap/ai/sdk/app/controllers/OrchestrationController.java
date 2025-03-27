@@ -83,6 +83,30 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/image")
+  @Nonnull
+  Object imageInput(@RequestParam(value = "format", required = false) final String format) {
+    final var response =
+        service.imageInput(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/multiString")
+  @Nonnull
+  Object multiStringInput(@RequestParam(value = "format", required = false) final String format) {
+    final var response =
+        service.multiStringInput(
+            List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"));
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/inputFiltering/{policy}")
   @Nonnull
   Object inputFiltering(
@@ -197,30 +221,6 @@ class OrchestrationController {
   Object groundingHelpSapCom(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.groundingHelpSapCom("What is a fuzzy search?");
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
-  }
-
-  @GetMapping("/image")
-  @Nonnull
-  Object imageInput(@RequestParam(value = "format", required = false) final String format) {
-    final var response =
-        service.imageInput(
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
-  }
-
-  @GetMapping("/multiString")
-  @Nonnull
-  Object multiStringInput(@RequestParam(value = "format", required = false) final String format) {
-    final var response =
-        service.multiStringInput(
-            List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"));
     if ("json".equals(format)) {
       return response;
     }
