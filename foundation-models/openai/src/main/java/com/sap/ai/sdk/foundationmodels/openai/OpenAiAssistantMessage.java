@@ -18,6 +18,10 @@ import lombok.experimental.Accessors;
 /**
  * Represents a chat message as 'assistant' to OpenAI service.
  *
+ * <p>When {@link OpenAiAssistantMessage} is received from {@link OpenAiChatCompletionResponse}, it
+ * may contain tool calls that need to be executed. The tool calls are represented as {@link
+ * OpenAiToolCallItem}.
+ *
  * @since 1.4.0
  */
 @Beta
@@ -43,6 +47,12 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
     this(new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))));
   }
 
+  /**
+   * Retrieves the list of tool calls within the content items in this assistant message.
+   *
+   * @return a list of {@link OpenAiToolCallItem} representing the tool calls.
+   * @since 1.6.0
+   */
   @Nonnull
   public List<OpenAiToolCallItem> getToolCalls() {
     return this.content().items().stream()
@@ -58,21 +68,21 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    */
   @Nonnull
   ChatCompletionRequestAssistantMessage createChatCompletionRequestMessage() {
-    var message =
+    final var message =
         new ChatCompletionRequestAssistantMessage()
             .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()));
 
-    for (var item : content().items()) {
+    for (final var item : content().items()) {
       if (item instanceof OpenAiTextItem textItem) {
         message.content(ChatCompletionRequestAssistantMessageContent.create(textItem.text()));
       } else if (item instanceof OpenAiFunctionCallItem functionItem) {
 
-        var functionCall =
+        final var functionCall =
             new ChatCompletionMessageToolCallFunction()
                 .name(functionItem.getName())
                 .arguments(functionItem.getArguments());
 
-        var toolCall =
+        final var toolCall =
             new ChatCompletionMessageToolCall()
                 .type(ToolCallType.FUNCTION)
                 .id(functionItem.getId())

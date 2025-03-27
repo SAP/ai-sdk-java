@@ -63,6 +63,12 @@ public class OpenAiChatCompletionResponse {
     return Objects.requireNonNullElse(getChoice().getMessage().getContent(), "");
   }
 
+  /**
+   * Gets the {@code OpenAiAssistantMessage} for the first choice in response. *
+   *
+   * @return the assistant message
+   * @since 1.6.0
+   */
   @Nonnull
   public OpenAiAssistantMessage getMessage() {
 
@@ -70,12 +76,12 @@ public class OpenAiChatCompletionResponse {
       return OpenAiMessage.assistant(getContent());
     }
 
-    var contentItems = new ArrayList<OpenAiContentItem>();
-    if (getContent().isEmpty()) {
+    final var contentItems = new ArrayList<OpenAiContentItem>();
+    if (!getContent().isEmpty()) {
       contentItems.add(new OpenAiTextItem(getContent()));
     }
 
-    for (var toolCall : getChoice().getMessage().getToolCalls()) {
+    for (final var toolCall : getChoice().getMessage().getToolCalls()) {
       contentItems.add(
           new OpenAiFunctionCallItem(
               toolCall.getId(),

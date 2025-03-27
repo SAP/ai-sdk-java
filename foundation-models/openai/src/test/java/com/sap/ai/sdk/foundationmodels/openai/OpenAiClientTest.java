@@ -480,4 +480,48 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                       }
                       """)));
   }
+
+  @Test
+  void chatCompletionResponseGetMessage() {
+    stubForChatCompletion();
+
+    final var response = client.chatCompletion(new OpenAiChatCompletionRequest("Some text"));
+    final var message = response.getMessage();
+
+    assertThat(message).isNotNull();
+    assertThat(message).isInstanceOf(OpenAiAssistantMessage.class);
+    assertThat(message.getToolCalls()).isEmpty();
+
+    stubForChatCompletionTool();
+
+    final var responseTool =
+        client.chatCompletion(new OpenAiChatCompletionRequest("Some tool request"));
+    OpenAiAssistantMessage messageWithToolCalls = responseTool.getMessage();
+
+    assertThat(messageWithToolCalls).isNotNull();
+    assertThat(messageWithToolCalls).isInstanceOf(OpenAiAssistantMessage.class);
+    assertThat(messageWithToolCalls.content().items()).hasSize(1);
+    assertThat(messageWithToolCalls.getToolCalls()).hasSize(1);
+    assertThat(((OpenAiFunctionCallItem) messageWithToolCalls.getToolCalls().get(0)).getId())
+        .isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
+    assertThat(((OpenAiFunctionCallItem) messageWithToolCalls.getToolCalls().get(0)).getName())
+        .isEqualTo("fibonacci");
+    assertThat(((OpenAiFunctionCallItem) messageWithToolCalls.getToolCalls().get(0)).getArguments())
+        .isEqualTo("{\"N\":12}");
+
+    // edge case: both content and tool calls are present
+    responseTool.getChoice().getMessage().content("Some content");
+    var messageWithToolCallsAndContent = responseTool.getMessage();
+
+    assertThat(messageWithToolCallsAndContent).isNotNull();
+    assertThat(messageWithToolCallsAndContent.content().items()).hasSize(2);
+    assertThat(messageWithToolCallsAndContent.content().items().get(0))
+        .isInstanceOf(OpenAiTextItem.class);
+    assertThat(messageWithToolCallsAndContent.content().items().get(1))
+        .isInstanceOf(OpenAiFunctionCallItem.class);
+
+    assertThat(messageWithToolCallsAndContent.getToolCalls()).hasSize(1);
+    assertThat(messageWithToolCallsAndContent).isInstanceOf(OpenAiAssistantMessage.class);
+    assertThat(messageWithToolCallsAndContent.getToolCalls()).hasSize(1);
+  }
 }
