@@ -103,6 +103,8 @@ public class OrchestrationTemplate extends TemplateConfig {
    *
    * @param inputString the provided JSON
    * @return A Template object representing the provided JSON
+   *
+   * @since 1.6.0
    */
   @Nullable
   public Template fromJSON(@Nonnull final String inputString) {
@@ -124,6 +126,8 @@ public class OrchestrationTemplate extends TemplateConfig {
    *
    * @param inputYaml the provided YAML
    * @return A Template object representing the provided YAML
+   *
+   * @since 1.6.0
    */
   @Nullable
   public Template fromYAML(@Nonnull final String inputYaml) {

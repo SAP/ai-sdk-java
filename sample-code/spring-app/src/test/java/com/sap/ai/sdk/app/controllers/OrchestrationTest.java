@@ -337,4 +337,12 @@ class OrchestrationTest {
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
+
+  @Test
+  void testLocalPromptTemplate() {
+    final var result =
+        service.localPromptTemplate("Cloud ERP systems").getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
 }
