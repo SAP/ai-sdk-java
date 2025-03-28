@@ -6,6 +6,8 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -28,7 +30,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
-import io.vavr.control.Try;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -134,13 +135,14 @@ public class OpenAiServiceV2 {
   public CreateChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    final var schemaMap =
-        Try.of(() -> new JsonSchemaGenerator(JACKSON).generateSchema(WeatherMethod.Request.class))
-            .map(schema -> JACKSON.convertValue(schema, Map.class))
-            .getOrElseThrow(
-                e ->
-                    new IllegalArgumentException(
-                        "Could not generate schema for WeatherMethod.Request", e));
+    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
+    Map<String, Object> schemaMap;
+    try {
+      var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
+      schemaMap = JACKSON.convertValue(schema, new TypeReference<Map<String, Object>>() {});
+    } catch (JsonMappingException e) {
+      throw new IllegalArgumentException("Could not generate schema for WeatherMethod.Request", e);
+    }
 
     final var function =
         new FunctionObject()
