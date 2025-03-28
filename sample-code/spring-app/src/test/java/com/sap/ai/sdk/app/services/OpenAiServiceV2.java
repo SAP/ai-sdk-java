@@ -139,7 +139,7 @@ public class OpenAiServiceV2 {
     Map<String, Object> schemaMap;
     try {
       var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
-      schemaMap = JACKSON.convertValue(schema, new TypeReference<Map<String, Object>>() {});
+      schemaMap = JACKSON.convertValue(schema, new TypeReference<>() {});
     } catch (JsonMappingException e) {
       throw new IllegalArgumentException("Could not generate schema for WeatherMethod.Request", e);
     }
