@@ -8,16 +8,11 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
-import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
-
-import java.util.List;
 
 /**
  * Internal utility class for getting a default object mapper with preset configuration.
@@ -57,7 +52,8 @@ public class OrchestrationJacksonConfiguration {
                 TemplateResponseFormat.class,
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
             .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class)
-            .setMixInAnnotation(TemplateResponseFormat.class, JacksonMixins.NoneTypeInfoMixin.class);
+            .setMixInAnnotation(
+                TemplateResponseFormat.class, JacksonMixins.NoneTypeInfoMixin.class);
     jackson.registerModule(module);
     return jackson;
   }

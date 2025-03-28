@@ -69,7 +69,7 @@ final class ConfigToRequestTransformer {
             .template(messagesWithPrompt)
             .tools(template.getTools())
             .defaults(template.getDefaults())
-        .responseFormat(responseFormat);
+            .responseFormat(responseFormat);
 
     for (val customFieldName : template.getCustomFieldNames()) {
       result.setCustomField(customFieldName, template.getCustomField(customFieldName));
