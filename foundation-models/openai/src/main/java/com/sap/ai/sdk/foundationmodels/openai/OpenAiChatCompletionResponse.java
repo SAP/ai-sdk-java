@@ -8,7 +8,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +67,7 @@ public class OpenAiChatCompletionResponse {
    * Gets the {@code OpenAiAssistantMessage} for the first choice in response. *
    *
    * @return the assistant message
+   * @throws OpenAiClientException if the content is filtered by the content filter
    * @since 1.6.0
    */
   @Nonnull
@@ -76,19 +77,20 @@ public class OpenAiChatCompletionResponse {
       return OpenAiMessage.assistant(getContent());
     }
 
-    final var contentItems = new ArrayList<OpenAiContentItem>();
-    if (!getContent().isEmpty()) {
-      contentItems.add(new OpenAiTextItem(getContent()));
-    }
+    final List<OpenAiContentItem> contentItems =
+        getContent().isEmpty() ? List.of() : List.of(new OpenAiTextItem(getContent()));
 
-    for (final var toolCall : getChoice().getMessage().getToolCalls()) {
-      contentItems.add(
-          new OpenAiFunctionCallItem(
-              toolCall.getId(),
-              toolCall.getFunction().getName(),
-              toolCall.getFunction().getArguments()));
-    }
+    final List toolCalls =
+        getChoice().getMessage().getToolCalls().stream()
+            .map(
+                toolCall ->
+                    new OpenAiFunctionCall(
+                        toolCall.getId(),
+                        toolCall.getFunction().getName(),
+                        toolCall.getFunction().getArguments()))
+            .map(OpenAiToolCall.class::cast)
+            .toList();
 
-    return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems));
+    return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), toolCalls);
   }
 }

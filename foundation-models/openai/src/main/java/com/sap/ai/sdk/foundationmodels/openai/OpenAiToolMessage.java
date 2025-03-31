@@ -25,17 +25,17 @@ public class OpenAiToolMessage implements OpenAiMessage {
   /** The role associated with this message. */
   @Nonnull String role = "tool";
 
-  /** The content of the message. */
+  /** The response from tool */
   @Nonnull OpenAiMessageContent content;
 
   /** The tool call id associated with this message. */
   @Nonnull private final String toolCallId;
 
   /**
-   * Creates a new tool message from a string and tool call id.
+   * Creates a new tool message from a tool execution response and tool call id.
    *
-   * @param message the first message.
-   * @param toolCallId identifier of the tool call this message is responding to.
+   * @param message the response from executing a tool call.
+   * @param toolCallId identifier of the executed tool call in assistant message.
    */
   OpenAiToolMessage(@Nonnull final String message, @Nonnull final String toolCallId) {
     this(new OpenAiMessageContent(List.of(new OpenAiTextItem(message))), toolCallId);

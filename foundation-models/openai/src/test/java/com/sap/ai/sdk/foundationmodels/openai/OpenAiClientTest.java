@@ -489,20 +489,18 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     final var simpleMessage = response.getMessage();
 
     assertThat(simpleMessage).isNotNull();
-    assertThat(simpleMessage).isInstanceOf(OpenAiAssistantMessage.class);
-    assertThat(simpleMessage.getToolCalls()).isEmpty();
+    assertThat(simpleMessage.toolCalls()).isEmpty();
 
     stubForChatCompletionTool();
 
     final var responseWithToolCall =
         client.chatCompletion(new OpenAiChatCompletionRequest("Some tool request"));
-    OpenAiAssistantMessage messageWithToolCall = responseWithToolCall.getMessage();
+    var messageWithToolCall = responseWithToolCall.getMessage();
 
     assertThat(messageWithToolCall).isNotNull();
-    assertThat(messageWithToolCall).isInstanceOf(OpenAiAssistantMessage.class);
-    assertThat(messageWithToolCall.content().items()).hasSize(1);
-    OpenAiFunctionCallItem functionCallItem =
-        (OpenAiFunctionCallItem) messageWithToolCall.getToolCalls().get(0);
+    assertThat(messageWithToolCall.content().items()).hasSize(0);
+    OpenAiFunctionCall functionCallItem =
+        (OpenAiFunctionCall) messageWithToolCall.toolCalls().get(0);
     assertThat(functionCallItem.getId()).isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
     assertThat(functionCallItem.getName()).isEqualTo("fibonacci");
     assertThat(functionCallItem.getArguments()).isEqualTo("{\"N\":12}");
@@ -512,10 +510,10 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     var messageWithToolCallsAndContent = responseWithToolCall.getMessage();
 
     assertThat(messageWithToolCallsAndContent).isNotNull();
-    assertThat(messageWithToolCallsAndContent.content().items()).hasSize(2);
+    assertThat(messageWithToolCallsAndContent.content().items()).hasSize(1);
     assertThat(messageWithToolCallsAndContent.content().items().get(0))
         .isInstanceOf(OpenAiTextItem.class);
-    assertThat(messageWithToolCallsAndContent.content().items().get(1))
-        .isInstanceOf(OpenAiFunctionCallItem.class);
+    assertThat(messageWithToolCallsAndContent.toolCalls().get(0))
+        .isInstanceOf(OpenAiFunctionCall.class);
   }
 }

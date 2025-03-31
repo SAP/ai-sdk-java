@@ -8,6 +8,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMess
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ToolCallType;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import lombok.experimental.Accessors;
  *
  * <p>When {@link OpenAiAssistantMessage} is received from {@link OpenAiChatCompletionResponse}, it
  * may contain tool calls that need to be executed. The tool calls are represented as {@link
- * OpenAiToolCallItem}.
+ * OpenAiToolCall}.
  *
  * @since 1.4.0
  */
@@ -33,10 +34,23 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
   /** The role associated with this message. */
   @Nonnull String role = "assistant";
 
-  /** The content of the message. */
+  /**
+   * The content of the message. *
+   *
+   * <p>May contain an empty list of {@link OpenAiContentItem} when tool calls are present.
+   */
   @Getter(onMethod_ = @Beta)
   @Nonnull
   OpenAiMessageContent content;
+
+  /**
+   * The tool calls associated with this message if present.
+   *
+   * @since 1.6.0
+   */
+  @Getter(onMethod_ = @Beta)
+  @Nonnull
+  List<OpenAiToolCall> toolCalls;
 
   /**
    * Creates a new assistant message with the given single message as text content.
@@ -44,21 +58,9 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    * @param singleMessage the message.
    */
   OpenAiAssistantMessage(@Nonnull final String singleMessage) {
-    this(new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))));
-  }
-
-  /**
-   * Retrieves the list of tool calls within the content items in this assistant message.
-   *
-   * @return a list of {@link OpenAiToolCallItem} representing the tool calls.
-   * @since 1.6.0
-   */
-  @Nonnull
-  public List<OpenAiToolCallItem> getToolCalls() {
-    return this.content().items().stream()
-        .filter(item -> item instanceof OpenAiToolCallItem)
-        .map(item -> (OpenAiToolCallItem) item)
-        .toList();
+    this(
+        new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))),
+        Collections.emptyList());
   }
 
   /**
@@ -72,11 +74,13 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
         new ChatCompletionRequestAssistantMessage()
             .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()));
 
-    for (final var item : content().items()) {
-      if (item instanceof OpenAiTextItem textItem) {
-        message.content(ChatCompletionRequestAssistantMessageContent.create(textItem.text()));
-      } else if (item instanceof OpenAiFunctionCallItem functionItem) {
+    final var items = content().items();
+    if (!items.isEmpty() && items.get(0) instanceof OpenAiTextItem textItem) {
+      message.content(ChatCompletionRequestAssistantMessageContent.create(textItem.text()));
+    }
 
+    for (final var item : toolCalls()) {
+      if (item instanceof OpenAiFunctionCall functionItem) {
         final var functionCall =
             new ChatCompletionMessageToolCallFunction()
                 .name(functionItem.getName())

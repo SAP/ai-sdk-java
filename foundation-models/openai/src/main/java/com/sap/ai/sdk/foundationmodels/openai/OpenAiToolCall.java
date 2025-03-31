@@ -5,5 +5,4 @@ package com.sap.ai.sdk.foundationmodels.openai;
  *
  * @since 1.6.0
  */
-public sealed interface OpenAiToolCallItem extends OpenAiContentItem
-    permits OpenAiFunctionCallItem {}
+public sealed interface OpenAiToolCall permits OpenAiFunctionCall {}

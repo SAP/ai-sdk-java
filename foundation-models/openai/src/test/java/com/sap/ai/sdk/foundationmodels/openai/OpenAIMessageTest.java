@@ -199,8 +199,8 @@ class OpenAIMessageTest {
 
     var messageWithFunctionCall =
         new OpenAiAssistantMessage(
-            new OpenAiMessageContent(
-                List.of(new OpenAiFunctionCallItem("id", "name", "arguments"))));
+            new OpenAiMessageContent(List.of()),
+            List.of(new OpenAiFunctionCall("id", "name", "arguments")));
     var requestMessageWithFunctionCall =
         messageWithFunctionCall.createChatCompletionRequestMessage();
 
@@ -243,21 +243,20 @@ class OpenAIMessageTest {
   void assistantMessageGetToolCalls() {
     var message =
         new OpenAiAssistantMessage(
-            new OpenAiMessageContent(
-                List.of(
-                    new OpenAiTextItem("text"),
-                    new OpenAiFunctionCallItem("id1", "name1", "arguments1"),
-                    new OpenAiFunctionCallItem("id2", "name2", "arguments2"))));
+            new OpenAiMessageContent(List.of(new OpenAiTextItem("text"))),
+            List.of(
+                new OpenAiFunctionCall("id1", "name1", "arguments1"),
+                new OpenAiFunctionCall("id2", "name2", "arguments2")));
 
-    var toolCalls = message.getToolCalls();
+    var toolCalls = message.toolCalls();
     assertThat(toolCalls).hasSize(2);
 
-    var functionCallItem1 = (OpenAiFunctionCallItem) toolCalls.get(0);
+    var functionCallItem1 = (OpenAiFunctionCall) toolCalls.get(0);
     assertThat(functionCallItem1.getId()).isEqualTo("id1");
     assertThat(functionCallItem1.getName()).isEqualTo("name1");
     assertThat(functionCallItem1.getArguments()).isEqualTo("arguments1");
 
-    var functionCallItem2 = (OpenAiFunctionCallItem) toolCalls.get(1);
+    var functionCallItem2 = (OpenAiFunctionCall) toolCalls.get(1);
     assertThat(functionCallItem2.getId()).isEqualTo("id2");
     assertThat(functionCallItem2.getName()).isEqualTo("name2");
     assertThat(functionCallItem2.getArguments()).isEqualTo("arguments2");

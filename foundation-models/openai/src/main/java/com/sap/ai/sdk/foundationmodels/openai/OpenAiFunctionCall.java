@@ -13,7 +13,7 @@ import lombok.Value;
 @Beta
 @Value
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
-public class OpenAiFunctionCallItem implements OpenAiToolCallItem {
+public class OpenAiFunctionCall implements OpenAiToolCall {
   /** The unique identifier for the function call. */
   @Nonnull String id;
 

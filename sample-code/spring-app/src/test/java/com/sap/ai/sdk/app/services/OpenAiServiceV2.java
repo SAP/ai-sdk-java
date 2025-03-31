@@ -17,13 +17,12 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCallItem;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
-import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +153,7 @@ public class OpenAiServiceV2 {
     final var assistantMessage = response.getMessage();
     messages.add(assistantMessage);
 
-    final var functionCall = (OpenAiFunctionCallItem) assistantMessage.getToolCalls().get(0);
+    final var functionCall = (OpenAiFunctionCall) assistantMessage.toolCalls().get(0);
 
     String toolResponseJson;
     try {
