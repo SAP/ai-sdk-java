@@ -7,6 +7,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequ
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -93,5 +94,23 @@ class OpenAiChatCompletionRequestTest {
             .value();
     assertThat(choice.getType().getValue()).isEqualTo("function");
     assertThat(choice.getFunction().getName()).isEqualTo("functionName");
+  }
+
+  @Test
+  void messageListExternallyUnmodifiable() {
+    var originalList = new ArrayList<OpenAiMessage>();
+    originalList.add(OpenAiMessage.user("Initial message"));
+
+    var request = new OpenAiChatCompletionRequest(originalList);
+
+    var generatedRequest = request.createCreateChatCompletionRequest();
+    assertThat(generatedRequest.getMessages()).hasSize(1);
+
+    originalList.add(OpenAiMessage.user("Another message"));
+
+    var generatedRequestAfter = request.createCreateChatCompletionRequest();
+    assertThat(generatedRequestAfter.getMessages())
+        .as("Modifying the original list should not affect the messages in the request object.")
+        .hasSize(1);
   }
 }

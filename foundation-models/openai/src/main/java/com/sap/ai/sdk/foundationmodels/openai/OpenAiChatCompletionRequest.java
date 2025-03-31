@@ -9,7 +9,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -162,7 +161,7 @@ public class OpenAiChatCompletionRequest {
   @Tolerate
   public OpenAiChatCompletionRequest(@Nonnull final List<OpenAiMessage> messages) {
     this(
-        Collections.unmodifiableList(messages),
+        List.copyOf(messages),
         null,
         null,
         null,
