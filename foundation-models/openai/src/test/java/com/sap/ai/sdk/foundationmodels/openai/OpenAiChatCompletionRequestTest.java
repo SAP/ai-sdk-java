@@ -99,7 +99,8 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void messageListExternallyUnmodifiable() {
     var originalList = new ArrayList<OpenAiMessage>();
-    originalList.add(OpenAiMessage.user("Initial message"));
+    OpenAiUserMessage user = OpenAiMessage.user("Initial message");
+    originalList.add(user);
 
     var request = new OpenAiChatCompletionRequest(originalList);
 
