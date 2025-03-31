@@ -131,17 +131,6 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  @GetMapping("/chatCompletionToolExecution")
-  @Nonnull
-  Object chatCompletionToolExecution(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.chatCompletionToolExecution("Dubai", "°C");
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
-  }
-
   @GetMapping("/embedding")
   @Nonnull
   Object embedding() {
