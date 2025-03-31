@@ -148,7 +148,7 @@ public class OpenAiServiceV2 {
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
     final var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
-    var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+    final var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
     final var assistantMessage = response.getMessage();
     messages.add(assistantMessage);
@@ -157,10 +157,10 @@ public class OpenAiServiceV2 {
 
     String toolResponseJson;
     try {
-      var weatherRequest =
+      final var weatherRequest =
           JACKSON.readValue(functionCall.getArguments(), WeatherMethod.Request.class);
-      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
-      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
+      final var currentWeather = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(currentWeather);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
