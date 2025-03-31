@@ -5,6 +5,9 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -17,7 +20,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
-import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -128,13 +130,14 @@ public class OpenAiService {
   public OpenAiChatCompletionOutput chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    final var schemaMap =
-        Try.of(() -> new JsonSchemaGenerator(JACKSON).generateSchema(WeatherMethod.Request.class))
-            .map(schema -> JACKSON.convertValue(schema, Map.class))
-            .getOrElseThrow(
-                e ->
-                    new IllegalArgumentException(
-                        "Could not generate schema for WeatherMethod.Request", e));
+    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
+    Map<String, Object> schemaMap;
+    try {
+      final var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
+      schemaMap = JACKSON.convertValue(schema, new TypeReference<>() {});
+    } catch (JsonMappingException e) {
+      throw new IllegalArgumentException("Could not generate schema for WeatherMethod.Request", e);
+    }
 
     final var function =
         new OpenAiChatCompletionFunction()
@@ -163,7 +166,7 @@ public class OpenAiService {
           JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
       final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
       toolResponseJson = JACKSON.writeValueAsString(toolResponse);
-    } catch (Exception e) {
+    } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
 
