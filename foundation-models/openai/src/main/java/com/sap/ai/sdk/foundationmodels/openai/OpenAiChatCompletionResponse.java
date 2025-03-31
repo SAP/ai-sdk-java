@@ -51,6 +51,9 @@ public class OpenAiChatCompletionResponse {
   /**
    * Gets the content of the first choice.
    *
+   * <p>The content may be empty {@code ""} if the assistant did not return any content i.e. when
+   * tool calls are present.
+   *
    * @return the content of the first choice
    * @throws OpenAiClientException if the content is filtered by the content filter
    */
