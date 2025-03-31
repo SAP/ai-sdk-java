@@ -164,8 +164,8 @@ public class OpenAiService {
     try {
       final var weatherRequest =
           JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
-      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
-      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
+      final var currentWeather = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(currentWeather);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }

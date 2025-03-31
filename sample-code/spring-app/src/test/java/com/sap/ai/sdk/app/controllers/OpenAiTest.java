@@ -108,7 +108,6 @@ class OpenAiTest {
 
     String content = completion.getContent();
 
-    assertThat(content).isNotEmpty();
     assertThat(content).contains("°C");
   }
 }

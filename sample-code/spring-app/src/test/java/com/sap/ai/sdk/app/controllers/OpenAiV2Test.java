@@ -109,7 +109,6 @@ class OpenAiV2Test {
 
     String content = completion.getContent();
 
-    assertThat(content).isNotEmpty();
     assertThat(content).contains("°C");
   }
 }
