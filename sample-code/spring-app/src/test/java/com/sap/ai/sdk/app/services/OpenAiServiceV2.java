@@ -138,7 +138,7 @@ public class OpenAiServiceV2 {
     final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
     Map<String, Object> schemaMap;
     try {
-      var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
+      final var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
       schemaMap = JACKSON.convertValue(schema, new TypeReference<>() {});
     } catch (JsonMappingException e) {
       throw new IllegalArgumentException("Could not generate schema for WeatherMethod.Request", e);
@@ -152,7 +152,7 @@ public class OpenAiServiceV2 {
 
     final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
 
-    var userMessage =
+    final var userMessage =
         new ChatCompletionRequestUserMessage()
             .role(ChatCompletionRequestUserMessage.RoleEnum.USER)
             .content(
@@ -167,15 +167,15 @@ public class OpenAiServiceV2 {
 
     OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
 
-    final var initialResponse = client.chatCompletion(request);
+    final var response = client.chatCompletion(request);
 
-    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
+    final var toolCall = response.getChoices().get(0).getMessage().getToolCalls().get(0);
     String toolResponseJson;
     try {
-      var weatherRequest =
+      final var weatherRequest =
           JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
-      final var toolResponse = new WeatherMethod().getCurrentWeather(weatherRequest);
-      toolResponseJson = JACKSON.writeValueAsString(toolResponse);
+      final var currentWeather = new WeatherMethod().getCurrentWeather(weatherRequest);
+      toolResponseJson = JACKSON.writeValueAsString(currentWeather);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Error parsing tool call arguments", e);
     }
@@ -185,7 +185,7 @@ public class OpenAiServiceV2 {
             .role(ChatCompletionRequestAssistantMessage.RoleEnum.ASSISTANT)
             .content(
                 ChatCompletionRequestAssistantMessageContent.create(
-                    initialResponse.getChoices().get(0).getMessage().getContent()))
+                    response.getChoices().get(0).getMessage().getContent()))
             .toolCalls(List.of(toolCall));
     request.addMessagesItem(assistantMessage);
 
