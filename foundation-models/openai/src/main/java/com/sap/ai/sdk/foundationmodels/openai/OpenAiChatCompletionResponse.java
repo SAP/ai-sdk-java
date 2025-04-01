@@ -75,7 +75,7 @@ public class OpenAiChatCompletionResponse {
    */
   @Nonnull
   public OpenAiAssistantMessage getMessage() {
-    var toolCalls = getChoice().getMessage().getToolCalls();
+    final var toolCalls = getChoice().getMessage().getToolCalls();
 
     if (toolCalls == null) {
       return OpenAiMessage.assistant(getContent());
