@@ -35,7 +35,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
   @Nonnull String role = "assistant";
 
   /**
-   * The content of the message. *
+   * The content of the message.
    *
    * <p>May contain an empty list of {@link OpenAiContentItem} when tool calls are present.
    */

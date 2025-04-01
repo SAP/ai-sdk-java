@@ -264,7 +264,7 @@ class OpenAIMessageTest {
 
   @ParameterizedTest
   @MethodSource("provideValidTextMessageByRole")
-  void verifyAllMessageTypesMappedToDto(OpenAiMessage message) {
+  void testCreateChatCompletionRequestMessage(OpenAiMessage message) {
     assertThatNoException()
         .isThrownBy(() -> OpenAiUtils.createChatCompletionRequestMessage(message));
   }
