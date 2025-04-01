@@ -511,24 +511,58 @@ public class OrchestrationService {
       @Nonnull final String topic) {
     String promptTemplateYAML =
         """
-name: poem
+name: translator
 version: 0.0.1
-scenario: agent-evaluator
+scenario: translation scenario
 spec:
   template:
     - role: "system"
       content: |-
-        You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.
+        You are a language translator.
     - role: "user"
       content: |-
-        Write a 3 verse poem about the following topic:
-        {{ ?topic }}
+        Whats {{ ?word }} in {{ ?language }}?
+  defaults:
+    word: "apple"
+  response_format:
+    type: "json_schema"
+    strict: true
+    json_schema:
+      name: translation-schema
+      description: Translate the given word into the provided language.
+      schema:
+        type: object
+        additionalProperties: False
+        required:
+          - language
+          - translation
+        properties:
+          language:
+            type: string
+          translation:
+            type: string
 """;
+//  response_format:
+//    name: translation-schema
+//    description: Translate the given word into the provided language.
+//    strict: true
+//    schema:
+//      type: object
+//      additionalProperties: False
+//      required:
+//        - language
+//        - translation
+//      properties:\s
+//        language:
+//          type: string
+//        translation:
+//          type: string
+//""";
 
     var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
     var configWithTemplate = config.withTemplateConfig(template);
 
-    var inputParams = Map.of("topic", "Cloud ERP");
+    var inputParams = Map.of("language", "German");
     var prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);

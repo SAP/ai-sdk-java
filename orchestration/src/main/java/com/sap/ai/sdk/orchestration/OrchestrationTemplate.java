@@ -108,17 +108,18 @@ public class OrchestrationTemplate extends TemplateConfig {
    */
   @Nullable
   public Template fromJSON(@Nonnull final String inputString) {
-    Template template1 = null;
+    Template promptTemplate = null;
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
     try {
       final JsonNode rootNode = objectMapper.readTree(inputString);
-      template1 = objectMapper.treeToValue(rootNode.get("spec"), Template.class);
+      promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), Template.class);
+//      the response_schema.type is not set even though this value is given in the yaml/json
     } catch (JsonProcessingException ex) {
       throw new RuntimeException(ex.getMessage());
     }
 
-    return template1;
+    return promptTemplate;
   }
 
   /**
