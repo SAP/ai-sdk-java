@@ -25,7 +25,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ContentFilterPromptResults;
