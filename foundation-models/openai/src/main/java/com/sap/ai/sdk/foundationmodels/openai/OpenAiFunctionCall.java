@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 
 /**
- * Represents a function type tool call suggested by an OpenAI model.
+ * Represents a function type tool called by an OpenAI model.
  *
  * @since 1.6.0
  */

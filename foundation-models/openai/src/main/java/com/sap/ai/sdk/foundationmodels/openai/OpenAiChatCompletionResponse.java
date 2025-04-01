@@ -76,10 +76,6 @@ public class OpenAiChatCompletionResponse {
   @Nonnull
   public OpenAiAssistantMessage getMessage() {
 
-    if (getChoice().getMessage().getToolCalls() == null) {
-      return OpenAiMessage.assistant(getContent());
-    }
-
     final List<OpenAiContentItem> contentItems =
         getContent().isEmpty() ? List.of() : List.of(new OpenAiTextItem(getContent()));
 
