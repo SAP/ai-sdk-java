@@ -67,7 +67,7 @@ public class OpenAiChatCompletionResponse {
   }
 
   /**
-   * Gets the {@code OpenAiAssistantMessage} for the first choice in response. *
+   * Gets the {@code OpenAiAssistantMessage} for the first choice.
    *
    * @return the assistant message
    * @throws OpenAiClientException if the content is filtered by the content filter
