@@ -75,21 +75,25 @@ public class OpenAiChatCompletionResponse {
    */
   @Nonnull
   public OpenAiAssistantMessage getMessage() {
+    var toolCalls = getChoice().getMessage().getToolCalls();
+
+    if (toolCalls == null) {
+      return OpenAiMessage.assistant(getContent());
+    }
 
     final List<OpenAiContentItem> contentItems =
         getContent().isEmpty() ? List.of() : List.of(new OpenAiTextItem(getContent()));
 
-    final List toolCalls =
-        getChoice().getMessage().getToolCalls().stream()
-            .map(
+    final var openAiToolCalls =
+        toolCalls.stream()
+            .<OpenAiToolCall>map(
                 toolCall ->
                     new OpenAiFunctionCall(
                         toolCall.getId(),
                         toolCall.getFunction().getName(),
                         toolCall.getFunction().getArguments()))
-            .map(OpenAiToolCall.class::cast)
             .toList();
 
-    return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), toolCalls);
+    return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
   }
 }
