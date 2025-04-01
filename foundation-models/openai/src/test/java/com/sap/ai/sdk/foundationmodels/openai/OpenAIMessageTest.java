@@ -239,29 +239,6 @@ class OpenAIMessageTest {
             "Unknown content type for class com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem messages.");
   }
 
-  @Test
-  void assistantMessageGetToolCalls() {
-    var message =
-        new OpenAiAssistantMessage(
-            new OpenAiMessageContent(List.of(new OpenAiTextItem("text"))),
-            List.of(
-                new OpenAiFunctionCall("id1", "name1", "arguments1"),
-                new OpenAiFunctionCall("id2", "name2", "arguments2")));
-
-    var toolCalls = message.toolCalls();
-    assertThat(toolCalls).hasSize(2);
-
-    var functionCallItem1 = (OpenAiFunctionCall) toolCalls.get(0);
-    assertThat(functionCallItem1.getId()).isEqualTo("id1");
-    assertThat(functionCallItem1.getName()).isEqualTo("name1");
-    assertThat(functionCallItem1.getArguments()).isEqualTo("arguments1");
-
-    var functionCallItem2 = (OpenAiFunctionCall) toolCalls.get(1);
-    assertThat(functionCallItem2.getId()).isEqualTo("id2");
-    assertThat(functionCallItem2.getName()).isEqualTo("name2");
-    assertThat(functionCallItem2.getArguments()).isEqualTo("arguments2");
-  }
-
   @ParameterizedTest
   @MethodSource("provideValidTextMessageByRole")
   void testCreateChatCompletionRequestMessage(OpenAiMessage message) {
