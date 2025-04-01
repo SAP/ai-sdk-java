@@ -593,6 +593,11 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
 
     assertThat(simpleMessage).isNotNull();
     assertThat(simpleMessage.toolCalls()).isEmpty();
+    assertThat(simpleMessage.content().items()).hasSize(1);
+    assertThat(simpleMessage.content().items().get(0)).isInstanceOf(OpenAiTextItem.class);
+    assertThat(((OpenAiTextItem) simpleMessage.content().items().get(0)).text())
+        .isEqualTo(
+            "I'm an AI and cannot answer that question as beauty is subjective and varies from person to person.");
 
     stubForChatCompletionTool();
 
