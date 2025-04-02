@@ -21,10 +21,18 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-/** Client for the Prompt Registry service. */
+/**
+ * Client for the Prompt Registry service.
+ *
+ * @since 1.6.0
+ */
 public class PromptClient extends DefaultApi {
 
-  /** Instantiates this a client to invoke operations on the Prompt Registry service. */
+  /**
+   * Instantiates this a client to invoke operations on the Prompt Registry service.
+   *
+   * @since 1.6.0
+   */
   public PromptClient() {
     this(new AiCoreService());
   }
@@ -33,6 +41,7 @@ public class PromptClient extends DefaultApi {
    * Instantiates this a client to invoke operations on the Prompt Registry service.
    *
    * @param aiCoreService The configured connectivity instance to AI Core
+   * @since 1.6.0
    */
   public PromptClient(@Nonnull final AiCoreService aiCoreService) {
     super(addMixin(aiCoreService));
