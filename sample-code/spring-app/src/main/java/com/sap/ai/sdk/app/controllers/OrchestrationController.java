@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-
-
 /** Endpoints for the Orchestration service */
 @RestController
 @Slf4j
@@ -20,19 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 class OrchestrationController {
   @Autowired private OrchestrationService service;
 
-
-
-
-
   @PostMapping("/processInput")
-  public Object processInput(@RequestParam("userInput") String userInput)  {
-    log.info("User input: {}", userInput);
+  public Object processInput(@RequestParam("userInput") String userInput) {
     final String output = service.processInput(userInput);
     return ResponseEntity.ok(output);
   }
-
-
-
-
-
 }
