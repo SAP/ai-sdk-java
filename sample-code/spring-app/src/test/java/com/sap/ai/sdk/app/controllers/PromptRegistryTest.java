@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
@@ -27,7 +28,7 @@ public class PromptRegistryTest {
     controller.deleteTemplate();
 
     // create
-    PromptTemplatePostResponse createdTemplate = controller.createUpdateTemplate();
+    PromptTemplatePostResponse createdTemplate = controller.createTemplate();
     assertThat(createdTemplate.getMessage()).contains("successful");
     assertThat(createdTemplate.getName()).contains(PromptRegistryController.NAME);
 
@@ -56,6 +57,26 @@ public class PromptRegistryTest {
     assertThat(template.getMessage()).contains("successful");
 
     // export TODO: NOT WORKING
+
+    // cleanup
+    List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();
+    assertThat(deletedTemplate).hasSize(1);
+    assertThat(deletedTemplate.get(0).getMessage()).contains("successful");
+  }
+
+  @Test
+  void history() {
+    var controller = new PromptRegistryController();
+    // cleanup
+    controller.deleteTemplate();
+
+    // create + update
+    controller.updateTemplate();
+
+    // history
+    PromptTemplateListResponse history = controller.history();
+    assertThat(history.getCount()).isEqualTo(2);
+    assertThat(history.getResources()).hasSize(2);
 
     // cleanup
     List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();

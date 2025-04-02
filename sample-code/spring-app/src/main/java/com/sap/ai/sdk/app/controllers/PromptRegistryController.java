@@ -33,8 +33,19 @@ class PromptRegistryController {
     return client.listPromptTemplates();
   }
 
-  @GetMapping("/createUpdateTemplate")
-  PromptTemplatePostResponse createUpdateTemplate() {
+  @GetMapping("/createTemplate")
+  PromptTemplatePostResponse createTemplate() {
+    return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+  }
+
+  @GetMapping("/updateTemplate")
+  PromptTemplatePostResponse updateTemplate() {
+    // create template then update
+    client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
+  }
+
+  private PromptTemplatePostRequest getTemplate(String categories) {
     final var spec =
         PromptTemplateSpec.create()
             .template(
@@ -43,16 +54,18 @@ class PromptRegistryController {
                     .content(
                         "You classify input text into the two following categories: {{?categories}}"),
                 SingleChatTemplate.create().role("user").content("{{?inputExample}}"))
-            .defaults(Map.of("categories", "Finance, Tech, Sports"));
+            .defaults(Map.of("categories", categories));
 
-    final var request =
-        PromptTemplatePostRequest.create()
-            .name(NAME)
-            .version("0.0.1")
-            .scenario("categorization")
-            .spec(spec);
+    return PromptTemplatePostRequest.create()
+        .name(NAME)
+        .version("0.0.1")
+        .scenario("categorization")
+        .spec(spec);
+  }
 
-    return client.createUpdatePromptTemplate(request);
+  @GetMapping("/history")
+  PromptTemplateListResponse history() {
+    return client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
   }
 
   @GetMapping("/importTemplate")
@@ -69,7 +82,7 @@ class PromptRegistryController {
 
   @GetMapping("/useTemplate")
   PromptTemplateSubstitutionResponse useTemplate() {
-    final var template = createUpdateTemplate();
+    final var template = createTemplate();
     return client.parsePromptTemplateById(
         template.getId(),
         false,
