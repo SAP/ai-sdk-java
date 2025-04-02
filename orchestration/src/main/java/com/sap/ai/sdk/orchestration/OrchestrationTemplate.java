@@ -103,7 +103,6 @@ public class OrchestrationTemplate extends TemplateConfig {
    *
    * @param inputString the provided JSON
    * @return A Template object representing the provided JSON
-   *
    * @since 1.6.0
    */
   @Nullable
@@ -114,7 +113,7 @@ public class OrchestrationTemplate extends TemplateConfig {
     try {
       final JsonNode rootNode = objectMapper.readTree(inputString);
       promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), Template.class);
-//      the response_schema.type is not set even though this value is given in the yaml/json
+      //      the response_schema.type is not set even though this value is given in the yaml/json
     } catch (JsonProcessingException ex) {
       throw new RuntimeException(ex.getMessage());
     }
@@ -127,7 +126,6 @@ public class OrchestrationTemplate extends TemplateConfig {
    *
    * @param inputYaml the provided YAML
    * @return A Template object representing the provided YAML
-   *
    * @since 1.6.0
    */
   @Nullable

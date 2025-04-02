@@ -41,7 +41,7 @@ public final class JacksonConfiguration {
         // still added for any non-generated code and additional safety
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         .disable(DEFAULT_VIEW_INCLUSION)
-//        TODO: remove the line below
+        //        JONAS: remove the line below
         .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
         .build();
   }
