@@ -93,33 +93,6 @@ public class OpenAiService {
   }
 
   /**
-   * Chat request to OpenAI with a tool.
-   *
-   * @param months The number of months to be inferred in the tool
-   * @return the assistant message response
-   */
-  @Nonnull
-  public OpenAiChatCompletionOutput chatCompletionTools(final int months) {
-    final var question =
-        "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
-            .formatted(months);
-    final var par = Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer")));
-    final var function =
-        new OpenAiChatCompletionFunction()
-            .setName("fibonacci")
-            .setDescription("Calculate the Fibonacci number for given sequence index.")
-            .setParameters(par);
-    final var tool = new OpenAiChatCompletionTool().setType(FUNCTION).setFunction(function);
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText(question))
-            .setTools(List.of(tool))
-            .setToolChoiceFunction("fibonacci");
-
-    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
-  }
-
-  /**
    * Executes a chat completion request to OpenAI with a tool that calculates the weather.
    *
    * @param location The location to get the weather for.
@@ -130,15 +103,7 @@ public class OpenAiService {
   public OpenAiChatCompletionOutput chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
-    Map<String, Object> schemaMap;
-    try {
-      final var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
-      schemaMap = JACKSON.convertValue(schema, new TypeReference<>() {});
-    } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for WeatherMethod.Request", e);
-    }
-
+    final var schemaMap = generateSchema(WeatherMethod.Request.class);
     final var function =
         new OpenAiChatCompletionFunction()
             .setName("weather")
@@ -156,34 +121,45 @@ public class OpenAiService {
             .addMessages(messages.toArray(OpenAiChatMessage[]::new))
             .setTools(List.of(tool));
 
-    final var client = OpenAiClient.forModel(GPT_4O_MINI);
-    final var initialResponse = client.chatCompletion(request);
+    final var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
-    final var toolCall = initialResponse.getChoices().get(0).getMessage().getToolCalls().get(0);
-    String toolResponseJson;
-    try {
-      final var weatherRequest =
-          JACKSON.readValue(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
-      final var currentWeather = new WeatherMethod().getCurrentWeather(weatherRequest);
-      toolResponseJson = JACKSON.writeValueAsString(currentWeather);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Error parsing tool call arguments", e);
-    }
+    final var toolCall = response.getChoices().get(0).getMessage().getToolCalls().get(0);
+    final var arguments =
+        parseJson(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
+    final var currentWeather = new WeatherMethod().getCurrentWeather(arguments);
 
-    final var assistantMessage = initialResponse.getChoices().get(0).getMessage();
+    final var assistantMessage = response.getChoices().get(0).getMessage();
     messages.add(assistantMessage);
 
     final var toolMessage =
         new OpenAiChatMessage.OpenAiChatToolMessage()
             .setToolCallId(toolCall.getId())
-            .setContent(toolResponseJson);
+            .setContent(currentWeather.toString());
     messages.add(toolMessage);
 
     final var finalRequest =
         new OpenAiChatCompletionParameters()
             .addMessages(messages.toArray(OpenAiChatMessage[]::new));
 
-    return client.chatCompletion(finalRequest);
+    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(finalRequest);
+  }
+
+  private static <T> T parseJson(@Nonnull final String rawJson, @Nonnull final Class<T> clazz) {
+    try {
+      return JACKSON.readValue(rawJson, clazz);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Failed to parse tool call arguments: " + rawJson, e);
+    }
+  }
+
+  private static Map<String, Object> generateSchema(@Nonnull final Class<?> clazz) {
+    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
+    try {
+      final var schema = jsonSchemaGenerator.generateSchema(clazz);
+      return JACKSON.convertValue(schema, new TypeReference<>() {});
+    } catch (JsonMappingException e) {
+      throw new IllegalArgumentException("Could not generate schema for " + clazz.getName(), e);
+    }
   }
 
   /**

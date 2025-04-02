@@ -120,17 +120,6 @@ public class OpenAiController {
     return response.getChoices().get(0).getMessage();
   }
 
-  @GetMapping("/chatCompletionTool")
-  @Nonnull
-  Object chatCompletionTools(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.chatCompletionTools(12);
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
-  }
-
   @GetMapping("/chatCompletionToolExecution")
   @Nonnull
   Object chatCompletionToolExecution(

@@ -20,7 +20,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolChoice;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.ArrayList;
@@ -92,33 +91,6 @@ public class OpenAiServiceV2 {
   }
 
   /**
-   * Chat request to OpenAI with a tool.
-   *
-   * @param months The number of months to be inferred in the tool
-   * @return the assistant message response
-   */
-  @Nonnull
-  public OpenAiChatCompletionResponse chatCompletionTools(final int months) {
-    final var function =
-        new FunctionObject()
-            .name("fibonacci")
-            .description("Calculate the Fibonacci number for given sequence index.")
-            .parameters(
-                Map.of("type", "object", "properties", Map.of("N", Map.of("type", "integer"))));
-
-    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
-
-    final var request =
-        new OpenAiChatCompletionRequest(
-                "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after %s months?"
-                    .formatted(months))
-            .withTools(List.of(tool))
-            .withToolChoice(OpenAiToolChoice.function("fibonacci"));
-
-    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
-  }
-
-  /**
    * Executes a chat completion request to OpenAI with a tool that calculates the weather.
    *
    * @param location The location to get the weather for.
@@ -128,15 +100,7 @@ public class OpenAiServiceV2 {
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
-    Map<String, Object> schemaMap;
-    try {
-      final var schema = jsonSchemaGenerator.generateSchema(WeatherMethod.Request.class);
-      schemaMap = JACKSON.convertValue(schema, new TypeReference<>() {});
-    } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for WeatherMethod.Request", e);
-    }
-
+    var schemaMap = generateSchema(WeatherMethod.Request.class);
     final var function =
         new FunctionObject()
             .name("weather")
@@ -153,22 +117,38 @@ public class OpenAiServiceV2 {
     final var assistantMessage = response.getMessage();
     messages.add(assistantMessage);
 
-    final var functionCall = (OpenAiFunctionCall) assistantMessage.toolCalls().get(0);
-
-    String toolResponseJson;
-    try {
-      final var weatherRequest =
-          JACKSON.readValue(functionCall.getArguments(), WeatherMethod.Request.class);
-      final var currentWeather = new WeatherMethod().getCurrentWeather(weatherRequest);
-      toolResponseJson = JACKSON.writeValueAsString(currentWeather);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Error parsing tool call arguments", e);
+    var toolCall = assistantMessage.toolCalls().get(0);
+    if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
+      throw new IllegalArgumentException(
+          "Expected a function call, but got: %s".formatted(assistantMessage));
     }
 
-    final var toolMessage = OpenAiMessage.tool(toolResponseJson, functionCall.getId());
-    messages.add(toolMessage);
+    var arguments = parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
+    var weatherMethod = new WeatherMethod().getCurrentWeather(arguments);
+
+    messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
 
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
+  }
+
+  @Nonnull
+  private static <T> T parseJson(@Nonnull final String rawJson, @Nonnull final Class<T> clazz) {
+    try {
+      return JACKSON.readValue(rawJson, clazz);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Failed to parse tool call arguments: " + rawJson, e);
+    }
+  }
+
+  @Nonnull
+  private static Map<String, Object> generateSchema(@Nonnull final Class<?> clazz) {
+    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
+    try {
+      final var schema = jsonSchemaGenerator.generateSchema(clazz);
+      return JACKSON.convertValue(schema, new TypeReference<>() {});
+    } catch (JsonMappingException e) {
+      throw new IllegalArgumentException("Could not generate schema for " + clazz.getName(), e);
+    }
   }
 
   /**
