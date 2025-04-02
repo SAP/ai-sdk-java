@@ -30,8 +30,8 @@ class PromptRegistryController {
     return client.listPromptTemplates();
   }
 
-  @GetMapping("/createTemplate")
-  PromptTemplatePostResponse createTemplate() {
+  @GetMapping("/createUpdateTemplate")
+  PromptTemplatePostResponse createUpdateTemplate() {
     final var spec =
         PromptTemplateSpec.create()
             .template(
@@ -66,7 +66,7 @@ class PromptRegistryController {
 
   @GetMapping("/useTemplate")
   PromptTemplateSubstitutionResponse useTemplate() {
-    final var template = createTemplate();
+    final var template = createUpdateTemplate();
     return client.parsePromptTemplateById(
         template.getId(),
         false,
