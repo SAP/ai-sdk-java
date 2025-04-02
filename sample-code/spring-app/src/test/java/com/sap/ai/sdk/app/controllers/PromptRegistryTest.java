@@ -71,7 +71,8 @@ public class PromptRegistryTest {
     controller.deleteTemplate();
 
     // create + update
-    controller.updateTemplate();
+    PromptTemplatePostResponse template = controller.updateTemplate();
+    assertThat(template.getMessage()).contains("successful");
 
     // history
     PromptTemplateListResponse history = controller.history();
