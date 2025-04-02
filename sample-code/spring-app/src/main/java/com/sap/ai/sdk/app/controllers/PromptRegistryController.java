@@ -60,7 +60,7 @@ class PromptRegistryController {
 
   @GetMapping("/exportTemplate")
   File exportTemplate() {
-    final var template = createTemplate();
+    final var template = importTemplate();
     return client.exportPromptTemplate(template.getId());
   }
 
