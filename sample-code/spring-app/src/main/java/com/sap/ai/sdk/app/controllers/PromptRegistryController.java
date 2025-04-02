@@ -45,7 +45,7 @@ class PromptRegistryController {
     return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
   }
 
-  private PromptTemplatePostRequest getTemplate(String categories) {
+  private PromptTemplatePostRequest getTemplate(final String categories) {
     final var spec =
         PromptTemplateSpec.create()
             .template(
@@ -70,7 +70,7 @@ class PromptRegistryController {
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
-    Resource template = new ClassPathResource("prompt-template.yaml");
+    final Resource template = new ClassPathResource("prompt-template.yaml");
     return client.importPromptTemplate(template.getFile());
   }
 
