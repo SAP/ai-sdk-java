@@ -41,7 +41,7 @@ public class OrchestrationService {
 
 
   @Nonnull
-  public String processInput123(@Nonnull final String userInput) {
+  public String processInput(@Nonnull final String userInput) {
     var client = new OrchestrationClient();
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
     var prompt = new OrchestrationPrompt(userInput);
