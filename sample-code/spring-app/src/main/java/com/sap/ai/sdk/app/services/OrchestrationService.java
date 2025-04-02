@@ -46,7 +46,10 @@ public class OrchestrationService {
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
     var prompt = new OrchestrationPrompt(userInput);
 
-    var response = client.chatCompletion(prompt, config);
+    var schema = ResponseJsonSchema.fromType(Translation.class);
+    var templateConfig = TemplateConfig.create().withJsonSchemaResponse(schema);
+
+    var response = client.chatCompletion(prompt, config.withTemplateConfig(templateConfig));
     return response.getContent();
   }
 
