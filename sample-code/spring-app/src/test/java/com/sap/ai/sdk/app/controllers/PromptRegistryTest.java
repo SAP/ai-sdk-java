@@ -7,6 +7,7 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.Template;
+import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ public class PromptRegistryTest {
   }
 
   @Test
-  void importExportTemplate() {
+  void importExportTemplate() throws IOException {
     var controller = new PromptRegistryController();
     // cleanup
     controller.deleteTemplate();
