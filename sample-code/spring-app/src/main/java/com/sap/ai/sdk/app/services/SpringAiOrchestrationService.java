@@ -1,15 +1,13 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
-
-import com.sap.ai.sdk.orchestration.*;
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.annotation.Nonnull;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -21,6 +19,13 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
 /** Service class for the Orchestration service */
 @Service
