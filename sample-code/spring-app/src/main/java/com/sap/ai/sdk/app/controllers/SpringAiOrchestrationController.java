@@ -5,8 +5,8 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.val;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,8 @@ class SpringAiOrchestrationController {
 
   @GetMapping("/inputFiltering")
   @Nonnull
-  Object inputFiltering(@Nullable @RequestParam(value = "format", required = false) final String format) {
+  Object inputFiltering(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
 
     final ChatResponse response;
     try {
@@ -75,7 +76,8 @@ class SpringAiOrchestrationController {
 
   @GetMapping("/outputFiltering")
   @Nonnull
-  Object outputFiltering(@Nullable @RequestParam(value = "format", required = false) final String format) {
+  Object outputFiltering(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
 
     final ChatResponse response;
     try {
