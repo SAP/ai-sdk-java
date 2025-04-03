@@ -2,8 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
-import com.sap.ai.sdk.orchestration.DpiMasking;
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.*;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
@@ -90,6 +89,52 @@ public class SpringAiOrchestrationService {
         new Prompt(
             "Please write 'Hello World!' to me via email. My email address is foo.bar@baz.ai",
             opts);
+
+    return client.call(prompt);
+  }
+
+  /**
+   * Apply input filtering for a request to orchestration using the SpringAI integration.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public ChatResponse inputFiltering() throws OrchestrationClientException{
+    val filterConfig = new AzureContentFilter()
+            .hate(AzureFilterThreshold.ALLOW_SAFE)
+            .selfHarm(AzureFilterThreshold.ALLOW_SAFE)
+            .sexual(AzureFilterThreshold.ALLOW_SAFE)
+            .violence(AzureFilterThreshold.ALLOW_SAFE);
+
+    val opts = new OrchestrationChatOptions(config.withInputFiltering(filterConfig));
+
+    val prompt = new Prompt("'We shall spill blood tonight', said the operator in charge.", opts);
+
+    return client.call(prompt);
+  }
+
+  /**
+   * Apply output filtering for a request to orchestration using the SpringAI integration.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public ChatResponse outputFiltering() throws OrchestrationClientException {
+    val filterConfig = new AzureContentFilter()
+            .hate(AzureFilterThreshold.ALLOW_SAFE)
+            .selfHarm(AzureFilterThreshold.ALLOW_SAFE)
+            .sexual(AzureFilterThreshold.ALLOW_SAFE)
+            .violence(AzureFilterThreshold.ALLOW_SAFE);
+
+    val opts = new OrchestrationChatOptions(config.withOutputFiltering(filterConfig));
+
+    val prompt = new Prompt("Give three paraphrases for the following sentence: 'We shall spill blood tonight', said the operator in charge.", opts);
 
     return client.call(prompt);
   }
