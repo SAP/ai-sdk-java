@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.prompt.registry.client.DefaultApi;
+import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpecResponseFormat;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
@@ -21,10 +21,18 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-/** Client for the Prompt Registry service. */
-public class PromptClient extends DefaultApi {
+/**
+ * Client for the Prompt Registry service.
+ *
+ * @since 1.6.0
+ */
+public class PromptClient extends PromptTemplatesApi {
 
-  /** Instantiates this a client to invoke operations on the Prompt Registry service. */
+  /**
+   * Instantiates this a client to invoke operations on the Prompt Registry service.
+   *
+   * @since 1.6.0
+   */
   public PromptClient() {
     this(new AiCoreService());
   }
@@ -33,6 +41,7 @@ public class PromptClient extends DefaultApi {
    * Instantiates this a client to invoke operations on the Prompt Registry service.
    *
    * @param aiCoreService The configured connectivity instance to AI Core
+   * @since 1.6.0
    */
   public PromptClient(@Nonnull final AiCoreService aiCoreService) {
     super(addMixin(aiCoreService));

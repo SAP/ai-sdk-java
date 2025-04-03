@@ -93,7 +93,7 @@ jobs:
               ;;
             prompt-registry)
               API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
-              FILE_PATH='prompt-registry/src/main/resources/spec/prompt-registry.yaml'
+              FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               ;;
           esac
           

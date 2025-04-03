@@ -72,16 +72,6 @@ class OpenAiV2Test {
   }
 
   @Test
-  void chatCompletionTools() {
-    final var completion = service.chatCompletionTools(12);
-
-    final var message = completion.getChoice().getMessage();
-    assertThat(message.getRole()).isEqualTo(ASSISTANT);
-    assertThat(message.getToolCalls()).isNotNull();
-    assertThat(message.getToolCalls().get(0).getFunction().getName()).isEqualTo("fibonacci");
-  }
-
-  @Test
   void embedding() {
     final var embedding = service.embedding("Hello world");
 
@@ -101,5 +91,14 @@ class OpenAiV2Test {
 
     assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(completion.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void chatCompletionToolExecution() {
+    final var completion = service.chatCompletionToolExecution("Dubai", "°C");
+
+    String content = completion.getContent();
+
+    assertThat(content).contains("°C");
   }
 }
