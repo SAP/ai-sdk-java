@@ -18,6 +18,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage;
+import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import java.util.ArrayList;
@@ -103,7 +104,8 @@ public class OpenAiService {
   public OpenAiChatCompletionOutput chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    final var schemaMap = generateSchema(WeatherMethod.Request.class);
+    // 1. Define the function
+    final Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
     final var function =
         new OpenAiChatCompletionFunction()
             .setName("weather")
@@ -116,19 +118,24 @@ public class OpenAiService {
         new OpenAiChatMessage.OpenAiChatUserMessage()
             .addText("What's the weather in %s in %s?".formatted(location, unit)));
 
+    // Assistant will call the function
     final var request =
         new OpenAiChatCompletionParameters()
             .addMessages(messages.toArray(OpenAiChatMessage[]::new))
             .setTools(List.of(tool));
 
-    final var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+    final OpenAiChatCompletionOutput response =
+        OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
-    final var toolCall = response.getChoices().get(0).getMessage().getToolCalls().get(0);
-    final var arguments =
+    // 2. Optionally, execute the function.
+    final OpenAiChatToolCall toolCall =
+        response.getChoices().get(0).getMessage().getToolCalls().get(0);
+    final WeatherMethod.Request arguments =
         parseJson(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
-    final var currentWeather = new WeatherMethod().getCurrentWeather(arguments);
+    final WeatherMethod.Response currentWeather = WeatherMethod.getCurrentWeather(arguments);
 
-    final var assistantMessage = response.getChoices().get(0).getMessage();
+    final OpenAiChatMessage.OpenAiChatAssistantMessage assistantMessage =
+        response.getChoices().get(0).getMessage();
     messages.add(assistantMessage);
 
     final var toolMessage =

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
@@ -20,6 +21,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.ArrayList;
@@ -100,7 +102,8 @@ public class OpenAiServiceV2 {
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    var schemaMap = generateSchema(WeatherMethod.Request.class);
+    // 1. Define the function
+    Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
     final var function =
         new FunctionObject()
             .name("weather")
@@ -111,23 +114,28 @@ public class OpenAiServiceV2 {
     final var messages = new ArrayList<OpenAiMessage>();
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
+    // Assistant will call the function
     final var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
-    final var response = OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+    final OpenAiChatCompletionResponse response =
+        OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
-    final var assistantMessage = response.getMessage();
+    // 2. Optionally, execute the function.
+    final OpenAiAssistantMessage assistantMessage = response.getMessage();
     messages.add(assistantMessage);
 
-    var toolCall = assistantMessage.toolCalls().get(0);
+    final OpenAiToolCall toolCall = assistantMessage.toolCalls().get(0);
     if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
       throw new IllegalArgumentException(
           "Expected a function call, but got: %s".formatted(assistantMessage));
     }
 
-    var arguments = parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
-    var weatherMethod = new WeatherMethod().getCurrentWeather(arguments);
+    WeatherMethod.Request arguments =
+        parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
+    WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
 
     messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
 
+    // Send back the results, and the model will incorporate them into its final response.
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
 
