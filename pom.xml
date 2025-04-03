@@ -31,7 +31,8 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
-    <module>document-grounding</module>
+    <module>core-services/document-grounding</module>
+    <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
   </modules>
   <scm>
@@ -794,7 +795,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       </activation>
       <modules>
         <module>sample-code/spring-app</module>
-        <module>prompt-registry</module>
       </modules>
     </profile>
     <profile>
