@@ -1,0 +1,11 @@
+name: java-e2e-test
+version: 0.0.1
+scenario: categorization
+spec:
+  template:
+    - role: 'system'
+      content: 'You classify input text into the two following categories: {{?categories}}'
+    - role: 'user'
+      content: '{{?inputExample}}'
+  defaults:
+    categories: Finance, Tech, Sports
