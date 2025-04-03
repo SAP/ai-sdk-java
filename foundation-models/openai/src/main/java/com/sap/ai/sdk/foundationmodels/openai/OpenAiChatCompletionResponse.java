@@ -8,6 +8,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,9 @@ public class OpenAiChatCompletionResponse {
   /**
    * Gets the content of the first choice.
    *
+   * <p>The content may be empty {@code ""} if the assistant did not return any content i.e. when
+   * tool calls are present.
+   *
    * @return the content of the first choice
    * @throws OpenAiClientException if the content is filtered by the content filter
    */
@@ -60,5 +64,36 @@ public class OpenAiChatCompletionResponse {
     }
 
     return Objects.requireNonNullElse(getChoice().getMessage().getContent(), "");
+  }
+
+  /**
+   * Gets the {@code OpenAiAssistantMessage} for the first choice.
+   *
+   * @return the assistant message
+   * @throws OpenAiClientException if the content is filtered by the content filter
+   * @since 1.6.0
+   */
+  @Nonnull
+  public OpenAiAssistantMessage getMessage() {
+    final var toolCalls = getChoice().getMessage().getToolCalls();
+
+    if (toolCalls == null) {
+      return OpenAiMessage.assistant(getContent());
+    }
+
+    final List<OpenAiContentItem> contentItems =
+        getContent().isEmpty() ? List.of() : List.of(new OpenAiTextItem(getContent()));
+
+    final var openAiToolCalls =
+        toolCalls.stream()
+            .<OpenAiToolCall>map(
+                toolCall ->
+                    new OpenAiFunctionCall(
+                        toolCall.getId(),
+                        toolCall.getFunction().getName(),
+                        toolCall.getFunction().getArguments()))
+            .toList();
+
+    return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
   }
 }
