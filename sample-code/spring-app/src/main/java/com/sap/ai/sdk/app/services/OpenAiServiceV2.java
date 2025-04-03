@@ -99,11 +99,12 @@ public class OpenAiServiceV2 {
    * @param unit The unit of temperature to use.
    * @return The assistant message response.
    */
+  @Nonnull
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
     // 1. Define the function
-    Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
+    final Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
     final var function =
         new FunctionObject()
             .name("weather")
@@ -129,9 +130,9 @@ public class OpenAiServiceV2 {
           "Expected a function call, but got: %s".formatted(assistantMessage));
     }
 
-    WeatherMethod.Request arguments =
+    final WeatherMethod.Request arguments =
         parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
-    WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
+    final WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
 
     messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
 
