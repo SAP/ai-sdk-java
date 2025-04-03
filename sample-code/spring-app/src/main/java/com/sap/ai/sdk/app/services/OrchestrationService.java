@@ -41,13 +41,14 @@ public class OrchestrationService {
 
 
   @Nonnull
-  public String processInput(@Nonnull final String userInput) {
+  public String processInput123(@Nonnull final String userInput) {
     var client = new OrchestrationClient();
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
     var prompt = new OrchestrationPrompt(userInput);
 
     var schema = ResponseJsonSchema.fromType(Translation.class);
     var templateConfig = TemplateConfig.create().withJsonSchemaResponse(schema);
+
 
     var response = client.chatCompletion(prompt, config.withTemplateConfig(templateConfig));
     return response.getContent();
@@ -69,11 +70,11 @@ public class OrchestrationService {
 
 
   @Nonnull
-  public String processInputWithGrounding(@Nonnull final String userInput) {
+  public String processInput(@Nonnull final String userInput) {
     var client = new OrchestrationClient();
     var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0));
 
-    var schema = ResponseJsonSchema.fromType(Translation.class).withStrict(true);
+    var schema = ResponseJsonSchema.fromType(Translation.class);
     var templatingConfig = TemplateConfig.create().withJsonSchemaResponse(schema);
 
     var groundingFilter = DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM);
