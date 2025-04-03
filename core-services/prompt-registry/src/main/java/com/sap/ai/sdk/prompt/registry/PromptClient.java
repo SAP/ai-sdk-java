@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.prompt.registry.client.DefaultApi;
+import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpecResponseFormat;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
@@ -26,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @since 1.6.0
  */
-public class PromptClient extends DefaultApi {
+public class PromptClient extends PromptTemplatesApi {
 
   /**
    * Instantiates this a client to invoke operations on the Prompt Registry service.
