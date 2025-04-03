@@ -134,7 +134,7 @@ public class SpringAiOrchestrationService {
 
     val opts = new OrchestrationChatOptions(config.withOutputFiltering(filterConfig));
 
-    val prompt = new Prompt("Give three paraphrases for the following sentence: 'We shall spill blood tonight', said the operator in charge.", opts);
+    val prompt = new Prompt("Please rephrase the following sentence for me: 'I want to kill myself!'", opts);
 
     return client.call(prompt);
   }
