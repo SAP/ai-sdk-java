@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.prompt.registry.PromptClient;
-import com.sap.ai.sdk.prompt.registry.client.DefaultApi;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/prompt-registry")
 class PromptRegistryController {
   static final String NAME = "java-e2e-test";
-  private static final DefaultApi client = new PromptClient();
+  private static final PromptClient client = new PromptClient();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {

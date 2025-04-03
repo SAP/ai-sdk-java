@@ -8,7 +8,6 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
-import com.sap.ai.sdk.prompt.registry.model.ProvisioningResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -35,13 +34,13 @@ import org.springframework.web.util.UriComponentsBuilder;
  * <p>Prompt Storage service for Design time & Runtime prompt templates.
  */
 @Beta
-public class DefaultApi extends AbstractOpenApiService {
+public class PromptTemplatesApi extends AbstractOpenApiService {
   /**
    * Instantiates this API class to invoke operations on the Prompt Registry API.
    *
    * @param httpDestination The destination that API should be used with
    */
-  public DefaultApi(@Nonnull final Destination httpDestination) {
+  public PromptTemplatesApi(@Nonnull final Destination httpDestination) {
     super(httpDestination);
   }
 
@@ -52,12 +51,14 @@ public class DefaultApi extends AbstractOpenApiService {
    * @param apiClient ApiClient to invoke the API on
    */
   @Beta
-  public DefaultApi(@Nonnull final ApiClient apiClient) {
+  public PromptTemplatesApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Create or update a prompt template
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>403</b> - Forbidden Error
    *
@@ -113,7 +114,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Delete prompt template
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>404</b> - Bad Request
    *
@@ -173,7 +176,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Export prompt template
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -231,7 +236,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Get prompt template by UUID
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -291,49 +298,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Service is up and running.
+   * Import prompt template
    *
-   * <p><b>503</b> - Service is unavailable.
-   *
-   * @return String
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public String healthz() throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    final String localVarPath = UriComponentsBuilder.fromPath("/healthz").build().toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    final String[] localVarAccepts = {"text/plain", "application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<String> localVarReturnType =
-        new ParameterizedTypeReference<String>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.GET,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * <b>200</b> - Successful response
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -382,7 +349,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Import prompt template
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -397,7 +366,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * List prompt template history
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -475,7 +446,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * List prompt templates
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -540,7 +513,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * List prompt templates
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -557,123 +532,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Parse prompt template by ID
    *
-   * <p><b>403</b> - Forbidden Error
-   *
-   * <p><b>0</b> - Common Error
-   *
-   * @param aiMainTenant The main tenant name
-   * @return ProvisioningResponse
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public ProvisioningResponse offboardTenant(@Nonnull final String aiMainTenant)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiMainTenant' is set
-    if (aiMainTenant == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiMainTenant' when calling offboardTenant");
-    }
-
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/internal/promptTemplates/provisioning")
-            .build()
-            .toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiMainTenant != null)
-      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<ProvisioningResponse> localVarReturnType =
-        new ParameterizedTypeReference<ProvisioningResponse>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.DELETE,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * <b>200</b> - Successful response
-   *
-   * <p><b>403</b> - Forbidden Error
-   *
-   * <p><b>0</b> - Common Error
-   *
-   * @param aiMainTenant The main tenant name
-   * @return ProvisioningResponse
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public ProvisioningResponse onboardTenant(@Nonnull final String aiMainTenant)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiMainTenant' is set
-    if (aiMainTenant == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiMainTenant' when calling onboardTenant");
-    }
-
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/internal/promptTemplates/provisioning")
-            .build()
-            .toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiMainTenant != null)
-      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<ProvisioningResponse> localVarReturnType =
-        new ParameterizedTypeReference<ProvisioningResponse>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.POST,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * <b>200</b> - Successful response
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -741,7 +602,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Parse prompt template by ID
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -760,7 +623,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Parse prompt template by name and version
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
@@ -847,7 +712,9 @@ public class DefaultApi extends AbstractOpenApiService {
   }
 
   /**
-   * <b>200</b> - Successful response
+   * Parse prompt template by name and version
+   *
+   * <p><b>200</b> - Successful response
    *
    * <p><b>400</b> - Bad Request
    *
