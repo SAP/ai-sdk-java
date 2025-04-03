@@ -35,7 +35,7 @@
 			<property name="severity" value="info"/>
 		</module>
 		<module name="JavadocVariable">
-			<property name="accessModifiers" value="protected"/>
+			<property name="accessModifiers" value="protected, public"/>
 			<property name="severity" value="info"/>
 		</module>
 		<module name="MissingJavadocMethod">
@@ -47,7 +47,7 @@
 			<property name="severity" value="info"/>
 		</module>
 		<module name="JavadocMethod">
-			<property name="accessModifiers" value="protected"/>
+			<property name="accessModifiers" value="protected, public"/>
 			<property name="allowedAnnotations" value="Override"/>
 			<property name="severity" value="info"/>
 		</module>
@@ -56,7 +56,7 @@
 			<property name="severity" value="info"/>
 		</module>
 		<module name="JavadocVariable">
-			<property name="accessModifiers" value="protected"/>
+			<property name="accessModifiers" value="protected, public"/>
 			<property name="severity" value="info"/>
 		</module>
 		<module name="IllegalCatch">
