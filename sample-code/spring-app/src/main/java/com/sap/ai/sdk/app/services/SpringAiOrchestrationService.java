@@ -102,7 +102,7 @@ public class SpringAiOrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse inputFiltering() throws OrchestrationClientException{
+  public ChatResponse inputFiltering() throws OrchestrationClientException {
     val filterConfig = new AzureContentFilter()
             .hate(AzureFilterThreshold.ALLOW_SAFE)
             .selfHarm(AzureFilterThreshold.ALLOW_SAFE)
@@ -111,7 +111,7 @@ public class SpringAiOrchestrationService {
 
     val opts = new OrchestrationChatOptions(config.withInputFiltering(filterConfig));
 
-    val prompt = new Prompt("'We shall spill blood tonight', said the operator in charge.", opts);
+    val prompt = new Prompt("Please rephrase the following sentence for me: 'I want to kill you!'", opts);
 
     return client.call(prompt);
   }
@@ -134,7 +134,7 @@ public class SpringAiOrchestrationService {
 
     val opts = new OrchestrationChatOptions(config.withOutputFiltering(filterConfig));
 
-    val prompt = new Prompt("Please rephrase the following sentence for me: 'I want to kill myself!'", opts);
+    val prompt = new Prompt("Please rephrase the following sentence for me: 'I want to kill you!'", opts);
 
     return client.call(prompt);
   }
