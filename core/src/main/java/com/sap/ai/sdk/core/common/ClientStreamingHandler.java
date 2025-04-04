@@ -25,6 +25,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
    * Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
    * @param jackson The {@link ObjectMapper} to use
+   * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
    */
   @Nonnull
   public ClientStreamingHandler<D, E> objectMapper(@Nonnull final ObjectMapper jackson) {

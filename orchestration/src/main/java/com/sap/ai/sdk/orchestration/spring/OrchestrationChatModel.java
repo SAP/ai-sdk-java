@@ -55,6 +55,7 @@ public class OrchestrationChatModel implements ChatModel {
   /**
    * Constructor with a custom client.
    *
+   * @param client The custom client to use.
    * @since 1.2.0
    */
   public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {

@@ -15,7 +15,7 @@
   <suppress files="[/\\]registry[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]registry[/\\]model[/\\]" checks=".*"/>
   <!-- Suppress TODOs -->
-  <suppress files="OpenAiChatMessage.java" checks="TodoComment" lines="257,7" />
+  <suppress files="OpenAiChatMessage.java" checks="TodoComment" lines="261,7" />
   <suppress files="ChatCompletionResponseMessage.java" checks="TodoComment" lines="53,34" />
   <suppress files="CreateChatCompletionRequest.java" checks="TodoComment" lines="73,47" />
 </suppressions>
