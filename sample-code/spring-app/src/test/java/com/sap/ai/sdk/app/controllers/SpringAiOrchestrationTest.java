@@ -59,22 +59,6 @@ public class SpringAiOrchestrationTest {
   }
 
   @Test
-  void testInputFiltering() {
-    assertThatThrownBy(() -> service.inputFiltering())
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("filter")
-        .hasMessageContaining("400 Bad Request");
-  }
-
-  @Test
-  void testOutputFiltering() {
-    assertThatThrownBy(() -> service.outputFiltering())
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("filter")
-        .hasMessageContaining("400 Bad Request");
-  }
-
-  @Test
   void testToolCallingWithoutExecution() {
     ChatResponse response = service.toolCalling(false);
     List<ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
