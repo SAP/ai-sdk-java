@@ -57,6 +57,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
     <cloud-sdk.version>5.17.0</cloud-sdk.version>
     <junit-jupiter.version>5.12.1</junit-jupiter.version>
     <wiremock.version>3.12.1</wiremock.version>
@@ -291,6 +292,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.4.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.4.2</version>
         </plugin>
         <plugin>
           <groupId>com.sap.cloud.sdk.datamodel</groupId>
