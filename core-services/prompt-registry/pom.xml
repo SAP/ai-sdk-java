@@ -4,12 +4,14 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>document-grounding</artifactId>
-  <name>Document Grounding Client</name>
-  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Document Grounding Service.</description>
-
+  <artifactId>prompt-registry</artifactId>
+  <name>Prompt Registry client</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI
+    Hub, and Orchestration Service. This is the client for life cycle management of your prompts without
+    Orchestration Service.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -30,17 +32,25 @@
     </developer>
   </developers>
   <properties>
-    <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>80%</coverage.complexity>
-    <coverage.line>71%</coverage.line>
-    <coverage.instruction>85%</coverage.instruction>
+    <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <coverage.complexity>75%</coverage.complexity>
+    <coverage.line>87%</coverage.line>
+    <coverage.instruction>89%</coverage.instruction>
     <coverage.branch>100%</coverage.branch>
-    <coverage.method>80%</coverage.method>
+    <coverage.method>75%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
   <dependencies>
-    <!-- used by generated API classes -->
+    <!-- scope "compile" -->
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
@@ -49,34 +59,33 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
     </dependency>
-    <!-- scope "compile" -->
-    <dependency>
-      <groupId>com.sap.ai.sdk</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-core</artifactId>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-apache-httpclient5</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>
@@ -125,20 +134,23 @@
             </configuration>
             <executions>
               <execution>
-                <id>orchestration</id>
+                <id>prompt-registry</id>
                 <goals>
                   <goal>generate</goal>
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/grounding.yaml</inputSpec>
-                  <apiPackage>com.sap.ai.sdk.grounding.client</apiPackage>
-                  <modelPackage>com.sap.ai.sdk.grounding.model</modelPackage>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/prompt-registry.yaml</inputSpec>
+                  <apiPackage>com.sap.ai.sdk.prompt.registry.client</apiPackage>
+                  <modelPackage>com.sap.ai.sdk.prompt.registry.model</modelPackage>
                   <additionalProperties>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <removeOperationIdPrefix>true</removeOperationIdPrefix>
+                    <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
+                    <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>
                   </additionalProperties>
