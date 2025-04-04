@@ -44,6 +44,7 @@ public class ClientResponseHandler<T, E extends ClientException>
    * Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
    * @param jackson The {@link ObjectMapper} to use
+   * @return the current instance of {@link ClientResponseHandler} with the changed object mapper
    */
   @Beta
   @Nonnull

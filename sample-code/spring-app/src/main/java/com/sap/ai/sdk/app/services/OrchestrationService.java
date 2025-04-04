@@ -51,6 +51,7 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
    *
+   * @param famousPhrase the phrase to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
@@ -62,6 +63,7 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with an image.
    *
+   * @param pathToImage the path to the image
    * @return the assistant response object
    */
   @Nonnull
@@ -78,6 +80,7 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with multiple strings.
    *
+   * @param questions the list of questions to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
@@ -91,6 +94,7 @@ public class OrchestrationService {
   /**
    * Asynchronous stream of an OpenAI chat request
    *
+   * @param topic the topic to send to the assistant
    * @return a stream of assistant message responses
    */
   @Nonnull
@@ -106,6 +110,7 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param language the language to use in the template
    * @return the assistant response object
    */
   @Nonnull
@@ -124,6 +129,7 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service using message history.
    *
+   * @param prevMessage the previous message to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
@@ -237,6 +243,7 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
+   * @param entity the entity to be masked
    * @return the assistant response object
    */
   @Nonnull
@@ -261,6 +268,8 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
    *
+   * @param resourceGroup the resource group to use
+   * @param famousPhrase the phrase to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
@@ -282,6 +291,7 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
+   * @param entity the entity to be pseudonymized
    * @return the assistant response object
    */
   @Nonnull
@@ -375,6 +385,7 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
+   * @param word the word to translate
    * @return the assistant response object
    */
   @Nonnull
@@ -410,6 +421,7 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
+   * @param word the word to translate
    * @return the assistant response object
    */
   @Nonnull
@@ -436,6 +448,7 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
+   * @param word the word to translate
    * @return the assistant response object
    */
   @Nonnull
@@ -460,6 +473,7 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param topic the topic to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
@@ -482,6 +496,7 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param topic the topic to send to the assistant
    * @return the assistant response object
    */
   @Nonnull

@@ -102,7 +102,8 @@ public class OrchestrationClient {
    * Generate a completion for the given prompt.
    *
    * @param prompt a text message.
-   * @return A stream of message deltas
+   * @param config the configuration to use
+   * @return a stream of message deltas
    * @throws OrchestrationClientException if the request fails or if the finish reason is
    *     content_filter
    * @since 1.1.0

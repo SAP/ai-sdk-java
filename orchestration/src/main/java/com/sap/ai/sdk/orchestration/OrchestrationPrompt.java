@@ -49,6 +49,7 @@ public class OrchestrationPrompt {
    * Initialize a prompt based on template variables.
    *
    * @param inputParams The input parameters as entries of template variables and their contents.
+   * @param messages The messages to be sent to the orchestration service.
    */
   public OrchestrationPrompt(
       @Nonnull final Map<String, String> inputParams, @Nonnull final Message... messages) {
@@ -60,6 +61,7 @@ public class OrchestrationPrompt {
    * Set the chat history of this prompt.
    *
    * @param messagesHistory The chat history to add.
+   * @return The current instance of {@link OrchestrationPrompt} with the changed chat history.
    */
   @Nonnull
   public OrchestrationPrompt messageHistory(@Nonnull final List<Message> messagesHistory) {

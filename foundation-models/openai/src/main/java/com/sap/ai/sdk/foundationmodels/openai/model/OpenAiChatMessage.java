@@ -146,7 +146,11 @@ public interface OpenAiChatMessage {
       @Type(value = ContentPartImage.class, name = "image_url")
     })
     public interface ContentPart {
-      /** Get the type of the content part. */
+      /**
+       * Get the type of the content part.
+       *
+       * @return The type of the content part as string.
+       */
       @Nonnull
       String getType();
     }
