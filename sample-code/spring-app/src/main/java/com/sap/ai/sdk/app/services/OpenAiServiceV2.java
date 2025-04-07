@@ -5,7 +5,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -131,22 +130,13 @@ public class OpenAiServiceV2 {
     }
 
     final WeatherMethod.Request arguments =
-        parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
+        functionCall.getArgumentsAsObject(WeatherMethod.Request.class);
     final WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
 
     messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
 
     // Send back the results, and the model will incorporate them into its final response.
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
-  }
-
-  @Nonnull
-  private static <T> T parseJson(@Nonnull final String rawJson, @Nonnull final Class<T> clazz) {
-    try {
-      return JACKSON.readValue(rawJson, clazz);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Failed to parse tool call arguments: " + rawJson, e);
-    }
   }
 
   @Nonnull
