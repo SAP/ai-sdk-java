@@ -4,10 +4,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
@@ -23,7 +20,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
@@ -134,8 +130,6 @@ public class OpenAiServiceV2 {
     // Send back the results, and the model will incorporate them into its final response.
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
-
-
 
   /**
    * Get the embedding of a text
