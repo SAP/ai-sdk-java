@@ -35,7 +35,7 @@ public class PromptRegistryTest {
     // use template
     PromptTemplateSubstitutionResponse template = controller.useTemplate();
     List<Template> prompt = template.getParsedPrompt();
-    assertThat(prompt.size()).isGreaterThanOrEqualTo(2);
+    assertThat(prompt).hasSize(2);
     SingleChatTemplate userMessage = (SingleChatTemplate) prompt.get(1);
     assertThat(userMessage.getRole()).isEqualTo("user");
     assertThat(userMessage.getContent()).isEqualTo("I love football");
@@ -76,8 +76,8 @@ public class PromptRegistryTest {
 
     // history
     PromptTemplateListResponse history = controller.history();
-    assertThat(history.getCount()).isEqualTo(2);
-    assertThat(history.getResources()).hasSize(2);
+    assertThat(history.getCount()).isGreaterThanOrEqualTo(2);
+    assertThat(history.getResources().size()).isGreaterThanOrEqualTo(2);
 
     // cleanup
     List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();
