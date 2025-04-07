@@ -12,8 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Prompt Registry] [Add Prompt Registry client](https://sap.github.io/ai-sdk/docs/java/ai-core/prompt-registry)
-  - `com.sap.ai.sdk:prompt-registry:1.6.0`
+-
 
 ### 📈 Improvements
 
