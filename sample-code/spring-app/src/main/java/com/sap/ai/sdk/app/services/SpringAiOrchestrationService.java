@@ -109,7 +109,7 @@ public class SpringAiOrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse inputFiltering(AzureFilterThreshold policy)
+  public ChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
     val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
@@ -137,7 +137,7 @@ public class SpringAiOrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse outputFiltering(AzureFilterThreshold policy)
+  public ChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
     val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
