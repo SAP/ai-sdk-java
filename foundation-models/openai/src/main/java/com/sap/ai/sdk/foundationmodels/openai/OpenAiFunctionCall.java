@@ -33,13 +33,7 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * @throws IllegalArgumentException if parsing fails
    */
   public Map<String, Object> getArgumentsAsMap() throws IllegalArgumentException {
-    try {
-      return OpenAiUtils.getOpenAiObjectMapper()
-          .readValue(getArguments(), new TypeReference<Map<String, Object>>() {});
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(
-          "Failed to parse given JSON string to Map<String, Object>", e);
-    }
+    return OpenAiUtils.parseJson(getArguments(), new TypeReference<Map<String, Object>>() {});
   }
 
   /**
@@ -51,11 +45,6 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * @throws IllegalArgumentException if parsing fails
    */
   public <T> T getArgumentsAsObject(Class<T> clazz) throws IllegalArgumentException {
-    try {
-      return OpenAiUtils.getOpenAiObjectMapper().readValue(getArguments(), clazz);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(
-          "Failed to parse given JSON string to " + clazz.getTypeName(), e);
-    }
+    return OpenAiUtils.parseJson(getArguments(), clazz);
   }
 }

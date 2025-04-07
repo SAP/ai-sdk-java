@@ -283,7 +283,30 @@ public class OpenAiChatCompletionRequest {
   }
 
   /**
-   * Converts the request to a generated model class CreateChatCompletionRequest.
+   * Sets the tools to be used in the request with convenience class {@code OpenAiTool}.
+   *
+   * @param tools the list of tools to be used
+   * @return a new OpenAiChatCompletionRequest instance with the specified tools
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withOpenAiTools(@Nonnull final List<OpenAiTool> tools) {
+    return this.withTools(
+        tools.stream()
+            .map(
+                tool -> {
+                  if (tool instanceof OpenAiFunctionTool) {
+                    return ((OpenAiFunctionTool) tool).createChatCompletionTool();
+                  } else {
+                    throw new IllegalArgumentException(
+                        "Unsupported tool type: " + tool.getClass().getName());
+                  }
+                })
+            .toList());
+  }
+
+  /**
+   * tool.getClass().getName()); } Converts the request to a generated model class
+   * CreateChatCompletionRequest.
    *
    * @return the CreateChatCompletionRequest
    */

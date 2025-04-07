@@ -3,7 +3,6 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -18,11 +17,10 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionTool;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,19 +101,17 @@ public class OpenAiServiceV2 {
       @Nonnull final String location, @Nonnull final String unit) {
 
     // 1. Define the function
-    final Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
-    final var function =
-        new FunctionObject()
-            .name("weather")
-            .description("Get the weather for the given location")
-            .parameters(schemaMap);
-    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+    final var openAiTool =
+        new OpenAiFunctionTool("weather", WeatherMethod.Request.class)
+            .withDescription("Get the weather for the given location");
 
     final var messages = new ArrayList<OpenAiMessage>();
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
     // Assistant will call the function
-    final var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
+    final var request =
+        new OpenAiChatCompletionRequest(messages).withOpenAiTools(List.of(openAiTool));
+
     final OpenAiChatCompletionResponse response =
         OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
 
