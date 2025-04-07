@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +58,62 @@ public class SpringAiOrchestrationTest {
     ChatResponse response = service.masking();
     assertThat(response).isNotNull();
     assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+  }
+
+  @Test
+  void testInputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    assertThatThrownBy(() -> service.inputFiltering(policy))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
+  }
+
+  @Test
+  void testInputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.inputFiltering(policy);
+
+    assertThat(response.getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+
+    var filterResult =
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getModuleResults()
+            .getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testOutputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    assertThatThrownBy(() -> service.outputFiltering(policy))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Content filter filtered the output.");
+  }
+
+  @Test
+  void testOutputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.outputFiltering(policy);
+
+    assertThat(response.getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+
+    var filterResult =
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getModuleResults()
+            .getOutputFiltering();
+    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
   }
 
   @Test
