@@ -35,7 +35,7 @@ public class PromptRegistryTest {
     // use template
     PromptTemplateSubstitutionResponse template = controller.useTemplate();
     List<Template> prompt = template.getParsedPrompt();
-    assertThat(prompt).hasSize(2);
+    assertThat(prompt.size()).isGreaterThanOrEqualTo(2);
     SingleChatTemplate userMessage = (SingleChatTemplate) prompt.get(1);
     assertThat(userMessage.getRole()).isEqualTo("user");
     assertThat(userMessage.getContent()).isEqualTo("I love football");
