@@ -287,6 +287,7 @@ public class OpenAiChatCompletionRequest {
    *
    * @param tools the list of tools to be used
    * @return a new OpenAiChatCompletionRequest instance with the specified tools
+   * @since 1.7.0
    */
   @Nonnull
   public OpenAiChatCompletionRequest withOpenAiTools(@Nonnull final List<OpenAiTool> tools) {

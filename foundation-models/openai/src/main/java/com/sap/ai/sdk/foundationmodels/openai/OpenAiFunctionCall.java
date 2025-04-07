@@ -30,6 +30,7 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    *
    * @return the parsed arguments
    * @throws IllegalArgumentException if parsing fails
+   * @since 1.7.0
    */
   @Nonnull
   public Map<String, Object> getArgumentsAsMap() throws IllegalArgumentException {
@@ -43,6 +44,7 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * @param <T> the type of the class
    * @return the arguments as an object of the specified class
    * @throws IllegalArgumentException if parsing fails
+   * @since 1.7.0
    */
   @Nonnull
   public <T> T getArgumentsAsObject(@Nonnull final Class<T> clazz) throws IllegalArgumentException {

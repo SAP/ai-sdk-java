@@ -64,6 +64,7 @@ class OpenAiUtils {
    * @param <T> the target type
    * @return the parsed object
    * @throws IllegalArgumentException if parsing fails
+   * @since 1.7.0
    */
   @Nonnull
   static <T> T parseJson(@Nonnull final String json, @Nonnull final TypeReference<T> typeReference)
@@ -85,6 +86,7 @@ class OpenAiUtils {
    * @param <T> the target type
    * @return the parsed object
    * @throws IllegalArgumentException if parsing fails
+   * @since 1.7.0
    */
   @Nonnull
   static <T> T parseJson(@Nonnull final String json, @Nonnull final Class<T> clazz)

@@ -135,16 +135,7 @@ public class OpenAiServiceV2 {
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
 
-  @Nonnull
-  private static Map<String, Object> generateSchema(@Nonnull final Class<?> clazz) {
-    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
-    try {
-      final var schema = jsonSchemaGenerator.generateSchema(clazz);
-      return JACKSON.convertValue(schema, new TypeReference<>() {});
-    } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for " + clazz.getName(), e);
-    }
-  }
+
 
   /**
    * Get the embedding of a text
