@@ -55,6 +55,16 @@ class OpenAiUtils {
             JacksonMixins.DefaultChatCompletionCreate200ResponseMixIn.class);
   }
 
+  /**
+   * Parses a JSON string into an object of the specified {@code TypeReference} using the module
+   * default object mapper.
+   *
+   * @param json the JSON string to parse
+   * @param typeReference the type reference for the target type
+   * @param <T> the target type
+   * @return the parsed object
+   * @throws IllegalArgumentException if parsing fails
+   */
   @Nonnull
   static <T> T parseJson(@Nonnull final String json, @Nonnull final TypeReference<T> typeReference)
       throws IllegalArgumentException {
@@ -66,6 +76,16 @@ class OpenAiUtils {
     }
   }
 
+  /**
+   * Parses a JSON string into an object of the specified class using the module default object
+   * mapper.
+   *
+   * @param json the JSON string to parse
+   * @param clazz the class of the target type
+   * @param <T> the target type
+   * @return the parsed object
+   * @throws IllegalArgumentException if parsing fails
+   */
   @Nonnull
   static <T> T parseJson(@Nonnull final String json, @Nonnull final Class<T> clazz)
       throws IllegalArgumentException {

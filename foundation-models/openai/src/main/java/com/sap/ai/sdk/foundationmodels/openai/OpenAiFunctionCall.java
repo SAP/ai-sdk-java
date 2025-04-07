@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.annotations.Beta;
 import java.util.Map;
@@ -29,11 +28,12 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
   /**
    * Returns the arguments as a {@code Map<String, Object>}.
    *
-   * @return the arguments as a map
+   * @return the parsed arguments
    * @throws IllegalArgumentException if parsing fails
    */
+  @Nonnull
   public Map<String, Object> getArgumentsAsMap() throws IllegalArgumentException {
-    return OpenAiUtils.parseJson(getArguments(), new TypeReference<Map<String, Object>>() {});
+    return OpenAiUtils.parseJson(getArguments(), new TypeReference<>() {});
   }
 
   /**
@@ -44,7 +44,8 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * @return the arguments as an object of the specified class
    * @throws IllegalArgumentException if parsing fails
    */
-  public <T> T getArgumentsAsObject(Class<T> clazz) throws IllegalArgumentException {
+  @Nonnull
+  public <T> T getArgumentsAsObject(@Nonnull final Class<T> clazz) throws IllegalArgumentException {
     return OpenAiUtils.parseJson(getArguments(), clazz);
   }
 }
