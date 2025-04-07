@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.app.services;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
@@ -103,21 +105,24 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
+   * @param policy the explicitness of content that should be allowed through the filter
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse inputFiltering() throws OrchestrationClientException {
+  public ChatResponse inputFiltering(AzureFilterThreshold policy)
+      throws OrchestrationClientException {
     val filterConfig =
-        new AzureContentFilter()
-            .hate(AzureFilterThreshold.ALLOW_SAFE)
-            .selfHarm(AzureFilterThreshold.ALLOW_SAFE)
-            .sexual(AzureFilterThreshold.ALLOW_SAFE)
-            .violence(AzureFilterThreshold.ALLOW_SAFE);
-
-    val opts = new OrchestrationChatOptions(config.withInputFiltering(filterConfig));
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+    val opts =
+        new OrchestrationChatOptions(
+            config
+                .withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0))
+                .withInputFiltering(filterConfig));
 
     val prompt =
-        new Prompt("Please rephrase the following sentence for me: 'I want to kill you!'", opts);
+        new Prompt(
+            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.",
+            opts);
 
     return client.call(prompt);
   }
@@ -128,21 +133,24 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
+   * @param policy the explicitness of content that should be allowed through the filter
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse outputFiltering() throws OrchestrationClientException {
+  public ChatResponse outputFiltering(AzureFilterThreshold policy)
+      throws OrchestrationClientException {
     val filterConfig =
-        new AzureContentFilter()
-            .hate(AzureFilterThreshold.ALLOW_SAFE)
-            .selfHarm(AzureFilterThreshold.ALLOW_SAFE)
-            .sexual(AzureFilterThreshold.ALLOW_SAFE)
-            .violence(AzureFilterThreshold.ALLOW_SAFE);
-
-    val opts = new OrchestrationChatOptions(config.withOutputFiltering(filterConfig));
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+    val opts =
+        new OrchestrationChatOptions(
+            config
+                .withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0))
+                .withOutputFiltering(filterConfig));
 
     val prompt =
-        new Prompt("Please rephrase the following sentence for me: 'I want to kill you!'", opts);
+        new Prompt(
+            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.",
+            opts);
 
     return client.call(prompt);
   }

@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
 import javax.annotation.Nonnull;
@@ -12,6 +13,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,14 +59,15 @@ class SpringAiOrchestrationController {
     return response.getResult().getOutput().getText();
   }
 
-  @GetMapping("/inputFiltering")
+  @GetMapping("/inputFiltering/{policy}")
   @Nonnull
   Object inputFiltering(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
     final ChatResponse response;
     try {
-      response = service.inputFiltering();
+      response = service.inputFiltering(policy);
     } catch (OrchestrationClientException e) {
       final var msg = "Failed to obtain a response as the content was flagged by input filter.";
       log.debug(msg, e);
@@ -72,19 +75,22 @@ class SpringAiOrchestrationController {
     }
 
     if ("json".equals(format)) {
-      return response;
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
     }
     return response.getResult().getOutput().getText();
   }
 
-  @GetMapping("/outputFiltering")
+  @GetMapping("/outputFiltering/{policy}")
   @Nonnull
   Object outputFiltering(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
     final ChatResponse response;
     try {
-      response = service.outputFiltering();
+      response = service.outputFiltering(policy);
     } catch (OrchestrationClientException e) {
       final var msg = "Failed to obtain a response as the content was flagged by output filter.";
       log.debug(msg, e);
@@ -92,7 +98,9 @@ class SpringAiOrchestrationController {
     }
 
     if ("json".equals(format)) {
-      return response;
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
     }
     return response.getResult().getOutput().getText();
   }
