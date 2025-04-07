@@ -306,8 +306,7 @@ public class OpenAiChatCompletionRequest {
   }
 
   /**
-   * tool.getClass().getName()); } Converts the request to a generated model class
-   * CreateChatCompletionRequest.
+   * Converts the request to a generated model class CreateChatCompletionRequest.
    *
    * @return the CreateChatCompletionRequest
    */
