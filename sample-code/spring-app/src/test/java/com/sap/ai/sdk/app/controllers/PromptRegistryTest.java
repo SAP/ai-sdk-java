@@ -76,8 +76,9 @@ public class PromptRegistryTest {
 
     // history
     PromptTemplateListResponse history = controller.history();
+    // Bug that doesn't delete prompts fast enough. Should be equal to 2
     assertThat(history.getCount()).isGreaterThanOrEqualTo(2);
-    assertThat(history.getResources().size()).isGreaterThanOrEqualTo(2);
+    assertThat(history.getResources()).hasSizeGreaterThan(2);
 
     // cleanup
     List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();
