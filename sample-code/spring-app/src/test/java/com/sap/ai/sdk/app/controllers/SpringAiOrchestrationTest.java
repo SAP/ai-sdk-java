@@ -99,11 +99,11 @@ public class SpringAiOrchestrationTest {
     assertThat(response.getResult().getOutput().getText()).isEmpty();
 
     var filterResult =
-            ((OrchestrationSpringChatResponse) response)
-                    .getOrchestrationResponse()
-                    .getOriginalResponse()
-                    .getModuleResults()
-                    .getOutputFiltering();
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getModuleResults()
+            .getOutputFiltering();
     assertThat(filterResult.getMessage()).containsPattern("1 of 1 choices failed");
   }
 
