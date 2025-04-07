@@ -34,10 +34,6 @@
 			<property name="checkFirstSentence" value="false"/>
 			<property name="severity" value="info"/>
 		</module>
-		<module name="JavadocVariable">
-			<property name="accessModifiers" value="protected, public"/>
-			<property name="severity" value="info"/>
-		</module>
 		<module name="MissingJavadocMethod">
 			<property name="scope" value="protected"/>
 			<property name="severity" value="info"/>
