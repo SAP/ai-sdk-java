@@ -93,9 +93,18 @@ public class SpringAiOrchestrationTest {
   void testOutputFilteringStrict() {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
-    assertThatThrownBy(() -> service.outputFiltering(policy))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Content filter filtered the output.");
+    var response = service.outputFiltering(policy);
+
+    assertThat(response.getResult().getMetadata().getFinishReason()).isEqualTo("content_filter");
+    assertThat(response.getResult().getOutput().getText()).isEmpty();
+
+    var filterResult =
+            ((OrchestrationSpringChatResponse) response)
+                    .getOrchestrationResponse()
+                    .getOriginalResponse()
+                    .getModuleResults()
+                    .getOutputFiltering();
+    assertThat(filterResult.getMessage()).containsPattern("1 of 1 choices failed");
   }
 
   @Test
