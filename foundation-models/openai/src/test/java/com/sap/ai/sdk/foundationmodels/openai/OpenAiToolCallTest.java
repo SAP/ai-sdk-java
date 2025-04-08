@@ -11,6 +11,9 @@ class OpenAiToolCallTest {
   private static final OpenAiFunctionCall INVALID_FUNCTION_CALL =
       new OpenAiFunctionCall("1", "functionName", "{invalid-json}");
 
+  private static final OpenAiFunctionTool FUNCTION_TOOL =
+      new OpenAiFunctionTool("functionName", DummyRequest.class);
+
   record DummyRequest(String key) {}
 
   @Test
@@ -28,21 +31,14 @@ class OpenAiToolCallTest {
 
   @Test
   void getArgumentsAsObjectParsesValidJson() {
-    var result = VALID_FUNCTION_CALL.getArgumentsAsObject(DummyRequest.class);
+    var result = (DummyRequest) VALID_FUNCTION_CALL.getArgumentsAsObject(FUNCTION_TOOL);
     assertThat(result).isInstanceOf(DummyRequest.class);
     assertThat(result.key()).isEqualTo("value");
   }
 
   @Test
   void getArgumentsAsObjectThrowsOnInvalidJson() {
-    assertThatThrownBy(() -> INVALID_FUNCTION_CALL.getArgumentsAsObject(DummyRequest.class))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Failed to parse JSON string");
-  }
-
-  @Test
-  void getArgumentsAsObjectThrowsOnTypeMismatch() {
-    assertThatThrownBy(() -> VALID_FUNCTION_CALL.getArgumentsAsObject(Integer.class))
+    assertThatThrownBy(() -> INVALID_FUNCTION_CALL.getArgumentsAsObject(FUNCTION_TOOL))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to parse JSON string");
   }

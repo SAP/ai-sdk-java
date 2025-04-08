@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
 import lombok.With;
 
@@ -29,6 +30,7 @@ import lombok.With;
 @Beta
 @Value
 @With
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OpenAiFunctionTool implements OpenAiTool {
 
@@ -36,7 +38,7 @@ public class OpenAiFunctionTool implements OpenAiTool {
   @Nonnull String name;
 
   /** The model class for function request. */
-  @Nonnull Class<?> clazz;
+  @Nonnull Class<?> requestModel;
 
   /** An optional description of the function. */
   @Nullable String description;
@@ -45,22 +47,24 @@ public class OpenAiFunctionTool implements OpenAiTool {
   @Nullable Boolean strict;
 
   /**
-   * Constructs an {@code OpenAiFunctionTool} with the specified name and request class.
+   * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
+   * captures the request to the function.
    *
    * @param name the name of the function
-   * @param clazz the model class for the function request
+   * @param requestModel the model class for the function request
    */
-  public <T> OpenAiFunctionTool(@Nonnull final String name, @Nonnull final Class<T> clazz) {
-    this(name, clazz, null, null);
+  public <T> OpenAiFunctionTool(@Nonnull final String name, @Nonnull final Class<T> requestModel) {
+    this(name, requestModel, null, null);
   }
 
   ChatCompletionTool createChatCompletionTool() {
     final var objectMapper = new ObjectMapper();
     JsonSchema schema = null;
     try {
-      schema = new JsonSchemaGenerator(objectMapper).generateSchema(clazz);
+      schema = new JsonSchemaGenerator(objectMapper).generateSchema(requestModel);
     } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for " + clazz.getTypeName(), e);
+      throw new IllegalArgumentException(
+          "Could not generate schema for " + requestModel.getTypeName(), e);
     }
 
     schema.setId(null);
