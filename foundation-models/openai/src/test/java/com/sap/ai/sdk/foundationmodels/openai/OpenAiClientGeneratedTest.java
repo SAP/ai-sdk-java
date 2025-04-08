@@ -605,5 +605,10 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(toolCall.getId()).isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
     assertThat(toolCall.getName()).isEqualTo("fibonacci");
     assertThat(toolCall.getArguments()).isEqualTo("{\"N\":12}");
+    assertThat(toolCall.getArgumentsAsMap()).isEqualTo(Map.of("N", 12));
+
+    record DummyRequest(int N) {}
+    assertThat(toolCall.getArgumentsAsObject(DummyRequest.class)).isInstanceOf(DummyRequest.class);
+    assertThat(toolCall.getArgumentsAsObject(DummyRequest.class).N()).isEqualTo(12);
   }
 }

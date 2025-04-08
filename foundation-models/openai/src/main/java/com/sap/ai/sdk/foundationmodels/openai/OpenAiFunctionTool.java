@@ -63,6 +63,7 @@ public class OpenAiFunctionTool implements OpenAiTool {
       throw new IllegalArgumentException("Could not generate schema for " + clazz.getTypeName(), e);
     }
 
+    schema.setId(null);
     final var schemaMap =
         objectMapper.convertValue(schema, new TypeReference<Map<String, Object>>() {});
 

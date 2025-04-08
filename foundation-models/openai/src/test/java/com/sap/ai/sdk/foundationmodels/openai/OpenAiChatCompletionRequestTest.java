@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestUserMessageContent;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class OpenAiChatCompletionRequestTest {
@@ -113,5 +115,46 @@ class OpenAiChatCompletionRequestTest {
     assertThat(generatedRequestAfter.getMessages())
         .as("Modifying the original list should not affect the messages in the request object.")
         .hasSize(1);
+  }
+
+  @Test
+  void withOpenAiTools() {
+    record DummyRequest(String param1, int param2) {}
+
+    var request =
+        new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
+            .withOpenAiTools(
+                List.of(
+                    new OpenAiFunctionTool("toolA", DummyRequest.class)
+                        .withDescription("descA")
+                        .withStrict(true),
+                    new OpenAiFunctionTool("toolB", String.class)
+                        .withDescription("descB")
+                        .withStrict(false)));
+
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
+    assertThat(lowLevelRequest.getTools()).hasSize(2);
+
+    var toolA = lowLevelRequest.getTools().get(0);
+    assertThat(toolA).isInstanceOf(ChatCompletionTool.class);
+    assertThat(toolA.getType()).isEqualTo(ChatCompletionTool.TypeEnum.FUNCTION);
+    assertThat(toolA.getFunction().getName()).isEqualTo("toolA");
+    assertThat(toolA.getFunction().getDescription()).isEqualTo("descA");
+    assertThat(toolA.getFunction().isStrict()).isTrue();
+    assertThat(toolA.getFunction().getParameters())
+        .isEqualTo(
+            Map.of(
+                "properties",
+                Map.of("param1", Map.of("type", "string"), "param2", Map.of("type", "integer")),
+                "type",
+                "object"));
+
+    var toolB = lowLevelRequest.getTools().get(1);
+    assertThat(toolB).isInstanceOf(ChatCompletionTool.class);
+    assertThat(toolB.getType()).isEqualTo(ChatCompletionTool.TypeEnum.FUNCTION);
+    assertThat(toolB.getFunction().getName()).isEqualTo("toolB");
+    assertThat(toolB.getFunction().getDescription()).isEqualTo("descB");
+    assertThat(toolB.getFunction().isStrict()).isFalse();
+    assertThat(toolB.getFunction().getParameters()).isEqualTo(Map.of("type", "string"));
   }
 }
