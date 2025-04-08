@@ -33,7 +33,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * <p>Prompt Storage service for Design time & Runtime prompt templates.
  */
-@Beta
 public class PromptTemplatesApi extends AbstractOpenApiService {
   /**
    * Instantiates this API class to invoke operations on the Prompt Registry API.

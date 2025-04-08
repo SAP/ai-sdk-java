@@ -11,8 +11,5 @@
 
 package com.sap.ai.sdk.core.model;
 
-import com.google.common.annotations.Beta;
-
 /** KpiResultRowItem */
-@Beta
 public interface KpiResultRowItem {}

@@ -13,10 +13,8 @@ package com.sap.ai.sdk.grounding.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 
 /** VectorV1VectorEndpointsGetCollectionCreationStatus200Response */
-@Beta
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = CollectionCreatedResponse.class),

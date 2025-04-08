@@ -13,14 +13,12 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 
 /**
  * Response format that the model output should adhere to. This is the same as the OpenAI
  * definition. Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer
  * than gpt-3.5-turbo-1106.
  */
-@Beta
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = ResponseFormatJsonObject.class),
