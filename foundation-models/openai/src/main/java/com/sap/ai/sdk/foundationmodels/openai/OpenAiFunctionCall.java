@@ -2,7 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -36,13 +36,7 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    */
   @Nonnull
   public Map<String, Object> getArgumentsAsMap() throws IllegalArgumentException {
-    final var typeReference = new TypeReference<Map<String, Object>>() {};
-    try {
-      return getOpenAiObjectMapper().readValue(getArguments(), typeReference);
-    } catch (Exception e) {
-      throw new IllegalArgumentException(
-          "Failed to parse JSON string to type " + typeReference.getType(), e);
-    }
+    return getArgumentsAsObject(Map.class);
   }
 
   /**
@@ -58,7 +52,7 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
   public <T> T getArgumentsAsObject(@Nonnull final Class<T> clazz) throws IllegalArgumentException {
     try {
       return getOpenAiObjectMapper().readValue(getArguments(), clazz);
-    } catch (Exception e) {
+    } catch (JsonProcessingException e) {
       throw new IllegalArgumentException(
           "Failed to parse JSON string to class " + clazz.getTypeName(), e);
     }
