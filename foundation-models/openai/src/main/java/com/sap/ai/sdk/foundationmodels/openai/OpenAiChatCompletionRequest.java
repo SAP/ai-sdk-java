@@ -123,7 +123,8 @@ public class OpenAiChatCompletionRequest {
   @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
   /** List of tools that the model may invoke during the completion. */
-  @Nullable List<ChatCompletionTool> tools;
+  @Getter(value = AccessLevel.PACKAGE)
+  @Nullable List<OpenAiFunctionTool<?, ?>> tools;
 
   /** Option to control which tool is invoked by the model. */
   @With(AccessLevel.PRIVATE)
@@ -297,7 +298,7 @@ public class OpenAiChatCompletionRequest {
             .map(
                 tool -> {
                   if (tool instanceof OpenAiFunctionTool) {
-                    return ((OpenAiFunctionTool) tool).createChatCompletionTool();
+                    return ((OpenAiFunctionTool<?,?>) tool).createChatCompletionTool();
                   } else {
                     throw new IllegalArgumentException(
                         "Unsupported tool type: " + tool.getClass().getName());
@@ -336,7 +337,7 @@ public class OpenAiChatCompletionRequest {
     request.seed(this.seed);
     request.streamOptions(this.streamOptions);
     request.responseFormat(this.responseFormat);
-    request.tools(this.tools);
+    request.tools(this.tools.createChatCompletionTool());
     request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);

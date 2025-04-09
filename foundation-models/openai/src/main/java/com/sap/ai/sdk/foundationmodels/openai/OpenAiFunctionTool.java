@@ -41,8 +41,6 @@ public class OpenAiFunctionTool<T, R> implements OpenAiTool {
   /** The model class for function request. */
   @Nonnull Function<T, R> function;
 
-  /** The model class for function response. */
-
   /** An optional description of the function. */
   @Nullable String description;
 
@@ -60,14 +58,19 @@ public class OpenAiFunctionTool<T, R> implements OpenAiTool {
     this(name, function, null, null);
   }
 
+  @Nonnull
+  R call(@Nonnull final T request) {
+    return function.apply(request);
+  }
+
   ChatCompletionTool createChatCompletionTool() {
     final var objectMapper = new ObjectMapper();
     JsonSchema schema = null;
     try {
-      schema = new JsonSchemaGenerator(objectMapper).generateSchema(Class<T>.class);
+      schema = new JsonSchemaGenerator(objectMapper).generateSchema(new TypeReference<T>() {}.getClass());
     } catch (JsonMappingException e) {
       throw new IllegalArgumentException(
-          "Could not generate schema for " + function.getTypeName(), e);
+          "Could not generate schema for " + name, e);
     }
 
     schema.setId(null);

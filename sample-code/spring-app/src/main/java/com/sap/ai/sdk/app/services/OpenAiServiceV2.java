@@ -15,6 +15,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionTool;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -96,24 +97,20 @@ public class OpenAiServiceV2 {
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
     // 1. Define the function
-    final var weatherFunction =
-        new OpenAiFunctionTool(
-                "weather", WeatherMethod.Request.class, WeatherMethod.Response.class)
-            .withDescription("Get the weather for the given location");
+    final List<OpenAiTool> tools =
+        List.of(
+            new OpenAiFunctionTool<>("weather", WeatherMethod::getCurrentWeather)
+                .withDescription("Get the weather for the given location"));
 
     // 2. Assistant calls the function
-    final var request =
-        new OpenAiChatCompletionRequest(messages).withOpenAiTools(List.of(weatherFunction));
+    final var request = new OpenAiChatCompletionRequest(messages).withOpenAiTools(tools);
     final OpenAiChatCompletionResponse response =
         OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
     final OpenAiAssistantMessage assistantMessage = response.getMessage();
-    
-    // 3. Execute the function
-    
-   
+
     // 4. Send back the results, and the model will incorporate them into its final response.
     messages.add(assistantMessage);
-    messages.add(OpenAiMessage.tool(currentWeather.toString(), functionCall.getId()));
+    messages.addAll(response.executeTools(tools));
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
 
