@@ -4,13 +4,16 @@ import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatC
 import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
@@ -26,7 +29,9 @@ import lombok.Value;
 @Setter(value = NONE)
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
-  @Nonnull final CreateChatCompletionResponse originalResponse;
+  @Nonnull CreateChatCompletionResponse originalResponse;
+
+  @Nullable List<ChatCompletionTool> functions;
 
   /**
    * Gets the token usage from the original response.
@@ -95,5 +100,32 @@ public class OpenAiChatCompletionResponse {
             .toList();
 
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
+  }
+
+  public <T, R> List<OpenAiToolMessage> executeTools(List<OpenAiTool> tools) {
+    return getMessage().toolCalls().stream()
+        .filter(toolCall -> toolCall instanceof OpenAiFunctionCall)
+        .map(toolCall -> (OpenAiFunctionCall) toolCall)
+        .map(
+            functionCall -> {
+              OpenAiFunctionTool<T, R> request = findFunction(tools, functionCall.getName());
+              T arguments = functionCall.parseArguments(new TypeReference<T>() {});
+              R response = request.call(arguments);
+              return OpenAiMessage.tool(response, functionCall.getId());
+            })
+        .toList();
+  }
+
+  @Nullable
+  private <T, R> OpenAiFunctionTool<T, R> findFunction(List<OpenAiTool> tools, String name) {
+    if (functions == null) {
+      return null;
+    }
+    for (OpenAiTool tool : tools) {
+      if (tool instanceof OpenAiFunctionTool<?, ?> function && function.getName().equals(name)) {
+        return (OpenAiFunctionTool<T, R>) function;
+      }
+    }
+    return null;
   }
 }

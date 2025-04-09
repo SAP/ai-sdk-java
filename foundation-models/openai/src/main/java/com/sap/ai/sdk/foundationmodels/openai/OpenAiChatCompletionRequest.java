@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
@@ -123,7 +122,9 @@ public class OpenAiChatCompletionRequest {
   @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
   /** List of tools that the model may invoke during the completion. */
-  @Nullable List<ChatCompletionTool> tools;
+  @Getter(value = AccessLevel.PACKAGE)
+  @Nullable
+  List<OpenAiFunctionTool<?, ?>> tools;
 
   /** Option to control which tool is invoked by the model. */
   @With(AccessLevel.PRIVATE)
@@ -283,6 +284,30 @@ public class OpenAiChatCompletionRequest {
   }
 
   /**
+   * Sets the tools to be used in the request with convenience class {@code OpenAiTool}.
+   *
+   * @param tools the list of tools to be used
+   * @return a new OpenAiChatCompletionRequest instance with the specified tools
+   * @throws IllegalArgumentException if the tool type is not supported
+   * @since 1.7.0
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withOpenAiTools(@Nonnull final List<OpenAiTool> tools) {
+    return this.withTools(
+        tools.stream()
+            .map(
+                tool -> {
+                  if (tool instanceof OpenAiFunctionTool) {
+                    return ((OpenAiFunctionTool<?, ?>) tool).createChatCompletionTool();
+                  } else {
+                    throw new IllegalArgumentException(
+                        "Unsupported tool type: " + tool.getClass().getName());
+                  }
+                })
+            .toList());
+  }
+
+  /**
    * Converts the request to a generated model class CreateChatCompletionRequest.
    *
    * @return the CreateChatCompletionRequest
@@ -312,7 +337,7 @@ public class OpenAiChatCompletionRequest {
     request.seed(this.seed);
     request.streamOptions(this.streamOptions);
     request.responseFormat(this.responseFormat);
-    request.tools(this.tools);
+    request.tools(this.tools.createChatCompletionTool());
     request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);
