@@ -119,7 +119,6 @@
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <apiMaturity>beta</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
               <compileScope>COMPILE</compileScope>
               <deleteOutputDirectory>true</deleteOutputDirectory>

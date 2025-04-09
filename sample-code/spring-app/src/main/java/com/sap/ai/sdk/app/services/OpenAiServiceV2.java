@@ -43,6 +43,7 @@ public class OpenAiServiceV2 {
   /**
    * Asynchronous stream of an OpenAI chat request
    *
+   * @param message The message to send to the assistant
    * @return the emitter that streams the assistant message response
    */
   @Nonnull
@@ -56,6 +57,7 @@ public class OpenAiServiceV2 {
   /**
    * Asynchronous stream of an OpenAI chat request
    *
+   * @param message The message to send to the assistant
    * @return the emitter that streams the assistant message response
    */
   @Nonnull

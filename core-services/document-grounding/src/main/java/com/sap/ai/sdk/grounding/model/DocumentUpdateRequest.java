@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
  * An update request containing one or more documents to update existing documents in a collection
  * by ID.
  */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class DocumentUpdateRequest
 // CHECKSTYLE:ON
 {

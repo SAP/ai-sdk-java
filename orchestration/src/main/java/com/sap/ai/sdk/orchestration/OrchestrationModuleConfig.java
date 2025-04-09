@@ -140,7 +140,8 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @param contentFilters one or more content filters to apply to the input.
+   * @param contentFilter a filter to apply to the input.
+   * @param contentFilters zero or more additional content filters to apply to the input.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified input filters
    *     added.
    */
@@ -174,7 +175,8 @@ public class OrchestrationModuleConfig {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * @param contentFilters one or more content filters to apply to the output.
+   * @param contentFilter a filter to apply to the input.
+   * @param contentFilters zero or more additional content filters to apply to the input.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified output filters
    *     added.
    */
