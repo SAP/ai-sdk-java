@@ -11,6 +11,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.Map;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -32,13 +33,15 @@ import lombok.With;
 @With
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OpenAiFunctionTool implements OpenAiTool {
+public class OpenAiFunctionTool<T, R> implements OpenAiTool {
 
   /** The name of the function. */
   @Nonnull String name;
 
   /** The model class for function request. */
-  @Nonnull Class<?> requestModel;
+  @Nonnull Function<T, R> function;
+
+  /** The model class for function response. */
 
   /** An optional description of the function. */
   @Nullable String description;
@@ -51,20 +54,20 @@ public class OpenAiFunctionTool implements OpenAiTool {
    * captures the request to the function.
    *
    * @param name the name of the function
-   * @param requestModel the model class for the function request
+   * @param function the model class for function request
    */
-  public <T> OpenAiFunctionTool(@Nonnull final String name, @Nonnull final Class<T> requestModel) {
-    this(name, requestModel, null, null);
+  public OpenAiFunctionTool(@Nonnull final String name, @Nonnull final Function<T, R> function) {
+    this(name, function, null, null);
   }
 
   ChatCompletionTool createChatCompletionTool() {
     final var objectMapper = new ObjectMapper();
     JsonSchema schema = null;
     try {
-      schema = new JsonSchemaGenerator(objectMapper).generateSchema(requestModel);
+      schema = new JsonSchemaGenerator(objectMapper).generateSchema(Class<T>.class);
     } catch (JsonMappingException e) {
       throw new IllegalArgumentException(
-          "Could not generate schema for " + requestModel.getTypeName(), e);
+          "Could not generate schema for " + function.getTypeName(), e);
     }
 
     schema.setId(null);
