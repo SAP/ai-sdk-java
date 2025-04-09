@@ -137,8 +137,7 @@ public class SpringAiOrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy)
-      throws OrchestrationClientException {
+  public ChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
     val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =

@@ -4,6 +4,7 @@ import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -88,13 +89,10 @@ class SpringAiOrchestrationController {
       @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
-    final ChatResponse response;
-    try {
-      response = service.outputFiltering(policy);
-    } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+    val response = service.outputFiltering(policy);
+
+    if (response.hasFinishReasons(Set.of("content_filter"))) {
+      return ResponseEntity.internalServerError().body("Failed to obtain a response as the content was flagged by output filter.");
     }
 
     if ("json".equals(format)) {
