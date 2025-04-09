@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +34,7 @@ import javax.annotation.Nullable;
  * handle of the artifact within a scenario and &#x60;kind&#x60; specifies the type of usage, e.g.
  * you would only want to allow models in the model operator).
  */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class AiArtifactPostData
 // CHECKSTYLE:ON
 {
