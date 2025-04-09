@@ -37,15 +37,11 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * @since 1.7.0
    */
   @Nonnull
-  <T> T parseArguments(@Nonnull final TypeReference<T> request)
-      throws IllegalArgumentException {
+  <T> T parseArguments(@Nonnull final TypeReference<T> request) throws IllegalArgumentException {
     try {
       return getOpenAiObjectMapper().readValue(arguments, request);
     } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(
-          "Failed to parse JSON string to class " + request, e);
+      throw new IllegalArgumentException("Failed to parse JSON string to class " + request, e);
     }
   }
-
-
 }

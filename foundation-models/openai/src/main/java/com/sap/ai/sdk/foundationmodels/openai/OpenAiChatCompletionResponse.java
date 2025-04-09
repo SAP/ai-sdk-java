@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
-import lombok.val;
 
 /**
  * Represents the output of an OpenAI chat completion. *
@@ -103,7 +102,7 @@ public class OpenAiChatCompletionResponse {
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
   }
 
-  public <T, R> List<OpenAiToolMessage> executeTools( List<OpenAiTool> tools ) {
+  public <T, R> List<OpenAiToolMessage> executeTools(List<OpenAiTool> tools) {
     return getMessage().toolCalls().stream()
         .filter(toolCall -> toolCall instanceof OpenAiFunctionCall)
         .map(toolCall -> (OpenAiFunctionCall) toolCall)
