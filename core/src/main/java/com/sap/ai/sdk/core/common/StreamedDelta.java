@@ -37,6 +37,8 @@ public interface StreamedDelta {
    * <p>{@code content_filter}: Omitted content due to a flag from our content filters
    *
    * <p>{@code null}: API response still in progress or incomplete
+   *
+   * @return the finish reason or null.
    */
   @Nullable
   String getFinishReason();

@@ -159,6 +159,7 @@ public class SpringAiOrchestrationService {
    * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
    * Tool Method Declarative Specification</a>
    *
+   * @param internalToolExecutionEnabled whether the internal tool execution is enabled
    * @return the assistant response object
    */
   @Nonnull
