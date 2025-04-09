@@ -29,7 +29,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * <p>SAP AI Core - API Specification AI Data Management api's
  */
-@Beta
 public class PipelinesApi extends AbstractOpenApiService {
   /**
    * Instantiates this API class to invoke operations on the Document Grounding Pipeline API.

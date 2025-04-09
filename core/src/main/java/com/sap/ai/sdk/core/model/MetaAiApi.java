@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
  * don&#39;t need executions 4) runtimes that have fixed endpoints and therefore only need listing
  * deployments
  */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class MetaAiApi
 // CHECKSTYLE:ON
 {

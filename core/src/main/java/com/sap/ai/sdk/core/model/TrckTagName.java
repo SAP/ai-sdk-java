@@ -11,11 +11,9 @@
 
 package com.sap.ai.sdk.core.model;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
 /** TrckTagName */
-@Beta
 public interface TrckTagName {
   /** Helper class to create a String that implements {@link TrckTagName}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
