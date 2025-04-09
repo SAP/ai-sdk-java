@@ -12,11 +12,9 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionTool;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -97,7 +95,8 @@ public class OpenAiServiceV2 {
 
     // 1. Define the function
     final var weatherFunction =
-        new OpenAiFunctionTool("weather", WeatherMethod.Request.class)
+        new OpenAiFunctionTool(
+                "weather", WeatherMethod.Request.class, WeatherMethod.Response.class)
             .withDescription("Get the weather for the given location");
 
     // 2. Assistant calls the function
@@ -106,16 +105,10 @@ public class OpenAiServiceV2 {
     final OpenAiChatCompletionResponse response =
         OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
     final OpenAiAssistantMessage assistantMessage = response.getMessage();
-
+    
     // 3. Execute the function
-    final OpenAiToolCall toolCall = assistantMessage.toolCalls().get(0);
-    if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
-      throw new IllegalArgumentException(
-          "Expected a function call, but got: %s".formatted(assistantMessage));
-    }
-    final WeatherMethod.Request arguments = functionCall.getArgumentsAsObject(weatherFunction);
-    final WeatherMethod.Response currentWeather = WeatherMethod.getCurrentWeather(arguments);
-
+    
+   
     // 4. Send back the results, and the model will incorporate them into its final response.
     messages.add(assistantMessage);
     messages.add(OpenAiMessage.tool(currentWeather.toString(), functionCall.getId()));

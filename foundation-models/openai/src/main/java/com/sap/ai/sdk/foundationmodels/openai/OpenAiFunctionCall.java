@@ -58,7 +58,7 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
         new TypeReference<T>() {
           @Override
           public Type getType() {
-            return tool.getRequestModel();
+            return tool.getFunction();
           }
         };
     return parseArguments(typeRef);
