@@ -92,7 +92,8 @@ class SpringAiOrchestrationController {
     val response = service.outputFiltering(policy);
 
     if (response.hasFinishReasons(Set.of("content_filter"))) {
-      return ResponseEntity.internalServerError().body("Failed to obtain a response as the content was flagged by output filter.");
+      return ResponseEntity.internalServerError()
+          .body("Failed to obtain a response as the content was flagged by output filter.");
     }
 
     if ("json".equals(format)) {
