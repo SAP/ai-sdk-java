@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionRequestMessageContentPartRefusal */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ChatCompletionRequestMessageContentPartRefusal
     implements ChatCompletionRequestAssistantMessageContentPart
 // CHECKSTYLE:ON

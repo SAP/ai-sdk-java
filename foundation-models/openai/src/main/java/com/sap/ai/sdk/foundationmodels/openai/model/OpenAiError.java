@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
@@ -14,7 +13,7 @@ import lombok.experimental.Delegate;
 @Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
-@Beta
+@Deprecated
 public class OpenAiError implements ClientError {
   /** The error object. */
   @JsonProperty("error")

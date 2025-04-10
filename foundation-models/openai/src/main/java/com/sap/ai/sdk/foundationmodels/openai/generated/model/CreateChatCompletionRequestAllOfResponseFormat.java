@@ -46,5 +46,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = ResponseFormatJsonSchema.class),
   @JsonSubTypes.Type(value = ResponseFormatText.class),
 })
-@com.google.common.annotations.Beta
 public interface CreateChatCompletionRequestAllOfResponseFormat {}

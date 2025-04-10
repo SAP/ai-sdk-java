@@ -37,7 +37,6 @@ import javax.annotation.Nullable;
  * provided input.
  */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class CreateChatCompletionStreamResponse implements ChatCompletionsCreate200Response
 // CHECKSTYLE:ON
 {

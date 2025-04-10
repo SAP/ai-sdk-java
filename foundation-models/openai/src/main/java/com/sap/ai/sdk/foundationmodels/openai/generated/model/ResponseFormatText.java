@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
 
 /** ResponseFormatText */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ResponseFormatText implements CreateChatCompletionRequestAllOfResponseFormat
 // CHECKSTYLE:ON
 {
