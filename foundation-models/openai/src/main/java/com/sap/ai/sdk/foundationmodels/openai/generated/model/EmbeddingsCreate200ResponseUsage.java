@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 /** EmbeddingsCreate200ResponseUsage */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class EmbeddingsCreate200ResponseUsage
 // CHECKSTYLE:ON
 {

@@ -19,7 +19,6 @@ package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 import java.util.List;
 
 /** Up to 4 sequences where the API will stop generating further tokens. */
-@com.google.common.annotations.Beta
 public interface CreateChatCompletionRequestAllOfStop {
   /**
    * Helper class to create a String that implements {@link CreateChatCompletionRequestAllOfStop}.

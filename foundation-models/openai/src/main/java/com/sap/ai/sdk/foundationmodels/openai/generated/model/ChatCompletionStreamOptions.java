@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 /** Options for streaming response. Only set this when you set &#x60;stream: true&#x60;. */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ChatCompletionStreamOptions
 // CHECKSTYLE:ON
 {

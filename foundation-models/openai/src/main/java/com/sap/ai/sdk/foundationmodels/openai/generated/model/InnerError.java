@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 /** Inner error with additional details. */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class InnerError
 // CHECKSTYLE:ON
 {

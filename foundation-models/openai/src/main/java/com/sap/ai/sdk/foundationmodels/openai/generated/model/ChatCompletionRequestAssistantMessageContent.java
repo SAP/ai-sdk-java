@@ -22,7 +22,6 @@ import java.util.List;
  * The contents of the assistant message. Required unless &#x60;tool_calls&#x60; or
  * &#x60;function_call&#x60; is specified.
  */
-@com.google.common.annotations.Beta
 public interface ChatCompletionRequestAssistantMessageContent {
   /**
    * Helper class to create a String that implements {@link

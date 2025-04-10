@@ -19,7 +19,6 @@ package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 import java.util.List;
 
 /** The contents of the user message. */
-@com.google.common.annotations.Beta
 public interface ChatCompletionRequestUserMessageContent {
   /**
    * Helper class to create a String that implements {@link

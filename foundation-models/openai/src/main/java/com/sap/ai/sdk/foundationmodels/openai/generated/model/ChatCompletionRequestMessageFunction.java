@@ -34,7 +34,6 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionRequestMessageFunction */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ChatCompletionRequestMessageFunction
 // CHECKSTYLE:ON
 {

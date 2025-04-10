@@ -36,7 +36,6 @@ import javax.annotation.Nullable;
  * not. And information about customer block list, if it has been filtered and its id.
  */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ContentFilterPromptResults
 // CHECKSTYLE:ON
 {

@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionRequestMessageContentPartImage */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ChatCompletionRequestMessageContentPartImage
     implements ChatCompletionRequestUserMessageContentPart
 // CHECKSTYLE:ON
