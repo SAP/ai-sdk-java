@@ -22,7 +22,7 @@ class OpenAiToolCallTest {
   }
 
   private static final OpenAiTool<Dummy.Request, Dummy.Request> TOOL =
-      new OpenAiTool("functionName", Dummy.conCat);
+      OpenAiTool.of("functionName", Dummy.Request.class);
 
   @Test
   void getArgumentsAsMapParsesValidJson() {
@@ -39,15 +39,14 @@ class OpenAiToolCallTest {
 
   @Test
   void getArgumentsAsObjectParsesValidJson() {
-    var result = VALID_FUNCTION_CALL.getArgumentsAsObject(new TypeReference<Dummy.Request>() {});
+    var result = VALID_FUNCTION_CALL.getArgumentsAsObject(TOOL);
     assertThat(result).isInstanceOf(Dummy.Request.class);
     assertThat(result.key()).isEqualTo("value");
   }
 
   @Test
   void getArgumentsAsObjectThrowsOnInvalidJson() {
-    assertThatThrownBy(
-            () -> INVALID_FUNCTION_CALL.getArgumentsAsObject(new TypeReference<Dummy.Request>() {}))
+    assertThatThrownBy(() -> INVALID_FUNCTION_CALL.getArgumentsAsObject(TOOL))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to parse JSON string");
   }

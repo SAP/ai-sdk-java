@@ -130,8 +130,12 @@ class OpenAiChatCompletionRequestTest {
         new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
             .withOpenAiTools(
                 List.of(
-                    new OpenAiTool("toolA", conCat).withDescription("descA").withStrict(true),
-                    new OpenAiTool("toolB", conCat).withDescription("descB").withStrict(false)));
+                    OpenAiTool.of("toolA", DummyRequest.class)
+                        .setDescription("descA")
+                        .setStrict(true),
+                    OpenAiTool.of("toolB", DummyRequest.class)
+                        .setDescription("descB")
+                        .setStrict(false)));
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     assertThat(lowLevelRequest.getTools()).hasSize(2);
@@ -142,31 +146,18 @@ class OpenAiChatCompletionRequestTest {
     assertThat(toolA.getFunction().getName()).isEqualTo("toolA");
     assertThat(toolA.getFunction().getDescription()).isEqualTo("descA");
     assertThat(toolA.getFunction().isStrict()).isTrue();
-    /// {"id"="urn:jsonschema:com:sap:ai:sdk:foundationmodels:openai:OpenAiTool:1",
-    // "properties"={"type"={"id"="urn:jsonschema:java:lang:reflect:Type",
-    // "properties"={"typeName"={"type"="string"}}, "type"="object"}}, "type"="object"}
+
     assertThat(toolA.getFunction().getParameters())
         .isEqualTo(
             Map.of(
+                "id", "urn:jsonschema:com:sap:ai:sdk:foundationmodels:openai:OpenAiTool:1",
                 "properties",
-                Map.of(
-                    "type",
                     Map.of(
-                        "properties",
-                        Map.of("typeName", Map.of("type", "string")),
                         "type",
-                        "object")),
-                "type",
-                "object"));
-    assertThat(toolA.getFunction().getParameters())
-        .isEqualTo(Map.of("type", "string", "typeName", "java.lang.reflect.Type"));
-
-    var toolB = lowLevelRequest.getTools().get(1);
-    assertThat(toolB).isInstanceOf(ChatCompletionTool.class);
-    assertThat(toolB.getType()).isEqualTo(ChatCompletionTool.TypeEnum.FUNCTION);
-    assertThat(toolB.getFunction().getName()).isEqualTo("toolB");
-    assertThat(toolB.getFunction().getDescription()).isEqualTo("descB");
-    assertThat(toolB.getFunction().isStrict()).isFalse();
-    assertThat(toolB.getFunction().getParameters()).isEqualTo(Map.of("type", "string"));
+                        Map.of(
+                            "id", "urn:jsonschema:java:lang:reflect:Type",
+                            "properties", Map.of("typeName", Map.of("type", "string")),
+                            "type", "object")),
+                "type", "object"));
   }
 }

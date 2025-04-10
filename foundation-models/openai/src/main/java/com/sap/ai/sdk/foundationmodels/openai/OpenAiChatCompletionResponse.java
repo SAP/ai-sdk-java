@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatC
 import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
@@ -99,15 +98,15 @@ public class OpenAiChatCompletionResponse {
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
   }
 
-  public <T, R> List<OpenAiToolMessage> executeTools(List<OpenAiTool> tools) {
+  public <T, R> List<OpenAiToolMessage> executeTools(List<OpenAiTool<T, R>> tools) {
     var toolMessages = new ArrayList<OpenAiToolMessage>();
 
     for (var toolCall : getMessage().toolCalls()) {
       if (toolCall instanceof OpenAiFunctionCall functionCall) {
         for (OpenAiTool<T, R> tool : tools) {
           if (tool.getName().equals(functionCall.getName())) {
-            T arguments = functionCall.getArgumentsAsObject(new TypeReference<T>() {});
-            R response = tool.call(arguments);
+            T arguments = functionCall.getArgumentsAsObject(tool);
+            R response = tool.execute(arguments);
             toolMessages.add(OpenAiMessage.tool(response.toString(), functionCall.getId()));
           }
         }

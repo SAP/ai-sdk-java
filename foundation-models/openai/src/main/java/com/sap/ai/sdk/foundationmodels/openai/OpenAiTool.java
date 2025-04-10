@@ -16,9 +16,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.Value;
-import lombok.With;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Represents an OpenAI function tool that can be used to define a function call in an OpenAI Chat
@@ -29,9 +30,9 @@ import lombok.With;
  * @since 1.7.0
  */
 @Beta
-@Value
-@With
+@Data
 @Getter(AccessLevel.PACKAGE)
+@Accessors(chain = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OpenAiTool<T, R> {
 
@@ -39,7 +40,7 @@ public class OpenAiTool<T, R> {
   @Nonnull String name;
 
   /** The model class for function request. */
-  @Nonnull Function<T, R> function;
+  @Nonnull Class<T> requestClass;
 
   /** An optional description of the function. */
   @Nullable String description;
@@ -47,20 +48,49 @@ public class OpenAiTool<T, R> {
   /** An optional flag indicating whether the function parameters should be treated strictly. */
   @Nullable Boolean strict;
 
+  /** The function to be called. */
+  @Setter(AccessLevel.NONE)
+  @Nullable
+  Function<T, R> function;
+
+  /** The response class for the function. */
+  @Setter(AccessLevel.NONE)
+  @Nullable
+  Class<R> responseClass;
+
+  public static <I, O> OpenAiTool<I, O> of(@Nonnull String name, @Nonnull Class<I> requestClass) {
+    return new OpenAiTool<>(name, requestClass);
+  }
+
   /**
    * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
    * captures the request to the function.
    *
    * @param name the name of the function
-   * @param function the model class for function request
+   * @param requestClass the model class for function request
    */
-  public OpenAiTool(@Nonnull final String name, @Nonnull final Function<T, R> function) {
-    this(name, function, null, null);
+  private OpenAiTool(@Nonnull final String name, @Nonnull final Class<T> requestClass) {
+    this(name, requestClass, null, null, null, null);
+  }
+
+  /**
+   * Sets the function to be called and the response class for the function.
+   *
+   * @param function the function to be called
+   * @param responseClass the response class for the function
+   * @return this instance of {@code OpenAiFunctionTool}
+   */
+  @Nonnull
+  public OpenAiTool<T, R> setCallback(
+      @Nonnull final Function<T, R> function, @Nonnull final Class<R> responseClass) {
+    this.function = function;
+    this.responseClass = responseClass;
+    return this;
   }
 
   @Nonnull
-  R call(@Nonnull final T request) {
-    return function.apply(request);
+  R execute(@Nonnull final T argument) {
+    return function.apply(argument);
   }
 
   ChatCompletionTool createChatCompletionTool() {
@@ -74,7 +104,6 @@ public class OpenAiTool<T, R> {
       throw new IllegalArgumentException("Could not generate schema for " + name, e);
     }
 
-    schema.setId(null);
     final var schemaMap =
         objectMapper.convertValue(schema, new TypeReference<Map<String, Object>>() {});
 
