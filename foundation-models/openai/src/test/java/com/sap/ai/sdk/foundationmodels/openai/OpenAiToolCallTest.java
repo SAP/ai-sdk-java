@@ -3,6 +3,8 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
 class OpenAiToolCallTest {
@@ -11,10 +13,16 @@ class OpenAiToolCallTest {
   private static final OpenAiFunctionCall INVALID_FUNCTION_CALL =
       new OpenAiFunctionCall("1", "functionName", "{invalid-json}");
 
-  private static final OpenAiFunctionTool FUNCTION_TOOL =
-      new OpenAiFunctionTool("functionName", DummyRequest.class);
+  private static class Dummy {
+    record Request(String key) {}
 
-  record DummyRequest(String key) {}
+    record Response(String result) {}
+
+    static Function<Request, Response> conCat = request -> new Response(request.key());
+  }
+
+  private static final OpenAiTool<Dummy.Request, Dummy.Request> TOOL =
+      new OpenAiTool("functionName", Dummy.conCat);
 
   @Test
   void getArgumentsAsMapParsesValidJson() {
@@ -31,14 +39,15 @@ class OpenAiToolCallTest {
 
   @Test
   void getArgumentsAsObjectParsesValidJson() {
-    var result = (DummyRequest) VALID_FUNCTION_CALL.getArgumentsAsObject(FUNCTION_TOOL);
-    assertThat(result).isInstanceOf(DummyRequest.class);
+    var result = VALID_FUNCTION_CALL.getArgumentsAsObject(new TypeReference<Dummy.Request>() {});
+    assertThat(result).isInstanceOf(Dummy.Request.class);
     assertThat(result.key()).isEqualTo("value");
   }
 
   @Test
   void getArgumentsAsObjectThrowsOnInvalidJson() {
-    assertThatThrownBy(() -> INVALID_FUNCTION_CALL.getArgumentsAsObject(FUNCTION_TOOL))
+    assertThatThrownBy(
+            () -> INVALID_FUNCTION_CALL.getArgumentsAsObject(new TypeReference<Dummy.Request>() {}))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to parse JSON string");
   }

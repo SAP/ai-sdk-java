@@ -12,7 +12,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionTool;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
@@ -99,7 +98,7 @@ public class OpenAiServiceV2 {
     // 1. Define the function
     final List<OpenAiTool> tools =
         List.of(
-            new OpenAiFunctionTool<>("weather", WeatherMethod::getCurrentWeather)
+            new OpenAiTool<>("weather", WeatherMethod::getCurrentWeather)
                 .withDescription("Get the weather for the given location"));
 
     // 2. Assistant calls the function
@@ -111,6 +110,7 @@ public class OpenAiServiceV2 {
     // 4. Send back the results, and the model will incorporate them into its final response.
     messages.add(assistantMessage);
     messages.addAll(response.executeTools(tools));
+
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
   }
 

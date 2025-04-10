@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
 class OpenAiChatCompletionRequestTest {
@@ -120,17 +121,17 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void withOpenAiTools() {
     record DummyRequest(String param1, int param2) {}
+    record DummyResponse(String result) {}
+
+    Function<DummyRequest, DummyResponse> conCat =
+        (request) -> new DummyResponse(request.param1 + request.param2);
 
     var request =
         new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
             .withOpenAiTools(
                 List.of(
-                    new OpenAiFunctionTool("toolA", DummyRequest.class)
-                        .withDescription("descA")
-                        .withStrict(true),
-                    new OpenAiFunctionTool("toolB", String.class)
-                        .withDescription("descB")
-                        .withStrict(false)));
+                    new OpenAiTool("toolA", conCat).withDescription("descA").withStrict(true),
+                    new OpenAiTool("toolB", conCat).withDescription("descB").withStrict(false)));
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     assertThat(lowLevelRequest.getTools()).hasSize(2);
@@ -141,13 +142,24 @@ class OpenAiChatCompletionRequestTest {
     assertThat(toolA.getFunction().getName()).isEqualTo("toolA");
     assertThat(toolA.getFunction().getDescription()).isEqualTo("descA");
     assertThat(toolA.getFunction().isStrict()).isTrue();
+    /// {"id"="urn:jsonschema:com:sap:ai:sdk:foundationmodels:openai:OpenAiTool:1",
+    // "properties"={"type"={"id"="urn:jsonschema:java:lang:reflect:Type",
+    // "properties"={"typeName"={"type"="string"}}, "type"="object"}}, "type"="object"}
     assertThat(toolA.getFunction().getParameters())
         .isEqualTo(
             Map.of(
                 "properties",
-                Map.of("param1", Map.of("type", "string"), "param2", Map.of("type", "integer")),
+                Map.of(
+                    "type",
+                    Map.of(
+                        "properties",
+                        Map.of("typeName", Map.of("type", "string")),
+                        "type",
+                        "object")),
                 "type",
                 "object"));
+    assertThat(toolA.getFunction().getParameters())
+        .isEqualTo(Map.of("type", "string", "typeName", "java.lang.reflect.Type"));
 
     var toolB = lowLevelRequest.getTools().get(1);
     assertThat(toolB).isInstanceOf(ChatCompletionTool.class);

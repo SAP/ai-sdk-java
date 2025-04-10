@@ -3,6 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
@@ -122,9 +123,7 @@ public class OpenAiChatCompletionRequest {
   @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
   /** List of tools that the model may invoke during the completion. */
-  @Getter(value = AccessLevel.PACKAGE)
-  @Nullable
-  List<OpenAiFunctionTool<?, ?>> tools;
+  @Nullable List<ChatCompletionTool> tools;
 
   /** Option to control which tool is invoked by the model. */
   @With(AccessLevel.PRIVATE)
@@ -293,18 +292,7 @@ public class OpenAiChatCompletionRequest {
    */
   @Nonnull
   public OpenAiChatCompletionRequest withOpenAiTools(@Nonnull final List<OpenAiTool> tools) {
-    return this.withTools(
-        tools.stream()
-            .map(
-                tool -> {
-                  if (tool instanceof OpenAiFunctionTool) {
-                    return ((OpenAiFunctionTool<?, ?>) tool).createChatCompletionTool();
-                  } else {
-                    throw new IllegalArgumentException(
-                        "Unsupported tool type: " + tool.getClass().getName());
-                  }
-                })
-            .toList());
+    return this.withTools(tools.stream().map(OpenAiTool::createChatCompletionTool).toList());
   }
 
   /**
@@ -337,7 +325,7 @@ public class OpenAiChatCompletionRequest {
     request.seed(this.seed);
     request.streamOptions(this.streamOptions);
     request.responseFormat(this.responseFormat);
-    request.tools(this.tools.createChatCompletionTool());
+    request.tools(this.tools);
     request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);

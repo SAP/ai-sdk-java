@@ -6,14 +6,13 @@ import static lombok.AccessLevel.PACKAGE;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
@@ -30,8 +29,6 @@ import lombok.Value;
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
   @Nonnull CreateChatCompletionResponse originalResponse;
-
-  @Nullable List<ChatCompletionTool> functions;
 
   /**
    * Gets the token usage from the original response.
@@ -103,29 +100,19 @@ public class OpenAiChatCompletionResponse {
   }
 
   public <T, R> List<OpenAiToolMessage> executeTools(List<OpenAiTool> tools) {
-    return getMessage().toolCalls().stream()
-        .filter(toolCall -> toolCall instanceof OpenAiFunctionCall)
-        .map(toolCall -> (OpenAiFunctionCall) toolCall)
-        .map(
-            functionCall -> {
-              OpenAiFunctionTool<T, R> request = findFunction(tools, functionCall.getName());
-              T arguments = functionCall.parseArguments(new TypeReference<T>() {});
-              R response = request.call(arguments);
-              return OpenAiMessage.tool(response, functionCall.getId());
-            })
-        .toList();
-  }
+    var toolMessages = new ArrayList<OpenAiToolMessage>();
 
-  @Nullable
-  private <T, R> OpenAiFunctionTool<T, R> findFunction(List<OpenAiTool> tools, String name) {
-    if (functions == null) {
-      return null;
-    }
-    for (OpenAiTool tool : tools) {
-      if (tool instanceof OpenAiFunctionTool<?, ?> function && function.getName().equals(name)) {
-        return (OpenAiFunctionTool<T, R>) function;
+    for (var toolCall : getMessage().toolCalls()) {
+      if (toolCall instanceof OpenAiFunctionCall functionCall) {
+        for (OpenAiTool<T, R> tool : tools) {
+          if (tool.getName().equals(functionCall.getName())) {
+            T arguments = functionCall.getArgumentsAsObject(new TypeReference<T>() {});
+            R response = tool.call(arguments);
+            toolMessages.add(OpenAiMessage.tool(response.toString(), functionCall.getId()));
+          }
+        }
       }
     }
-    return null;
+    return toolMessages;
   }
 }
