@@ -97,11 +97,9 @@ public class OpenAiTool<T, R> {
     final var objectMapper = new ObjectMapper();
     JsonSchema schema = null;
     try {
-      schema =
-          new JsonSchemaGenerator(objectMapper)
-              .generateSchema(new TypeReference<T>() {}.getClass());
+      schema = new JsonSchemaGenerator(objectMapper).generateSchema(getRequestClass());
     } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for " + name, e);
+      throw new IllegalArgumentException("Could not generate schema for " + getRequestClass(), e);
     }
 
     final var schemaMap =

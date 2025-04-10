@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatC
 import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
@@ -107,7 +108,14 @@ public class OpenAiChatCompletionResponse {
           if (tool.getName().equals(functionCall.getName())) {
             T arguments = functionCall.getArgumentsAsObject(tool);
             R response = tool.execute(arguments);
-            toolMessages.add(OpenAiMessage.tool(response.toString(), functionCall.getId()));
+
+            String serializedResponse;
+            try {
+              serializedResponse = OpenAiUtils.getOpenAiObjectMapper().writeValueAsString(response);
+            } catch (JsonProcessingException e) {
+              throw new IllegalArgumentException(e);
+            }
+            toolMessages.add(OpenAiMessage.tool(serializedResponse, functionCall.getId()));
           }
         }
       }
