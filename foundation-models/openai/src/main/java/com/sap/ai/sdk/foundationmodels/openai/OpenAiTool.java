@@ -18,7 +18,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
@@ -26,6 +25,7 @@ import lombok.experimental.Accessors;
  * Completion request. This tool generates a JSON schema based on the provided class representing
  * the function's request structure.
  *
+ * @param <I> the type of the input argument for the function
  * @see <a href="https://platform.openai.com/docs/guides/gpt/function-calling"/>OpenAI Function
  * @since 1.7.0
  */
@@ -43,13 +43,13 @@ public class OpenAiTool<I> {
   @Nonnull Class<I> requestClass;
 
   /** An optional description of the function. */
-  @Setter @Nullable String description;
+  @Nullable String description;
 
   /** An optional flag indicating whether the function parameters should be treated strictly. */
-  @Setter @Nullable Boolean strict;
+  @Nullable Boolean strict;
 
   /** The function to be called. */
-  @Setter @Nullable Function<I, ?> function;
+  @Nullable Function<I, ?> function;
 
   /**
    * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
@@ -68,11 +68,6 @@ public class OpenAiTool<I> {
       throw new IllegalStateException("Callback function is not set");
     }
     return getFunction().apply(argument);
-  }
-
-  public OpenAiTool<I> setCallback(Function<I, ?> function) {
-    this.function = function;
-    return this;
   }
 
   ChatCompletionTool createChatCompletionTool() {

@@ -31,7 +31,7 @@ public class OpenAiToolExecutor {
    */
   @Nonnull
   public static List<OpenAiToolMessage> executeTools(
-      List<OpenAiTool<?>> tools, List<OpenAiToolCall> toolCalls) {
+      @Nonnull final List<OpenAiTool<?>> tools, @Nonnull final List<OpenAiToolCall> toolCalls) {
 
     final var toolMap = tools.stream().collect(Collectors.toMap(OpenAiTool::getName, tool -> tool));
 
@@ -41,15 +41,17 @@ public class OpenAiToolExecutor {
         .filter(functionCall -> toolMap.containsKey(functionCall.getName()))
         .map(
             functionCall -> {
-              var tool = toolMap.get(functionCall.getName());
-              var result = executeFunction(tool, functionCall);
+              final var tool = toolMap.get(functionCall.getName());
+              final var result = executeFunction(tool, functionCall);
               return OpenAiMessage.tool(serializeObject(result), functionCall.getId());
             })
         .toList();
   }
 
-  private static <I> Object executeFunction(OpenAiTool<I> tool, OpenAiFunctionCall toolCall) {
-    I arguments = toolCall.getArgumentsAsObject(tool);
+  @Nonnull
+  private static <I> Object executeFunction(
+      @Nonnull final OpenAiTool<I> tool, @Nonnull final OpenAiFunctionCall toolCall) {
+    final I arguments = toolCall.getArgumentsAsObject(tool);
     return tool.execute(arguments);
   }
 

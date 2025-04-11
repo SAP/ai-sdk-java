@@ -103,7 +103,7 @@ public class OpenAiServiceV2 {
         List.of(
             new OpenAiTool<>("weather", WeatherMethod.Request.class)
                 .setDescription("Get the weather for the given location")
-                .setCallback(WeatherMethod::getCurrentWeather));
+                .setFunction(WeatherMethod::getCurrentWeather));
 
     // 2. Assistant calls the function
     final var request = new OpenAiChatCompletionRequest(messages).withOpenAiTools(tools);
