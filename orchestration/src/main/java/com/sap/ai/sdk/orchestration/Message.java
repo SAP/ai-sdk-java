@@ -3,9 +3,9 @@ package com.sap.ai.sdk.orchestration;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
-import com.sap.ai.sdk.orchestration.model.ImageContentImageUrl;
+import com.sap.ai.sdk.orchestration.model.ImageContentUrl;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.LinkedList;
@@ -71,13 +71,13 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
     if (itemList.size() == 1 && itemList.get(0) instanceof TextItem textItem) {
       return SingleChatMessage.create().role(role()).content(textItem.text());
     }
-    final var contentList = new LinkedList<MultiChatMessageContent>();
+    final var contentList = new LinkedList<ChatMessageContent>();
     for (final ContentItem item : itemList) {
       if (item instanceof TextItem textItem) {
         contentList.add(TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
       } else if (item instanceof ImageItem imageItem) {
         final var detail = imageItem.detailLevel().toString();
-        final var img = ImageContentImageUrl.create().url(imageItem.imageUrl()).detail(detail);
+        final var img = ImageContentUrl.create().url(imageItem.imageUrl()).detail(detail);
         contentList.add(ImageContent.create().type(ImageContent.TypeEnum.IMAGE_URL).imageUrl(img));
       }
     }

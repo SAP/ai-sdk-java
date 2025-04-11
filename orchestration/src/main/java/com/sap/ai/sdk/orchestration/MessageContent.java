@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ImageContent;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 public record MessageContent(@Nonnull List<ContentItem> items) {
   @Nonnull
   static MessageContent fromMCMContentList(
-      @Nonnull final List<MultiChatMessageContent> mCMContentList) {
+      @Nonnull final List<ChatMessageContent> mCMContentList) {
     final var itemList =
         mCMContentList.stream()
             .map(

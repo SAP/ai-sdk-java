@@ -1,7 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.ToolChatMessage.RoleEnum.TOOL;
+
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Value;
@@ -32,8 +35,6 @@ public class ToolMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    final SingleChatMessage message = SingleChatMessage.create().role(role()).content(content);
-    message.setCustomField("tool_call_id", id);
-    return message;
+    return ToolChatMessage.create().role(TOOL).toolCallId(id).content(ChatMessageContent.create(content));
   }
 }
