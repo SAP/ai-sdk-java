@@ -1,6 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum.SYSTEM;
+
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -47,5 +51,11 @@ public class SystemMessage implements Message {
     final var contentItems = new LinkedList<>(content.items());
     contentItems.add(new TextItem(message));
     return new SystemMessage(new MessageContent(contentItems));
+  }
+
+  @Nonnull
+  @Override
+  public ChatMessage createChatMessage() {
+    return SystemChatMessage.create().role(SYSTEM).content(content);
   }
 }

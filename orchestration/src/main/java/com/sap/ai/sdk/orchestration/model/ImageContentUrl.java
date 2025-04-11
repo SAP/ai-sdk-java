@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContentImageUrl */
+/** ImageContentUrl */
 // CHECKSTYLE:OFF
-public class ImageContentImageUrl
+public class ImageContentUrl
 // CHECKSTYLE:ON
 {
   @JsonProperty("url")
@@ -37,17 +37,17 @@ public class ImageContentImageUrl
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContentImageUrl. */
-  protected ImageContentImageUrl() {}
+  /** Default constructor for ImageContentUrl. */
+  protected ImageContentUrl() {}
 
   /**
-   * Set the url of this {@link ImageContentImageUrl} instance and return the same instance.
+   * Set the url of this {@link ImageContentUrl} instance and return the same instance.
    *
-   * @param url The url of this {@link ImageContentImageUrl}
-   * @return The same instance of this {@link ImageContentImageUrl} class
+   * @param url The url of this {@link ImageContentUrl}
+   * @return The same instance of this {@link ImageContentUrl} class
    */
   @Nonnull
-  public ImageContentImageUrl url(@Nonnull final String url) {
+  public ImageContentUrl url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
@@ -55,7 +55,7 @@ public class ImageContentImageUrl
   /**
    * Get url
    *
-   * @return url The url of this {@link ImageContentImageUrl} instance.
+   * @return url The url of this {@link ImageContentUrl} instance.
    */
   @Nonnull
   public String getUrl() {
@@ -63,22 +63,22 @@ public class ImageContentImageUrl
   }
 
   /**
-   * Set the url of this {@link ImageContentImageUrl} instance.
+   * Set the url of this {@link ImageContentUrl} instance.
    *
-   * @param url The url of this {@link ImageContentImageUrl}
+   * @param url The url of this {@link ImageContentUrl}
    */
   public void setUrl(@Nonnull final String url) {
     this.url = url;
   }
 
   /**
-   * Set the detail of this {@link ImageContentImageUrl} instance and return the same instance.
+   * Set the detail of this {@link ImageContentUrl} instance and return the same instance.
    *
-   * @param detail The detail of this {@link ImageContentImageUrl}
-   * @return The same instance of this {@link ImageContentImageUrl} class
+   * @param detail The detail of this {@link ImageContentUrl}
+   * @return The same instance of this {@link ImageContentUrl} class
    */
   @Nonnull
-  public ImageContentImageUrl detail(@Nullable final String detail) {
+  public ImageContentUrl detail(@Nullable final String detail) {
     this.detail = detail;
     return this;
   }
@@ -86,7 +86,7 @@ public class ImageContentImageUrl
   /**
    * Get detail
    *
-   * @return detail The detail of this {@link ImageContentImageUrl} instance.
+   * @return detail The detail of this {@link ImageContentUrl} instance.
    */
   @Nonnull
   public String getDetail() {
@@ -94,16 +94,16 @@ public class ImageContentImageUrl
   }
 
   /**
-   * Set the detail of this {@link ImageContentImageUrl} instance.
+   * Set the detail of this {@link ImageContentUrl} instance.
    *
-   * @param detail The detail of this {@link ImageContentImageUrl}
+   * @param detail The detail of this {@link ImageContentUrl}
    */
   public void setDetail(@Nullable final String detail) {
     this.detail = detail;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ImageContentImageUrl}.
+   * Get the names of the unrecognizable properties of the {@link ImageContentUrl}.
    *
    * @return The set of properties names
    */
@@ -114,7 +114,7 @@ public class ImageContentImageUrl
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContentImageUrl} instance.
+   * Get the value of an unrecognizable property of this {@link ImageContentUrl} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -125,15 +125,14 @@ public class ImageContentImageUrl
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ImageContentImageUrl has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ImageContentUrl has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ImageContentImageUrl} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link ImageContentUrl} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -147,8 +146,8 @@ public class ImageContentImageUrl
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContentImageUrl} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ImageContentUrl} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -166,10 +165,10 @@ public class ImageContentImageUrl
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContentImageUrl imageContentImageUrl = (ImageContentImageUrl) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContentImageUrl.cloudSdkCustomFields)
-        && Objects.equals(this.url, imageContentImageUrl.url)
-        && Objects.equals(this.detail, imageContentImageUrl.detail);
+    final ImageContentUrl imageContentUrl = (ImageContentUrl) o;
+    return Objects.equals(this.cloudSdkCustomFields, imageContentUrl.cloudSdkCustomFields)
+        && Objects.equals(this.url, imageContentUrl.url)
+        && Objects.equals(this.detail, imageContentUrl.detail);
   }
 
   @Override
@@ -181,7 +180,7 @@ public class ImageContentImageUrl
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContentImageUrl {\n");
+    sb.append("class ImageContentUrl {\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -202,21 +201,21 @@ public class ImageContentImageUrl
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContentImageUrl}
+   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContentUrl}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (url) -> new ImageContentImageUrl().url(url);
+    return (url) -> new ImageContentUrl().url(url);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the url of this {@link ImageContentImageUrl} instance.
+     * Set the url of this {@link ImageContentUrl} instance.
      *
-     * @param url The url of this {@link ImageContentImageUrl}
-     * @return The ImageContentImageUrl instance.
+     * @param url The url of this {@link ImageContentUrl}
+     * @return The ImageContentUrl instance.
      */
-    ImageContentImageUrl url(@Nonnull final String url);
+    ImageContentUrl url(@Nonnull final String url);
   }
 }
