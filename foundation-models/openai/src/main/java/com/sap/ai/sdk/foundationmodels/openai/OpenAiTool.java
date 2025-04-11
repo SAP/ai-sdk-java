@@ -34,33 +34,22 @@ import lombok.experimental.Accessors;
 @Getter(AccessLevel.PACKAGE)
 @Accessors(chain = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OpenAiTool<T, R> {
+public class OpenAiTool<I> {
 
   /** The name of the function. */
   @Nonnull String name;
 
   /** The model class for function request. */
-  @Nonnull Class<T> requestClass;
+  @Nonnull Class<I> requestClass;
 
   /** An optional description of the function. */
-  @Nullable String description;
+  @Setter @Nullable String description;
 
   /** An optional flag indicating whether the function parameters should be treated strictly. */
-  @Nullable Boolean strict;
+  @Setter @Nullable Boolean strict;
 
   /** The function to be called. */
-  @Setter(AccessLevel.NONE)
-  @Nullable
-  Function<T, R> function;
-
-  /** The response class for the function. */
-  @Setter(AccessLevel.NONE)
-  @Nullable
-  Class<R> responseClass;
-
-  public static <I, O> OpenAiTool<I, O> of(@Nonnull String name, @Nonnull Class<I> requestClass) {
-    return new OpenAiTool<>(name, requestClass);
-  }
+  @Setter @Nullable Function<I, ?> function;
 
   /**
    * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
@@ -69,28 +58,21 @@ public class OpenAiTool<T, R> {
    * @param name the name of the function
    * @param requestClass the model class for function request
    */
-  private OpenAiTool(@Nonnull final String name, @Nonnull final Class<T> requestClass) {
-    this(name, requestClass, null, null, null, null);
+  public OpenAiTool(@Nonnull final String name, @Nonnull final Class<I> requestClass) {
+    this(name, requestClass, null, null, null);
   }
 
-  /**
-   * Sets the function to be called and the response class for the function.
-   *
-   * @param function the function to be called
-   * @param responseClass the response class for the function
-   * @return this instance of {@code OpenAiFunctionTool}
-   */
   @Nonnull
-  public OpenAiTool<T, R> setCallback(
-      @Nonnull final Function<T, R> function, @Nonnull final Class<R> responseClass) {
+  Object execute(@Nonnull final I argument) {
+    if (getFunction() == null) {
+      throw new IllegalStateException("Callback function is not set");
+    }
+    return getFunction().apply(argument);
+  }
+
+  public OpenAiTool<I> setCallback(Function<I, ?> function) {
     this.function = function;
-    this.responseClass = responseClass;
     return this;
-  }
-
-  @Nonnull
-  R execute(@Nonnull final T argument) {
-    return function.apply(argument);
   }
 
   ChatCompletionTool createChatCompletionTool() {

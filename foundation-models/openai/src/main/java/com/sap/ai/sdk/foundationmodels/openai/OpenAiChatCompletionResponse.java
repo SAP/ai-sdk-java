@@ -99,27 +99,5 @@ public class OpenAiChatCompletionResponse {
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
   }
 
-  public <T, R> List<OpenAiToolMessage> executeTools(List<OpenAiTool<T, R>> tools) {
-    var toolMessages = new ArrayList<OpenAiToolMessage>();
-
-    for (var toolCall : getMessage().toolCalls()) {
-      if (toolCall instanceof OpenAiFunctionCall functionCall) {
-        for (OpenAiTool<T, R> tool : tools) {
-          if (tool.getName().equals(functionCall.getName())) {
-            T arguments = functionCall.getArgumentsAsObject(tool);
-            R response = tool.execute(arguments);
-
-            String serializedResponse;
-            try {
-              serializedResponse = OpenAiUtils.getOpenAiObjectMapper().writeValueAsString(response);
-            } catch (JsonProcessingException e) {
-              throw new IllegalArgumentException(e);
-            }
-            toolMessages.add(OpenAiMessage.tool(serializedResponse, functionCall.getId()));
-          }
-        }
-      }
-    }
-    return toolMessages;
-  }
+  
 }

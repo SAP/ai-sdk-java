@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
 class OpenAiChatCompletionRequestTest {
@@ -121,19 +120,15 @@ class OpenAiChatCompletionRequestTest {
   @Test
   void withOpenAiTools() {
     record DummyRequest(String param1, int param2) {}
-    record DummyResponse(String result) {}
-
-    Function<DummyRequest, DummyResponse> conCat =
-        (request) -> new DummyResponse(request.param1 + request.param2);
 
     var request =
         new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
             .withOpenAiTools(
                 List.of(
-                    OpenAiTool.of("toolA", DummyRequest.class)
+                    new OpenAiTool<>("toolA", DummyRequest.class)
                         .setDescription("descA")
                         .setStrict(true),
-                    OpenAiTool.of("toolB", DummyRequest.class)
+                    new OpenAiTool<>("toolB", DummyRequest.class)
                         .setDescription("descB")
                         .setStrict(false)));
 

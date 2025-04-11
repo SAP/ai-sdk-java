@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +20,8 @@ class OpenAiToolCallTest {
     static Function<Request, Response> conCat = request -> new Response(request.key());
   }
 
-  private static final OpenAiTool<Dummy.Request, Dummy.Request> TOOL =
-      OpenAiTool.of("functionName", Dummy.Request.class);
+  private static final OpenAiTool<Dummy.Request> TOOL =
+      new OpenAiTool<>("functionName", Dummy.Request.class);
 
   @Test
   void getArgumentsAsMapParsesValidJson() {
@@ -39,7 +38,7 @@ class OpenAiToolCallTest {
 
   @Test
   void getArgumentsAsObjectParsesValidJson() {
-    var result = VALID_FUNCTION_CALL.getArgumentsAsObject(TOOL);
+    Dummy.Request result = VALID_FUNCTION_CALL.getArgumentsAsObject(TOOL);
     assertThat(result).isInstanceOf(Dummy.Request.class);
     assertThat(result.key()).isEqualTo("value");
   }

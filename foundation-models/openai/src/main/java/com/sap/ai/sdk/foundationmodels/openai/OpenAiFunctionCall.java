@@ -52,16 +52,16 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * @since 1.7.0
    */
   @Nonnull
-  public <T> T getArgumentsAsObject(@Nonnull final OpenAiTool<T, ?> tool)
+  public <T> T getArgumentsAsObject(@Nonnull final OpenAiTool<T> tool)
       throws IllegalArgumentException {
-    final var typeRef =
-        new TypeReference<T>() {
+
+    return parseArguments(
+        new TypeReference<>() {
           @Override
           public Type getType() {
             return tool.getRequestClass();
           }
-        };
-    return parseArguments(typeRef);
+        });
   }
 
   @Nonnull
