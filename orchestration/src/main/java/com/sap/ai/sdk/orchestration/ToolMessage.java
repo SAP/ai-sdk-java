@@ -35,6 +35,9 @@ public class ToolMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    return ToolChatMessage.create().role(TOOL).toolCallId(id).content(ChatMessageContent.create(content));
+    return ToolChatMessage.create()
+        .role(TOOL)
+        .toolCallId(id)
+        .content(ChatMessageContent.create(content));
   }
 }

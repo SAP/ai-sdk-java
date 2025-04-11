@@ -1,23 +1,19 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum.SYSTEM;
+
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
-import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
-import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
-
-import static com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum.SYSTEM;
-import static com.sap.ai.sdk.orchestration.model.ToolChatMessage.RoleEnum.TOOL;
 
 /** Represents a chat message as 'system' to the orchestration service. */
 @Value

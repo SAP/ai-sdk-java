@@ -2,10 +2,10 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentUrl;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.LinkedList;

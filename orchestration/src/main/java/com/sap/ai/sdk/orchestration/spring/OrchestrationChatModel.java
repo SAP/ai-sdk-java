@@ -159,8 +159,6 @@ public class OrchestrationChatModel implements ChatModel {
         .id(toolCall.id())
         .type(FUNCTION)
         .function(
-            MessageToolCallFunction.create()
-                .name(toolCall.name())
-                .arguments(toolCall.arguments()));
+            MessageToolCallFunction.create().name(toolCall.name()).arguments(toolCall.arguments()));
   }
 }
