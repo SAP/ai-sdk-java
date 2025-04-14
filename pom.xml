@@ -59,7 +59,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
     <cloud-sdk.version>5.17.0</cloud-sdk.version>
-    <junit-jupiter.version>5.12.1</junit-jupiter.version>
+    <junit-jupiter.version>5.12.2</junit-jupiter.version>
     <wiremock.version>3.12.1</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
