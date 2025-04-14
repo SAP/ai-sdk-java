@@ -78,7 +78,7 @@
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250107</json.version>
     <!-- Formatting -->
-    <spotless.version>2.44.3</spotless.version>
+    <spotless.version>2.44.4</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
