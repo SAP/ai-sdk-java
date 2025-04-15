@@ -112,7 +112,7 @@ public class OpenAiServiceV2 {
     final OpenAiAssistantMessage assistantMessage = response.getMessage();
 
     // 3. Execute the tool call for given tools
-    List<OpenAiToolMessage> toolMessages =
+    final List<OpenAiToolMessage> toolMessages =
         OpenAiToolExecutor.executeTools(tools, assistantMessage.toolCalls());
 
     // 4. Send back the results for model will incorporate them into its final response.

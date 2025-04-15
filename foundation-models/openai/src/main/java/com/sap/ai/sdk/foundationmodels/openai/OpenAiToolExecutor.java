@@ -23,15 +23,17 @@ public class OpenAiToolExecutor {
 
   /**
    * Executes the given tool calls with the provided tools and returns the results as a list of
-   * {@link OpenAiToolMessage}.
+   * {@link OpenAiToolMessage} containing execution results encoded as JSON string.
    *
    * @param tools the list of tools to execute
    * @param toolCalls the list of tool calls with arguments
    * @return the list of tool messages with the results
+   * @throws IllegalArgumentException if the tool results cannot be serialized to JSON
    */
   @Nonnull
   public static List<OpenAiToolMessage> executeTools(
-      @Nonnull final List<OpenAiTool<?>> tools, @Nonnull final List<OpenAiToolCall> toolCalls) {
+      @Nonnull final List<OpenAiTool<?>> tools, @Nonnull final List<OpenAiToolCall> toolCalls)
+      throws IllegalArgumentException {
 
     final var toolMap = tools.stream().collect(Collectors.toMap(OpenAiTool::getName, tool -> tool));
 
@@ -56,11 +58,11 @@ public class OpenAiToolExecutor {
   }
 
   @Nonnull
-  private static String serializeObject(@Nonnull final Object obj) {
+  private static String serializeObject(@Nonnull final Object obj) throws IllegalArgumentException {
     try {
       return JACKSON.writeValueAsString(obj);
     } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(e);
+      throw new IllegalArgumentException("Failed to serialize object to JSON", e);
     }
   }
 }

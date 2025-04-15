@@ -37,19 +37,19 @@ import lombok.experimental.Accessors;
 public class OpenAiTool<I> {
 
   /** The name of the function. */
-  @Nonnull String name;
+  private @Nonnull String name;
 
   /** The model class for function request. */
-  @Nonnull Class<I> requestClass;
+  private @Nonnull Class<I> requestClass;
 
   /** An optional description of the function. */
-  @Nullable String description;
+  private @Nullable String description;
 
   /** An optional flag indicating whether the function parameters should be treated strictly. */
-  @Nullable Boolean strict;
+  private @Nullable Boolean strict;
 
   /** The function to be called. */
-  @Nullable Function<I, ?> function;
+  private @Nullable Function<I, ?> function;
 
   /**
    * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
@@ -65,7 +65,7 @@ public class OpenAiTool<I> {
   @Nonnull
   Object execute(@Nonnull final I argument) {
     if (getFunction() == null) {
-      throw new IllegalStateException("Callback function is not set");
+      throw new IllegalStateException("Function must not be set to execute the tool.");
     }
     return getFunction().apply(argument);
   }
