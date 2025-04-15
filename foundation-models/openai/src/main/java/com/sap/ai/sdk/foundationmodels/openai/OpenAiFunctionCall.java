@@ -46,9 +46,9 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    * tool.
    *
    * @param tool the function tool the arguments are for
-   * @param <T> the type of the class
    * @return the parsed arguments as an object
-   * @throws IllegalArgumentException if parsing fails
+   * @param <T> the type of object accepted by the function tool
+   * @throws IllegalArgumentException if parsing arguments fails
    * @since 1.7.0
    */
   @Nonnull

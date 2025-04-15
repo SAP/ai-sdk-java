@@ -52,6 +52,7 @@ public class OpenAiFunctionTool implements OpenAiTool {
    *
    * @param name the name of the function
    * @param requestModel the model class for the function request
+   * @param <T> the type of the request model
    */
   public <T> OpenAiFunctionTool(@Nonnull final String name, @Nonnull final Class<T> requestModel) {
     this(name, requestModel, null, null);
