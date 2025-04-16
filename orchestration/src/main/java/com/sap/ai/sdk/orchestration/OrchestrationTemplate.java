@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,9 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
+
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,14 +43,22 @@ import lombok.val;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
-  @Nullable List<ChatMessage> template;
-  @Nullable Map<String, String> defaults;
+  @JsonProperty("template")
+  @Nullable
+  List<ChatMessage> template;
 
+  @JsonProperty("defaults")
+  @Nullable
+  Map<String, String> defaults;
+
+  @JsonProperty("response_format")
   @With(AccessLevel.PRIVATE)
   @Nullable
   TemplateResponseFormat responseFormat;
 
-  @Nullable List<ChatCompletionTool> tools;
+  @JsonProperty("tools")
+  @Nullable
+  List<ChatCompletionTool> tools;
 
   /**
    * Create a low-level representation of the template.
@@ -106,16 +118,16 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @since 1.6.0
    */
   @Nullable
-  public Template fromJSON(@Nonnull final String inputString) {
-    Template promptTemplate = null;
+  public OrchestrationTemplate fromJSON(@Nonnull final String inputString) throws IOException {
+    OrchestrationTemplate promptTemplate = null;
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
     try {
       final JsonNode rootNode = objectMapper.readTree(inputString);
-      promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), Template.class);
+      promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
       //      the response_schema.type is not set even though this value is given in the yaml/json
     } catch (JsonProcessingException ex) {
-      throw new RuntimeException(ex.getMessage());
+      throw new IOException("Failed to parse the input: " + ex.getMessage());
     }
 
     return promptTemplate;
@@ -129,15 +141,19 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @since 1.6.0
    */
   @Nullable
-  public Template fromYAML(@Nonnull final String inputYaml) {
+  public OrchestrationTemplate fromYAML(@Nonnull final String inputYaml) throws IOException {
+    final Object obj;
     try {
       final ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-      final Object obj = yamlReader.readValue(inputYaml, Object.class);
-
+      obj = yamlReader.readValue(inputYaml, Object.class);
+    } catch (JsonProcessingException ex) {
+      throw new IOException("Failed to parse the YAML input: " + ex.getMessage());
+    }
+    try {
       final ObjectMapper jsonWriter = new ObjectMapper();
       return fromJSON(jsonWriter.writeValueAsString(obj));
-    } catch (JsonProcessingException ex) {
-      throw new RuntimeException(ex.getMessage());
+    } catch (IOException ex) {
+      throw new IOException("Failed to deserialize the input: " + ex.getMessage());
     }
   }
 

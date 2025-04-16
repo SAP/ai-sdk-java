@@ -53,7 +53,7 @@ public class OrchestrationJacksonConfiguration {
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
             .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class)
             .setMixInAnnotation(
-                TemplateResponseFormat.class, JacksonMixins.NoneTypeInfoMixin.class);
+                TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class);
     jackson.registerModule(module);
     return jackson;
   }

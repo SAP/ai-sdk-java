@@ -1018,60 +1018,77 @@ spec:
     }
   }
 
-  //  @Test
-  //  void testTemplateFromInput() throws IOException {
-  //    stubFor(
-  //        post(anyUrl())
-  //            .willReturn(
-  //                aResponse()
-  //                    .withBodyFile("templateReferenceResponse.json")
-  //                    .withHeader("Content-Type", "application/json")));
-  //
-  //    String promptTemplateYAML =
-  //        """
-  // name: translator
-  // version: 0.0.1
-  // scenario: translation scenario
-  // spec:
-  //  template:
-  //    - role: "system"
-  //      content: |-
-  //        You are a language translator.
-  //    - role: "user"
-  //      content: |-
-  //        Whats {{ ?word }} in {{ ?language }}?
-  //  defaults:
-  //    word: "apple"
-  //  response_format:
-  //    json_schema:
-  //      name: translation-schema
-  //      description: Translate the given word into the provided language.
-  //      strict: true
-  //      schema:
-  //        type: object
-  //        additionalProperties: False
-  //        required:
-  //          - language
-  //          - translation
-  //        properties:
-  //          language:
-  //            type: string
-  //          translation:
-  //            type: string
-  //    type: json_schema
-  // """;
-  //
-  //    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
-  //    var configWithTemplate = config.withTemplateConfig(template);
-  //
-  //    var inputParams = Map.of("language", "German");
-  //    var prompt = new OrchestrationPrompt(inputParams);
-  //
-  //    final var response = client.chatCompletion(prompt, configWithTemplate);
-  //
-  //    try (var requestInputStream = fileLoader.apply("localTemplateRequest.json")) {
-  //      final String request = new String(requestInputStream.readAllBytes());
-  //      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-  //    }
-  //  }
+  @Test
+  void testTemplateFromInput() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    String promptTemplateYAML =
+        """
+ name: translator
+ version: 0.0.1
+ scenario: translation scenario
+ spec:
+  template:
+    - role: "system"
+      content: |-
+        You are a language translator.
+    - role: "user"
+      content: |-
+        Whats {{ ?word }} in {{ ?language }}?
+  defaults:
+    word: "apple"
+  tools:
+    - type: function
+      function:
+        description: Translate a word.
+        name: translate
+        parameters:
+          type: object
+          additionalProperties: False
+          required:
+            - language
+            - wordToTranslate
+          properties:
+            language:
+              type: string
+            wordToTranslate:
+              type: string
+        strict: true
+  response_format:
+    type: json_schema
+    json_schema:
+      name: translation-schema
+      description: Translate the given word into the provided language.
+      strict: true
+      schema:
+        type: object
+        additionalProperties: False
+        required:
+          - language
+          - translation
+        properties:
+          language:
+            type: string
+          translation:
+            type: string
+""";
+
+    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams = Map.of("language", "German");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+
+    try (var requestInputStream = fileLoader.apply("localTemplateRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
 }
