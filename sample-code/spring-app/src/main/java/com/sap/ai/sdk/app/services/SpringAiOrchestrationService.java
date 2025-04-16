@@ -113,7 +113,11 @@ public class SpringAiOrchestrationService {
       throws OrchestrationClientException {
     val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
-    val opts = new OrchestrationChatOptions(config.withInputFiltering(filterConfig));
+    val opts =
+        new OrchestrationChatOptions(
+            config
+                .withLlmConfig(GEMINI_1_5_FLASH)
+                .withInputFiltering(filterConfig));
 
     val prompt =
         new Prompt(
@@ -139,7 +143,7 @@ public class SpringAiOrchestrationService {
     val opts =
         new OrchestrationChatOptions(
             config
-                .withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0))
+                .withLlmConfig(GEMINI_1_5_FLASH)
                 .withOutputFiltering(filterConfig));
 
     val prompt =
