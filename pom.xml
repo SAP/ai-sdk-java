@@ -59,7 +59,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
     <cloud-sdk.version>5.17.0</cloud-sdk.version>
-    <junit-jupiter.version>5.12.1</junit-jupiter.version>
+    <junit-jupiter.version>5.12.2</junit-jupiter.version>
     <wiremock.version>3.12.1</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
@@ -78,7 +78,7 @@
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250107</json.version>
     <!-- Formatting -->
-    <spotless.version>2.44.3</spotless.version>
+    <spotless.version>2.44.4</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
