@@ -2,7 +2,6 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
@@ -115,9 +114,7 @@ public class SpringAiOrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =
         new OrchestrationChatOptions(
-            config
-                .withLlmConfig(GEMINI_1_5_FLASH)
-                .withInputFiltering(filterConfig));
+            config.withLlmConfig(GEMINI_1_5_FLASH).withInputFiltering(filterConfig));
 
     val prompt =
         new Prompt(
@@ -142,9 +139,7 @@ public class SpringAiOrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =
         new OrchestrationChatOptions(
-            config
-                .withLlmConfig(GEMINI_1_5_FLASH)
-                .withOutputFiltering(filterConfig));
+            config.withLlmConfig(GEMINI_1_5_FLASH).withOutputFiltering(filterConfig));
 
     val prompt =
         new Prompt(
