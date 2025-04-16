@@ -116,7 +116,6 @@ public class SpringAiOrchestrationService {
     val opts =
         new OrchestrationChatOptions(
             config
-                .withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0))
                 .withInputFiltering(filterConfig));
 
     val prompt =
