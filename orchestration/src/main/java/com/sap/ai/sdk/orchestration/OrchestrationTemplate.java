@@ -118,17 +118,13 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @since 1.6.0
    */
   @Nullable
-  public OrchestrationTemplate fromJSON(@Nonnull final String inputString) throws IOException {
+  private OrchestrationTemplate fromJSON(@Nonnull final String inputString) throws JsonProcessingException {
     OrchestrationTemplate promptTemplate = null;
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
-    try {
       final JsonNode rootNode = objectMapper.readTree(inputString);
       promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
-      //      the response_schema.type is not set even though this value is given in the yaml/json
-    } catch (JsonProcessingException ex) {
-      throw new IOException("Failed to parse the input: " + ex.getMessage());
-    }
+      //      the response_schema.type is null even though this value is given in the yaml/json
 
     return promptTemplate;
   }
@@ -152,7 +148,7 @@ public class OrchestrationTemplate extends TemplateConfig {
     try {
       final ObjectMapper jsonWriter = new ObjectMapper();
       return fromJSON(jsonWriter.writeValueAsString(obj));
-    } catch (IOException ex) {
+    } catch (JsonProcessingException ex) {
       throw new IOException("Failed to deserialize the input: " + ex.getMessage());
     }
   }

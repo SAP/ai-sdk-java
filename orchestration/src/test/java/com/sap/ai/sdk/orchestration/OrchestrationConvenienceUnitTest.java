@@ -263,7 +263,27 @@ public class OrchestrationConvenienceUnitTest {
             .withJsonSchemaResponse(
                 ResponseJsonSchema.fromMap(schema, "translation-schema")
                     .withDescription("Translate the given word into the provided language.")
-                    .withStrict(true));
+                    .withStrict(true))
+            .withTools(List.of(
+                ChatCompletionTool.create()
+                    .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                    .function(
+                        FunctionObject.create()
+                            .name("translate")
+                            .parameters(
+                                Map.of(
+                                    "type",
+                                    "object",
+                                    "additionalProperties",
+                                    false,
+                                    "required",
+                                    List.of("language", "wordToTranslate"),
+                                    "properties",
+                                    Map.of(
+                                        "language", Map.of("type", "string"),
+                                        "wordToTranslate", Map.of("type", "string"))))
+                            .description("Translate a word.")
+                            .strict(true))));
     assertThat(templateWithJsonSchema).isEqualTo(expectedTemplateWithJsonSchema);
 
     String promptTemplateWithJsonObject =

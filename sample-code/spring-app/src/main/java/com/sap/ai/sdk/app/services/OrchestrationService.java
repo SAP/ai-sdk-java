@@ -29,6 +29,8 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -559,8 +561,14 @@ spec:
 //          type: string
 //""";
 
-    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
-    var configWithTemplate = config.withTemplateConfig(template);
+    TemplateConfig template = null;
+    try {
+    template = TemplateConfig.create().fromYAML(promptTemplateYAML);
+    } catch (IOException e) {
+      log.error("Error reading template file", e);
+      throw new RuntimeException(e);
+    }
+    var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
     var inputParams = Map.of("language", "German");
     var prompt = new OrchestrationPrompt(inputParams);

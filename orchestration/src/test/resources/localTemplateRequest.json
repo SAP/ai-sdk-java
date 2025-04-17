@@ -45,7 +45,27 @@
             }
           }
         },
-        "tools" : [ ]
+        "tools" : [ {
+          "type" : "function",
+          "function" : {
+            "description" : "Translate a word.",
+            "name" : "translate",
+            "parameters" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "required" : [ "language", "wordToTranslate" ],
+              "properties" : {
+                "language" : {
+                  "type" : "string"
+                },
+                "wordToTranslate" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "strict" : true
+          }
+        } ]
       }
     },
     "stream" : false
