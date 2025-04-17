@@ -44,7 +44,7 @@ public class OrchestrationAiModel {
   /** The version of the model, defaults to "latest". */
   String version;
 
-  /** IBM Granite 13B chat completions model */
+  /** IBM Granite 13B Chat model */
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
       new OrchestrationAiModel("ibm--granite-13b-chat");
 
@@ -56,7 +56,13 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MIXTRAL_8X7B_INSTRUCT_V01 =
       new OrchestrationAiModel("mistralai--mixtral-8x7b-instruct-v01");
 
-  /** Meta Llama3 70B Instruct model */
+  /**
+   * Meta Llama3 70B Instruct model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2024-12-15. The
+   *     suggested replacement model is {@link OrchestrationAiModel#LLAMA3_1_70B_INSTRUCT}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel LLAMA3_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3-70b-instruct");
 
@@ -99,33 +105,58 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  /**
+   * Azure OpenAI GPT-3.5 Turbo model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo chat completions model
+   * Azure OpenAI GPT-3.5 Turbo model
    *
-   * @deprecated This model is not usable anymore. It is retired on AI Core since 2025-02-13.
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-13. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
    */
   @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO_16K =
       new OrchestrationAiModel("gpt-35-turbo-16k");
 
-  /** Azure OpenAI GPT-3.5 Turbo chat completions model */
+  /**
+   * Azure OpenAI GPT-3.5 Turbo model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-02-22. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GPT_35_TURBO_0125 =
       new OrchestrationAiModel("gpt-35-turbo-0125");
 
-  /** Azure OpenAI GPT-4 chat completions model */
+  /** Azure OpenAI GPT-4 model */
   public static final OrchestrationAiModel GPT_4 = new OrchestrationAiModel("gpt-4");
 
-  /** Azure OpenAI GPT-4-32k chat completions model */
+  /**
+   * Azure OpenAI GPT-4 model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-05-13. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GPT_4_32K = new OrchestrationAiModel("gpt-4-32k");
 
-  /** Azure OpenAI GPT-4o chat completions model */
+  /** Azure OpenAI GPT-4o model */
   public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
-  /** Azure OpenAI GPT-4o-mini chat completions model */
+  /** Azure OpenAI GPT-4o-mini model */
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
+
+  /** Azure OpenAI o1 model */
+  public static final OrchestrationAiModel OPENAI_O1 = new OrchestrationAiModel("o1");
+
+  /** Azure OpenAI o3-mini model */
+  public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
   /** Google Cloud Platform Gemini 1.0 Pro model */
   public static final OrchestrationAiModel GEMINI_1_0_PRO =

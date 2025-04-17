@@ -97,6 +97,7 @@ public final class OpenAiClient {
    *
    * @param destination The specific {@link HttpDestination} to use.
    * @see AiCoreService#getInferenceDestination(String)
+   * @return a new OpenAI client.
    */
   @Beta
   @Nonnull

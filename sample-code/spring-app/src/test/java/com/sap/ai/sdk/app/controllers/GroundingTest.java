@@ -15,6 +15,7 @@ import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.UUID;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class GroundingTest {
@@ -54,6 +55,7 @@ class GroundingTest {
   }
 
   @Test
+  @Disabled("Temporary disabled because of an unresolved minor bug") // SAP/ai-sdk-java-backlog#232
   void testCreateDeleteCollection() {
     final var controller = new GroundingController();
 

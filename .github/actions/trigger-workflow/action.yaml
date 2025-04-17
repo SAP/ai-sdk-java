@@ -1,0 +1,67 @@
+name: "Trigger Workflow"
+description: "Triggers a workflow without waiting for it to complete."
+
+inputs:
+  workflow:
+    description: "The workflow file name"
+    required: true
+  workflow-ref:
+    description: "The ref (i.e. branch name, or tag name) where the workflow is located."
+    required: true
+  parameters:
+    description: "The workflow parameters"
+    required: false
+  commit-sha:
+    description: "The commit SHA to trigger the workflow on"
+    required: false
+    default: ${{ github.sha }}
+
+outputs:
+  run-id:
+    description: "The id of the workflow run that was triggered."
+    value: ${{ steps.trigger-workflow.outputs.RUN_ID }}
+  run-url:
+    description: "The url of the workflow run that was triggered."
+    value: ${{ steps.trigger-workflow.outputs.RUN_URL }}
+
+runs:
+  using: composite
+  steps:
+    - name: Print Action Input
+      run: |
+        echo "[DEBUG] Starting 'Trigger Workflow' Action; inputs = ${{ toJson(inputs) }}"
+      shell: bash
+
+    - name: Trigger Workflow
+      id: trigger-workflow
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        PREVIOUS_RUN_ID=$(gh run list --workflow=${{ inputs.workflow}} --commit=${{ inputs.commit-sha }} --json databaseId | jq -r '.[0].databaseId')
+        echo "[DEBUG] Previous run id = '$PREVIOUS_RUN_ID'"
+        
+        gh workflow run "${{ inputs.workflow }}" --ref "${{ inputs.workflow-ref }}" ${{ inputs.parameters }}
+        # allow for some initial delay as workflows take a moment to spin up
+        sleep 20
+        
+        for i in {0..6}; do
+          LATEST_RUN_ID=$(gh run list --workflow=${{ inputs.workflow }} --commit=${{ inputs.commit-sha }} --json databaseId | jq -r '.[0].databaseId')
+        
+          if [[ -z "$LATEST_RUN_ID" || "$LATEST_RUN_ID" == "$PREVIOUS_RUN_ID" ]]; then
+            echo "[DEBUG] No new run detected. Waiting for 10 seconds."
+            sleep 10
+          else
+            echo "[DEBUG] New workflow run detected: '$LATEST_RUN_ID'."
+        
+            RUN_URL=$(gh run view $LATEST_RUN_ID --json url | jq -r '.url')
+            echo "[DEBUG] ${{ inputs.workflow }} run #$LATEST_RUN_ID successfully triggered: $RUN_URL"
+            echo "[${{ inputs.workflow }} run (#$LATEST_RUN_ID)]($RUN_URL)" >> $GITHUB_STEP_SUMMARY        
+            echo "RUN_ID=$LATEST_RUN_ID" >> $GITHUB_OUTPUT
+            echo "RUN_URL=$RUN_URL" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+        done
+        
+        echo "[DEBUG] Unable to detect new run of workflow '${{ inputs.workflow }}'."
+        exit 1
+      shell: bash

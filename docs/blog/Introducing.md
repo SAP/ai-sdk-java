@@ -41,7 +41,7 @@ String id = deployment.getId();
 AiExecutionStatus status = deployment.getStatus();
 ```
 
-You can learn more about the SDK's capabilities for SAP AI Core [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/AI_CORE_DEPLOYMENT.md).
+You can learn more about the SDK's capabilities for SAP AI Core [in this guide](https://sap.github.io/ai-sdk/docs/java/guides/ai-core-deployment).
 
 ## AI Core - Orchestration
 
@@ -72,7 +72,7 @@ var result = client.chatCompletion(prompt, config);
 String messageResult = result.getContent();
 ```
 
-You can learn more about the SDK's capabilities for Orchestration Service [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/ORCHESTRATION_CHAT_COMPLETION.md).
+You can learn more about the SDK's capabilities for Orchestration Service [in this guide](https://sap.github.io/ai-sdk/docs/java/guides/orchestration-chat-completion).
 
 ## AI Core - Foundation Models
 
@@ -101,7 +101,7 @@ var result =
 String resultMessage = result.getContent();
 ```
 
-You can learn more about the SDK's capabilities for foundation models and OpenAI specific features [in the public repository guide](https://github.com/SAP/ai-sdk-java/blob/main/docs/guides/OPENAI_CHAT_COMPLETION.md).
+You can learn more about the SDK's capabilities for foundation models and OpenAI specific features [this guide](https://sap.github.io/ai-sdk/docs/java/guides/openai-chat-completion).
 
 ## Getting Started
 

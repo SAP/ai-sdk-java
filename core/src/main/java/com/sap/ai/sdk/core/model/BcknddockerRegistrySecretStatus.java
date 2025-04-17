@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
  * This represents the meta-data of a stored secret. The &#39;data&#39; field of the secret is never
  * retrieved.
  */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class BcknddockerRegistrySecretStatus
 // CHECKSTYLE:ON
 {

@@ -12,8 +12,10 @@ on:
         required: false
 
 env:
+  CI_BUILD_WORKFLOW: "continuous-integration.yaml" # Name of the workflow that should be triggered for CI build
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   JAVA_VERSION: 17
+  DOCS_REPO: SAP/ai-sdk
 
 jobs:
   bump-version:
@@ -59,11 +61,6 @@ jobs:
           git add .
           git commit -m "Update to version ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
 
-          # Create release notes
-          python .pipeline/scripts/release_notes_automation.py --version ${{ steps.determine-versions.outputs.RELEASE_VERSION }} --folder "docs/release-notes"
-          git add .
-          git commit -m "Add new release notes"
-
           # We need to get the commit id, and push the branch so the release tag will point at the right commit afterwards
           RELEASE_COMMIT_ID=$(git log -1 --pretty=format:"%H")
           echo "RELEASE_COMMIT_ID=$RELEASE_COMMIT_ID" >> $GITHUB_OUTPUT
@@ -75,9 +72,38 @@ jobs:
           git push origin $BRANCH_NAME
           git push origin $TAG_NAME
 
+  run-ci:
+    name: "Continuous Integration"
+    outputs:
+      ci-run-id: ${{ steps.trigger-ci.outputs.run-id }}
+    needs: [ bump-version ]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write # needed to trigger the ci-build workflow
+      statuses: write # needed to update the commit status
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.bump-version.outputs.release-branch }}
+
+      - name: "Trigger CI Workflow"
+        id: trigger-ci
+        uses: ./.github/actions/trigger-workflow
+        with:
+          workflow: ${{ env.CI_BUILD_WORKFLOW }}
+          workflow-ref: ${{ needs.bump-version.outputs.release-branch }}
+          commit-sha: ${{ needs.bump-version.outputs.release-commit }}
+
+      - name: "Await CI Workflow"
+        uses: ./.github/actions/await-workflow
+        with:
+          run-id: ${{ steps.trigger-ci.outputs.run-id }}
+          commit-status: "Continuous Integration Workflow"
+
   create-release:
     name: "Create GitHub Release"
-    needs: [ bump-version ]
+    needs: [ bump-version, run-ci ]
     outputs:
       release-name: ${{ steps.create-release.outputs.RELEASE_NAME }}
       release-url: ${{ steps.create-release.outputs.RELEASE_URL }}
@@ -122,9 +148,88 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+
+  create-release-notes-pr:
+    name: "Create Release Notes PR"
+    needs: [ bump-version, run-ci ]
+    outputs:
+      pr-url: ${{ steps.create-release-notes-pr.outputs.PR_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code Repository"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.bump-version.outputs.release-branch }}
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+      - name: "Checkout Docs Repository"
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DOCS_REPO }}
+          path: .ai-sdk-docs
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+      - name: "Prepare Git"
+        working-directory: ./.ai-sdk-docs
+        run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "SAP Cloud SDK Bot"
+
+      - name: "Create Release Notes Branch"
+        working-directory: ./.ai-sdk-docs
+        run: git checkout -B java/release-notes-${{ needs.bump-version.outputs.release-version }}
+
+      - name: "Create Release Notes"
+        run: python .pipeline/scripts/release_notes_automation.py --version ${{ needs.bump-version.outputs.release-version }} --folder ".ai-sdk-docs/docs-java/release-notes"
+
+      - name: "Commit Release Notes"
+        working-directory: ./.ai-sdk-docs
+        run: |
+          git add .
+          git commit -m "Add new release notes"
+
+      - name: "Push Release Notes"
+        working-directory: ./.ai-sdk-docs
+        run: git push origin java/release-notes-${{ needs.bump-version.outputs.release-version }}
+
+      - name: "Create Release Notes PR"
+        id: create-release-notes-pr
+        working-directory: ./.ai-sdk-docs
+        run: |
+          PR_TITLE="Java: Add release notes for release ${{ needs.bump-version.outputs.release-version }}"
+
+          # if the minor version is a multiple of 15, then change the PR_BODY to "# ⚠️Update the `docs-java/release-notes/index.jsx` file⚠️"
+          # else the PR_BODY will be "Add the SAP Cloud SDK ${{ needs.bump-version.outputs.release-version }} release notes"
+
+          minor_version=$(echo ${{ needs.bump-version.outputs.release-version }} | cut -d '.' -f 2)
+          if [[ $((minor_version % 15)) -eq 0 ]]; then
+            PR_BODY="# ⚠️Update the \`docs-java/release-notes/index.jsx\` file⚠️"
+          else
+            PR_BODY="Add the SAP Cloud SDK ${{ needs.bump-version.outputs.release-version }} release notes"
+          fi
+
+          PR_URL=$(gh pr create --title "$PR_TITLE" --body "$PR_BODY" --repo "${{ env.DOCS_REPO }}")
+          echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
+      - name: "Reset Release Notes for Next Version"
+        run: |
+          rm -rf .ai-sdk-docs
+
+          cp .pipeline/scripts/release_notes_template.md docs/release_notes.md
+          git add docs/release_notes.md
+
+          CHANGED_FILES="$(git status -s)"
+          if [[ -z "$CHANGED_FILES" ]]; then
+              echo "[DEBUG] No changes to release_notes.md detected, skipping reset."
+              exit 0
+          fi
+
+          git commit -m "Reset release notes"
+          git push
+
   create-code-pr:
     name: "Create Code PR"
-    needs: [ bump-version, create-release ]
+    needs: [ bump-version, run-ci, create-release, create-release-notes-pr ]
     outputs:
       pr-url: ${{ steps.create-code-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
@@ -134,11 +239,17 @@ jobs:
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} # this is needed so that the same token is used when pushing our changes later. Otherwise, our on: push workflows (i.e. our continuous integration) won't be triggered.
-
-      - name: "Prepare git"
+      - name: "Prepare Git"
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
+
+      - name: "Set New Version"
+        run: |
+          python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
+          git add .
+          git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
+          git push
 
       - name: "Create Code PR"
         run: |
@@ -146,6 +257,7 @@ jobs:
           
           PR_URL=$(gh pr create --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
+          - [ ] Review **and approve** the [Release Notes PR](${{ needs.create-release-notes-pr.outputs.pr-url }})
           - [ ] Add release notes to the [Draft Release](${{ needs.create-release.outputs.release-url }}) and improve formatting
           - [ ] Review **and approve** this PR
           - [ ] Trigger the [Perform Release Workflow](${{ github.event.repository.html_url }}/actions/workflows/perform-release.yaml)
@@ -154,27 +266,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
-      - name: "Run Continuous Integration" # It should trigger on push but sometimes doesn't
-        run: |
-          gh workflow run continuous-integration.yaml --ref ${{ needs.bump-version.outputs.release-branch }}
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-
-      - name: "Set New Version and Reset Release Notes"
-        run: |
-          python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
-          git add .
-          git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
-          
-          # Reset release notes for next version
-          cp .pipeline/scripts/release_notes_template.md docs/release-notes/release_notes.md
-          git add docs/release-notes/release_notes.md
-          git commit -m "Reset release notes"
-          git push
-
   handle-failure:
     runs-on: ubuntu-latest
-    needs: [ bump-version, create-release, create-code-pr ]
+    needs: [ bump-version, create-release, create-release-notes-pr, create-code-pr ]
     permissions:
       contents: write # needed to delete the GitHub release
     if: ${{ failure() }}
@@ -208,4 +302,11 @@ jobs:
         run: git push --delete origin ${{ needs.bump-version.outputs.release-tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+        continue-on-error: true
+
+      - name: "Delete Release Notes PR"
+        if: ${{ needs.create-release-notes-pr.outputs.pr-url != '' }}
+        run: gh pr close --repo "${{ env.DOCS_REPO }}" ${{ needs.create-release-notes-pr.outputs.pr-url }} --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
         continue-on-error: true

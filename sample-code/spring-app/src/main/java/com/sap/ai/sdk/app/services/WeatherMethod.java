@@ -35,7 +35,7 @@ class WeatherMethod {
   @Nonnull
   @SuppressWarnings("unused")
   @Tool(description = "Get the weather in location")
-  Response getCurrentWeather(@ToolParam @Nonnull final Request request) {
+  static Response getCurrentWeather(@ToolParam @Nonnull final Request request) {
     final int temperature = request.location.hashCode() % 30;
     return new Response(temperature, request.unit);
   }
