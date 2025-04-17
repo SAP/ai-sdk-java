@@ -25,22 +25,22 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ImageContent */
+/** DeveloperChatMessage */
 // CHECKSTYLE:OFF
-public class ImageContent implements MultiChatMessageContent
+public class DeveloperChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
-  public enum TypeEnum {
-    /** The IMAGE_URL option of this ImageContent */
-    IMAGE_URL("image_url"),
+  /** Gets or Sets role */
+  public enum RoleEnum {
+    /** The DEVELOPER option of this DeveloperChatMessage */
+    DEVELOPER("developer"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ImageContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this DeveloperChatMessage */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
-    TypeEnum(String value) {
+    RoleEnum(String value) {
       this.value = value;
     }
 
@@ -70,12 +70,12 @@ public class ImageContent implements MultiChatMessageContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ImageContent
+     * @return The enum value of type DeveloperChatMessage
      */
     @JsonCreator
     @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
@@ -84,82 +84,82 @@ public class ImageContent implements MultiChatMessageContent
     }
   }
 
-  @JsonProperty("type")
-  private TypeEnum type;
+  @JsonProperty("role")
+  private RoleEnum role;
 
-  @JsonProperty("image_url")
-  private ImageContentImageUrl imageUrl;
+  @JsonProperty("content")
+  private ChatMessageContent content;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ImageContent. */
-  protected ImageContent() {}
+  /** Default constructor for DeveloperChatMessage. */
+  protected DeveloperChatMessage() {}
 
   /**
-   * Set the type of this {@link ImageContent} instance and return the same instance.
+   * Set the role of this {@link DeveloperChatMessage} instance and return the same instance.
    *
-   * @param type The type of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param role The role of this {@link DeveloperChatMessage}
+   * @return The same instance of this {@link DeveloperChatMessage} class
    */
   @Nonnull
-  public ImageContent type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public DeveloperChatMessage role(@Nonnull final RoleEnum role) {
+    this.role = role;
     return this;
   }
 
   /**
-   * Get type
+   * Get role
    *
-   * @return type The type of this {@link ImageContent} instance.
+   * @return role The role of this {@link DeveloperChatMessage} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public RoleEnum getRole() {
+    return role;
   }
 
   /**
-   * Set the type of this {@link ImageContent} instance.
+   * Set the role of this {@link DeveloperChatMessage} instance.
    *
-   * @param type The type of this {@link ImageContent}
+   * @param role The role of this {@link DeveloperChatMessage}
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setRole(@Nonnull final RoleEnum role) {
+    this.role = role;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance and return the same instance.
+   * Set the content of this {@link DeveloperChatMessage} instance and return the same instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
-   * @return The same instance of this {@link ImageContent} class
+   * @param content The content of this {@link DeveloperChatMessage}
+   * @return The same instance of this {@link DeveloperChatMessage} class
    */
   @Nonnull
-  public ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public DeveloperChatMessage content(@Nonnull final ChatMessageContent content) {
+    this.content = content;
     return this;
   }
 
   /**
-   * Get imageUrl
+   * Get content
    *
-   * @return imageUrl The imageUrl of this {@link ImageContent} instance.
+   * @return content The content of this {@link DeveloperChatMessage} instance.
    */
   @Nonnull
-  public ImageContentImageUrl getImageUrl() {
-    return imageUrl;
+  public ChatMessageContent getContent() {
+    return content;
   }
 
   /**
-   * Set the imageUrl of this {@link ImageContent} instance.
+   * Set the content of this {@link DeveloperChatMessage} instance.
    *
-   * @param imageUrl The imageUrl of this {@link ImageContent}
+   * @param content The content of this {@link DeveloperChatMessage}
    */
-  public void setImageUrl(@Nonnull final ImageContentImageUrl imageUrl) {
-    this.imageUrl = imageUrl;
+  public void setContent(@Nonnull final ChatMessageContent content) {
+    this.content = content;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ImageContent}.
+   * Get the names of the unrecognizable properties of the {@link DeveloperChatMessage}.
    *
    * @return The set of properties names
    */
@@ -170,7 +170,7 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ImageContent} instance.
+   * Get the value of an unrecognizable property of this {@link DeveloperChatMessage} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -181,14 +181,15 @@ public class ImageContent implements MultiChatMessageContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ImageContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "DeveloperChatMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ImageContent} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link DeveloperChatMessage} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -196,14 +197,14 @@ public class ImageContent implements MultiChatMessageContent
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
-    if (imageUrl != null) declaredFields.put("imageUrl", imageUrl);
+    if (role != null) declaredFields.put("role", role);
+    if (content != null) declaredFields.put("content", content);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ImageContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DeveloperChatMessage} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -221,24 +222,24 @@ public class ImageContent implements MultiChatMessageContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ImageContent imageContent = (ImageContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, imageContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, imageContent.type)
-        && Objects.equals(this.imageUrl, imageContent.imageUrl);
+    final DeveloperChatMessage developerChatMessage = (DeveloperChatMessage) o;
+    return Objects.equals(this.cloudSdkCustomFields, developerChatMessage.cloudSdkCustomFields)
+        && Objects.equals(this.role, developerChatMessage.role)
+        && Objects.equals(this.content, developerChatMessage.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, imageUrl, cloudSdkCustomFields);
+    return Objects.hash(role, content, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ImageContent {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
+    sb.append("class DeveloperChatMessage {\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
+    sb.append("    content: ").append(toIndentedString(content)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -257,32 +258,32 @@ public class ImageContent implements MultiChatMessageContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ImageContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link DeveloperChatMessage}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return (role) -> (content) -> new DeveloperChatMessage().role(role).content(content);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ImageContent} instance.
+     * Set the role of this {@link DeveloperChatMessage} instance.
      *
-     * @param type The type of this {@link ImageContent}
-     * @return The ImageContent builder.
+     * @param role The role of this {@link DeveloperChatMessage}
+     * @return The DeveloperChatMessage builder.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
+    Builder1 role(@Nonnull final RoleEnum role);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the imageUrl of this {@link ImageContent} instance.
+     * Set the content of this {@link DeveloperChatMessage} instance.
      *
-     * @param imageUrl The imageUrl of this {@link ImageContent}
-     * @return The ImageContent instance.
+     * @param content The content of this {@link DeveloperChatMessage}
+     * @return The DeveloperChatMessage instance.
      */
-    ImageContent imageUrl(@Nonnull final ImageContentImageUrl imageUrl);
+    DeveloperChatMessage content(@Nonnull final ChatMessageContent content);
   }
 }

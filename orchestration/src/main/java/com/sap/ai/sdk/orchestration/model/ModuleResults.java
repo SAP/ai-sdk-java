@@ -36,6 +36,9 @@ public class ModuleResults
   @JsonProperty("templating")
   private List<ChatMessage> templating = new ArrayList<>();
 
+  @JsonProperty("input_translation")
+  private GenericModuleResult inputTranslation;
+
   @JsonProperty("input_masking")
   private GenericModuleResult inputMasking;
 
@@ -50,6 +53,9 @@ public class ModuleResults
 
   @JsonProperty("output_unmasking")
   private List<ModuleResultsOutputUnmaskingInner> outputUnmasking = new ArrayList<>();
+
+  @JsonProperty("output_translation")
+  private GenericModuleResult outputTranslation;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -132,6 +138,37 @@ public class ModuleResults
    */
   public void setTemplating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
+  }
+
+  /**
+   * Set the inputTranslation of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param inputTranslation The inputTranslation of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults inputTranslation(@Nullable final GenericModuleResult inputTranslation) {
+    this.inputTranslation = inputTranslation;
+    return this;
+  }
+
+  /**
+   * Get inputTranslation
+   *
+   * @return inputTranslation The inputTranslation of this {@link ModuleResults} instance.
+   */
+  @Nonnull
+  public GenericModuleResult getInputTranslation() {
+    return inputTranslation;
+  }
+
+  /**
+   * Set the inputTranslation of this {@link ModuleResults} instance.
+   *
+   * @param inputTranslation The inputTranslation of this {@link ModuleResults}
+   */
+  public void setInputTranslation(@Nullable final GenericModuleResult inputTranslation) {
+    this.inputTranslation = inputTranslation;
   }
 
   /**
@@ -308,6 +345,37 @@ public class ModuleResults
   }
 
   /**
+   * Set the outputTranslation of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param outputTranslation The outputTranslation of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults outputTranslation(@Nullable final GenericModuleResult outputTranslation) {
+    this.outputTranslation = outputTranslation;
+    return this;
+  }
+
+  /**
+   * Get outputTranslation
+   *
+   * @return outputTranslation The outputTranslation of this {@link ModuleResults} instance.
+   */
+  @Nonnull
+  public GenericModuleResult getOutputTranslation() {
+    return outputTranslation;
+  }
+
+  /**
+   * Set the outputTranslation of this {@link ModuleResults} instance.
+   *
+   * @param outputTranslation The outputTranslation of this {@link ModuleResults}
+   */
+  public void setOutputTranslation(@Nullable final GenericModuleResult outputTranslation) {
+    this.outputTranslation = outputTranslation;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link ModuleResults}.
    *
    * @return The set of properties names
@@ -347,11 +415,13 @@ public class ModuleResults
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (grounding != null) declaredFields.put("grounding", grounding);
     if (templating != null) declaredFields.put("templating", templating);
+    if (inputTranslation != null) declaredFields.put("inputTranslation", inputTranslation);
     if (inputMasking != null) declaredFields.put("inputMasking", inputMasking);
     if (inputFiltering != null) declaredFields.put("inputFiltering", inputFiltering);
     if (llm != null) declaredFields.put("llm", llm);
     if (outputFiltering != null) declaredFields.put("outputFiltering", outputFiltering);
     if (outputUnmasking != null) declaredFields.put("outputUnmasking", outputUnmasking);
+    if (outputTranslation != null) declaredFields.put("outputTranslation", outputTranslation);
     return declaredFields;
   }
 
@@ -379,11 +449,13 @@ public class ModuleResults
     return Objects.equals(this.cloudSdkCustomFields, moduleResults.cloudSdkCustomFields)
         && Objects.equals(this.grounding, moduleResults.grounding)
         && Objects.equals(this.templating, moduleResults.templating)
+        && Objects.equals(this.inputTranslation, moduleResults.inputTranslation)
         && Objects.equals(this.inputMasking, moduleResults.inputMasking)
         && Objects.equals(this.inputFiltering, moduleResults.inputFiltering)
         && Objects.equals(this.llm, moduleResults.llm)
         && Objects.equals(this.outputFiltering, moduleResults.outputFiltering)
-        && Objects.equals(this.outputUnmasking, moduleResults.outputUnmasking);
+        && Objects.equals(this.outputUnmasking, moduleResults.outputUnmasking)
+        && Objects.equals(this.outputTranslation, moduleResults.outputTranslation);
   }
 
   @Override
@@ -391,11 +463,13 @@ public class ModuleResults
     return Objects.hash(
         grounding,
         templating,
+        inputTranslation,
         inputMasking,
         inputFiltering,
         llm,
         outputFiltering,
         outputUnmasking,
+        outputTranslation,
         cloudSdkCustomFields);
   }
 
@@ -406,11 +480,13 @@ public class ModuleResults
     sb.append("class ModuleResults {\n");
     sb.append("    grounding: ").append(toIndentedString(grounding)).append("\n");
     sb.append("    templating: ").append(toIndentedString(templating)).append("\n");
+    sb.append("    inputTranslation: ").append(toIndentedString(inputTranslation)).append("\n");
     sb.append("    inputMasking: ").append(toIndentedString(inputMasking)).append("\n");
     sb.append("    inputFiltering: ").append(toIndentedString(inputFiltering)).append("\n");
     sb.append("    llm: ").append(toIndentedString(llm)).append("\n");
     sb.append("    outputFiltering: ").append(toIndentedString(outputFiltering)).append("\n");
     sb.append("    outputUnmasking: ").append(toIndentedString(outputUnmasking)).append("\n");
+    sb.append("    outputTranslation: ").append(toIndentedString(outputTranslation)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

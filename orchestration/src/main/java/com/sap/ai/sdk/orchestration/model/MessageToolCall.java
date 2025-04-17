@@ -25,17 +25,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TextContent */
+/** MessageToolCall */
 // CHECKSTYLE:OFF
-public class TextContent
+public class MessageToolCall
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
-  public enum TypeEnum {
-    /** The TEXT option of this TextContent */
-    TEXT("text"),
+  @JsonProperty("id")
+  private String id;
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this TextContent */
+  /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
+  public enum TypeEnum {
+    /** The FUNCTION option of this MessageToolCall */
+    FUNCTION("function"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this MessageToolCall */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +73,7 @@ public class TextContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type TextContent
+     * @return The enum value of type MessageToolCall
      */
     @JsonCreator
     @Nonnull
@@ -87,31 +90,62 @@ public class TextContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("text")
-  private String text;
+  @JsonProperty("function")
+  private MessageToolCallFunction function;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TextContent. */
-  protected TextContent() {}
+  /** Default constructor for MessageToolCall. */
+  protected MessageToolCall() {}
 
   /**
-   * Set the type of this {@link TextContent} instance and return the same instance.
+   * Set the id of this {@link MessageToolCall} instance and return the same instance.
    *
-   * @param type The type of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param id The ID of the tool call.
+   * @return The same instance of this {@link MessageToolCall} class
    */
   @Nonnull
-  public TextContent type(@Nonnull final TypeEnum type) {
+  public MessageToolCall id(@Nonnull final String id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * The ID of the tool call.
+   *
+   * @return id The id of this {@link MessageToolCall} instance.
+   */
+  @Nonnull
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * Set the id of this {@link MessageToolCall} instance.
+   *
+   * @param id The ID of the tool call.
+   */
+  public void setId(@Nonnull final String id) {
+    this.id = id;
+  }
+
+  /**
+   * Set the type of this {@link MessageToolCall} instance and return the same instance.
+   *
+   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * @return The same instance of this {@link MessageToolCall} class
+   */
+  @Nonnull
+  public MessageToolCall type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * The type of the tool. Currently, only &#x60;function&#x60; is supported.
    *
-   * @return type The type of this {@link TextContent} instance.
+   * @return type The type of this {@link MessageToolCall} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -119,47 +153,47 @@ public class TextContent
   }
 
   /**
-   * Set the type of this {@link TextContent} instance.
+   * Set the type of this {@link MessageToolCall} instance.
    *
-   * @param type The type of this {@link TextContent}
+   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance and return the same instance.
+   * Set the function of this {@link MessageToolCall} instance and return the same instance.
    *
-   * @param text The text of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param function The function of this {@link MessageToolCall}
+   * @return The same instance of this {@link MessageToolCall} class
    */
   @Nonnull
-  public TextContent text(@Nonnull final String text) {
-    this.text = text;
+  public MessageToolCall function(@Nonnull final MessageToolCallFunction function) {
+    this.function = function;
     return this;
   }
 
   /**
-   * Get text
+   * Get function
    *
-   * @return text The text of this {@link TextContent} instance.
+   * @return function The function of this {@link MessageToolCall} instance.
    */
   @Nonnull
-  public String getText() {
-    return text;
+  public MessageToolCallFunction getFunction() {
+    return function;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance.
+   * Set the function of this {@link MessageToolCall} instance.
    *
-   * @param text The text of this {@link TextContent}
+   * @param function The function of this {@link MessageToolCall}
    */
-  public void setText(@Nonnull final String text) {
-    this.text = text;
+  public void setFunction(@Nonnull final MessageToolCallFunction function) {
+    this.function = function;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TextContent}.
+   * Get the names of the unrecognizable properties of the {@link MessageToolCall}.
    *
    * @return The set of properties names
    */
@@ -170,7 +204,7 @@ public class TextContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TextContent} instance.
+   * Get the value of an unrecognizable property of this {@link MessageToolCall} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -181,13 +215,13 @@ public class TextContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TextContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MessageToolCall has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TextContent} instance including unrecognized
+   * Get the value of all properties of this {@link MessageToolCall} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -196,13 +230,14 @@ public class TextContent
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (id != null) declaredFields.put("id", id);
     if (type != null) declaredFields.put("type", type);
-    if (text != null) declaredFields.put("text", text);
+    if (function != null) declaredFields.put("function", function);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TextContent} instance. If the map previously
+   * Set an unrecognizable property of this {@link MessageToolCall} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -221,24 +256,26 @@ public class TextContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TextContent textContent = (TextContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, textContent.type)
-        && Objects.equals(this.text, textContent.text);
+    final MessageToolCall messageToolCall = (MessageToolCall) o;
+    return Objects.equals(this.cloudSdkCustomFields, messageToolCall.cloudSdkCustomFields)
+        && Objects.equals(this.id, messageToolCall.id)
+        && Objects.equals(this.type, messageToolCall.type)
+        && Objects.equals(this.function, messageToolCall.function);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cloudSdkCustomFields);
+    return Objects.hash(id, type, function, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TextContent {\n");
+    sb.append("class MessageToolCall {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    function: ").append(toIndentedString(function)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -257,32 +294,44 @@ public class TextContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TextContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link MessageToolCall}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return (id) ->
+        (type) -> (function) -> new MessageToolCall().id(id).type(type).function(function);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link TextContent} instance.
+     * Set the id of this {@link MessageToolCall} instance.
      *
-     * @param type The type of this {@link TextContent}
-     * @return The TextContent builder.
+     * @param id The ID of the tool call.
+     * @return The MessageToolCall builder.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
+    Builder1 id(@Nonnull final String id);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the text of this {@link TextContent} instance.
+     * Set the type of this {@link MessageToolCall} instance.
      *
-     * @param text The text of this {@link TextContent}
-     * @return The TextContent instance.
+     * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+     * @return The MessageToolCall builder.
      */
-    TextContent text(@Nonnull final String text);
+    Builder2 type(@Nonnull final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder2 {
+    /**
+     * Set the function of this {@link MessageToolCall} instance.
+     *
+     * @param function The function of this {@link MessageToolCall}
+     * @return The MessageToolCall instance.
+     */
+    MessageToolCall function(@Nonnull final MessageToolCallFunction function);
   }
 }

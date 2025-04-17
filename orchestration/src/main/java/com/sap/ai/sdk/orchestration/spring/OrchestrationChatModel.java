@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
-import static com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall.TypeEnum.FUNCTION;
+import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
@@ -11,8 +11,8 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
-import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
-import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCallFunction;
+import com.sap.ai.sdk.orchestration.model.MessageToolCall;
+import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -131,7 +131,7 @@ public class OrchestrationChatModel implements ChatModel {
                 val springToolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
                 if (springToolCalls != null && !springToolCalls.isEmpty()) {
-                  final List<ResponseMessageToolCall> sdkToolCalls =
+                  final List<MessageToolCall> sdkToolCalls =
                       springToolCalls.stream()
                           .map(OrchestrationChatModel::toOrchestrationToolCall)
                           .toList();
@@ -154,13 +154,11 @@ public class OrchestrationChatModel implements ChatModel {
   }
 
   @Nonnull
-  private static ResponseMessageToolCall toOrchestrationToolCall(@Nonnull final ToolCall toolCall) {
-    return ResponseMessageToolCall.create()
+  private static MessageToolCall toOrchestrationToolCall(@Nonnull final ToolCall toolCall) {
+    return MessageToolCall.create()
         .id(toolCall.id())
         .type(FUNCTION)
         .function(
-            ResponseMessageToolCallFunction.create()
-                .name(toolCall.name())
-                .arguments(toolCall.arguments()));
+            MessageToolCallFunction.create().name(toolCall.name()).arguments(toolCall.arguments()));
   }
 }
