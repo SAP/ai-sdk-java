@@ -3,10 +3,13 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
+import com.github.victools.jsonschema.generator.Option;
+import com.github.victools.jsonschema.generator.OptionPreset;
+import com.github.victools.jsonschema.generator.SchemaGenerator;
+import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
+import com.github.victools.jsonschema.generator.SchemaVersion;
+import com.github.victools.jsonschema.module.jackson.JacksonModule;
+import com.github.victools.jsonschema.module.jackson.JacksonOption;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
@@ -21,9 +24,9 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * Represents an OpenAI function tool that can be used to define a function call in an OpenAI Chat
- * Completion request. This tool generates a JSON schema based on the provided class representing
- * the function's request structure.
+ * Represents an OpenAI tool that can be used to define a function call in an OpenAI Chat Completion
+ * request. This tool generates a JSON schema based on the provided class representing the
+ * function's request structure.
  *
  * @param <I> the type of the input argument for the function
  * @see <a href="https://platform.openai.com/docs/guides/gpt/function-calling"/>OpenAI Function
@@ -36,20 +39,23 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OpenAiTool<I> {
 
+  /** The schema generator used to create JSON schemas. */
+  @Nonnull private static final SchemaGenerator GENERATOR = createSchemaGenerator();
+
   /** The name of the function. */
-  private @Nonnull String name;
+  @Nonnull private String name;
 
   /** The model class for function request. */
-  private @Nonnull Class<I> requestClass;
+  @Nonnull private Class<I> requestClass;
 
   /** An optional description of the function. */
-  private @Nullable String description;
+  @Nullable private String description;
 
   /** An optional flag indicating whether the function parameters should be treated strictly. */
-  private @Nullable Boolean strict;
+  @Nullable private Boolean strict;
 
   /** The function to be called. */
-  private @Nullable Function<I, ?> function;
+  @Nullable private Function<I, ?> function;
 
   /**
    * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
@@ -65,22 +71,16 @@ public class OpenAiTool<I> {
   @Nonnull
   Object execute(@Nonnull final I argument) {
     if (getFunction() == null) {
-      throw new IllegalStateException("Function must not be set to execute the tool.");
+      throw new IllegalStateException("No function configured to execute.");
     }
     return getFunction().apply(argument);
   }
 
   ChatCompletionTool createChatCompletionTool() {
-    final var objectMapper = new ObjectMapper();
-    JsonSchema schema = null;
-    try {
-      schema = new JsonSchemaGenerator(objectMapper).generateSchema(getRequestClass());
-    } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for " + getRequestClass(), e);
-    }
-
+    final var schema = GENERATOR.generateSchema(getRequestClass());
     final var schemaMap =
-        objectMapper.convertValue(schema, new TypeReference<Map<String, Object>>() {});
+        OpenAiUtils.getOpenAiObjectMapper()
+            .convertValue(schema, new TypeReference<Map<String, Object>>() {});
 
     final var function =
         new FunctionObject()
@@ -89,5 +89,16 @@ public class OpenAiTool<I> {
             .parameters(schemaMap)
             .strict(getStrict());
     return new ChatCompletionTool().type(FUNCTION).function(function);
+  }
+
+  private static SchemaGenerator createSchemaGenerator() {
+    final var module =
+        new JacksonModule(
+            JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
+    return new SchemaGenerator(
+        new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON)
+            .without(Option.SCHEMA_VERSION_INDICATOR)
+            .with(module)
+            .build());
   }
 }

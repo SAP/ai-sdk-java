@@ -145,12 +145,11 @@ class OpenAiChatCompletionRequestTest {
     assertThat(toolA.getFunction().getParameters())
         .isEqualTo(
             Map.of(
-                "id",
-                    "urn:jsonschema:com:sap:ai:sdk:foundationmodels:openai:OpenAiChatCompletionRequestTest:1DummyRequest",
                 "properties",
-                    Map.of(
-                        "param1", Map.of("type", "string"),
-                        "param2", Map.of("type", "integer")),
-                "type", "object"));
+                Map.of(
+                    "param1", Map.of("type", "string"),
+                    "param2", Map.of("type", "integer")),
+                "type",
+                "object"));
   }
 }

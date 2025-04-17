@@ -75,7 +75,7 @@ class OpenAiToolTest {
     assertThatThrownBy(
             () -> OpenAiToolExecutor.executeTools(List.of(toolA), List.of(functionCallA)))
         .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("Function must not be set to execute the tool");
+        .hasMessageContaining("No function configured to execute.");
   }
 
   @Test
