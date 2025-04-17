@@ -73,7 +73,7 @@ public class GroundingModuleConfig
      * @return The enum value of type GroundingModuleConfig
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static TypeEnum fromValue(@Nonnull final String value) {
       for (TypeEnum b : TypeEnum.values()) {
         if (b.value.equals(value)) {
