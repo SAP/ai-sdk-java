@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
  * request. This tool generates a JSON schema based on the provided class representing the
  * function's request structure.
  *
- * @param <I> the type of the input argument for the function
+ * @param <InputT> the type of the input argument for the function
  * @see <a href="https://platform.openai.com/docs/guides/gpt/function-calling"/>OpenAI Function
  * @since 1.7.0
  */
@@ -37,7 +37,7 @@ import lombok.experimental.Accessors;
 @Getter(AccessLevel.PACKAGE)
 @Accessors(chain = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OpenAiTool<I> {
+public class OpenAiTool<InputT> {
 
   /** The schema generator used to create JSON schemas. */
   @Nonnull private static final SchemaGenerator GENERATOR = createSchemaGenerator();
@@ -46,7 +46,7 @@ public class OpenAiTool<I> {
   @Nonnull private String name;
 
   /** The model class for function request. */
-  @Nonnull private Class<I> requestClass;
+  @Nonnull private Class<InputT> requestClass;
 
   /** An optional description of the function. */
   @Nullable private String description;
@@ -55,7 +55,7 @@ public class OpenAiTool<I> {
   @Nullable private Boolean strict;
 
   /** The function to be called. */
-  @Nullable private Function<I, ?> function;
+  @Nullable private Function<InputT, ?> function;
 
   /**
    * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
@@ -64,12 +64,12 @@ public class OpenAiTool<I> {
    * @param name the name of the function
    * @param requestClass the model class for function request
    */
-  public OpenAiTool(@Nonnull final String name, @Nonnull final Class<I> requestClass) {
+  public OpenAiTool(@Nonnull final String name, @Nonnull final Class<InputT> requestClass) {
     this(name, requestClass, null, null, null);
   }
 
   @Nonnull
-  Object execute(@Nonnull final I argument) {
+  Object execute(@Nonnull final InputT argument) {
     if (getFunction() == null) {
       throw new IllegalStateException("No function configured to execute.");
     }
