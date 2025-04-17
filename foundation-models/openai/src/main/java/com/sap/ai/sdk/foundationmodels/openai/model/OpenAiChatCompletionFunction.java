@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
-@Beta
+@Deprecated
 public class OpenAiChatCompletionFunction {
   /**
    * Name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes,

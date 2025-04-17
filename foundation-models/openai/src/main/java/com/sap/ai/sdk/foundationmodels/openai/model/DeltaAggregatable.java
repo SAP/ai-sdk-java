@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
 /**
@@ -10,7 +9,7 @@ import javax.annotation.Nonnull;
  *
  * @param <D> the delta type.
  */
-@Beta
+@Deprecated
 public interface DeltaAggregatable<D> {
 
   /**

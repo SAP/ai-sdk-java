@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 /** ContentFilterDetectedWithCitationResultAllOfCitation */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ContentFilterDetectedWithCitationResultAllOfCitation
 // CHECKSTYLE:ON
 {

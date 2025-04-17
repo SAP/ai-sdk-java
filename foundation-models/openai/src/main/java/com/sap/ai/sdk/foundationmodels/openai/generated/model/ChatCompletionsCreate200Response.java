@@ -25,5 +25,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = CreateChatCompletionResponse.class),
   @JsonSubTypes.Type(value = CreateChatCompletionStreamResponse.class),
 })
-@com.google.common.annotations.Beta
 public interface ChatCompletionsCreate200Response {}
