@@ -82,13 +82,14 @@ public class OpenAiTool<InputT> {
         OpenAiUtils.getOpenAiObjectMapper()
             .convertValue(schema, new TypeReference<Map<String, Object>>() {});
 
-    final var function =
-        new FunctionObject()
-            .name(getName())
-            .description(getDescription())
-            .parameters(schemaMap)
-            .strict(getStrict());
-    return new ChatCompletionTool().type(FUNCTION).function(function);
+    return new ChatCompletionTool()
+        .type(FUNCTION)
+        .function(
+            new FunctionObject()
+                .name(getName())
+                .description(getDescription())
+                .parameters(schemaMap)
+                .strict(getStrict()));
   }
 
   private static SchemaGenerator createSchemaGenerator() {
