@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)
 
 ### 📈 Improvements
 

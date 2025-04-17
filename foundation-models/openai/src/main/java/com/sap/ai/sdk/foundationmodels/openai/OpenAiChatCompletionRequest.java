@@ -283,6 +283,19 @@ public class OpenAiChatCompletionRequest {
   }
 
   /**
+   * Sets the tools to be used in the request with convenience class {@code OpenAiTool}.
+   *
+   * @param tools the list of tools to be used
+   * @return a new OpenAiChatCompletionRequest instance with the specified tools
+   * @throws IllegalArgumentException if the tool type is not supported
+   * @since 1.7.0
+   */
+  @Nonnull
+  public OpenAiChatCompletionRequest withOpenAiTools(@Nonnull final List<OpenAiTool<?>> tools) {
+    return this.withTools(tools.stream().map(OpenAiTool::createChatCompletionTool).toList());
+  }
+
+  /**
    * Converts the request to a generated model class CreateChatCompletionRequest.
    *
    * @return the CreateChatCompletionRequest

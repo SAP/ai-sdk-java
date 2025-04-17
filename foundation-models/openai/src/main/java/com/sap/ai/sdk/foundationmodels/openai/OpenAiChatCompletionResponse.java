@@ -26,7 +26,7 @@ import lombok.Value;
 @Setter(value = NONE)
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
-  @Nonnull final CreateChatCompletionResponse originalResponse;
+  @Nonnull CreateChatCompletionResponse originalResponse;
 
   /**
    * Gets the token usage from the original response.
