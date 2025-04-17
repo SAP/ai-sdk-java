@@ -100,7 +100,7 @@ public class CreateChatCompletionStreamResponseChoicesInner
      * @return The enum value of type CreateChatCompletionStreamResponseChoicesInner
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static FinishReasonEnum fromValue(@Nonnull final String value) {
       for (FinishReasonEnum b : FinishReasonEnum.values()) {
         if (b.value.equals(value)) {
