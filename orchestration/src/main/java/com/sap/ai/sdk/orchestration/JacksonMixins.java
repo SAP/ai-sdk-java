@@ -24,7 +24,7 @@ final class JacksonMixins {
   interface NoneTypeInfoMixin {}
 
 //  JONAS: used EXISTING_PROPERTY here, did not seem to work better
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", visible = true)
   @JsonSubTypes({
     @JsonSubTypes.Type(
         value = com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema.class,
