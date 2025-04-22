@@ -28,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * \&quot;my_function\&quot;}}&#x60; forces the model to call that tool. &#x60;none&#x60; is the
  * default when no tools are present. &#x60;auto&#x60; is the default if tools are present.
  */
-@com.google.common.annotations.Beta
 public interface ChatCompletionToolChoiceOption {
   /**
    * Helper class to create a ChatCompletionNamedToolChoice that implements {@link

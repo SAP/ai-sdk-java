@@ -30,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @deprecated
  */
 @Deprecated
-@com.google.common.annotations.Beta
 public interface CreateChatCompletionRequestAllOfFunctionCall {
   /**
    * Helper class to create a ChatCompletionFunctionCallOption that implements {@link

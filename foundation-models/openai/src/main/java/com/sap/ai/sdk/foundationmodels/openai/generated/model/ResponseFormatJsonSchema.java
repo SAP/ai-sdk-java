@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
 
 /** ResponseFormatJsonSchema */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ResponseFormatJsonSchema implements CreateChatCompletionRequestAllOfResponseFormat
 // CHECKSTYLE:ON
 {

@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 /** ChatCompletionNamedToolChoiceFunction */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ChatCompletionNamedToolChoiceFunction
 // CHECKSTYLE:ON
 {

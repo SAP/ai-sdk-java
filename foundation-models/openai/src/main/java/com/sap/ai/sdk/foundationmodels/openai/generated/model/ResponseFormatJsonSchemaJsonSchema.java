@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 
 /** ResponseFormatJsonSchemaJsonSchema */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class ResponseFormatJsonSchemaJsonSchema
 // CHECKSTYLE:ON
 {

@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
 
 /** CreateChatCompletionResponseChoicesInner */
 // CHECKSTYLE:OFF
-@com.google.common.annotations.Beta
 public class CreateChatCompletionResponseChoicesInner
 // CHECKSTYLE:ON
 {
