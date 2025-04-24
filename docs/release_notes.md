@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] [Added support for using local prompt template files](https://sap.github.io/ai-sdk/docs/java/TODO)
 
 ### 📈 Improvements
 

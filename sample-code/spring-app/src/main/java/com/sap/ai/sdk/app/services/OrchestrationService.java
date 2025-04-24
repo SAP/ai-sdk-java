@@ -518,6 +518,7 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param filePath the filepath to the YAML file
    * @throws IOException if the YAML cannot be parsed
    * @return the assistant response object
    */
