@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -343,7 +345,8 @@ class OrchestrationTest {
   void testLocalPromptTemplate() throws IOException {
     final var result =
         service
-            .localPromptTemplate("src/main/resources/promptTemplateExample.yaml")
+            .localPromptTemplate(
+                Files.readString(Path.of("src/main/resources/promptTemplateExample.yaml")))
             .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();

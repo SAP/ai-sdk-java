@@ -12,4 +12,19 @@ spec:
   defaults:
     word: "apple"
   response_format:
-    type: "json_object"
+    type: json_schema
+    json_schema:
+      name: translation-schema
+      description: Translate the given word into the provided language.
+      strict: true
+      schema:
+        type: object
+        additionalProperties: False
+        required:
+          - language
+          - translation
+        properties:
+          language:
+            type: string
+          translation:
+            type: string

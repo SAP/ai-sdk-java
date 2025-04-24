@@ -30,8 +30,6 @@ import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -518,15 +516,14 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param filePath the filepath to the YAML file
+   * @param promptTemplate the YAML prompt template to use
    * @throws IOException if the YAML cannot be parsed
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse localPromptTemplate(@Nonnull final String filePath)
+  public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
-    val promptTemplateYaml = Files.readString(Path.of(filePath));
-    val template = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    val template = TemplateConfig.create().fromYaml(promptTemplate);
     val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
     val inputParams = Map.of("language", "German");
