@@ -211,8 +211,8 @@ public class SpringAiOrchestrationService {
   public Translation responseFormat() {
     val cl = ChatClient.builder(new OrchestrationChatModel()).build();
 
-    var schema = ResponseJsonSchema.fromType(Translation.class);
-    var template = TemplateConfig.create().withJsonSchemaResponse(schema);
+    val schema = ResponseJsonSchema.fromType(Translation.class);
+    val template = TemplateConfig.create().withJsonSchemaResponse(schema);
 
     val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
     val prompt =
