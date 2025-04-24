@@ -55,6 +55,8 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -980,45 +982,6 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromInputSimple() throws IOException {
-    stubFor(
-        post(anyUrl())
-            .willReturn(
-                aResponse()
-                    .withBodyFile("templateReferenceResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-
-    String promptTemplateYAML =
-        """
-name: poem
-version: 0.0.1
-scenario: agent-evaluator
-spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.
-    - role: "user"
-      content: |-
-        Write a 3 verse poem about the following topic:
-        {{ ?topic }}
-""";
-
-    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
-    var configWithTemplate = config.withTemplateConfig(template);
-
-    var inputParams = Map.of("topic", "Cloud ERP");
-    var prompt = new OrchestrationPrompt(inputParams);
-
-    final var response = client.chatCompletion(prompt, configWithTemplate);
-
-    try (var requestInputStream = fileLoader.apply("templateFromInputRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
-  }
-
-  @Test
   void testTemplateFromInput() throws IOException {
     stubFor(
         post(anyUrl())
@@ -1027,58 +990,9 @@ spec:
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    String promptTemplateYAML =
-        """
- name: translator
- version: 0.0.1
- scenario: translation scenario
- spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a language translator.
-    - role: "user"
-      content: |-
-        Whats {{ ?word }} in {{ ?language }}?
-  defaults:
-    word: "apple"
-  tools:
-    - type: function
-      function:
-        description: Translate a word.
-        name: translate
-        parameters:
-          type: object
-          additionalProperties: False
-          required:
-            - language
-            - wordToTranslate
-          properties:
-            language:
-              type: string
-            wordToTranslate:
-              type: string
-        strict: true
-  response_format:
-    type: json_schema
-    json_schema:
-      name: translation-schema
-      description: Translate the given word into the provided language.
-      strict: true
-      schema:
-        type: object
-        additionalProperties: False
-        required:
-          - language
-          - translation
-        properties:
-          language:
-            type: string
-          translation:
-            type: string
-""";
+    var promptTemplateYAML = Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
 
-    var template = TemplateConfig.create().fromYAML(promptTemplateYAML);
+    var template = TemplateConfig.create().fromYaml(promptTemplateYAML);
     var configWithTemplate = config.withTemplateConfig(template);
 
     var inputParams = Map.of("language", "German");
@@ -1090,5 +1004,21 @@ spec:
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
+  }
+
+  @Test
+  void testTemplateFromInputThrows() {
+    assertThatThrownBy(() -> TemplateConfig.create().fromYaml(": what?"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("Failed to parse");
+
+    prompt = new OrchestrationPrompt(Map.of());
+    assertThatThrownBy(
+            () ->
+                TemplateConfig.create()
+                    .fromYaml(
+                        "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("Failed to deserialize");
   }
 }

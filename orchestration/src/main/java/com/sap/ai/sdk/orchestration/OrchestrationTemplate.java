@@ -14,9 +14,7 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
-
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,17 +113,15 @@ public class OrchestrationTemplate extends TemplateConfig {
    *
    * @param inputString the provided JSON
    * @return A Template object representing the provided JSON
-   * @since 1.6.0
+   * @since 1.7.0
    */
   @Nullable
-  private OrchestrationTemplate fromJSON(@Nonnull final String inputString) throws JsonProcessingException {
+  private OrchestrationTemplate fromJson(@Nonnull final String inputString) throws IOException {
     OrchestrationTemplate promptTemplate = null;
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
-      final JsonNode rootNode = objectMapper.readTree(inputString);
-      promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
-      //      the response_schema.type is null even though this value is given in the yaml/json
-
+    final JsonNode rootNode = objectMapper.readTree(inputString);
+    promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
     return promptTemplate;
   }
 
@@ -134,40 +130,22 @@ public class OrchestrationTemplate extends TemplateConfig {
    *
    * @param inputYaml the provided YAML
    * @return A Template object representing the provided YAML
-   * @since 1.6.0
+   * @since 1.7.0
    */
   @Nullable
-  public OrchestrationTemplate fromYAML(@Nonnull final String inputYaml) throws IOException {
+  public OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
     final Object obj;
     try {
       final ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
       obj = yamlReader.readValue(inputYaml, Object.class);
     } catch (JsonProcessingException ex) {
-      throw new IOException("Failed to parse the YAML input: " + ex.getMessage());
+      throw new IOException("Failed to parse the YAML input: " + ex.getMessage(), ex);
     }
     try {
       final ObjectMapper jsonWriter = new ObjectMapper();
-      return fromJSON(jsonWriter.writeValueAsString(obj));
+      return fromJson(jsonWriter.writeValueAsString(obj));
     } catch (JsonProcessingException ex) {
-      throw new IOException("Failed to deserialize the input: " + ex.getMessage());
+      throw new IOException("Failed to deserialize the input: " + ex.getMessage(), ex);
     }
   }
-
-  //  public static class CustomSerializer extends JsonDeserializer<Template> {
-  //    @Override
-  //    public Template deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-  //      JsonNode node = p.getCodec().readTree(p);
-  //
-  //      if (node.has("content")) {
-  //        if (node.get("content").isArray()) {
-  //          return p.getCodec().treeToValue(node, MultiChatMessage.class);
-  //        } else {
-  //          return p.getCodec().treeToValue(node, SingleChatMessage.class);
-  //        }
-  //      }
-  //
-  //      // Default handling
-  //      return p.getCodec().treeToValue(node, ChatMessage.class);
-  //    }
-  //  }
 }

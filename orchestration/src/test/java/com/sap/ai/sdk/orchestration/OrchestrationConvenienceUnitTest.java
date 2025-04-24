@@ -14,6 +14,10 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,64 +183,9 @@ public class OrchestrationConvenienceUnitTest {
   }
 
   @Test
-  void testTemplateFromLocalFile() {
-    String promptTemplateWithJsonSchema =
-        """
- name: translator
- version: 0.0.1
- scenario: translation scenario
- spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a language translator.
-    - role: "user"
-      content: |-
-        Whats {{ ?word }} in {{ ?language }}?
-  defaults:
-    word: "apple"
-  tools:
-    - type: function
-      function:
-        description: Translate a word.
-        name: translate
-        parameters:
-          type: object
-          additionalProperties: False
-          required:
-            - language
-            - wordToTranslate
-          properties:
-            language:
-              type: string
-            wordToTranslate:
-              type: string
-        strict: true
-  response_format:
-    type: json_schema
-    json_schema:
-      name: translation-schema
-      description: Translate the given word into the provided language.
-      strict: true
-      schema:
-        type: object
-        additionalProperties: False
-        required:
-          - language
-          - translation
-        properties:
-          language:
-            type: string
-          translation:
-            type: string
- """;
-    TemplateConfig templateWithJsonSchema = null;
-    try{
-      templateWithJsonSchema = TemplateConfig.create().fromYAML(promptTemplateWithJsonSchema);
-    }
-    catch (Exception e){
-      System.out.println("Error: " + e.getMessage());
-    }
+  void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
+    String promptTemplateYAML = Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+    var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYAML);
     var schema =
         Map.of(
             "type",
@@ -249,7 +198,7 @@ public class OrchestrationConvenienceUnitTest {
             List.of("language", "translation"),
             "additionalProperties",
             false);
-    var expectedTemplateWithJsonSchema =
+    var expectedTemplateWithJsonSchemaTools =
         OrchestrationTemplate.create()
             .withTemplate(
                 List.of(
@@ -264,28 +213,32 @@ public class OrchestrationConvenienceUnitTest {
                 ResponseJsonSchema.fromMap(schema, "translation-schema")
                     .withDescription("Translate the given word into the provided language.")
                     .withStrict(true))
-            .withTools(List.of(
-                ChatCompletionTool.create()
-                    .type(ChatCompletionTool.TypeEnum.FUNCTION)
-                    .function(
-                        FunctionObject.create()
-                            .name("translate")
-                            .parameters(
-                                Map.of(
-                                    "type",
-                                    "object",
-                                    "additionalProperties",
-                                    false,
-                                    "required",
-                                    List.of("language", "wordToTranslate"),
-                                    "properties",
+            .withTools(
+                List.of(
+                    ChatCompletionTool.create()
+                        .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                        .function(
+                            FunctionObject.create()
+                                .name("translate")
+                                .parameters(
                                     Map.of(
-                                        "language", Map.of("type", "string"),
-                                        "wordToTranslate", Map.of("type", "string"))))
-                            .description("Translate a word.")
-                            .strict(true))));
-    assertThat(templateWithJsonSchema).isEqualTo(expectedTemplateWithJsonSchema);
+                                        "type",
+                                        "object",
+                                        "additionalProperties",
+                                        false,
+                                        "required",
+                                        List.of("language", "wordToTranslate"),
+                                        "properties",
+                                        Map.of(
+                                            "language", Map.of("type", "string"),
+                                            "wordToTranslate", Map.of("type", "string"))))
+                                .description("Translate a word.")
+                                .strict(true))));
+    assertThat(templateWithJsonSchemaTools).isEqualTo(expectedTemplateWithJsonSchemaTools);
+  }
 
+  @Test
+  void testTemplateFromLocalFileWithJsonObject() throws IOException {
     String promptTemplateWithJsonObject =
         """
  name: translator
@@ -304,90 +257,19 @@ public class OrchestrationConvenienceUnitTest {
   response_format:
     type: json_object
  """;
-//    var templateWithJsonObject = TemplateConfig.create().fromYAML(promptTemplateWithJsonObject);
-//    var expectedTemplateWithJsonObject =
-//        Template.create()
-//            .template(
-//                List.of(
-//                    SingleChatMessage.create()
-//                        .role("system")
-//                        .content("You are a language translator."),
-//                    SingleChatMessage.create()
-//                        .role("user")
-//                        .content("Whats {{ ?word }} in {{ ?language }}?")))
-//            .defaults(Map.of("word", "apple"))
-//            .responseFormat(
-//                ResponseFormatJsonObject.create()
-//                    .type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT))
-//            .tools(List.of());
-//    assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
-
-    String promptTemplateWithToolCall =
-        """
-         name: translator
-         version: 0.0.1
-         scenario: translation scenario
-         spec:
-          template:
-            - role: "system"
-              content: |-
-                You are a language translator.
-            - role: "user"
-              content: |-
-                Whats {{ ?word }} in {{ ?language }}?
-          defaults:
-            word: "apple"
-          tools:
-            - type: function
-              function:
-                description: Translate a word.
-                name: translate
-                parameters:
-                  type: object
-                  additionalProperties: False
-                  required:
-                    - language
-                    - wordToTranslate
-                  properties:
-                    language:
-                      type: string
-                    wordToTranslate:
-                      type: string
-                strict: true
-        """;
-//    var templateWithToolCall = TemplateConfig.create().fromYAML(promptTemplateWithToolCall);
-//    var expectedTemplateWithToolCall =
-//        Template.create()
-//            .template(
-//                List.of(
-//                    SingleChatMessage.create()
-//                        .role("system")
-//                        .content("You are a language translator."),
-//                    SingleChatMessage.create()
-//                        .role("user")
-//                        .content("Whats {{ ?word }} in {{ ?language }}?")))
-//            .defaults(Map.of("word", "apple"))
-//            .tools(
-//                List.of(
-//                    ChatCompletionTool.create()
-//                        .type(ChatCompletionTool.TypeEnum.FUNCTION)
-//                        .function(
-//                            FunctionObject.create()
-//                                .name("translate")
-//                                .parameters(
-//                                    Map.of(
-//                                        "type",
-//                                        "object",
-//                                        "additionalProperties",
-//                                        false,
-//                                        "required",
-//                                        List.of("language", "wordToTranslate"),
-//                                        "properties",
-//                                        Map.of(
-//                                            "language", Map.of("type", "string"),
-//                                            "wordToTranslate", Map.of("type", "string"))))
-//                                .description("Translate a word.")
-//                                .strict(true))));
-//    assertThat(templateWithToolCall).isEqualTo(expectedTemplateWithToolCall);
+    var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
+    var expectedTemplateWithJsonObject =
+        OrchestrationTemplate.create()
+            .withTemplate(
+                List.of(
+                    SingleChatMessage.create()
+                        .role("system")
+                        .content("You are a language translator."),
+                    SingleChatMessage.create()
+                        .role("user")
+                        .content("Whats {{ ?word }} in {{ ?language }}?")))
+            .withDefaults(Map.of("word", "apple"))
+            .withJsonResponse();
+    assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
   }
 }

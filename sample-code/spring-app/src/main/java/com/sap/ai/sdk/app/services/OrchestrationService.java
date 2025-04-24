@@ -563,7 +563,7 @@ spec:
 
     TemplateConfig template = null;
     try {
-    template = TemplateConfig.create().fromYAML(promptTemplateYAML);
+    template = TemplateConfig.create().fromYaml(promptTemplateYAML);
     } catch (IOException e) {
       log.error("Error reading template file", e);
       throw new RuntimeException(e);
