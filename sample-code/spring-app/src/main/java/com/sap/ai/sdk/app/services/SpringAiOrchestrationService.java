@@ -3,11 +3,14 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -159,7 +163,7 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    final OrchestrationChatOptions options = new OrchestrationChatOptions(config);
+    val options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
     options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
 
@@ -183,5 +187,37 @@ public class SpringAiOrchestrationService {
     cl.prompt(prompt1).call().content();
     return Objects.requireNonNull(
         cl.prompt(prompt2).call().chatResponse(), "Chat response is null");
+  }
+
+  /**
+   * A simple record to demonstrate the response format feature of the orchestration service.
+   *
+   * @param translation the translated text
+   * @param language the language of the translation
+   */
+  public record Translation(
+      @JsonProperty(required = true) String translation,
+      @JsonProperty(required = true) String language) {}
+
+  /**
+   * Perform a chat completion where the LLM response adheres to a JSON schema. Use a Java record or
+   * class to define the expected format and automatically parse the response into it.
+   *
+   * <p>In this case, we expect a {@code Translation} of the input text into Dutch.
+   *
+   * @return The translated text.
+   */
+  @Nullable
+  public Translation responseFormat() {
+    val cl = ChatClient.builder(new OrchestrationChatModel()).build();
+
+    var schema = ResponseJsonSchema.fromType(Translation.class);
+    var template = TemplateConfig.create().withJsonSchemaResponse(schema);
+
+    val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
+    val prompt =
+        new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
+
+    return cl.prompt(prompt).call().entity(Translation.class);
   }
 }
