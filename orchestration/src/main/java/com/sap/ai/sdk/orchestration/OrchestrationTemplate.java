@@ -111,23 +111,23 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Create a {@link Template} object from a JSON provided as String.
    *
+   * @throws IOException if the JSON cannot be deserialized
    * @param inputString the provided JSON
    * @return A Template object representing the provided JSON
    * @since 1.7.0
    */
   @Nullable
   private OrchestrationTemplate fromJson(@Nonnull final String inputString) throws IOException {
-    OrchestrationTemplate promptTemplate = null;
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
     final JsonNode rootNode = objectMapper.readTree(inputString);
-    promptTemplate = objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
-    return promptTemplate;
+    return objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
   }
 
   /**
    * Create a {@link Template} object from a YAML provided as String.
    *
+   * @throws IOException if the YAML cannot be parsed or deserialized
    * @param inputYaml the provided YAML
    * @return A Template object representing the provided YAML
    * @since 1.7.0

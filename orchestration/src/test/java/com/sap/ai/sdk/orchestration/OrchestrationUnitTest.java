@@ -990,7 +990,8 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var promptTemplateYAML = Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+    var promptTemplateYAML =
+        Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
 
     var template = TemplateConfig.create().fromYaml(promptTemplateYAML);
     var configWithTemplate = config.withTemplateConfig(template);

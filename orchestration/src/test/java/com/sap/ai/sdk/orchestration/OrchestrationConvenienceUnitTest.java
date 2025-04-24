@@ -14,7 +14,6 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -184,7 +183,8 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
-    String promptTemplateYAML = Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+    String promptTemplateYAML =
+        Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
     var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYAML);
     var schema =
         Map.of(

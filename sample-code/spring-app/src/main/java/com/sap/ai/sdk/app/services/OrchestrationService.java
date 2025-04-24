@@ -29,8 +29,9 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
-
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -506,72 +507,18 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @throws IOException if the YAML cannot be parsed
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse localPromptTemplate(
-      @Nonnull final String topic) {
-    String promptTemplateYAML =
-        """
-name: translator
-version: 0.0.1
-scenario: translation scenario
-spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a language translator.
-    - role: "user"
-      content: |-
-        Whats {{ ?word }} in {{ ?language }}?
-  defaults:
-    word: "apple"
-  response_format:
-    type: "json_schema"
-    strict: true
-    json_schema:
-      name: translation-schema
-      description: Translate the given word into the provided language.
-      schema:
-        type: object
-        additionalProperties: False
-        required:
-          - language
-          - translation
-        properties:
-          language:
-            type: string
-          translation:
-            type: string
-""";
-//  response_format:
-//    name: translation-schema
-//    description: Translate the given word into the provided language.
-//    strict: true
-//    schema:
-//      type: object
-//      additionalProperties: False
-//      required:
-//        - language
-//        - translation
-//      properties:\s
-//        language:
-//          type: string
-//        translation:
-//          type: string
-//""";
+  public OrchestrationChatResponse localPromptTemplate(@Nonnull final String filePath)
+      throws IOException {
+    val promptTemplateYAML = Files.readString(Path.of(filePath));
+    val template = TemplateConfig.create().fromYaml(promptTemplateYAML);
+    val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
-    TemplateConfig template = null;
-    try {
-    template = TemplateConfig.create().fromYaml(promptTemplateYAML);
-    } catch (IOException e) {
-      log.error("Error reading template file", e);
-      throw new RuntimeException(e);
-    }
-    var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
-
-    var inputParams = Map.of("language", "German");
-    var prompt = new OrchestrationPrompt(inputParams);
+    val inputParams = Map.of("language", "German");
+    val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
   }

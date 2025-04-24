@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -273,9 +274,10 @@ class OrchestrationController {
 
   @GetMapping("/localPromptTemplate")
   @Nonnull
-  Object localPromptTemplate(
-      @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.localPromptTemplate("cloud ERP systems");
+  Object localPromptTemplate(@RequestParam(value = "format", required = false) final String format)
+      throws IOException {
+    final var response =
+        service.localPromptTemplate("src/main/resources/promptTemplateExample.yaml");
     if ("json".equals(format)) {
       return response;
     }

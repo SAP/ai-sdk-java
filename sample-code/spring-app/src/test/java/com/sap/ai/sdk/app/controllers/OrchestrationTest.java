@@ -13,6 +13,7 @@ import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -339,9 +340,11 @@ class OrchestrationTest {
   }
 
   @Test
-  void testLocalPromptTemplate() {
+  void testLocalPromptTemplate() throws IOException {
     final var result =
-        service.localPromptTemplate("Cloud ERP systems").getOriginalResponse();
+        service
+            .localPromptTemplate("src/main/resources/promptTemplateExample.yaml")
+            .getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
