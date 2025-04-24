@@ -149,8 +149,19 @@ public class OpenAiChatCompletionRequest {
   @Tolerate
   public OpenAiChatCompletionRequest(
       @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
+    this(Lists.asList(message, messages));
+  }
+
+  /**
+   * Creates an OpenAiChatCompletionPrompt with a list of messages.
+   *
+   * @param messages the list of messages to be added to the prompt
+   * @since 1.6.0
+   */
+  @Tolerate
+  public OpenAiChatCompletionRequest(@Nonnull final List<OpenAiMessage> messages) {
     this(
-        Lists.asList(message, messages),
+        List.copyOf(messages),
         null,
         null,
         null,

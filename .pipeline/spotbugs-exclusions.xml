@@ -7,6 +7,9 @@
       <Package name="com.sap.ai.sdk.orchestration.model"/>
       <Package name="com.sap.ai.sdk.grounding.client"/>
       <Package name="com.sap.ai.sdk.grounding.model"/>
+      <Package name="com.sap.ai.sdk.foundationmodels.openai.generated.model"/>
+      <Package name="com.sap.ai.sdk.prompt.registry.model"/>
+      <Package name="com.sap.ai.sdk.prompt.registry.client"/>
     </Or>
   </Match>
   <Match>

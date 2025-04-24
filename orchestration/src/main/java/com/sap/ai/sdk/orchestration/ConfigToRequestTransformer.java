@@ -22,20 +22,24 @@ final class ConfigToRequestTransformer {
   static CompletionPostRequest toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
     val template = toTemplateModuleConfig(prompt, config.getTemplateConfig());
+
     // note that the config is immutable and implicitly copied here
     // copying is required here, to not alter the original config object, which might be reused for
     // subsequent requests
     val configCopy = config.withTemplateConfig(template);
 
+    val messageHistory =
+        prompt.getMessagesHistory().stream()
+            .map(Message::createChatMessage)
+            .map(ChatMessage.class::cast)
+            .toList();
+
+    val moduleConfigs = toModuleConfigs(configCopy);
+
     return CompletionPostRequest.create()
-        .orchestrationConfig(
-            OrchestrationConfig.create().moduleConfigurations(toModuleConfigs(configCopy)))
+        .orchestrationConfig(OrchestrationConfig.create().moduleConfigurations(moduleConfigs))
         .inputParams(prompt.getTemplateParameters())
-        .messagesHistory(
-            prompt.getMessagesHistory().stream()
-                .map(Message::createChatMessage)
-                .map(ChatMessage.class::cast)
-                .toList());
+        .messagesHistory(messageHistory);
   }
 
   @Nonnull
@@ -54,7 +58,6 @@ final class ConfigToRequestTransformer {
 
     val template = config instanceof Template t ? t : Template.create().template();
     val messages = template.getTemplate();
-    val responseFormat = template.getResponseFormat();
     val messagesWithPrompt = new ArrayList<>(messages);
 
     messagesWithPrompt.addAll(
@@ -69,7 +72,7 @@ final class ConfigToRequestTransformer {
             .template(messagesWithPrompt)
             .tools(template.getTools())
             .defaults(template.getDefaults())
-            .responseFormat(responseFormat);
+            .responseFormat(template.getResponseFormat());
 
     for (val customFieldName : template.getCustomFieldNames()) {
       result.setCustomField(customFieldName, template.getCustomField(customFieldName));

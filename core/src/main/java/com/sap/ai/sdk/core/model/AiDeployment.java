@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Detailed data about a deployment */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class AiDeployment
 // CHECKSTYLE:ON
 {
@@ -171,7 +170,7 @@ public class AiDeployment
      * @return The enum value of type AiDeployment
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static LastOperationEnum fromValue(@Nonnull final String value) {
       for (LastOperationEnum b : LastOperationEnum.values()) {
         if (b.value.equals(value)) {

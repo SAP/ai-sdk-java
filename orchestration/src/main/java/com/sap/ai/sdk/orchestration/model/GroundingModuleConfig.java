@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -27,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** GroundingModuleConfig */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class GroundingModuleConfig
 // CHECKSTYLE:ON
 {
@@ -74,7 +73,7 @@ public class GroundingModuleConfig
      * @return The enum value of type GroundingModuleConfig
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static TypeEnum fromValue(@Nonnull final String value) {
       for (TypeEnum b : TypeEnum.values()) {
         if (b.value.equals(value)) {

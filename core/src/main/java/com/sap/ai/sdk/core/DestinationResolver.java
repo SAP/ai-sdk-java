@@ -37,7 +37,6 @@ class DestinationResolver {
             ServiceBindingMerger.KEEP_EVERYTHING));
   }
 
-  @SuppressWarnings("UnstableApiUsage")
   @Nonnull
   HttpDestination getDestination() {
     val binding =

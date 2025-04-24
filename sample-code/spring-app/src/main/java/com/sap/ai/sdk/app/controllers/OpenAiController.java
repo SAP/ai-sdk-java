@@ -120,11 +120,13 @@ public class OpenAiController {
     return response.getChoices().get(0).getMessage();
   }
 
-  @GetMapping("/chatCompletionTool")
+  @GetMapping("/chatCompletionToolExecution")
   @Nonnull
-  Object chatCompletionTools(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.chatCompletionTools(12);
+  Object chatCompletionToolExecution(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @RequestParam(value = "location", defaultValue = "Dubai") final String location,
+      @Nonnull @RequestParam(value = "unit", defaultValue = "°C") final String unit) {
+    final var response = service.chatCompletionToolExecution(location, unit);
     if ("json".equals(format)) {
       return response;
     }
