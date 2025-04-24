@@ -183,9 +183,9 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
-    String promptTemplateYAML =
+    String promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
-    var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYAML);
+    var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYaml);
     var schema =
         Map.of(
             "type",

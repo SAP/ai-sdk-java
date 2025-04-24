@@ -990,11 +990,11 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var promptTemplateYAML =
+    var promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
 
-    var template = TemplateConfig.create().fromYaml(promptTemplateYAML);
-    var configWithTemplate = config.withTemplateConfig(template);
+    var template = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
     var inputParams = Map.of("language", "German");
     var prompt = new OrchestrationPrompt(inputParams);

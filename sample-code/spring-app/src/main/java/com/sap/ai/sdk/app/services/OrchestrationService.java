@@ -525,8 +525,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String filePath)
       throws IOException {
-    val promptTemplateYAML = Files.readString(Path.of(filePath));
-    val template = TemplateConfig.create().fromYaml(promptTemplateYAML);
+    val promptTemplateYaml = Files.readString(Path.of(filePath));
+    val template = TemplateConfig.create().fromYaml(promptTemplateYaml);
     val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
     val inputParams = Map.of("language", "German");
