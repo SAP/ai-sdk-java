@@ -15,7 +15,7 @@ import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 
 @Slf4j
-public class SpringAiOrchestrationTest {
+class SpringAiOrchestrationTest {
 
   SpringAiOrchestrationService service = new SpringAiOrchestrationService();
 
@@ -159,5 +159,13 @@ public class SpringAiOrchestrationTest {
     assertThat(text)
         .containsAnyOf(
             "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");
+  }
+
+  @Test
+  void testResponseFormat() {
+    var translation = service.responseFormat();
+    assertThat(translation).isNotNull();
+    assertThat(translation.translation()).isNotEmpty();
+    assertThat(translation.language()).containsIgnoringCase("dutch");
   }
 }
