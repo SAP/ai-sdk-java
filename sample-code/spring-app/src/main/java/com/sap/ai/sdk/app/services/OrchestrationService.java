@@ -391,13 +391,9 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
     //    Example class
-    class Translation {
-      @JsonProperty(required = true)
-      private String translation;
-
-      @JsonProperty(required = true)
-      private String language;
-    }
+    record Translation(
+        @JsonProperty(required = true) String translation,
+        @JsonProperty(required = true) String language) {}
 
     val schema =
         ResponseJsonSchema.fromType(Translation.class)
