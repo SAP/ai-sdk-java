@@ -3,9 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.annotations.Beta;
-import java.lang.reflect.Type;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
@@ -38,40 +36,25 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
    */
   @Nonnull
   public Map<String, Object> getArgumentsAsMap() throws IllegalArgumentException {
-    return parseArguments(new TypeReference<>() {});
+    return getArgumentsAsObject(Map.class);
   }
 
   /**
    * Parses the arguments, encoded as a JSON string, into an object of type expected by a function
    * tool.
    *
-   * @param tool the function tool the arguments are for
+   * @param type the class reference for requested type.
    * @param <T> the type of the class
    * @return the parsed arguments as an object
    * @throws IllegalArgumentException if parsing fails
    * @since 1.7.0
    */
   @Nonnull
-  public <T> T getArgumentsAsObject(@Nonnull final OpenAiTool<T> tool)
-      throws IllegalArgumentException {
-
-    return parseArguments(
-        new TypeReference<>() {
-          @Override
-          public Type getType() {
-            return tool.getRequestClass();
-          }
-        });
-  }
-
-  @Nonnull
-  private <T> T parseArguments(@Nonnull final TypeReference<T> typeReference)
-      throws IllegalArgumentException {
+  public <T> T getArgumentsAsObject(@Nonnull final Class<T> type) throws IllegalArgumentException {
     try {
-      return getOpenAiObjectMapper().readValue(getArguments(), typeReference);
+      return getOpenAiObjectMapper().readValue(getArguments(), type);
     } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(
-          "Failed to parse JSON string to class " + typeReference.getType(), e);
+      throw new IllegalArgumentException("Failed to parse JSON string to class " + type, e);
     }
   }
 }

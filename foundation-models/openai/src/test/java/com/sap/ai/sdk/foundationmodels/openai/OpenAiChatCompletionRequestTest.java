@@ -123,7 +123,7 @@ class OpenAiChatCompletionRequestTest {
 
     var request =
         new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
-            .withOpenAiTools(
+            .withToolsExecutable(
                 List.of(
                     new OpenAiTool<>("toolA", DummyRequest.class)
                         .setDescription("descA")

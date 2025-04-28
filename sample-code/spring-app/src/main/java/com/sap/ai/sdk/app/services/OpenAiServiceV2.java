@@ -15,8 +15,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolExecutor;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -95,6 +93,8 @@ public class OpenAiServiceV2 {
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
+    final OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
+
     final var messages = new ArrayList<OpenAiMessage>();
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
@@ -106,20 +106,18 @@ public class OpenAiServiceV2 {
                 .setFunction(WeatherMethod::getCurrentWeather));
 
     // 2. Assistant calls the function
-    final var request = new OpenAiChatCompletionRequest(messages).withOpenAiTools(tools);
-    final OpenAiChatCompletionResponse response =
-        OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
-    final OpenAiAssistantMessage assistantMessage = response.getMessage();
+    final var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
+    final OpenAiChatCompletionResponse response = client.chatCompletion(request);
 
     // 3. Execute the tool call for given tools
-    final List<OpenAiToolMessage> toolMessages =
-        OpenAiToolExecutor.executeTools(tools, assistantMessage.toolCalls());
+    final OpenAiAssistantMessage assistantMessage = response.getMessage();
+    final var toolResults = OpenAiTool.execute(tools, assistantMessage);
 
     // 4. Send back the results for model will incorporate them into its final response.
     messages.add(assistantMessage);
-    messages.addAll(toolMessages);
+    messages.addAll(toolResults.getMessages());
 
-    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
+    return client.chatCompletion(request.withMessages(messages));
   }
 
   /**
