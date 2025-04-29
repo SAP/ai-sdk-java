@@ -10,11 +10,14 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 class OrchestrationController {
   @Autowired private OrchestrationService service;
   @Autowired private ResourceLoader resourceLoader;
+
+  @Value("classpath:promptTemplateExample.yaml")
+  private Resource localPromptTemplate;
 
   @GetMapping("/completion")
   Object completion(
@@ -279,9 +285,8 @@ class OrchestrationController {
   @Nonnull
   Object localPromptTemplate(@RequestParam(value = "format", required = false) final String format)
       throws IOException {
-    final var resource = resourceLoader.getResource("classpath:promptTemplateExample.yaml");
     final var promptTemplate =
-        new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        Files.readString(localPromptTemplate.getFile().toPath(), StandardCharsets.UTF_8);
     final var response = service.localPromptTemplate(promptTemplate);
     if ("json".equals(format)) {
       return response;
