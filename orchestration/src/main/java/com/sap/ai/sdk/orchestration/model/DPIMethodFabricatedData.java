@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TextContent */
+/** DPIMethodFabricatedData */
 // CHECKSTYLE:OFF
-public class TextContent
+public class DPIMethodFabricatedData implements DPIStandardEntityMethod
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */
   public enum TypeEnum {
-    /** The TEXT option of this TextContent */
-    TEXT("text"),
+    /** The FABRICATED_DATA option of this DPIMethodFabricatedData */
+    FABRICATED_DATA("fabricated-data"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this TextContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this DPIMethodFabricatedData */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class TextContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type TextContent
+     * @return The enum value of type DPIMethodFabricatedData
      */
     @JsonCreator
     @Nonnull
@@ -87,23 +87,20 @@ public class TextContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("text")
-  private String text;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TextContent. */
-  protected TextContent() {}
+  /** Default constructor for DPIMethodFabricatedData. */
+  protected DPIMethodFabricatedData() {}
 
   /**
-   * Set the type of this {@link TextContent} instance and return the same instance.
+   * Set the type of this {@link DPIMethodFabricatedData} instance and return the same instance.
    *
-   * @param type The type of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param type The type of this {@link DPIMethodFabricatedData}
+   * @return The same instance of this {@link DPIMethodFabricatedData} class
    */
   @Nonnull
-  public TextContent type(@Nonnull final TypeEnum type) {
+  public DPIMethodFabricatedData type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -111,7 +108,7 @@ public class TextContent
   /**
    * Get type
    *
-   * @return type The type of this {@link TextContent} instance.
+   * @return type The type of this {@link DPIMethodFabricatedData} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -119,47 +116,16 @@ public class TextContent
   }
 
   /**
-   * Set the type of this {@link TextContent} instance.
+   * Set the type of this {@link DPIMethodFabricatedData} instance.
    *
-   * @param type The type of this {@link TextContent}
+   * @param type The type of this {@link DPIMethodFabricatedData}
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance and return the same instance.
-   *
-   * @param text The text of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
-   */
-  @Nonnull
-  public TextContent text(@Nonnull final String text) {
-    this.text = text;
-    return this;
-  }
-
-  /**
-   * Get text
-   *
-   * @return text The text of this {@link TextContent} instance.
-   */
-  @Nonnull
-  public String getText() {
-    return text;
-  }
-
-  /**
-   * Set the text of this {@link TextContent} instance.
-   *
-   * @param text The text of this {@link TextContent}
-   */
-  public void setText(@Nonnull final String text) {
-    this.text = text;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link TextContent}.
+   * Get the names of the unrecognizable properties of the {@link DPIMethodFabricatedData}.
    *
    * @return The set of properties names
    */
@@ -170,7 +136,7 @@ public class TextContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TextContent} instance.
+   * Get the value of an unrecognizable property of this {@link DPIMethodFabricatedData} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -181,14 +147,15 @@ public class TextContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TextContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "DPIMethodFabricatedData has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TextContent} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link DPIMethodFabricatedData} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -197,13 +164,12 @@ public class TextContent
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
-    if (text != null) declaredFields.put("text", text);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TextContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DPIMethodFabricatedData} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -221,24 +187,22 @@ public class TextContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TextContent textContent = (TextContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, textContent.type)
-        && Objects.equals(this.text, textContent.text);
+    final DPIMethodFabricatedData dpIMethodFabricatedData = (DPIMethodFabricatedData) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpIMethodFabricatedData.cloudSdkCustomFields)
+        && Objects.equals(this.type, dpIMethodFabricatedData.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cloudSdkCustomFields);
+    return Objects.hash(type, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TextContent {\n");
+    sb.append("class DPIMethodFabricatedData {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -257,32 +221,21 @@ public class TextContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TextContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * DPIMethodFabricatedData} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return (type) -> new DPIMethodFabricatedData().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link TextContent} instance.
+     * Set the type of this {@link DPIMethodFabricatedData} instance.
      *
-     * @param type The type of this {@link TextContent}
-     * @return The TextContent builder.
+     * @param type The type of this {@link DPIMethodFabricatedData}
+     * @return The DPIMethodFabricatedData instance.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the text of this {@link TextContent} instance.
-     *
-     * @param text The text of this {@link TextContent}
-     * @return The TextContent instance.
-     */
-    TextContent text(@Nonnull final String text);
+    DPIMethodFabricatedData type(@Nonnull final TypeEnum type);
   }
 }

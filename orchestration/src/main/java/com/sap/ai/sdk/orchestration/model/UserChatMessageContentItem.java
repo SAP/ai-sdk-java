@@ -25,20 +25,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseMessageToolCall */
+/** UserChatMessageContentItem */
 // CHECKSTYLE:OFF
-public class ResponseMessageToolCall
+public class UserChatMessageContentItem
 // CHECKSTYLE:ON
 {
-  @JsonProperty("id")
-  private String id;
-
-  /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
+  /** Gets or Sets type */
   public enum TypeEnum {
-    /** The FUNCTION option of this ResponseMessageToolCall */
-    FUNCTION("function"),
+    /** The TEXT option of this UserChatMessageContentItem */
+    TEXT("text"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseMessageToolCall */
+    /** The IMAGE_URL option of this UserChatMessageContentItem */
+    IMAGE_URL("image_url"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this UserChatMessageContentItem */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -73,7 +73,7 @@ public class ResponseMessageToolCall
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseMessageToolCall
+     * @return The enum value of type UserChatMessageContentItem
      */
     @JsonCreator
     @Nonnull
@@ -90,62 +90,34 @@ public class ResponseMessageToolCall
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("function")
-  private ResponseMessageToolCallFunction function;
+  @JsonProperty("text")
+  private String text;
+
+  @JsonProperty("image_url")
+  private ImageContentUrl imageUrl;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseMessageToolCall. */
-  protected ResponseMessageToolCall() {}
+  /** Default constructor for UserChatMessageContentItem. */
+  protected UserChatMessageContentItem() {}
 
   /**
-   * Set the id of this {@link ResponseMessageToolCall} instance and return the same instance.
+   * Set the type of this {@link UserChatMessageContentItem} instance and return the same instance.
    *
-   * @param id The ID of the tool call.
-   * @return The same instance of this {@link ResponseMessageToolCall} class
+   * @param type The type of this {@link UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
    */
   @Nonnull
-  public ResponseMessageToolCall id(@Nonnull final String id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * The ID of the tool call.
-   *
-   * @return id The id of this {@link ResponseMessageToolCall} instance.
-   */
-  @Nonnull
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * Set the id of this {@link ResponseMessageToolCall} instance.
-   *
-   * @param id The ID of the tool call.
-   */
-  public void setId(@Nonnull final String id) {
-    this.id = id;
-  }
-
-  /**
-   * Set the type of this {@link ResponseMessageToolCall} instance and return the same instance.
-   *
-   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-   * @return The same instance of this {@link ResponseMessageToolCall} class
-   */
-  @Nonnull
-  public ResponseMessageToolCall type(@Nonnull final TypeEnum type) {
+  public UserChatMessageContentItem type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * Get type
    *
-   * @return type The type of this {@link ResponseMessageToolCall} instance.
+   * @return type The type of this {@link UserChatMessageContentItem} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -153,47 +125,79 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Set the type of this {@link ResponseMessageToolCall} instance.
+   * Set the type of this {@link UserChatMessageContentItem} instance.
    *
-   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * @param type The type of this {@link UserChatMessageContentItem}
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the function of this {@link ResponseMessageToolCall} instance and return the same instance.
+   * Set the text of this {@link UserChatMessageContentItem} instance and return the same instance.
    *
-   * @param function The function of this {@link ResponseMessageToolCall}
-   * @return The same instance of this {@link ResponseMessageToolCall} class
+   * @param text The text of this {@link UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
    */
   @Nonnull
-  public ResponseMessageToolCall function(@Nonnull final ResponseMessageToolCallFunction function) {
-    this.function = function;
+  public UserChatMessageContentItem text(@Nullable final String text) {
+    this.text = text;
     return this;
   }
 
   /**
-   * Get function
+   * Get text
    *
-   * @return function The function of this {@link ResponseMessageToolCall} instance.
+   * @return text The text of this {@link UserChatMessageContentItem} instance.
    */
   @Nonnull
-  public ResponseMessageToolCallFunction getFunction() {
-    return function;
+  public String getText() {
+    return text;
   }
 
   /**
-   * Set the function of this {@link ResponseMessageToolCall} instance.
+   * Set the text of this {@link UserChatMessageContentItem} instance.
    *
-   * @param function The function of this {@link ResponseMessageToolCall}
+   * @param text The text of this {@link UserChatMessageContentItem}
    */
-  public void setFunction(@Nonnull final ResponseMessageToolCallFunction function) {
-    this.function = function;
+  public void setText(@Nullable final String text) {
+    this.text = text;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseMessageToolCall}.
+   * Set the imageUrl of this {@link UserChatMessageContentItem} instance and return the same
+   * instance.
+   *
+   * @param imageUrl The imageUrl of this {@link UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
+   */
+  @Nonnull
+  public UserChatMessageContentItem imageUrl(@Nullable final ImageContentUrl imageUrl) {
+    this.imageUrl = imageUrl;
+    return this;
+  }
+
+  /**
+   * Get imageUrl
+   *
+   * @return imageUrl The imageUrl of this {@link UserChatMessageContentItem} instance.
+   */
+  @Nonnull
+  public ImageContentUrl getImageUrl() {
+    return imageUrl;
+  }
+
+  /**
+   * Set the imageUrl of this {@link UserChatMessageContentItem} instance.
+   *
+   * @param imageUrl The imageUrl of this {@link UserChatMessageContentItem}
+   */
+  public void setImageUrl(@Nullable final ImageContentUrl imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link UserChatMessageContentItem}.
    *
    * @return The set of properties names
    */
@@ -204,7 +208,8 @@ public class ResponseMessageToolCall
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseMessageToolCall} instance.
+   * Get the value of an unrecognizable property of this {@link UserChatMessageContentItem}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -216,13 +221,13 @@ public class ResponseMessageToolCall
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ResponseMessageToolCall has no field with name '" + name + "'.");
+          "UserChatMessageContentItem has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseMessageToolCall} instance including
+   * Get the value of all properties of this {@link UserChatMessageContentItem} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -231,14 +236,14 @@ public class ResponseMessageToolCall
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (id != null) declaredFields.put("id", id);
     if (type != null) declaredFields.put("type", type);
-    if (function != null) declaredFields.put("function", function);
+    if (text != null) declaredFields.put("text", text);
+    if (imageUrl != null) declaredFields.put("imageUrl", imageUrl);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseMessageToolCall} instance. If the map
+   * Set an unrecognizable property of this {@link UserChatMessageContentItem} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -257,26 +262,27 @@ public class ResponseMessageToolCall
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseMessageToolCall responseMessageToolCall = (ResponseMessageToolCall) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseMessageToolCall.cloudSdkCustomFields)
-        && Objects.equals(this.id, responseMessageToolCall.id)
-        && Objects.equals(this.type, responseMessageToolCall.type)
-        && Objects.equals(this.function, responseMessageToolCall.function);
+    final UserChatMessageContentItem userChatMessageContentItem = (UserChatMessageContentItem) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, userChatMessageContentItem.cloudSdkCustomFields)
+        && Objects.equals(this.type, userChatMessageContentItem.type)
+        && Objects.equals(this.text, userChatMessageContentItem.text)
+        && Objects.equals(this.imageUrl, userChatMessageContentItem.imageUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, type, function, cloudSdkCustomFields);
+    return Objects.hash(type, text, imageUrl, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseMessageToolCall {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class UserChatMessageContentItem {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    function: ").append(toIndentedString(function)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -296,43 +302,20 @@ public class ResponseMessageToolCall
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseMessageToolCall} instance with all required arguments.
+   * UserChatMessageContentItem} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (type) -> (function) -> new ResponseMessageToolCall().id(id).type(type).function(function);
+    return (type) -> new UserChatMessageContentItem().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the id of this {@link ResponseMessageToolCall} instance.
+     * Set the type of this {@link UserChatMessageContentItem} instance.
      *
-     * @param id The ID of the tool call.
-     * @return The ResponseMessageToolCall builder.
+     * @param type The type of this {@link UserChatMessageContentItem}
+     * @return The UserChatMessageContentItem instance.
      */
-    Builder1 id(@Nonnull final String id);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the type of this {@link ResponseMessageToolCall} instance.
-     *
-     * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-     * @return The ResponseMessageToolCall builder.
-     */
-    Builder2 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder2 {
-    /**
-     * Set the function of this {@link ResponseMessageToolCall} instance.
-     *
-     * @param function The function of this {@link ResponseMessageToolCall}
-     * @return The ResponseMessageToolCall instance.
-     */
-    ResponseMessageToolCall function(@Nonnull final ResponseMessageToolCallFunction function);
+    UserChatMessageContentItem type(@Nonnull final TypeEnum type);
   }
 }

@@ -23,87 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SingleChatMessage */
+/** DPICustomEntity */
 // CHECKSTYLE:OFF
-public class SingleChatMessage implements ChatMessage
+public class DPICustomEntity implements DPIEntityConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("role")
-  private String role;
+  @JsonProperty("regex")
+  private String regex;
 
-  @JsonProperty("content")
-  private String content;
+  @JsonProperty("method")
+  private DPIMethodConstant method;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SingleChatMessage. */
-  protected SingleChatMessage() {}
+  /** Default constructor for DPICustomEntity. */
+  protected DPICustomEntity() {}
 
   /**
-   * Set the role of this {@link SingleChatMessage} instance and return the same instance.
+   * Set the regex of this {@link DPICustomEntity} instance and return the same instance.
    *
-   * @param role The role of this {@link SingleChatMessage}
-   * @return The same instance of this {@link SingleChatMessage} class
+   * @param regex The regex of this {@link DPICustomEntity}
+   * @return The same instance of this {@link DPICustomEntity} class
    */
   @Nonnull
-  public SingleChatMessage role(@Nonnull final String role) {
-    this.role = role;
+  public DPICustomEntity regex(@Nonnull final String regex) {
+    this.regex = regex;
     return this;
   }
 
   /**
-   * Get role
+   * Get regex
    *
-   * @return role The role of this {@link SingleChatMessage} instance.
+   * @return regex The regex of this {@link DPICustomEntity} instance.
    */
   @Nonnull
-  public String getRole() {
-    return role;
+  public String getRegex() {
+    return regex;
   }
 
   /**
-   * Set the role of this {@link SingleChatMessage} instance.
+   * Set the regex of this {@link DPICustomEntity} instance.
    *
-   * @param role The role of this {@link SingleChatMessage}
+   * @param regex The regex of this {@link DPICustomEntity}
    */
-  public void setRole(@Nonnull final String role) {
-    this.role = role;
+  public void setRegex(@Nonnull final String regex) {
+    this.regex = regex;
   }
 
   /**
-   * Set the content of this {@link SingleChatMessage} instance and return the same instance.
+   * Set the method of this {@link DPICustomEntity} instance and return the same instance.
    *
-   * @param content The content of this {@link SingleChatMessage}
-   * @return The same instance of this {@link SingleChatMessage} class
+   * @param method The method of this {@link DPICustomEntity}
+   * @return The same instance of this {@link DPICustomEntity} class
    */
   @Nonnull
-  public SingleChatMessage content(@Nonnull final String content) {
-    this.content = content;
+  public DPICustomEntity method(@Nonnull final DPIMethodConstant method) {
+    this.method = method;
     return this;
   }
 
   /**
-   * Get content
+   * Get method
    *
-   * @return content The content of this {@link SingleChatMessage} instance.
+   * @return method The method of this {@link DPICustomEntity} instance.
    */
   @Nonnull
-  public String getContent() {
-    return content;
+  public DPIMethodConstant getMethod() {
+    return method;
   }
 
   /**
-   * Set the content of this {@link SingleChatMessage} instance.
+   * Set the method of this {@link DPICustomEntity} instance.
    *
-   * @param content The content of this {@link SingleChatMessage}
+   * @param method The method of this {@link DPICustomEntity}
    */
-  public void setContent(@Nonnull final String content) {
-    this.content = content;
+  public void setMethod(@Nonnull final DPIMethodConstant method) {
+    this.method = method;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SingleChatMessage}.
+   * Get the names of the unrecognizable properties of the {@link DPICustomEntity}.
    *
    * @return The set of properties names
    */
@@ -114,7 +114,7 @@ public class SingleChatMessage implements ChatMessage
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SingleChatMessage} instance.
+   * Get the value of an unrecognizable property of this {@link DPICustomEntity} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -125,14 +125,14 @@ public class SingleChatMessage implements ChatMessage
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("SingleChatMessage has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DPICustomEntity has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SingleChatMessage} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link DPICustomEntity} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -140,14 +140,14 @@ public class SingleChatMessage implements ChatMessage
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (role != null) declaredFields.put("role", role);
-    if (content != null) declaredFields.put("content", content);
+    if (regex != null) declaredFields.put("regex", regex);
+    if (method != null) declaredFields.put("method", method);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link SingleChatMessage} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DPICustomEntity} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -165,24 +165,24 @@ public class SingleChatMessage implements ChatMessage
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SingleChatMessage singleChatMessage = (SingleChatMessage) o;
-    return Objects.equals(this.cloudSdkCustomFields, singleChatMessage.cloudSdkCustomFields)
-        && Objects.equals(this.role, singleChatMessage.role)
-        && Objects.equals(this.content, singleChatMessage.content);
+    final DPICustomEntity dpICustomEntity = (DPICustomEntity) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpICustomEntity.cloudSdkCustomFields)
+        && Objects.equals(this.regex, dpICustomEntity.regex)
+        && Objects.equals(this.method, dpICustomEntity.method);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(role, content, cloudSdkCustomFields);
+    return Objects.hash(regex, method, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SingleChatMessage {\n");
-    sb.append("    role: ").append(toIndentedString(role)).append("\n");
-    sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    sb.append("class DPICustomEntity {\n");
+    sb.append("    regex: ").append(toIndentedString(regex)).append("\n");
+    sb.append("    method: ").append(toIndentedString(method)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -201,32 +201,32 @@ public class SingleChatMessage implements ChatMessage
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link SingleChatMessage}
+   * Create a type-safe, fluent-api builder object to construct a new {@link DPICustomEntity}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (role) -> (content) -> new SingleChatMessage().role(role).content(content);
+    return (regex) -> (method) -> new DPICustomEntity().regex(regex).method(method);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the role of this {@link SingleChatMessage} instance.
+     * Set the regex of this {@link DPICustomEntity} instance.
      *
-     * @param role The role of this {@link SingleChatMessage}
-     * @return The SingleChatMessage builder.
+     * @param regex The regex of this {@link DPICustomEntity}
+     * @return The DPICustomEntity builder.
      */
-    Builder1 role(@Nonnull final String role);
+    Builder1 regex(@Nonnull final String regex);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the content of this {@link SingleChatMessage} instance.
+     * Set the method of this {@link DPICustomEntity} instance.
      *
-     * @param content The content of this {@link SingleChatMessage}
-     * @return The SingleChatMessage instance.
+     * @param method The method of this {@link DPICustomEntity}
+     * @return The DPICustomEntity instance.
      */
-    SingleChatMessage content(@Nonnull final String content);
+    DPICustomEntity method(@Nonnull final DPIMethodConstant method);
   }
 }

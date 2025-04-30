@@ -25,22 +25,25 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TextContent */
+/** UserChatMessage */
 // CHECKSTYLE:OFF
-public class TextContent
+public class UserChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
-  public enum TypeEnum {
-    /** The TEXT option of this TextContent */
-    TEXT("text"),
+  @JsonProperty("content")
+  private UserChatMessageContent content;
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this TextContent */
+  /** Gets or Sets role */
+  public enum RoleEnum {
+    /** The USER option of this UserChatMessage */
+    USER("user"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this UserChatMessage */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
-    TypeEnum(String value) {
+    RoleEnum(String value) {
       this.value = value;
     }
 
@@ -70,12 +73,12 @@ public class TextContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type TextContent
+     * @return The enum value of type UserChatMessage
      */
     @JsonCreator
     @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
@@ -84,82 +87,79 @@ public class TextContent
     }
   }
 
-  @JsonProperty("type")
-  private TypeEnum type;
-
-  @JsonProperty("text")
-  private String text;
+  @JsonProperty("role")
+  private RoleEnum role;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TextContent. */
-  protected TextContent() {}
+  /** Default constructor for UserChatMessage. */
+  protected UserChatMessage() {}
 
   /**
-   * Set the type of this {@link TextContent} instance and return the same instance.
+   * Set the content of this {@link UserChatMessage} instance and return the same instance.
    *
-   * @param type The type of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param content The content of this {@link UserChatMessage}
+   * @return The same instance of this {@link UserChatMessage} class
    */
   @Nonnull
-  public TextContent type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public UserChatMessage content(@Nonnull final UserChatMessageContent content) {
+    this.content = content;
     return this;
   }
 
   /**
-   * Get type
+   * Get content
    *
-   * @return type The type of this {@link TextContent} instance.
+   * @return content The content of this {@link UserChatMessage} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public UserChatMessageContent getContent() {
+    return content;
   }
 
   /**
-   * Set the type of this {@link TextContent} instance.
+   * Set the content of this {@link UserChatMessage} instance.
    *
-   * @param type The type of this {@link TextContent}
+   * @param content The content of this {@link UserChatMessage}
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setContent(@Nonnull final UserChatMessageContent content) {
+    this.content = content;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance and return the same instance.
+   * Set the role of this {@link UserChatMessage} instance and return the same instance.
    *
-   * @param text The text of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param role The role of this {@link UserChatMessage}
+   * @return The same instance of this {@link UserChatMessage} class
    */
   @Nonnull
-  public TextContent text(@Nonnull final String text) {
-    this.text = text;
+  public UserChatMessage role(@Nonnull final RoleEnum role) {
+    this.role = role;
     return this;
   }
 
   /**
-   * Get text
+   * Get role
    *
-   * @return text The text of this {@link TextContent} instance.
+   * @return role The role of this {@link UserChatMessage} instance.
    */
   @Nonnull
-  public String getText() {
-    return text;
+  public RoleEnum getRole() {
+    return role;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance.
+   * Set the role of this {@link UserChatMessage} instance.
    *
-   * @param text The text of this {@link TextContent}
+   * @param role The role of this {@link UserChatMessage}
    */
-  public void setText(@Nonnull final String text) {
-    this.text = text;
+  public void setRole(@Nonnull final RoleEnum role) {
+    this.role = role;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TextContent}.
+   * Get the names of the unrecognizable properties of the {@link UserChatMessage}.
    *
    * @return The set of properties names
    */
@@ -170,7 +170,7 @@ public class TextContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TextContent} instance.
+   * Get the value of an unrecognizable property of this {@link UserChatMessage} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -181,13 +181,13 @@ public class TextContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TextContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("UserChatMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TextContent} instance including unrecognized
+   * Get the value of all properties of this {@link UserChatMessage} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -196,13 +196,13 @@ public class TextContent
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
-    if (text != null) declaredFields.put("text", text);
+    if (content != null) declaredFields.put("content", content);
+    if (role != null) declaredFields.put("role", role);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TextContent} instance. If the map previously
+   * Set an unrecognizable property of this {@link UserChatMessage} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -221,24 +221,24 @@ public class TextContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TextContent textContent = (TextContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, textContent.type)
-        && Objects.equals(this.text, textContent.text);
+    final UserChatMessage userChatMessage = (UserChatMessage) o;
+    return Objects.equals(this.cloudSdkCustomFields, userChatMessage.cloudSdkCustomFields)
+        && Objects.equals(this.content, userChatMessage.content)
+        && Objects.equals(this.role, userChatMessage.role);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cloudSdkCustomFields);
+    return Objects.hash(content, role, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TextContent {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("class UserChatMessage {\n");
+    sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -257,32 +257,32 @@ public class TextContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TextContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link UserChatMessage}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return (content) -> (role) -> new UserChatMessage().content(content).role(role);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link TextContent} instance.
+     * Set the content of this {@link UserChatMessage} instance.
      *
-     * @param type The type of this {@link TextContent}
-     * @return The TextContent builder.
+     * @param content The content of this {@link UserChatMessage}
+     * @return The UserChatMessage builder.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
+    Builder1 content(@Nonnull final UserChatMessageContent content);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the text of this {@link TextContent} instance.
+     * Set the role of this {@link UserChatMessage} instance.
      *
-     * @param text The text of this {@link TextContent}
-     * @return The TextContent instance.
+     * @param role The role of this {@link UserChatMessage}
+     * @return The UserChatMessage instance.
      */
-    TextContent text(@Nonnull final String text);
+    UserChatMessage role(@Nonnull final RoleEnum role);
   }
 }

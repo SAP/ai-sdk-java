@@ -14,13 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** ChatMessage */
+/** DPIStandardEntityMethod */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = AssistantChatMessage.class),
-  @JsonSubTypes.Type(value = DeveloperChatMessage.class),
-  @JsonSubTypes.Type(value = SystemChatMessage.class),
-  @JsonSubTypes.Type(value = ToolChatMessage.class),
-  @JsonSubTypes.Type(value = UserChatMessage.class),
+  @JsonSubTypes.Type(value = DPIMethodConstant.class),
+  @JsonSubTypes.Type(value = DPIMethodFabricatedData.class),
 })
-public interface ChatMessage {}
+public interface DPIStandardEntityMethod {}

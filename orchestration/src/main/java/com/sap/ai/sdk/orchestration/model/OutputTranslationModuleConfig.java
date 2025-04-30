@@ -14,10 +14,9 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** MultiChatMessageContent */
+/** OutputTranslationModuleConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = ImageContent.class),
-  @JsonSubTypes.Type(value = TextContent.class),
+  @JsonSubTypes.Type(value = SAPDocumentTranslation.class),
 })
-public interface MultiChatMessageContent {}
+public interface OutputTranslationModuleConfig {}
