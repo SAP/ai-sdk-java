@@ -1,16 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
-import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.IMAGE_URL;
-import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.TEXT;
-
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ImageContentUrl;
-import com.sap.ai.sdk.orchestration.model.UserChatMessage;
-import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
-import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
-import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -68,20 +59,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the corresponding {@code ChatMessage} object.
    */
   @Nonnull
-  default ChatMessage createChatMessage() {
-    final var contentList = new LinkedList<UserChatMessageContentItem>();
-
-    for (final ContentItem item : this.content().items()) {
-      if (item instanceof TextItem textItem) {
-        contentList.add(UserChatMessageContentItem.create().type(TEXT).text(textItem.text()));
-      } else if (item instanceof ImageItem imageItem) {
-        final var detail = imageItem.detailLevel().toString();
-        final var img = ImageContentUrl.create().url(imageItem.imageUrl()).detail(detail);
-        contentList.add(UserChatMessageContentItem.create().type(IMAGE_URL).imageUrl(img));
-      }
-    }
-    return UserChatMessage.create().content(UserChatMessageContent.create(contentList)).role(USER);
-  }
+  ChatMessage createChatMessage();
 
   /**
    * Returns the role of the assistant.
