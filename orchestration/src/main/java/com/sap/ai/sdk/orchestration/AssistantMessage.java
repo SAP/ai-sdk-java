@@ -5,7 +5,10 @@ import static com.sap.ai.sdk.orchestration.model.AssistantChatMessage.RoleEnum.A
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
+import com.sap.ai.sdk.orchestration.model.TextContent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,6 +44,16 @@ public class AssistantMessage implements Message {
   }
 
   /**
+   * Creates a new assistant message with the given single message.
+   *
+   * @param content the single message.
+   */
+  AssistantMessage(@Nonnull final MessageContent content) {
+    this.content = content;
+    toolCalls = null;
+  }
+
+  /**
    * Creates a new assistant message with the given tool calls.
    *
    * @param toolCalls list of tool call objects
@@ -56,6 +69,16 @@ public class AssistantMessage implements Message {
     if (toolCalls() != null) {
       return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
-    return AssistantChatMessage.create().role(ASSISTANT).content(content);
+    var textContents = new ArrayList<TextContent>();
+    for (var item : content.items()) {
+      if (item
+          instanceof TextItem textItem) { // TODO: throw exception if we have ImageItem instead?
+        textContents.add(
+            TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
+      }
+    }
+    return AssistantChatMessage.create()
+        .role(ASSISTANT)
+        .content(ChatMessageContent.create(textContents));
   }
 }

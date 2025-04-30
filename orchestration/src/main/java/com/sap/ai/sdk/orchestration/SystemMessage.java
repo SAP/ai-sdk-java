@@ -4,7 +4,10 @@ import static com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum.SYST
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
+import com.sap.ai.sdk.orchestration.model.TextContent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -56,6 +59,14 @@ public class SystemMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    return SystemChatMessage.create().role(SYSTEM).content(content);
+    var textContents = new ArrayList<TextContent>();
+    for (var item : content.items()) {
+      if (item
+          instanceof TextItem textItem) { // TODO: throw exception if we have ImageItem instead?
+        textContents.add(
+            TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
+      }
+    }
+    return SystemChatMessage.create().role(SYSTEM).content(ChatMessageContent.create(textContents));
   }
 }

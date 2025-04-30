@@ -2,16 +2,22 @@ package com.sap.ai.sdk.orchestration;
 
 import static lombok.AccessLevel.PACKAGE;
 
+import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
 import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -59,14 +65,41 @@ public class OrchestrationChatResponse {
   public List<Message> getAllMessages() throws IllegalArgumentException {
     final var messages = new ArrayList<Message>();
     for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
-      if (chatMessage instanceof SingleChatMessage simpleMsg) {
-        messages.add(chatMessageIntoMessage(simpleMsg));
-      } else if (chatMessage instanceof MultiChatMessage mCMessage) {
-        messages.add(chatMessageIntoMessage(mCMessage));
+      if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
+        var toolCalls = assistantChatMessage.getToolCalls();
+        if (!toolCalls.isEmpty()) {
+          messages.add(new AssistantMessage(toolCalls));
+        } else {
+          messages.add(new AssistantMessage(MessageContent.fromChatMessageContent(assistantChatMessage.getContent())));
+        }
+      } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {
+        messages.add(new SystemMessage(MessageContent.fromChatMessageContent(systemChatMessage.getContent())));
+      } else if (chatMessage instanceof UserChatMessage userChatMessage) {
+        if (userChatMessage.getContent() instanceof UserChatMessageContent.InnerString innerString) {
+          messages.add(new UserMessage(innerString.value()));
+        } else{
+          var items = ((UserChatMessageContent.InnerUserChatMessageContentItems) userChatMessage.getContent()).values();
+          var contentItems = new ArrayList<ContentItem>();
+          for (var item: items) {
+            if (item.getType().equals(UserChatMessageContentItem.TypeEnum.TEXT)) {
+              contentItems.add()
+            }
+          }
+          messages.add(new UserMessage())
+        }
       } else {
         throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
+    }
+//      if (chatMessage instanceof SingleChatMessage simpleMsg) {
+//        messages.add(chatMessageIntoMessage(simpleMsg));
+//      } else if (chatMessage instanceof MultiChatMessage mCMessage) {
+//        messages.add(chatMessageIntoMessage(mCMessage));
+//      } else {
+//        throw new IllegalArgumentException(
+//            "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
+//      }
     }
     messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
