@@ -56,6 +56,6 @@ public class AssistantMessage implements Message {
     if (toolCalls() != null) {
       return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
-    return Message.super.createChatMessage();
+    return AssistantChatMessage.create().role(ASSISTANT).content(content);
   }
 }

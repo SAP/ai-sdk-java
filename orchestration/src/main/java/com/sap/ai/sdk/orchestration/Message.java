@@ -1,13 +1,15 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
+import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.IMAGE_URL;
+import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.TEXT;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
-import com.sap.ai.sdk.orchestration.model.ImageContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentUrl;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
-import com.sap.ai.sdk.orchestration.model.TextContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -67,21 +69,18 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    */
   @Nonnull
   default ChatMessage createChatMessage() {
-    final var itemList = this.content().items();
-    if (itemList.size() == 1 && itemList.get(0) instanceof TextItem textItem) {
-      return SingleChatMessage.create().role(role()).content(textItem.text());
-    }
-    final var contentList = new LinkedList<ChatMessageContent>();
-    for (final ContentItem item : itemList) {
+    final var contentList = new LinkedList<UserChatMessageContentItem>();
+
+    for (final ContentItem item : this.content().items()) {
       if (item instanceof TextItem textItem) {
-        contentList.add(TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
+        contentList.add(UserChatMessageContentItem.create().type(TEXT).text(textItem.text()));
       } else if (item instanceof ImageItem imageItem) {
         final var detail = imageItem.detailLevel().toString();
         final var img = ImageContentUrl.create().url(imageItem.imageUrl()).detail(detail);
-        contentList.add(ImageContent.create().type(ImageContent.TypeEnum.IMAGE_URL).imageUrl(img));
+        contentList.add(UserChatMessageContentItem.create().type(IMAGE_URL).imageUrl(img));
       }
     }
-    return MultiChatMessage.create().role(role()).content(contentList);
+    return UserChatMessage.create().content(UserChatMessageContent.create(contentList)).role(USER);
   }
 
   /**
