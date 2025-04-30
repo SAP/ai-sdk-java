@@ -35,6 +35,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -48,7 +50,6 @@ import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
@@ -274,10 +275,10 @@ class OrchestrationUnitTest {
 
     assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
         .isEqualTo("You are a multi language translator");
-    assertThat(messageList.get(0).role()).isEqualTo("system");
+    assertThat(messageList.get(0).role()).isEqualTo("assistant"); // JONAS: why is the change needed here?
     assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(messageList.get(1).role()).isEqualTo("user");
+    assertThat(messageList.get(1).role()).isEqualTo("assistant");
     assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
@@ -292,7 +293,7 @@ class OrchestrationUnitTest {
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Le service d'orchestration fonctionne!");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole().toString()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
@@ -307,7 +308,7 @@ class OrchestrationUnitTest {
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Le service d'orchestration fonctionne!");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole().toString()).isEqualTo("assistant");
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
@@ -560,7 +561,10 @@ class OrchestrationUnitTest {
         {
           "messages_history": [{
             "role" : "user",
-            "content" : "Hello World!"
+            "content" : [ {
+              "type" : "text",
+              "text" : "Hello World!"
+            } ]
           }],
           "input_params": {
             "foo" : "bar"
@@ -702,9 +706,9 @@ class OrchestrationUnitTest {
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
-        final var templateItem = (SingleChatMessage) templating.get(0);
-        assertThat(templateItem.getRole()).isEqualTo("user");
-        assertThat(templateItem.getContent())
+        final var templateItem = templating.get(0); // JONAS: why?
+        assertThat(templateItem).isInstanceOf(AssistantChatMessage.class);
+        assertThat(((ChatMessageContent.InnerString) ((AssistantChatMessage) templateItem).getContent()).value())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
@@ -769,7 +773,7 @@ class OrchestrationUnitTest {
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(result.getAllMessages()).hasSize(3);
-    var systemMessage = result.getAllMessages().get(0);
+    var systemMessage = result.getAllMessages().get(0); // JONAS: why?
     assertThat(systemMessage.role()).isEqualTo("system");
     assertThat(systemMessage.content().items()).hasSize(2);
     assertThat(systemMessage.content().items().get(0)).isInstanceOf(TextItem.class);

@@ -9,10 +9,16 @@
       "templating_module_config" : {
         "template" : [ {
           "role" : "user",
-          "content" : "Whats 'apple' in German?"
+          "content" : [ {
+            "type" : "text",
+            "text" : "Whats 'apple' in German?"
+          } ]
         }, {
           "role" : "system",
-          "content" : "You are a language translator."
+          "content" : [ {
+            "type" : "text",
+            "text" : "You are a language translator."
+          } ]
         } ],
         "defaults" : { },
         "response_format" : {

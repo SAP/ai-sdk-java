@@ -9,11 +9,12 @@ import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +123,10 @@ public class OrchestrationConvenienceUnitTest {
   @Test
   void testTemplateConstruction() {
     List<ChatMessage> templateMessages =
-        List.of(SingleChatMessage.create().role("user").content("message"));
+        List.of(
+            UserChatMessage.create()
+                .content(UserChatMessageContent.create("message"))
+                .role(UserChatMessage.RoleEnum.USER));
     var defaults = Map.of("key", "value");
     var tools =
         List.of(

@@ -4,20 +4,17 @@ import static lombok.AccessLevel.PACKAGE;
 
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
+import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.orchestration.model.UserChatMessage;
-import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
-import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -70,60 +67,31 @@ public class OrchestrationChatResponse {
         if (!toolCalls.isEmpty()) {
           messages.add(new AssistantMessage(toolCalls));
         } else {
-          messages.add(new AssistantMessage(MessageContent.fromChatMessageContent(assistantChatMessage.getContent())));
+          messages.add(
+              new AssistantMessage(
+                  MessageContent.fromChatMessageContent(assistantChatMessage.getContent())));
         }
       } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {
-        messages.add(new SystemMessage(MessageContent.fromChatMessageContent(systemChatMessage.getContent())));
+        messages.add(
+            new SystemMessage(
+                MessageContent.fromChatMessageContent(systemChatMessage.getContent())));
       } else if (chatMessage instanceof UserChatMessage userChatMessage) {
-        if (userChatMessage.getContent() instanceof UserChatMessageContent.InnerString innerString) {
-          messages.add(new UserMessage(innerString.value()));
-        } else{
-          var items = ((UserChatMessageContent.InnerUserChatMessageContentItems) userChatMessage.getContent()).values();
-          var contentItems = new ArrayList<ContentItem>();
-          for (var item: items) {
-            if (item.getType().equals(UserChatMessageContentItem.TypeEnum.TEXT)) {
-              contentItems.add()
-            }
-          }
-          messages.add(new UserMessage())
-        }
+        messages.add(
+            new UserMessage(
+                MessageContent.fromUserChatMessageContent(userChatMessage.getContent())));
+      } else if (chatMessage instanceof ToolChatMessage toolChatMessage) {
+        messages.add(
+            new ToolMessage(
+                toolChatMessage.getToolCallId(),
+                ((ChatMessageContent.InnerString) toolChatMessage.getContent()).value()));
       } else {
         throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
     }
-//      if (chatMessage instanceof SingleChatMessage simpleMsg) {
-//        messages.add(chatMessageIntoMessage(simpleMsg));
-//      } else if (chatMessage instanceof MultiChatMessage mCMessage) {
-//        messages.add(chatMessageIntoMessage(mCMessage));
-//      } else {
-//        throw new IllegalArgumentException(
-//            "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
-//      }
-    }
+
     messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
-  }
-
-  @Nonnull
-  private Message chatMessageIntoMessage(@Nonnull final SingleChatMessage simpleMsg) {
-    return switch (simpleMsg.getRole()) {
-      case "user" -> Message.user(simpleMsg.getContent());
-      case "assistant" -> Message.assistant(simpleMsg.getContent());
-      case "system" -> Message.system(simpleMsg.getContent());
-      default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
-    };
-  }
-
-  @Nonnull
-  private Message chatMessageIntoMessage(@Nonnull final MultiChatMessage mCMessage) {
-    return switch (mCMessage.getRole()) {
-      case "user" -> new UserMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
-      case "system" -> new SystemMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
-      default ->
-          throw new IllegalStateException(
-              "Unexpected role with complex message: " + mCMessage.getRole());
-    };
   }
 
   /**

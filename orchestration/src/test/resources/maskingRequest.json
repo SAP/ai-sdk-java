@@ -17,7 +17,10 @@
         "template": [
           {
             "role": "user",
-            "content": "Hello World! Why is this phrase so famous?"
+            "content": [ {
+              "type" : "text",
+              "text" : "Hello World! Why is this phrase so famous?"
+            } ]
           }
         ],
         "defaults" : { },

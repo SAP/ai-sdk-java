@@ -1,7 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
-
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -46,7 +47,29 @@ public record MessageContent(@Nonnull List<ContentItem> items) {
       return new MessageContent(items);
     } else {
       throw new IllegalArgumentException(
-            "Contents of type " + chatMessageContent.getClass() + " are not supported.");
+          "Contents of type " + chatMessageContent.getClass() + " are not supported.");
+    }
+  }
+
+  @Nonnull
+  static MessageContent fromUserChatMessageContent(UserChatMessageContent chatMessageContent) {
+    if (chatMessageContent instanceof UserChatMessageContent.InnerString innerString) {
+      return new MessageContent(List.of(new TextItem(innerString.value())));
+    } else if (chatMessageContent
+        instanceof UserChatMessageContent.InnerUserChatMessageContentItems innerContentItems) {
+      var items = new ArrayList<ContentItem>();
+      for (var value : innerContentItems.values()) {
+        if (value.getType().equals(UserChatMessageContentItem.TypeEnum.TEXT)) {
+          items.add(new TextItem(value.getText()));
+        } else if (value.getType().equals(UserChatMessageContentItem.TypeEnum.IMAGE_URL)) {
+          var detailLevel = ImageItem.DetailLevel.fromString(value.getImageUrl().getDetail());
+          items.add(new ImageItem(value.getImageUrl().getUrl(), detailLevel));
+        }
+      }
+      return new MessageContent(items);
+    } else {
+      throw new IllegalArgumentException(
+          "Contents of type " + chatMessageContent.getClass() + " are not supported.");
     }
   }
 }
