@@ -3,6 +3,10 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringChatResponse;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +15,7 @@ import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 
 @Slf4j
-public class SpringAiOrchestrationTest {
+class SpringAiOrchestrationTest {
 
   SpringAiOrchestrationService service = new SpringAiOrchestrationService();
 
@@ -57,6 +61,71 @@ public class SpringAiOrchestrationTest {
   }
 
   @Test
+  void testInputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    assertThatThrownBy(() -> service.inputFiltering(policy))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
+  }
+
+  @Test
+  void testInputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.inputFiltering(policy);
+
+    assertThat(response.getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+
+    var filterResult =
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getModuleResults()
+            .getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("passed");
+  }
+
+  @Test
+  void testOutputFilteringStrict() {
+    var policy = AzureFilterThreshold.ALLOW_SAFE;
+
+    var response = service.outputFiltering(policy);
+
+    assertThat(response.getResult().getMetadata().getFinishReason()).isEqualTo("content_filter");
+    assertThat(response.getResult().getOutput().getText()).isEmpty();
+
+    var filterResult =
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getModuleResults()
+            .getOutputFiltering();
+    assertThat(filterResult.getMessage()).containsPattern("1 of 1 choices failed");
+  }
+
+  @Test
+  void testOutputFilteringLenient() {
+    var policy = AzureFilterThreshold.ALLOW_ALL;
+
+    var response = service.outputFiltering(policy);
+
+    assertThat(response.getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+
+    var filterResult =
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getModuleResults()
+            .getOutputFiltering();
+    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
+  }
+
+  @Test
   void testToolCallingWithoutExecution() {
     ChatResponse response = service.toolCalling(false);
     List<ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
@@ -88,5 +157,13 @@ public class SpringAiOrchestrationTest {
     assertThat(text)
         .containsAnyOf(
             "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");
+  }
+
+  @Test
+  void testResponseFormat() {
+    var translation = service.responseFormat();
+    assertThat(translation).isNotNull();
+    assertThat(translation.translation()).isNotEmpty();
+    assertThat(translation.language()).containsIgnoringCase("dutch");
   }
 }
