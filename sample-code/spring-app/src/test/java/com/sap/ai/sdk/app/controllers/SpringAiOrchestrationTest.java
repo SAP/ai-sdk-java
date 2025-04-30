@@ -1,10 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.SpringAiOrchestrationService;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
@@ -77,10 +75,8 @@ public class SpringAiOrchestrationTest {
 
   @Test
   void testToolCallingWithExecution() {
-    // tool execution broken on orchestration https://jira.tools.sap/browse/AI-86627
-    assertThatThrownBy(() -> service.toolCalling(true))
-        .isExactlyInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Request failed with status 400 Bad Request");
+    ChatResponse response = service.toolCalling(true);
+    assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse");
   }
 
   @Test
