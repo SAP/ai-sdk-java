@@ -113,7 +113,7 @@ public class OpenAiServiceV2 {
     final OpenAiAssistantMessage assistantMessage = response.getMessage();
     final var toolResults = OpenAiTool.execute(tools, assistantMessage);
 
-    // 4. Send back the results for model will incorporate them into its final response.
+    // 4. Return the results so that the model can incorporate them into the final response.
     messages.add(assistantMessage);
     messages.addAll(toolResults.getMessages());
 
