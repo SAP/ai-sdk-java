@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
 import lombok.With;
@@ -163,14 +162,34 @@ public class OpenAiTool {
    *
    * @param tools the list of tools to execute
    * @param msg the assistant message containing a list of tool calls with arguments
-   * @return a result object that contains the list of tool messages with the results
+   * @return The list of tool messages with the results.
    */
   @Beta
   @Nonnull
-  public static Execution execute(
+  public static List<OpenAiToolMessage> execute(
+      @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg) {
+    final var toolResults = executeInternal(tools, msg);
+    final var result = new ArrayList<OpenAiToolMessage>();
+    for (final var entry : toolResults.entrySet()) {
+      final var functionCall = entry.getKey().getId();
+      final var serializedValue = serializeObject(entry.getValue());
+      result.add(OpenAiMessage.tool(serializedValue, functionCall));
+    }
+    return result;
+  }
+
+  /**
+   * Executes the given tool calls with the provided tools and returns the results as a list of
+   * {@link OpenAiToolMessage} containing execution results encoded as JSON string.
+   *
+   * @param tools the list of tools to execute
+   * @param msg the assistant message containing a list of tool calls with arguments
+   * @return a map that contains the function calls and their respective tool results.
+   */
+  @Nonnull
+  protected static Map<OpenAiFunctionCall, Object> executeInternal(
       @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg) {
     final var result = new LinkedHashMap<OpenAiFunctionCall, Object>();
-
     final var toolMap = tools.stream().collect(Collectors.toMap(OpenAiTool::getName, identity()));
     for (final OpenAiToolCall toolCall : msg.toolCalls()) {
       if (toolCall instanceof OpenAiFunctionCall functionCall) {
@@ -183,7 +202,7 @@ public class OpenAiTool {
         result.put(functionCall, toolResult);
       }
     }
-    return new Execution(result);
+    return result;
   }
 
   @Nonnull
@@ -200,33 +219,6 @@ public class OpenAiTool {
       return JACKSON.writeValueAsString(obj);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Failed to serialize object to JSON", e);
-    }
-  }
-
-  /**
-   * Represents the result of executing a tool call, containing the results of the function calls.
-   */
-  @RequiredArgsConstructor
-  @Beta
-  public static class Execution {
-    @Getter @Beta @Nonnull private final Map<OpenAiFunctionCall, Object> results;
-
-    /**
-     * Creates a new list of serialized OpenAI tool messages.
-     *
-     * @return the list of serialized OpenAI tool messages.
-     * @throws IllegalArgumentException if the tool results cannot be serialized to JSON
-     */
-    @Beta
-    @Nonnull
-    public List<OpenAiToolMessage> getMessages() {
-      final var result = new ArrayList<OpenAiToolMessage>();
-      for (final var entry : getResults().entrySet()) {
-        final var functionCall = entry.getKey().getId();
-        final var serializedValue = serializeObject(entry.getValue());
-        result.add(OpenAiMessage.tool(serializedValue, functionCall));
-      }
-      return result;
     }
   }
 }

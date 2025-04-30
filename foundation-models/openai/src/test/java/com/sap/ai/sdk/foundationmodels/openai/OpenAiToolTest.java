@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Test;
@@ -64,17 +63,11 @@ class OpenAiToolTest {
             .withArgument(Dummy.Request.class)
             .withName("functionA");
     final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_A));
-    final var execution = OpenAiTool.execute(List.of(toolA), assistMsg);
+    final var toolMsgs = OpenAiTool.execute(List.of(toolA), assistMsg);
 
-    final var results = execution.getResults();
-    assertThat(results)
-        .hasSize(1)
-        .containsExactly(Map.entry(FUNCTION_CALL_A, new Dummy.Response("value")));
-
-    final var toolMsg = execution.getMessages();
-    assertThat(toolMsg).hasSize(1);
-    assertThat(toolMsg.get(0).toolCallId()).isEqualTo("1");
-    assertThat(((OpenAiTextItem) toolMsg.get(0).content().items().get(0)).text())
+    assertThat(toolMsgs).hasSize(1);
+    assertThat(toolMsgs.get(0).toolCallId()).isEqualTo("1");
+    assertThat(((OpenAiTextItem) toolMsgs.get(0).content().items().get(0)).text())
         .isEqualTo("{\"toolMsg\":\"value\"}");
   }
 
@@ -85,9 +78,8 @@ class OpenAiToolTest {
             .withArgument(Dummy.Request.class)
             .withName("functionA");
     final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_B));
-    final var executions = OpenAiTool.execute(List.of(toolA), assistMsg);
-    assertThat(executions.getResults()).isEmpty();
-    assertThat(executions.getMessages()).isEmpty();
+    final var toolMsgs = OpenAiTool.execute(List.of(toolA), assistMsg);
+    assertThat(toolMsgs).isEmpty();
   }
 
   @Test
@@ -106,12 +98,8 @@ class OpenAiToolTest {
     final var toolA =
         OpenAiTool.forFunction(badF).withArgument(Dummy.Request.class).withName("functionA");
     final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_A));
-    final var executions = OpenAiTool.execute(List.of(toolA), assistMsg);
 
-    assertThat(executions.getResults())
-        .containsExactly(Map.entry(FUNCTION_CALL_A, new NonSerializableResponse("value")));
-
-    assertThatThrownBy(executions::getMessages)
+    assertThatThrownBy(() -> OpenAiTool.execute(List.of(toolA), assistMsg))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to serialize object to JSON");
   }

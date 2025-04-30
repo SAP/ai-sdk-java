@@ -15,6 +15,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -112,11 +113,11 @@ public class OpenAiServiceV2 {
 
     // 3. Execute the tool call for given tools
     final OpenAiAssistantMessage assistantMessage = response.getMessage();
-    final var toolResults = OpenAiTool.execute(tools, assistantMessage);
+    final List<OpenAiToolMessage> toolMessages = OpenAiTool.execute(tools, assistantMessage);
 
     // 4. Return the results so that the model can incorporate them into the final response.
     messages.add(assistantMessage);
-    messages.addAll(toolResults.getMessages());
+    messages.addAll(toolMessages);
 
     return client.chatCompletion(request.withMessages(messages));
   }
