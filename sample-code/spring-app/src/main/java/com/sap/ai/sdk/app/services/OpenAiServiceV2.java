@@ -99,11 +99,12 @@ public class OpenAiServiceV2 {
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
     // 1. Define the function
-    final List<OpenAiTool<?>> tools =
+    final List<OpenAiTool> tools =
         List.of(
-            new OpenAiTool<>("weather", WeatherMethod.Request.class)
-                .setDescription("Get the weather for the given location")
-                .setFunction(WeatherMethod::getCurrentWeather));
+            OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
+                .withArgument(WeatherMethod.Request.class)
+                .withName("weather")
+                .withDescription("Get the weather for the given location"));
 
     // 2. Assistant calls the function
     final var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);

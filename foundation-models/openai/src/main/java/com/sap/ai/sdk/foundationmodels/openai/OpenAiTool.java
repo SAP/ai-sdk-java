@@ -6,6 +6,7 @@ import static java.util.function.UnaryOperator.identity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.victools.jsonschema.generator.Option;
 import com.github.victools.jsonschema.generator.OptionPreset;
 import com.github.victools.jsonschema.generator.SchemaGenerator;
@@ -26,10 +27,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
+import lombok.Setter;
+import lombok.Value;
+import lombok.With;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,17 +39,16 @@ import lombok.extern.slf4j.Slf4j;
  * request. This tool generates a JSON schema based on the provided class representing the
  * function's request structure.
  *
- * @param <InputT> the type of the input argument for the function
  * @see <a href="https://platform.openai.com/docs/guides/gpt/function-calling"/>OpenAI Function
  * @since 1.7.0
  */
 @Slf4j
 @Beta
-@Data
+@Value
+@With
 @Getter(AccessLevel.PACKAGE)
-@Accessors(chain = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OpenAiTool<InputT> {
+public class OpenAiTool {
 
   private static final ObjectMapper JACKSON = new ObjectMapper();
 
@@ -55,45 +56,85 @@ public class OpenAiTool<InputT> {
   @Nonnull private static final SchemaGenerator GENERATOR = createSchemaGenerator();
 
   /** The name of the function. */
-  @Nonnull private String name;
+  @Setter(AccessLevel.NONE)
+  @Nonnull
+  String name;
 
-  /** The model class for function request. */
-  @Nonnull private Class<InputT> requestClass;
+  /** The function to execute a string argument to tool result object. */
+  @Setter(AccessLevel.NONE)
+  @Nonnull
+  Function<String, Object> functionExecutor;
+
+  /** schema to be used for the function call. */
+  @Setter(AccessLevel.NONE)
+  @Nonnull
+  ObjectNode schema;
 
   /** An optional description of the function. */
-  @Nullable private String description;
+  @Nullable String description;
 
   /** An optional flag indicating whether the function parameters should be treated strictly. */
-  @Nullable private Boolean strict;
-
-  /** The function to be called. */
-  @Nullable private Function<InputT, ?> function;
+  @Nullable Boolean strict;
 
   /**
-   * Constructs an {@code OpenAiFunctionTool} with the specified name and a model class that
-   * captures the request to the function.
+   * Instantiates a OpenAiTool builder instance on behalf of an executable function.
    *
-   * @param name the name of the function
-   * @param requestClass the model class for function request
+   * @param function the function to be executed.
+   * @return an OpenAiTool builder instance.
+   * @param <InputT> the type of the function input-argument class.
    */
-  public OpenAiTool(@Nonnull final String name, @Nonnull final Class<InputT> requestClass) {
-    this(name, requestClass, null, null, null);
+  @Nonnull
+  public static <InputT> Builder1<InputT> forFunction(@Nonnull final Function<InputT, ?> function) {
+    return inputClass ->
+        name -> {
+          final Function<String, Object> exec =
+              s -> function.apply(deserializeArgument(inputClass, s));
+          final var schema = GENERATOR.generateSchema(inputClass);
+          return new OpenAiTool(name, exec, schema, null, null);
+        };
   }
 
-  @Nonnull
-  Object execute(@Nonnull final InputT argument) {
-    if (getFunction() == null) {
-      throw new IllegalStateException(
-          "Tool " + name + " is missing a method reference to execute.");
+  /**
+   * Creates a new OpenAiTool instance with the specified function and input class.
+   *
+   * @param <InputT> the type of the input class.
+   */
+  public interface Builder1<InputT> {
+    /**
+     * Sets the name of the function.
+     *
+     * @param inputClass the class of the input object.
+     * @return a new OpenAiTool instance with the specified function and input class.
+     */
+    @Nonnull
+    Builder2 withArgument(@Nonnull final Class<InputT> inputClass);
+  }
+
+  /** Creates a new OpenAiTool instance with the specified name. */
+  public interface Builder2 {
+    /**
+     * Sets the name of the function.
+     *
+     * @param name the name of the function
+     * @return a new OpenAiTool instance with the specified name
+     */
+    @Nonnull
+    OpenAiTool withName(@Nonnull final String name);
+  }
+
+  @Nullable
+  private static <T> T deserializeArgument(@Nonnull final Class<T> cl, @Nonnull final String s) {
+    try {
+      return JACKSON.readValue(s, cl);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Failed to parse JSON string to class " + cl, e);
     }
-    return getFunction().apply(argument);
   }
 
   ChatCompletionTool createChatCompletionTool() {
-    final var schema = GENERATOR.generateSchema(getRequestClass());
     final var schemaMap =
         OpenAiUtils.getOpenAiObjectMapper()
-            .convertValue(schema, new TypeReference<Map<String, Object>>() {});
+            .convertValue(getSchema(), new TypeReference<Map<String, Object>>() {});
 
     return new ChatCompletionTool()
         .type(FUNCTION)
@@ -128,7 +169,7 @@ public class OpenAiTool<InputT> {
   @Beta
   @Nonnull
   public static Execution execute(
-      @Nonnull final List<OpenAiTool<?>> tools, @Nonnull final OpenAiAssistantMessage msg)
+      @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg)
       throws IllegalArgumentException {
     final var result = new LinkedHashMap<OpenAiFunctionCall, Object>();
 
@@ -148,10 +189,11 @@ public class OpenAiTool<InputT> {
   }
 
   @Nonnull
-  private static <I> Object executeFunction(
-      @Nonnull final OpenAiTool<I> tool, @Nonnull final OpenAiFunctionCall toolCall) {
-    final I arguments = toolCall.getArgumentsAsObject(tool.getRequestClass());
-    return tool.execute(arguments);
+  private static Object executeFunction(
+      @Nonnull final OpenAiTool tool, @Nonnull final OpenAiFunctionCall toolCall) {
+    final Function<String, Object> executor = tool.getFunctionExecutor();
+    final String arguments = toolCall.getArguments();
+    return executor.apply(arguments);
   }
 
   @Nonnull

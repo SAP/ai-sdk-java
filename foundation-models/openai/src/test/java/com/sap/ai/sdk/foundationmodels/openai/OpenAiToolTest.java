@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import lombok.EqualsAndHashCode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class OpenAiToolTest {
@@ -31,13 +30,6 @@ class OpenAiToolTest {
         request -> new Dummy.Response(request.key());
   }
 
-  private OpenAiTool<Dummy.Request> toolA;
-
-  @BeforeEach
-  void setUp() {
-    toolA = new OpenAiTool<>("functionA", Dummy.Request.class);
-  }
-
   @Test
   void getArgumentsAsMapValid() {
     final var result = FUNCTION_CALL_A.getArgumentsAsMap();
@@ -53,21 +45,24 @@ class OpenAiToolTest {
 
   @Test
   void getArgumentsAsObjectValid() {
-    final Dummy.Request result = FUNCTION_CALL_A.getArgumentsAsObject(toolA.getRequestClass());
+    final Dummy.Request result = FUNCTION_CALL_A.getArgumentsAsObject(Dummy.Request.class);
     assertThat(result).isInstanceOf(Dummy.Request.class);
     assertThat(result.key()).isEqualTo("value");
   }
 
   @Test
   void getArgumentsAsObjectInvalid() {
-    assertThatThrownBy(() -> INVALID_FUNCTION_CALL_A.getArgumentsAsObject(toolA.getRequestClass()))
+    assertThatThrownBy(() -> INVALID_FUNCTION_CALL_A.getArgumentsAsObject(Integer.class))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to parse JSON string");
   }
 
   @Test
   void executeToolsValid() {
-    toolA.setFunction(Dummy.conCat);
+    final var toolA =
+        OpenAiTool.forFunction(Dummy.conCat)
+            .withArgument(Dummy.Request.class)
+            .withName("functionA");
     final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_A));
     final var execution = OpenAiTool.execute(List.of(toolA), assistMsg);
 
@@ -84,18 +79,13 @@ class OpenAiToolTest {
   }
 
   @Test
-  void executeToolsThrowsOnNoFunction() {
-    final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_A));
-    assertThatThrownBy(() -> OpenAiTool.execute(List.of(toolA), assistMsg))
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("Tool functionA is missing a method reference to execute.");
-  }
-
-  @Test
   void executeToolsNoMatchingCall() {
-    final var toolAWithFunction = toolA.setFunction(Dummy.conCat);
+    final var toolA =
+        OpenAiTool.forFunction(Dummy.conCat)
+            .withArgument(Dummy.Request.class)
+            .withName("functionA");
     final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_B));
-    final var executions = OpenAiTool.execute(List.of(toolAWithFunction), assistMsg);
+    final var executions = OpenAiTool.execute(List.of(toolA), assistMsg);
     assertThat(executions.getResults()).isEmpty();
     assertThat(executions.getMessages()).isEmpty();
   }
@@ -111,7 +101,10 @@ class OpenAiToolTest {
       }
     }
 
-    toolA.setFunction(request -> new NonSerializableResponse(request.key()));
+    final Function<Dummy.Request, Object> badF =
+        request -> new NonSerializableResponse(request.key());
+    final var toolA =
+        OpenAiTool.forFunction(badF).withArgument(Dummy.Request.class).withName("functionA");
     final var assistMsg = new OpenAiAssistantMessage(EMPTY_MSG_CONTENT, List.of(FUNCTION_CALL_A));
     final var executions = OpenAiTool.execute(List.of(toolA), assistMsg);
 

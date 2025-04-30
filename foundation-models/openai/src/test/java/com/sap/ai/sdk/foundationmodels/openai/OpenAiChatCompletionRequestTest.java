@@ -125,12 +125,16 @@ class OpenAiChatCompletionRequestTest {
         new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
             .withToolsExecutable(
                 List.of(
-                    new OpenAiTool<>("toolA", DummyRequest.class)
-                        .setDescription("descA")
-                        .setStrict(true),
-                    new OpenAiTool<>("toolB", DummyRequest.class)
-                        .setDescription("descB")
-                        .setStrict(false)));
+                    OpenAiTool.<DummyRequest>forFunction(r -> "result")
+                        .withArgument(DummyRequest.class)
+                        .withName("toolA")
+                        .withDescription("descA")
+                        .withStrict(true),
+                    OpenAiTool.<DummyRequest>forFunction(r -> "result")
+                        .withArgument(DummyRequest.class)
+                        .withName("toolB")
+                        .withDescription("descB")
+                        .withStrict(true)));
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     assertThat(lowLevelRequest.getTools()).hasSize(2);

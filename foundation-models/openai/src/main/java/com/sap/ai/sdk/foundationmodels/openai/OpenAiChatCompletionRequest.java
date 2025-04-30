@@ -292,7 +292,7 @@ public class OpenAiChatCompletionRequest {
    */
   @Nonnull
   @Beta
-  public OpenAiChatCompletionRequest withToolsExecutable(@Nonnull final List<OpenAiTool<?>> tools) {
+  public OpenAiChatCompletionRequest withToolsExecutable(@Nonnull final List<OpenAiTool> tools) {
     return this.withTools(tools.stream().map(OpenAiTool::createChatCompletionTool).toList());
   }
 
