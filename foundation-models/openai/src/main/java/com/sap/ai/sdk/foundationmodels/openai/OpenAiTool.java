@@ -164,13 +164,11 @@ public class OpenAiTool {
    * @param tools the list of tools to execute
    * @param msg the assistant message containing a list of tool calls with arguments
    * @return a result object that contains the list of tool messages with the results
-   * @throws IllegalStateException if a tool is missing a method reference for function execution.
    */
   @Beta
   @Nonnull
   public static Execution execute(
-      @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg)
-      throws IllegalArgumentException {
+      @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg) {
     final var result = new LinkedHashMap<OpenAiFunctionCall, Object>();
 
     final var toolMap = tools.stream().collect(Collectors.toMap(OpenAiTool::getName, identity()));
