@@ -16,6 +16,7 @@
 
 - [Orchestration] [Added support to locally test prompt template files](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#locally-test-a-prompt-template)
 - [Orchestration] Added new models:
+  - `OrchestrationAiModel.CLAUDE_3_7_SONNET`
   - `OrchestrationAiModel.GEMINI_2_0_FLASH`
   - `OrchestrationAiModel.GEMINI_2_0_FLASH_LITE`
 
