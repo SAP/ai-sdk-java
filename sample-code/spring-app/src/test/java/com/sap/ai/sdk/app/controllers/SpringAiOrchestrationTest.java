@@ -76,7 +76,7 @@ public class SpringAiOrchestrationTest {
   @Test
   void testToolCallingWithExecution() {
     ChatResponse response = service.toolCalling(true);
-    assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse");
+    assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse", "°C");
   }
 
   @Test
