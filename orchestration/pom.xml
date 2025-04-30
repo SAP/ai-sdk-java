@@ -34,7 +34,7 @@
     <coverage.complexity>83%</coverage.complexity>
     <coverage.line>94%</coverage.line>
     <coverage.instruction>94%</coverage.instruction>
-    <coverage.branch>77%</coverage.branch>
+    <coverage.branch>78%</coverage.branch>
     <coverage.method>93%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
@@ -107,6 +107,10 @@
     <dependency>
       <groupId>com.github.victools</groupId>
       <artifactId>jsonschema-module-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>

@@ -55,6 +55,8 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -977,5 +979,47 @@ class OrchestrationUnitTest {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
+  }
+
+  @Test
+  void testTemplateFromInput() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var promptTemplateYaml =
+        Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+
+    var template = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+
+    var inputParams = Map.of("language", "German");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+
+    try (var requestInputStream = fileLoader.apply("localTemplateRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromInputThrows() {
+    assertThatThrownBy(() -> TemplateConfig.create().fromYaml(": what?"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("Failed to parse");
+
+    prompt = new OrchestrationPrompt(Map.of());
+    assertThatThrownBy(
+            () ->
+                TemplateConfig.create()
+                    .fromYaml(
+                        "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("Failed to deserialize");
   }
 }
