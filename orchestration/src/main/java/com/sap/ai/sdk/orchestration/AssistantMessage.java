@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
+import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
 @Value
@@ -68,7 +69,7 @@ public class AssistantMessage implements Message {
     if (toolCalls() != null) {
       return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
-    var texts =
+    val texts =
         content.items().stream()
             .filter(item -> item instanceof TextItem)
             .map(item -> (TextItem) item)

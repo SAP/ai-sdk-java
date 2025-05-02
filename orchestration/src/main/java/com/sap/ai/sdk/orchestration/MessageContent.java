@@ -6,6 +6,7 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.val;
 
 /**
  * Represents the content of a chat message.
@@ -35,16 +36,16 @@ public record MessageContent(@Nonnull List<ContentItem> items) {
   //    return new MessageContent(itemList);
   //  }
   @Nonnull
-  static MessageContent fromChatMessageContent(ChatMessageContent chatMessageContent) {
+  static MessageContent fromChatMessageContent(final ChatMessageContent chatMessageContent) {
     if (chatMessageContent instanceof ChatMessageContent.InnerString innerString) {
       return new MessageContent(List.of(new TextItem(innerString.value())));
     } else if (chatMessageContent
         instanceof ChatMessageContent.InnerTextContents innerTextContents) {
-      var items =
+      val texts =
           innerTextContents.values().stream()
               .map(textContent -> ((ContentItem) new TextItem(textContent.getText())))
               .toList();
-      return new MessageContent(items);
+      return new MessageContent(texts);
     } else {
       throw new IllegalArgumentException(
           "Contents of type " + chatMessageContent.getClass() + " are not supported.");
@@ -52,17 +53,19 @@ public record MessageContent(@Nonnull List<ContentItem> items) {
   }
 
   @Nonnull
-  static MessageContent fromUserChatMessageContent(UserChatMessageContent chatMessageContent) {
+  static MessageContent fromUserChatMessageContent(
+      final UserChatMessageContent chatMessageContent) {
     if (chatMessageContent instanceof UserChatMessageContent.InnerString innerString) {
       return new MessageContent(List.of(new TextItem(innerString.value())));
     } else if (chatMessageContent
-        instanceof UserChatMessageContent.InnerUserChatMessageContentItems innerContentItems) {
-      var items = new ArrayList<ContentItem>();
-      for (var value : innerContentItems.values()) {
+        instanceof
+        final UserChatMessageContent.InnerUserChatMessageContentItems innerContentItems) {
+      val items = new ArrayList<ContentItem>();
+      for (val value : innerContentItems.values()) {
         if (value.getType().equals(UserChatMessageContentItem.TypeEnum.TEXT)) {
           items.add(new TextItem(value.getText()));
         } else if (value.getType().equals(UserChatMessageContentItem.TypeEnum.IMAGE_URL)) {
-          var detailLevel = ImageItem.DetailLevel.fromString(value.getImageUrl().getDetail());
+          val detailLevel = ImageItem.DetailLevel.fromString(value.getImageUrl().getDetail());
           items.add(new ImageItem(value.getImageUrl().getUrl(), detailLevel));
         }
       }

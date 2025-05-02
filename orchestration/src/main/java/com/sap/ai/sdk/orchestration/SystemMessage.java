@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
+import lombok.val;
 
 /** Represents a chat message as 'system' to the orchestration service. */
 @Value
@@ -58,8 +59,7 @@ public class SystemMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-
-    var texts =
+    val texts =
         content.items().stream()
             .filter(item -> item instanceof TextItem)
             .map(item -> (TextItem) item)

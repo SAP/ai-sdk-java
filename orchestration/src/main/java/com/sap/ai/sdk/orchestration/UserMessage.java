@@ -88,6 +88,7 @@ public class UserMessage implements Message {
     return new UserMessage(new MessageContent(contentItems));
   }
 
+  @Override
   @Nonnull
   public ChatMessage createChatMessage() {
     final var contentList = new LinkedList<UserChatMessageContentItem>();

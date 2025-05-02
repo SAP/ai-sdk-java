@@ -17,6 +17,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.val;
 
 /** Orchestration chat completion output. */
 @Value
@@ -60,10 +61,10 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
-    final var messages = new ArrayList<Message>();
+    val messages = new ArrayList<Message>();
     for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
       if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
-        var toolCalls = assistantChatMessage.getToolCalls();
+        val toolCalls = assistantChatMessage.getToolCalls();
         if (!toolCalls.isEmpty()) {
           messages.add(new AssistantMessage(toolCalls));
         } else {
