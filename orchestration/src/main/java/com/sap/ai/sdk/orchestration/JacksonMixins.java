@@ -47,11 +47,21 @@ final class JacksonMixins {
       property = "role",
       visible = true)
   @JsonSubTypes({
-    @JsonSubTypes.Type(value = com.sap.ai.sdk.orchestration.model.AssistantChatMessage.class, name = "assistant"),
-    @JsonSubTypes.Type(value = com.sap.ai.sdk.orchestration.model.DeveloperChatMessage.class, name = "developer"),
-    @JsonSubTypes.Type(value = com.sap.ai.sdk.orchestration.model.SystemChatMessage.class, name = "system"),
-    @JsonSubTypes.Type(value = com.sap.ai.sdk.orchestration.model.ToolChatMessage.class, name = "tool"),
-    @JsonSubTypes.Type(value = com.sap.ai.sdk.orchestration.model.UserChatMessage.class, name = "user")
+    @JsonSubTypes.Type(
+        value = com.sap.ai.sdk.orchestration.model.AssistantChatMessage.class,
+        name = "assistant"),
+    @JsonSubTypes.Type(
+        value = com.sap.ai.sdk.orchestration.model.DeveloperChatMessage.class,
+        name = "developer"),
+    @JsonSubTypes.Type(
+        value = com.sap.ai.sdk.orchestration.model.SystemChatMessage.class,
+        name = "system"),
+    @JsonSubTypes.Type(
+        value = com.sap.ai.sdk.orchestration.model.ToolChatMessage.class,
+        name = "tool"),
+    @JsonSubTypes.Type(
+        value = com.sap.ai.sdk.orchestration.model.UserChatMessage.class,
+        name = "user")
   })
   interface ChatMessageMixin {}
 }
