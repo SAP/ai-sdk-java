@@ -8,11 +8,16 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +34,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @RequestMapping("/orchestration")
 class OrchestrationController {
   @Autowired private OrchestrationService service;
+
+  @Value("classpath:promptTemplateExample.yaml")
+  private Resource localPromptTemplate;
 
   @GetMapping("/completion")
   Object completion(
@@ -265,6 +273,19 @@ class OrchestrationController {
   Object templateFromPromptRegistryByScenario(
       @RequestParam(value = "format", required = false) final String format) {
     final var response = service.templateFromPromptRegistryByScenario("cloud ERP systems");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/localPromptTemplate")
+  @Nonnull
+  Object localPromptTemplate(@RequestParam(value = "format", required = false) final String format)
+      throws IOException {
+    final var promptTemplate =
+        Files.readString(localPromptTemplate.getFile().toPath(), StandardCharsets.UTF_8);
+    final var response = service.localPromptTemplate(promptTemplate);
     if ("json".equals(format)) {
       return response;
     }

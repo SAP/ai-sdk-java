@@ -29,6 +29,7 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -505,6 +506,27 @@ public class OrchestrationService {
     val configWithTemplate = config.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to an LLM through the Orchestration service using a local template file.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @param promptTemplate the YAML prompt template to use
+   * @throws IOException if the YAML cannot be parsed
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
+      throws IOException {
+    val template = TemplateConfig.create().fromYaml(promptTemplate);
+    val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+
+    val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);

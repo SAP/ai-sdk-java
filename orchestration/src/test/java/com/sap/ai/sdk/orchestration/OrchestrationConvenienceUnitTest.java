@@ -15,6 +15,9 @@ import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,5 +183,97 @@ public class OrchestrationConvenienceUnitTest {
         .isEqualTo(expectedTemplateReferenceScenarioNameVersion);
     assertThat(templateReferenceScenarioNameVersion.toLowLevel())
         .isEqualTo(templateReferenceScenarioNameVersionLowLevel);
+  }
+
+  @Test
+  void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
+    String promptTemplateYaml =
+        Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+    var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var schema =
+        Map.of(
+            "type",
+            "object",
+            "properties",
+            Map.of(
+                "language", Map.of("type", "string"),
+                "translation", Map.of("type", "string")),
+            "required",
+            List.of("language", "translation"),
+            "additionalProperties",
+            false);
+    var expectedTemplateWithJsonSchemaTools =
+        OrchestrationTemplate.create()
+            .withTemplate(
+                List.of(
+                    SingleChatMessage.create()
+                        .role("system")
+                        .content("You are a language translator."),
+                    SingleChatMessage.create()
+                        .role("user")
+                        .content("Whats {{ ?word }} in {{ ?language }}?")))
+            .withDefaults(Map.of("word", "apple"))
+            .withJsonSchemaResponse(
+                ResponseJsonSchema.fromMap(schema, "translation-schema")
+                    .withDescription("Translate the given word into the provided language.")
+                    .withStrict(true))
+            .withTools(
+                List.of(
+                    ChatCompletionTool.create()
+                        .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                        .function(
+                            FunctionObject.create()
+                                .name("translate")
+                                .parameters(
+                                    Map.of(
+                                        "type",
+                                        "object",
+                                        "additionalProperties",
+                                        false,
+                                        "required",
+                                        List.of("language", "wordToTranslate"),
+                                        "properties",
+                                        Map.of(
+                                            "language", Map.of("type", "string"),
+                                            "wordToTranslate", Map.of("type", "string"))))
+                                .description("Translate a word.")
+                                .strict(true))));
+    assertThat(templateWithJsonSchemaTools).isEqualTo(expectedTemplateWithJsonSchemaTools);
+  }
+
+  @Test
+  void testTemplateFromLocalFileWithJsonObject() throws IOException {
+    String promptTemplateWithJsonObject =
+        """
+ name: translator
+ version: 0.0.1
+ scenario: translation scenario
+ spec:
+  template:
+    - role: "system"
+      content: |-
+        You are a language translator.
+    - role: "user"
+      content: |-
+        Whats {{ ?word }} in {{ ?language }}?
+  defaults:
+    word: "apple"
+  response_format:
+    type: json_object
+ """;
+    var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
+    var expectedTemplateWithJsonObject =
+        OrchestrationTemplate.create()
+            .withTemplate(
+                List.of(
+                    SingleChatMessage.create()
+                        .role("system")
+                        .content("You are a language translator."),
+                    SingleChatMessage.create()
+                        .role("user")
+                        .content("Whats {{ ?word }} in {{ ?language }}?")))
+            .withDefaults(Map.of("word", "apple"))
+            .withJsonResponse();
+    assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
   }
 }
