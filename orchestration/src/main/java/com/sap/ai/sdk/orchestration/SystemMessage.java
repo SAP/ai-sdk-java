@@ -7,7 +7,6 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TextContent;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -59,14 +58,13 @@ public class SystemMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    var textContents = new ArrayList<TextContent>();
-    for (var item : content.items()) {
-      if (item
-          instanceof TextItem textItem) { // TODO: throw exception if we have ImageItem instead?
-        textContents.add(
-            TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
-      }
-    }
-    return SystemChatMessage.create().role(SYSTEM).content(ChatMessageContent.create(textContents));
+
+    var texts =
+        content.items().stream()
+            .filter(item -> item instanceof TextItem) // TODO: images are ignored
+            .map(item -> (TextItem) item)
+            .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
+            .toList();
+    return SystemChatMessage.create().role(SYSTEM).content(ChatMessageContent.create(texts));
   }
 }

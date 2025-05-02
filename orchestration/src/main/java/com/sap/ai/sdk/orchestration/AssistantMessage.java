@@ -8,7 +8,6 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.TextContent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,16 +68,13 @@ public class AssistantMessage implements Message {
     if (toolCalls() != null) {
       return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
-    var textContents = new ArrayList<TextContent>();
-    for (var item : content.items()) {
-      if (item
-          instanceof TextItem textItem) { // TODO: throw exception if we have ImageItem instead?
-        textContents.add(
-            TextContent.create().type(TextContent.TypeEnum.TEXT).text(textItem.text()));
-      }
-    }
-    return AssistantChatMessage.create()
-        .role(ASSISTANT)
-        .content(ChatMessageContent.create(textContents));
+    var texts =
+        content.items().stream()
+            .filter(item -> item instanceof TextItem) // TODO: images are ignored
+            .map(item -> (TextItem) item)
+            .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
+            .toList();
+
+    return AssistantChatMessage.create().role(ASSISTANT).content(ChatMessageContent.create(texts));
   }
 }
