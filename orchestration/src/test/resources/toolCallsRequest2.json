@@ -10,42 +10,43 @@
         "template": [
           {
             "role": "user",
-            "content": [ {
-              "type" : "text",
-              "text" : "What is the weather in Potsdam and in Toulouse?"
-            } ]
+            "content": [
+              {
+                "type": "text",
+                "text": "What is the weather in Potsdam and in Toulouse?"
+              }
+            ]
           },
           {
             "role": "assistant",
-            "content": "",
             "tool_calls": [
               {
+                "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
+                "type": "function",
                 "function": {
                   "name": "getCurrentWeather",
                   "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
-                },
-                "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
-                "type": "function"
+                }
               },
               {
+                "id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
+                "type": "function",
                 "function": {
                   "name": "getCurrentWeather",
                   "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
-                },
-                "id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
-                "type": "function"
+                }
               }
             ]
           },
           {
             "role": "tool",
-            "content": "{\"temp\":30.0,\"unit\":\"C\"}",
-            "tool_call_id": "call_LOyP7EVdeqFlGEmVzmPdCVey"
+            "tool_call_id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
+            "content": "{\"temp\":30.0,\"unit\":\"C\"}"
           },
           {
             "role": "tool",
-            "content": "{\"temp\":30.0,\"unit\":\"C\"}",
-            "tool_call_id": "call_bwFjnXCfCO4N3f0bMtFMlNSg"
+            "tool_call_id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
+            "content": "{\"temp\":30.0,\"unit\":\"C\"}"
           }
         ],
         "defaults": {},

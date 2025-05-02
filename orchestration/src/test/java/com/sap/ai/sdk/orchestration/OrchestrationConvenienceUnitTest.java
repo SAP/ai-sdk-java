@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -130,9 +131,7 @@ public class OrchestrationConvenienceUnitTest {
   void testTemplateConstruction() {
     List<ChatMessage> templateMessages =
         List.of(
-            UserChatMessage.create()
-                .content(UserChatMessageContent.create("message"))
-                .role(UserChatMessage.RoleEnum.USER));
+            UserChatMessage.create().content(UserChatMessageContent.create("message")).role(USER));
     var defaults = Map.of("key", "value");
     var tools =
         List.of(
@@ -212,11 +211,10 @@ public class OrchestrationConvenienceUnitTest {
                     SystemChatMessage.create()
                         .role(RoleEnum.SYSTEM)
                         .content(ChatMessageContent.create("You are a language translator.")),
-                    (ChatMessage)
-                        UserChatMessage.create()
-                            .content(
-                                UserChatMessageContent.create(
-                                    "Whats {{ ?word }} in {{ ?language }}?"))))
+                    UserChatMessage.create()
+                        .content(
+                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
+                        .role(USER)))
             .withDefaults(Map.of("word", "apple"))
             .withJsonSchemaResponse(
                 ResponseJsonSchema.fromMap(schema, "translation-schema")
@@ -274,11 +272,10 @@ public class OrchestrationConvenienceUnitTest {
                     SystemChatMessage.create()
                         .role(RoleEnum.SYSTEM)
                         .content(ChatMessageContent.create("You are a language translator.")),
-                    (ChatMessage)
-                        UserChatMessage.create()
-                            .content(
-                                UserChatMessageContent.create(
-                                    "Whats {{ ?word }} in {{ ?language }}?"))))
+                    UserChatMessage.create()
+                        .content(
+                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
+                        .role(USER)))
             .withDefaults(Map.of("word", "apple"))
             .withJsonResponse();
     assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
