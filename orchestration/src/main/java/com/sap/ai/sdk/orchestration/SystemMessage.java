@@ -61,7 +61,7 @@ public class SystemMessage implements Message {
 
     var texts =
         content.items().stream()
-            .filter(item -> item instanceof TextItem) // TODO: images are ignored
+            .filter(item -> item instanceof TextItem)
             .map(item -> (TextItem) item)
             .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
             .toList();
