@@ -19,6 +19,8 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_M
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
+import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,8 +37,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -51,6 +51,8 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -277,10 +279,10 @@ class OrchestrationUnitTest {
 
     assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
         .isEqualTo("You are a multi language translator");
-    assertThat(messageList.get(0).role()).isEqualTo("assistant"); // JONAS: why is the change needed here?
+    assertThat(messageList.get(0).role()).isEqualTo("system");
     assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
-    assertThat(messageList.get(1).role()).isEqualTo("assistant");
+    assertThat(messageList.get(1).role()).isEqualTo("user");
     assertThat(((TextItem) messageList.get(2).content().items().get(0)).text())
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
@@ -295,7 +297,7 @@ class OrchestrationUnitTest {
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Le service d'orchestration fonctionne!");
-    assertThat(choices.get(0).getMessage().getRole().toString()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
@@ -310,7 +312,7 @@ class OrchestrationUnitTest {
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Le service d'orchestration fonctionne!");
-    assertThat(choices.get(0).getMessage().getRole().toString()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
@@ -708,9 +710,9 @@ class OrchestrationUnitTest {
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
-        final var templateItem = templating.get(0); // JONAS: why?
-        assertThat(templateItem).isInstanceOf(AssistantChatMessage.class);
-        assertThat(((ChatMessageContent.InnerString) ((AssistantChatMessage) templateItem).getContent()).value())
+        final var templateItem = (UserChatMessage) templating.get(0);
+        assertThat(templateItem.getRole()).isEqualTo(USER);
+        assertThat(((UserChatMessageContent.InnerString) templateItem.getContent()).value())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
@@ -775,7 +777,7 @@ class OrchestrationUnitTest {
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(result.getAllMessages()).hasSize(3);
-    var systemMessage = result.getAllMessages().get(0); // JONAS: why?
+    var systemMessage = result.getAllMessages().get(0);
     assertThat(systemMessage.role()).isEqualTo("system");
     assertThat(systemMessage.content().items()).hasSize(2);
     assertThat(systemMessage.content().items().get(0)).isInstanceOf(TextItem.class);
@@ -813,15 +815,14 @@ class OrchestrationUnitTest {
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
-        .isEqualTo("assistant");
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
 
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
