@@ -277,7 +277,8 @@ class OrchestrationUnitTest {
 
     assertThat(((TextItem) messageList.get(0).content().items().get(0)).text())
         .isEqualTo("You are a multi language translator");
-    assertThat(messageList.get(0).role()).isEqualTo("assistant"); // JONAS: why is the change needed here?
+    assertThat(messageList.get(0).role())
+        .isEqualTo("assistant"); // JONAS: why is the change needed here?
     assertThat(((TextItem) messageList.get(1).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(messageList.get(1).role()).isEqualTo("assistant");
@@ -710,7 +711,10 @@ class OrchestrationUnitTest {
 
         final var templateItem = templating.get(0); // JONAS: why?
         assertThat(templateItem).isInstanceOf(AssistantChatMessage.class);
-        assertThat(((ChatMessageContent.InnerString) ((AssistantChatMessage) templateItem).getContent()).value())
+        assertThat(
+                ((ChatMessageContent.InnerString)
+                        ((AssistantChatMessage) templateItem).getContent())
+                    .value())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
