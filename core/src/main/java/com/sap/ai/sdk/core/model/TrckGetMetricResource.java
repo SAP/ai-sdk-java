@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +33,12 @@ public class TrckGetMetricResource
 {
   @JsonProperty("executionId")
   private TrckExecutionId executionId;
+
+  @JsonProperty("createdAt")
+  private OffsetDateTime createdAt;
+
+  @JsonProperty("modifiedAt")
+  private OffsetDateTime modifiedAt;
 
   @JsonProperty("metrics")
   private List<TrckGetMetric> metrics = new ArrayList<>();
@@ -78,6 +85,68 @@ public class TrckGetMetricResource
    */
   public void setExecutionId(@Nonnull final TrckExecutionId executionId) {
     this.executionId = executionId;
+  }
+
+  /**
+   * Set the createdAt of this {@link TrckGetMetricResource} instance and return the same instance.
+   *
+   * @param createdAt Time when the metric was created or logged in RFC3339 format
+   * @return The same instance of this {@link TrckGetMetricResource} class
+   */
+  @Nonnull
+  public TrckGetMetricResource createdAt(@Nullable final OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  /**
+   * Time when the metric was created or logged in RFC3339 format
+   *
+   * @return createdAt The createdAt of this {@link TrckGetMetricResource} instance.
+   */
+  @Nonnull
+  public OffsetDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  /**
+   * Set the createdAt of this {@link TrckGetMetricResource} instance.
+   *
+   * @param createdAt Time when the metric was created or logged in RFC3339 format
+   */
+  public void setCreatedAt(@Nullable final OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the modifiedAt of this {@link TrckGetMetricResource} instance and return the same instance.
+   *
+   * @param modifiedAt Time when the metric was created or logged in RFC3339 format
+   * @return The same instance of this {@link TrckGetMetricResource} class
+   */
+  @Nonnull
+  public TrckGetMetricResource modifiedAt(@Nullable final OffsetDateTime modifiedAt) {
+    this.modifiedAt = modifiedAt;
+    return this;
+  }
+
+  /**
+   * Time when the metric was created or logged in RFC3339 format
+   *
+   * @return modifiedAt The modifiedAt of this {@link TrckGetMetricResource} instance.
+   */
+  @Nonnull
+  public OffsetDateTime getModifiedAt() {
+    return modifiedAt;
+  }
+
+  /**
+   * Set the modifiedAt of this {@link TrckGetMetricResource} instance.
+   *
+   * @param modifiedAt Time when the metric was created or logged in RFC3339 format
+   */
+  public void setModifiedAt(@Nullable final OffsetDateTime modifiedAt) {
+    this.modifiedAt = modifiedAt;
   }
 
   /**
@@ -259,6 +328,8 @@ public class TrckGetMetricResource
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (executionId != null) declaredFields.put("executionId", executionId);
+    if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (modifiedAt != null) declaredFields.put("modifiedAt", modifiedAt);
     if (metrics != null) declaredFields.put("metrics", metrics);
     if (tags != null) declaredFields.put("tags", tags);
     if (customInfo != null) declaredFields.put("customInfo", customInfo);
@@ -288,6 +359,8 @@ public class TrckGetMetricResource
     final TrckGetMetricResource trckGetMetricResource = (TrckGetMetricResource) o;
     return Objects.equals(this.cloudSdkCustomFields, trckGetMetricResource.cloudSdkCustomFields)
         && Objects.equals(this.executionId, trckGetMetricResource.executionId)
+        && Objects.equals(this.createdAt, trckGetMetricResource.createdAt)
+        && Objects.equals(this.modifiedAt, trckGetMetricResource.modifiedAt)
         && Objects.equals(this.metrics, trckGetMetricResource.metrics)
         && Objects.equals(this.tags, trckGetMetricResource.tags)
         && Objects.equals(this.customInfo, trckGetMetricResource.customInfo);
@@ -295,7 +368,8 @@ public class TrckGetMetricResource
 
   @Override
   public int hashCode() {
-    return Objects.hash(executionId, metrics, tags, customInfo, cloudSdkCustomFields);
+    return Objects.hash(
+        executionId, createdAt, modifiedAt, metrics, tags, customInfo, cloudSdkCustomFields);
   }
 
   @Override
@@ -304,6 +378,8 @@ public class TrckGetMetricResource
     final StringBuilder sb = new StringBuilder();
     sb.append("class TrckGetMetricResource {\n");
     sb.append("    executionId: ").append(toIndentedString(executionId)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
     sb.append("    metrics: ").append(toIndentedString(metrics)).append("\n");
     sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
     sb.append("    customInfo: ").append(toIndentedString(customInfo)).append("\n");

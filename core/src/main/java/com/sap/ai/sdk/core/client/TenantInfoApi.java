@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.model.MetaCapabilities;
+import com.sap.ai.sdk.core.model.TntTenantInfo;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.util.List;
@@ -24,10 +24,10 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class MetaApi extends AbstractOpenApiService {
+public class TenantInfoApi extends AbstractOpenApiService {
 
   /** Instantiates this API class to invoke operations on the AI Core */
-  public MetaApi() {
+  public TenantInfoApi() {
     super(new AiCoreService().getApiClient());
   }
 
@@ -36,28 +36,28 @@ public class MetaApi extends AbstractOpenApiService {
    *
    * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public MetaApi(@Nonnull final AiCoreService aiCoreService) {
+  public TenantInfoApi(@Nonnull final AiCoreService aiCoreService) {
     super(aiCoreService.getApiClient());
   }
 
   /**
-   * Meta information about API
+   * Information about a specified tenant
    *
-   * <p>Meta information about an implementation of AI API, describing its capabilities, limits and
-   * extensions
+   * <p>Tenant information containing the service plan that the tenant is subscribed to.
    *
-   * <p><b>200</b> - Description of the implementation
+   * <p><b>200</b> - A tenant info object
    *
    * <p><b>404</b> - The specified resource was not found
    *
-   * @return MetaCapabilities
+   * @return TntTenantInfo
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public MetaCapabilities get() throws OpenApiRequestException {
+  public TntTenantInfo get() throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
-    final String localVarPath = UriComponentsBuilder.fromPath("/lm/meta").build().toUriString();
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/admin/tenantInfo").build().toUriString();
 
     final MultiValueMap<String, String> localVarQueryParams =
         new LinkedMultiValueMap<String, String>();
@@ -72,8 +72,8 @@ public class MetaApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {"Oauth2"};
 
-    final ParameterizedTypeReference<MetaCapabilities> localVarReturnType =
-        new ParameterizedTypeReference<MetaCapabilities>() {};
+    final ParameterizedTypeReference<TntTenantInfo> localVarReturnType =
+        new ParameterizedTypeReference<TntTenantInfo>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,

@@ -50,6 +50,9 @@ public class BckndExtendedService
   @JsonProperty("serviceCatalog")
   private List<BckndServiceServiceCatalogItem> serviceCatalog = new ArrayList<>();
 
+  @JsonProperty("sharedResourceGroupStatus")
+  private BckndSharedResourceGroupStatus sharedResourceGroupStatus;
+
   /** aggregated status of the service */
   public enum StatusEnum {
     /** The PROVISIONED option of this BckndExtendedService */
@@ -333,6 +336,43 @@ public class BckndExtendedService
   }
 
   /**
+   * Set the sharedResourceGroupStatus of this {@link BckndExtendedService} instance and return the
+   * same instance.
+   *
+   * @param sharedResourceGroupStatus The sharedResourceGroupStatus of this {@link
+   *     BckndExtendedService}
+   * @return The same instance of this {@link BckndExtendedService} class
+   */
+  @Nonnull
+  public BckndExtendedService sharedResourceGroupStatus(
+      @Nullable final BckndSharedResourceGroupStatus sharedResourceGroupStatus) {
+    this.sharedResourceGroupStatus = sharedResourceGroupStatus;
+    return this;
+  }
+
+  /**
+   * Get sharedResourceGroupStatus
+   *
+   * @return sharedResourceGroupStatus The sharedResourceGroupStatus of this {@link
+   *     BckndExtendedService} instance.
+   */
+  @Nonnull
+  public BckndSharedResourceGroupStatus getSharedResourceGroupStatus() {
+    return sharedResourceGroupStatus;
+  }
+
+  /**
+   * Set the sharedResourceGroupStatus of this {@link BckndExtendedService} instance.
+   *
+   * @param sharedResourceGroupStatus The sharedResourceGroupStatus of this {@link
+   *     BckndExtendedService}
+   */
+  public void setSharedResourceGroupStatus(
+      @Nullable final BckndSharedResourceGroupStatus sharedResourceGroupStatus) {
+    this.sharedResourceGroupStatus = sharedResourceGroupStatus;
+  }
+
+  /**
    * Set the status of this {@link BckndExtendedService} instance and return the same instance.
    *
    * @param status aggregated status of the service
@@ -440,6 +480,8 @@ public class BckndExtendedService
     if (brokerSecret != null) declaredFields.put("brokerSecret", brokerSecret);
     if (capabilities != null) declaredFields.put("capabilities", capabilities);
     if (serviceCatalog != null) declaredFields.put("serviceCatalog", serviceCatalog);
+    if (sharedResourceGroupStatus != null)
+      declaredFields.put("sharedResourceGroupStatus", sharedResourceGroupStatus);
     if (status != null) declaredFields.put("status", status);
     if (statusMessage != null) declaredFields.put("statusMessage", statusMessage);
     return declaredFields;
@@ -473,6 +515,8 @@ public class BckndExtendedService
         && Objects.equals(this.brokerSecret, bckndExtendedService.brokerSecret)
         && Objects.equals(this.capabilities, bckndExtendedService.capabilities)
         && Objects.equals(this.serviceCatalog, bckndExtendedService.serviceCatalog)
+        && Objects.equals(
+            this.sharedResourceGroupStatus, bckndExtendedService.sharedResourceGroupStatus)
         && Objects.equals(this.status, bckndExtendedService.status)
         && Objects.equals(this.statusMessage, bckndExtendedService.statusMessage);
   }
@@ -486,6 +530,7 @@ public class BckndExtendedService
         brokerSecret,
         capabilities,
         serviceCatalog,
+        sharedResourceGroupStatus,
         status,
         statusMessage,
         cloudSdkCustomFields);
@@ -502,6 +547,9 @@ public class BckndExtendedService
     sb.append("    brokerSecret: ").append(toIndentedString(brokerSecret)).append("\n");
     sb.append("    capabilities: ").append(toIndentedString(capabilities)).append("\n");
     sb.append("    serviceCatalog: ").append(toIndentedString(serviceCatalog)).append("\n");
+    sb.append("    sharedResourceGroupStatus: ")
+        .append(toIndentedString(sharedResourceGroupStatus))
+        .append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    statusMessage: ").append(toIndentedString(statusMessage)).append("\n");
     cloudSdkCustomFields.forEach(
