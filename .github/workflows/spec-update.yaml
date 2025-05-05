@@ -84,7 +84,7 @@ jobs:
               FILE_PATH='core/src/main/resources/spec/aicore.yaml'
               ;;
             grounding)
-              API_URL="$API_BASE_URL/AI/rage-proxy-inference/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
+              API_URL="$API_BASE_URL/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
               FILE_PATH='core-services/document-grounding/src/main/resources/spec/grounding.yaml'
               ;;
             orchestration)
