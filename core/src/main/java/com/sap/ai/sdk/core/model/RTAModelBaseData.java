@@ -52,6 +52,9 @@ public class RTAModelBaseData
   @JsonProperty("provider")
   private String provider;
 
+  @JsonProperty("allowedScenarios")
+  private List<RTAModelBaseDataAllowedScenariosInner> allowedScenarios = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -291,6 +294,56 @@ public class RTAModelBaseData
   }
 
   /**
+   * Set the allowedScenarios of this {@link RTAModelBaseData} instance and return the same
+   * instance.
+   *
+   * @param allowedScenarios List of scenarioId:executuableId pair where the model supported
+   * @return The same instance of this {@link RTAModelBaseData} class
+   */
+  @Nonnull
+  public RTAModelBaseData allowedScenarios(
+      @Nullable final List<RTAModelBaseDataAllowedScenariosInner> allowedScenarios) {
+    this.allowedScenarios = allowedScenarios;
+    return this;
+  }
+
+  /**
+   * Add one allowedScenarios instance to this {@link RTAModelBaseData}.
+   *
+   * @param allowedScenariosItem The allowedScenarios that should be added
+   * @return The same instance of type {@link RTAModelBaseData}
+   */
+  @Nonnull
+  public RTAModelBaseData addAllowedScenariosItem(
+      @Nonnull final RTAModelBaseDataAllowedScenariosInner allowedScenariosItem) {
+    if (this.allowedScenarios == null) {
+      this.allowedScenarios = new ArrayList<>();
+    }
+    this.allowedScenarios.add(allowedScenariosItem);
+    return this;
+  }
+
+  /**
+   * List of scenarioId:executuableId pair where the model supported
+   *
+   * @return allowedScenarios The allowedScenarios of this {@link RTAModelBaseData} instance.
+   */
+  @Nonnull
+  public List<RTAModelBaseDataAllowedScenariosInner> getAllowedScenarios() {
+    return allowedScenarios;
+  }
+
+  /**
+   * Set the allowedScenarios of this {@link RTAModelBaseData} instance.
+   *
+   * @param allowedScenarios List of scenarioId:executuableId pair where the model supported
+   */
+  public void setAllowedScenarios(
+      @Nullable final List<RTAModelBaseDataAllowedScenariosInner> allowedScenarios) {
+    this.allowedScenarios = allowedScenarios;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link RTAModelBaseData}.
    *
    * @return The set of properties names
@@ -335,6 +388,7 @@ public class RTAModelBaseData
     if (displayName != null) declaredFields.put("displayName", displayName);
     if (accessType != null) declaredFields.put("accessType", accessType);
     if (provider != null) declaredFields.put("provider", provider);
+    if (allowedScenarios != null) declaredFields.put("allowedScenarios", allowedScenarios);
     return declaredFields;
   }
 
@@ -366,7 +420,8 @@ public class RTAModelBaseData
         && Objects.equals(this.versions, rtAModelBaseData.versions)
         && Objects.equals(this.displayName, rtAModelBaseData.displayName)
         && Objects.equals(this.accessType, rtAModelBaseData.accessType)
-        && Objects.equals(this.provider, rtAModelBaseData.provider);
+        && Objects.equals(this.provider, rtAModelBaseData.provider)
+        && Objects.equals(this.allowedScenarios, rtAModelBaseData.allowedScenarios);
   }
 
   @Override
@@ -379,6 +434,7 @@ public class RTAModelBaseData
         displayName,
         accessType,
         provider,
+        allowedScenarios,
         cloudSdkCustomFields);
   }
 
@@ -394,6 +450,7 @@ public class RTAModelBaseData
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
     sb.append("    accessType: ").append(toIndentedString(accessType)).append("\n");
     sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
+    sb.append("    allowedScenarios: ").append(toIndentedString(allowedScenarios)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

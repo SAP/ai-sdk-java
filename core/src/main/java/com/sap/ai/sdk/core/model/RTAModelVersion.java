@@ -63,6 +63,12 @@ public class RTAModelVersion
   @JsonProperty("suggestedReplacements")
   private List<String> suggestedReplacements = new ArrayList<>();
 
+  @JsonProperty("streamingSupported")
+  private Boolean streamingSupported;
+
+  @JsonProperty("orchestrationCapabilities")
+  private List<String> orchestrationCapabilities = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -458,6 +464,88 @@ public class RTAModelVersion
   }
 
   /**
+   * Set the streamingSupported of this {@link RTAModelVersion} instance and return the same
+   * instance.
+   *
+   * @param streamingSupported Streaming support status of the model
+   * @return The same instance of this {@link RTAModelVersion} class
+   */
+  @Nonnull
+  public RTAModelVersion streamingSupported(@Nullable final Boolean streamingSupported) {
+    this.streamingSupported = streamingSupported;
+    return this;
+  }
+
+  /**
+   * Streaming support status of the model
+   *
+   * @return streamingSupported The streamingSupported of this {@link RTAModelVersion} instance.
+   */
+  @Nonnull
+  public Boolean isStreamingSupported() {
+    return streamingSupported;
+  }
+
+  /**
+   * Set the streamingSupported of this {@link RTAModelVersion} instance.
+   *
+   * @param streamingSupported Streaming support status of the model
+   */
+  public void setStreamingSupported(@Nullable final Boolean streamingSupported) {
+    this.streamingSupported = streamingSupported;
+  }
+
+  /**
+   * Set the orchestrationCapabilities of this {@link RTAModelVersion} instance and return the same
+   * instance.
+   *
+   * @param orchestrationCapabilities List of model capabilities supported by orchestration service
+   * @return The same instance of this {@link RTAModelVersion} class
+   */
+  @Nonnull
+  public RTAModelVersion orchestrationCapabilities(
+      @Nullable final List<String> orchestrationCapabilities) {
+    this.orchestrationCapabilities = orchestrationCapabilities;
+    return this;
+  }
+
+  /**
+   * Add one orchestrationCapabilities instance to this {@link RTAModelVersion}.
+   *
+   * @param orchestrationCapabilitiesItem The orchestrationCapabilities that should be added
+   * @return The same instance of type {@link RTAModelVersion}
+   */
+  @Nonnull
+  public RTAModelVersion addOrchestrationCapabilitiesItem(
+      @Nonnull final String orchestrationCapabilitiesItem) {
+    if (this.orchestrationCapabilities == null) {
+      this.orchestrationCapabilities = new ArrayList<>();
+    }
+    this.orchestrationCapabilities.add(orchestrationCapabilitiesItem);
+    return this;
+  }
+
+  /**
+   * List of model capabilities supported by orchestration service
+   *
+   * @return orchestrationCapabilities The orchestrationCapabilities of this {@link RTAModelVersion}
+   *     instance.
+   */
+  @Nonnull
+  public List<String> getOrchestrationCapabilities() {
+    return orchestrationCapabilities;
+  }
+
+  /**
+   * Set the orchestrationCapabilities of this {@link RTAModelVersion} instance.
+   *
+   * @param orchestrationCapabilities List of model capabilities supported by orchestration service
+   */
+  public void setOrchestrationCapabilities(@Nullable final List<String> orchestrationCapabilities) {
+    this.orchestrationCapabilities = orchestrationCapabilities;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link RTAModelVersion}.
    *
    * @return The set of properties names
@@ -506,6 +594,9 @@ public class RTAModelVersion
     if (cost != null) declaredFields.put("cost", cost);
     if (suggestedReplacements != null)
       declaredFields.put("suggestedReplacements", suggestedReplacements);
+    if (streamingSupported != null) declaredFields.put("streamingSupported", streamingSupported);
+    if (orchestrationCapabilities != null)
+      declaredFields.put("orchestrationCapabilities", orchestrationCapabilities);
     return declaredFields;
   }
 
@@ -540,7 +631,10 @@ public class RTAModelVersion
         && Objects.equals(this.capabilities, rtAModelVersion.capabilities)
         && Objects.equals(this.metadata, rtAModelVersion.metadata)
         && Objects.equals(this.cost, rtAModelVersion.cost)
-        && Objects.equals(this.suggestedReplacements, rtAModelVersion.suggestedReplacements);
+        && Objects.equals(this.suggestedReplacements, rtAModelVersion.suggestedReplacements)
+        && Objects.equals(this.streamingSupported, rtAModelVersion.streamingSupported)
+        && Objects.equals(
+            this.orchestrationCapabilities, rtAModelVersion.orchestrationCapabilities);
   }
 
   @Override
@@ -556,6 +650,8 @@ public class RTAModelVersion
         metadata,
         cost,
         suggestedReplacements,
+        streamingSupported,
+        orchestrationCapabilities,
         cloudSdkCustomFields);
   }
 
@@ -575,6 +671,10 @@ public class RTAModelVersion
     sb.append("    cost: ").append(toIndentedString(cost)).append("\n");
     sb.append("    suggestedReplacements: ")
         .append(toIndentedString(suggestedReplacements))
+        .append("\n");
+    sb.append("    streamingSupported: ").append(toIndentedString(streamingSupported)).append("\n");
+    sb.append("    orchestrationCapabilities: ")
+        .append(toIndentedString(orchestrationCapabilities))
         .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
