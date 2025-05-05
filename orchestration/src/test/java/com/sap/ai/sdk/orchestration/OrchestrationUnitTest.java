@@ -1027,4 +1027,31 @@ class OrchestrationUnitTest {
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
   }
+
+  @Test
+  void testGetAllMessages() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var resultTemplating = client.chatCompletion(new OrchestrationPrompt("Hello"), config);
+    final var messageListTemplating = resultTemplating.getAllMessages();
+    assertThat(messageListTemplating.get(0)).isInstanceOf(SystemMessage.class);
+    assertThat(messageListTemplating.get(1)).isInstanceOf(UserMessage.class);
+    assertThat(messageListTemplating.get(2)).isInstanceOf(AssistantMessage.class);
+
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("toolCallsResponse2.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var resultTools = client.chatCompletion(new OrchestrationPrompt("Hello"), config);
+    final var messageListTools = resultTools.getAllMessages();
+    assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
+    assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
+    assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
+  }
 }
