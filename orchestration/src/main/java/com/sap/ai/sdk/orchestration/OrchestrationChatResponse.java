@@ -2,18 +2,22 @@ package com.sap.ai.sdk.orchestration;
 
 import static lombok.AccessLevel.PACKAGE;
 
+import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessage;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
+import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.val;
 
 /** Orchestration chat completion output. */
 @Value
@@ -57,40 +61,38 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
-    final var messages = new ArrayList<Message>();
+    val messages = new ArrayList<Message>();
     for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
-      if (chatMessage instanceof SingleChatMessage simpleMsg) {
-        messages.add(chatMessageIntoMessage(simpleMsg));
-      } else if (chatMessage instanceof MultiChatMessage mCMessage) {
-        messages.add(chatMessageIntoMessage(mCMessage));
+      if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
+        val toolCalls = assistantChatMessage.getToolCalls();
+        if (!toolCalls.isEmpty()) {
+          messages.add(new AssistantMessage(toolCalls));
+        } else {
+          messages.add(
+              new AssistantMessage(
+                  MessageContent.fromChatMessageContent(assistantChatMessage.getContent())));
+        }
+      } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {
+        messages.add(
+            new SystemMessage(
+                MessageContent.fromChatMessageContent(systemChatMessage.getContent())));
+      } else if (chatMessage instanceof UserChatMessage userChatMessage) {
+        messages.add(
+            new UserMessage(
+                MessageContent.fromUserChatMessageContent(userChatMessage.getContent())));
+      } else if (chatMessage instanceof ToolChatMessage toolChatMessage) {
+        messages.add(
+            new ToolMessage(
+                toolChatMessage.getToolCallId(),
+                ((ChatMessageContent.InnerString) toolChatMessage.getContent()).value()));
       } else {
         throw new IllegalArgumentException(
             "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
       }
     }
+
     messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
-  }
-
-  @Nonnull
-  private Message chatMessageIntoMessage(@Nonnull final SingleChatMessage simpleMsg) {
-    return switch (simpleMsg.getRole()) {
-      case "user" -> Message.user(simpleMsg.getContent());
-      case "assistant" -> Message.assistant(simpleMsg.getContent());
-      case "system" -> Message.system(simpleMsg.getContent());
-      default -> throw new IllegalStateException("Unexpected role: " + simpleMsg.getRole());
-    };
-  }
-
-  @Nonnull
-  private Message chatMessageIntoMessage(@Nonnull final MultiChatMessage mCMessage) {
-    return switch (mCMessage.getRole()) {
-      case "user" -> new UserMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
-      case "system" -> new SystemMessage(MessageContent.fromMCMContentList(mCMessage.getContent()));
-      default ->
-          throw new IllegalStateException(
-              "Unexpected role with complex message: " + mCMessage.getRole());
-    };
   }
 
   /**

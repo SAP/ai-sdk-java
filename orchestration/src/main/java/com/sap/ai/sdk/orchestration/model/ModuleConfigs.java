@@ -43,6 +43,12 @@ public class ModuleConfigs
   @JsonProperty("grounding_module_config")
   private GroundingModuleConfig groundingModuleConfig;
 
+  @JsonProperty("input_translation_module_config")
+  private InputTranslationModuleConfig inputTranslationModuleConfig;
+
+  @JsonProperty("output_translation_module_config")
+  private OutputTranslationModuleConfig outputTranslationModuleConfig;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -217,6 +223,80 @@ public class ModuleConfigs
   }
 
   /**
+   * Set the inputTranslationModuleConfig of this {@link ModuleConfigs} instance and return the same
+   * instance.
+   *
+   * @param inputTranslationModuleConfig The inputTranslationModuleConfig of this {@link
+   *     ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull
+  public ModuleConfigs inputTranslationModuleConfig(
+      @Nullable final InputTranslationModuleConfig inputTranslationModuleConfig) {
+    this.inputTranslationModuleConfig = inputTranslationModuleConfig;
+    return this;
+  }
+
+  /**
+   * Get inputTranslationModuleConfig
+   *
+   * @return inputTranslationModuleConfig The inputTranslationModuleConfig of this {@link
+   *     ModuleConfigs} instance.
+   */
+  @Nonnull
+  public InputTranslationModuleConfig getInputTranslationModuleConfig() {
+    return inputTranslationModuleConfig;
+  }
+
+  /**
+   * Set the inputTranslationModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param inputTranslationModuleConfig The inputTranslationModuleConfig of this {@link
+   *     ModuleConfigs}
+   */
+  public void setInputTranslationModuleConfig(
+      @Nullable final InputTranslationModuleConfig inputTranslationModuleConfig) {
+    this.inputTranslationModuleConfig = inputTranslationModuleConfig;
+  }
+
+  /**
+   * Set the outputTranslationModuleConfig of this {@link ModuleConfigs} instance and return the
+   * same instance.
+   *
+   * @param outputTranslationModuleConfig The outputTranslationModuleConfig of this {@link
+   *     ModuleConfigs}
+   * @return The same instance of this {@link ModuleConfigs} class
+   */
+  @Nonnull
+  public ModuleConfigs outputTranslationModuleConfig(
+      @Nullable final OutputTranslationModuleConfig outputTranslationModuleConfig) {
+    this.outputTranslationModuleConfig = outputTranslationModuleConfig;
+    return this;
+  }
+
+  /**
+   * Get outputTranslationModuleConfig
+   *
+   * @return outputTranslationModuleConfig The outputTranslationModuleConfig of this {@link
+   *     ModuleConfigs} instance.
+   */
+  @Nonnull
+  public OutputTranslationModuleConfig getOutputTranslationModuleConfig() {
+    return outputTranslationModuleConfig;
+  }
+
+  /**
+   * Set the outputTranslationModuleConfig of this {@link ModuleConfigs} instance.
+   *
+   * @param outputTranslationModuleConfig The outputTranslationModuleConfig of this {@link
+   *     ModuleConfigs}
+   */
+  public void setOutputTranslationModuleConfig(
+      @Nullable final OutputTranslationModuleConfig outputTranslationModuleConfig) {
+    this.outputTranslationModuleConfig = outputTranslationModuleConfig;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link ModuleConfigs}.
    *
    * @return The set of properties names
@@ -262,6 +342,10 @@ public class ModuleConfigs
     if (maskingModuleConfig != null) declaredFields.put("maskingModuleConfig", maskingModuleConfig);
     if (groundingModuleConfig != null)
       declaredFields.put("groundingModuleConfig", groundingModuleConfig);
+    if (inputTranslationModuleConfig != null)
+      declaredFields.put("inputTranslationModuleConfig", inputTranslationModuleConfig);
+    if (outputTranslationModuleConfig != null)
+      declaredFields.put("outputTranslationModuleConfig", outputTranslationModuleConfig);
     return declaredFields;
   }
 
@@ -291,7 +375,11 @@ public class ModuleConfigs
         && Objects.equals(this.templatingModuleConfig, moduleConfigs.templatingModuleConfig)
         && Objects.equals(this.filteringModuleConfig, moduleConfigs.filteringModuleConfig)
         && Objects.equals(this.maskingModuleConfig, moduleConfigs.maskingModuleConfig)
-        && Objects.equals(this.groundingModuleConfig, moduleConfigs.groundingModuleConfig);
+        && Objects.equals(this.groundingModuleConfig, moduleConfigs.groundingModuleConfig)
+        && Objects.equals(
+            this.inputTranslationModuleConfig, moduleConfigs.inputTranslationModuleConfig)
+        && Objects.equals(
+            this.outputTranslationModuleConfig, moduleConfigs.outputTranslationModuleConfig);
   }
 
   @Override
@@ -302,6 +390,8 @@ public class ModuleConfigs
         filteringModuleConfig,
         maskingModuleConfig,
         groundingModuleConfig,
+        inputTranslationModuleConfig,
+        outputTranslationModuleConfig,
         cloudSdkCustomFields);
   }
 
@@ -322,6 +412,12 @@ public class ModuleConfigs
         .append("\n");
     sb.append("    groundingModuleConfig: ")
         .append(toIndentedString(groundingModuleConfig))
+        .append("\n");
+    sb.append("    inputTranslationModuleConfig: ")
+        .append(toIndentedString(inputTranslationModuleConfig))
+        .append("\n");
+    sb.append("    outputTranslationModuleConfig: ")
+        .append(toIndentedString(outputTranslationModuleConfig))
         .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

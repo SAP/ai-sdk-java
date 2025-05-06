@@ -119,8 +119,7 @@ class SpringAiOrchestrationController {
   @GetMapping("/toolCalling")
   Object toolCalling(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    // tool execution broken on orchestration https://jira.tools.sap/browse/AI-86627
-    val response = service.toolCalling(false);
+    val response = service.toolCalling(true);
 
     if ("json".equals(format)) {
       return ((OrchestrationSpringChatResponse) response)

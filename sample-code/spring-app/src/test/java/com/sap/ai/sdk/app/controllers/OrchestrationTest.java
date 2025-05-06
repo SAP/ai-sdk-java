@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -86,7 +87,7 @@ class OrchestrationTest {
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
@@ -100,7 +101,7 @@ class OrchestrationTest {
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     assertThat(result.getChoice()).isSameAs(choices.get(0));
     usage = result.getTokenUsage();
@@ -201,7 +202,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 
@@ -246,7 +247,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 

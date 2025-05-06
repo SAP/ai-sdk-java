@@ -42,16 +42,13 @@ public class OrchestrationJacksonConfiguration {
     jackson.addMixIn(
         ModuleResultsOutputUnmaskingInner.class,
         JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
+    jackson.addMixIn(ChatMessage.class, JacksonMixins.ChatMessageMixin.class);
 
     final var module =
         new SimpleModule()
             .addDeserializer(
-                ChatMessage.class,
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class))
-            .addDeserializer(
                 TemplateResponseFormat.class,
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
-            .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class)
             .setMixInAnnotation(
                 TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class);
     jackson.registerModule(module);

@@ -1,9 +1,13 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.AssistantChatMessage.RoleEnum.ASSISTANT;
+
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ResponseMessageToolCall;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.MessageToolCall;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +31,7 @@ public class AssistantMessage implements Message {
   MessageContent content;
 
   /** Tool call if there is any. */
-  @Nullable List<ResponseMessageToolCall> toolCalls;
+  @Nullable List<MessageToolCall> toolCalls;
 
   /**
    * Creates a new assistant message with the given single message.
@@ -40,11 +44,21 @@ public class AssistantMessage implements Message {
   }
 
   /**
+   * Creates a new assistant message with the given single message.
+   *
+   * @param content the single message.
+   */
+  AssistantMessage(@Nonnull final MessageContent content) {
+    this.content = content;
+    toolCalls = null;
+  }
+
+  /**
    * Creates a new assistant message with the given tool calls.
    *
    * @param toolCalls list of tool call objects
    */
-  public AssistantMessage(@Nonnull final List<ResponseMessageToolCall> toolCalls) {
+  public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());
     this.toolCalls = toolCalls;
   }
@@ -53,11 +67,15 @@ public class AssistantMessage implements Message {
   @Override
   public ChatMessage createChatMessage() {
     if (toolCalls() != null) {
-      // content shouldn't be required for tool calls 🤷
-      val message = SingleChatMessage.create().role(role).content("");
-      message.setCustomField("tool_calls", toolCalls);
-      return message;
+      return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
-    return Message.super.createChatMessage();
+    val texts =
+        content.items().stream()
+            .filter(item -> item instanceof TextItem)
+            .map(item -> (TextItem) item)
+            .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
+            .toList();
+
+    return AssistantChatMessage.create().role(ASSISTANT).content(ChatMessageContent.create(texts));
   }
 }

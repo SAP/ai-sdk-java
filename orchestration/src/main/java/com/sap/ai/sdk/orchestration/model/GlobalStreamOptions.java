@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -30,6 +32,9 @@ public class GlobalStreamOptions
 {
   @JsonProperty("chunk_size")
   private Integer chunkSize = 100;
+
+  @JsonProperty("delimiters")
+  private List<String> delimiters = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -72,6 +77,58 @@ public class GlobalStreamOptions
   }
 
   /**
+   * Set the delimiters of this {@link GlobalStreamOptions} instance and return the same instance.
+   *
+   * @param delimiters List of delimiters to split the input text into chunks.Please note, this is a
+   *     required parameter when &#x60;input_translation_module_config&#x60; or
+   *     &#x60;output_translation_module_config&#x60; are configured.
+   * @return The same instance of this {@link GlobalStreamOptions} class
+   */
+  @Nonnull
+  public GlobalStreamOptions delimiters(@Nullable final List<String> delimiters) {
+    this.delimiters = delimiters;
+    return this;
+  }
+
+  /**
+   * Add one delimiters instance to this {@link GlobalStreamOptions}.
+   *
+   * @param delimitersItem The delimiters that should be added
+   * @return The same instance of type {@link GlobalStreamOptions}
+   */
+  @Nonnull
+  public GlobalStreamOptions addDelimitersItem(@Nonnull final String delimitersItem) {
+    if (this.delimiters == null) {
+      this.delimiters = new ArrayList<>();
+    }
+    this.delimiters.add(delimitersItem);
+    return this;
+  }
+
+  /**
+   * List of delimiters to split the input text into chunks.Please note, this is a required
+   * parameter when &#x60;input_translation_module_config&#x60; or
+   * &#x60;output_translation_module_config&#x60; are configured.
+   *
+   * @return delimiters The delimiters of this {@link GlobalStreamOptions} instance.
+   */
+  @Nonnull
+  public List<String> getDelimiters() {
+    return delimiters;
+  }
+
+  /**
+   * Set the delimiters of this {@link GlobalStreamOptions} instance.
+   *
+   * @param delimiters List of delimiters to split the input text into chunks.Please note, this is a
+   *     required parameter when &#x60;input_translation_module_config&#x60; or
+   *     &#x60;output_translation_module_config&#x60; are configured.
+   */
+  public void setDelimiters(@Nullable final List<String> delimiters) {
+    this.delimiters = delimiters;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link GlobalStreamOptions}.
    *
    * @return The set of properties names
@@ -111,6 +168,7 @@ public class GlobalStreamOptions
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (chunkSize != null) declaredFields.put("chunkSize", chunkSize);
+    if (delimiters != null) declaredFields.put("delimiters", delimiters);
     return declaredFields;
   }
 
@@ -136,12 +194,13 @@ public class GlobalStreamOptions
     }
     final GlobalStreamOptions globalStreamOptions = (GlobalStreamOptions) o;
     return Objects.equals(this.cloudSdkCustomFields, globalStreamOptions.cloudSdkCustomFields)
-        && Objects.equals(this.chunkSize, globalStreamOptions.chunkSize);
+        && Objects.equals(this.chunkSize, globalStreamOptions.chunkSize)
+        && Objects.equals(this.delimiters, globalStreamOptions.delimiters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chunkSize, cloudSdkCustomFields);
+    return Objects.hash(chunkSize, delimiters, cloudSdkCustomFields);
   }
 
   @Override
@@ -150,6 +209,7 @@ public class GlobalStreamOptions
     final StringBuilder sb = new StringBuilder();
     sb.append("class GlobalStreamOptions {\n");
     sb.append("    chunkSize: ").append(toIndentedString(chunkSize)).append("\n");
+    sb.append("    delimiters: ").append(toIndentedString(delimiters)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

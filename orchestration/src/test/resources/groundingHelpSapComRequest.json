@@ -16,7 +16,10 @@
       "templating_module_config" : {
         "template" : [ {
           "role" : "user",
-          "content" : "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"
+          "content" : [ {
+            "type" : "text",
+            "text" : "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"
+          } ]
         } ],
         "defaults" : { },
         "tools" : [ ]
