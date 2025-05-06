@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
 
 ### 📈 Improvements
 
