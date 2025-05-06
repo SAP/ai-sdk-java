@@ -189,6 +189,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_0_FLASH_LITE =
       new OrchestrationAiModel("gemini-2.0-flash-lite");
 
+  /** DeepSeek-R1 */
+  public static final OrchestrationAiModel DEEPSEEK_R1 =
+      new OrchestrationAiModel("deepseek-ai--deepseek-r1");
+
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
   }
