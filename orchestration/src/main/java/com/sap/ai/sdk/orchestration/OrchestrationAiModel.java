@@ -88,7 +88,7 @@ public class OrchestrationAiModel {
 
   /** Anthropic Claude 3.7 Sonnet model */
   public static final OrchestrationAiModel CLAUDE_3_7_SONNET =
-      new OrchestrationAiModel("anthropic--claude-3.7-sonnet ");
+      new OrchestrationAiModel("anthropic--claude-3.7-sonnet");
 
   /** Amazon Titan Text Lite model */
   public static final OrchestrationAiModel TITAN_TEXT_LITE =

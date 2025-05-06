@@ -21,4 +21,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Orchestration] Fixed `OrchestrationAiModel.CLAUDE_3_7_SONNET`.
