@@ -19,7 +19,10 @@ class OrchestrationChatDeltaTest {
     var choice =
         LLMChoice.create()
             .index(0)
-            .message(ResponseChatMessage.create().role("wrong").content("wrong"))
+            .message(
+                ResponseChatMessage.create()
+                    .role(ResponseChatMessage.RoleEnum.UNKNOWN_DEFAULT_OPEN_API)
+                    .content("wrong"))
             .finishReason("stop");
     // this will be fixed once the spec is fixed
     choice.setCustomField("delta", Map.of("content", "Hello, world!"));

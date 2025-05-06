@@ -17,7 +17,10 @@ class OrchestrationChatResponseTest {
     var choice =
         LLMChoice.create()
             .index(0)
-            .message(ResponseChatMessage.create().role("assistant").content("Hello, world!"))
+            .message(
+                ResponseChatMessage.create()
+                    .role(ResponseChatMessage.RoleEnum.ASSISTANT)
+                    .content("Hello, world!"))
             .finishReason("stop");
 
     Generation generation = OrchestrationSpringChatResponse.toGeneration(choice);

@@ -25,17 +25,18 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TextContent */
+/** SAPDocumentTranslation */
 // CHECKSTYLE:OFF
-public class TextContent
+public class SAPDocumentTranslation
+    implements InputTranslationModuleConfig, OutputTranslationModuleConfig
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets type */
+  /** Type of document translation provider */
   public enum TypeEnum {
-    /** The TEXT option of this TextContent */
-    TEXT("text"),
+    /** The SAP_DOCUMENT_TRANSLATION option of this SAPDocumentTranslation */
+    SAP_DOCUMENT_TRANSLATION("sap_document_translation"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this TextContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this SAPDocumentTranslation */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +71,7 @@ public class TextContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type TextContent
+     * @return The enum value of type SAPDocumentTranslation
      */
     @JsonCreator
     @Nonnull
@@ -87,31 +88,31 @@ public class TextContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("text")
-  private String text;
+  @JsonProperty("config")
+  private SAPDocumentTranslationConfig config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TextContent. */
-  protected TextContent() {}
+  /** Default constructor for SAPDocumentTranslation. */
+  protected SAPDocumentTranslation() {}
 
   /**
-   * Set the type of this {@link TextContent} instance and return the same instance.
+   * Set the type of this {@link SAPDocumentTranslation} instance and return the same instance.
    *
-   * @param type The type of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param type Type of document translation provider
+   * @return The same instance of this {@link SAPDocumentTranslation} class
    */
   @Nonnull
-  public TextContent type(@Nonnull final TypeEnum type) {
+  public SAPDocumentTranslation type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Get type
+   * Type of document translation provider
    *
-   * @return type The type of this {@link TextContent} instance.
+   * @return type The type of this {@link SAPDocumentTranslation} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -119,47 +120,47 @@ public class TextContent
   }
 
   /**
-   * Set the type of this {@link TextContent} instance.
+   * Set the type of this {@link SAPDocumentTranslation} instance.
    *
-   * @param type The type of this {@link TextContent}
+   * @param type Type of document translation provider
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance and return the same instance.
+   * Set the config of this {@link SAPDocumentTranslation} instance and return the same instance.
    *
-   * @param text The text of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param config The config of this {@link SAPDocumentTranslation}
+   * @return The same instance of this {@link SAPDocumentTranslation} class
    */
   @Nonnull
-  public TextContent text(@Nonnull final String text) {
-    this.text = text;
+  public SAPDocumentTranslation config(@Nonnull final SAPDocumentTranslationConfig config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get text
+   * Get config
    *
-   * @return text The text of this {@link TextContent} instance.
+   * @return config The config of this {@link SAPDocumentTranslation} instance.
    */
   @Nonnull
-  public String getText() {
-    return text;
+  public SAPDocumentTranslationConfig getConfig() {
+    return config;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance.
+   * Set the config of this {@link SAPDocumentTranslation} instance.
    *
-   * @param text The text of this {@link TextContent}
+   * @param config The config of this {@link SAPDocumentTranslation}
    */
-  public void setText(@Nonnull final String text) {
-    this.text = text;
+  public void setConfig(@Nonnull final SAPDocumentTranslationConfig config) {
+    this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TextContent}.
+   * Get the names of the unrecognizable properties of the {@link SAPDocumentTranslation}.
    *
    * @return The set of properties names
    */
@@ -170,7 +171,7 @@ public class TextContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TextContent} instance.
+   * Get the value of an unrecognizable property of this {@link SAPDocumentTranslation} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -181,14 +182,15 @@ public class TextContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TextContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "SAPDocumentTranslation has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TextContent} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link SAPDocumentTranslation} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -197,13 +199,13 @@ public class TextContent
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
-    if (text != null) declaredFields.put("text", text);
+    if (config != null) declaredFields.put("config", config);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TextContent} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link SAPDocumentTranslation} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -221,24 +223,24 @@ public class TextContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TextContent textContent = (TextContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, textContent.type)
-        && Objects.equals(this.text, textContent.text);
+    final SAPDocumentTranslation saPDocumentTranslation = (SAPDocumentTranslation) o;
+    return Objects.equals(this.cloudSdkCustomFields, saPDocumentTranslation.cloudSdkCustomFields)
+        && Objects.equals(this.type, saPDocumentTranslation.type)
+        && Objects.equals(this.config, saPDocumentTranslation.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TextContent {\n");
+    sb.append("class SAPDocumentTranslation {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -257,20 +259,20 @@ public class TextContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TextContent} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link SAPDocumentTranslation}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return (type) -> (config) -> new SAPDocumentTranslation().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link TextContent} instance.
+     * Set the type of this {@link SAPDocumentTranslation} instance.
      *
-     * @param type The type of this {@link TextContent}
-     * @return The TextContent builder.
+     * @param type Type of document translation provider
+     * @return The SAPDocumentTranslation builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -278,11 +280,11 @@ public class TextContent
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the text of this {@link TextContent} instance.
+     * Set the config of this {@link SAPDocumentTranslation} instance.
      *
-     * @param text The text of this {@link TextContent}
-     * @return The TextContent instance.
+     * @param config The config of this {@link SAPDocumentTranslation}
+     * @return The SAPDocumentTranslation instance.
      */
-    TextContent text(@Nonnull final String text);
+    SAPDocumentTranslation config(@Nonnull final SAPDocumentTranslationConfig config);
   }
 }

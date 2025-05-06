@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- The constructor of the `AssistantMessage` class now takes `List<MessageToolCall>` as input instead of `List<ResponseMessageToolCall>` (the generated class got renamed).
 
 ### ✨ New Functionality
 
