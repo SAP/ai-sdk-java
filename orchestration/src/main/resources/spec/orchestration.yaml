@@ -63,7 +63,7 @@ components:
           allOf:
             - $ref: "#/components/schemas/ChatMessages"
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-    
+
     ChatMessages:
       type: array
       items:
@@ -76,7 +76,6 @@ components:
         $ref: "#/components/schemas/ChatMessage"
 
     ChatMessage:
-      type: object
       oneOf:
         - $ref: "#/components/schemas/SystemChatMessage"
         - $ref: "#/components/schemas/UserChatMessage"
@@ -131,7 +130,7 @@ components:
             - user
       required:
         - content
-        - role  
+        - role
     UserChatMessageContent:
       oneOf:
         - type: string
@@ -201,7 +200,7 @@ components:
       properties:
         role:
           type: string
-          enum: 
+          enum:
             - assistant
         content:
           type: string
@@ -328,6 +327,7 @@ components:
 
     CompletionPostResponseStreaming:
       # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
+      # see also lint rule ignore in `.spectral.yaml`, Remove the ignore when fixing.
       type: object
       required:
         - request_id
@@ -1042,15 +1042,51 @@ components:
               description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
 
     DPIEntityConfig:
+      oneOf:
+        - $ref: "#/components/schemas/DPIStandardEntity"
+
+    DPIStandardEntity:
       type: object
       required:
         - type
       additionalProperties: false
       properties:
         type:
-          description: Type of entity to be masked
-          allOf:
-            - $ref: "#/components/schemas/DPIEntities"
+          $ref: "#/components/schemas/DPIEntities"
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: "#/components/schemas/DPIMethodConstant"
+            - $ref: "#/components/schemas/DPIMethodFabricatedData"
+
+    DPIMethodConstant:
+      description: Replaces the entity with the specified value followed by an incrementing number
+      type: object
+      required:
+        - method
+        - value
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - constant
+        value:
+          description: Value to be used for replacement
+          example: NAME_REDACTED
+          type: string
+
+    DPIMethodFabricatedData:
+      description: Replaces the entity with a randomly generated value appropriate to its type.
+      type: object
+      required:
+        - method
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - fabricated_data
 
     DPIEntities:
       description: Default entities supported by data privacy and integration service
@@ -1077,6 +1113,7 @@ components:
         - profile-religious-group
         - profile-political-group
         - profile-pronouns-gender
+        - profile-ethnicity
         - profile-gender
         - profile-sexual-orientation
         - profile-trade-union
