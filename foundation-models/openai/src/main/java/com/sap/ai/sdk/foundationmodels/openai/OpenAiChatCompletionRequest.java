@@ -301,29 +301,16 @@ public class OpenAiChatCompletionRequest {
    * @return the CreateChatCompletionRequest
    */
   CreateChatCompletionRequest createCreateChatCompletionRequest() {
-    final var toolsCombined = new ArrayList<ChatCompletionTool>();
-    if (this.tools != null) {
-      toolsCombined.addAll(this.tools);
-    }
-    if (this.toolsExecutable != null) {
-      for (final OpenAiTool tool : this.toolsExecutable) {
-        toolsCombined.add(tool.createChatCompletionTool());
-      }
-    }
-
     final var request = new CreateChatCompletionRequest();
-    for (final OpenAiMessage message : this.messages) {
-      request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message));
-    }
-    if (this.stop != null) {
-      request.stop(CreateChatCompletionRequestAllOfStop.create(this.stop));
-    }
-    if (!toolsCombined.isEmpty()) {
-      request.tools(toolsCombined);
-    }
+    this.messages.forEach(
+        message ->
+            request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message)));
+
+    request.stop(this.stop != null ? CreateChatCompletionRequestAllOfStop.create(this.stop) : null);
 
     request.temperature(this.temperature);
     request.topP(this.topP);
+
     request.stream(null);
     request.maxTokens(this.maxTokens);
     request.maxCompletionTokens(this.maxCompletionTokens);
@@ -338,9 +325,24 @@ public class OpenAiChatCompletionRequest {
     request.seed(this.seed);
     request.streamOptions(this.streamOptions);
     request.responseFormat(this.responseFormat);
+    request.tools(getChatCompletionTools());
     request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);
     return request;
+  }
+
+  @Nullable
+  private List<ChatCompletionTool> getChatCompletionTools() {
+    final var toolsCombined = new ArrayList<ChatCompletionTool>();
+    if (this.tools != null) {
+      toolsCombined.addAll(this.tools);
+    }
+    if (this.toolsExecutable != null) {
+      for (final OpenAiTool tool : this.toolsExecutable) {
+        toolsCombined.add(tool.createChatCompletionTool());
+      }
+    }
+    return toolsCombined.isEmpty() ? null : toolsCombined;
   }
 }
