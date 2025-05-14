@@ -187,7 +187,7 @@ public class OpenAiTool {
    * @return a map that contains the function calls and their respective tool results.
    */
   @Nonnull
-  protected static Map<OpenAiFunctionCall, Object> executeInternal(
+  private static Map<OpenAiFunctionCall, Object> executeInternal(
       @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg) {
     final var result = new LinkedHashMap<OpenAiFunctionCall, Object>();
     final var toolMap = tools.stream().collect(Collectors.toMap(OpenAiTool::getName, identity()));
