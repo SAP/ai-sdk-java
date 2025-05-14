@@ -1,8 +1,6 @@
 name: "Weekly Spec Update"
 
 on:
-  workflow_dispatch:
-
   schedule:
     - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
 
