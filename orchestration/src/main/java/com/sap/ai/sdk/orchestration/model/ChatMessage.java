@@ -17,7 +17,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 /** ChatMessage */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = MultiChatMessage.class),
-  @JsonSubTypes.Type(value = SingleChatMessage.class),
+  @JsonSubTypes.Type(value = AssistantChatMessage.class),
+  @JsonSubTypes.Type(value = DeveloperChatMessage.class),
+  @JsonSubTypes.Type(value = SystemChatMessage.class),
+  @JsonSubTypes.Type(value = ToolChatMessage.class),
+  @JsonSubTypes.Type(value = UserChatMessage.class),
 })
 public interface ChatMessage {}

@@ -1,10 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ImageContent;
-import com.sap.ai.sdk.orchestration.model.MultiChatMessageContent;
-import com.sap.ai.sdk.orchestration.model.TextContent;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.val;
 
 /**
  * Represents the content of a chat message.
@@ -14,23 +16,39 @@ import javax.annotation.Nonnull;
  */
 public record MessageContent(@Nonnull List<ContentItem> items) {
   @Nonnull
-  static MessageContent fromMCMContentList(
-      @Nonnull final List<MultiChatMessageContent> mCMContentList) {
-    final var itemList =
-        mCMContentList.stream()
-            .map(
-                content -> {
-                  if (content instanceof TextContent text) {
-                    return new TextItem(text.getText());
-                  } else {
-                    final var imageUrl = ((ImageContent) content).getImageUrl();
-                    return (ContentItem)
-                        new ImageItem(
-                            imageUrl.getUrl(),
-                            ImageItem.DetailLevel.fromString(imageUrl.getDetail()));
-                  }
-                })
-            .toList();
-    return new MessageContent(itemList);
+  static MessageContent fromChatMessageContent(final ChatMessageContent chatMessageContent) {
+    if (chatMessageContent instanceof ChatMessageContent.InnerString innerString) {
+      return new MessageContent(List.of(new TextItem(innerString.value())));
+    } else if (chatMessageContent
+        instanceof ChatMessageContent.InnerTextContents innerTextContents) {
+      val texts =
+          innerTextContents.values().stream()
+              .map(textContent -> ((ContentItem) new TextItem(textContent.getText())))
+              .toList();
+      return new MessageContent(texts);
+    }
+    return new MessageContent(List.of());
+  }
+
+  @Nonnull
+  static MessageContent fromUserChatMessageContent(
+      final UserChatMessageContent chatMessageContent) {
+    if (chatMessageContent instanceof UserChatMessageContent.InnerString innerString) {
+      return new MessageContent(List.of(new TextItem(innerString.value())));
+    } else if (chatMessageContent
+        instanceof
+        final UserChatMessageContent.InnerUserChatMessageContentItems innerContentItems) {
+      val items = new ArrayList<ContentItem>();
+      for (val value : innerContentItems.values()) {
+        if (value.getType().equals(UserChatMessageContentItem.TypeEnum.TEXT)) {
+          items.add(new TextItem(value.getText()));
+        } else if (value.getType().equals(UserChatMessageContentItem.TypeEnum.IMAGE_URL)) {
+          val detailLevel = ImageItem.DetailLevel.fromString(value.getImageUrl().getDetail());
+          items.add(new ImageItem(value.getImageUrl().getUrl(), detailLevel));
+        }
+      }
+      return new MessageContent(items);
+    }
+    return new MessageContent(List.of());
   }
 }

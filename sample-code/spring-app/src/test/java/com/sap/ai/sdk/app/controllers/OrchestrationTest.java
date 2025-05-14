@@ -1,21 +1,32 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +39,9 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 @Slf4j
 class OrchestrationTest {
   OrchestrationService service;
+  private final OrchestrationClient client = new OrchestrationClient();
+  private final OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   @BeforeEach
   void setUp() {
@@ -83,7 +97,7 @@ class OrchestrationTest {
     var choices = llm.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isGreaterThan(1);
@@ -97,7 +111,7 @@ class OrchestrationTest {
     choices = orchestrationResult.getChoices();
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     assertThat(result.getChoice()).isSameAs(choices.get(0));
     usage = result.getTokenUsage();
@@ -198,7 +212,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 
@@ -243,7 +257,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 
@@ -336,5 +350,56 @@ class OrchestrationTest {
         service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
     final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testLocalPromptTemplate() throws IOException {
+    final var result =
+        service
+            .localPromptTemplate(
+                Files.readString(Path.of("src/main/resources/promptTemplateExample.yaml")))
+            .getOriginalResponse();
+    final var choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testStreamingErrorHandlingTemplate() {
+    final var template = Message.user("Bad template: {{?language!@#$}}");
+    final var templatingConfig =
+        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+    final var configWithTemplate = config.withTemplateConfig(templatingConfig);
+    final var inputParams = Map.of("language", "German");
+    final var prompt = new OrchestrationPrompt(inputParams);
+
+    assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithTemplate))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("Error processing template:");
+  }
+
+  @Test
+  void testStreamingErrorHandlingInputFilter() {
+    final var prompt = new OrchestrationPrompt("Create 5 paraphrases of 'I hate you'.");
+    final var filterConfig = new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE);
+    final var configWithFilter = config.withInputFiltering(filterConfig);
+
+    assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("Filtering Module - Input Filter");
+  }
+
+  @Test
+  void testStreamingErrorHandlingMasking() {
+    final var prompt = new OrchestrationPrompt("Some message.");
+    final var maskingConfig =
+        DpiMasking.anonymization().withEntities(DPIEntities.UNKNOWN_DEFAULT_OPEN_API);
+    final var configWithMasking = config.withMaskingConfig(maskingConfig);
+
+    assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithMasking))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("'type': 'sap_data_privacy_integration', 'method': 'anonymization'");
   }
 }

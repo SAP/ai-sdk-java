@@ -1,0 +1,49 @@
+name: translator
+version: 0.0.1
+scenario: translation scenario
+spec:
+  template:
+    - role: "system"
+      content: |-
+        You are a language translator.
+    - role: "user"
+      content: |-
+        Whats {{ ?word }} in {{ ?language }}?
+  defaults:
+    word: "apple"
+  tools:
+    - type: function
+      function:
+        description: Translate a word.
+        name: translate
+        parameters:
+          type: object
+          additionalProperties: False
+          required:
+            - language
+            - wordToTranslate
+          properties:
+            language:
+              type: string
+            wordToTranslate:
+              type: string
+        strict: true
+  response_format:
+    type: json_schema
+    json_schema:
+      name: translation-schema
+      description: Translate the given word into the provided language.
+      strict: true
+      schema:
+        type: object
+        additionalProperties: False
+        required:
+          - language
+          - translation
+        properties:
+          language:
+            type: string
+          translation:
+            type: string
+  additionalFields:
+    this: will get ignored

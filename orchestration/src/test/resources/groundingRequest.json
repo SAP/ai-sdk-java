@@ -16,7 +16,10 @@
       "templating_module_config" : {
         "template" : [ {
           "role" : "system",
-          "content" : "Context message with embedded grounding results. {{?results}}"
+          "content" : [ {
+            "type" : "text",
+            "text" : "Context message with embedded grounding results. {{?results}}"
+          } ]
         } ],
         "defaults" : { },
         "tools" : [ ]

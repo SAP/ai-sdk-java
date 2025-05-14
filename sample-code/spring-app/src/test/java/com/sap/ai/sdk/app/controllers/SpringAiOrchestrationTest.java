@@ -67,7 +67,7 @@ class SpringAiOrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 
@@ -144,10 +144,8 @@ class SpringAiOrchestrationTest {
 
   @Test
   void testToolCallingWithExecution() {
-    // tool execution broken on orchestration https://jira.tools.sap/browse/AI-86627
-    assertThatThrownBy(() -> service.toolCalling(true))
-        .isExactlyInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Request failed with status 400 Bad Request");
+    ChatResponse response = service.toolCalling(true);
+    assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse", "°C");
   }
 
   @Test

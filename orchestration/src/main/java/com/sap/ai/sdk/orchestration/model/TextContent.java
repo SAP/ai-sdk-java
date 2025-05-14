@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** TextContent */
 // CHECKSTYLE:OFF
-public class TextContent implements MultiChatMessageContent
+public class TextContent
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */
