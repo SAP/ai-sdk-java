@@ -1,0 +1,26 @@
+name: Weekly Spec Update
+
+on:
+  schedule:
+    - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
+
+jobs:
+  update-all-specs:
+    runs-on: ubuntu-latest
+
+    # matrix of all the spec files
+    strategy:
+      matrix:
+        file:
+          - core
+          - grounding
+          - orchestration
+          - prompt-registry
+
+    steps:
+    - name: Trigger spec update
+      run: |
+        gh workflow run spec-update.yaml \
+          --field file=${{ matrix.file }} \
+          --field file-ref=main \
+          --field create-pr=true
