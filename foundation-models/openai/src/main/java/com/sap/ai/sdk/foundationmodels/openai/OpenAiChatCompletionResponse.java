@@ -109,7 +109,9 @@ public class OpenAiChatCompletionResponse {
    * @return the list of tool messages that were serialized for the computed results. Empty list if
    *     no tools were called.
    */
+  @Nonnull
   public List<OpenAiToolMessage> executeTools() {
-    return OpenAiTool.execute(originalRequest.getToolsExecutable(), getMessage());
+    final var tools = originalRequest.getToolsExecutable();
+    return OpenAiTool.execute(tools != null ? tools : List.of(), getMessage());
   }
 }

@@ -306,13 +306,13 @@ public class OpenAiChatCompletionRequest {
       toolsCombined.addAll(this.tools);
     }
     if (this.toolsExecutable != null) {
-      for (OpenAiTool tool : this.toolsExecutable) {
+      for (final OpenAiTool tool : this.toolsExecutable) {
         toolsCombined.add(tool.createChatCompletionTool());
       }
     }
 
     final var request = new CreateChatCompletionRequest();
-    for (OpenAiMessage message : this.messages) {
+    for (final OpenAiMessage message : this.messages) {
       request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message));
     }
     if (this.stop != null) {
