@@ -1,10 +1,12 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiTool.deserializeArgument;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Test;
@@ -31,27 +33,28 @@ class OpenAiToolTest {
 
   @Test
   void getArgumentsAsMapValid() {
-    final var result = FUNCTION_CALL_A.getArgumentsAsMap();
+    final var result = deserializeArgument(Map.class, FUNCTION_CALL_A.getArguments());
     assertThat(result).containsEntry("key", "value");
   }
 
   @Test
   void getArgumentsAsMapInvalid() {
-    assertThatThrownBy(INVALID_FUNCTION_CALL_A::getArgumentsAsMap)
+    assertThatThrownBy(() -> deserializeArgument(Map.class, INVALID_FUNCTION_CALL_A.getArguments()))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to parse JSON string");
   }
 
   @Test
   void getArgumentsAsObjectValid() {
-    final Dummy.Request result = FUNCTION_CALL_A.getArgumentsAsObject(Dummy.Request.class);
+    final var result = deserializeArgument(Dummy.Request.class, FUNCTION_CALL_A.getArguments());
     assertThat(result).isInstanceOf(Dummy.Request.class);
     assertThat(result.key()).isEqualTo("value");
   }
 
   @Test
   void getArgumentsAsObjectInvalid() {
-    assertThatThrownBy(() -> INVALID_FUNCTION_CALL_A.getArgumentsAsObject(Integer.class))
+    final var payload = INVALID_FUNCTION_CALL_A.getArguments();
+    assertThatThrownBy(() -> deserializeArgument(Integer.class, payload))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Failed to parse JSON string");
   }

@@ -1,10 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -26,35 +22,4 @@ public class OpenAiFunctionCall implements OpenAiToolCall {
 
   /** The arguments for the function call, encoded as a JSON string. */
   @Nonnull String arguments;
-
-  /**
-   * Parses the arguments, encoded as a JSON string, into a {@code Map<String, Object>}.
-   *
-   * @return a map of the arguments
-   * @throws IllegalArgumentException if parsing fails
-   * @since 1.7.0
-   */
-  @Nonnull
-  public Map<String, Object> getArgumentsAsMap() throws IllegalArgumentException {
-    return getArgumentsAsObject(Map.class);
-  }
-
-  /**
-   * Parses the arguments, encoded as a JSON string, into an object of type expected by a function
-   * tool.
-   *
-   * @param type the class reference for requested type.
-   * @param <T> the type of the class
-   * @return the parsed arguments as an object
-   * @throws IllegalArgumentException if parsing fails
-   * @since 1.7.0
-   */
-  @Nonnull
-  public <T> T getArgumentsAsObject(@Nonnull final Class<T> type) throws IllegalArgumentException {
-    try {
-      return getOpenAiObjectMapper().readValue(getArguments(), type);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Failed to parse JSON string to class " + type, e);
-    }
-  }
 }

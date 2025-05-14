@@ -122,7 +122,7 @@ public class OpenAiTool {
   }
 
   @Nullable
-  private static <T> T deserializeArgument(@Nonnull final Class<T> cl, @Nonnull final String s) {
+  static <T> T deserializeArgument(@Nonnull final Class<T> cl, @Nonnull final String s) {
     try {
       return JACKSON.readValue(s, cl);
     } catch (JsonProcessingException e) {
