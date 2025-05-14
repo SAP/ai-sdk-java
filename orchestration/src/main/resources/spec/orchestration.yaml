@@ -63,7 +63,7 @@ components:
           allOf:
             - $ref: "#/components/schemas/ChatMessages"
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-    
+
     ChatMessages:
       type: array
       items:
@@ -131,7 +131,7 @@ components:
             - user
       required:
         - content
-        - role  
+        - role
     UserChatMessageContent:
       oneOf:
         - type: string
@@ -201,7 +201,7 @@ components:
       properties:
         role:
           type: string
-          enum: 
+          enum:
             - assistant
         content:
           type: string
@@ -328,7 +328,7 @@ components:
 
     CompletionPostResponseStreaming:
       # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
-      # see also lint rule ignore in `.spectral.yaml`, Remove the ignore when fixing. 
+      # see also lint rule ignore in `.spectral.yaml`, Remove the ignore when fixing.
       type: object
       required:
         - request_id
@@ -1078,6 +1078,7 @@ components:
         - profile-religious-group
         - profile-political-group
         - profile-pronouns-gender
+        - profile-ethnicity
         - profile-gender
         - profile-sexual-orientation
         - profile-trade-union
