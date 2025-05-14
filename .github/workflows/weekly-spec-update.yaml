@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
       - name: "Trigger spec update"
         run: |
