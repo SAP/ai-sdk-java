@@ -26,3 +26,5 @@ jobs:
           --field file=${{ matrix.file }} \
           --field file-ref=main \
           --field create-pr=true
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
