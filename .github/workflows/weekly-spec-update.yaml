@@ -13,7 +13,6 @@ jobs:
         file:
           - core
           - grounding
-          - orchestration
           - prompt-registry
 
     steps:
