@@ -1,4 +1,4 @@
-name: Weekly Spec Update
+name: "Weekly Spec Update"
 
 on:
   workflow_dispatch:
@@ -20,11 +20,16 @@ jobs:
           - prompt-registry
 
     steps:
-    - name: Trigger spec update
-      run: |
-        gh workflow run spec-update.yaml \
-          --field file=${{ matrix.file }} \
-          --field file-ref=main \
-          --field create-pr=true
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
+      - name: "Trigger spec update"
+        run: |
+          gh workflow run spec-update.yaml \
+            --field file=${{ matrix.file }} \
+            --field file-ref=main \
+            --field create-pr=true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
