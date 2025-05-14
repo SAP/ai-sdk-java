@@ -166,7 +166,7 @@ public class OpenAiTool {
    */
   @Beta
   @Nonnull
-  public static List<OpenAiToolMessage> execute(
+  static List<OpenAiToolMessage> execute(
       @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg) {
     final var toolResults = executeInternal(tools, msg);
     final var result = new ArrayList<OpenAiToolMessage>();
