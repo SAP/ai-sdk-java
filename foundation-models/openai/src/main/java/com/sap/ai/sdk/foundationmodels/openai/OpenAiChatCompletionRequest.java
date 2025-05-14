@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -125,6 +126,15 @@ public class OpenAiChatCompletionRequest {
   /** List of tools that the model may invoke during the completion. */
   @Nullable List<ChatCompletionTool> tools;
 
+  /**
+   * List of tools that are executable at runtime of the application.
+   *
+   * @since 1.7.0
+   */
+  @Getter(value = AccessLevel.PACKAGE)
+  @Nullable
+  List<OpenAiTool> toolsExecutable;
+
   /** Option to control which tool is invoked by the model. */
   @With(AccessLevel.PRIVATE)
   @Nullable
@@ -162,6 +172,7 @@ public class OpenAiChatCompletionRequest {
   public OpenAiChatCompletionRequest(@Nonnull final List<OpenAiMessage> messages) {
     this(
         List.copyOf(messages),
+        null,
         null,
         null,
         null,
@@ -226,6 +237,7 @@ public class OpenAiChatCompletionRequest {
             this.streamOptions,
             this.responseFormat,
             this.tools,
+            this.toolsExecutable,
             this.toolChoice);
   }
 
@@ -258,6 +270,7 @@ public class OpenAiChatCompletionRequest {
             this.streamOptions,
             this.responseFormat,
             this.tools,
+            this.toolsExecutable,
             this.toolChoice);
   }
 
@@ -312,10 +325,24 @@ public class OpenAiChatCompletionRequest {
     request.seed(this.seed);
     request.streamOptions(this.streamOptions);
     request.responseFormat(this.responseFormat);
-    request.tools(this.tools);
+    request.tools(getChatCompletionTools());
     request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);
     return request;
+  }
+
+  @Nullable
+  private List<ChatCompletionTool> getChatCompletionTools() {
+    final var toolsCombined = new ArrayList<ChatCompletionTool>();
+    if (this.tools != null) {
+      toolsCombined.addAll(this.tools);
+    }
+    if (this.toolsExecutable != null) {
+      for (final OpenAiTool tool : this.toolsExecutable) {
+        toolsCombined.add(tool.createChatCompletionTool());
+      }
+    }
+    return toolsCombined.isEmpty() ? null : toolsCombined;
   }
 }
