@@ -158,8 +158,8 @@ public final class OpenAiClient {
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     warnIfUnsupportedUsage();
-    return new OpenAiChatCompletionResponse(
-        chatCompletion(request.createCreateChatCompletionRequest()));
+    final var response = chatCompletion(request.createCreateChatCompletionRequest());
+    return new OpenAiChatCompletionResponse(response, request);
   }
 
   /**

@@ -9,6 +9,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -125,6 +126,15 @@ public class OpenAiChatCompletionRequest {
   /** List of tools that the model may invoke during the completion. */
   @Nullable List<ChatCompletionTool> tools;
 
+  /**
+   * List of tools that are executable at runtime of the application.
+   *
+   * @since 1.7.0
+   */
+  @Getter(value = AccessLevel.PACKAGE)
+  @Nullable
+  List<OpenAiTool> toolsExecutable;
+
   /** Option to control which tool is invoked by the model. */
   @With(AccessLevel.PRIVATE)
   @Nullable
@@ -162,6 +172,7 @@ public class OpenAiChatCompletionRequest {
   public OpenAiChatCompletionRequest(@Nonnull final List<OpenAiMessage> messages) {
     this(
         List.copyOf(messages),
+        null,
         null,
         null,
         null,
@@ -226,6 +237,7 @@ public class OpenAiChatCompletionRequest {
             this.streamOptions,
             this.responseFormat,
             this.tools,
+            this.toolsExecutable,
             this.toolChoice);
   }
 
@@ -258,6 +270,7 @@ public class OpenAiChatCompletionRequest {
             this.streamOptions,
             this.responseFormat,
             this.tools,
+            this.toolsExecutable,
             this.toolChoice);
   }
 
@@ -283,35 +296,34 @@ public class OpenAiChatCompletionRequest {
   }
 
   /**
-   * Sets the tools to be used in the request with convenience class {@code OpenAiTool}.
-   *
-   * @param tools the list of tools to be used
-   * @return a new OpenAiChatCompletionRequest instance with the specified tools
-   * @throws IllegalArgumentException if the tool type is not supported
-   * @since 1.7.0
-   */
-  @Nonnull
-  @Beta
-  public OpenAiChatCompletionRequest withToolsExecutable(@Nonnull final List<OpenAiTool> tools) {
-    return this.withTools(tools.stream().map(OpenAiTool::createChatCompletionTool).toList());
-  }
-
-  /**
    * Converts the request to a generated model class CreateChatCompletionRequest.
    *
    * @return the CreateChatCompletionRequest
    */
   CreateChatCompletionRequest createCreateChatCompletionRequest() {
-    final var request = new CreateChatCompletionRequest();
-    this.messages.forEach(
-        message ->
-            request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message)));
+    final var toolsCombined = new ArrayList<ChatCompletionTool>();
+    if (this.tools != null) {
+      toolsCombined.addAll(this.tools);
+    }
+    if (this.toolsExecutable != null) {
+      for (OpenAiTool tool : this.toolsExecutable) {
+        toolsCombined.add(tool.createChatCompletionTool());
+      }
+    }
 
-    request.stop(this.stop != null ? CreateChatCompletionRequestAllOfStop.create(this.stop) : null);
+    final var request = new CreateChatCompletionRequest();
+    for (OpenAiMessage message : this.messages) {
+      request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message));
+    }
+    if (this.stop != null) {
+      request.stop(CreateChatCompletionRequestAllOfStop.create(this.stop));
+    }
+    if (!toolsCombined.isEmpty()) {
+      request.tools(toolsCombined);
+    }
 
     request.temperature(this.temperature);
     request.topP(this.topP);
-
     request.stream(null);
     request.maxTokens(this.maxTokens);
     request.maxCompletionTokens(this.maxCompletionTokens);
@@ -326,7 +338,6 @@ public class OpenAiChatCompletionRequest {
     request.seed(this.seed);
     request.streamOptions(this.streamOptions);
     request.responseFormat(this.responseFormat);
-    request.tools(this.tools);
     request.toolChoice(this.toolChoice);
     request.functionCall(null);
     request.functions(null);

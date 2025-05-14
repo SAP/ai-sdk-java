@@ -28,6 +28,9 @@ public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
   @Nonnull CreateChatCompletionResponse originalResponse;
 
+  /** The original request that was sent to the OpenAI API. */
+  @Nonnull OpenAiChatCompletionRequest originalRequest;
+
   /**
    * Gets the token usage from the original response.
    *
@@ -95,5 +98,15 @@ public class OpenAiChatCompletionResponse {
             .toList();
 
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
+  }
+
+  /**
+   * Execute tool calls that were suggested by the assistant response.
+   *
+   * @return the list of tool messages that were serialized for the computed results. Empty list if
+   *     no tools were called.
+   */
+  public List<OpenAiToolMessage> executeTools() {
+    return OpenAiTool.execute(getOriginalRequest().getToolsExecutable(), getMessage());
   }
 }

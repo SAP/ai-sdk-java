@@ -111,14 +111,11 @@ public class OpenAiServiceV2 {
     final var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
     final OpenAiChatCompletionResponse response = client.chatCompletion(request);
 
-    // 3. Execute the tool call for given tools
-    final OpenAiAssistantMessage assistantMessage = response.getMessage();
-    final List<OpenAiToolMessage> toolMessages = OpenAiTool.execute(tools, assistantMessage);
+    // 3. Execute the tool calls
+    messages.add(response.getMessage());
+    messages.addAll(response.executeTools());
 
-    // 4. Return the results so that the model can incorporate them into the final response.
-    messages.add(assistantMessage);
-    messages.addAll(toolMessages);
-
+    // 4. Have model run the final request with incorporated tool results
     return client.chatCompletion(request.withMessages(messages));
   }
 
