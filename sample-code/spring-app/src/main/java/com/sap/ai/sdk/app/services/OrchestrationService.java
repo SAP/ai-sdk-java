@@ -535,6 +535,12 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, configWithTemplate);
   }
 
+  /**
+   * Chat request to an LLM through the Orchestration service using translation.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
   public OrchestrationChatResponse translation() {
     val prompt =
         new OrchestrationPrompt(
