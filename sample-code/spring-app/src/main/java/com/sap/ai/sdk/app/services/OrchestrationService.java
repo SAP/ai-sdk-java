@@ -502,9 +502,6 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenario(
       @Nonnull final String topic) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
     val configWithTemplate = config.withTemplateConfig(template);
 
