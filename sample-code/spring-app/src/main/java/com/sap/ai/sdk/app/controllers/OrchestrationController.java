@@ -291,4 +291,14 @@ class OrchestrationController {
     }
     return response.getContent();
   }
+
+  @GetMapping("/translation")
+  @Nonnull
+  Object translation(@RequestParam(value = "format", required = false) final String format) {
+    final var response = service.translation();
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
 }

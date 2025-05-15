@@ -4,9 +4,11 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
+import com.sap.ai.sdk.orchestration.model.InputTranslationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
+import com.sap.ai.sdk.orchestration.model.OutputTranslationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,6 +95,10 @@ public class OrchestrationModuleConfig {
    * @since 1.1.0
    */
   @Nullable GroundingModuleConfig groundingConfig;
+
+  @Nullable InputTranslationModuleConfig inputTranslationConfig;
+
+  @Nullable OutputTranslationModuleConfig outputTranslationConfig;
 
   /**
    * Creates a new configuration with the given LLM configuration.
