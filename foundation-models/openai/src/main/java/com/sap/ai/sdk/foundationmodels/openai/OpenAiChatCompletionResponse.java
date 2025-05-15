@@ -11,6 +11,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
@@ -26,7 +27,12 @@ import lombok.Value;
 @Setter(value = NONE)
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
-  @Nonnull final CreateChatCompletionResponse originalResponse;
+  @Nonnull CreateChatCompletionResponse originalResponse;
+
+  /** The original request that was sent to the OpenAI API. */
+  @Getter(NONE)
+  @Nonnull
+  OpenAiChatCompletionRequest originalRequest;
 
   /**
    * Gets the token usage from the original response.
@@ -95,5 +101,17 @@ public class OpenAiChatCompletionResponse {
             .toList();
 
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);
+  }
+
+  /**
+   * Execute tool calls that were suggested by the assistant response.
+   *
+   * @return the list of tool messages that were serialized for the computed results. Empty list if
+   *     no tools were called.
+   */
+  @Nonnull
+  public List<OpenAiToolMessage> executeTools() {
+    final var tools = originalRequest.getToolsExecutable();
+    return OpenAiTool.execute(tools != null ? tools : List.of(), getMessage());
   }
 }

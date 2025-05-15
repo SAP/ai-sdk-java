@@ -12,6 +12,7 @@
 
 ### ✨ New Functionality
 
+- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)
 - [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
 - [Orchestration] [Tool execution fully enabled](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#tool-calling)
 
