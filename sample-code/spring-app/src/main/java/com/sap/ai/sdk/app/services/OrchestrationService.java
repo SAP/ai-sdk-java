@@ -536,7 +536,9 @@ public class OrchestrationService {
   }
 
   public OrchestrationChatResponse translation() {
-    val prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
+    val prompt =
+        new OrchestrationPrompt(
+            "Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
     // list of supported language pairs
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
     val configWithTranslation =
