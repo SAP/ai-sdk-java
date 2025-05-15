@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation.TypeEnum.SAP_DOCUMENT_TRANSLATION;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -26,6 +27,8 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationConfig;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -530,5 +533,23 @@ public class OrchestrationService {
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  public OrchestrationChatResponse translation() {
+    val prompt = new OrchestrationPrompt("Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
+    // list of supported language pairs
+    // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
+    val configWithTranslation =
+        config
+            .withInputTranslationConfig(
+                SAPDocumentTranslation.create()
+                    .type(SAP_DOCUMENT_TRANSLATION)
+                    .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
+            .withOutputTranslationConfig(
+                SAPDocumentTranslation.create()
+                    .type(SAP_DOCUMENT_TRANSLATION)
+                    .config(SAPDocumentTranslationConfig.create().targetLanguage("de-DE")));
+
+    return client.chatCompletion(prompt, configWithTranslation);
   }
 }
