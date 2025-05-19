@@ -126,13 +126,12 @@ public class OpenAiChatCompletionRequest {
   /**
    * Tools the model may invoke during chat completion (metadata only).
    *
-   * <p>Prefer {@link #withToolsExecutable} for registering executable tools.
+   * <p>Use {@link #withToolsExecutable} for registering executable tools.
    */
   @Nullable List<ChatCompletionTool> tools;
 
   /**
-   * Tools the model may invoke during chat completion that are also executable at runtime of the
-   * application.
+   * Tools the model may invoke during chat completion that are also executable at application runtime.
    *
    * @since 1.8.0
    */
