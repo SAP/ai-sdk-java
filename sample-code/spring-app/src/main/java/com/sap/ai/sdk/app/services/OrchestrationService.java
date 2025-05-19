@@ -553,7 +553,10 @@ public class OrchestrationService {
             .withOutputTranslationConfig(
                 SAPDocumentTranslation.create()
                     .type(SAP_DOCUMENT_TRANSLATION)
-                    .config(SAPDocumentTranslationConfig.create().targetLanguage("de-DE")));
+                    .config(
+                        SAPDocumentTranslationConfig.create()
+                            .targetLanguage("de-DE")
+                            .sourceLanguage("en-US"))); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);
   }
