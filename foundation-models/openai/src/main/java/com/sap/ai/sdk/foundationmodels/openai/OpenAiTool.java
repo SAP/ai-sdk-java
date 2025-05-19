@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  * function's request structure.
  *
  * @see <a href="https://platform.openai.com/docs/guides/gpt/function-calling"/>OpenAI Function
- * @since 1.7.0
+ * @since 1.8.0
  */
 @Slf4j
 @Beta
@@ -157,8 +157,9 @@ public class OpenAiTool {
   }
 
   /**
-   * Executes the given tool calls with the provided tools and returns the results as a list of
-   * {@link OpenAiToolMessage} containing execution results encoded as JSON string.
+   * Executes all tool calls specified in the given assistant message using the provided list of
+   * tools. Returns the results as a list of {@link OpenAiToolMessage} containing execution results
+   * encoded as JSON string.
    *
    * @param tools the list of tools to execute
    * @param msg the assistant message containing a list of tool calls with arguments
@@ -179,8 +180,8 @@ public class OpenAiTool {
   }
 
   /**
-   * Executes the given tool calls with the provided tools and returns the results as a list of
-   * {@link OpenAiToolMessage} containing execution results encoded as JSON string.
+   * Executes all function tool calls present in the given assistant message using the provided list
+   * of tools. Returns a map associating each executed function call with its result.
    *
    * @param tools the list of tools to execute
    * @param msg the assistant message containing a list of tool calls with arguments
