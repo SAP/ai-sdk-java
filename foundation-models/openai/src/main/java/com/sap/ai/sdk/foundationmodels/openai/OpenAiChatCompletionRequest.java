@@ -131,7 +131,8 @@ public class OpenAiChatCompletionRequest {
   @Nullable List<ChatCompletionTool> tools;
 
   /**
-   * Tools the model may invoke during chat completion that are also executable at application runtime.
+   * Tools the model may invoke during chat completion that are also executable at application
+   * runtime.
    *
    * @since 1.8.0
    */
