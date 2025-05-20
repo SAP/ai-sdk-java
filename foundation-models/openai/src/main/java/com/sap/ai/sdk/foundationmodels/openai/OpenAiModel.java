@@ -76,6 +76,21 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   public static final OpenAiModel TEXT_EMBEDDING_3_SMALL =
       new OpenAiModel("text-embedding-3-small", null);
 
+  /** Azure OpenAI GPT-o4 Mini model */
+  public static final OpenAiModel O4_MINI = new OpenAiModel("o4-mini", null);
+
+  /** Azure OpenAI GPT-o3 model */
+  public static final OpenAiModel O3 = new OpenAiModel("o3", null);
+
+  /** Azure OpenAI GPT-4.1 model */
+  public static final OpenAiModel GPT_41 = new OpenAiModel("gpt-4.1", null);
+
+  /** Azure OpenAI GPT-4.1-nano model */
+  public static final OpenAiModel GPT_41_NANO = new OpenAiModel("gpt-4.1-nano", null);
+
+  /** Azure OpenAI GPT-4.1-mini model */
+  public static final OpenAiModel GPT_41_MINI = new OpenAiModel("gpt-4.1-mini", null);
+
   /**
    * Azure OpenAI Text Embedding ADA 002 model
    *
