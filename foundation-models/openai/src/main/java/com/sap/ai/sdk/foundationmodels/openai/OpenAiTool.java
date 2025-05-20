@@ -157,9 +157,9 @@ public class OpenAiTool {
   }
 
   /**
-   * Executes all tool calls specified in the given assistant message using the provided list of
-   * tools. Returns the results as a list of {@link OpenAiToolMessage} containing execution results
-   * encoded as JSON string.
+   * Executes each tool call found in the specified assistant message using the provided tools.
+   * Returns a list of {@link OpenAiToolMessage} objects, each containing the execution result
+   * encoded as a JSON string.
    *
    * @param tools the list of tools to execute
    * @param msg the assistant message containing a list of tool calls with arguments
@@ -180,8 +180,8 @@ public class OpenAiTool {
   }
 
   /**
-   * Executes all function tool calls present in the given assistant message using the provided list
-   * of tools. Returns a map associating each executed function call with its result.
+   * Executes each tool call found in the specified assistant message using the provided tools.
+   * Returns a map that links each executed tool call to its corresponding result.
    *
    * @param tools the list of tools to execute
    * @param msg the assistant message containing a list of tool calls with arguments
