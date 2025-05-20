@@ -16,6 +16,7 @@
 - [OpenAI] Added the following new models: `o4-mini`, `o3`, `gpt-4.1`, `gpt-4.1-nano`, and `gpt-4.1-mini` 
 - [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
 - [Orchestration] [Tool execution fully enabled](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#tool-calling)
+- [Orchestration] [Added translation](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#translation)
 
 ### 📈 Improvements
 
