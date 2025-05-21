@@ -14,9 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** DPIEntityConfig */
+/** Replacement strategy to be used for the entity */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = DPIStandardEntity.class),
+  @JsonSubTypes.Type(value = DPIMethodConstant.class),
+  @JsonSubTypes.Type(value = DPIMethodFabricatedData.class),
 })
-public interface DPIEntityConfig {}
+public interface DPIStandardEntityReplacementStrategy {}
