@@ -123,13 +123,18 @@ public class OpenAiChatCompletionRequest {
   /** Response format for the completion. */
   @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
-  /** List of tools that the model may invoke during the completion. */
+  /**
+   * Tools the model may invoke during chat completion (metadata only).
+   *
+   * <p>Use {@link #withToolsExecutable} for registering executable tools.
+   */
   @Nullable List<ChatCompletionTool> tools;
 
   /**
-   * List of tools that are executable at runtime of the application.
+   * Tools the model may invoke during chat completion that are also executable at application
+   * runtime.
    *
-   * @since 1.7.0
+   * @since 1.8.0
    */
   @Getter(value = AccessLevel.PACKAGE)
   @Nullable
