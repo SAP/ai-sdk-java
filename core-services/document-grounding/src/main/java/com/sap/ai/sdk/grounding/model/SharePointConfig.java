@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,53 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** PipelineStatus */
+/** SharePointConfig */
 // CHECKSTYLE:OFF
-public class PipelineStatus
+public class SharePointConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("lastStarted")
-  private OffsetDateTime lastStarted;
+  @JsonProperty("site")
+  private SharePointSite site;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PipelineStatus. */
-  protected PipelineStatus() {}
+  /** Default constructor for SharePointConfig. */
+  protected SharePointConfig() {}
 
   /**
-   * Set the lastStarted of this {@link PipelineStatus} instance and return the same instance.
+   * Set the site of this {@link SharePointConfig} instance and return the same instance.
    *
-   * @param lastStarted The lastStarted of this {@link PipelineStatus}
-   * @return The same instance of this {@link PipelineStatus} class
+   * @param site The site of this {@link SharePointConfig}
+   * @return The same instance of this {@link SharePointConfig} class
    */
   @Nonnull
-  public PipelineStatus lastStarted(@Nullable final OffsetDateTime lastStarted) {
-    this.lastStarted = lastStarted;
+  public SharePointConfig site(@Nonnull final SharePointSite site) {
+    this.site = site;
     return this;
   }
 
   /**
-   * Get lastStarted
+   * Get site
    *
-   * @return lastStarted The lastStarted of this {@link PipelineStatus} instance.
+   * @return site The site of this {@link SharePointConfig} instance.
    */
   @Nonnull
-  public OffsetDateTime getLastStarted() {
-    return lastStarted;
+  public SharePointSite getSite() {
+    return site;
   }
 
   /**
-   * Set the lastStarted of this {@link PipelineStatus} instance.
+   * Set the site of this {@link SharePointConfig} instance.
    *
-   * @param lastStarted The lastStarted of this {@link PipelineStatus}
+   * @param site The site of this {@link SharePointConfig}
    */
-  public void setLastStarted(@Nullable final OffsetDateTime lastStarted) {
-    this.lastStarted = lastStarted;
+  public void setSite(@Nonnull final SharePointSite site) {
+    this.site = site;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link PipelineStatus}.
+   * Get the names of the unrecognizable properties of the {@link SharePointConfig}.
    *
    * @return The set of properties names
    */
@@ -81,7 +80,7 @@ public class PipelineStatus
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PipelineStatus} instance.
+   * Get the value of an unrecognizable property of this {@link SharePointConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,14 +91,14 @@ public class PipelineStatus
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("PipelineStatus has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SharePointConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PipelineStatus} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link SharePointConfig} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -107,12 +106,12 @@ public class PipelineStatus
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (lastStarted != null) declaredFields.put("lastStarted", lastStarted);
+    if (site != null) declaredFields.put("site", site);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link PipelineStatus} instance. If the map previously
+   * Set an unrecognizable property of this {@link SharePointConfig} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -131,22 +130,22 @@ public class PipelineStatus
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PipelineStatus pipelineStatus = (PipelineStatus) o;
-    return Objects.equals(this.cloudSdkCustomFields, pipelineStatus.cloudSdkCustomFields)
-        && Objects.equals(this.lastStarted, pipelineStatus.lastStarted);
+    final SharePointConfig sharePointConfig = (SharePointConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, sharePointConfig.cloudSdkCustomFields)
+        && Objects.equals(this.site, sharePointConfig.site);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(lastStarted, cloudSdkCustomFields);
+    return Objects.hash(site, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PipelineStatus {\n");
-    sb.append("    lastStarted: ").append(toIndentedString(lastStarted)).append("\n");
+    sb.append("class SharePointConfig {\n");
+    sb.append("    site: ").append(toIndentedString(site)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -164,8 +163,22 @@ public class PipelineStatus
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link PipelineStatus} instance. No arguments are required. */
-  public static PipelineStatus create() {
-    return new PipelineStatus();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link SharePointConfig}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (site) -> new SharePointConfig().site(site);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the site of this {@link SharePointConfig} instance.
+     *
+     * @param site The site of this {@link SharePointConfig}
+     * @return The SharePointConfig instance.
+     */
+    SharePointConfig site(@Nonnull final SharePointSite site);
   }
 }
