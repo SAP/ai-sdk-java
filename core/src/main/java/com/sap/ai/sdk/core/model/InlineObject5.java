@@ -29,7 +29,7 @@ public class InlineObject5
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private MetaApiError error;
+  private DSetError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class InlineObject5
    * @return The same instance of this {@link InlineObject5} class
    */
   @Nonnull
-  public InlineObject5 error(@Nullable final MetaApiError error) {
+  public InlineObject5 error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -55,7 +55,7 @@ public class InlineObject5
    * @return error The error of this {@link InlineObject5} instance.
    */
   @Nonnull
-  public MetaApiError getError() {
+  public DSetError getError() {
     return error;
   }
 
@@ -64,7 +64,7 @@ public class InlineObject5
    *
    * @param error The error of this {@link InlineObject5}
    */
-  public void setError(@Nullable final MetaApiError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
