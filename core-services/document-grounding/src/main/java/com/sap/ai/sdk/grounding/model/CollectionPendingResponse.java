@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -32,7 +31,7 @@ public class CollectionPendingResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("Location")
-  private URI location;
+  private String location;
 
   @JsonProperty("status")
   private String status;
@@ -51,7 +50,7 @@ public class CollectionPendingResponse
    * @return The same instance of this {@link CollectionPendingResponse} class
    */
   @Nonnull
-  public CollectionPendingResponse location(@Nonnull final URI location) {
+  public CollectionPendingResponse location(@Nonnull final String location) {
     this.location = location;
     return this;
   }
@@ -62,7 +61,7 @@ public class CollectionPendingResponse
    * @return location The location of this {@link CollectionPendingResponse} instance.
    */
   @Nonnull
-  public URI getLocation() {
+  public String getLocation() {
     return location;
   }
 
@@ -71,7 +70,7 @@ public class CollectionPendingResponse
    *
    * @param location The location of this {@link CollectionPendingResponse}
    */
-  public void setLocation(@Nonnull final URI location) {
+  public void setLocation(@Nonnull final String location) {
     this.location = location;
   }
 
@@ -222,7 +221,7 @@ public class CollectionPendingResponse
      * @param location The location of this {@link CollectionPendingResponse}
      * @return The CollectionPendingResponse builder.
      */
-    Builder1 location(@Nonnull final URI location);
+    Builder1 location(@Nonnull final String location);
   }
 
   /** Builder helper class. */

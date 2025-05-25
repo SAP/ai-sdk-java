@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetrievalDocument */
+/** Document */
 // CHECKSTYLE:OFF
-public class RetrievalDocument
+public class Document
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -43,17 +43,17 @@ public class RetrievalDocument
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetrievalDocument. */
-  protected RetrievalDocument() {}
+  /** Default constructor for Document. */
+  protected Document() {}
 
   /**
-   * Set the id of this {@link RetrievalDocument} instance and return the same instance.
+   * Set the id of this {@link Document} instance and return the same instance.
    *
-   * @param id The id of this {@link RetrievalDocument}
-   * @return The same instance of this {@link RetrievalDocument} class
+   * @param id The id of this {@link Document}
+   * @return The same instance of this {@link Document} class
    */
   @Nonnull
-  public RetrievalDocument id(@Nonnull final String id) {
+  public Document id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
@@ -61,7 +61,7 @@ public class RetrievalDocument
   /**
    * Get id
    *
-   * @return id The id of this {@link RetrievalDocument} instance.
+   * @return id The id of this {@link Document} instance.
    */
   @Nonnull
   public String getId() {
@@ -69,34 +69,34 @@ public class RetrievalDocument
   }
 
   /**
-   * Set the id of this {@link RetrievalDocument} instance.
+   * Set the id of this {@link Document} instance.
    *
-   * @param id The id of this {@link RetrievalDocument}
+   * @param id The id of this {@link Document}
    */
   public void setId(@Nonnull final String id) {
     this.id = id;
   }
 
   /**
-   * Set the metadata of this {@link RetrievalDocument} instance and return the same instance.
+   * Set the metadata of this {@link Document} instance and return the same instance.
    *
-   * @param metadata The metadata of this {@link RetrievalDocument}
-   * @return The same instance of this {@link RetrievalDocument} class
+   * @param metadata The metadata of this {@link Document}
+   * @return The same instance of this {@link Document} class
    */
   @Nonnull
-  public RetrievalDocument metadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
+  public Document metadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
 
   /**
-   * Add one metadata instance to this {@link RetrievalDocument}.
+   * Add one metadata instance to this {@link Document}.
    *
    * @param metadataItem The metadata that should be added
-   * @return The same instance of type {@link RetrievalDocument}
+   * @return The same instance of type {@link Document}
    */
   @Nonnull
-  public RetrievalDocument addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
+  public Document addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -107,7 +107,7 @@ public class RetrievalDocument
   /**
    * Get metadata
    *
-   * @return metadata The metadata of this {@link RetrievalDocument} instance.
+   * @return metadata The metadata of this {@link Document} instance.
    */
   @Nonnull
   public List<DocumentKeyValueListPair> getMetadata() {
@@ -115,34 +115,34 @@ public class RetrievalDocument
   }
 
   /**
-   * Set the metadata of this {@link RetrievalDocument} instance.
+   * Set the metadata of this {@link Document} instance.
    *
-   * @param metadata The metadata of this {@link RetrievalDocument}
+   * @param metadata The metadata of this {@link Document}
    */
   public void setMetadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
   /**
-   * Set the chunks of this {@link RetrievalDocument} instance and return the same instance.
+   * Set the chunks of this {@link Document} instance and return the same instance.
    *
-   * @param chunks The chunks of this {@link RetrievalDocument}
-   * @return The same instance of this {@link RetrievalDocument} class
+   * @param chunks The chunks of this {@link Document}
+   * @return The same instance of this {@link Document} class
    */
   @Nonnull
-  public RetrievalDocument chunks(@Nonnull final List<Chunk> chunks) {
+  public Document chunks(@Nonnull final List<Chunk> chunks) {
     this.chunks = chunks;
     return this;
   }
 
   /**
-   * Add one chunks instance to this {@link RetrievalDocument}.
+   * Add one chunks instance to this {@link Document}.
    *
    * @param chunksItem The chunks that should be added
-   * @return The same instance of type {@link RetrievalDocument}
+   * @return The same instance of type {@link Document}
    */
   @Nonnull
-  public RetrievalDocument addChunksItem(@Nonnull final Chunk chunksItem) {
+  public Document addChunksItem(@Nonnull final Chunk chunksItem) {
     if (this.chunks == null) {
       this.chunks = new ArrayList<>();
     }
@@ -153,7 +153,7 @@ public class RetrievalDocument
   /**
    * Get chunks
    *
-   * @return chunks The chunks of this {@link RetrievalDocument} instance.
+   * @return chunks The chunks of this {@link Document} instance.
    */
   @Nonnull
   public List<Chunk> getChunks() {
@@ -161,16 +161,16 @@ public class RetrievalDocument
   }
 
   /**
-   * Set the chunks of this {@link RetrievalDocument} instance.
+   * Set the chunks of this {@link Document} instance.
    *
-   * @param chunks The chunks of this {@link RetrievalDocument}
+   * @param chunks The chunks of this {@link Document}
    */
   public void setChunks(@Nonnull final List<Chunk> chunks) {
     this.chunks = chunks;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link RetrievalDocument}.
+   * Get the names of the unrecognizable properties of the {@link Document}.
    *
    * @return The set of properties names
    */
@@ -181,7 +181,7 @@ public class RetrievalDocument
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetrievalDocument} instance.
+   * Get the value of an unrecognizable property of this {@link Document} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -192,14 +192,14 @@ public class RetrievalDocument
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("RetrievalDocument has no field with name '" + name + "'.");
+      throw new NoSuchElementException("Document has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetrievalDocument} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link Document} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -214,8 +214,8 @@ public class RetrievalDocument
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetrievalDocument} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link Document} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -233,11 +233,11 @@ public class RetrievalDocument
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetrievalDocument retrievalDocument = (RetrievalDocument) o;
-    return Objects.equals(this.cloudSdkCustomFields, retrievalDocument.cloudSdkCustomFields)
-        && Objects.equals(this.id, retrievalDocument.id)
-        && Objects.equals(this.metadata, retrievalDocument.metadata)
-        && Objects.equals(this.chunks, retrievalDocument.chunks);
+    final Document document = (Document) o;
+    return Objects.equals(this.cloudSdkCustomFields, document.cloudSdkCustomFields)
+        && Objects.equals(this.id, document.id)
+        && Objects.equals(this.metadata, document.metadata)
+        && Objects.equals(this.chunks, document.chunks);
   }
 
   @Override
@@ -249,7 +249,7 @@ public class RetrievalDocument
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetrievalDocument {\n");
+    sb.append("class Document {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    chunks: ").append(toIndentedString(chunks)).append("\n");
@@ -271,20 +271,20 @@ public class RetrievalDocument
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link RetrievalDocument}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link Document} instance with
+   * all required arguments.
    */
   public static Builder create() {
-    return (id) -> (chunks) -> new RetrievalDocument().id(id).chunks(chunks);
+    return (id) -> (chunks) -> new Document().id(id).chunks(chunks);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the id of this {@link RetrievalDocument} instance.
+     * Set the id of this {@link Document} instance.
      *
-     * @param id The id of this {@link RetrievalDocument}
-     * @return The RetrievalDocument builder.
+     * @param id The id of this {@link Document}
+     * @return The Document builder.
      */
     Builder1 id(@Nonnull final String id);
   }
@@ -292,20 +292,20 @@ public class RetrievalDocument
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the chunks of this {@link RetrievalDocument} instance.
+     * Set the chunks of this {@link Document} instance.
      *
-     * @param chunks The chunks of this {@link RetrievalDocument}
-     * @return The RetrievalDocument instance.
+     * @param chunks The chunks of this {@link Document}
+     * @return The Document instance.
      */
-    RetrievalDocument chunks(@Nonnull final List<Chunk> chunks);
+    Document chunks(@Nonnull final List<Chunk> chunks);
 
     /**
-     * Set the chunks of this {@link RetrievalDocument} instance.
+     * Set the chunks of this {@link Document} instance.
      *
-     * @param chunks The chunks of this {@link RetrievalDocument}
-     * @return The RetrievalDocument instance.
+     * @param chunks The chunks of this {@link Document}
+     * @return The Document instance.
      */
-    default RetrievalDocument chunks(@Nonnull final Chunk... chunks) {
+    default Document chunks(@Nonnull final Chunk... chunks) {
       return chunks(Arrays.asList(chunks));
     }
   }
