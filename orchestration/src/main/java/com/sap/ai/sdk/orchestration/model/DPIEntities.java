@@ -59,6 +59,8 @@ public enum DPIEntities {
 
   PRONOUNS_GENDER("profile-pronouns-gender"),
 
+  ETHNICITY("profile-ethnicity"),
+
   GENDER("profile-gender"),
 
   SEXUAL_ORIENTATION("profile-sexual-orientation"),
