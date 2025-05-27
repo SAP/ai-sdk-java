@@ -37,6 +37,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.model.ChatDelta;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -45,7 +46,6 @@ import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
@@ -287,7 +287,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llm = response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
@@ -303,7 +303,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getOrchestrationResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -687,9 +687,9 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
-        var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
-        var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
-        var result2 = (LLMModuleResultSynchronous) deltaList.get(2).getOrchestrationResult();
+        var result0 = deltaList.get(0).getOrchestrationResult();
+        var result1 = deltaList.get(1).getOrchestrationResult();
+        var result2 = deltaList.get(2).getOrchestrationResult();
 
         assertThat(result0.getSystemFingerprint()).isEmpty();
         assertThat(result0.getId()).isEmpty();
@@ -704,9 +704,9 @@ class OrchestrationUnitTest {
         assertThat(choices0.getFinishReason()).isEmpty();
         assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) choices0.toMap().get("delta");
-        assertThat(message0.get("role")).isEqualTo("");
-        assertThat(message0.get("content")).isEqualTo("");
+        final ChatDelta message0 = choices0.getDelta();
+        assertThat(message0.getRole()).isEqualTo("");
+        assertThat(message0.getContent()).isEqualTo("");
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
@@ -726,9 +726,9 @@ class OrchestrationUnitTest {
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
         assertThat(choices1.toMap().get("delta")).isNotNull();
-        final var message1 = (Map<String, Object>) choices1.toMap().get("delta");
-        assertThat(message1.get("role")).isEqualTo("assistant");
-        assertThat(message1.get("content")).isEqualTo("Sure");
+        final ChatDelta message1 = choices1.getDelta();
+        assertThat(message1.getRole()).isEqualTo("assistant");
+        assertThat(message1.getContent()).isEqualTo("Sure");
 
         assertThat(result2.getSystemFingerprint()).isEqualTo("fp_808245b034");
         assertThat(result2.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");
@@ -742,9 +742,9 @@ class OrchestrationUnitTest {
         assertThat(choices2.getFinishReason()).isEqualTo("stop");
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
         assertThat(choices2.toMap().get("delta")).isNotNull();
-        final var message2 = (Map<String, Object>) choices2.toMap().get("delta");
-        assertThat(message2.get("role")).isEqualTo("assistant");
-        assertThat(message2.get("content")).isEqualTo("!");
+        final ChatDelta message2 = choices2.getDelta();
+        assertThat(message2.getRole()).isEqualTo("assistant");
+        assertThat(message2.getContent()).isEqualTo("!");
       }
       Mockito.verify(inputStream, times(1)).close();
     }
@@ -808,7 +808,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llmResults = response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
@@ -816,7 +816,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getOrchestrationResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(

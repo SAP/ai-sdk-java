@@ -2,12 +2,11 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
-import com.sap.ai.sdk.orchestration.model.ResponseChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatDelta;
+import com.sap.ai.sdk.orchestration.model.LLMChoiceStreaming;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultStreaming;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.metadata.EmptyUsage;
 import org.springframework.ai.chat.model.Generation;
@@ -17,15 +16,13 @@ class OrchestrationChatDeltaTest {
   @Test
   void testToGeneration() {
     var choice =
-        LLMChoice.create()
+        LLMChoiceStreaming.create()
             .index(0)
-            .message(
-                ResponseChatMessage.create()
-                    .role(ResponseChatMessage.RoleEnum.UNKNOWN_DEFAULT_OPEN_API)
-                    .content("wrong"))
+            .delta(
+                ChatDelta.create()
+                    .content("Hello, world!")
+                    .role(""))
             .finishReason("stop");
-    // this will be fixed once the spec is fixed
-    choice.setCustomField("delta", Map.of("content", "Hello, world!"));
 
     Generation generation = OrchestrationSpringChatDelta.toGeneration(choice);
 
@@ -37,7 +34,7 @@ class OrchestrationChatDeltaTest {
   @Test
   void testToChatResponseMetadata() {
     var moduleResult =
-        LLMModuleResultSynchronous.create()
+        LLMModuleResultStreaming.create()
             .id("test-id")
             ._object("test-object")
             .created(123456789)

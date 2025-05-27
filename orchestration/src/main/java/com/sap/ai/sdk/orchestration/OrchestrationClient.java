@@ -13,7 +13,7 @@ import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponseSynchronous;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -148,8 +148,8 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
-  public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
-      throws OrchestrationClientException {
+  public CompletionPostResponseSynchronous executeRequest(
+      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
     final String jsonRequest;
     try {
       jsonRequest = JACKSON.writeValueAsString(request);
@@ -209,7 +209,7 @@ public class OrchestrationClient {
   }
 
   @Nonnull
-  CompletionPostResponse executeRequest(@Nonnull final String request) {
+  CompletionPostResponseSynchronous executeRequest(@Nonnull final String request) {
     val postRequest = new HttpPost("/completion");
     postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
 
@@ -219,7 +219,7 @@ public class OrchestrationClient {
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       val handler =
           new ClientResponseHandler<>(
-                  CompletionPostResponse.class,
+                  CompletionPostResponseSynchronous.class,
                   OrchestrationError.class,
                   OrchestrationClientException::new)
               .objectMapper(JACKSON);
