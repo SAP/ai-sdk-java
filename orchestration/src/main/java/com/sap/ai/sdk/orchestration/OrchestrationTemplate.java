@@ -41,9 +41,18 @@ import lombok.val;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
+
+  /**
+   * @deprecated Please use {@link #withTemplateMessages(List)} instead.
+   */
   @JsonProperty("template")
   @Nullable
+  @Deprecated // withTemplate() is deprecated, not the variable
   List<ChatMessage> template;
+
+  @Nullable
+  @With(AccessLevel.PRIVATE)
+  List<Message> messages;
 
   @JsonProperty("defaults")
   @Nullable
@@ -57,6 +66,17 @@ public class OrchestrationTemplate extends TemplateConfig {
   @JsonProperty("tools")
   @Nullable
   List<ChatCompletionTool> tools;
+
+  /**
+   * Create a new template with the given messages.
+   *
+   * @param messages The messages to use in the template.
+   * @return The updated template.
+   */
+  public OrchestrationTemplate withTemplateMessages(@Nonnull final List<Message> messages) {
+    return this.withMessages(messages)
+        .withTemplate(messages.stream().map(Message::createChatMessage).toList());
+  }
 
   /**
    * Create a low-level representation of the template.

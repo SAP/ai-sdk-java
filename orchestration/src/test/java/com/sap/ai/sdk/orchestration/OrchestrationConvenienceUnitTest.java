@@ -6,13 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
-import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
-import com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -206,15 +203,10 @@ public class OrchestrationConvenienceUnitTest {
             false);
     var expectedTemplateWithJsonSchemaTools =
         OrchestrationTemplate.create()
-            .withTemplate(
+            .withTemplateMessages(
                 List.of(
-                    SystemChatMessage.create()
-                        .role(RoleEnum.SYSTEM)
-                        .content(ChatMessageContent.create("You are a language translator.")),
-                    UserChatMessage.create()
-                        .content(
-                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
-                        .role(USER)))
+                    Message.system("You are a language translator."),
+                    Message.user("Whats {{ ?word }} in {{ ?language }}?")))
             .withDefaults(Map.of("word", "apple"))
             .withJsonSchemaResponse(
                 ResponseJsonSchema.fromMap(schema, "translation-schema")
@@ -267,15 +259,10 @@ public class OrchestrationConvenienceUnitTest {
     var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
         OrchestrationTemplate.create()
-            .withTemplate(
+            .withTemplateMessages(
                 List.of(
-                    SystemChatMessage.create()
-                        .role(RoleEnum.SYSTEM)
-                        .content(ChatMessageContent.create("You are a language translator.")),
-                    UserChatMessage.create()
-                        .content(
-                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
-                        .role(USER)))
+                    Message.system("You are a language translator."),
+                    Message.user("Whats {{ ?word }} in {{ ?language }}?")))
             .withDefaults(Map.of("word", "apple"))
             .withJsonResponse();
     assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
