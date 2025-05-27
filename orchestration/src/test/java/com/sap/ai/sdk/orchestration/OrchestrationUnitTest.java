@@ -258,6 +258,59 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testGroundingWithSharepoint() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingHelpSapComResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+//    val groundingSharepoint =
+//        DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR);
+//    val groundingConfig = Grounding.create().filters(groundingSharepoint);
+//    val configWithGrounding = config.withGrounding(groundingConfig);
+//
+//    val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+//    val response = client.chatCompletion(prompt, configWithGrounding);
+
+
+//    final var documentMetadata =
+//        SearchDocumentKeyValueListPair.create()
+//            .key("document metadata")
+//            .value("2")
+//            .selectMode(List.of(SearchSelectOptionEnum.IGNORE_IF_KEY_ABSENT));
+    val dataRepositoryId = "0bd2adc2-8d0d-478a-94f6-a0c10958f602";
+    final var groundingSharepoint =
+        DocumentGroundingFilter.create()
+            .dataRepositoryType(DataRepositoryType.VECTOR).dataRepositories(List.of(dataRepositoryId));
+//            .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(3))
+//            .documentMetadata(List.of(documentMetadata))
+//            .chunkMetadata(List.of(KeyValueListPair.create().key("chunk metadata").value("1")));
+//    final var groundingConfigConfig =
+//        GroundingModuleConfigConfig.create()
+//            .inputParams(List.of("query"))
+//            .outputParam("results")
+//            .addFiltersItem(groundingSharepoint);
+//    final var groundingConfig =
+//        GroundingModuleConfig.create()
+//            .type(GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE)
+//            .config(groundingConfigConfig);
+
+//    https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1d64d9f06be467
+
+    val groundingConfig = Grounding.create().filters(groundingSharepoint);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+
+    val prompt = groundingConfig.createGroundingPrompt("What is the secret to this AI SDK e2e test?");
+    val response = client.chatCompletion(prompt, configWithGrounding);
+
+    try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
   void testTemplating() throws IOException {
     stubFor(
         post(anyUrl())

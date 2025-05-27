@@ -1,0 +1,71 @@
+{
+  "request_id": "b8a18c5f-b5e8-4440-9312-1d8de844ee60",
+  "module_results": {
+    "grounding": {
+      "message": "grounding result",
+      "data": {
+        "grounding_query": "grounding call",
+        "grounding_result": "Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler."
+      }
+    },
+    "templating": [
+      {
+        "content": [
+          {
+            "type": "text",
+            "text": "What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands your business. Joule revolutionizes how you interact with your SAP business systems, making every touchpoint count and every task simpler."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "input_masking": {
+      "message": "Input to LLM is masked successfully.",
+      "data": {
+        "masked_template": "[{\"content\": [{\"type\": \"text\", \"text\": \"What does Joule do? Use the following information as additional context: Joule is the AI copilot that truly understands MASKED_SENSITIVE_DATA business. Joule revolutionizes how MASKED_SENSITIVE_DATA interact with MASKED_SENSITIVE_DATA SAP business systems, making every touchpoint count and every task simpler.\"}], \"role\": \"user\"}]"
+      }
+    },
+    "llm": {
+      "id": "",
+      "object": "chat.completion",
+      "created": 1747917616,
+      "model": "gemini-1.5-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Based on the provided text, Joule is an AI copilot designed to improve how businesses interact with their SAP systems.  It focuses on making interactions and tasks simpler and more efficient.  The specifics of *what* kind of businesses it serves and *how* it interacts with SAP systems are masked by the redacted information.\n"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 68,
+        "total_tokens": 135
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "",
+    "object": "chat.completion",
+    "created": 1747917616,
+    "model": "gemini-1.5-flash",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Based on the provided text, Joule is an AI copilot designed to improve how businesses interact with their SAP systems.  It focuses on making interactions and tasks simpler and more efficient.  The specifics of *what* kind of businesses it serves and *how* it interacts with SAP systems are masked by the redacted information.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 67,
+      "prompt_tokens": 68,
+      "total_tokens": 135
+    }
+  }
+}
