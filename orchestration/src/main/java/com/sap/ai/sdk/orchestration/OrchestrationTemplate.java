@@ -73,6 +73,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @param messages The messages to use in the template.
    * @return The updated template.
    */
+  @Nonnull
   public OrchestrationTemplate withTemplateMessages(@Nonnull final List<Message> messages) {
     return this.withMessages(messages)
         .withTemplate(messages.stream().map(Message::createChatMessage).toList());

@@ -69,6 +69,12 @@ public class AssistantMessage implements Message {
     if (toolCalls() != null) {
       return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
+    if (this.content().items().size() == 1
+        && this.content().items().get(0) instanceof TextItem textItem) {
+      return AssistantChatMessage.create()
+          .role(ASSISTANT)
+          .content(ChatMessageContent.create(textItem.text()));
+    }
     val texts =
         content.items().stream()
             .filter(item -> item instanceof TextItem)

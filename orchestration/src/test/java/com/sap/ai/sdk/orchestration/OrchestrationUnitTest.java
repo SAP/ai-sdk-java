@@ -565,10 +565,7 @@ class OrchestrationUnitTest {
         {
           "messages_history": [{
             "role" : "user",
-            "content" : [ {
-              "type" : "text",
-              "text" : "Hello World!"
-            } ]
+            "content" : "Hello World!"
           }],
           "input_params": {
             "foo" : "bar"

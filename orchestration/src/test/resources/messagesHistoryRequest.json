@@ -17,10 +17,7 @@
         "template": [
           {
             "role": "user",
-            "content": [ {
-              "type" : "text",
-              "text" : "What is the typical food there?"
-            } ]
+            "content": "What is the typical food there?"
           }
         ],
         "defaults" : { },
@@ -33,17 +30,11 @@
   "messages_history": [
     {
       "role": "user",
-      "content": [ {
-        "type" : "text",
-        "text" : "What is the capital of France?"
-      } ]
+      "content": "What is the capital of France?"
     },
     {
       "role": "assistant",
-      "content": [ {
-        "type" : "text",
-        "text" : "The capital of France is Paris."
-      } ],
+      "content": "The capital of France is Paris.",
       "tool_calls" : [ ]
     }
   ]
