@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatFunctionMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
@@ -40,7 +39,7 @@ import lombok.experimental.Accessors;
   @Type(value = OpenAiChatToolMessage.class, name = "tool"),
   @Type(value = OpenAiChatFunctionMessage.class, name = "function")
 })
-@Beta
+@Deprecated
 public interface OpenAiChatMessage {
   /**
    * The role of the messages author.
@@ -258,7 +257,7 @@ public interface OpenAiChatMessage {
     @Getter(onMethod_ = @Nullable)
     private List<OpenAiChatToolCall> toolCalls;
 
-    // TODO: add context
+    // add context
     // https://github.com/Azure/azure-rest-api-specs/blob/07d286359f828bbc7901e86288a5d62b48ae2052/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-02-01/inference.json#L1599
 
     void addDelta(@Nonnull final OpenAiChatAssistantMessage delta) {

@@ -13,10 +13,8 @@ package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 
 /** ChatCompletionRequestAssistantMessageContentPart */
-@Beta
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = ChatCompletionRequestMessageContentPartRefusal.class),

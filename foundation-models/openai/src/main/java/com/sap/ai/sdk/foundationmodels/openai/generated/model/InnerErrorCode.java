@@ -13,11 +13,9 @@ package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
 /** Error codes for the inner error object. */
-@Beta
 public enum InnerErrorCode {
   RESPONSIBLE_AI_POLICY_VIOLATION("ResponsibleAIPolicyViolation"),
 

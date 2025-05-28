@@ -13,7 +13,6 @@ package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 
 /**
  * An object specifying the format that the model must output. Compatible with
@@ -36,7 +35,6 @@ import com.google.common.annotations.Beta;
  * indicates the generation exceeded &#x60;max_tokens&#x60; or the conversation exceeded the max
  * context length.
  */
-@Beta
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = ResponseFormatJsonObject.class),
