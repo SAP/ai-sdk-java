@@ -427,9 +427,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
     val template = Message.user("What is '%s' in German?".formatted(word));
     val templatingConfig =
-        TemplateConfig.create()
-            .withTemplateMessages(List.of(template))
-            .withJsonResponse();
+        TemplateConfig.create().withTemplateMessages(List.of(template)).withJsonResponse();
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =

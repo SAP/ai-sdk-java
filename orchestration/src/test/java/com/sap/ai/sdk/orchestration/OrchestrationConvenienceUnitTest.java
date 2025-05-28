@@ -128,8 +128,7 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateConstruction() {
-    List<Message> templateMessages =
-        List.of(Message.user("message"));
+    List<Message> templateMessages = List.of(Message.user("message"));
     List<ChatMessage> templateMessagesLowLevel =
         List.of(
             UserChatMessage.create().content(UserChatMessageContent.create("message")).role(USER));
