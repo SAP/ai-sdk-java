@@ -121,8 +121,8 @@ public class OrchestrationChatResponse {
    * @param <T> the type of the entity to deserialize to.
    */
   @Nonnull
-  public <T> T entity(@Nonnull final Class<T> type) {
-    String refusal =
+  public <T> T entity(@Nonnull final Class<T> type) throws OrchestrationClientException {
+    final String refusal =
         ((LLMModuleResultSynchronous) getOriginalResponse().getOrchestrationResult())
             .getChoices()
             .get(0)
