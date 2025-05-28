@@ -2,8 +2,8 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
-import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMChoiceStreaming;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultStreaming;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
 import java.util.Map;
@@ -30,17 +30,17 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
 
   OrchestrationSpringChatDelta(@Nonnull final OrchestrationChatCompletionDelta delta) {
     super(
-        toGenerations((LLMModuleResultSynchronous) delta.getOrchestrationResult()),
-        toChatResponseMetadata((LLMModuleResultSynchronous) delta.getOrchestrationResult()));
+        toGenerations(delta.getOrchestrationResult()),
+        toChatResponseMetadata(delta.getOrchestrationResult()));
   }
 
   @Nonnull
-  static List<Generation> toGenerations(@Nonnull final LLMModuleResultSynchronous result) {
+  static List<Generation> toGenerations(@Nonnull final LLMModuleResultStreaming result) {
     return result.getChoices().stream().map(OrchestrationSpringChatDelta::toGeneration).toList();
   }
 
   @Nonnull
-  static Generation toGeneration(@Nonnull final LLMChoice choice) {
+  static Generation toGeneration(@Nonnull final LLMChoiceStreaming choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
     if (!choice.getLogprobs().isEmpty()) {
@@ -50,7 +50,7 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
   }
 
   @Nonnull
-  private static String getContent(@Nonnull final LLMChoice choice) {
+  private static String getContent(@Nonnull final LLMChoiceStreaming choice) {
     return choice.toMap().get("delta") instanceof Map<?, ?> delta
             && delta.get("content") instanceof String content
         ? content
@@ -59,7 +59,7 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
 
   @Nonnull
   static ChatResponseMetadata toChatResponseMetadata(
-      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
+      @Nonnull final LLMModuleResultStreaming orchestrationResult) {
     val metadataBuilder = ChatResponseMetadata.builder();
 
     metadataBuilder
