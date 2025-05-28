@@ -6,11 +6,10 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.orchestration.model.TextContent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

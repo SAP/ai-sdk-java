@@ -97,13 +97,12 @@ public class OrchestrationChatResponse {
   /**
    * Get the LLM response. Useful for accessing the finish reason or further data like logprobs.
    *
-   * @return The (first, in case of multiple) {@link com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous}.
+   * @return The (first, in case of multiple) {@link
+   *     com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous}.
    */
   @Nonnull
   public LLMChoiceSynchronous getChoice() {
     //    We expect choices to be defined and never empty.
-    return originalResponse.getOrchestrationResult()
-        .getChoices()
-        .get(0);
+    return originalResponse.getOrchestrationResult().getChoices().get(0);
   }
 }
