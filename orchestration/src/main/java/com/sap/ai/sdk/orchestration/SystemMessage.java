@@ -4,16 +4,20 @@ import static com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum.SYST
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
+import lombok.val;
 
 /** Represents a chat message as 'system' to the orchestration service. */
 @Value
@@ -56,6 +60,12 @@ public class SystemMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    return SystemChatMessage.create().role(SYSTEM).content(content);
+    val texts =
+        content.items().stream()
+            .filter(item -> item instanceof TextItem)
+            .map(item -> (TextItem) item)
+            .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
+            .toList();
+    return SystemChatMessage.create().role(SYSTEM).content(ChatMessageContent.create(texts));
   }
 }

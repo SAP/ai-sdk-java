@@ -5,13 +5,16 @@ import static com.sap.ai.sdk.orchestration.model.AssistantChatMessage.RoleEnum.A
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Accessors;
+import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
 @Value
@@ -41,6 +44,16 @@ public class AssistantMessage implements Message {
   }
 
   /**
+   * Creates a new assistant message with the given single message.
+   *
+   * @param content the single message.
+   */
+  AssistantMessage(@Nonnull final MessageContent content) {
+    this.content = content;
+    toolCalls = null;
+  }
+
+  /**
    * Creates a new assistant message with the given tool calls.
    *
    * @param toolCalls list of tool call objects
@@ -56,6 +69,13 @@ public class AssistantMessage implements Message {
     if (toolCalls() != null) {
       return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
     }
-    return AssistantChatMessage.create().role(ASSISTANT).content(content);
+    val texts =
+        content.items().stream()
+            .filter(item -> item instanceof TextItem)
+            .map(item -> (TextItem) item)
+            .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
+            .toList();
+
+    return AssistantChatMessage.create().role(ASSISTANT).content(ChatMessageContent.create(texts));
   }
 }
