@@ -93,6 +93,12 @@ public class UserMessage implements Message {
   public ChatMessage createChatMessage() {
     final var contentList = new LinkedList<UserChatMessageContentItem>();
 
+    if (this.content().items().size() == 1
+        && this.content().items().get(0) instanceof TextItem textItem) {
+      return UserChatMessage.create()
+          .content(UserChatMessageContent.create(textItem.text()))
+          .role(USER);
+    }
     for (final ContentItem item : this.content().items()) {
       if (item instanceof TextItem textItem) {
         contentList.add(UserChatMessageContentItem.create().type(TEXT).text(textItem.text()));

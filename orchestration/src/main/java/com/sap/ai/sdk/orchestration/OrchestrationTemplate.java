@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,9 +42,17 @@ import lombok.val;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
+
+  /** Please use {@link #withTemplateMessages(List)} instead. */
   @JsonProperty("template")
   @Nullable
+  @With(onMethod_ = {@Deprecated})
   List<ChatMessage> template;
+
+  @JsonIgnore
+  @Nullable
+  @With(AccessLevel.PRIVATE)
+  List<Message> messages;
 
   @JsonProperty("defaults")
   @Nullable
@@ -57,6 +66,18 @@ public class OrchestrationTemplate extends TemplateConfig {
   @JsonProperty("tools")
   @Nullable
   List<ChatCompletionTool> tools;
+
+  /**
+   * Create a new template with the given messages.
+   *
+   * @param messages The messages to use in the template.
+   * @return The updated template.
+   */
+  @Nonnull
+  public OrchestrationTemplate withTemplateMessages(@Nonnull final List<Message> messages) {
+    return this.withMessages(messages)
+        .withTemplate(messages.stream().map(Message::createChatMessage).toList());
+  }
 
   /**
    * Create a low-level representation of the template.

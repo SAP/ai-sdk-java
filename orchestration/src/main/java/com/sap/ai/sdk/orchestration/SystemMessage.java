@@ -59,6 +59,12 @@ public class SystemMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
+    if (this.content().items().size() == 1
+        && this.content().items().get(0) instanceof TextItem textItem) {
+      return SystemChatMessage.create()
+          .role(SYSTEM)
+          .content(ChatMessageContent.create(textItem.text()));
+    }
     val texts =
         content.items().stream()
             .filter(item -> item instanceof TextItem)
