@@ -11,12 +11,10 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /** The contents of the tool message. */
-@Beta
 public interface ChatCompletionRequestToolMessageContent {
   /**
    * Helper class to create a String that implements {@link

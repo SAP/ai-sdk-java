@@ -11,7 +11,6 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -21,7 +20,6 @@ import javax.annotation.Nonnull;
  * Unless you are embedding code, we suggest replacing newlines (\\n) in your input with a single
  * space, as we have observed inferior results when newlines are present.
  */
-@Beta
 public interface EmbeddingsCreateRequestInput {
   /** Helper class to create a String that implements {@link EmbeddingsCreateRequestInput}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)

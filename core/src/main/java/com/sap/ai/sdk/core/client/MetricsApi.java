@@ -22,7 +22,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.38.0.
+ * AI Core in version 2.40.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -119,7 +119,8 @@ public class MetricsApi extends AbstractOpenApiService {
    * Get metrics according to specified filter conditions.
    *
    * <p>Retrieve metrics, labels, or tags according to filter conditions. One query parameter is
-   * mandatory, either execution ID or filter. Use up to 10 execution IDs in a query parameter.
+   * mandatory, either execution ID or filter. Use up to 10 execution IDs in a query parameter. With
+   * top/skip parameters it is possible to paginate the result list.
    *
    * <p><b>200</b> - List of tracking metadata, where each item includes metrics, labels, tags and
    * customInfo. If $select query parameter is specified, each item will include only the resources
@@ -137,6 +138,14 @@ public class MetricsApi extends AbstractOpenApiService {
    * @param $select (optional returns only the resources that the client explicitly requests. User
    *     can also pass * as a value for $select, which will behave same as that of not passing
    *     $select query param.
+   * @param tagFilters (optional) Filter metrics using tags by providing expressions in the format
+   *     name&#x3D;value or name!&#x3D;value, separated by commas (,). The results will include only
+   *     those metrics that match all the specified tag expressions, ensuring a logical AND
+   *     operation. The filter supports up to 100 tag expressions, key-only searches (e.g., name)
+   *     without a value, and tags containing special characters, which must be properly
+   *     percent-encoded for accurate matching.
+   * @param $top (optional, default to 1000) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
    * @return TrckGetMetricResourceList
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -145,7 +154,10 @@ public class MetricsApi extends AbstractOpenApiService {
       @Nonnull final String aiResourceGroup,
       @Nullable final String $filter,
       @Nullable final List<String> executionIds,
-      @Nullable final List<String> $select)
+      @Nullable final List<String> $select,
+      @Nullable final String tagFilters,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -174,6 +186,9 @@ public class MetricsApi extends AbstractOpenApiService {
             ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
             "$select",
             $select));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "tagFilters", tagFilters));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -204,7 +219,8 @@ public class MetricsApi extends AbstractOpenApiService {
    * Get metrics according to specified filter conditions.
    *
    * <p>Retrieve metrics, labels, or tags according to filter conditions. One query parameter is
-   * mandatory, either execution ID or filter. Use up to 10 execution IDs in a query parameter.
+   * mandatory, either execution ID or filter. Use up to 10 execution IDs in a query parameter. With
+   * top/skip parameters it is possible to paginate the result list.
    *
    * <p><b>200</b> - List of tracking metadata, where each item includes metrics, labels, tags and
    * customInfo. If $select query parameter is specified, each item will include only the resources
@@ -221,7 +237,7 @@ public class MetricsApi extends AbstractOpenApiService {
   @Nonnull
   public TrckGetMetricResourceList find(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    return find(aiResourceGroup, null, null, null);
+    return find(aiResourceGroup, null, null, null, null, null, null);
   }
 
   /**

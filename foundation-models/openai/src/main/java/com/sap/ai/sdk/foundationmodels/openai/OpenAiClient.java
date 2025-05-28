@@ -112,8 +112,7 @@ public final class OpenAiClient {
   }
 
   /**
-   * Use this method to set a system prompt that should be used across multiple chat completions
-   * with basic string prompts {@link #streamChatCompletionDeltas(OpenAiChatCompletionParameters)}.
+   * Add a system prompt before user prompts.
    *
    * <p>Note: The system prompt is ignored on chat completions invoked with
    * OpenAiChatCompletionPrompt.
@@ -133,8 +132,10 @@ public final class OpenAiClient {
    * @param prompt a text message.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
+   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
   @Nonnull
+  @Deprecated
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
       throws OpenAiClientException {
     final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
@@ -158,8 +159,8 @@ public final class OpenAiClient {
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     warnIfUnsupportedUsage();
-    return new OpenAiChatCompletionResponse(
-        chatCompletion(request.createCreateChatCompletionRequest()));
+    final var response = chatCompletion(request.createCreateChatCompletionRequest());
+    return new OpenAiChatCompletionResponse(response, request);
   }
 
   /**
@@ -183,8 +184,10 @@ public final class OpenAiClient {
    * @param parameters the completion request.
    * @return the completion output
    * @throws OpenAiClientException if the request fails
+   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
   @Nonnull
+  @Deprecated
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     warnIfUnsupportedUsage();
@@ -321,8 +324,10 @@ public final class OpenAiClient {
    * @param parameters The prompt, including a list of messages.
    * @return A stream of message deltas
    * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @deprecated Use {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)} instead.
    */
   @Nonnull
+  @Deprecated
   public Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta>
       streamChatCompletionDeltas(@Nonnull final OpenAiChatCompletionParameters parameters)
           throws OpenAiClientException {
@@ -383,6 +388,7 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    */
   @Nonnull
+  @Deprecated
   public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
       throws OpenAiClientException {
     return execute("/embeddings", parameters, OpenAiEmbeddingOutput.class);

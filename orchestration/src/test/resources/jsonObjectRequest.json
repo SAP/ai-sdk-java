@@ -9,10 +9,16 @@
       "templating_module_config" : {
         "template" : [ {
           "role" : "user",
-          "content" : "What is 'apple' in German?"
+          "content" : [ {
+            "type" : "text",
+            "text" : "What is 'apple' in German?"
+          } ]
         }, {
           "role" : "system",
-          "content" : "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"
+          "content" : [ {
+            "type" : "text",
+            "text" : "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"
+          } ]
         } ],
         "defaults" : { },
         "response_format" : {

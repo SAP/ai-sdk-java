@@ -86,6 +86,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.5-sonnet");
 
+  /** Anthropic Claude 3.7 Sonnet model */
+  public static final OrchestrationAiModel CLAUDE_3_7_SONNET =
+      new OrchestrationAiModel("anthropic--claude-3.7-sonnet");
+
   /** Amazon Titan Text Lite model */
   public static final OrchestrationAiModel TITAN_TEXT_LITE =
       new OrchestrationAiModel("amazon--titan-text-lite");
@@ -158,7 +162,14 @@ public class OrchestrationAiModel {
   /** Azure OpenAI o3-mini model */
   public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
-  /** Google Cloud Platform Gemini 1.0 Pro model */
+  /**
+   * Google Cloud Platform Gemini 1.0 Pro model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-04-09. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GEMINI_2_0_FLASH} or {@link
+   *     OrchestrationAiModel#GEMINI_2_0_FLASH_LITE}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
       new OrchestrationAiModel("gemini-1.0-pro");
 
@@ -169,6 +180,18 @@ public class OrchestrationAiModel {
   /** Google Cloud Platform Gemini 1.5 Flash model */
   public static final OrchestrationAiModel GEMINI_1_5_FLASH =
       new OrchestrationAiModel("gemini-1.5-flash");
+
+  /** Google Cloud Platform Gemini 2.0 Flash model */
+  public static final OrchestrationAiModel GEMINI_2_0_FLASH =
+      new OrchestrationAiModel("gemini-2.0-flash");
+
+  /** Google Cloud Platform Gemini 2.0 Flash-Lite model */
+  public static final OrchestrationAiModel GEMINI_2_0_FLASH_LITE =
+      new OrchestrationAiModel("gemini-2.0-flash-lite");
+
+  /** DeepSeek-R1 */
+  public static final OrchestrationAiModel DEEPSEEK_R1 =
+      new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");

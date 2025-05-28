@@ -66,7 +66,7 @@ class SpringAiOrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 

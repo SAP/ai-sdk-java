@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation.TypeEnum.SAP_DOCUMENT_TRANSLATION;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -26,9 +27,12 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationConfig;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -498,9 +502,6 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenario(
       @Nonnull final String topic) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-
     val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
     val configWithTemplate = config.withTemplateConfig(template);
 
@@ -508,5 +509,55 @@ public class OrchestrationService {
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to an LLM through the Orchestration service using a local template file.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @param promptTemplate the YAML prompt template to use
+   * @throws IOException if the YAML cannot be parsed
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
+      throws IOException {
+    val template = TemplateConfig.create().fromYaml(promptTemplate);
+    val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+
+    val inputParams = Map.of("language", "German");
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to an LLM through the Orchestration service using translation.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse translation() {
+    val prompt =
+        new OrchestrationPrompt(
+            "Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
+    // list of supported language pairs
+    // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
+    val configWithTranslation =
+        config
+            .withInputTranslationConfig(
+                SAPDocumentTranslation.create()
+                    .type(SAP_DOCUMENT_TRANSLATION)
+                    .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
+            .withOutputTranslationConfig(
+                SAPDocumentTranslation.create()
+                    .type(SAP_DOCUMENT_TRANSLATION)
+                    .config(
+                        SAPDocumentTranslationConfig.create()
+                            .targetLanguage("de-DE")
+                            .sourceLanguage("en-US"))); // optional source language
+
+    return client.chatCompletion(prompt, configWithTranslation);
   }
 }
