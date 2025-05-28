@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
+import com.sap.ai.sdk.app.services.OrchestrationService.Translation;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -317,9 +318,9 @@ class OrchestrationTest {
 
   @Test
   void testResponseFormatJsonSchema() {
-    val result = service.responseFormatJsonSchema("apple").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    Translation translation = service.responseFormatJsonSchema("apple");
+    assertThat(translation.translation()).isNotEmpty();
+    assertThat(translation.language()).isNotEmpty();
   }
 
   @Test

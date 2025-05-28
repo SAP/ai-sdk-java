@@ -383,22 +383,27 @@ public class OrchestrationService {
   }
 
   /**
+   * A simple record to demonstrate the response format feature of the orchestration service.
+   *
+   * @param translation the translated text
+   * @param language the language of the translation
+   */
+  public record Translation(
+      @JsonProperty(required = true) String translation,
+      @JsonProperty(required = true) String language) {}
+
+  /**
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
+   * @param word the word to translate
+   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    //    Example class
-    record Translation(
-        @JsonProperty(required = true) String translation,
-        @JsonProperty(required = true) String language) {}
-
+  public Translation responseFormatJsonSchema(@Nonnull final String word) {
     val schema =
         ResponseJsonSchema.fromType(Translation.class)
             .withDescription("Output schema for language translation.")
@@ -411,7 +416,7 @@ public class OrchestrationService {
             Message.user("Whats '%s' in German?".formatted(word)),
             Message.system("You are a language translator."));
 
-    return client.chatCompletion(prompt, configWithResponseSchema);
+    return client.chatCompletion(prompt, configWithResponseSchema).entity(Translation.class);
   }
 
   /**
