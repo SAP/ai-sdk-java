@@ -413,7 +413,11 @@ class OrchestrationUnitTest {
     final List<Message> messagesHistory =
         List.of(
             new UserMessage("What is the capital of France?"),
-            new AssistantMessage("The capital of France is Paris."));
+            new AssistantMessage(
+                new MessageContent(
+                    List.of(
+                        new TextItem("The capital of France is Paris."),
+                        new TextItem("Paris is known for its art, fashion, and culture.")))));
     final var message = new UserMessage("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);

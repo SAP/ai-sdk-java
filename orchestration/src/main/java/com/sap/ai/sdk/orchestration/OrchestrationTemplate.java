@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,6 +49,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @With(onMethod_ = {@Deprecated})
   List<ChatMessage> template;
 
+  @JsonIgnore
   @Nullable
   @With(AccessLevel.PRIVATE)
   List<Message> messages;
