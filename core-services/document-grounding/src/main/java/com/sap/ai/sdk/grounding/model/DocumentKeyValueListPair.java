@@ -85,7 +85,7 @@ public class DocumentKeyValueListPair
      * @return The enum value of type DocumentKeyValueListPair
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static MatchModeEnum fromValue(@Nonnull final String value) {
       for (MatchModeEnum b : MatchModeEnum.values()) {
         if (b.value.equals(value)) {

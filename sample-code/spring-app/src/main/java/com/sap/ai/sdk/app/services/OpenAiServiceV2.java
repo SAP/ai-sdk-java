@@ -3,30 +3,19 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
-import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum.FUNCTION;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +25,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OpenAiServiceV2 {
-  private static final ObjectMapper JACKSON = new ObjectMapper();
-
   /**
    * Chat request to OpenAI
    *
@@ -95,7 +82,8 @@ public class OpenAiServiceV2 {
   }
 
   /**
-   * Executes a chat completion request to OpenAI with a tool that calculates the weather.
+   * Chat request to OpenAI with tool that gets the weather for a given location and unit. The tool
+   * executed and the result is sent back to the assistant.
    *
    * @param location The location to get the weather for.
    * @param unit The unit of temperature to use.
@@ -104,62 +92,29 @@ public class OpenAiServiceV2 {
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
-
-    // 1. Define the function
-    final Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
-    final var function =
-        new FunctionObject()
-            .name("weather")
-            .description("Get the weather for the given location")
-            .parameters(schemaMap);
-    final var tool = new ChatCompletionTool().type(FUNCTION).function(function);
+    final OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
 
     final var messages = new ArrayList<OpenAiMessage>();
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
-    // Assistant will call the function
-    final var request = new OpenAiChatCompletionRequest(messages).withTools(List.of(tool));
-    final OpenAiChatCompletionResponse response =
-        OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+    // 1. Define the function
+    final List<OpenAiTool> tools =
+        List.of(
+            OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
+                .withArgument(WeatherMethod.Request.class)
+                .withName("weather")
+                .withDescription("Get the weather for the given location"));
 
-    // 2. Optionally, execute the function.
-    final OpenAiAssistantMessage assistantMessage = response.getMessage();
-    messages.add(assistantMessage);
+    // 2. Assistant calls the function
+    final var request = new OpenAiChatCompletionRequest(messages).withToolsExecutable(tools);
+    final OpenAiChatCompletionResponse response = client.chatCompletion(request);
 
-    final OpenAiToolCall toolCall = assistantMessage.toolCalls().get(0);
-    if (!(toolCall instanceof OpenAiFunctionCall functionCall)) {
-      throw new IllegalArgumentException(
-          "Expected a function call, but got: %s".formatted(assistantMessage));
-    }
+    // 3. Execute the tool calls
+    messages.add(response.getMessage());
+    messages.addAll(response.executeTools());
 
-    final WeatherMethod.Request arguments =
-        parseJson(functionCall.getArguments(), WeatherMethod.Request.class);
-    final WeatherMethod.Response weatherMethod = WeatherMethod.getCurrentWeather(arguments);
-
-    messages.add(OpenAiMessage.tool(weatherMethod.toString(), functionCall.getId()));
-
-    // Send back the results, and the model will incorporate them into its final response.
-    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request.withMessages(messages));
-  }
-
-  @Nonnull
-  private static <T> T parseJson(@Nonnull final String rawJson, @Nonnull final Class<T> clazz) {
-    try {
-      return JACKSON.readValue(rawJson, clazz);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Failed to parse tool call arguments: " + rawJson, e);
-    }
-  }
-
-  @Nonnull
-  private static Map<String, Object> generateSchema(@Nonnull final Class<?> clazz) {
-    final var jsonSchemaGenerator = new JsonSchemaGenerator(JACKSON);
-    try {
-      final var schema = jsonSchemaGenerator.generateSchema(clazz);
-      return JACKSON.convertValue(schema, new TypeReference<>() {});
-    } catch (JsonMappingException e) {
-      throw new IllegalArgumentException("Could not generate schema for " + clazz.getName(), e);
-    }
+    // 4. Have model run the final request with incorporated tool results
+    return client.chatCompletion(request.withMessages(messages));
   }
 
   /**

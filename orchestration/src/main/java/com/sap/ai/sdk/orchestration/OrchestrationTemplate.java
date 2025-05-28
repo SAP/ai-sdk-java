@@ -1,5 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
@@ -9,6 +14,7 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,14 +41,22 @@ import lombok.val;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
-  @Nullable List<ChatMessage> template;
-  @Nullable Map<String, String> defaults;
+  @JsonProperty("template")
+  @Nullable
+  List<ChatMessage> template;
 
+  @JsonProperty("defaults")
+  @Nullable
+  Map<String, String> defaults;
+
+  @JsonProperty("response_format")
   @With(AccessLevel.PRIVATE)
   @Nullable
   TemplateResponseFormat responseFormat;
 
-  @Nullable List<ChatCompletionTool> tools;
+  @JsonProperty("tools")
+  @Nullable
+  List<ChatCompletionTool> tools;
 
   /**
    * Create a low-level representation of the template.
@@ -92,5 +106,46 @@ public class OrchestrationTemplate extends TemplateConfig {
     val responseFormatJsonObject =
         ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);
     return this.withResponseFormat(responseFormatJsonObject);
+  }
+
+  /**
+   * Create a {@link Template} object from a JSON provided as String.
+   *
+   * @throws IOException if the JSON cannot be deserialized
+   * @param inputString the provided JSON
+   * @return A Template object representing the provided JSON
+   * @since 1.7.0
+   */
+  @Nullable
+  private OrchestrationTemplate fromJson(@Nonnull final String inputString) throws IOException {
+    final ObjectMapper objectMapper =
+        OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
+    final JsonNode rootNode = objectMapper.readTree(inputString);
+    return objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
+  }
+
+  /**
+   * Create a {@link Template} object from a YAML provided as String.
+   *
+   * @throws IOException if the YAML cannot be parsed or deserialized
+   * @param inputYaml the provided YAML
+   * @return A Template object representing the provided YAML
+   * @since 1.7.0
+   */
+  @Nullable
+  public OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
+    final Object obj;
+    try {
+      final ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+      obj = yamlReader.readValue(inputYaml, Object.class);
+    } catch (JsonProcessingException ex) {
+      throw new IOException("Failed to parse the YAML input: " + ex.getMessage(), ex);
+    }
+    try {
+      final ObjectMapper jsonWriter = new ObjectMapper();
+      return fromJson(jsonWriter.writeValueAsString(obj));
+    } catch (JsonProcessingException ex) {
+      throw new IOException("Failed to deserialize the input: " + ex.getMessage(), ex);
+    }
   }
 }

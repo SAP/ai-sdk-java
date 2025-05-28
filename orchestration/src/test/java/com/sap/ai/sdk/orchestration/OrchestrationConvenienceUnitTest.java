@@ -1,19 +1,27 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +130,8 @@ public class OrchestrationConvenienceUnitTest {
   @Test
   void testTemplateConstruction() {
     List<ChatMessage> templateMessages =
-        List.of(SingleChatMessage.create().role("user").content("message"));
+        List.of(
+            UserChatMessage.create().content(UserChatMessageContent.create("message")).role(USER));
     var defaults = Map.of("key", "value");
     var tools =
         List.of(
@@ -176,5 +185,99 @@ public class OrchestrationConvenienceUnitTest {
         .isEqualTo(expectedTemplateReferenceScenarioNameVersion);
     assertThat(templateReferenceScenarioNameVersion.toLowLevel())
         .isEqualTo(templateReferenceScenarioNameVersionLowLevel);
+  }
+
+  @Test
+  void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
+    String promptTemplateYaml =
+        Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+    var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var schema =
+        Map.of(
+            "type",
+            "object",
+            "properties",
+            Map.of(
+                "language", Map.of("type", "string"),
+                "translation", Map.of("type", "string")),
+            "required",
+            List.of("language", "translation"),
+            "additionalProperties",
+            false);
+    var expectedTemplateWithJsonSchemaTools =
+        OrchestrationTemplate.create()
+            .withTemplate(
+                List.of(
+                    SystemChatMessage.create()
+                        .role(RoleEnum.SYSTEM)
+                        .content(ChatMessageContent.create("You are a language translator.")),
+                    UserChatMessage.create()
+                        .content(
+                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
+                        .role(USER)))
+            .withDefaults(Map.of("word", "apple"))
+            .withJsonSchemaResponse(
+                ResponseJsonSchema.fromMap(schema, "translation-schema")
+                    .withDescription("Translate the given word into the provided language.")
+                    .withStrict(true))
+            .withTools(
+                List.of(
+                    ChatCompletionTool.create()
+                        .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                        .function(
+                            FunctionObject.create()
+                                .name("translate")
+                                .parameters(
+                                    Map.of(
+                                        "type",
+                                        "object",
+                                        "additionalProperties",
+                                        false,
+                                        "required",
+                                        List.of("language", "wordToTranslate"),
+                                        "properties",
+                                        Map.of(
+                                            "language", Map.of("type", "string"),
+                                            "wordToTranslate", Map.of("type", "string"))))
+                                .description("Translate a word.")
+                                .strict(true))));
+    assertThat(templateWithJsonSchemaTools).isEqualTo(expectedTemplateWithJsonSchemaTools);
+  }
+
+  @Test
+  void testTemplateFromLocalFileWithJsonObject() throws IOException {
+    String promptTemplateWithJsonObject =
+        """
+ name: translator
+ version: 0.0.1
+ scenario: translation scenario
+ spec:
+  template:
+    - role: "system"
+      content: |-
+        You are a language translator.
+    - role: "user"
+      content: |-
+        Whats {{ ?word }} in {{ ?language }}?
+  defaults:
+    word: "apple"
+  response_format:
+    type: json_object
+ """;
+    var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
+    var expectedTemplateWithJsonObject =
+        OrchestrationTemplate.create()
+            .withTemplate(
+                List.of(
+                    SystemChatMessage.create()
+                        .role(RoleEnum.SYSTEM)
+                        .content(ChatMessageContent.create("You are a language translator.")),
+                    UserChatMessage.create()
+                        .content(
+                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
+                        .role(USER)))
+            .withDefaults(Map.of("word", "apple"))
+            .withJsonResponse();
+    assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
   }
 }

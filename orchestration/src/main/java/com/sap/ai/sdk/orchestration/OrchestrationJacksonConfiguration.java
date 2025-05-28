@@ -8,6 +8,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsOutputUnmaskingInner;
+import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -41,13 +42,15 @@ public class OrchestrationJacksonConfiguration {
     jackson.addMixIn(
         ModuleResultsOutputUnmaskingInner.class,
         JacksonMixins.ModuleResultsOutputUnmaskingInnerMixIn.class);
+    jackson.addMixIn(ChatMessage.class, JacksonMixins.ChatMessageMixin.class);
 
     final var module =
         new SimpleModule()
             .addDeserializer(
-                ChatMessage.class,
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(ChatMessage.class))
-            .setMixInAnnotation(ChatMessage.class, JacksonMixins.NoneTypeInfoMixin.class);
+                TemplateResponseFormat.class,
+                PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
+            .setMixInAnnotation(
+                TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class);
     jackson.registerModule(module);
     return jackson;
   }

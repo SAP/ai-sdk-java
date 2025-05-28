@@ -1,0 +1,77 @@
+{
+  "orchestration_config" : {
+    "module_configurations" : {
+      "llm_module_config" : {
+        "model_name" : "gpt-4o",
+        "model_params" : {
+          "max_tokens" : 50,
+          "temperature" : 0.1,
+          "frequency_penalty" : 0,
+          "presence_penalty" : 0,
+          "top_p" : 1,
+          "n" : 1
+        },
+        "model_version" : "latest"
+      },
+      "templating_module_config" : {
+        "template" : [ {
+          "role" : "system",
+          "content" : "You are a language translator."
+        }, {
+          "role" : "user",
+          "content" : "Whats {{ ?word }} in {{ ?language }}?"
+        } ],
+        "defaults" : {
+          "word" : "apple"
+        },
+        "response_format" : {
+          "type" : "json_schema",
+          "json_schema" : {
+            "name" : "translation-schema",
+            "description" : "Translate the given word into the provided language.",
+            "strict" : true,
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "required" : [ "language", "translation" ],
+              "properties" : {
+                "language" : {
+                  "type" : "string"
+                },
+                "translation" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "tools" : [ {
+          "type" : "function",
+          "function" : {
+            "description" : "Translate a word.",
+            "name" : "translate",
+            "parameters" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "required" : [ "language", "wordToTranslate" ],
+              "properties" : {
+                "language" : {
+                  "type" : "string"
+                },
+                "wordToTranslate" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "strict" : true
+          }
+        } ]
+      }
+    },
+    "stream" : false
+  },
+  "input_params" : {
+    "language" : "German"
+  },
+  "messages_history" : [ ]
+}

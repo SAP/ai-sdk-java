@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.sap.ai.sdk</groupId>
   <artifactId>sdk-parent</artifactId>
-  <version>1.7.0-SNAPSHOT</version>
+  <version>1.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Parent pom</name>
   <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. The parent pom defines dependency versions and plugin configurations</description>
@@ -58,27 +58,28 @@
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
-    <cloud-sdk.version>5.17.0</cloud-sdk.version>
-    <junit-jupiter.version>5.12.1</junit-jupiter.version>
-    <wiremock.version>3.12.1</wiremock.version>
+    <cloud-sdk.version>5.18.0</cloud-sdk.version>
+    <junit-jupiter.version>5.12.2</junit-jupiter.version>
+    <wiremock.version>3.13.0</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <checkstyle.version>10.23.0</checkstyle.version>
+    <checkstyle.version>10.24.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.3</surefire.version>
     <springframework.version>6.2.1</springframework.version>
     <spring-ai.version>1.0.0-M6</spring-ai.version>
     <reactor-core.version>3.6.12</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
-    <mockito.version>5.17.0</mockito.version>
+    <mockito.version>5.18.0</mockito.version>
     <javaparser.version>3.26.4</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.18.3</jackson.version>
+    <jackson.version>2.19.0</jackson.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
-    <json.version>20250107</json.version>
+    <json.version>20250517</json.version>
+    <snakeyaml.version>2.4</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>2.44.3</spotless.version>
+    <spotless.version>2.44.4</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -151,6 +152,11 @@
         <artifactId>jsonschema-module-jackson</artifactId>
         <version>${jsonschema-generator.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.dataformat</groupId>
+        <artifactId>jackson-dataformat-yaml</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
       <!-- conflicts resolution scope "compile" -->
       <dependency>
         <groupId>io.micrometer</groupId>
@@ -176,6 +182,11 @@
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
         <version>${json.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
@@ -306,7 +317,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.12.0</version>
+          <version>7.13.0</version>
         </plugin>
       </plugins>
     </pluginManagement>

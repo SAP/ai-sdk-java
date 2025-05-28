@@ -170,7 +170,7 @@ public class AiDeploymentResponseWithDetails
      * @return The enum value of type AiDeploymentResponseWithDetails
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static LastOperationEnum fromValue(@Nonnull final String value) {
       for (LastOperationEnum b : LastOperationEnum.values()) {
         if (b.value.equals(value)) {

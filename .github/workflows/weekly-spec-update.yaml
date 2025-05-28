@@ -1,0 +1,29 @@
+name: "Weekly Spec Update"
+
+on:
+  schedule:
+    - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
+
+jobs:
+  update-all-specs:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        file:
+          - core
+          - grounding
+          - prompt-registry
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Trigger spec update"
+        run: |
+          gh workflow run spec-update.yaml \
+            --field file=${{ matrix.file }} \
+            --field file-ref=main \
+            --field create-pr=true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

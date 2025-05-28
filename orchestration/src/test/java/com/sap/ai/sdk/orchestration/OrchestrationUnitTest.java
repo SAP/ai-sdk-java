@@ -19,6 +19,8 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_M
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
+import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.hc.core5.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,13 +50,16 @@ import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.SingleChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -292,7 +297,7 @@ class OrchestrationUnitTest {
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Le service d'orchestration fonctionne!");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     var usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
@@ -307,7 +312,7 @@ class OrchestrationUnitTest {
     assertThat(choices.get(0).getIndex()).isZero();
     assertThat(choices.get(0).getMessage().getContent())
         .isEqualTo("Le service d'orchestration fonctionne!");
-    assertThat(choices.get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(choices.get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     assertThat(choices.get(0).getFinishReason()).isEqualTo("stop");
     usage = result.getTokenUsage();
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
@@ -560,7 +565,10 @@ class OrchestrationUnitTest {
         {
           "messages_history": [{
             "role" : "user",
-            "content" : "Hello World!"
+            "content" : [ {
+              "type" : "text",
+              "text" : "Hello World!"
+            } ]
           }],
           "input_params": {
             "foo" : "bar"
@@ -702,9 +710,9 @@ class OrchestrationUnitTest {
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
-        final var templateItem = (SingleChatMessage) templating.get(0);
-        assertThat(templateItem.getRole()).isEqualTo("user");
-        assertThat(templateItem.getContent())
+        final var templateItem = (UserChatMessage) templating.get(0);
+        assertThat(templateItem.getRole()).isEqualTo(USER);
+        assertThat(((UserChatMessageContent.InnerString) templateItem.getContent()).value())
             .isEqualTo("Hello world! Why is this phrase so famous?");
 
         assertThat(result1.getSystemFingerprint()).isEqualTo("fp_808245b034");
@@ -807,15 +815,14 @@ class OrchestrationUnitTest {
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo("assistant");
+    assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
-    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole())
-        .isEqualTo("assistant");
+    assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
 
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
@@ -977,5 +984,74 @@ class OrchestrationUnitTest {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
+  }
+
+  @Test
+  void testTemplateFromInput() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var promptTemplateYaml =
+        Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
+
+    var template = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+
+    var inputParams = Map.of("language", "German");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+
+    try (var requestInputStream = fileLoader.apply("localTemplateRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromInputThrows() {
+    assertThatThrownBy(() -> TemplateConfig.create().fromYaml(": what?"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("Failed to parse");
+
+    prompt = new OrchestrationPrompt(Map.of());
+    assertThatThrownBy(
+            () ->
+                TemplateConfig.create()
+                    .fromYaml(
+                        "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("Failed to deserialize");
+  }
+
+  @Test
+  void testGetAllMessages() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var resultTemplating = client.chatCompletion(new OrchestrationPrompt("Hello"), config);
+    final var messageListTemplating = resultTemplating.getAllMessages();
+    assertThat(messageListTemplating.get(0)).isInstanceOf(SystemMessage.class);
+    assertThat(messageListTemplating.get(1)).isInstanceOf(UserMessage.class);
+    assertThat(messageListTemplating.get(2)).isInstanceOf(AssistantMessage.class);
+
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("toolCallsResponse2.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var resultTools = client.chatCompletion(new OrchestrationPrompt("Hello"), config);
+    final var messageListTools = resultTools.getAllMessages();
+    assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
+    assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
+    assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
   }
 }

@@ -13,9 +13,9 @@ tags:
   - name: retrieval
     description: Tag for retrieval component
 servers:
-  - url: '/v2/lm/document-grounding'
+  - url: "/v2/lm/document-grounding"
 paths:
-  '/pipelines':
+  "/pipelines":
     post:
       operationId: pipeline.v1.pipeline_endpoints.create_pipeline
       x-sap-cloud-sdk-operation-name: createPipeline
@@ -50,7 +50,7 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/top'
+        - $ref: "#/components/parameters/top"
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       operationId: pipeline.v1.pipeline_endpoints.get_all_pipelines
@@ -67,7 +67,7 @@ paths:
                 $ref: '#/components/schemas/Pipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/pipelines/{pipelineId}':
+  "/pipelines/{pipelineId}":
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
       x-sap-cloud-sdk-operation-name: getPipelineById
@@ -118,7 +118,7 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/pipelines/{pipelineId}/status':
+  "/pipelines/{pipelineId}/status":
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
       x-sap-cloud-sdk-operation-name: getPipelineStatus
@@ -146,7 +146,7 @@ paths:
                 $ref: '#/components/schemas/PipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/vector/collections':
+  "/vector/collections":
     get:
       parameters:
         - in: header
@@ -154,7 +154,7 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/top'
+        - $ref: "#/components/parameters/top"
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       tags:
@@ -203,7 +203,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{collectionId}':
+  "/vector/collections/{collectionId}":
     get:
       tags:
         - vector
@@ -270,7 +270,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{collectionId}/documents/{documentId}':
+  "/vector/collections/{collectionId}/documents/{documentId}":
     get:
       tags:
         - vector
@@ -347,7 +347,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{collectionId}/documents':
+  "/vector/collections/{collectionId}/documents":
     get:
       tags:
         - vector
@@ -368,7 +368,7 @@ paths:
             type: string
             format: uuid
             title: Collectionid
-        - $ref: '#/components/parameters/top'
+        - $ref: "#/components/parameters/top"
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       responses:
@@ -462,7 +462,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/search':
+  "/vector/search":
     post:
       parameters:
         - in: header
@@ -473,7 +473,7 @@ paths:
       tags:
         - vector
       summary: Search chunk by vector
-      description: 'Search chunk by vector'
+      description: "Search chunk by vector"
       operationId: vector.v1.vector_endpoints.search
       x-sap-cloud-sdk-operation-name: search
       requestBody:
@@ -495,7 +495,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{id}/creationStatus':
+  "/vector/collections/{id}/creationStatus":
     get:
       tags:
         - vector
@@ -531,7 +531,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{id}/deletionStatus':
+  "/vector/collections/{id}/deletionStatus":
     get:
       tags:
         - vector
@@ -567,7 +567,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/retrieval/dataRepositories':
+  "/retrieval/dataRepositories":
     get:
       parameters:
         - in: header
@@ -575,7 +575,7 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/top'
+        - $ref: "#/components/parameters/top"
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       tags:
@@ -590,10 +590,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataRepositories'
+                $ref: "#/components/schemas/DataRepositories"
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/retrieval/dataRepositories/{repositoryId}':
+  "/retrieval/dataRepositories/{repositoryId}":
     get:
       tags:
         - retrieval
@@ -620,14 +620,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataRepository'
+                $ref: "#/components/schemas/DataRepository"
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
         '404':
           $ref: '#/components/responses/NotFound'
-  '/retrieval/search':
+  "/retrieval/search":
     post:
       parameters:
         - in: header
@@ -645,7 +645,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RetrievalSearchInput'
+              $ref: "#/components/schemas/RetrievalSearchInput"
         required: true
       responses:
         '200':
@@ -653,7 +653,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RetievalSearchResults'
+                $ref: "#/components/schemas/RetievalSearchResults"
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -663,8 +663,8 @@ components:
     PipelinePostRequst:
       type: object
       required:
-        - type
-        - configuration
+      - type
+      - configuration
       additionalProperties: true
       properties:
         type:
@@ -674,7 +674,7 @@ components:
           type: object
           additionalProperties: true
           required:
-            - destination
+          - destination
           properties:
             destination:
               type: string
@@ -694,19 +694,19 @@ components:
                       type: array
                       items:
                         type: string
-                      example: ['/testFolder1', 'testFolder2']
+                      example: ["/testFolder1","testFolder2"]
     Pipelines:
       properties:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/Pipeline'
+            $ref: "#/components/schemas/Pipeline"
           title: Get Pipelines
         count:
           type: integer
       type: object
       required:
-        - resources
+      - resources
       title: Pipelines
     Pipeline:
       type: object
@@ -739,7 +739,7 @@ components:
                       type: array
                       items:
                         type: string
-                      example: ['/testFolder1', 'testFolder2']
+                      example: ["/testFolder1","testFolder2"]
     PipelineStatus:
       type: object
       properties:
@@ -765,13 +765,13 @@ components:
         metadata:
           type: array
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: "#/components/schemas/KeyValueListPair"
           title: Metadata
           default: []
       type: object
       required:
-        - id
-        - content
+      - id
+      - content
       title: Chunk
     DocumentKeyValueListPair:
       additionalProperties: true
@@ -794,13 +794,13 @@ components:
           default: ANY
           anyOf:
             - enum:
-                - ANY
-                - ALL
+              - ANY
+              - ALL
             - {}
       type: object
       required:
-        - key
-        - value
+      - key
+      - value
       title: DocumentKeyValueListPair
     KeyValueListPair:
       additionalProperties: true
@@ -817,8 +817,8 @@ components:
           title: Value
       type: object
       required:
-        - key
-        - value
+      - key
+      - value
       title: KeyValueListPair
     Document-Output:
       properties:
@@ -918,13 +918,13 @@ components:
         selectMode:
           type: array
           items:
-            $ref: '#/components/schemas/SearchSelectOptionEnum'
+            $ref: "#/components/schemas/SearchSelectOptionEnum"
           title: Selectmode
           description: Select mode for search filters
       type: object
       required:
-        - key
-        - value
+      - key
+      - value
       title: SearchDocumentKeyValueListPair
     SearchResults:
       properties:
@@ -932,12 +932,12 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: '#/components/schemas/PerFilterSearchResult'
+            - $ref: "#/components/schemas/PerFilterSearchResult"
           title: Results
           description: List of returned results.
       type: object
       required:
-        - results
+      - results
       title: SearchResults
     CollectionsListResponse:
       properties:
@@ -1181,7 +1181,7 @@ components:
       type: string
       anyOf:
         - enum:
-            - ignoreIfKeyAbsent
+          - ignoreIfKeyAbsent
         - {}
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
@@ -1295,7 +1295,7 @@ components:
       type: string
       anyOf:
         - enum:
-            - vector
+          - vector
         - {}
       title: DataRepositoryType
     DataRepository:
@@ -1311,17 +1311,17 @@ components:
         metadata:
           type: array
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: "#/components/schemas/KeyValueListPair"
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
           default: []
         type:
-          $ref: '#/components/schemas/DataRepositoryType'
+          $ref: "#/components/schemas/DataRepositoryType"
       type: object
       required:
-        - id
-        - title
-        - type
+      - id
+      - title
+      - type
       title: DataRepository
       description: DataRepository schema expected by Retrieval.
     DataRepositories:
@@ -1329,13 +1329,13 @@ components:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/DataRepository'
+            $ref: "#/components/schemas/DataRepository"
           title: Datarepositories
         count:
           type: integer
       type: object
       required:
-        - resources
+      - resources
       title: DataRepositories
     RetrievalSearchInput:
       additionalProperties: true
@@ -1348,12 +1348,12 @@ components:
         filters:
           type: array
           items:
-            $ref: '#/components/schemas/RetrievalSearchFilter'
+            $ref: "#/components/schemas/RetrievalSearchFilter"
           title: Filters
       type: object
       required:
-        - query
-        - filters
+      - query
+      - filters
       title: SearchInput
     RetrievalSearchFilter:
       additionalProperties: true
@@ -1363,7 +1363,7 @@ components:
           title: Id
           description: Identifier of this SearchFilter - unique per request.
         searchConfiguration:
-          $ref: '#/components/schemas/SearchConfiguration'
+          $ref: "#/components/schemas/SearchConfiguration"
         dataRepositories:
           type: array
           items:
@@ -1371,34 +1371,34 @@ components:
           title: Datarepositories
           description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
           default:
-            - '*'
+          - "*"
         dataRepositoryType:
-          $ref: '#/components/schemas/DataRepositoryType'
+          $ref: "#/components/schemas/DataRepositoryType"
         dataRepositoryMetadata:
           type: array
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: "#/components/schemas/KeyValueListPair"
           title: Datarepositorymetadata
           description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
           default: []
         documentMetadata:
           type: array
           items:
-            $ref: '#/components/schemas/SearchDocumentKeyValueListPair'
+            $ref: "#/components/schemas/SearchDocumentKeyValueListPair"
           title: Documentmetadata
           description: Restrict documents considered during search to those annotated with the given metadata.
           default: []
         chunkMetadata:
           type: array
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: "#/components/schemas/KeyValueListPair"
           title: Chunkmetadata
           description: Restrict chunks considered during search to those with the given metadata.
           default: []
       type: object
       required:
-        - id
-        - dataRepositoryType
+      - id
+      - dataRepositoryType
       title: RetrievalSearchFilter
       description: Limit scope of search to certain DataRepositories, Documents or Chunks.
     RetrievalDocument:
@@ -1409,18 +1409,18 @@ components:
         metadata:
           type: array
           items:
-            $ref: '#/components/schemas/DocumentKeyValueListPair'
+            $ref: "#/components/schemas/DocumentKeyValueListPair"
           title: Metadata
           default: []
         chunks:
           type: array
           items:
-            $ref: '#/components/schemas/Chunk'
+            $ref: "#/components/schemas/Chunk"
           title: Chunks
       type: object
       required:
-        - id
-        - chunks
+      - id
+      - chunks
       title: RetrievalDocument
     DataRepositoryWithDocuments:
       properties:
@@ -1435,28 +1435,28 @@ components:
         metadata:
           type: array
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: "#/components/schemas/KeyValueListPair"
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/RetrievalDocument'
+            $ref: "#/components/schemas/RetrievalDocument"
           title: Documents
       type: object
       required:
-        - id
-        - title
-        - documents
+      - id
+      - title
+      - documents
       title: DataRepositoryWithDocuments
       description: DataRepository schema returned by the Vector search endpoint
     RetievalDataRepositorySearchResult:
       properties:
         dataRepository:
-          $ref: '#/components/schemas/DataRepositoryWithDocuments'
+          $ref: "#/components/schemas/DataRepositoryWithDocuments"
       type: object
       required:
-        - dataRepository
+      - dataRepository
       title: DataRepositorySearchResult
     RetievalPerFilterSearchResult:
       properties:
@@ -1466,13 +1466,13 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/RetievalDataRepositorySearchResult'
+            $ref: "#/components/schemas/RetievalDataRepositorySearchResult"
           title: Results
           description: List of returned results.
           default: []
       type: object
       required:
-        - filterId
+      - filterId
       title: PerFilterSearchResult
     RetievalPerFilterSearchResultWithError:
       properties:
@@ -1481,7 +1481,7 @@ components:
           title: Message
       type: object
       required:
-        - message
+      - message
       title: PerFilterSearchResultError
     RetievalSearchResults:
       properties:
@@ -1489,13 +1489,13 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: '#/components/schemas/RetievalPerFilterSearchResult'
-              - $ref: '#/components/schemas/RetievalPerFilterSearchResultWithError'
+            - $ref: "#/components/schemas/RetievalPerFilterSearchResult"
+            - $ref: "#/components/schemas/RetievalPerFilterSearchResultWithError"
           title: Results
           description: List of returned results.
       type: object
       required:
-        - results
+      - results
       title: SearchResults
 
     ### ###  ########################  ### ###
@@ -1570,6 +1570,7 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/ApiError'
+
 
   parameters:
     top:
