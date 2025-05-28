@@ -122,11 +122,23 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public <T> T entity(@Nonnull final Class<T> type) {
+    String refusal =
+        ((LLMModuleResultSynchronous) getOriginalResponse().getOrchestrationResult())
+            .getChoices()
+            .get(0)
+            .getMessage()
+            .getRefusal();
+    if (refusal != null) {
+      throw new OrchestrationClientException(
+          "The model refused to answer the question: " + refusal);
+    }
     try {
       return new ObjectMapper().readValue(getContent(), type);
     } catch (JsonProcessingException e) {
       throw new OrchestrationClientException(
-          "Failed to deserialize the JSON content: " + e.getMessage(), e);
+          "Failed to deserialize the JSON content, please configure an OrchestrationTemplate with format set to JSON schema into your OrchestrationModuleConfig"
+              + e.getMessage(),
+          e);
     }
   }
 }
