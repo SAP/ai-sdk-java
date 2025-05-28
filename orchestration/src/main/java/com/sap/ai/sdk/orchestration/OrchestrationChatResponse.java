@@ -129,6 +129,7 @@ public class OrchestrationChatResponse {
             .getMessage()
             .getRefusal();
     if (refusal != null) {
+      // https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#refusals
       throw new OrchestrationClientException(
           "The model refused to answer the question: " + refusal);
     }
