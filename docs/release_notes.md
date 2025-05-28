@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
-- [Orchestration] `OrchestrationTemplate.withTemplate()` has been deprecated. Use `OrchestrationTemplate.withTemplateMessages()` instead.
+- [Orchestration] `OrchestrationTemplate.withTemplate()` has been deprecated. Please use `OrchestrationTemplate.withTemplateMessages()` instead.
 
 ### ✨ New Functionality
 
