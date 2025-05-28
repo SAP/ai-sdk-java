@@ -23,34 +23,35 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** CompletionPostResponse */
+/** CompletionPostResponseSynchronous */
 // CHECKSTYLE:OFF
-public class CompletionPostResponse
+public class CompletionPostResponseSynchronous
 // CHECKSTYLE:ON
 {
   @JsonProperty("request_id")
   private String requestId;
 
   @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  private ModuleResultsSynchronous moduleResults;
 
   @JsonProperty("orchestration_result")
-  private LLMModuleResult orchestrationResult;
+  private LLMModuleResultSynchronous orchestrationResult;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for CompletionPostResponse. */
-  protected CompletionPostResponse() {}
+  /** Default constructor for CompletionPostResponseSynchronous. */
+  protected CompletionPostResponseSynchronous() {}
 
   /**
-   * Set the requestId of this {@link CompletionPostResponse} instance and return the same instance.
+   * Set the requestId of this {@link CompletionPostResponseSynchronous} instance and return the
+   * same instance.
    *
    * @param requestId ID of the request
-   * @return The same instance of this {@link CompletionPostResponse} class
+   * @return The same instance of this {@link CompletionPostResponseSynchronous} class
    */
   @Nonnull
-  public CompletionPostResponse requestId(@Nonnull final String requestId) {
+  public CompletionPostResponseSynchronous requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -58,7 +59,7 @@ public class CompletionPostResponse
   /**
    * ID of the request
    *
-   * @return requestId The requestId of this {@link CompletionPostResponse} instance.
+   * @return requestId The requestId of this {@link CompletionPostResponseSynchronous} instance.
    */
   @Nonnull
   public String getRequestId() {
@@ -66,7 +67,7 @@ public class CompletionPostResponse
   }
 
   /**
-   * Set the requestId of this {@link CompletionPostResponse} instance.
+   * Set the requestId of this {@link CompletionPostResponseSynchronous} instance.
    *
    * @param requestId ID of the request
    */
@@ -75,14 +76,15 @@ public class CompletionPostResponse
   }
 
   /**
-   * Set the moduleResults of this {@link CompletionPostResponse} instance and return the same
-   * instance.
+   * Set the moduleResults of this {@link CompletionPostResponseSynchronous} instance and return the
+   * same instance.
    *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
-   * @return The same instance of this {@link CompletionPostResponse} class
+   * @param moduleResults The moduleResults of this {@link CompletionPostResponseSynchronous}
+   * @return The same instance of this {@link CompletionPostResponseSynchronous} class
    */
   @Nonnull
-  public CompletionPostResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
+  public CompletionPostResponseSynchronous moduleResults(
+      @Nonnull final ModuleResultsSynchronous moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -90,32 +92,34 @@ public class CompletionPostResponse
   /**
    * Get moduleResults
    *
-   * @return moduleResults The moduleResults of this {@link CompletionPostResponse} instance.
+   * @return moduleResults The moduleResults of this {@link CompletionPostResponseSynchronous}
+   *     instance.
    */
   @Nonnull
-  public ModuleResults getModuleResults() {
+  public ModuleResultsSynchronous getModuleResults() {
     return moduleResults;
   }
 
   /**
-   * Set the moduleResults of this {@link CompletionPostResponse} instance.
+   * Set the moduleResults of this {@link CompletionPostResponseSynchronous} instance.
    *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
+   * @param moduleResults The moduleResults of this {@link CompletionPostResponseSynchronous}
    */
-  public void setModuleResults(@Nonnull final ModuleResults moduleResults) {
+  public void setModuleResults(@Nonnull final ModuleResultsSynchronous moduleResults) {
     this.moduleResults = moduleResults;
   }
 
   /**
-   * Set the orchestrationResult of this {@link CompletionPostResponse} instance and return the same
-   * instance.
+   * Set the orchestrationResult of this {@link CompletionPostResponseSynchronous} instance and
+   * return the same instance.
    *
-   * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
-   * @return The same instance of this {@link CompletionPostResponse} class
+   * @param orchestrationResult The orchestrationResult of this {@link
+   *     CompletionPostResponseSynchronous}
+   * @return The same instance of this {@link CompletionPostResponseSynchronous} class
    */
   @Nonnull
-  public CompletionPostResponse orchestrationResult(
-      @Nonnull final LLMModuleResult orchestrationResult) {
+  public CompletionPostResponseSynchronous orchestrationResult(
+      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
     return this;
   }
@@ -123,25 +127,28 @@ public class CompletionPostResponse
   /**
    * Get orchestrationResult
    *
-   * @return orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
-   *     instance.
+   * @return orchestrationResult The orchestrationResult of this {@link
+   *     CompletionPostResponseSynchronous} instance.
    */
   @Nonnull
-  public LLMModuleResult getOrchestrationResult() {
+  public LLMModuleResultSynchronous getOrchestrationResult() {
     return orchestrationResult;
   }
 
   /**
-   * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
+   * Set the orchestrationResult of this {@link CompletionPostResponseSynchronous} instance.
    *
-   * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
+   * @param orchestrationResult The orchestrationResult of this {@link
+   *     CompletionPostResponseSynchronous}
    */
-  public void setOrchestrationResult(@Nonnull final LLMModuleResult orchestrationResult) {
+  public void setOrchestrationResult(
+      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
     this.orchestrationResult = orchestrationResult;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link CompletionPostResponse}.
+   * Get the names of the unrecognizable properties of the {@link
+   * CompletionPostResponseSynchronous}.
    *
    * @return The set of properties names
    */
@@ -152,7 +159,8 @@ public class CompletionPostResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link CompletionPostResponse} instance.
+   * Get the value of an unrecognizable property of this {@link CompletionPostResponseSynchronous}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -164,14 +172,14 @@ public class CompletionPostResponse
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "CompletionPostResponse has no field with name '" + name + "'.");
+          "CompletionPostResponseSynchronous has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link CompletionPostResponse} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link CompletionPostResponseSynchronous} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -186,8 +194,9 @@ public class CompletionPostResponse
   }
 
   /**
-   * Set an unrecognizable property of this {@link CompletionPostResponse} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link CompletionPostResponseSynchronous} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -205,11 +214,14 @@ public class CompletionPostResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final CompletionPostResponse completionPostResponse = (CompletionPostResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, completionPostResponse.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, completionPostResponse.requestId)
-        && Objects.equals(this.moduleResults, completionPostResponse.moduleResults)
-        && Objects.equals(this.orchestrationResult, completionPostResponse.orchestrationResult);
+    final CompletionPostResponseSynchronous completionPostResponseSynchronous =
+        (CompletionPostResponseSynchronous) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, completionPostResponseSynchronous.cloudSdkCustomFields)
+        && Objects.equals(this.requestId, completionPostResponseSynchronous.requestId)
+        && Objects.equals(this.moduleResults, completionPostResponseSynchronous.moduleResults)
+        && Objects.equals(
+            this.orchestrationResult, completionPostResponseSynchronous.orchestrationResult);
   }
 
   @Override
@@ -221,7 +233,7 @@ public class CompletionPostResponse
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class CompletionPostResponse {\n");
+    sb.append("class CompletionPostResponseSynchronous {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
     sb.append("    orchestrationResult: ")
@@ -245,14 +257,14 @@ public class CompletionPostResponse
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link CompletionPostResponse}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * CompletionPostResponseSynchronous} instance with all required arguments.
    */
   public static Builder create() {
     return (requestId) ->
         (moduleResults) ->
             (orchestrationResult) ->
-                new CompletionPostResponse()
+                new CompletionPostResponseSynchronous()
                     .requestId(requestId)
                     .moduleResults(moduleResults)
                     .orchestrationResult(orchestrationResult);
@@ -261,10 +273,10 @@ public class CompletionPostResponse
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the requestId of this {@link CompletionPostResponse} instance.
+     * Set the requestId of this {@link CompletionPostResponseSynchronous} instance.
      *
      * @param requestId ID of the request
-     * @return The CompletionPostResponse builder.
+     * @return The CompletionPostResponseSynchronous builder.
      */
     Builder1 requestId(@Nonnull final String requestId);
   }
@@ -272,22 +284,24 @@ public class CompletionPostResponse
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the moduleResults of this {@link CompletionPostResponse} instance.
+     * Set the moduleResults of this {@link CompletionPostResponseSynchronous} instance.
      *
-     * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
-     * @return The CompletionPostResponse builder.
+     * @param moduleResults The moduleResults of this {@link CompletionPostResponseSynchronous}
+     * @return The CompletionPostResponseSynchronous builder.
      */
-    Builder2 moduleResults(@Nonnull final ModuleResults moduleResults);
+    Builder2 moduleResults(@Nonnull final ModuleResultsSynchronous moduleResults);
   }
 
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
+     * Set the orchestrationResult of this {@link CompletionPostResponseSynchronous} instance.
      *
-     * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
-     * @return The CompletionPostResponse instance.
+     * @param orchestrationResult The orchestrationResult of this {@link
+     *     CompletionPostResponseSynchronous}
+     * @return The CompletionPostResponseSynchronous instance.
      */
-    CompletionPostResponse orchestrationResult(@Nonnull final LLMModuleResult orchestrationResult);
+    CompletionPostResponseSynchronous orchestrationResult(
+        @Nonnull final LLMModuleResultSynchronous orchestrationResult);
   }
 }
