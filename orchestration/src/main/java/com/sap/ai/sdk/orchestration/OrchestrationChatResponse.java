@@ -2,6 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import static lombok.AccessLevel.PACKAGE;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
@@ -106,5 +108,25 @@ public class OrchestrationChatResponse {
     return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
         .getChoices()
         .get(0);
+  }
+
+  /**
+   * Transform a JSON response into an entity of the given type.
+   *
+   * <p>This is possible on a request with a {@link OrchestrationTemplate#withJsonSchemaResponse}
+   * configured into {@link OrchestrationModuleConfig#withTemplateConfig}.
+   *
+   * @param type the class type to deserialize the JSON content into.
+   * @return the deserialized entity of type T.
+   * @param <T> the type of the entity to deserialize to.
+   */
+  @Nonnull
+  public <T> T entity(@Nonnull final Class<T> type) {
+    try {
+      return new ObjectMapper().readValue(getContent(), type);
+    } catch (JsonProcessingException e) {
+      throw new OrchestrationClientException(
+          "Failed to deserialize the JSON content: " + e.getMessage(), e);
+    }
   }
 }
