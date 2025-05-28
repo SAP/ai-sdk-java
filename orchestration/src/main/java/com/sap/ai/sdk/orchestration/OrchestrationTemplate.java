@@ -42,12 +42,10 @@ import lombok.val;
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
 
-  /**
-   * @deprecated Please use {@link #withTemplateMessages(List)} instead.
-   */
+  /** Please use {@link #withTemplateMessages(List)} instead. */
   @JsonProperty("template")
   @Nullable
-  @Deprecated // withTemplate() is deprecated, not the variable
+  @With(onMethod_ = {@Deprecated})
   List<ChatMessage> template;
 
   @Nullable
