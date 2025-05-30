@@ -14,6 +14,7 @@ import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponseSynchronous;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseModuleResultsAllOfLlm;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -212,6 +213,7 @@ public class OrchestrationClient {
   CompletionPostResponseSynchronous executeRequest(@Nonnull final String request) {
     val postRequest = new HttpPost("/completion");
     postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
+    JACKSON.addMixIn(ErrorResponseModuleResultsAllOfLlm.class, JacksonMixins.DefaultToSynchronousMixin.class);
 
     try {
       val destination = destinationSupplier.get();
@@ -275,6 +277,7 @@ public class OrchestrationClient {
       val destination = destinationSupplier.get();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      JACKSON.addMixIn(ErrorResponseModuleResultsAllOfLlm.class, JacksonMixins.DefaultToStreamingMixin.class);
       return new ClientStreamingHandler<>(
               deltaType, OrchestrationError.class, OrchestrationClientException::new)
           .objectMapper(JACKSON)
