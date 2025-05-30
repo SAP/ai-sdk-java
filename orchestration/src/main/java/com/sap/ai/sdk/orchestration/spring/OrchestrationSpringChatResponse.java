@@ -2,7 +2,7 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.model.LLMChoice;
+import com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
@@ -48,7 +48,7 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   }
 
   @Nonnull
-  static Generation toGeneration(@Nonnull final LLMChoice choice) {
+  static Generation toGeneration(@Nonnull final LLMChoiceSynchronous choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
     if (!choice.getLogprobs().isEmpty()) {

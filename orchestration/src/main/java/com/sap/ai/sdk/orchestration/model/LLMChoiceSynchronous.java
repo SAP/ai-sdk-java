@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** LLMChoice */
+/** LLMChoiceSynchronous */
 // CHECKSTYLE:OFF
-public class LLMChoice implements ModuleResultsOutputUnmaskingInner
+public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutputUnmaskingInner
 // CHECKSTYLE:ON
 {
   @JsonProperty("index")
@@ -46,17 +46,17 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for LLMChoice. */
-  protected LLMChoice() {}
+  /** Default constructor for LLMChoiceSynchronous. */
+  protected LLMChoiceSynchronous() {}
 
   /**
-   * Set the index of this {@link LLMChoice} instance and return the same instance.
+   * Set the index of this {@link LLMChoiceSynchronous} instance and return the same instance.
    *
    * @param index Index of the choice
-   * @return The same instance of this {@link LLMChoice} class
+   * @return The same instance of this {@link LLMChoiceSynchronous} class
    */
   @Nonnull
-  public LLMChoice index(@Nonnull final Integer index) {
+  public LLMChoiceSynchronous index(@Nonnull final Integer index) {
     this.index = index;
     return this;
   }
@@ -64,7 +64,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   /**
    * Index of the choice
    *
-   * @return index The index of this {@link LLMChoice} instance.
+   * @return index The index of this {@link LLMChoiceSynchronous} instance.
    */
   @Nonnull
   public Integer getIndex() {
@@ -72,7 +72,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set the index of this {@link LLMChoice} instance.
+   * Set the index of this {@link LLMChoiceSynchronous} instance.
    *
    * @param index Index of the choice
    */
@@ -81,13 +81,13 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set the message of this {@link LLMChoice} instance and return the same instance.
+   * Set the message of this {@link LLMChoiceSynchronous} instance and return the same instance.
    *
-   * @param message The message of this {@link LLMChoice}
-   * @return The same instance of this {@link LLMChoice} class
+   * @param message The message of this {@link LLMChoiceSynchronous}
+   * @return The same instance of this {@link LLMChoiceSynchronous} class
    */
   @Nonnull
-  public LLMChoice message(@Nonnull final ResponseChatMessage message) {
+  public LLMChoiceSynchronous message(@Nonnull final ResponseChatMessage message) {
     this.message = message;
     return this;
   }
@@ -95,7 +95,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   /**
    * Get message
    *
-   * @return message The message of this {@link LLMChoice} instance.
+   * @return message The message of this {@link LLMChoiceSynchronous} instance.
    */
   @Nonnull
   public ResponseChatMessage getMessage() {
@@ -103,35 +103,35 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set the message of this {@link LLMChoice} instance.
+   * Set the message of this {@link LLMChoiceSynchronous} instance.
    *
-   * @param message The message of this {@link LLMChoice}
+   * @param message The message of this {@link LLMChoiceSynchronous}
    */
   public void setMessage(@Nonnull final ResponseChatMessage message) {
     this.message = message;
   }
 
   /**
-   * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
+   * Set the logprobs of this {@link LLMChoiceSynchronous} instance and return the same instance.
    *
    * @param logprobs Log probabilities
-   * @return The same instance of this {@link LLMChoice} class
+   * @return The same instance of this {@link LLMChoiceSynchronous} class
    */
   @Nonnull
-  public LLMChoice logprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
+  public LLMChoiceSynchronous logprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
     this.logprobs = logprobs;
     return this;
   }
 
   /**
-   * Put one logprobs instance to this {@link LLMChoice} instance.
+   * Put one logprobs instance to this {@link LLMChoiceSynchronous} instance.
    *
    * @param key The String key of this logprobs instance
    * @param logprobsItem The logprobs that should be added under the given key
-   * @return The same instance of type {@link LLMChoice}
+   * @return The same instance of type {@link LLMChoiceSynchronous}
    */
   @Nonnull
-  public LLMChoice putlogprobsItem(
+  public LLMChoiceSynchronous putlogprobsItem(
       @Nonnull final String key, @Nonnull final List<BigDecimal> logprobsItem) {
     if (this.logprobs == null) {
       this.logprobs = new HashMap<>();
@@ -143,7 +143,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   /**
    * Log probabilities
    *
-   * @return logprobs The logprobs of this {@link LLMChoice} instance.
+   * @return logprobs The logprobs of this {@link LLMChoiceSynchronous} instance.
    */
   @Nonnull
   public Map<String, List<BigDecimal>> getLogprobs() {
@@ -151,7 +151,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set the logprobs of this {@link LLMChoice} instance.
+   * Set the logprobs of this {@link LLMChoiceSynchronous} instance.
    *
    * @param logprobs Log probabilities
    */
@@ -160,16 +160,17 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
+   * Set the finishReason of this {@link LLMChoiceSynchronous} instance and return the same
+   * instance.
    *
    * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
    *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
    *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
    *     enforced by the LLM model provider or the content filtering module
-   * @return The same instance of this {@link LLMChoice} class
+   * @return The same instance of this {@link LLMChoiceSynchronous} class
    */
   @Nonnull
-  public LLMChoice finishReason(@Nonnull final String finishReason) {
+  public LLMChoiceSynchronous finishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
     return this;
   }
@@ -180,7 +181,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
    * &#39;content_filter&#39; if content was omitted due to a filter enforced by the LLM model
    * provider or the content filtering module
    *
-   * @return finishReason The finishReason of this {@link LLMChoice} instance.
+   * @return finishReason The finishReason of this {@link LLMChoiceSynchronous} instance.
    */
   @Nonnull
   public String getFinishReason() {
@@ -188,7 +189,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set the finishReason of this {@link LLMChoice} instance.
+   * Set the finishReason of this {@link LLMChoiceSynchronous} instance.
    *
    * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
    *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
@@ -200,7 +201,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link LLMChoice}.
+   * Get the names of the unrecognizable properties of the {@link LLMChoiceSynchronous}.
    *
    * @return The set of properties names
    */
@@ -211,7 +212,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link LLMChoice} instance.
+   * Get the value of an unrecognizable property of this {@link LLMChoiceSynchronous} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -222,14 +223,15 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("LLMChoice has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "LLMChoiceSynchronous has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link LLMChoice} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link LLMChoiceSynchronous} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -245,8 +247,8 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Set an unrecognizable property of this {@link LLMChoice} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link LLMChoiceSynchronous} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -264,12 +266,12 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final LLMChoice llMChoice = (LLMChoice) o;
-    return Objects.equals(this.cloudSdkCustomFields, llMChoice.cloudSdkCustomFields)
-        && Objects.equals(this.index, llMChoice.index)
-        && Objects.equals(this.message, llMChoice.message)
-        && Objects.equals(this.logprobs, llMChoice.logprobs)
-        && Objects.equals(this.finishReason, llMChoice.finishReason);
+    final LLMChoiceSynchronous llMChoiceSynchronous = (LLMChoiceSynchronous) o;
+    return Objects.equals(this.cloudSdkCustomFields, llMChoiceSynchronous.cloudSdkCustomFields)
+        && Objects.equals(this.index, llMChoiceSynchronous.index)
+        && Objects.equals(this.message, llMChoiceSynchronous.message)
+        && Objects.equals(this.logprobs, llMChoiceSynchronous.logprobs)
+        && Objects.equals(this.finishReason, llMChoiceSynchronous.finishReason);
   }
 
   @Override
@@ -281,7 +283,7 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class LLMChoice {\n");
+    sb.append("class LLMChoiceSynchronous {\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
@@ -304,23 +306,23 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoice} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoiceSynchronous}
+   * instance with all required arguments.
    */
   public static Builder create() {
     return (index) ->
         (message) ->
             (finishReason) ->
-                new LLMChoice().index(index).message(message).finishReason(finishReason);
+                new LLMChoiceSynchronous().index(index).message(message).finishReason(finishReason);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the index of this {@link LLMChoice} instance.
+     * Set the index of this {@link LLMChoiceSynchronous} instance.
      *
      * @param index Index of the choice
-     * @return The LLMChoice builder.
+     * @return The LLMChoiceSynchronous builder.
      */
     Builder1 index(@Nonnull final Integer index);
   }
@@ -328,10 +330,10 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the message of this {@link LLMChoice} instance.
+     * Set the message of this {@link LLMChoiceSynchronous} instance.
      *
-     * @param message The message of this {@link LLMChoice}
-     * @return The LLMChoice builder.
+     * @param message The message of this {@link LLMChoiceSynchronous}
+     * @return The LLMChoiceSynchronous builder.
      */
     Builder2 message(@Nonnull final ResponseChatMessage message);
   }
@@ -339,14 +341,14 @@ public class LLMChoice implements ModuleResultsOutputUnmaskingInner
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the finishReason of this {@link LLMChoice} instance.
+     * Set the finishReason of this {@link LLMChoiceSynchronous} instance.
      *
      * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model
      *     hit a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum
      *     token number was reached, &#39;content_filter&#39; if content was omitted due to a filter
      *     enforced by the LLM model provider or the content filtering module
-     * @return The LLMChoice instance.
+     * @return The LLMChoiceSynchronous instance.
      */
-    LLMChoice finishReason(@Nonnull final String finishReason);
+    LLMChoiceSynchronous finishReason(@Nonnull final String finishReason);
   }
 }

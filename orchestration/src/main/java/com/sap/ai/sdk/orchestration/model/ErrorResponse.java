@@ -41,7 +41,7 @@ public class ErrorResponse
   private String location;
 
   @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  private ErrorResponseModuleResults moduleResults;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -180,7 +180,7 @@ public class ErrorResponse
    * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponse moduleResults(@Nullable final ModuleResults moduleResults) {
+  public ErrorResponse moduleResults(@Nullable final ErrorResponseModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -191,7 +191,7 @@ public class ErrorResponse
    * @return moduleResults The moduleResults of this {@link ErrorResponse} instance.
    */
   @Nonnull
-  public ModuleResults getModuleResults() {
+  public ErrorResponseModuleResults getModuleResults() {
     return moduleResults;
   }
 
@@ -200,7 +200,7 @@ public class ErrorResponse
    *
    * @param moduleResults The moduleResults of this {@link ErrorResponse}
    */
-  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
+  public void setModuleResults(@Nullable final ErrorResponseModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 

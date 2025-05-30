@@ -14,10 +14,9 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** FilterConfig */
+/** Replacement strategy to be used for the entity */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = AzureContentSafetyFilterConfig.class),
-  @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
+  @JsonSubTypes.Type(value = DPIMethodConstant.class),
 })
-public interface FilterConfig {}
+public interface DPICustomEntityReplacementStrategy {}

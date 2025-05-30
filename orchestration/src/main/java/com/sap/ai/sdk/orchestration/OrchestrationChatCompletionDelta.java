@@ -1,15 +1,14 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponseStreaming;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.val;
 
 /** Orchestration chat completion output delta for streaming. */
-public class OrchestrationChatCompletionDelta extends CompletionPostResponse
+public class OrchestrationChatCompletionDelta extends CompletionPostResponseStreaming
     implements StreamedDelta {
 
   @Nonnull
@@ -18,7 +17,7 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponse
   // CompletionPostResponseStreaming
   @SuppressWarnings("unchecked")
   public String getDeltaContent() {
-    val choices = ((LLMModuleResultSynchronous) getOrchestrationResult()).getChoices();
+    val choices = getOrchestrationResult().getChoices();
     // Avoid the first delta: "choices":[]
     if (!choices.isEmpty()
         // Multiple choices are spread out on multiple deltas
@@ -37,9 +36,6 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponse
   @Nullable
   @Override
   public String getFinishReason() {
-    return ((LLMModuleResultSynchronous) getOrchestrationResult())
-        .getChoices()
-        .get(0)
-        .getFinishReason();
+    return getOrchestrationResult().getChoices().get(0).getFinishReason();
   }
 }

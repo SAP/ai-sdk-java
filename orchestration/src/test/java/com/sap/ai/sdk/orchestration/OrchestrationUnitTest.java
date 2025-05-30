@@ -687,9 +687,9 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
-        var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
-        var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
-        var result2 = (LLMModuleResultSynchronous) deltaList.get(2).getOrchestrationResult();
+        var result0 = deltaList.get(0).getOrchestrationResult();
+        var result1 = deltaList.get(1).getOrchestrationResult();
+        var result2 = deltaList.get(2).getOrchestrationResult();
 
         assertThat(result0.getSystemFingerprint()).isEmpty();
         assertThat(result0.getId()).isEmpty();
