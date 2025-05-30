@@ -40,7 +40,17 @@ public class LlamaGuardFilter implements ContentFilter {
 
   @Nonnull
   @Override
-  public LlamaGuard38bFilterConfig createConfig() {
+  public LlamaGuard38bFilterConfig createInputConfig() {
+    return createConfig();
+  }
+
+  @Nonnull
+  @Override
+  public LlamaGuard38bFilterConfig createOutputConfig() {
+    return createConfig();
+  }
+
+  private LlamaGuard38bFilterConfig createConfig() {
     return LlamaGuard38bFilterConfig.create().type(LLAMA_GUARD_3_8B).config(config);
   }
 }

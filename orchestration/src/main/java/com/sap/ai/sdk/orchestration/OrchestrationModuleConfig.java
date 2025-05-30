@@ -160,7 +160,7 @@ public class OrchestrationModuleConfig {
     allFilters.addAll(Arrays.asList(contentFilters));
 
     final var filterConfigs =
-        allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createConfig).toList();
+        allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createInputConfig).toList();
 
     final var inputFilter = InputFilteringConfig.create().filters(filterConfigs);
 
@@ -195,7 +195,10 @@ public class OrchestrationModuleConfig {
     allFilters.addAll(Arrays.asList(contentFilters));
 
     final var filterConfigs =
-        allFilters.stream().filter(Objects::nonNull).map(ContentFilter::createConfig).toList();
+        allFilters.stream()
+            .filter(Objects::nonNull)
+            .map(ContentFilter::createOutputConfig)
+            .toList();
 
     final var outputFilter = OutputFilteringConfig.create().filters(filterConfigs);
 
