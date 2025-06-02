@@ -35,7 +35,8 @@
                 "Hate": 4,
                 "SelfHarm": 4,
                 "Sexual": 4,
-                "Violence": 4
+                "Violence": 4,
+                "PromptShield" : false
               }
             },
             {

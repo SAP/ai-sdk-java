@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.common.StreamedDelta;
+import com.sap.ai.sdk.orchestration.model.ChatDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponseStreaming;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -24,7 +25,7 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
         // A delta only contains one choice with a variable index
         && choices.get(0).getIndex() == 0) {
 
-      final var message = (Map<String, Object>) choices.get(0).toMap().get("delta");
+      final var message = (Map<String, Object>) ((ChatDelta) choices.get(0).toMap().get("delta")).toMap();
       // Avoid the second delta: "choices":[{"delta":{"content":"","role":"assistant"}}]
       if (message != null && message.get("content") != null) {
         return message.get("content").toString();
