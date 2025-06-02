@@ -416,7 +416,7 @@ public class OrchestrationService {
             Message.user("Whats '%s' in German?".formatted(word)),
             Message.system("You are a language translator."));
 
-    return client.chatCompletion(prompt, configWithResponseSchema).entity(Translation.class);
+    return client.chatCompletion(prompt, configWithResponseSchema).asEntity(Translation.class);
   }
 
   /**
