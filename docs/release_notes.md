@@ -8,6 +8,8 @@
 
 ### 🔧 Compatibility Notes
 
+- The old OpenAI client (v1.0.0) is being deprecated in favor of the new OpenAI client (v1.4.0).
+  [See the documentation for more details](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion)
 - [Orchestration] `OrchestrationTemplate.withTemplate()` has been deprecated. Please use `OrchestrationTemplate.withTemplateMessages()` instead.
 
 ### ✨ New Functionality

@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
-@Beta
+@Deprecated
 public class OpenAiEmbeddingOutput {
   /** List object. */
   @JsonProperty("object")

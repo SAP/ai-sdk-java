@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
-@Beta
+@Deprecated
 public class OpenAiChatCompletionTool {
   /** Specifies a tool the model should use. Use to force the model to call a specific function. */
   @JsonProperty("type")
