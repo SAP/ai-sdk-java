@@ -17,6 +17,7 @@ import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ import lombok.val;
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
 
-  /** Please use {@link #withTemplateMessages(List)} instead. */
+  /** Please use {@link #withMessages(Message...)} instead. */
   @JsonProperty("template")
   @Nullable
   @With(onMethod_ = {@Deprecated})
@@ -52,7 +53,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @JsonIgnore
   @Nullable
   @With(AccessLevel.PRIVATE)
-  List<Message> messages;
+  List<Message> templateMessages;
 
   @JsonProperty("defaults")
   @Nullable
@@ -74,9 +75,10 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @return The updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withTemplateMessages(@Nonnull final List<Message> messages) {
-    return this.withMessages(messages)
-        .withTemplate(messages.stream().map(Message::createChatMessage).toList());
+  public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
+    val messageList = Arrays.asList(messages);
+    return this.withTemplateMessages(messageList)
+        .withTemplate(messageList.stream().map(Message::createChatMessage).toList());
   }
 
   /**

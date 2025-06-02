@@ -128,7 +128,7 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateConstruction() {
-    List<Message> templateMessages = List.of(Message.user("message"));
+    Message templateMessages = Message.user("message");
     List<ChatMessage> templateMessagesLowLevel =
         List.of(
             UserChatMessage.create().content(UserChatMessageContent.create("message")).role(USER));
@@ -140,7 +140,7 @@ public class OrchestrationConvenienceUnitTest {
                 .function(FunctionObject.create().name("func")));
     var template =
         TemplateConfig.create()
-            .withTemplateMessages(templateMessages)
+            .withMessages(templateMessages)
             .withDefaults(defaults)
             .withTools(tools)
             .withJsonResponse();
@@ -206,10 +206,9 @@ public class OrchestrationConvenienceUnitTest {
             false);
     var expectedTemplateWithJsonSchemaTools =
         OrchestrationTemplate.create()
-            .withTemplateMessages(
-                List.of(
-                    Message.system("You are a language translator."),
-                    Message.user("Whats {{ ?word }} in {{ ?language }}?")))
+            .withMessages(
+                Message.system("You are a language translator."),
+                Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
             .withJsonSchemaResponse(
                 ResponseJsonSchema.fromMap(schema, "translation-schema")
@@ -267,10 +266,9 @@ public class OrchestrationConvenienceUnitTest {
     var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
         OrchestrationTemplate.create()
-            .withTemplateMessages(
-                List.of(
-                    Message.system("You are a language translator."),
-                    Message.user("Whats {{ ?word }} in {{ ?language }}?")))
+            .withMessages(
+                Message.system("You are a language translator."),
+                Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
             .withJsonResponse();
 
