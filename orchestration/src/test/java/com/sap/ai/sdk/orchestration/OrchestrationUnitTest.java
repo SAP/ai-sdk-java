@@ -704,7 +704,8 @@ class OrchestrationUnitTest {
         assertThat(choices0.getFinishReason()).isEmpty();
         assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) ((ChatDelta) choices0.toMap().get("delta")).toMap();
+        final var message0 =
+            (Map<String, Object>) ((ChatDelta) choices0.toMap().get("delta")).toMap();
         assertThat(message0.get("role")).isEqualTo("");
         assertThat(message0.get("content")).isEqualTo("");
         final var templating = deltaList.get(0).getModuleResults().getTemplating();

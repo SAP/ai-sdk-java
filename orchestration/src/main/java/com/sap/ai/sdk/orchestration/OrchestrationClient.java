@@ -213,7 +213,8 @@ public class OrchestrationClient {
   CompletionPostResponseSynchronous executeRequest(@Nonnull final String request) {
     val postRequest = new HttpPost("/completion");
     postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
-    JACKSON.addMixIn(ErrorResponseModuleResultsAllOfLlm.class, JacksonMixins.DefaultToSynchronousMixin.class);
+    JACKSON.addMixIn(
+        ErrorResponseModuleResultsAllOfLlm.class, JacksonMixins.DefaultToSynchronousMixin.class);
 
     try {
       val destination = destinationSupplier.get();
@@ -277,7 +278,8 @@ public class OrchestrationClient {
       val destination = destinationSupplier.get();
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      JACKSON.addMixIn(ErrorResponseModuleResultsAllOfLlm.class, JacksonMixins.DefaultToStreamingMixin.class);
+      JACKSON.addMixIn(
+          ErrorResponseModuleResultsAllOfLlm.class, JacksonMixins.DefaultToStreamingMixin.class);
       return new ClientStreamingHandler<>(
               deltaType, OrchestrationError.class, OrchestrationClientException::new)
           .objectMapper(JACKSON)

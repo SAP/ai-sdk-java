@@ -2,12 +2,12 @@ package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultStreaming;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class JacksonMixins {
@@ -30,11 +30,10 @@ final class JacksonMixins {
       use = JsonTypeInfo.Id.NAME,
       include = JsonTypeInfo.As.PROPERTY,
       property = "type",
-      defaultImpl = LLMModuleResultSynchronous.class
-  )
+      defaultImpl = LLMModuleResultSynchronous.class)
   @JsonSubTypes({
-      @JsonSubTypes.Type(value = LLMModuleResultSynchronous.class, name = "synch"),
-      @JsonSubTypes.Type(value = LLMModuleResultStreaming.class, name = "streaming")
+    @JsonSubTypes.Type(value = LLMModuleResultSynchronous.class, name = "synch"),
+    @JsonSubTypes.Type(value = LLMModuleResultStreaming.class, name = "streaming")
   })
   public interface DefaultToSynchronousMixin {}
 
@@ -43,11 +42,10 @@ final class JacksonMixins {
       use = JsonTypeInfo.Id.NAME,
       include = JsonTypeInfo.As.PROPERTY,
       property = "type",
-      defaultImpl = LLMModuleResultStreaming.class
-  )
+      defaultImpl = LLMModuleResultStreaming.class)
   @JsonSubTypes({
-      @JsonSubTypes.Type(value = LLMModuleResultSynchronous.class, name = "synch"),
-      @JsonSubTypes.Type(value = LLMModuleResultStreaming.class, name = "streaming")
+    @JsonSubTypes.Type(value = LLMModuleResultSynchronous.class, name = "synch"),
+    @JsonSubTypes.Type(value = LLMModuleResultStreaming.class, name = "streaming")
   })
   public interface DefaultToStreamingMixin {}
 
