@@ -11,7 +11,6 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -19,7 +18,6 @@ import javax.annotation.Nonnull;
  * The contents of the assistant message. Required unless &#x60;tool_calls&#x60; or
  * &#x60;function_call&#x60; is specified.
  */
-@Beta
 public interface ChatCompletionRequestAssistantMessageContent {
   /**
    * Helper class to create a String that implements {@link

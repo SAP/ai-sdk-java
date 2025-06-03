@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
  * @deprecated
  */
 @Deprecated
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class ChatCompletionFunctions
 // CHECKSTYLE:ON
 {

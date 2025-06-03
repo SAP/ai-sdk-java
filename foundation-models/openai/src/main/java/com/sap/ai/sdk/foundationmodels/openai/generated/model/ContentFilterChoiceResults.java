@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
  * about third party text and profanity, if it has been detected, and if it has been filtered or
  * not. And information about customer block list, if it has been filtered and its id.
  */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class ContentFilterChoiceResults
 // CHECKSTYLE:ON
 {

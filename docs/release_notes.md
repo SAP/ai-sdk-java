@@ -8,15 +8,12 @@
 
 ### 🔧 Compatibility Notes
 
-- The constructor of the `AssistantMessage` class now takes `List<MessageToolCall>` as input instead of `List<ResponseMessageToolCall>` (the generated class got renamed).
+- The old OpenAI client (v1.0.0) is being deprecated in favor of the new OpenAI client (v1.4.0).
+  [See the documentation for more details](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion)
 
 ### ✨ New Functionality
 
-- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)
-- [OpenAI] Added the following new models: `o4-mini`, `o3`, `gpt-4.1`, `gpt-4.1-nano`, and `gpt-4.1-mini` 
-- [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
-- [Orchestration] [Tool execution fully enabled](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#tool-calling)
-- [Orchestration] [Added translation](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#translation)
+-
 
 ### 📈 Improvements
 
@@ -24,4 +21,4 @@
 
 ### 🐛 Fixed Issues
 
-- [Orchestration] Fixed `OrchestrationAiModel.CLAUDE_3_7_SONNET`.
+-
