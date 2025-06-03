@@ -79,7 +79,7 @@
     <json.version>20250517</json.version>
     <snakeyaml.version>2.4</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>2.44.4</spotless.version>
+    <spotless.version>2.44.5</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -302,7 +302,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
